@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital2Real · Gemelo Digital Industrial</title>
+  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="container topbar-wrap">
+      <a class="brand" href="#" data-section="Home">Digital<span class="brand-accent">2Real</span></a>
+      <nav class="menu">
+        <a class="menu-link" href="#" data-section="Videos">Videos</a>
+        <a class="menu-link" href="#" data-section="Posts">Posts</a>
+        <a class="menu-link" href="#" data-section="Scada">SCADA</a>
+      </nav>
+      <form class="search" onsubmit="return false;">
+        <input type="search" placeholder="Buscar…" aria-label="Buscar"/>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="page-home" class="page">
+      <div class="hero hero-grid container">
+        <div class="hero-media">
+          <img src="hero.jpg" alt="Gemelo Digital Industrial">
+        </div>
+        <div class="hero-text">
+          <h1>Digital2Real</h1>
+          <h2>Gemelo Digital para la Industria 4.0</h2>
+          <p>
+            Conecta el mundo físico y digital. Simula, monitoriza y valida tus sistemas industriales
+            antes de implementarlos en planta. Ideal para <b>pruebas</b>, <b>comisionamiento digital</b>
+            e <b>I+D</b>. Integra PLC, SCADA e IoT para tomar decisiones informadas y optimizar resultados.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VÍDEOS -->
+    <section id="page-videos" class="page hidden">
+      <div class="container">
+        <div class="page-head">
+          <h2>Machines / Vídeos</h2>
+          <div class="reel-controls">
+            <button id="vidPrev" class="reel-btn" aria-label="Anterior">‹</button>
+            <button id="vidNext" class="reel-btn" aria-label="Siguiente">›</button>
+          </div>
+        </div>
+        <div id="videoStrip" class="reel"></div>
+      </div>
+    </section>
+
+    <!-- POSTS -->
+    <section id="page-posts" class="page hidden">
+      <div class="container">
+        <h2>Posts</h2>
+        <div id="postGrid" class="posts-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <p>Digital<span class="brand-accent">2Real</span> · Automatización Industrial</p>
+      <small>© 2025</small>
+    </div>
+  </footer>
+    <!-- SCADA / DRIVE PANEL -->
+    <section class="page hidden" id="page-scada">
+      <div class="container drive-panel">
+        <!-- COLUMNA 1: DRIVE + MOTOR -->
+        <div class="dp-column dp-drive">
+          <h3 class="dp-title">SINAMICS V90</h3>
+
+          <div class="dp-drive-image">
+            <div class="dp-drive-rect"></div>
+          </div>
+
+          <div class="dp-motor-icon">
+            <div class="dp-motor-body"></div>
+          </div>
+
+          <div class="dp-rpm-display">
+            <span id="dp-rpm-value">+0000.00 rpm</span>
+          </div>
+        </div>
+
+        <!-- COLUMNA 2: COMANDOS + ESTADOS -->
+        <div class="dp-column dp-commands">
+          <!-- COMANDOS -->
+          <div class="dp-box">
+            <h3 class="dp-box-title">COMANDOS</h3>
+
+            <div class="dp-row">
+              <button class="dp-btn dp-btn-green" id="btn-start">ARRANCAR</button>
+              <button class="dp-btn dp-btn-red" id="btn-stop">PARAR</button>
+            </div>
+
+            <div class="dp-subtitle">INVERTIR GIRO</div>
+            <div class="dp-row">
+              <button class="dp-toggle" id="btn-reverse">
+                <span class="dp-toggle-label" id="lbl-direction">FW</span>
+              </button>
+              <button class="dp-btn dp-btn-blue" id="btn-reset">RESET</button>
+            </div>
+
+            <div class="dp-row">
+              <button class="dp-btn dp-btn-grey" id="btn-jog-right">JOG DERECHA</button>
+              <button class="dp-btn dp-btn-grey" id="btn-jog-left">JOG IZQUIERDA</button>
+            </div>
+          </div>
+
+          <!-- ESTADOS -->
+          <div class="dp-box dp-states">
+            <h3 class="dp-box-title">ESTADOS</h3>
+
+            <div class="dp-state-row">
+              <span class="dp-led" id="led-ready"></span>
+              <span>Listo</span>
+            </div>
+            <div class="dp-state-row">
+              <span class="dp-led" id="led-run"></span>
+              <span>Run</span>
+            </div>
+            <div class="dp-state-row">
+              <span class="dp-led dp-led-red" id="led-fault"></span>
+              <span>Falla</span>
+            </div>
+
+            <div class="dp-state-row">
+              <span class="dp-led" id="led-reverse"></span>
+              <span>Reverse</span>
+            </div>
+            <div class="dp-state-row">
+              <span class="dp-led" id="led-jog-right"></span>
+              <span>Jog Derecha</span>
+            </div>
+            <div class="dp-state-row">
+              <span class="dp-led" id="led-jog-left"></span>
+              <span>Jog Izquierda</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA 3: SETPOINT + GAUGE -->
+        <div class="dp-column dp-speed">
+          <div class="dp-box dp-setpoint">
+            <h3 class="dp-box-title">SETPOINT / VELOCIDAD</h3>
+
+            <div class="dp-setpoint-grid">
+              <!-- SETPOINT -->
+              <div class="dp-slider-block">
+                <div class="dp-slider-title">SETPOINT</div>
+                <input type="range" id="setpoint-slider" min="0" max="3000" step="10" value="1500" orient="vertical">
+                <div class="dp-slider-value" id="setpoint-value">1500 rpm</div>
+              </div>
+              <!-- VELOCIDAD REAL -->
+              <div class="dp-slider-block">
+                <div class="dp-slider-title">VELOCIDAD</div>
+                <div class="dp-slider-indicator">
+                  <div class="dp-speed-bar">
+                    <div class="dp-speed-fill" id="speed-fill"></div>
+                  </div>
+                  <div class="dp-speed-value" id="speed-value">0 rpm</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GAUGE -->
+          <div class="dp-box dp-gauge-box">
+            <div class="dp-gauge">
+              <div class="dp-gauge-inner">
+                <div class="dp-gauge-needle" id="gauge-needle"></div>
+                <div class="dp-gauge-center"></div>
+              </div>
+              <div class="dp-gauge-label">rpm<br>VELOCIDAD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  <!-- MODAL PARA VÍDEOS -->
+  <div id="modal" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal">
+      <header class="modal-header">
+        <h3 id="modalTitle">Reproduciendo…</h3>
+        <button id="closeModal" class="modal-close" aria-label="Cerrar">✕</button>
+      </header>
+      <div id="modalContent" class="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- AVATAR ASISTENTE FLOTANTE (vídeo en la esquina) -->
+  <div id="assistantAvatar" class="assistant-avatar">
+    <video id="assistantVideo" playsinline preload="metadata">
+      <source src="Avatar/AvatarIVVideo.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

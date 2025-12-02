@@ -1,0 +1,25 @@
+# Arquitectura del Proyecto – Web-Digital2Real
+
+Este documento describe la organización interna del proyecto **Web-Digital2Real**, incluyendo la estructura de archivos, las responsabilidades de cada carpeta, el uso de ramas en GitHub y la lógica general del flujo de trabajo.
+
+---
+
+## 1. Objetivo del Proyecto
+
+**Digital2Real** es una plataforma web orientada a la Automatización Industrial.  
+Combina:
+
+- Visualización tipo SCADA  
+- Animaciones e interfaz moderna  
+- Sección de vídeos técnicos  
+- Sección de posts  
+- Un avatar asistente (futuro: IA)  
+- Potencial integración con OPC-UA  
+- Simulaciones de procesos industriales  
+
+---
+
+## 2. Estructura de Carpetas
+
+La estructura profesional adoptada es:
+

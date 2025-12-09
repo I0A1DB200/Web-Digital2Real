@@ -7,7 +7,6 @@
   const pages = {
     Home:   "#page-home",
     Videos: "#page-videos",
-    Posts:  "#page-posts",
     Scada:  "#page-scada"
   };
 
@@ -35,29 +34,6 @@
   function closeModal(){
     $("#modalContent").innerHTML = "";
     $("#modal").classList.add("hidden");
-  }
-
-  async function loadPosts(){
-    const grid = $("#postGrid");
-    grid.innerHTML = "<div class='post-card'>Cargando posts…</div>";
-    try{
-      const res = await fetch(`${API_BASE}/api/posts`);
-      const data = await res.json();
-      grid.innerHTML = "";
-      if(!Array.isArray(data) || !data.length){
-        grid.innerHTML = "<div class='post-card'>Aún no hay posts.</div>";
-        return;
-      }
-      data.forEach(p => {
-        const card = document.createElement("article");
-        card.className = "post-card";
-        card.innerHTML = `<h3>${p.title}</h3><p>${(p.content || "").slice(0,180)}${(p.content||"").length>180?"…":""}</p>`;
-        grid.appendChild(card);
-      });
-      state.postsLoaded = true;
-    }catch(e){
-      grid.innerHTML = "<div class='post-card'>Error cargando posts.</div>";
-    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {

@@ -4,12 +4,12 @@
   const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
-const pages = {
-  Home:   "#page-home",
-  Videos: "#page-videos",
-  Posts:  "#page-posts",
-  Scada:  "#page-scada"
-};
+  const pages = {
+    Home:   "#page-home",
+    Videos: "#page-videos",
+    Posts:  "#page-posts",
+    Scada:  "#page-scada"
+  };
 
   const state = { videosLoaded:false, postsLoaded:false };
 
@@ -143,173 +143,148 @@ const pages = {
     const modal = $("#modal");
     if (modal) modal.classList.add("hidden");
 
-    // === AVATAR ASISTENTE (vídeo en la esquina) ===
-    const assistantAvatar = $("#assistantAvatar");
-    const assistantVideo  = $("#assistantVideo");
-
-    if (assistantAvatar && assistantVideo) {
-      // Estado inicial: parado y sin sonido (como imagen)
-      assistantVideo.muted = true;
-      assistantVideo.pause();
-
-      // Aseguramos que se quede en el primer frame cuando cargue
-      assistantVideo.addEventListener("loadeddata", () => {
-        assistantVideo.currentTime = 0;
-        assistantVideo.pause();
-      });
-
-      assistantAvatar.addEventListener("click", () => {
-        if (assistantVideo.paused) {
-          // Reproducir con sonido
-          assistantVideo.muted = false;
-          assistantVideo.currentTime = 0;
-          assistantVideo.play();
-        } else {
-          // Parar y volver a "imagen"
-          assistantVideo.pause();
-          assistantVideo.currentTime = 0;
-          assistantVideo.muted = true;
-        }
-      });
+    // === AVATAR ASISTENTE: inicialización delegada a avatar.js ===
+    if (window.D2R && typeof window.D2R.initAssistantAvatar === "function") {
+      window.D2R.initAssistantAvatar();
     }
 
     showPage("Home");
   });
 
   // === SIMULACIÓN PANEL DRIVE / SINAMICS V90 ===
-(function() {
-  const rpmText   = document.getElementById("dp-rpm-value");
-  const ledReady  = document.getElementById("led-ready");
-  const ledRun    = document.getElementById("led-run");
-  const ledFault  = document.getElementById("led-fault");
-  const ledReverse= document.getElementById("led-reverse");
-  const ledJogR   = document.getElementById("led-jog-right");
-  const ledJogL   = document.getElementById("led-jog-left");
+  (function() {
+    const rpmText   = document.getElementById("dp-rpm-value");
+    const ledReady  = document.getElementById("led-ready");
+    const ledRun    = document.getElementById("led-run");
+    const ledFault  = document.getElementById("led-fault");
+    const ledReverse= document.getElementById("led-reverse");
+    const ledJogR   = document.getElementById("led-jog-right");
+    const ledJogL   = document.getElementById("led-jog-left");
 
-  const btnStart  = document.getElementById("btn-start");
-  const btnStop   = document.getElementById("btn-stop");
-  const btnReset  = document.getElementById("btn-reset");
-  const btnRev    = document.getElementById("btn-reverse");
-  const lblDir    = document.getElementById("lbl-direction");
-  const btnJogR   = document.getElementById("btn-jog-right");
-  const btnJogL   = document.getElementById("btn-jog-left");
+    const btnStart  = document.getElementById("btn-start");
+    const btnStop   = document.getElementById("btn-stop");
+    const btnReset  = document.getElementById("btn-reset");
+    const btnRev    = document.getElementById("btn-reverse");
+    const lblDir    = document.getElementById("lbl-direction");
+    const btnJogR   = document.getElementById("btn-jog-right");
+    const btnJogL   = document.getElementById("btn-jog-left");
 
-  const spSlider  = document.getElementById("setpoint-slider");
-  const spValue   = document.getElementById("setpoint-value");
-  const speedFill = document.getElementById("speed-fill");
-  const speedText = document.getElementById("speed-value");
-  const needle    = document.getElementById("gauge-needle");
+    const spSlider  = document.getElementById("setpoint-slider");
+    const spValue   = document.getElementById("setpoint-value");
+    const speedFill = document.getElementById("speed-fill");
+    const speedText = document.getElementById("speed-value");
+    const needle    = document.getElementById("gauge-needle");
 
-  // Si no existe la sección (por cualquier motivo), salimos
-  if (!rpmText) return;
+    // Si no existe la sección (por cualquier motivo), salimos
+    if (!rpmText) return;
 
-  // Estado simulado
-  let running = false;
-  let reverse = false;
-  let fault   = false;
-  let rpm     = 0;
+    // Estado simulado
+    let running = false;
+    let reverse = false;
+    let fault   = false;
+    let rpm     = 0;
 
-  // Al inicio: drive listo
-  ledReady.classList.add("dp-led-on");
-
-  function updateRPMDisplay() {
-    rpmText.textContent = `+${rpm.toFixed(2)} rpm`;
-    const pct = Math.max(0, Math.min(1, rpm / 3000));
-    speedFill.style.height = (pct * 100) + "%";
-    speedText.textContent = `${Math.round(rpm)} rpm`;
-
-    // Aguja: -120º (0 rpm) a +120º (3000 rpm)
-    const angle = -120 + pct * 240;
-    needle.style.transform = `rotate(${angle}deg)`;
-  }
-
-  function setLed(led, on) {
-    led.classList.toggle("dp-led-on", !!on);
-  }
-
-  function stopJog() {
-    setLed(ledJogR, false);
-    setLed(ledJogL, false);
-  }
-
-  // Botones principales
-  btnStart?.addEventListener("click", () => {
-    if (fault) return;
-    running = true;
-    setLed(ledRun, true);
-    setLed(ledReady, true);
-  });
-
-  btnStop?.addEventListener("click", () => {
-    running = false;
-    setLed(ledRun, false);
-    stopJog();
-  });
-
-  btnReset?.addEventListener("click", () => {
-    fault = false;
-    setLed(ledFault, false);
+    // Al inicio: drive listo
     ledReady.classList.add("dp-led-on");
-  });
 
-  btnRev?.addEventListener("click", () => {
-    reverse = !reverse;
-    lblDir.textContent = reverse ? "REV" : "FW";
-    setLed(ledReverse, reverse);
-  });
+    function updateRPMDisplay() {
+      rpmText.textContent = `+${rpm.toFixed(2)} rpm`;
+      const pct = Math.max(0, Math.min(1, rpm / 3000));
+      speedFill.style.height = (pct * 100) + "%";
+      speedText.textContent = `${Math.round(rpm)} rpm`;
 
-  // Jog derecha
-  btnJogR?.addEventListener("mousedown", () => {
-    if (!running || fault) return;
-    setLed(ledJogR, true);
-  });
-  btnJogR?.addEventListener("mouseup", stopJog);
-  btnJogR?.addEventListener("mouseleave", stopJog);
-
-  // Jog izquierda
-  btnJogL?.addEventListener("mousedown", () => {
-    if (!running || fault) return;
-    setLed(ledJogL, true);
-  });
-  btnJogL?.addEventListener("mouseup", stopJog);
-  btnJogL?.addEventListener("mouseleave", stopJog);
-
-  // Slider de setpoint
-  spSlider?.addEventListener("input", () => {
-    spValue.textContent = `${spSlider.value} rpm`;
-  });
-
-  // Bucle de simulación (cada 100 ms)
-  setInterval(() => {
-    const sp = Number(spSlider?.value || 0);
-
-    if (fault) {
-      // El fallo hace que la velocidad caiga
-      rpm += (0 - rpm) * 0.2;
-    } else if (running) {
-      const target = sp;
-      rpm += (target - rpm) * 0.12; // aproximación suave al setpoint
-
-      // Simulamos posibilidad de fallo a RPM alta
-      if (rpm > 2900 && Math.random() < 0.0008) {
-        fault = true;
-        running = false;
-        setLed(ledRun, false);
-        setLed(ledFault, true);
-      }
-    } else {
-      // Parado: frenado hacia 0
-      rpm += (0 - rpm) * 0.18;
+      // Aguja: -120º (0 rpm) a +120º (3000 rpm)
+      const angle = -120 + pct * 240;
+      needle.style.transform = `rotate(${angle}deg)`;
     }
 
-    if (Math.abs(rpm) < 1) rpm = 0;
+    function setLed(led, on) {
+      led.classList.toggle("dp-led-on", !!on);
+    }
 
+    function stopJog() {
+      setLed(ledJogR, false);
+      setLed(ledJogL, false);
+    }
+
+    // Botones principales
+    btnStart?.addEventListener("click", () => {
+      if (fault) return;
+      running = true;
+      setLed(ledRun, true);
+      setLed(ledReady, true);
+    });
+
+    btnStop?.addEventListener("click", () => {
+      running = false;
+      setLed(ledRun, false);
+      stopJog();
+    });
+
+    btnReset?.addEventListener("click", () => {
+      fault = false;
+      setLed(ledFault, false);
+      ledReady.classList.add("dp-led-on");
+    });
+
+    btnRev?.addEventListener("click", () => {
+      reverse = !reverse;
+      lblDir.textContent = reverse ? "REV" : "FW";
+      setLed(ledReverse, reverse);
+    });
+
+    // Jog derecha
+    btnJogR?.addEventListener("mousedown", () => {
+      if (!running || fault) return;
+      setLed(ledJogR, true);
+    });
+    btnJogR?.addEventListener("mouseup", stopJog);
+    btnJogR?.addEventListener("mouseleave", stopJog);
+
+    // Jog izquierda
+    btnJogL?.addEventListener("mousedown", () => {
+      if (!running || fault) return;
+      setLed(ledJogL, true);
+    });
+    btnJogL?.addEventListener("mouseup", stopJog);
+    btnJogL?.addEventListener("mouseleave", stopJog);
+
+    // Slider de setpoint
+    spSlider?.addEventListener("input", () => {
+      spValue.textContent = `${spSlider.value} rpm`;
+    });
+
+    // Bucle de simulación (cada 100 ms)
+    setInterval(() => {
+      const sp = Number(spSlider?.value || 0);
+
+      if (fault) {
+        // El fallo hace que la velocidad caiga
+        rpm += (0 - rpm) * 0.2;
+      } else if (running) {
+        const target = sp;
+        rpm += (target - rpm) * 0.12; // aproximación suave al setpoint
+
+        // Simulamos posibilidad de fallo a RPM alta
+        if (rpm > 2900 && Math.random() < 0.0008) {
+          fault = true;
+          running = false;
+          setLed(ledRun, false);
+          setLed(ledFault, true);
+        }
+      } else {
+        // Parado: frenado hacia 0
+        rpm += (0 - rpm) * 0.18;
+      }
+
+      if (Math.abs(rpm) < 1) rpm = 0;
+
+      updateRPMDisplay();
+    }, 100);
+
+    // Primera actualización
+    if (spSlider) spValue.textContent = `${spSlider.value} rpm`;
     updateRPMDisplay();
-  }, 100);
-
-  // Primera actualización
-  if (spSlider) spValue.textContent = `${spSlider.value} rpm`;
-  updateRPMDisplay();
-})();
+  })();
 
 })();

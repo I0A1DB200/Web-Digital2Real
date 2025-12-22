@@ -28,7 +28,7 @@
       <div class="hero hero-grid container">
         <div class="hero-media">
           <!-- RUTA ACTUALIZADA -->
-          <img src="assets/images/hero.jpg" alt="Gemelo Digital Industrial">
+          <img id="homeHero" src="assets/images/hero.jpg" alt="Gemelo Digital Industrial">
         </div>
         <div class="hero-text">
           <h1>Digital2Real</h1>
@@ -48,8 +48,8 @@
         <div class="page-head">
           <h2>Machines / Vídeos</h2>
           <div class="reel-controls">
-            <button id="vidPrev" class="reel-btn" aria-label="Anterior">‹</button>
-            <button id="vidNext" class="reel-btn" aria-label="Siguiente">›</button>
+            <button id="vidPrev" class="reel-btn" aria-label="Anterior" type="button">‹</button>
+            <button id="vidNext" class="reel-btn" aria-label="Siguiente" type="button">›</button>
           </div>
         </div>
         <div id="videoStrip" class="reel"></div>
@@ -92,21 +92,21 @@
           <h3 class="dp-box-title">COMANDOS</h3>
 
           <div class="dp-row">
-            <button class="dp-btn dp-btn-green" id="btn-start">ARRANCAR</button>
-            <button class="dp-btn dp-btn-red" id="btn-stop">PARAR</button>
+            <button class="dp-btn dp-btn-green" id="btn-start" type="button">ARRANCAR</button>
+            <button class="dp-btn dp-btn-red" id="btn-stop" type="button">PARAR</button>
           </div>
 
           <div class="dp-subtitle">INVERTIR GIRO</div>
           <div class="dp-row">
-            <button class="dp-toggle" id="btn-reverse">
+            <button class="dp-toggle" id="btn-reverse" type="button">
               <span class="dp-toggle-label" id="lbl-direction">FW</span>
             </button>
-            <button class="dp-btn dp-btn-blue" id="btn-reset">RESET</button>
+            <button class="dp-btn dp-btn-blue" id="btn-reset" type="button">RESET</button>
           </div>
 
           <div class="dp-row">
-            <button class="dp-btn dp-btn-grey" id="btn-jog-right">JOG DERECHA</button>
-            <button class="dp-btn dp-btn-grey" id="btn-jog-left">JOG IZQUIERDA</button>
+            <button class="dp-btn dp-btn-grey" id="btn-jog-right" type="button">JOG DERECHA</button>
+            <button class="dp-btn dp-btn-grey" id="btn-jog-left" type="button">JOG IZQUIERDA</button>
           </div>
         </div>
 
@@ -180,13 +180,13 @@
       </div>
     </div>
   </section>
-    
+
   <!-- MODAL PARA VÍDEOS -->
   <div id="modal" class="modal-backdrop hidden" aria-hidden="true">
     <div class="modal">
       <header class="modal-header">
         <h3 id="modalTitle">Reproduciendo…</h3>
-        <button id="closeModal" class="modal-close" aria-label="Cerrar">✕</button>
+        <button id="closeModal" class="modal-close" aria-label="Cerrar" type="button">✕</button>
       </header>
       <div id="modalContent" class="modal-content"></div>
     </div>
@@ -199,11 +199,10 @@
     </video>
   </div>
 
-
+  <script src="app.js" defer></script>
   <script src="avatar/avatar.js" defer></script>
   <script src="scada/scada.js" defer></script>
   <script src="videos/videos.js" defer></script>
-  <script src="app.js" defer></script>
 </body>
 </html>
 

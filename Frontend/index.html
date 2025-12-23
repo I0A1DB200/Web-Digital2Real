@@ -2,207 +2,188 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Digital2Real · Gemelo Digital Industrial</title>
-  <link rel="stylesheet" href="styles.css?v=6" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital2Real · Automatización Industrial</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <!-- TOPBAR -->
+
+  <!-- HEADER -->
   <header class="topbar">
-    <div class="container topbar-wrap">
-      <a class="brand" href="#" data-section="Home">Digital<span class="brand-accent">2Real</span></a>
-      <nav class="menu">
-        <a class="menu-link" href="#" data-section="Videos">Videos</a>
-        <a class="menu-link" href="#" data-section="Scada">SCADA</a>
-      </nav>
-      <form class="search" onsubmit="return false;">
-        <input type="search" placeholder="Buscar…" aria-label="Buscar"/>
-      </form>
+    <div class="topbar__inner">
+      <div class="brand">
+        Digital<span class="brand__accent">2</span>Real
+      </div>
+
+
+<div class="topbar__tools topbar__tools--icons">
+
+  <div class="tool-item">
+    <span class="tool-icon">🔍</span>
+    <span class="tool-text">Buscar</span>
+  </div>
+
+  <div class="tool-item">
+    <span class="tool-icon">✉️</span>
+    <span class="tool-text">Contacto</span>
+  </div>
+
+  <div class="tool-item">
+    <span class="tool-icon">🌐</span>
+    <span class="tool-text">Idioma</span>
+  </div>
+
+  <div class="tool-item">
+    <span class="tool-icon">👤</span>
+    <span class="tool-text">Registrarse</span>
+  </div>
+
+</div>
+
     </div>
   </header>
 
   <main>
-    <!-- HOME -->
-    <section id="page-home" class="page">
-      <div class="hero hero-grid container">
-        <div class="hero-media">
-          <!-- RUTA ACTUALIZADA -->
-          <img id="homeHero" src="assets/images/hero.jpg" alt="Gemelo Digital Industrial">
-        </div>
-        <div class="hero-text">
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero__bg"></div>
+
+      <div class="container hero__content">
+        <div class="hero__text reveal">
+          <span class="kicker">Plataforma Industrial · SCADA Web · Gemelo Digital</span>
           <h1>Digital2Real</h1>
           <h2>Gemelo Digital para la Industria 4.0</h2>
+
           <p>
-            Conecta el mundo físico y digital. Simula, monitoriza y valida tus sistemas industriales
-            antes de implementarlos en planta. Ideal para <b>pruebas</b>, <b>comisionamiento digital</b>
-            e <b>I+D</b>. Integra PLC, SCADA e IoT para tomar decisiones informadas y optimizar resultados.
+            Simula, monitoriza y valida sistemas industriales antes de su despliegue
+            en planta. Plataforma orientada a demostración técnica e integración IT/OT.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn--primary" href="#scada">Ver Demo SCADA</a>
+            <a class="btn btn--ghost" href="#arquitectura">Arquitectura IT/OT</a>
+            <a class="btn btn--secondary" href="#videos">Ver Demos</a>
+          </div>
+
+          <div class="statusbar">
+            <span class="status-dot"></span>
+            <span>Simulación activa</span>
+          </div>
+        </div>
+
+        <div class="hero__panel reveal">
+          <div class="panel">
+            <h4>Highlights</h4>
+            <ul>
+              <li>SCADA Web interactivo</li>
+              <li>Integración Node-RED / OPC UA (roadmap)</li>
+              <li>Arquitectura IT/OT escalable</li>
+            </ul>
+          </div>
+
+
+    <div class="placeholder__line"></div>
+    <div class="placeholder__line"></div>
+    <div class="placeholder__line short"></div>
+  </div>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALOR -->
+    <section class="section">
+      <div class="container">
+        <h3 class="section-title reveal">Qué aporta Digital2Real</h3>
+
+        <div class="grid-3">
+          <div class="card reveal">
+            <img src="assets/images/diagnostics.png" alt="">
+            <h4>Simulación y validación</h4>
+            <p>Pruebas y comisionamiento digital antes de planta.</p>
+          </div>
+
+          <div class="card reveal">
+            <img src="assets/images/itot-laptop.png" alt="">
+            <h4>Integración IT / OT</h4>
+            <p>PLC, SCADA, OPC UA y middleware industrial.</p>
+          </div>
+
+          <div class="card reveal">
+            <img src="assets/images/scada-screen-2.png" alt="">
+            <h4>Operación asistida</h4>
+            <p>Estados, alarmas y soporte operativo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARQUITECTURA -->
+    <section id="arquitectura" class="section split">
+      <div class="container split-grid">
+        <img src="assets/images/itot-laptop.png" class="reveal" alt="">
+        <div class="reveal">
+          <h3>Arquitectura IT / OT</h3>
+          <p>
+            Frontend web industrial conectado a middleware Node-RED y servidor OPC UA
+            como modelo de datos común.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- VÍDEOS -->
-    <section id="page-videos" class="page hidden">
+    <!-- DEMOS -->
+    <section id="videos" class="section">
       <div class="container">
-        <div class="page-head">
-          <h2>Machines / Vídeos</h2>
-          <div class="reel-controls">
-            <button id="vidPrev" class="reel-btn" aria-label="Anterior" type="button">‹</button>
-            <button id="vidNext" class="reel-btn" aria-label="Siguiente" type="button">›</button>
+        <h3 class="section-title reveal">Demos técnicas</h3>
+
+        <div class="grid-3">
+          <div class="card reveal">
+            <img src="assets/images/demos-1.png" alt="">
+            <h4>Demo SCADA Web</h4>
+            <p>Control y monitorización.</p>
+          </div>
+
+          <div class="card reveal">
+            <img src="assets/images/demos-2.png" alt="">
+            <h4>Demo IT/OT</h4>
+            <p>Node-RED + OPC UA.</p>
+          </div>
+
+          <div class="card reveal">
+            <img src="assets/images/diagnostics.png" alt="">
+            <h4>Diagnóstico</h4>
+            <p>Eventos y estados del sistema.</p>
           </div>
         </div>
-        <div id="videoStrip" class="reel"></div>
       </div>
     </section>
 
+    <!-- SCADA -->
+    <section id="scada" class="section">
+      <div class="container scada-grid">
+        <img src="assets/images/scada-screen-2.png" class="reveal" alt="">
+        <div class="reveal">
+          <h3>SCADA Demo</h3>
+          <p>Simulación activa en entorno web.</p>
+          <a class="btn btn--primary" href="scada.html">Abrir SCADA</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer__bg"></div>
+      <div class="container footer-content">
+        <span>Digital2Real · Automatización Industrial</span>
+        <span>© 2025</span>
+      </div>
+    </footer>
+
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-wrap">
-      <p>Digital<span class="brand-accent">2Real</span> · Automatización Industrial</p>
-      <small>© 2025</small>
-    </div>
-  </footer>
-
-  <!-- SCADA / DRIVE PANEL -->
-  <section class="page hidden" id="page-scada">
-    <div class="container drive-panel">
-      <!-- COLUMNA 1: DRIVE + MOTOR -->
-      <div class="dp-column dp-drive">
-        <h3 class="dp-title">SINAMICS V90</h3>
-
-        <div class="dp-drive-image">
-          <div class="dp-drive-rect"></div>
-        </div>
-
-        <div class="dp-motor-icon">
-          <div class="dp-motor-body"></div>
-        </div>
-
-        <div class="dp-rpm-display">
-          <span id="dp-rpm-value">+0000.00 rpm</span>
-        </div>
-      </div>
-
-      <!-- COLUMNA 2: COMANDOS + ESTADOS -->
-      <div class="dp-column dp-commands">
-        <!-- COMANDOS -->
-        <div class="dp-box">
-          <h3 class="dp-box-title">COMANDOS</h3>
-
-          <div class="dp-row">
-            <button class="dp-btn dp-btn-green" id="btn-start" type="button">ARRANCAR</button>
-            <button class="dp-btn dp-btn-red" id="btn-stop" type="button">PARAR</button>
-          </div>
-
-          <div class="dp-subtitle">INVERTIR GIRO</div>
-          <div class="dp-row">
-            <button class="dp-toggle" id="btn-reverse" type="button">
-              <span class="dp-toggle-label" id="lbl-direction">FW</span>
-            </button>
-            <button class="dp-btn dp-btn-blue" id="btn-reset" type="button">RESET</button>
-          </div>
-
-          <div class="dp-row">
-            <button class="dp-btn dp-btn-grey" id="btn-jog-right" type="button">JOG DERECHA</button>
-            <button class="dp-btn dp-btn-grey" id="btn-jog-left" type="button">JOG IZQUIERDA</button>
-          </div>
-        </div>
-
-        <!-- ESTADOS -->
-        <div class="dp-box dp-states">
-          <h3 class="dp-box-title">ESTADOS</h3>
-
-          <div class="dp-state-row">
-            <span class="dp-led" id="led-ready"></span>
-            <span>Listo</span>
-          </div>
-          <div class="dp-state-row">
-            <span class="dp-led" id="led-run"></span>
-            <span>Run</span>
-          </div>
-          <div class="dp-state-row">
-            <span class="dp-led dp-led-red" id="led-fault"></span>
-            <span>Falla</span>
-          </div>
-
-          <div class="dp-state-row">
-            <span class="dp-led" id="led-reverse"></span>
-            <span>Reverse</span>
-          </div>
-          <div class="dp-state-row">
-            <span class="dp-led" id="led-jog-right"></span>
-            <span>Jog Derecha</span>
-          </div>
-          <div class="dp-state-row">
-            <span class="dp-led" id="led-jog-left"></span>
-            <span>Jog Izquierda</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- COLUMNA 3: SETPOINT + GAUGE -->
-      <div class="dp-column dp-speed">
-        <div class="dp-box dp-setpoint">
-          <h3 class="dp-box-title">SETPOINT / VELOCIDAD</h3>
-
-          <div class="dp-setpoint-grid">
-            <!-- SETPOINT -->
-            <div class="dp-slider-block">
-              <div class="dp-slider-title">SETPOINT</div>
-              <input type="range" id="setpoint-slider" min="0" max="3000" step="10" value="1500" orient="vertical">
-              <div class="dp-slider-value" id="setpoint-value">1500 rpm</div>
-            </div>
-            <!-- VELOCIDAD REAL -->
-            <div class="dp-slider-block">
-              <div class="dp-slider-title">VELOCIDAD</div>
-              <div class="dp-slider-indicator">
-                <div class="dp-speed-bar">
-                  <div class="dp-speed-fill" id="speed-fill"></div>
-                </div>
-                <div class="dp-speed-value" id="speed-value">0 rpm</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- GAUGE -->
-        <div class="dp-box dp-gauge-box">
-          <div class="dp-gauge">
-            <div class="dp-gauge-inner">
-              <div class="dp-gauge-needle" id="gauge-needle"></div>
-              <div class="dp-gauge-center"></div>
-            </div>
-            <div class="dp-gauge-label">rpm<br>VELOCIDAD</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL PARA VÍDEOS -->
-  <div id="modal" class="modal-backdrop hidden" aria-hidden="true">
-    <div class="modal">
-      <header class="modal-header">
-        <h3 id="modalTitle">Reproduciendo…</h3>
-        <button id="closeModal" class="modal-close" aria-label="Cerrar" type="button">✕</button>
-      </header>
-      <div id="modalContent" class="modal-content"></div>
-    </div>
-  </div>
-
-  <!-- AVATAR ASISTENTE FLOTANTE (vídeo en la esquina) -->
-  <div id="assistantAvatar" class="assistant-avatar">
-    <video id="assistantVideo" playsinline preload="metadata">
-      <source src="assets/videos/AvatarIVVideo.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <script src="app.js" defer></script>
-  <script src="avatar/avatar.js" defer></script>
-  <script src="scada/scada.js" defer></script>
-  <script src="videos/videos.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
-

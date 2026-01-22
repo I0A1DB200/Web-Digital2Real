@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital2Real · PLC Creator (TIA SCL)</title>
+
+  <!-- estilos globales -->
+  <link rel="stylesheet" href="../styles.css" />
+  <!-- estilos del módulo -->
+  <link rel="stylesheet" href="./plc.css" />
+</head>
+
+<body>
+  <!-- Topbar coherente con la home -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="../index.html" aria-label="Digital2Real">
+        Digital<span class="brand__accent">2</span>Real
+      </a>
+
+      <div class="topbar__tools topbar__tools--icons">
+        <a class="tool-item" href="../index.html">
+          <span class="tool-icon">🏠</span>
+          <span class="tool-text">Inicio</span>
+        </a>
+        <a class="tool-item" href="../index.html#videos">
+          <span class="tool-icon">🎬</span>
+          <span class="tool-text">Demos</span>
+        </a>
+        <a class="tool-item" href="../scada/scada.html">
+          <span class="tool-icon">📈</span>
+          <span class="tool-text">SCADA</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="plc-page">
+    <div class="container">
+
+      <section class="plc-head">
+        <div>
+          <div class="plc-kicker">Generador de código · Siemens TIA Portal</div>
+          <h1 class="plc-title">PLC Creator</h1>
+          <p class="plc-subtitle">
+            Crea una plantilla SCL para un <b>FUNCTION_BLOCK (FB)</b> a partir de señales I/O.
+            Modo <b>Simple</b> para demo comercial y modo <b>Técnico</b> para estructura avanzada.
+          </p>
+        </div>
+
+        <div class="plc-mode">
+          <div class="mode-label">Modo</div>
+          <div class="mode-toggle" role="tablist" aria-label="Modo PLC Creator">
+            <button class="mode-btn is-active" id="modeSimple" type="button" aria-selected="true">Simple</button>
+            <button class="mode-btn" id="modeTech" type="button" aria-selected="false">Técnico</button>
+          </div>
+
+          <div class="target-pill">Target: Siemens TIA (SCL)</div>
+        </div>
+      </section>
+
+      <section class="plc-grid">
+        <!-- Editor -->
+        <section class="card plc-editor">
+          <div class="card__title">Definición</div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span class="field__label">Nombre de proyecto</span>
+              <input id="projName" class="field__input" type="text" value="D2R_Project" />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Nombre FB (SCL)</span>
+              <input id="fbName" class="field__input" type="text" value="FB_Main" />
+            </label>
+          </div>
+
+          <div class="io-head">
+            <div>
+              <div class="io-title">Señales I/O</div>
+              <div class="io-hint">Define entradas y salidas; el generador crea VAR_INPUT / VAR_OUTPUT.</div>
+            </div>
+
+            <div class="io-actions">
+              <button class="btn btn--secondary" id="btnAddRow" type="button">Añadir señal</button>
+              <button class="btn btn--ghost" id="btnResetDemo" type="button">Cargar ejemplo</button>
+            </div>
+          </div>
+
+          <div class="io-table-wrap">
+            <table class="io-table" aria-label="Tabla de señales">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Dirección</th>
+                  <th>Comentario</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="ioTbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Avanzado (solo técnico) -->
+          <div class="tech-block" id="techBlock" hidden>
+            <div class="card__title">Opciones técnicas</div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span class="field__label">Nombre UDT (opcional)</span>
+                <input id="udtName" class="field__input" type="text" value="UDT_IO" />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Nombre DB (opcional)</span>
+                <input id="dbName" class="field__input" type="text" value="DB_IO" />
+              </label>
+            </div>
+
+            <div class="tech-hint">
+              En modo Técnico el output incluye bloque TYPE (UDT) + DATA_BLOCK (DB) + FUNCTION_BLOCK (FB) con secciones
+              y comentarios estructurales. Es una plantilla: podrás extenderla con tu lógica real.
+            </div>
+          </div>
+
+          <div class="gen-row">
+            <button class="btn btn--primary" id="btnGenerate" type="button">Generar SCL</button>
+            <button class="btn btn--secondary" id="btnCopy" type="button">Copiar</button>
+            <button class="btn btn--ghost" id="btnDownload" type="button">Descargar .scl</button>
+          </div>
+        </section>
+
+        <!-- Output -->
+        <aside class="card plc-output">
+          <div class="output-head">
+            <div class="card__title">Output (SCL)</div>
+            <div class="output-meta" id="outMeta">—</div>
+          </div>
+
+          <textarea id="outText" class="out-text" spellcheck="false"></textarea>
+
+          <div class="out-note">
+            Sugerencia: pega este código en un editor SCL en TIA Portal y adapta la lógica dentro de <b>BEGIN</b>.
+          </div>
+
+          <div class="out-status" id="outStatus" aria-live="polite"></div>
+        </aside>
+      </section>
+
+      <section class="plc-footer-note">
+        Roadmap: generación asistida por IA, plantillas por librería, export de UDT/DB/FB y endpoint backend (/api/plc/generate).
+      </section>
+
+    </div>
+  </main>
+
+  <script src="./plc.js"></script>
+</body>
+</html>

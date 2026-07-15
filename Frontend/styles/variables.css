@@ -1,0 +1,18 @@
+@import url("./brand.css");
+
+:root {
+  --bg: var(--color-bg);
+  --bg-soft: var(--color-bg-soft);
+
+  --ink: var(--color-ink);
+  --ink-soft: var(--color-ink-soft);
+  --muted: var(--color-muted);
+
+  --line: var(--color-line);
+  --line-soft: var(--color-line-soft);
+
+  --accent: var(--brand-primary);
+  --accent-soft: var(--brand-primary-soft);
+
+  --ease: var(--ease-editorial);
+}

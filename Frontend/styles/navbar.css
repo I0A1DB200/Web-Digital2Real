@@ -1,0 +1,73 @@
+.topbar {
+  position: fixed;
+  inset: 0 0 auto;
+  height: var(--topbar-h);
+  z-index: 1000;
+  background: rgba(5, 5, 5, 0.76);
+  border-bottom: 1px solid var(--line-soft);
+  backdrop-filter: blur(18px);
+}
+
+.topbar__inner {
+  width: var(--container);
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-brand);
+  font-size: 1rem;
+  font-weight: 690;
+  letter-spacing: -0.035em;
+}
+
+.brand__accent {
+  color: var(--brand-primary);
+}
+
+.topbar__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 3vw, 42px);
+}
+
+.topbar__link {
+  position: relative;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 620;
+  letter-spacing: .02em;
+}
+
+.topbar__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -10px;
+  height: 1px;
+  background: var(--brand-primary);
+  transition: right .32s var(--ease);
+}
+
+.topbar__link:hover,
+.topbar__link.is-active {
+  color: var(--ink);
+}
+
+.topbar__link:hover::after,
+.topbar__link.is-active::after {
+  right: 0;
+}

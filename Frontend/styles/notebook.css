@@ -1,0 +1,37 @@
+.notebook-card {
+  padding: 38px 0;
+  border-top: 1px solid var(--line);
+}
+
+.notebook-card:last-child { border-bottom: 1px solid var(--line); }
+
+.notebook-card__date {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 760;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.notebook-card h2 {
+  margin: 16px 0 14px;
+  max-width: 860px;
+  font-size: clamp(2rem, 4.5vw, 4.8rem);
+  line-height: .88;
+  letter-spacing: -.085em;
+  font-weight: 560;
+}
+
+.notebook-card p {
+  max-width: 760px;
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.notebook-card__tags {
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.notebook-card__tags span:not(:last-child)::after { content: " / "; }

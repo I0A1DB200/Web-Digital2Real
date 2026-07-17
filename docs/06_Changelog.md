@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.0.2 — V2 Repository Consolidation
+
+### Changed
+
+- Replaced the legacy `Frontend/index.html` with the minimal SPA shell.
+- Replaced the legacy `Frontend/app.js` with the modular Labs, Notebook and About application controller.
+- Replaced the legacy monolithic `Frontend/styles.css` with the official modular CSS import entry point.
+- Added favicon, metadata and theme colour references to the HTML document.
+- Added hash-based view persistence for `Labs`, `Notebook` and `About`.
+- Improved Lab Viewer cleanup and keyboard handling.
+- Improved reveal animation lifecycle.
+
+### Removed
+
+- Removed the legacy `Frontend/avatar/avatar.js`.
+- Removed the legacy `Frontend/scada/scada.js`.
+- Removed the legacy `Frontend/videos/videos.js`.
+- Removed the obsolete `docs/arquitectura.md.txt`.
+- Removed the unused `Frontend/styles/cards.css`.
+- Removed the unused `Frontend/styles/labs.css`.
+
+### Confirmed
+
+- `Frontend/styles/exhibition.css` is the official Home/Labs presentation layer.
+- `Frontend/styles/brand.css` remains the visual identity SSOT.
+- `Frontend/data/labs.js` remains the laboratory content SSOT.
+- `Frontend/data/notebook.js` remains the Notebook content SSOT.
+- `Frontend/data/site.js` remains the global site information SSOT.
+
+---
+
 ## v2.0.1 — File Architecture Documentation
 
 ### Added
@@ -20,4 +51,4 @@
 
 ### Notes
 
-This changelog entry establishes the official file architecture workflow for Digital2Real V2.
+This changelog entry established the official file architecture workflow for Digital2Real V2.

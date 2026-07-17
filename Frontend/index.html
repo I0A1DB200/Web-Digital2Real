@@ -1,189 +1,25 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digital2Real · Automatización Industrial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Digital2Real | Industrial Automation Labs</title>
+
+  <meta
+    name="description"
+    content="Digital2Real is an editorial collection of industrial automation laboratories, SCADA systems, HMIs, OPC UA and engineering experiments."
+  />
+  <meta name="author" content="Alejandro Sánchez" />
+  <meta name="theme-color" content="#050505" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
+  <div id="app"></div>
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <div class="topbar__inner">
-      <div class="brand">
-        Digital<span class="brand__accent">2</span>Real
-      </div>
-
-
-<div class="topbar__tools topbar__tools--icons">
-
-  <div class="tool-item">
-    <span class="tool-icon">🔍</span>
-    <span class="tool-text">Buscar</span>
-  </div>
-
-  <div class="tool-item">
-    <span class="tool-icon">✉️</span>
-    <span class="tool-text">Contacto</span>
-  </div>
-
-  <div class="tool-item">
-    <span class="tool-icon">🌐</span>
-    <span class="tool-text">Idioma</span>
-  </div>
-
-  <div class="tool-item">
-    <span class="tool-icon">👤</span>
-    <span class="tool-text">Registrarse</span>
-  </div>
-
-</div>
-
-    </div>
-  </header>
-
-  <main>
-
-    <!-- HERO -->
-    <section id="home" class="hero">
-      <div class="hero__bg"></div>
-
-      <div class="container hero__content">
-        <div class="hero__text reveal">
-          <span class="kicker">Plataforma Industrial · SCADA Web · Gemelo Digital</span>
-          <h1>Digital2Real</h1>
-          <h2>Gemelo Digital para la Industria 4.0</h2>
-
-          <p>
-            Simula, monitoriza y valida sistemas industriales antes de su despliegue
-            en planta. Plataforma orientada a demostración técnica e integración IT/OT.
-          </p>
-
-          <div class="cta-row">
-            <a class="btn btn--primary" href="#scada">Ver Demo SCADA</a>
-            <a class="btn btn--ghost" href="#arquitectura">Arquitectura IT/OT</a>
-            <a class="btn btn--secondary" href="#videos">Ver Demos</a>
-          </div>
-
-          <div class="statusbar">
-            <span class="status-dot"></span>
-            <span>Simulación activa</span>
-          </div>
-        </div>
-
-        <div class="hero__panel reveal">
-          <div class="panel">
-            <h4>Highlights</h4>
-            <ul>
-              <li>SCADA Web interactivo</li>
-              <li>Integración Node-RED / OPC UA (roadmap)</li>
-              <li>Arquitectura IT/OT escalable</li>
-            </ul>
-          </div>
-
-
-    <div class="placeholder__line"></div>
-    <div class="placeholder__line"></div>
-    <div class="placeholder__line short"></div>
-  </div>
-</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VALOR -->
-    <section class="section">
-      <div class="container">
-        <h3 class="section-title reveal">Qué aporta Digital2Real</h3>
-
-        <div class="grid-3">
-          <div class="card reveal">
-            <img src="assets/images/diagnostics.png" alt="">
-            <h4>Simulación y validación</h4>
-            <p>Pruebas y comisionamiento digital antes de planta.</p>
-          </div>
-
-          <div class="card reveal">
-            <img src="assets/images/itot-laptop.png" alt="">
-            <h4>Integración IT / OT</h4>
-            <p>PLC, SCADA, OPC UA y middleware industrial.</p>
-          </div>
-
-          <div class="card reveal">
-            <img src="assets/images/scada-screen-2.png" alt="">
-            <h4>Operación asistida</h4>
-            <p>Estados, alarmas y soporte operativo.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ARQUITECTURA -->
-    <section id="arquitectura" class="section split">
-      <div class="container split-grid">
-        <img src="assets/images/itot-laptop.png" class="reveal" alt="">
-        <div class="reveal">
-          <h3>Arquitectura IT / OT</h3>
-          <p>
-            Frontend web industrial conectado a middleware Node-RED y servidor OPC UA
-            como modelo de datos común.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- DEMOS -->
-    <section id="videos" class="section">
-      <div class="container">
-        <h3 class="section-title reveal">Demos técnicas</h3>
-
-        <div class="grid-3">
-          <div class="card reveal">
-            <img src="assets/images/demos-1.png" alt="">
-            <h4>Demo SCADA Web</h4>
-            <p>Control y monitorización.</p>
-          </div>
-
-          <div class="card reveal">
-            <img src="assets/images/demos-2.png" alt="">
-            <h4>Demo IT/OT</h4>
-            <p>Node-RED + OPC UA.</p>
-          </div>
-
-          <div class="card reveal">
-            <img src="assets/images/diagnostics.png" alt="">
-            <h4>Diagnóstico</h4>
-            <p>Eventos y estados del sistema.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SCADA -->
-    <section id="scada" class="section">
-      <div class="container scada-grid">
-        <img src="assets/images/scada-screen-2.png" class="reveal" alt="">
-        <div class="reveal">
-          <h3>SCADA Demo</h3>
-          <p>Simulación activa en entorno web.</p>
-          <a class="btn btn--primary" href="scada.html">Abrir SCADA</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="footer__bg"></div>
-      <div class="container footer-content">
-        <span>Digital2Real · Automatización Industrial</span>
-        <span>© 2025</span>
-      </div>
-    </footer>
-
-  </main>
-
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

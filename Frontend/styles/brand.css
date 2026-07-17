@@ -1,27 +1,27 @@
 :root {
-  /* ==============================
-     DIGITAL2REAL BRAND TOKENS
-     ============================== */
-
-  /* Core brand */
+  /* Brand identity */
   --brand-name: "Digital2Real";
   --brand-primary: #b36002;
-  --brand-primary-soft: rgba(108, 138, 166, 0.18);
-  --brand-primary-muted: rgba(108, 138, 166, 0.62);
+  --brand-primary-soft: rgba(179, 96, 2, 0.18);
+  --brand-primary-muted: rgba(179, 96, 2, 0.62);
 
-  /* Editorial black */
+  /* Editorial backgrounds and surfaces */
   --color-bg: #050505;
-  --color-bg-soft: #0A0A0A;
-  --color-surface: #0E1116;
+  --color-bg-soft: #0a0a0a;
+  --color-surface: #0e1116;
+  --color-page-gradient-start: #070707;
+  --color-page-gradient-glow: rgba(179, 96, 2, 0.055);
+  --color-navbar-bg: rgba(5, 5, 5, 0.76);
 
-  /* Ink */
-  --color-ink: #F2F0EC;
+  /* Text */
+  --color-ink: #f2f0ec;
   --color-ink-soft: rgba(242, 240, 236, 0.68);
   --color-muted: rgba(242, 240, 236, 0.42);
 
-  /* Lines */
+  /* Lines and interaction */
   --color-line: rgba(242, 240, 236, 0.14);
   --color-line-soft: rgba(242, 240, 236, 0.07);
+  --color-selection-bg: var(--brand-primary-soft);
 
   /* Typography */
   --font-brand: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
@@ -30,8 +30,11 @@
   /* Layout */
   --container: min(1520px, calc(100vw - 72px));
   --topbar-h: 72px;
+  --navbar-blur: 18px;
 
   /* Motion */
-  --ease-editorial: cubic-bezier(.18,.9,.18,1);
+  --ease-editorial: cubic-bezier(0.18, 0.9, 0.18, 1);
   --duration-soft: 0.9s;
+  --duration-quick: 0.32s;
+  --reveal-offset: 28px;
 }

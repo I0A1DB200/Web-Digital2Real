@@ -1,9 +1,11 @@
+/* Main frame */
 .app-main {
   width: var(--container);
   margin: 0 auto;
   padding: calc(var(--topbar-h) + 36px) 0 120px;
 }
 
+/* Editorial page header */
 .page-header {
   min-height: clamp(170px, 26vh, 300px);
   display: grid;
@@ -19,17 +21,17 @@
   display: block;
   margin-bottom: 22px;
   color: var(--muted);
-  font-size: .64rem;
+  font-size: 0.64rem;
   font-weight: 760;
-  letter-spacing: .22em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .page-header h1 {
   margin: 0;
   font-size: clamp(4rem, 10vw, 11rem);
-  line-height: .78;
-  letter-spacing: -.095em;
+  line-height: 0.78;
+  letter-spacing: -0.095em;
   font-weight: 560;
 }
 
@@ -37,10 +39,15 @@
   margin: 0;
   max-width: 560px;
   color: var(--ink-soft);
-  font-size: clamp(.95rem, 1.1vw, 1.08rem);
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
   line-height: 1.8;
 }
 
-.labs-grid { display: block; }
+/* Content collections */
+.labs-grid {
+  display: block;
+}
 
-.notebook-list { max-width: 980px; }
+.notebook-list {
+  max-width: 980px;
+}

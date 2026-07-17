@@ -1,11 +1,12 @@
+/* Fixed top bar */
 .topbar {
   position: fixed;
   inset: 0 0 auto;
   height: var(--topbar-h);
   z-index: 1000;
-  background: rgba(5, 5, 5, 0.76);
+  background: var(--color-navbar-bg);
   border-bottom: 1px solid var(--line-soft);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(var(--navbar-blur));
 }
 
 .topbar__inner {
@@ -17,6 +18,7 @@
   justify-content: space-between;
 }
 
+/* Brand control */
 .brand {
   border: 0;
   padding: 0;
@@ -33,6 +35,7 @@
   color: var(--brand-primary);
 }
 
+/* Primary navigation */
 .topbar__nav {
   display: flex;
   align-items: center;
@@ -46,9 +49,9 @@
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  font-size: .78rem;
+  font-size: 0.78rem;
   font-weight: 620;
-  letter-spacing: .02em;
+  letter-spacing: 0.02em;
 }
 
 .topbar__link::after {
@@ -59,7 +62,7 @@
   bottom: -10px;
   height: 1px;
   background: var(--brand-primary);
-  transition: right .32s var(--ease);
+  transition: right var(--duration-quick) var(--ease);
 }
 
 .topbar__link:hover,

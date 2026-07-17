@@ -1,18 +1,23 @@
 @import url("./brand.css");
 
 :root {
+  /* Background aliases */
   --bg: var(--color-bg);
   --bg-soft: var(--color-bg-soft);
 
+  /* Text aliases */
   --ink: var(--color-ink);
   --ink-soft: var(--color-ink-soft);
   --muted: var(--color-muted);
 
+  /* Line aliases */
   --line: var(--color-line);
   --line-soft: var(--color-line-soft);
 
+  /* Identity aliases */
   --accent: var(--brand-primary);
   --accent-soft: var(--brand-primary-soft);
 
+  /* Motion aliases */
   --ease: var(--ease-editorial);
 }

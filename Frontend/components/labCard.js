@@ -1,38 +1,72 @@
 export function createLabCard(lab, onOpen) {
-  const article = document.createElement("article");
-  article.className = "lab-card reveal";
-  article.tabIndex = 0;
-  article.setAttribute("role", "button");
-  article.setAttribute("aria-label", `Open laboratory ${lab.title}`);
+  if (!lab || typeof lab !== "object") {
+    throw new TypeError("Lab card requires laboratory data.");
+  }
 
-  const visibleTech = lab.technologies.slice(0, 3);
+  if (typeof onOpen !== "function") {
+    throw new TypeError("Lab card requires an activation callback.");
+  }
 
-  article.innerHTML = `
-    <div class="lab-card__media">
-      <img src="${lab.cover}" alt="${lab.title}" loading="lazy">
-    </div>
+  const title = getText(lab.title, "Laboratory");
+  const technologies = Array.isArray(lab.technologies) ? lab.technologies : [];
+  const visibleTechnologies = technologies.slice(0, 3);
 
-    <div class="lab-card__body">
-      <div class="lab-card__meta">
-        <span>${lab.id}</span>
-        <span>${lab.status}</span>
-      </div>
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "lab-card reveal";
+  card.setAttribute("aria-label", `Open laboratory ${title}`);
+  card.style.border = "0";
+  card.style.padding = "0";
+  card.style.width = "100%";
+  card.style.background = "transparent";
+  card.style.textAlign = "inherit";
 
-      <h2>${lab.title}</h2>
+  const media = document.createElement("div");
+  media.className = "lab-card__media";
 
-      <div class="lab-card__tags">
-        ${visibleTech.map(tag => `<span>${tag}</span>`).join("")}
-      </div>
-    </div>
-  `;
+  if (typeof lab.cover === "string" && lab.cover.length > 0) {
+    const image = document.createElement("img");
+    image.src = lab.cover;
+    image.alt = `${title} laboratory preview`;
+    image.loading = "lazy";
+    media.appendChild(image);
+  }
 
-  article.addEventListener("click", () => onOpen(lab));
-  article.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      onOpen(lab);
-    }
+  const body = document.createElement("div");
+  body.className = "lab-card__body";
+
+  const metadata = document.createElement("div");
+  metadata.className = "lab-card__meta";
+  appendTextItem(metadata, lab.id);
+  appendTextItem(metadata, lab.status);
+
+  const heading = document.createElement("h2");
+  heading.textContent = title;
+
+  const tags = document.createElement("div");
+  tags.className = "lab-card__tags";
+
+  visibleTechnologies.forEach(technology => {
+    appendTextItem(tags, technology);
   });
 
-  return article;
+  body.append(metadata, heading, tags);
+  card.append(media, body);
+  card.addEventListener("click", () => onOpen(lab, card));
+
+  return card;
+}
+
+function appendTextItem(container, value) {
+  if (typeof value !== "string" && typeof value !== "number") {
+    return;
+  }
+
+  const item = document.createElement("span");
+  item.textContent = String(value);
+  container.appendChild(item);
+}
+
+function getText(value, fallback) {
+  return typeof value === "string" && value.trim() ? value : fallback;
 }

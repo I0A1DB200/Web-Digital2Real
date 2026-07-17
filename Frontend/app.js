@@ -10,28 +10,71 @@ import { createAbout } from "./components/about.js";
 
 const app = document.querySelector("#app");
 
-if (!app) {
+if (!(app instanceof HTMLElement)) {
   throw new Error('Digital2Real could not start because "#app" was not found.');
 }
 
-const validViews = new Set(site.navigation.map(item => item.view));
+if (!Array.isArray(site.navigation) || site.navigation.length === 0) {
+  throw new Error("Digital2Real could not start because site navigation is invalid.");
+}
 
-let currentView = getInitialView();
+if (!Array.isArray(labs) || !Array.isArray(notebook)) {
+  throw new Error("Digital2Real could not start because application data is invalid.");
+}
+
+const validViews = new Set(
+  site.navigation
+    .map(item => item?.view)
+    .filter(view => typeof view === "string" && view.length > 0)
+);
+
+if (!validViews.has("labs")) {
+  throw new Error('Digital2Real could not start because the required "labs" view is missing.');
+}
+
+let currentView = null;
 let activeViewer = null;
 let revealObserver = null;
 
-function getInitialView() {
-  const requestedView = window.location.hash.replace("#", "");
+function getRequestedView() {
+  let requestedView = window.location.hash.slice(1);
+
+  try {
+    requestedView = decodeURIComponent(requestedView);
+  } catch {
+    return "labs";
+  }
+
   return validViews.has(requestedView) ? requestedView : "labs";
 }
 
-function render() {
+function navigateTo(view) {
+  if (typeof view !== "string" || !validViews.has(view)) {
+    return;
+  }
+
+  if (currentView === view) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const nextHash = `#${view}`;
+
+  if (window.location.hash === nextHash) {
+    renderView(view);
+    return;
+  }
+
+  window.location.hash = view;
+}
+
+function renderView(view) {
+  if (view === currentView) {
+    return;
+  }
+
   disconnectRevealObserver();
   closeLab();
-
-  app.replaceChildren();
-
-  app.appendChild(createNavbar(site, currentView, navigateTo));
 
   const main = document.createElement("main");
   main.className = "app-main";
@@ -42,10 +85,11 @@ function render() {
     about: () => createAbout(site)
   };
 
-  const renderView = viewRenderers[currentView] ?? viewRenderers.labs;
-  main.appendChild(renderView());
+  const renderCurrentView = viewRenderers[view] ?? viewRenderers.labs;
+  currentView = view;
 
-  app.appendChild(main);
+  main.appendChild(renderCurrentView());
+  app.replaceChildren(createNavbar(site, currentView, navigateTo), main);
 
   document.title = getDocumentTitle();
   initialiseRevealAnimations();
@@ -60,21 +104,6 @@ function getDocumentTitle() {
   }
 
   return `${currentItem.label} | ${site.name}`;
-}
-
-function navigateTo(view) {
-  if (!validViews.has(view)) {
-    return;
-  }
-
-  if (currentView === view) {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    return;
-  }
-
-  currentView = view;
-  window.location.hash = view;
-  render();
 }
 
 function renderLabsView() {
@@ -96,6 +125,10 @@ function renderLabsView() {
   `;
 
   const grid = section.querySelector(".labs-grid");
+
+  if (!(grid instanceof HTMLElement)) {
+    throw new Error("Digital2Real could not render the laboratories grid.");
+  }
 
   labs.forEach(lab => {
     grid.appendChild(createLabCard(lab, openLab));
@@ -127,6 +160,10 @@ function renderNotebookView() {
 
   const list = section.querySelector(".notebook-list");
 
+  if (!(list instanceof HTMLElement)) {
+    throw new Error("Digital2Real could not render the notebook list.");
+  }
+
   notebook.forEach(note => {
     list.appendChild(createNotebookCard(note));
   });
@@ -134,15 +171,13 @@ function renderNotebookView() {
   return section;
 }
 
-function openLab(lab) {
+function openLab(lab, opener) {
   closeLab();
 
-  activeViewer = createLabViewer(lab, closeLab);
-  document.body.appendChild(activeViewer);
-  document.body.classList.add("is-locked");
-
-  const closeButton = activeViewer.querySelector(".lab-viewer__close");
-  closeButton?.focus();
+  const viewer = createLabViewer(lab, closeLab, opener);
+  activeViewer = viewer;
+  document.body.appendChild(viewer.element);
+  viewer.activate();
 }
 
 function closeLab() {
@@ -150,12 +185,9 @@ function closeLab() {
     return;
   }
 
-  const video = activeViewer.querySelector("video");
-  video?.pause();
-
-  activeViewer.remove();
+  const viewer = activeViewer;
   activeViewer = null;
-  document.body.classList.remove("is-locked");
+  viewer.destroy();
 }
 
 function initialiseRevealAnimations() {
@@ -191,19 +223,9 @@ function disconnectRevealObserver() {
   revealObserver = null;
 }
 
-window.addEventListener("hashchange", () => {
-  const nextView = getInitialView();
+function handleHashChange() {
+  renderView(getRequestedView());
+}
 
-  if (nextView !== currentView) {
-    currentView = nextView;
-    render();
-  }
-});
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
-    closeLab();
-  }
-});
-
-render();
+window.addEventListener("hashchange", handleHashChange);
+renderView(getRequestedView());

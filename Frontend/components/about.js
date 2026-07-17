@@ -1,4 +1,6 @@
 export function createAbout(site) {
+  const author = getText(site?.author);
+  const subtitle = getText(site?.subtitle);
   const section = document.createElement("section");
   section.className = "about-view reveal";
 
@@ -28,11 +30,15 @@ export function createAbout(site) {
       </div>
 
       <footer class="about-view__footer">
-        <span>${site.author}</span>
-        <span>${site.subtitle}</span>
+        <span>${author}</span>
+        <span>${subtitle}</span>
       </footer>
     </div>
   `;
 
   return section;
+}
+
+function getText(value) {
+  return typeof value === "string" ? value : "";
 }

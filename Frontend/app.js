@@ -6,6 +6,7 @@ import { createNavbar } from "./components/navbar.js";
 import { createLabCard } from "./components/labCard.js";
 import { createLabViewer } from "./components/labViewer.js";
 import { createNotebookCard } from "./components/notebookCard.js";
+import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
 
 const app = document.querySelector("#app");
@@ -34,6 +35,7 @@ if (!validViews.has("labs")) {
 
 let currentView = null;
 let activeViewer = null;
+let activeArticleViewer = null;
 let revealObserver = null;
 
 function getRequestedView() {
@@ -75,6 +77,7 @@ function renderView(view) {
 
   disconnectRevealObserver();
   closeLab();
+  closeArticle();
 
   const main = document.createElement("main");
   main.className = "app-main";
@@ -165,13 +168,14 @@ function renderNotebookView() {
   }
 
   notebook.forEach(note => {
-    list.appendChild(createNotebookCard(note));
+    list.appendChild(createNotebookCard(note, openArticle));
   });
 
   return section;
 }
 
 function openLab(lab, opener) {
+  closeArticle();
   closeLab();
 
   const viewer = createLabViewer(lab, closeLab, opener);
@@ -187,6 +191,26 @@ function closeLab() {
 
   const viewer = activeViewer;
   activeViewer = null;
+  viewer.destroy();
+}
+
+function openArticle(article, opener) {
+  closeLab();
+  closeArticle();
+
+  const viewer = createArticleViewer(article, closeArticle, opener);
+  activeArticleViewer = viewer;
+  document.body.appendChild(viewer.element);
+  viewer.activate();
+}
+
+function closeArticle() {
+  if (!activeArticleViewer) {
+    return;
+  }
+
+  const viewer = activeArticleViewer;
+  activeArticleViewer = null;
   viewer.destroy();
 }
 

@@ -1,10 +1,7 @@
 import { site } from "./data/site.js";
-import { labs } from "./data/labs.js";
 import { notebook } from "./data/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
-import { createLabCard } from "./components/labCard.js";
-import { createLabViewer } from "./components/labViewer.js";
 import { createNotebookCard } from "./components/notebookCard.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
@@ -19,7 +16,7 @@ if (!Array.isArray(site.navigation) || site.navigation.length === 0) {
   throw new Error("Digital2Real could not start because site navigation is invalid.");
 }
 
-if (!Array.isArray(labs) || !Array.isArray(notebook)) {
+if (!Array.isArray(notebook)) {
   throw new Error("Digital2Real could not start because application data is invalid.");
 }
 
@@ -29,12 +26,11 @@ const validViews = new Set(
     .filter(view => typeof view === "string" && view.length > 0)
 );
 
-if (!validViews.has("labs")) {
-  throw new Error('Digital2Real could not start because the required "labs" view is missing.');
+if (!validViews.has("engineering-notes")) {
+  throw new Error('Digital2Real could not start because the required "engineering-notes" view is missing.');
 }
 
 let currentView = null;
-let activeViewer = null;
 let activeArticleViewer = null;
 let revealObserver = null;
 
@@ -44,10 +40,10 @@ function getRequestedView() {
   try {
     requestedView = decodeURIComponent(requestedView);
   } catch {
-    return "labs";
+    return "engineering-notes";
   }
 
-  return validViews.has(requestedView) ? requestedView : "labs";
+  return validViews.has(requestedView) ? requestedView : "engineering-notes";
 }
 
 function navigateTo(view) {
@@ -76,19 +72,18 @@ function renderView(view) {
   }
 
   disconnectRevealObserver();
-  closeLab();
   closeArticle();
 
   const main = document.createElement("main");
   main.className = "app-main";
 
   const viewRenderers = {
-    labs: renderLabsView,
-    notebook: renderNotebookView,
+    "engineering-notes": renderEngineeringNotesView,
+    academy: renderAcademyView,
     about: () => createAbout(site)
   };
 
-  const renderCurrentView = viewRenderers[view] ?? viewRenderers.labs;
+  const renderCurrentView = viewRenderers[view] ?? viewRenderers["engineering-notes"];
   currentView = view;
 
   main.appendChild(renderCurrentView());
@@ -102,69 +97,43 @@ function renderView(view) {
 function getDocumentTitle() {
   const currentItem = site.navigation.find(item => item.view === currentView);
 
-  if (!currentItem || currentView === "labs") {
-    return `${site.name} | ${site.subtitle}`;
+  if (!currentItem || currentView === "engineering-notes") {
+    return site.seo.title;
   }
 
   return `${currentItem.label} | ${site.name}`;
 }
 
-function renderLabsView() {
+function renderEngineeringNotesView() {
   const section = document.createElement("section");
-  section.className = "labs-view";
-  section.setAttribute("aria-labelledby", "labs-title");
+  section.className = "engineering-view";
+  section.setAttribute("aria-labelledby", "home-title");
 
   section.innerHTML = `
-    <header class="page-header reveal">
-      <div>
-        <span class="section-kicker">${site.name}</span>
-        <h1 id="labs-title">${site.subtitle}</h1>
+    <header class="editorial-hero reveal">
+      <span class="section-kicker">${site.home.eyebrow}</span>
+      <h1 id="home-title">${site.home.title}</h1>
+      <div class="editorial-hero__support">
+        <p>${site.home.introduction}</p>
       </div>
-
-      <p>${site.description}</p>
     </header>
 
-    <div class="labs-grid" aria-label="Laboratories"></div>
-  `;
+    <section class="notes-section" aria-labelledby="notes-title">
+      <header class="section-introduction reveal">
+        <div>
+          <h2 id="notes-title">${site.engineeringNotes.title}</h2>
+          <p>${site.engineeringNotes.introduction}</p>
+        </div>
+      </header>
+      <div class="notebook-list" aria-label="Engineering Notes"></div>
+    </section>
 
-  const grid = section.querySelector(".labs-grid");
-
-  if (!(grid instanceof HTMLElement)) {
-    throw new Error("Digital2Real could not render the laboratories grid.");
-  }
-
-  labs.forEach(lab => {
-    grid.appendChild(createLabCard(lab, openLab));
-  });
-
-  return section;
-}
-
-function renderNotebookView() {
-  const section = document.createElement("section");
-  section.className = "notebook-view";
-  section.setAttribute("aria-labelledby", "notebook-title");
-
-  section.innerHTML = `
-    <header class="page-header reveal">
-      <div>
-        <span class="section-kicker">Notebook</span>
-        <h1 id="notebook-title">Engineering notes.</h1>
-      </div>
-
-      <p>
-        Notes about automation, industrial interfaces, software experiments
-        and the technical decisions behind Digital2Real.
-      </p>
-    </header>
-
-    <div class="notebook-list"></div>
   `;
 
   const list = section.querySelector(".notebook-list");
 
   if (!(list instanceof HTMLElement)) {
-    throw new Error("Digital2Real could not render the notebook list.");
+    throw new Error("Digital2Real could not render the Engineering Notes list.");
   }
 
   notebook.forEach(note => {
@@ -174,28 +143,34 @@ function renderNotebookView() {
   return section;
 }
 
-function openLab(lab, opener) {
-  closeArticle();
-  closeLab();
+function renderAcademyView() {
+  const section = document.createElement("section");
+  section.className = "academy-view";
+  section.setAttribute("aria-labelledby", "academy-title");
 
-  const viewer = createLabViewer(lab, closeLab, opener);
-  activeViewer = viewer;
-  document.body.appendChild(viewer.element);
-  viewer.activate();
-}
+  section.innerHTML = `
+    <header class="academy-hero reveal">
+      <span class="section-kicker">${site.academy.eyebrow}</span>
+      <h1 id="academy-title">${site.academy.title}</h1>
+      <div class="academy-hero__copy">
+        <p>${site.academy.introduction}</p>
+        <p>${site.academy.objective}</p>
+      </div>
+    </header>
 
-function closeLab() {
-  if (!activeViewer) {
-    return;
-  }
+    <ul class="academy-principles reveal">
+      ${site.academy.principles.map(principle => `
+        <li>${principle}</li>
+      `).join("")}
+    </ul>
 
-  const viewer = activeViewer;
-  activeViewer = null;
-  viewer.destroy();
+    <p class="academy-status reveal">${site.academy.status}</p>
+  `;
+
+  return section;
 }
 
 function openArticle(article, opener) {
-  closeLab();
   closeArticle();
 
   const viewer = createArticleViewer(article, closeArticle, opener);

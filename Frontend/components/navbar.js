@@ -16,8 +16,8 @@ export function createNavbar(site, currentView, onNavigate) {
   const brand = document.createElement("button");
   brand.type = "button";
   brand.className = "brand";
-  brand.dataset.view = "labs";
-  brand.setAttribute("aria-label", "Go to Labs");
+  brand.dataset.view = site.navigation[0]?.view ?? "engineering-notes";
+  brand.setAttribute("aria-label", "Go to Engineering Notes");
   brand.append("Digital");
 
   const brandAccent = document.createElement("span");

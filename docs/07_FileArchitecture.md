@@ -1,531 +1,150 @@
 # Digital2Real — File Architecture
 
-**Version:** 1.0  
-**Status:** Active  
-**Project:** Digital2Real V2  
-**Purpose:** Define the official file structure, responsibilities and modification rules for the project.
-
----
+**Version:** 2.0
+**Status:** Current repository map
+**Architecture authority:** `RFC-001_RepositoryArchitecture.md`
 
 ## 1. Purpose
 
-This document defines how the Digital2Real project is organised.
+This document describes the repository as it exists now. It does not define the future migration structure.
 
-Its goal is to make future development predictable, maintainable and scalable.
+RFC-001 contains the approved target architecture. RFC-002 records implementation progress. Until a migration package is completed, current paths remain authoritative.
 
-Before modifying, creating or deleting files, this document should be used as the reference map.
+## 2. Current Structure
 
----
-
-## 2. Current Project Structure
-
-```txt
-WEB-DIGITAL2REALV2/
-│
+```text
+Web-Digital2RealV2/
 ├── Backend/
-│
-├── docs/
-│   ├── 00_ProjectVision.md
-│   ├── 01_ProductBlueprint.md
-│   ├── 02_DesignLanguage.md
-│   ├── 03_FrontendArchitecture.md
-│   ├── 04_DataModel.md
-│   ├── 05_Roadmap.md
-│   ├── 06_Changelog.md
-│   ├── 07_FileArchitecture.md
-│   └── 08_BrandBook.md
-│
-└── Frontend/
-    ├── assets/
-    │   ├── brand/
-    │   │   ├── favicon.svg
-    │   │   ├── logo-mark.svg
-    │   │   └── logo.svg
-    │   ├── fonts/
-    │   ├── icons/
-    │   ├── images/
-    │   └── videos/
-    │
-    ├── assistant/
-    │
-    ├── components/
-    │   ├── about.js
-    │   ├── labCard.js
-    │   ├── labViewer.js
-    │   ├── navbar.js
-    │   └── notebookCard.js
-    │
-    ├── data/
-    │   ├── labs.js
-    │   ├── notebook.js
-    │   └── site.js
-    │
-    ├── styles/
-    │   ├── about.css
-    │   ├── base.css
-    │   ├── brand.css
-    │   ├── cards.css
-    │   ├── exhibition.css
-    │   ├── labs.css
-    │   ├── layout.css
-    │   ├── navbar.css
-    │   ├── notebook.css
-    │   ├── responsive.css
-    │   ├── variables.css
-    │   └── viewer.css
-    │
-    ├── app.js
-    ├── index.html
-    └── styles.css
+│   └── main.py
+├── Frontend/
+│   ├── assets/
+│   │   ├── brand/
+│   │   ├── images/
+│   │   │   └── notebook/
+│   │   └── videos/
+│   ├── components/
+│   │   ├── about.js
+│   │   ├── articleViewer.js
+│   │   ├── labCard.js
+│   │   ├── labViewer.js
+│   │   ├── navbar.js
+│   │   └── notebookCard.js
+│   ├── data/
+│   │   ├── labs.js
+│   │   ├── notebook.js
+│   │   └── site.js
+│   ├── styles/
+│   │   ├── about.css
+│   │   ├── base.css
+│   │   ├── brand.css
+│   │   ├── exhibition.css
+│   │   ├── layout.css
+│   │   ├── navbar.css
+│   │   ├── notebook.css
+│   │   ├── responsive.css
+│   │   ├── variables.css
+│   │   └── viewer.css
+│   ├── app.js
+│   ├── index.html
+│   └── styles.css
+└── docs/
 ```
 
----
+## 3. Repository Responsibilities
 
-## 3. Folder Responsibilities
+### `Frontend/`
+
+The single browser-deployable application root.
+
+### `Backend/`
+
+An isolated FastAPI prototype. It is not consumed by the active frontend and is not an approved platform API.
 
 ### `docs/`
 
-Project documentation.
+Project governance, product documentation, architecture decisions, implementation records, and status.
 
-It defines the vision, product logic, design language, architecture, data model, roadmap, changelog, file architecture and brand book.
+## 4. Current Frontend SSOTs
 
----
+| Concern | Current source of truth |
+|---|---|
+| Visual identity | `Frontend/styles/brand.css` |
+| Global site information | `Frontend/data/site.js` |
+| Laboratories | `Frontend/data/labs.js` |
+| Engineering Notes | `Frontend/data/notebook.js` |
+| Navbar | `Frontend/components/navbar.js` |
+| Lab card | `Frontend/components/labCard.js` |
+| Lab viewer | `Frontend/components/labViewer.js` |
+| About rendering | `Frontend/components/about.js` |
+| CSS imports | `Frontend/styles.css` |
 
-### `Frontend/assets/`
+These paths remain official until an approved move is completed. Do not duplicate their data or responsibility at proposed target paths.
 
-Static resources.
+## 5. Current Runtime Status
 
-Contains brand assets, fonts, icons, images and videos.
+### Active
 
----
+- Engineering Notes data, card, viewer, and styles
+- Academy data and rendering
+- About data, rendering, and styles
+- Navbar, routing, layout, brand, and base styles
 
-### `Frontend/components/`
+### Preserved but disconnected
 
-JavaScript UI components.
+- Labs data
+- Lab card
+- Lab viewer
+- Labs exhibition and viewer styles
 
-Each file has one responsibility.
+Disconnected Labs styles remain imported by the global CSS entry point. This is known technical debt, not authorization to remove or activate Labs.
 
----
+### Not implemented
 
-### `Frontend/data/`
+- Digital2Real Assistant
+- Shared Engines directory
+- Product directories approved by RFC-001
 
-Source of truth for site content.
+Empty future directories must not be created.
 
-Labs and Notebook entries must live here.
+## 6. Modification Rules
 
----
+1. Define the objective and authoritative SSOT.
+2. List exact files changed and files explicitly not touched.
+3. Obtain approval before modification.
+4. Keep a package to five changed paths whenever possible.
+5. Preserve behavior unless an approved requirement changes it.
+6. Keep data separate from rendering.
+7. Do not hardcode colors outside `Frontend/styles/brand.css`.
+8. Do not duplicate current files at future target paths.
+9. Update every import and reference atomically with a future move.
+10. Validate and document every completed package.
 
-### `Frontend/styles/`
-
-CSS system.
-
-Each file controls a specific area of the interface.
-
----
-
-## 4. Main File Responsibilities
-
-### `Frontend/index.html`
-
-Minimal HTML shell.
-
-Allowed:
-
-- Metadata
-- Favicon reference
-- Stylesheet reference
-- `<div id="app"></div>`
-- JavaScript module reference
-
-Not allowed:
-
-- Manual Lab cards
-- Notebook content
-- About content
-- Inline styles
-- Inline scripts
-
----
-
-### `Frontend/app.js`
-
-Main application controller.
-
-Responsibilities:
-
-- Render views
-- Load data
-- Create navigation
-- Open/close Lab Viewer
-- Initialise reveal animations
-
----
-
-### `Frontend/data/site.js`
-
-Global site metadata:
-
-- Name
-- Subtitle
-- Description
-- Author
-- Version
-- Navigation labels
-- External links
-
----
-
-### `Frontend/data/labs.js`
-
-Source of truth for laboratories.
-
-To add a new Lab, add a new object here.
-
----
-
-### `Frontend/data/notebook.js`
-
-Source of truth for Notebook entries.
-
----
-
-### `Frontend/components/navbar.js`
-
-Creates the main navigation.
-
-Visual CSS:
-
-`Frontend/styles/navbar.css`
-
----
-
-### `Frontend/components/labCard.js`
-
-Creates one Lab item for the Home/Labs view.
-
-Visual CSS:
-
-`Frontend/styles/exhibition.css`
-
----
-
-### `Frontend/components/labViewer.js`
-
-Creates the Lab Viewer overlay.
-
-Visual CSS:
-
-`Frontend/styles/viewer.css`
-
----
-
-### `Frontend/components/notebookCard.js`
-
-Creates one Notebook item.
-
-Visual CSS:
-
-`Frontend/styles/notebook.css`
-
----
-
-### `Frontend/components/about.js`
-
-Creates the About view.
-
-Visual CSS:
-
-`Frontend/styles/about.css`
-
----
-
-## 5. CSS Architecture
-
-### `Frontend/styles.css`
-
-CSS entry point.
-
-It imports all CSS modules.
-
----
-
-### `Frontend/styles/brand.css`
-
-Brand identity tokens.
-
-This is the only place where the official colour of the `2` should be changed.
-
-Example:
-
-```css
---brand-primary: #6C8AA6;
-```
-
----
-
-### `Frontend/styles/variables.css`
-
-Bridge between brand tokens and application variables.
-
-It must import:
-
-```css
-@import url("./brand.css");
-```
-
----
-
-### `Frontend/styles/navbar.css`
-
-Navbar and logo styling.
-
-The `2` must use:
-
-```css
-.brand__accent {
-  color: var(--brand-primary);
-}
-```
-
-Never hardcode the colour here.
-
----
-
-### `Frontend/styles/exhibition.css`
-
-Main Home/Labs editorial composition.
-
-This file defines the visual rhythm of the laboratory magazine.
-
----
-
-### `Frontend/styles/viewer.css`
-
-Lab Viewer visual system.
-
----
-
-### `Frontend/styles/notebook.css`
-
-Notebook visual system.
-
----
-
-### `Frontend/styles/about.css`
-
-About view visual system.
-
----
-
-### `Frontend/styles/responsive.css`
-
-Responsive behaviour.
-
----
-
-## 6. Assets Architecture
-
-### `Frontend/assets/brand/`
-
-Brand identity assets.
-
-Current files:
-
-- `favicon.svg`
-- `logo-mark.svg`
-- `logo.svg`
-
-Decision:
-
-The navbar logo is HTML + CSS.
-
-The SVG files are brand resources, not the live navbar logo.
-
----
-
-### `Frontend/assets/images/`
-
-Lab covers, SCADA images, HMI images and other visual content.
-
----
-
-### `Frontend/assets/videos/`
-
-Laboratory videos.
-
----
-
-### `Frontend/assets/icons/`
-
-Interface icons.
-
-Use sparingly.
-
----
-
-### `Frontend/assets/fonts/`
-
-Local fonts if required.
-
-Do not add commercial fonts unless the licence allows it.
-
----
-
-## 7. Modification Rules
-
-### Rule 1
-
-Do not modify files without a clear purpose.
-
----
-
-### Rule 2
-
-Do not modify more than five files in one change package unless strictly necessary.
-
----
-
-### Rule 3
-
-Labs and Notebook entries must live in `data/`.
-
----
-
-### Rule 4
-
-Brand identity lives in `brand.css`.
-
----
-
-### Rule 5
-
-Components generate visible UI.
-
-HTML stays minimal.
-
----
-
-### Rule 6
-
-CSS modules must respect their boundaries.
-
----
-
-### Rule 7
-
-The interface must not compete with the laboratories.
-
-Digital2Real is a laboratory magazine, not a dashboard.
-
----
-
-## 8. Common Tasks
-
-### Change the colour of the `2`
-
-Modify:
-
-```txt
-Frontend/styles/brand.css
-```
-
-Variable:
-
-```css
---brand-primary
-```
-
----
-
-### Add a new Lab
-
-Modify:
-
-```txt
-Frontend/data/labs.js
-```
-
-Add images to:
-
-```txt
-Frontend/assets/images/
-```
-
-Add videos to:
-
-```txt
-Frontend/assets/videos/
-```
-
----
-
-### Add a new Notebook entry
-
-Modify:
-
-```txt
-Frontend/data/notebook.js
-```
-
----
-
-### Change Home visual composition
-
-Modify:
-
-```txt
-Frontend/styles/exhibition.css
-```
-
----
-
-### Change Lab Viewer
-
-Modify:
-
-```txt
-Frontend/components/labViewer.js
-Frontend/styles/viewer.css
-```
-
----
-
-### Change Navbar
-
-Modify:
-
-```txt
-Frontend/components/navbar.js
-Frontend/styles/navbar.css
-```
-
----
+## 7. Current Common Tasks
 
 ### Change brand identity
 
-Modify:
+Modify the relevant tokens in `Frontend/styles/brand.css` and reconcile `docs/08_BrandBook.md` when the identity decision changes.
 
-```txt
-Frontend/styles/brand.css
-docs/08_BrandBook.md
-```
+### Add an Engineering Note
 
----
+Modify `Frontend/data/notebook.js` and add owned images beneath `Frontend/assets/images/notebook/`.
 
-## 9. Development Workflow
+### Change global site information
 
-Before modifying the project:
+Modify `Frontend/data/site.js`.
 
-1. Define the goal.
-2. List affected files.
-3. List files that will not be touched.
-4. Explain the reason.
-5. Wait for approval.
-6. Generate the change package.
-7. Test visually.
-8. Update changelog if needed.
+### Change the active navbar
 
----
+Modify `Frontend/components/navbar.js` and, when presentation changes, `Frontend/styles/navbar.css`.
 
-Digital2Real  
-Industrial Automation Laboratory Magazine
+### Change About
+
+Use `Frontend/data/site.js`, `Frontend/components/about.js`, and the owning CSS modules according to the approved scope.
+
+### Change Labs
+
+Labs is disconnected. Any activation, retirement, or content repair requires explicit Product Owner approval before modifying Labs files.
+
+## 8. Migration Rule
+
+Do not implement the RFC-001 target structure directly from this document. Follow the approved packages and live move ledger in `RFC-002_RepositoryRefactor.md`.

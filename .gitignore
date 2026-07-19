@@ -1,0 +1,16 @@
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Browser validation profiles
+.edge-*-validation/
+.edge-validation/
+
+# Local validation output
+validation-*.png
+
+# Local operating-system and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp

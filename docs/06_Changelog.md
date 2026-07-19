@@ -1,5 +1,30 @@
 # Changelog
 
+## SPRINT-001 — Repository Foundation
+
+### Added
+
+- Added repository hygiene rules for generated Python, browser-validation, and local files.
+- Added `RFC-002_RepositoryRefactor.md` as the implementation and migration ledger.
+- Added a dependency-free validation baseline for syntax, imports, assets, routes, interactions, visual comparison, and scope review.
+
+### Changed
+
+- Reconciled project vision, product blueprint, frontend architecture, file architecture, and brand documentation with the active Notes-first application.
+- Clarified that Labs is preserved but disconnected, Academy is currently informational, Assistant is not implemented, and Backend is an isolated prototype.
+- Confirmed copper from `Frontend/styles/brand.css` as the visual identity SSOT.
+
+### Removed
+
+- Removed tracked generated Python bytecode from `Backend/__pycache__/`.
+
+### Confirmed
+
+- No runtime source, UI, import, asset, dependency, or repository structure changed.
+- RFC-002 structural migration has not started.
+
+---
+
 ## v2.0.2 — V2 Repository Consolidation
 
 ### Changed

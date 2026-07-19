@@ -1,19 +1,14 @@
 # Digital2Real — Brand Book
 
-**Version:** 1.0  
-**Status:** Active  
-**Project:** Digital2Real V2  
-**Focus:** Industrial Interface Gallery / Automation Laboratory Magazine
-
----
+**Version:** 2.0
+**Status:** Active
+**Focus:** Industrial editorial platform
 
 ## 1. Brand Essence
 
-Digital2Real is an editorial engineering platform focused on SCADA, HMI, automation laboratories, industrial software and technical experimentation.
+Digital2Real is an editorial and educational engineering platform focused on Industrial Automation.
 
-It should feel like a magazine of automation laboratories, not like a corporate website.
-
----
+It should feel like a technical publication and an industrial laboratory gallery, not a dashboard, commercial landing page, or generic portfolio.
 
 ## 2. Logo
 
@@ -21,138 +16,81 @@ The wordmark is:
 
 Digital2Real
 
-The number **2** is the identity accent.
+The number **2** is the identity accent. Its color must come exclusively from `Frontend/styles/brand.css`.
 
-It must not be too bright or corporate.  
-It should feel industrial, editorial and slightly metallic.
+The active navbar wordmark remains HTML and CSS. Brand SVG files are resources and do not replace it.
 
-Official accent colour:
+## 3. Identity Color
 
-`#6C8AA6`
+The official identity color is copper.
 
----
+Current token:
 
-## 3. Logo Files
+```css
+--brand-primary: #b36002;
+```
 
-Place these files in:
+The token value in `Frontend/styles/brand.css` is authoritative. Other documents and modules must not define competing identity colors.
 
-`Frontend/assets/brand/`
+## 4. Color System
 
-Required files:
+Color primitives are owned by `Frontend/styles/brand.css`:
 
-- `logo.svg`
-- `logo-mark.svg`
-- `favicon.svg`
+- graphite and black backgrounds;
+- off-white primary ink;
+- restrained neutral text and lines;
+- copper identity accents.
 
----
+Copper must remain selective. It supports identity and technical emphasis without dominating the editorial composition.
 
-## 4. Colour System
+## 5. Typography
 
-### Primary Brand
+Preferred typography is technical, neutral, editorial, and durable.
 
-`--brand-primary: #6C8AA6;`
+The authoritative font stacks are defined in `Frontend/styles/brand.css`.
 
-Used for:
+Avoid decorative futuristic, gaming, or novelty industrial typefaces.
 
-- Number 2 in logo
-- Active navigation underline
-- Small editorial accents
-- Selection highlights
-- Technical emphasis
-
-### Background
-
-`--color-bg: #050505;`
-
-Used for:
-
-- Main website background
-- Exhibition atmosphere
-- Fullscreen lab viewer
-
-### Ink
-
-`--color-ink: #F2F0EC;`
-
-Used for:
-
-- Main text
-- Logo text
-- Large editorial headings
-
----
-
-## 5. Colour Ratio
-
-Digital2Real should follow this ratio:
-
-- 90% black / graphite
-- 8% off-white / grey
-- 2% brand accent
-
-The brand colour must never dominate the interface.
-
----
-
-## 6. Typography
-
-Preferred font stack:
-
-`IBM Plex Sans`, `Inter Tight`, `Inter`, `system-ui`, `sans-serif`
-
-The type should feel:
-
-- technical
-- neutral
-- editorial
-- timeless
-
-Avoid futuristic fonts, gaming fonts or overly industrial display fonts.
-
----
-
-## 7. Visual Rules
+## 6. Editorial Design Rules
 
 Do:
 
-- Use large images.
-- Use thin lines.
-- Use quiet typography.
-- Give every lab space to breathe.
-- Treat each HMI or SCADA as a visual piece.
+- use generous whitespace;
+- prioritize clear typography;
+- use large, meaningful photography;
+- maintain thin lines and restrained interaction;
+- give engineering work room to breathe;
+- preserve accessible focus and readable contrast.
 
 Do not:
 
-- Use heavy shadows.
-- Use glassmorphism.
-- Use bright neon blue.
-- Use many badges.
-- Use dashboard-like UI unless inside an actual lab.
+- create dashboard-like chrome around editorial content;
+- use glassmorphism, neon accents, or heavy decorative effects;
+- add badges or controls without purpose;
+- allow the interface to compete with the work;
+- hardcode colors outside the brand SSOT.
 
----
+## 7. Brand Assets
 
-## 8. CSS References
+Brand resources currently live in `Frontend/assets/brand/`:
 
-The brand tokens live in:
+- `favicon.svg`
+- `logo-mark.svg`
+- `logo.svg`
 
-`Frontend/styles/brand.css`
+Asset presence does not imply that every resource is used by the active interface.
 
-The variables bridge lives in:
+## 8. CSS Ownership
 
-`Frontend/styles/variables.css`
+| Concern | Owner |
+|---|---|
+| Brand primitives | `Frontend/styles/brand.css` |
+| Compatibility aliases | `Frontend/styles/variables.css` |
+| Navbar presentation | `Frontend/styles/navbar.css` |
+| Document metadata theme color | `Frontend/index.html` |
 
-The navbar uses the brand colour in:
-
-`Frontend/styles/navbar.css`
-
-The favicon is referenced in:
-
-`Frontend/index.html`
-
----
+Literal color values currently present outside `brand.css` are known technical debt. They must be corrected through an approved, visually validated package.
 
 ## 9. Brand Principle
 
-The interface must never compete with the laboratory.
-
-The work speaks first.
+The interface must never compete with the engineering work.

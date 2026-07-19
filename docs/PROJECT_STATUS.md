@@ -10,28 +10,50 @@
 
 | Status | Value |
 |---|---|
+<<<<<<< HEAD
 | In Progress | RFC-002 migration preparation |
 
 ## Current Sprint
 
 - [x] **Completed:** SPRINT-001 Repository Foundation
 - [ ] **Planned:** RFC-002 structural migration
+=======
+| In Progress | Architecture governance and repository migration preparation |
+
+## Current Sprint
+
+- [x] **Completed:** Repository audit
+- [x] **Completed:** RFC-001
+- [ ] **In Progress:** Project governance documentation
+- [ ] **Planned:** RFC-002 migration baseline
+>>>>>>> main
 
 ## Architecture Status
 
 | Status | Item |
 |---|---|
 | Completed | RFC-001 target architecture approved |
+<<<<<<< HEAD
 | Completed | Foundation documentation reconciled |
 | Planned | Product and shared-engine boundaries |
+=======
+| In Progress | Governance baseline |
+| Planned | Evolutionary product/shared boundaries |
+>>>>>>> main
 
 ## Repository Status
 
 | Status | Item |
 |---|---|
+<<<<<<< HEAD
 | Completed | Repository hygiene baseline |
 | Completed | Validation baseline |
 | Completed | RFC-002 migration ledger |
+=======
+| Completed | Current repository audited |
+| In Progress | Documentation baseline |
+| Planned | Hygiene and structural migration packages |
+>>>>>>> main
 | Blocked | None |
 
 ## Frontend Status
@@ -40,7 +62,11 @@
 |---|---|
 | Completed | Notes-first frontend operational |
 | Completed | Engineering Notes, Academy, and About routes |
+<<<<<<< HEAD
 | Planned | Approved structural migration |
+=======
+| Planned | Product and shared-engine boundaries |
+>>>>>>> main
 
 ## Backend Status
 
@@ -63,6 +89,10 @@
 | Status | Item |
 |---|---|
 | Completed | Active product experience |
+<<<<<<< HEAD
+=======
+| Completed | Structured article content and viewer |
+>>>>>>> main
 | Planned | Dedicated product boundary |
 
 ## Labs Status
@@ -82,11 +112,19 @@
 
 ## Completed RFCs
 
+<<<<<<< HEAD
 - [x] **Completed:** RFC-001 Repository Architecture — approved baseline
 
 ## Pending RFCs
 
 - [ ] **In Progress:** RFC-002 Repository Refactor — foundation complete, migration not started
+=======
+- [x] **Completed:** RFC-001 Repository Architecture
+
+## Pending RFCs
+
+- [ ] **Planned:** RFC-002 Repository Refactor
+>>>>>>> main
 - [ ] **Blocked:** Backend RFC pending product requirement
 - [ ] **Blocked:** Assistant RFC pending product definition
 
@@ -104,14 +142,25 @@
 - [ ] **Planned:** Establish product and shared boundaries
 - [ ] **Planned:** Correct CSS token violations
 - [ ] **Planned:** Reconcile responsive CSS ownership
+<<<<<<< HEAD
 - [ ] **Planned:** Establish automated tests and CI
+=======
+- [ ] **Planned:** Add repository hygiene rules
+- [ ] **Planned:** Establish validation and CI strategy
+>>>>>>> main
 - [ ] **Planned:** Declare backend dependencies if retained
 
 ## Known Issues
 
 - [ ] **Blocked:** Three Labs video references are missing
 - [ ] **Planned:** Inactive Labs CSS remains globally imported
+<<<<<<< HEAD
 - [ ] **Planned:** Asset naming and ownership are inconsistent
+=======
+- [ ] **Planned:** Generated artifacts are tracked or unignored
+- [ ] **Planned:** Asset naming and ownership are inconsistent
+- [ ] **Planned:** Legacy documentation requires reconciliation
+>>>>>>> main
 
 ## Pending Product Decisions
 
@@ -128,6 +177,7 @@
 
 | Status | Milestone |
 |---|---|
+<<<<<<< HEAD
 | Planned | Approve the first RFC-002 structural migration package |
 
 ## Recent Changes
@@ -136,6 +186,16 @@
 - [x] **Completed:** RFC-002 migration ledger
 - [x] **Completed:** Dependency-free validation baseline
 - [x] **Completed:** Notes-first documentation reconciliation
+=======
+| Planned | Approve and begin RFC-002 safety packages |
+
+## Recent Changes
+
+- [x] **Completed:** Repository architecture audit
+- [x] **Completed:** RFC-001 created
+- [x] **Completed:** Project Constitution established
+- [x] **Completed:** Development workflow established
+>>>>>>> main
 
 ## Project Metrics
 

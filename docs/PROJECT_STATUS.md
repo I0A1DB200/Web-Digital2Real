@@ -15,7 +15,10 @@
 ## Current Sprint
 
 - [x] **Completed:** SPRINT-001 Repository Foundation
-- [ ] **In Progress:** Academy Implementation Package 1 — Core Contracts and Signal Registry
+- [x] **Completed:** Academy Implementation Package 1 — Core Contracts and Signal Registry
+- [x] **Completed:** Academy Implementation Package 2 — Simulation Clock and Controller
+- [x] **Completed:** Academy Implementation Package 3 — Machine Runtime
+- [ ] **In Progress:** Academy Implementation Package 4 — PLC Runtime
 - [ ] **Planned:** RFC-002 structural migration
 
 ## Architecture Status
@@ -60,7 +63,10 @@
 |---|---|
 | Completed | Informational frontend view |
 | Completed | Domain specifications and MVP architecture review |
-| In Progress | Core signal contracts and Signal Registry |
+| Completed | Core signal contracts and Signal Registry |
+| Completed | Simulation Clock and Controller |
+| Completed | Deterministic Machine Runtime |
+| In Progress | Deterministic PLC Runtime |
 | Planned | Remaining headless MVP implementation packages |
 
 ## Engineering Notes Status
@@ -110,7 +116,7 @@
 - [ ] **Planned:** Establish product and shared boundaries
 - [ ] **Planned:** Correct CSS token violations
 - [ ] **Planned:** Reconcile responsive CSS ownership
-- [ ] **Planned:** Expand automated testing beyond Academy Package 1
+- [ ] **Planned:** Expand automated testing across remaining Academy runtime packages
 - [ ] **Planned:** Establish CI and architectural enforcement
 - [ ] **Planned:** Declare backend dependencies if retained
 
@@ -122,7 +128,6 @@
 
 ## Pending Product Decisions
 
-- [ ] **Blocked:** Minimal learner Program representation
 - [ ] **Blocked:** Exact Lab 001 timing profile
 - [ ] **Blocked:** Hidden Emergency test policy
 - [ ] **Blocked:** Labs retain, reactivate, archive, or retire
@@ -138,7 +143,7 @@
 
 | Status | Milestone |
 |---|---|
-| In Progress | Complete Academy Implementation Package 1 review |
+| In Progress | Complete Academy Implementation Package 4 review |
 
 ## Recent Changes
 
@@ -146,6 +151,9 @@
 - [x] **Completed:** SPRINT-001 Repository Foundation
 - [x] **Completed:** Academy SPEC-001 through SPEC-005
 - [x] **Completed:** Academy MVP Architecture Review
-- [ ] **In Progress:** Academy Core Contracts and Signal Registry
+- [x] **Completed:** Academy Core Contracts and Signal Registry
+- [x] **Completed:** Academy Simulation Clock and Controller
+- [x] **Completed:** Academy Machine Runtime
+- [ ] **In Progress:** Academy PLC Runtime
 
 ## Project Metrics

@@ -1,5 +1,47 @@
 # Changelog
 
+## Academy Implementation Package 4 — PLC Runtime
+
+### Added
+
+- Added canonical PLC lifecycle, Boolean Input/Internal/Output memory areas and deterministic scan execution.
+- Added a bounded ordered Program/Network/Instruction model with Boolean reads, contacts, AND, OR, NOT and memory/output writes.
+- Added validated Signal-to-Input and Output-to-Signal mappings using the approved Signal Registry API.
+- Added immutable PLC events, faults, scan results, diagnostics and deterministic reset behavior.
+- Added dependency-free tests for lifecycle, process images, Boolean logic, priority representation, mappings, faults, events, reset and replay.
+
+### Confirmed
+
+- Packages 1 through 3 public behavior remains unchanged and all regression tests continue to pass.
+- No Machine dependency, vendor language, parser, timer, counter, UI, persistence or backend behavior was added.
+
+## Academy Implementation Package 3 — Machine Runtime
+
+### Added
+
+- Added a generic immutable Machine Component contract with deterministic update and reset behavior.
+- Added focused Motor and Sensor models plus the MVP Conveyor Machine Runtime composition.
+- Added Machine lifecycle, recoverable faults, Emergency priority, state-derived Sensors, synchronous events and diagnostics.
+- Added dependency-free tests for components, transitions, commands, faults, reset equivalence, events, snapshots and replay determinism.
+
+### Confirmed
+
+- Package 1 and Package 2 public behavior remains unchanged and all regression tests continue to pass.
+- No PLC, Validation, Signal Registry ownership, scheduler, UI, rendering, persistence or backend behavior was added.
+
+## Academy Implementation Package 2 — Simulation Clock and Controller
+
+### Added
+
+- Added a caller-driven fixed-step Simulation Clock with validated lifecycle transitions and deterministic diagnostics.
+- Added a Simulation Controller with synchronous canonical phase hooks, lifecycle events, immutable snapshots and reset behavior.
+- Added dependency-free tests for Clock and Controller lifecycle, phase ordering, determinism, faults, resets and immutability.
+
+### Confirmed
+
+- Package 1 public behavior remains unchanged and its tests continue to pass.
+- No application UI, routing, CSS, assets, backend code or future runtime logic changed.
+
 ## Academy Implementation Package 1 — Core Contracts and Signal Registry
 
 ### Added

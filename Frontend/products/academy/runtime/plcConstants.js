@@ -1,0 +1,7 @@
+export const PLCLifecycleState = Object.freeze({ Uninitialized: "Uninitialized", Ready: "Ready", Running: "Running", Stopped: "Stopped", Faulted: "Faulted", Resetting: "Resetting" });
+export const PLCMemoryArea = Object.freeze({ Input: "Input", Internal: "Internal", Output: "Output" });
+export const PLCMappingDirection = Object.freeze({ SignalToPLCInput: "SignalToPLCInput", PLCOutputToSignal: "PLCOutputToSignal" });
+export const PLCInstructionOperation = Object.freeze({ WriteInternal: "WriteInternal", WriteOutput: "WriteOutput" });
+export const PLCExpressionOperation = Object.freeze({ Literal: "Literal", Read: "Read", NormallyOpen: "NormallyOpen", NormallyClosed: "NormallyClosed", And: "And", Or: "Or", Not: "Not" });
+export const PLCEventType = Object.freeze({ Initialized: "PLCInitialized", Started: "PLCStarted", Stopped: "PLCStopped", ScanStarted: "PLCScanStarted", ScanCompleted: "PLCScanCompleted", OutputChanged: "PLCOutputChanged", Faulted: "PLCFaulted", Reset: "PLCReset" });
+export const PLCFaultType = Object.freeze({ InvalidProgram: "InvalidProgram", InvalidInstruction: "InvalidInstruction", InvalidMemoryReference: "InvalidMemoryReference", InvalidInputMapping: "InvalidInputMapping", InvalidOutputMapping: "InvalidOutputMapping", SignalReadFailure: "SignalReadFailure", SignalWriteFailure: "SignalWriteFailure", ExecutionFault: "ExecutionFault", InternalFault: "InternalFault" });

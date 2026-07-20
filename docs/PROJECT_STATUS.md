@@ -18,7 +18,8 @@
 - [x] **Completed:** Academy Implementation Package 1 — Core Contracts and Signal Registry
 - [x] **Completed:** Academy Implementation Package 2 — Simulation Clock and Controller
 - [x] **Completed:** Academy Implementation Package 3 — Machine Runtime
-- [ ] **In Progress:** Academy Implementation Package 4 — PLC Runtime
+- [x] **Completed:** Academy Implementation Package 4 — PLC Runtime
+- [ ] **In Progress:** Academy Implementation Package 5 — Validation Engine
 - [ ] **Planned:** RFC-002 structural migration
 
 ## Architecture Status
@@ -66,7 +67,8 @@
 | Completed | Core signal contracts and Signal Registry |
 | Completed | Simulation Clock and Controller |
 | Completed | Deterministic Machine Runtime |
-| In Progress | Deterministic PLC Runtime |
+| Completed | Deterministic PLC Runtime |
+| In Progress | Deterministic Validation Engine |
 | Planned | Remaining headless MVP implementation packages |
 
 ## Engineering Notes Status
@@ -143,7 +145,7 @@
 
 | Status | Milestone |
 |---|---|
-| In Progress | Complete Academy Implementation Package 4 review |
+| In Progress | Complete Academy Implementation Package 5 review |
 
 ## Recent Changes
 
@@ -154,6 +156,7 @@
 - [x] **Completed:** Academy Core Contracts and Signal Registry
 - [x] **Completed:** Academy Simulation Clock and Controller
 - [x] **Completed:** Academy Machine Runtime
-- [ ] **In Progress:** Academy PLC Runtime
+- [x] **Completed:** Academy PLC Runtime
+- [ ] **In Progress:** Academy Validation Engine
 
 ## Project Metrics

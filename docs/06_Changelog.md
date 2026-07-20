@@ -1,5 +1,19 @@
 # Changelog
 
+## Academy Implementation Package 5 — Validation Engine
+
+### Added
+
+- Added immutable Validation Rule definitions with separate per-session runtime state.
+- Added deterministic Signal equality, inequality, true/false and All/Any composite rule evaluation.
+- Added Validation Session lifecycle, immutable Results, synchronous events, diagnostics and reset behavior.
+- Added dependency-free tests for rules, composites, sessions, Registry observation, events, immutability, reset and replay.
+
+### Confirmed
+
+- Packages 1 through 4 public behavior remains unchanged and all regression tests continue to pass.
+- Validation remains observer-only and adds no scoring, UI, persistence, runtime ownership or scripting capability.
+
 ## Academy Implementation Package 4 — PLC Runtime
 
 ### Added

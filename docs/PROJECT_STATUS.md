@@ -10,50 +10,32 @@
 
 | Status | Value |
 |---|---|
-<<<<<<< HEAD
-| In Progress | RFC-002 migration preparation |
+| In Progress | Digital2Real Academy MVP implementation |
 
 ## Current Sprint
 
 - [x] **Completed:** SPRINT-001 Repository Foundation
+- [ ] **In Progress:** Academy Implementation Package 1 — Core Contracts and Signal Registry
 - [ ] **Planned:** RFC-002 structural migration
-=======
-| In Progress | Architecture governance and repository migration preparation |
-
-## Current Sprint
-
-- [x] **Completed:** Repository audit
-- [x] **Completed:** RFC-001
-- [ ] **In Progress:** Project governance documentation
-- [ ] **Planned:** RFC-002 migration baseline
->>>>>>> main
 
 ## Architecture Status
 
 | Status | Item |
 |---|---|
 | Completed | RFC-001 target architecture approved |
-<<<<<<< HEAD
-| Completed | Foundation documentation reconciled |
-| Planned | Product and shared-engine boundaries |
-=======
-| In Progress | Governance baseline |
-| Planned | Evolutionary product/shared boundaries |
->>>>>>> main
+| Completed | Academy SPEC-001 through SPEC-005 approved |
+| Completed | Academy MVP Architecture Review approved |
+| Planned | Evolutionary product and shared-engine boundaries |
 
 ## Repository Status
 
 | Status | Item |
 |---|---|
-<<<<<<< HEAD
 | Completed | Repository hygiene baseline |
-| Completed | Validation baseline |
 | Completed | RFC-002 migration ledger |
-=======
-| Completed | Current repository audited |
-| In Progress | Documentation baseline |
-| Planned | Hygiene and structural migration packages |
->>>>>>> main
+| Completed | Dependency-free validation baseline |
+| Completed | Notes-first documentation reconciliation |
+| Planned | RFC-002 structural migration |
 | Blocked | None |
 
 ## Frontend Status
@@ -62,11 +44,7 @@
 |---|---|
 | Completed | Notes-first frontend operational |
 | Completed | Engineering Notes, Academy, and About routes |
-<<<<<<< HEAD
 | Planned | Approved structural migration |
-=======
-| Planned | Product and shared-engine boundaries |
->>>>>>> main
 
 ## Backend Status
 
@@ -80,19 +58,17 @@
 
 | Status | Item |
 |---|---|
-| Completed | Current informational view |
-| Planned | Dedicated product boundary |
-| Blocked | Future product scope not approved |
+| Completed | Informational frontend view |
+| Completed | Domain specifications and MVP architecture review |
+| In Progress | Core signal contracts and Signal Registry |
+| Planned | Remaining headless MVP implementation packages |
 
 ## Engineering Notes Status
 
 | Status | Item |
 |---|---|
 | Completed | Active product experience |
-<<<<<<< HEAD
-=======
 | Completed | Structured article content and viewer |
->>>>>>> main
 | Planned | Dedicated product boundary |
 
 ## Labs Status
@@ -112,19 +88,11 @@
 
 ## Completed RFCs
 
-<<<<<<< HEAD
-- [x] **Completed:** RFC-001 Repository Architecture — approved baseline
-
-## Pending RFCs
-
-- [ ] **In Progress:** RFC-002 Repository Refactor — foundation complete, migration not started
-=======
 - [x] **Completed:** RFC-001 Repository Architecture
 
 ## Pending RFCs
 
-- [ ] **Planned:** RFC-002 Repository Refactor
->>>>>>> main
+- [ ] **In Progress:** RFC-002 Repository Refactor — foundation complete, structural migration not started
 - [ ] **Blocked:** Backend RFC pending product requirement
 - [ ] **Blocked:** Assistant RFC pending product definition
 
@@ -142,28 +110,21 @@
 - [ ] **Planned:** Establish product and shared boundaries
 - [ ] **Planned:** Correct CSS token violations
 - [ ] **Planned:** Reconcile responsive CSS ownership
-<<<<<<< HEAD
-- [ ] **Planned:** Establish automated tests and CI
-=======
-- [ ] **Planned:** Add repository hygiene rules
-- [ ] **Planned:** Establish validation and CI strategy
->>>>>>> main
+- [ ] **Planned:** Expand automated testing beyond Academy Package 1
+- [ ] **Planned:** Establish CI and architectural enforcement
 - [ ] **Planned:** Declare backend dependencies if retained
 
 ## Known Issues
 
 - [ ] **Blocked:** Three Labs video references are missing
 - [ ] **Planned:** Inactive Labs CSS remains globally imported
-<<<<<<< HEAD
 - [ ] **Planned:** Asset naming and ownership are inconsistent
-=======
-- [ ] **Planned:** Generated artifacts are tracked or unignored
-- [ ] **Planned:** Asset naming and ownership are inconsistent
-- [ ] **Planned:** Legacy documentation requires reconciliation
->>>>>>> main
 
 ## Pending Product Decisions
 
+- [ ] **Blocked:** Minimal learner Program representation
+- [ ] **Blocked:** Exact Lab 001 timing profile
+- [ ] **Blocked:** Hidden Emergency test policy
 - [ ] **Blocked:** Labs retain, reactivate, archive, or retire
 - [ ] **Blocked:** Missing Labs media disposition
 - [ ] **Blocked:** Unreferenced asset ownership
@@ -177,25 +138,14 @@
 
 | Status | Milestone |
 |---|---|
-<<<<<<< HEAD
-| Planned | Approve the first RFC-002 structural migration package |
+| In Progress | Complete Academy Implementation Package 1 review |
 
 ## Recent Changes
 
-- [x] **Completed:** Repository hygiene baseline
-- [x] **Completed:** RFC-002 migration ledger
-- [x] **Completed:** Dependency-free validation baseline
-- [x] **Completed:** Notes-first documentation reconciliation
-=======
-| Planned | Approve and begin RFC-002 safety packages |
-
-## Recent Changes
-
-- [x] **Completed:** Repository architecture audit
-- [x] **Completed:** RFC-001 created
-- [x] **Completed:** Project Constitution established
-- [x] **Completed:** Development workflow established
->>>>>>> main
+- [x] **Completed:** Repository architecture audit and RFC-001 approval
+- [x] **Completed:** SPRINT-001 Repository Foundation
+- [x] **Completed:** Academy SPEC-001 through SPEC-005
+- [x] **Completed:** Academy MVP Architecture Review
+- [ ] **In Progress:** Academy Core Contracts and Signal Registry
 
 ## Project Metrics
-

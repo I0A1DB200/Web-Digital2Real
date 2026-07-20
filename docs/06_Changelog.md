@@ -1,5 +1,18 @@
 # Changelog
 
+## Academy Implementation Package 1 — Core Contracts and Signal Registry
+
+### Added
+
+- Added immutable Academy signal constants and definition validation.
+- Added a deterministic, ownership-aware Signal Registry with safe events, reset behavior and diagnostics.
+- Added dependency-free Node tests for registration, validation, updates, events, resets, isolation and determinism.
+
+### Confirmed
+
+- No existing application source, UI, CSS, routing, assets or backend behavior changed.
+- Lab Loader and all PLC, Machine, Simulation and Validation runtimes remain outside this package.
+
 ## SPRINT-001 — Repository Foundation
 
 ### Added

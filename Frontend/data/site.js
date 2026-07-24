@@ -32,6 +32,10 @@ export const site = {
       view: "engineering-notes"
     },
     {
+      label: "Experience Lab",
+      view: "experience-lab"
+    },
+    {
       label: "About",
       view: "about"
     }

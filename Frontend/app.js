@@ -5,6 +5,7 @@ import { createNavbar } from "./components/navbar.js";
 import { createNotebookCard } from "./components/notebookCard.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
+import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
 
 const app = document.querySelector("#app");
 
@@ -32,6 +33,8 @@ if (!validViews.has("engineering-notes")) {
 
 let currentView = null;
 let activeArticleViewer = null;
+let activeExperienceWorkspace = null;
+let pendingExperienceId = null;
 let revealObserver = null;
 
 function getRequestedView() {
@@ -73,12 +76,14 @@ function renderView(view) {
 
   disconnectRevealObserver();
   closeArticle();
+  closeExperienceWorkspace();
 
   const main = document.createElement("main");
   main.className = "app-main";
 
   const viewRenderers = {
     "engineering-notes": renderEngineeringNotesView,
+    "experience-lab": renderExperienceLabView,
     about: () => createAbout(site)
   };
 
@@ -142,6 +147,41 @@ function renderEngineeringNotesView() {
   return section;
 }
 
+function renderExperienceLabView() {
+  const workspace = createExperienceWorkspace();
+  activeExperienceWorkspace = workspace;
+  workspace.initialise().then(async () => {
+    if (!pendingExperienceId || activeExperienceWorkspace !== workspace) return;
+    const experienceId = pendingExperienceId;
+    pendingExperienceId = null;
+    try {
+      await workspace.openExperience(experienceId);
+    } catch {
+      // The Workspace renders its own accessible loading error.
+    }
+  });
+  return workspace.element;
+}
+
+export async function openExperience(experienceId) {
+  if (typeof experienceId !== "string" || !experienceId.trim()) {
+    throw new Error("openExperience requires a non-empty experience identifier.");
+  }
+
+  if (currentView !== "experience-lab" || !activeExperienceWorkspace) {
+    pendingExperienceId = experienceId;
+    navigateTo("experience-lab");
+    return null;
+  }
+
+  return activeExperienceWorkspace.openExperience(experienceId);
+}
+
+function closeExperienceWorkspace() {
+  activeExperienceWorkspace?.destroy();
+  activeExperienceWorkspace = null;
+}
+
 function openArticle(article, opener) {
   closeArticle();
 
@@ -199,4 +239,5 @@ function handleHashChange() {
 }
 
 window.addEventListener("hashchange", handleHashChange);
+window.openExperience = openExperience;
 renderView(getRequestedView());

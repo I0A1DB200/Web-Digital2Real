@@ -59,6 +59,7 @@ export class ExperiencePlayer {
       ...this.#state,
       state: ExperiencePlayerState.Active,
       completionStatus: ExperienceCompletionStatus.Active,
+      interaction: "introduction",
       startedAt: timestamp,
       lastTimestamp: timestamp
     };
@@ -101,6 +102,7 @@ export class ExperiencePlayer {
       : ExperiencePlayerState.Active;
     const record = immutableCopy({
       decisionId: decision.id,
+      action: decision.action,
       originatingStage: decision.stage_id,
       timestamp,
       resultingStage: destination,
@@ -125,6 +127,7 @@ export class ExperiencePlayer {
       safetyScore,
       elapsedTime: this.#state.elapsedTime + (decision.time_cost ?? 0),
       lastTimestamp: timestamp,
+      interaction: "consequence",
       lastOutcome: {
         decisionId: decision.id,
         rationale: decision.rationale,
@@ -133,6 +136,31 @@ export class ExperiencePlayer {
         resultingStage: destination
       }
     };
+
+    return this.getSnapshot();
+  }
+
+  continue() {
+    const allowedStates = [
+      ExperiencePlayerState.Active,
+      ExperiencePlayerState.Completed,
+      ExperiencePlayerState.Blocked
+    ];
+    this.#assertState("continue", allowedStates);
+
+    if (this.#state.interaction === "introduction") {
+      this.#state = { ...this.#state, interaction: "stage" };
+    } else if (this.#state.interaction === "consequence") {
+      const terminal = this.#state.state === ExperiencePlayerState.Completed
+        || this.#state.state === ExperiencePlayerState.Blocked;
+      this.#state = { ...this.#state, interaction: terminal ? "debrief" : "stage" };
+    } else {
+      throw new ExperiencePlayerError(
+        "NOTHING_TO_CONTINUE",
+        "No introduction or consequence is waiting to continue.",
+        { interaction: this.#state.interaction }
+      );
+    }
 
     return this.getSnapshot();
   }
@@ -148,6 +176,9 @@ export class ExperiencePlayer {
       : null;
     const terminal = this.#state.state === ExperiencePlayerState.Completed
       || this.#state.state === ExperiencePlayerState.Blocked;
+    const currentStageNumber = this.#state.currentStage
+      ? this.#model.stages.findIndex(stage => stage.id === this.#state.currentStage) + 1
+      : this.#model.stages.length;
 
     return immutableCopy({
       experience: {
@@ -161,7 +192,21 @@ export class ExperiencePlayer {
       },
       state: this.#state.state,
       completionStatus: this.#state.completionStatus,
+      interaction: this.#state.interaction,
       startedAt: this.#state.startedAt,
+      context: {
+        initialContext: this.#model.scenario.initial_context,
+        operationalState: this.#model.scenario.operational_state,
+        initiatingEvent: this.#model.scenario.initiating_event,
+        learnerRole: this.#model.scenario.learner_role,
+        safetyContext: this.#model.scenario.safety_context,
+        businessImpact: this.#model.scenario.business_impact ?? null
+      },
+      progress: {
+        currentStage: currentStageNumber,
+        totalStages: this.#model.stages.length,
+        visitedStages: this.#state.visitedStages.length
+      },
       currentStage,
       revealedEvidence: this.#state.revealedEvidence.map(id => publicEvidence(this.#evidence.get(id))),
       selectedDecisions: [...this.#state.selectedDecisions],
@@ -178,11 +223,16 @@ export class ExperiencePlayer {
     });
   }
 
+  getState() {
+    return this.getSnapshot();
+  }
+
   #createInitialState() {
     const initialStage = this.#model.stages[0].id;
     return {
       state: ExperiencePlayerState.NotStarted,
       completionStatus: ExperienceCompletionStatus.NotStarted,
+      interaction: "start",
       startedAt: null,
       currentStage: initialStage,
       revealedEvidence: this.#model.evidence

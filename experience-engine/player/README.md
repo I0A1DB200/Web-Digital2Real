@@ -62,6 +62,22 @@ While a session is active, the snapshot excludes:
 
 The debrief and Notebook references become available only after `COMPLETE` or `BLOCKED`.
 
+### `getState()`
+
+Returns the same immutable public state as `getSnapshot()`. The alias is intended for presentation adapters and does not add UI ownership to the Player.
+
+The public state includes generic scenario context, canonical stage progress and an `interaction` phase:
+
+- `start`;
+- `introduction`;
+- `stage`;
+- `consequence`;
+- `debrief`.
+
+### `continue()`
+
+Acknowledges the current introduction or selected-decision consequence. The Player owns this transition so presentation layers do not duplicate workflow state.
+
 ### `reset()`
 
 Clears all temporary session state and returns the Player to `NotStarted`. The normalized static experience remains unchanged.

@@ -192,10 +192,28 @@ test("starts a session from a normalized immutable model", () => {
   assert.equal(active.state, ExperiencePlayerState.Active);
   assert.equal(active.startedAt, 10);
   assert.equal(active.currentStage.id, "STAGE-01");
+  assert.equal(active.interaction, "introduction");
+  assert.deepEqual(active.progress, { currentStage: 1, totalStages: 2, visitedStages: 1 });
+  assert.equal(active.context.initialContext, "A machine is stopped.");
   assert.deepEqual(active.currentStage.decisions, [
     { id: "DEC-INSPECT", action: "Inspect the prerequisite." },
     { id: "DEC-UNSAFE", action: "Bypass the safety gate." }
   ]);
+});
+
+test("exposes a generic UI contract without changing headless ownership", () => {
+  const player = createPlayer();
+  const introduction = player.start({ timestamp: 0 });
+
+  assert.deepEqual(player.getState(), introduction);
+  assert.equal(player.continue().interaction, "stage");
+  const consequence = player.selectDecision("DEC-INSPECT", { timestamp: 1 });
+  assert.equal(consequence.interaction, "consequence");
+  assert.equal(consequence.progress.currentStage, 2);
+  assert.equal(player.continue().interaction, "stage");
+  player.selectDecision("DEC-COMPLETE", { timestamp: 2 });
+  assert.equal(player.continue().interaction, "debrief");
+  assert.throws(() => player.continue(), error => error.code === "NOTHING_TO_CONTINUE");
 });
 
 test("does not expose private diagnosis or debrief during an active session", () => {
@@ -222,6 +240,7 @@ test("records decisions and progressively reveals evidence", () => {
   assert.deepEqual(snapshot.selectedDecisions, ["DEC-INSPECT"]);
   assert.deepEqual(snapshot.decisionHistory[0], {
     decisionId: "DEC-INSPECT",
+    action: "Inspect the prerequisite.",
     originatingStage: "STAGE-01",
     timestamp: 12,
     resultingStage: "STAGE-02",

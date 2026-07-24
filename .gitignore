@@ -9,6 +9,10 @@ __pycache__/
 # Local validation output
 validation-*.png
 
+# Generated Experience Engine publication artifacts
+Frontend/generated/experience-engine/
+Frontend/generated/.experience-engine-build/
+
 # Local operating-system and editor files
 .DS_Store
 Thumbs.db

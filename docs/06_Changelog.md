@@ -1,5 +1,23 @@
 # Changelog
 
+## Experience Engine — Workspace foundation
+
+### Added
+
+- Added a dependency-free YAML Adapter that converts canonical experience documents into immutable normalized models.
+- Added deterministic `preview` and `publish` packaging modes for the static frontend.
+- Added atomic validation, obsolete-artifact cleanup, generated catalogs and browser-consumable Player packaging.
+- Added tests for YAML parsing, Player compatibility, deterministic copying, cleanup, publication filtering and failure preservation.
+
+### Changed
+
+- Extended the Headless Player public state with generic scenario context, canonical progress and presentation-neutral interaction phases.
+
+### Confirmed
+
+- `experience-engine/` remains the only editable source of truth.
+- `Frontend/` remains the static deployment root, and generated Experience Engine artifacts are disposable and ignored by Git.
+
 ## Experience Engine — Experience Player v1
 
 ### Added

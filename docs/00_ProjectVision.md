@@ -1,5 +1,7 @@
 # Digital2Real — Project Vision
 
+> **Superseded by:** [D2R-000 — Digital2Real Blueprint](00-blueprint/D2R-000-digital2real-blueprint.md). This file is retained as historical project context and is no longer the active authority for product boundaries.
+
 **Status:** Active
 **Architecture authority:** `RFC-001_RepositoryArchitecture.md`
 

@@ -122,6 +122,26 @@ The Markdown files provide human-readable explanations and design rationale. The
 
 Existing schema 1.0 experiences remain supported for Draft and technical review. New experiences use the canonical schema 2.0 profile, and legacy experiences must be normalized before approval or publication.
 
+## Browser packaging
+
+`experience-engine/` remains the authoring and runtime source of truth. The static frontend consumes generated, disposable browser artifacts.
+
+Create a local review package:
+
+```text
+node scripts/package-experience-engine.mjs --mode=preview
+```
+
+Create a production publication package:
+
+```text
+node scripts/package-experience-engine.mjs --mode=publish
+```
+
+`preview` accepts canonical experiences in `technical_review`, `approved`, or `published` state when technical validation is not blocked. `publish` includes only experiences whose experience and web states are both `published` and whose technical validation status is `pass`.
+
+The command validates every canonical candidate before replacing `Frontend/generated/experience-engine/`. It then removes obsolete generated artifacts and writes a deterministic catalog, normalized JSON models, and the browser-consumable Headless Player. Generated files are ignored by Git and must never be edited manually.
+
 ## Status
 
 This foundation includes the first reference experience:

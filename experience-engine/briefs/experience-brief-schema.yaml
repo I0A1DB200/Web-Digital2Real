@@ -1,0 +1,85 @@
+schema:
+  name: Digital2Real Experience Brief
+  version: 1.0.0
+  status: official
+  authoritative_file: experience-engine/briefs/<brief-id>-<topic>.yaml
+
+required:
+  - brief
+  - classification
+  - difficulty
+  - problem
+  - root_cause
+  - resolution
+  - learning_goals
+  - constraints
+  - references
+
+fields:
+  brief:
+    type: object
+    required:
+      - id
+      - title
+      - version
+    fields:
+      id:
+        type: string
+        pattern: "^EE-[0-9]{4}$"
+      title:
+        type: string
+      version:
+        type: string
+        example: 1.0.0
+
+  classification:
+    type: object
+    required:
+      - platform
+      - vendor
+      - industry
+      - machine
+    fields:
+      platform:
+        type: list
+        item_type: string
+        min_items: 1
+      vendor:
+        type: string
+      industry:
+        type: string
+      machine:
+        type: string
+
+  difficulty:
+    type: enum
+    values:
+      - unknown
+      - foundation
+      - intermediate
+      - advanced
+      - expert
+
+  problem:
+    type: string
+
+  root_cause:
+    type: string
+    allow_unknown: true
+
+  resolution:
+    type: string
+    allow_unknown: true
+
+  learning_goals:
+    type: list
+    item_type: string
+    min_items: 1
+
+  constraints:
+    type: list
+    item_type: string
+
+  references:
+    type: list
+    item_type: string

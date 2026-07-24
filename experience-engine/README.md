@@ -28,6 +28,10 @@ experience-engine/
 ├── README.md
 ├── architecture/
 │   └── experience-engine-principles.md
+├── briefs/
+│   ├── README.md
+│   ├── experience-brief-schema.yaml
+│   └── EE-0002-drive-reset.yaml
 ├── workflows/
 │   ├── experience-creation-workflow.md
 │   └── automatic-experience-generation-workflow.md
@@ -61,6 +65,8 @@ It must reveal whether the learner knows:
 
 ## Content model
 
+An engineer begins with one Experience Brief containing the minimum known industrial problem. The generator expands that input into the complete model below.
+
 Each experience contains:
 
 1. a defined engineering competency;
@@ -71,6 +77,17 @@ Each experience contains:
 6. a controlled diagnostic tree;
 7. a technically rigorous debrief;
 8. reusable lessons linked to Notebook knowledge.
+
+The generation boundary is:
+
+```text
+Experience Brief
+→ Experience Generator
+→ experience.yaml
+→ Web
+```
+
+The Brief is the only file written manually by the engineer. `experience.yaml` and its supporting Markdown assets are generated and reviewed through the official workflow.
 
 ## Naming convention
 
@@ -96,6 +113,8 @@ Where:
 Folder names use lowercase kebab-case.
 
 ## Source of truth
+
+An Experience Brief is the structured source of truth for the engineer's original input.
 
 The authoritative structured representation of an experience is `experience.yaml`, governed by `schemas/experience-schema.yaml`.
 

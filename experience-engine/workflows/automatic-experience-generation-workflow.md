@@ -24,20 +24,21 @@ Automation assists the authoring process. It does not replace technical review, 
 
 ```mermaid
 flowchart TD
-    A[Industrial Fault] --> B[Master Prompt]
-    B --> C[Fault Model]
-    C --> D[Experience Generator]
-    D --> E[experience.yaml]
-    D --> F[fault-model.md]
-    D --> G[decision-tree.md]
-    D --> H[debrief.md]
-    D --> I[README.md]
+    A[Industrial Knowledge] --> B[Experience Brief]
+    B --> C[Master Prompt]
+    C --> D[Fault Model]
+    D --> E[Experience Generator]
+    E --> F[experience.yaml]
+    E --> G[fault-model.md]
+    E --> H[decision-tree.md]
+    E --> I[debrief.md]
+    E --> J[README.md]
 ```
 
 The workflow has seven architectural phases:
 
-1. capture a real or technically verified industrial fault;
-2. normalize the minimum input through the Master Prompt;
+1. capture known industrial fault information in one Experience Brief;
+2. validate the Brief and pass it to the Master Prompt;
 3. establish a coherent private fault model;
 4. generate the structured experience and its review assets;
 5. validate consistency, safety, technical accuracy, and pedagogy;
@@ -48,33 +49,23 @@ Generation must stop when the minimum input is incomplete, the causal chain is c
 
 ## Minimum Input
 
-The Master Prompt must receive enough information to define the fault before narrative generation begins.
+One Experience Brief is the only manual generation input.
 
-Required input:
+It must validate against `experience-engine/briefs/experience-brief-schema.yaml` and may contain only:
 
-- **competency:** the engineering capability the learner must demonstrate;
-- **industrial context:** industry, process, machine or line, and operational state;
-- **system boundary:** relevant controller, network, distributed I/O, drives, instrumentation, and supervisory systems;
-- **initiating event:** the event that preceded or triggered the failure;
-- **observable symptoms:** only what an operator or technician can initially observe;
-- **root cause:** the physical, electrical, configuration, communication, or software condition to be corrected;
-- **propagation:** how the root cause produced the observed symptoms;
-- **operational impact:** production, quality, availability, or safety consequences;
-- **intervention constraints:** safe-state, authorization, access, time, and production limitations;
-- **recovery condition:** the condition that must be restored before functional validation;
-- **validation criteria:** evidence required to confirm root cause, recovery, and safe production handover;
-- **technical sources:** authoritative references for vendor-specific or safety-relevant claims.
+- identity and version;
+- platform, vendor, industry, and machine classification;
+- difficulty or `unknown`;
+- observed problem;
+- known root cause or `unknown`;
+- applied resolution or `unknown`;
+- learning goals;
+- constraints;
+- references.
 
-Optional input:
+The Brief must not contain stages, decisions, evidence, scoring, a diagnostic tree, or a debrief.
 
-- difficulty and expected duration;
-- platform and domain classification;
-- common weak interventions observed in practice;
-- available diagrams, logs, alarms, or diagnostic captures;
-- related Notebook knowledge;
-- language and localization requirements.
-
-Missing optional input may be proposed by the generator and marked for review. Missing required input must not be invented.
+The generator derives the complete experience model from the Brief. Missing knowledge must remain explicit, use generic wording, and create a technical-review requirement. It must never be invented.
 
 ## Generated Assets
 
@@ -299,7 +290,8 @@ Public integration requires its own implementation package and does not occur as
 
 Future automation may add:
 
-- a governed Master Prompt template;
+- schema validation for Experience Briefs;
+- deterministic Brief-to-generator handoff;
 - schema-driven asset generation;
 - deterministic regeneration of derived files;
 - cross-file consistency checks;

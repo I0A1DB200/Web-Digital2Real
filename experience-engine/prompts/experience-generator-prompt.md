@@ -16,27 +16,28 @@ Your task is to transform one industrial fault into a structured diagnostic lear
 Before generating any asset, read completely:
 
 - experience-engine/architecture/experience-engine-principles.md
+- experience-engine/briefs/README.md
+- experience-engine/briefs/experience-brief-schema.yaml
 - experience-engine/workflows/automatic-experience-generation-workflow.md
 - experience-engine/schemas/experience-schema.yaml
 - experience-engine/validation/experience-validation-rules.md
 
+Treat the supplied Experience Brief as the authoritative manual input. Validate it against experience-engine/briefs/experience-brief-schema.yaml before generation.
+
 Treat experience-engine/schemas/experience-schema.yaml as the structural contract and experience.yaml as the authoritative representation of the generated experience. Markdown files are derived review and explanation assets. They must never contradict experience.yaml.
 
-INPUT
+OFFICIAL INPUT
 
-Plataforma:
-Industria o máquina:
-Avería observada:
-Causa raíz conocida:
-Resolución aplicada:
-Dificultad:
-Información adicional:
+BRIEF PATH:
+experience-engine/briefs/<brief-file>.yaml
 
-Input values may be unknown.
+Read exactly one Experience Brief. Do not accept an experience, decision tree, evidence catalogue, debrief, or free-form replacement as the generation source.
+
+Brief values may be unknown.
 
 When required information is missing:
 
-1. record the uncertainty in fault_model.uncertainties;
+1. preserve the unknown input and record the resulting uncertainty in fault_model.uncertainties;
 2. use vendor-neutral or generic wording;
 3. set metadata.technical_validation.status to pending or blocked;
 4. keep experience.status and web.publication_status at draft or technical_review;
@@ -47,23 +48,24 @@ El generador puede proponer contenido técnicamente plausible, pero no debe pres
 
 GENERATION ORDER
 
-1. Define the engineering competencies and measurable learning objectives.
-2. Build the complete private fault model before writing learner-facing narrative.
-3. Separate initiating event, failure, symptoms, consequences, vulnerabilities, root cause, recovery conditions, prevention, and uncertainties.
-4. Verify that the causal chain is physically or logically plausible.
-5. Define initial observations without revealing the root cause.
-6. Generate progressive evidence and associate every evidence item with its source, interpretation, reliability, and revealing action.
-7. Create stages that expose only evidence currently available.
-8. Create credible decisions, including plausible weak decisions and at least one strongest evidence-based action per diagnostic stage.
-9. Associate a realistic technical consequence, evidence transition, score effect, safety effect, and valid destination with every decision.
-10. Preserve safety before speed. Never reward unsafe actions or invasive actions unsupported by evidence.
-11. Allow recoverable errors where technically credible; a wrong decision need not always terminate the experience.
-12. Build a finite, coherent diagnostic tree with no broken references, unintended unreachable states, or unbounded cycles.
-13. Define recovery, functional validation, controlled restart, and production handover separately.
-14. Write a debrief centered on reasoning, evidence hierarchy, common errors, safe recovery, and reusable engineering lessons.
-15. Reference existing Notebook knowledge without reproducing its theory.
-16. Validate every generated asset against experience.yaml.
-17. Block publication whenever technical validation is incomplete.
+1. Read and validate the Experience Brief without adding fields to it.
+2. Define the engineering competencies and measurable learning objectives from its learning goals.
+3. Build the complete private fault model before writing learner-facing narrative.
+4. Separate initiating event, failure, symptoms, consequences, vulnerabilities, root cause, recovery conditions, prevention, and uncertainties.
+5. Verify that the causal chain is physically or logically plausible.
+6. Define initial observations without revealing the root cause.
+7. Generate progressive evidence and associate every evidence item with its source, interpretation, reliability, and revealing action.
+8. Create stages that expose only evidence currently available.
+9. Create credible decisions, including plausible weak decisions and at least one strongest evidence-based action per diagnostic stage.
+10. Associate a realistic technical consequence, evidence transition, score effect, safety effect, and valid destination with every decision.
+11. Preserve safety before speed. Never reward unsafe actions or invasive actions unsupported by evidence.
+12. Allow recoverable errors where technically credible; a wrong decision need not always terminate the experience.
+13. Build a finite, coherent diagnostic tree with no broken references, unintended unreachable states, or unbounded cycles.
+14. Define recovery, functional validation, controlled restart, and production handover separately.
+15. Write a debrief centered on reasoning, evidence hierarchy, common errors, safe recovery, and reusable engineering lessons.
+16. Reference existing Notebook knowledge without reproducing its theory.
+17. Validate every generated asset against experience.yaml.
+18. Block publication whenever technical validation is incomplete.
 
 FAULT-MODEL RULES
 
@@ -127,6 +129,8 @@ FILE RESPONSIBILITIES
 
 CONSISTENCY REQUIREMENTS
 
+- Do not add decisions, evidence, stages, scoring, or debrief content to the Brief.
+- Do not rewrite generated experience content back into the Brief.
 - Use the identifier convention EXP-<PLATFORM>-<DOMAIN>-<SEQUENCE>.
 - Use lowercase kebab-case for folders and slugs.
 - Use stable unique identifiers for competencies, objectives, stages, evidence, decisions, and hypotheses.

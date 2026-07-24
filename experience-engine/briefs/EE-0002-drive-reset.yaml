@@ -1,0 +1,42 @@
+brief:
+  id: EE-0002
+  title: Drive reset after emergency-stop release
+  version: 1.0.0
+
+classification:
+  platform:
+    - Siemens S7-1500
+    - SINAMICS G120
+    - WinCC Unified
+  vendor: Siemens
+  industry: Packaging
+  machine: Infeed Conveyor
+
+difficulty: unknown
+
+problem: >-
+  After an emergency stop is released, the conveyor does not restart.
+  The run command is active and there is no communication loss.
+
+root_cause: >-
+  The drive remains inhibited because the reset sequence has not been
+  completed correctly.
+
+resolution: >-
+  Verify the safety chain, confirm drive enablement, execute the reset
+  correctly, and validate the start.
+
+learning_goals:
+  - Distinguish a run command from drive enablement.
+  - Diagnose drive states.
+  - Understand reset sequences.
+  - Prioritize safety.
+  - Base diagnosis on evidence.
+
+constraints:
+  - Do not invent Siemens-specific alarms.
+  - Do not invent fault codes.
+  - Keep behavior technically plausible.
+  - Do not turn symptoms into the root cause.
+
+references: []

@@ -5,7 +5,6 @@ import { createNavbar } from "./components/navbar.js";
 import { createNotebookCard } from "./components/notebookCard.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
-import { createLab001View } from "./products/academy/components/lab001View.js";
 
 const app = document.querySelector("#app");
 
@@ -34,7 +33,6 @@ if (!validViews.has("engineering-notes")) {
 let currentView = null;
 let activeArticleViewer = null;
 let revealObserver = null;
-let activeAcademyView = null;
 
 function getRequestedView() {
   let requestedView = window.location.hash.slice(1);
@@ -75,14 +73,12 @@ function renderView(view) {
 
   disconnectRevealObserver();
   closeArticle();
-  closeAcademyView();
 
   const main = document.createElement("main");
   main.className = "app-main";
 
   const viewRenderers = {
     "engineering-notes": renderEngineeringNotesView,
-    academy: renderAcademyView,
     about: () => createAbout(site)
   };
 
@@ -144,16 +140,6 @@ function renderEngineeringNotesView() {
   });
 
   return section;
-}
-
-function renderAcademyView() {
-  activeAcademyView = createLab001View();
-  return activeAcademyView.element;
-}
-
-function closeAcademyView() {
-  activeAcademyView?.destroy();
-  activeAcademyView = null;
 }
 
 function openArticle(article, opener) {

@@ -32,10 +32,6 @@ export const site = {
       view: "engineering-notes"
     },
     {
-      label: "Academy",
-      view: "academy"
-    },
-    {
       label: "About",
       view: "about"
     }
@@ -54,22 +50,6 @@ export const site = {
       "Concise technical articles built around real industrial challenges, practical diagnostics and engineering decisions that can be applied in the field."
   },
 
-  academy: {
-    eyebrow: "Digital2Real Academy",
-    title: "Learn Industrial Automation Through Real Missions.",
-    introduction:
-      "Academy is being designed as a practical learning journey through a fictional industrial plant. Instead of following software menus or isolated exercises, each mission begins with a machine, a fault or a production requirement that must be understood and solved.",
-    objective:
-      "The objective is not simply to memorize PLC instructions. It is to understand machines, signals, sequences, diagnostics and reusable automation architectures.",
-    principles: [
-      "Real industrial scenarios",
-      "Problem-driven learning",
-      "Progressive engineering challenges",
-      "Concepts before platforms"
-    ],
-    status: "Academy is currently in development."
-  },
-
   about: {
     eyebrow: "About Digital2Real",
     title: "Engineering knowledge should begin with real problems.",
@@ -83,7 +63,7 @@ export const site = {
       {
         title: "Our Approach",
         paragraphs: [
-          "Every Engineering Note and every future Academy mission is built around an industrial situation.",
+          "Every Engineering Note is built around an industrial situation.",
           "A stopped conveyor.\nA drive that has lost communication.\nA sequence that does not behave as expected.\nA machine that needs to become safer, clearer or easier to maintain.",
           "The objective is not only to show a solution. It is to explain the engineering reasoning behind it: what should be inspected, which assumptions should be questioned and how a robust automation solution can be structured."
         ]
@@ -91,9 +71,9 @@ export const site = {
       {
         title: "What Digital2Real Is Building",
         paragraphs: [
-          "Digital2Real is evolving as an editorial and educational platform for Industrial Automation.",
+          "Digital2Real is evolving as an editorial publication for Industrial Automation.",
           "Engineering Notes provide concise technical knowledge based on practical challenges.",
-          "Academy will transform those principles into interactive missions where users learn by diagnosing, designing and solving industrial systems.",
+          "Each publication connects practical problems with the engineering reasoning used to understand and solve them.",
           "Different formats, one objective:\nHelp engineers think clearly about automation."
         ]
       },

@@ -31,7 +31,7 @@
  * @property {string[]} [tags]
  * @property {string[]} [technologies]
  * @property {boolean} [featured]
- * @property {{labs: string[], notebook: string[], academy: string[]}} [related]
+ * @property {{labs: string[], notebook: string[]}} [related]
  * @property {ArticleSection[]} sections
  * @property {string} [date]
  * @property {string} [summary]
@@ -65,8 +65,7 @@ export const notebook = [
 
     related: {
       labs: [],
-      notebook: [],
-      academy: []
+      notebook: []
     },
 
     sections: [
@@ -175,8 +174,7 @@ export const notebook = [
 
     related: {
       labs: [],
-      notebook: [],
-      academy: []
+      notebook: []
     },
 
     sections: [

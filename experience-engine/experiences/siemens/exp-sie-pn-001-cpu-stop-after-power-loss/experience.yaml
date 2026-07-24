@@ -1,0 +1,275 @@
+id: EXP-SIE-PN-001
+title: CPU Siemens en STOP tras un microcorte
+status: technical-review
+language: es
+version: 0.1.0
+
+classification:
+  domain: industrial-automation
+  platform: Siemens
+  technology:
+    - S7-1500
+    - TIA Portal
+    - PROFINET
+    - ET 200SP
+    - OB86
+  difficulty: intermediate
+
+competencies:
+  - id: COMP-DIAG-001
+    description: Priorizar comprobaciones diagnósticas no invasivas antes de actuar.
+    assessment: El alumno consulta el buffer de diagnóstico antes de reiniciar o descargar.
+  - id: COMP-PN-001
+    description: Diagnosticar la pérdida de una estación PROFINET.
+    assessment: El alumno diferencia presencia Ethernet, dirección IP e identidad PROFINET.
+  - id: COMP-RCA-001
+    description: Separar causa raíz, consecuencia y vulnerabilidad.
+    assessment: El alumno identifica la pérdida de identidad como causa y la ausencia de OB86 como factor de escalado.
+
+scenario:
+  industry: alimentación
+  process: línea automática de envasado
+  machine: línea de transporte y llenado
+  controller: Siemens S7-1516F
+  network: PROFINET
+  devices:
+    - Siemens ET 200SP
+    - Siemens SINAMICS G120
+    - WinCC Unified Comfort Panel
+  hmi_scada: WinCC Unified
+  operational_state: producción detenida después de un microcorte de aproximadamente dos segundos
+  impact: parada total de línea
+  constraints:
+    - No borrar la memoria de la CPU.
+    - No descargar el proyecto completo sin diagnóstico.
+    - No reiniciar repetidamente sin comprender el fallo.
+    - Mantener la instalación en estado seguro.
+
+fault_model:
+  trigger: Microcorte eléctrico.
+  root_cause: Pérdida o ausencia del nombre de dispositivo PROFINET esperado en la estación ET200SP_LINE_02.
+  mechanism: La CPU no puede asociar la estación física con el dispositivo configurado y declara la periferia como no accesible.
+  symptoms:
+    - Línea detenida.
+    - CPU en STOP.
+    - LED de error activo.
+    - Estación remota no accesible desde la vista online.
+    - Dispositivo visible por MAC pero sin identidad PROFINET válida.
+  vulnerability: El programa no dispone del tratamiento de diagnóstico requerido para tolerar la pérdida de estación sin escalar la parada.
+  operational_effect: El controlador no recupera la operación normal y la línea permanece parada.
+  recovery_condition: Restaurar la identidad PROFINET correcta, comprobar la integración de la estación, recuperar la CPU de forma controlada y validar las señales.
+  prevention:
+    - Verificar la remanencia y estado del módulo de interfaz.
+    - Documentar el procedimiento de sustitución y asignación de nombre.
+    - Revisar la estrategia de OB de diagnóstico.
+    - Supervisar la calidad de alimentación de 24 VDC.
+    - Mantener copias verificadas del proyecto y configuración.
+  technical_uncertainty:
+    - Validar el comportamiento exacto de STOP frente a ausencia de OB86 para la CPU y firmware objetivos.
+    - Validar los textos exactos del buffer de diagnóstico antes de publicar capturas simuladas.
+
+stages:
+  - id: S1
+    title: Evaluación inicial
+    objective: Obtener evidencia antes de modificar el estado del controlador.
+    observations:
+      - CPU en STOP.
+      - ERROR rojo.
+      - HMI alimentado.
+      - La línea no produce.
+      - Se produjo un microcorte.
+    decisions:
+      - id: S1-BUFFER
+        action: Abrir el buffer de diagnóstico de la CPU.
+        classification: strong
+        rationale: Conserva evidencia y permite identificar el evento que provocó la transición.
+        evidence_revealed:
+          - Pérdida de una estación PROFINET.
+          - Evento de diagnóstico asociado a fallo de estación.
+        consequence: Se reduce la incertidumbre sin alterar la instalación.
+        next_stage: S2
+        time_cost_minutes: 2
+        risk_delta: -1
+        score_delta: 3
+
+      - id: S1-RUN
+        action: Intentar poner inmediatamente la CPU en RUN.
+        classification: weak
+        rationale: Puede recuperar temporalmente el estado, pero no explica ni corrige la causa.
+        evidence_revealed: []
+        consequence: La CPU no recupera de forma estable o vuelve a declarar el fallo.
+        next_stage: S1
+        time_cost_minutes: 3
+        risk_delta: 1
+        score_delta: -1
+
+      - id: S1-DOWNLOAD
+        action: Descargar el proyecto completo.
+        classification: unsafe
+        rationale: Es una acción invasiva sin evidencia y puede alterar el estado validado de producción.
+        evidence_revealed: []
+        consequence: Se incrementa el riesgo y se puede perder información diagnóstica útil.
+        next_stage: S1
+        time_cost_minutes: 15
+        risk_delta: 3
+        score_delta: -3
+
+      - id: S1-POWER
+        action: Reiniciar la alimentación del armario.
+        classification: weak
+        rationale: Repite el evento iniciador sin aislar el fallo.
+        evidence_revealed: []
+        consequence: El síntoma permanece y aumenta el tiempo de parada.
+        next_stage: S1
+        time_cost_minutes: 5
+        risk_delta: 1
+        score_delta: -1
+
+  - id: S2
+    title: Identificación de la estación
+    objective: Determinar qué dispositivo no responde y si el problema es físico, de red o de identidad.
+    observations:
+      - ET200SP_LINE_02 aparece como no accesible.
+      - El resto de dispositivos PROFINET permanece operativo.
+    decisions:
+      - id: S2-ACCESSIBLE
+        action: Buscar dispositivos accesibles y comparar MAC, IP y nombre PROFINET.
+        classification: strong
+        rationale: Permite distinguir un equipo ausente de un equipo presente pero no identificado.
+        evidence_revealed:
+          - El módulo responde por MAC.
+          - La dirección IP no es la esperada.
+          - El nombre PROFINET esperado no está asignado.
+        consequence: La hipótesis de fallo completo de hardware pierde fuerza.
+        next_stage: S3
+        time_cost_minutes: 5
+        risk_delta: -1
+        score_delta: 3
+
+      - id: S2-REPLACE
+        action: Sustituir directamente el módulo de interfaz.
+        classification: weak
+        rationale: El hardware aún no ha sido demostrado como defectuoso.
+        evidence_revealed: []
+        consequence: Se consume tiempo y el módulo de sustitución también requerirá identidad correcta.
+        next_stage: S2
+        time_cost_minutes: 25
+        risk_delta: 2
+        score_delta: -2
+
+      - id: S2-IP
+        action: Asignar únicamente la dirección IP esperada.
+        classification: acceptable
+        rationale: Es técnicamente plausible, pero PROFINET identifica el dispositivo principalmente por su nombre configurado.
+        evidence_revealed:
+          - La estación sigue sin integrarse correctamente.
+        consequence: Se demuestra que la IP por sí sola no resuelve la asociación esperada.
+        next_stage: S3
+        time_cost_minutes: 5
+        risk_delta: 0
+        score_delta: 0
+
+  - id: S3
+    title: Corrección de identidad
+    objective: Restaurar la identidad configurada y confirmar la integración de la estación.
+    observations:
+      - Dispositivo visible por MAC.
+      - Nombre PROFINET ausente o incorrecto.
+      - Configuración del proyecto espera ET200SP_LINE_02.
+    decisions:
+      - id: S3-NAME
+        action: Asignar el nombre PROFINET esperado y verificar la asignación de parámetros.
+        classification: strong
+        rationale: Corrige la condición que impide a la CPU asociar la estación física con la configuración.
+        evidence_revealed:
+          - La estación aparece accesible.
+          - Los módulos recuperan estado operativo.
+        consequence: La causa inmediata queda corregida.
+        next_stage: S4
+        time_cost_minutes: 5
+        risk_delta: -1
+        score_delta: 3
+
+      - id: S3-OB86
+        action: Descargar únicamente OB86 antes de restaurar la estación.
+        classification: weak
+        rationale: Puede mejorar la tolerancia futura, pero no restaura la identidad perdida.
+        evidence_revealed: []
+        consequence: La estación continúa no accesible.
+        next_stage: S3
+        time_cost_minutes: 10
+        risk_delta: 1
+        score_delta: -1
+
+  - id: S4
+    title: Recuperación controlada
+    objective: Recuperar la CPU y comprobar que no existen fallos residuales.
+    observations:
+      - Estación PROFINET accesible.
+      - Módulos sin fallo de bus.
+      - Alimentación estable.
+    decisions:
+      - id: S4-CONTROLLED-RUN
+        action: Revisar diagnósticos activos, pasar la CPU a RUN de forma controlada y observar el comportamiento.
+        classification: strong
+        rationale: La causa inmediata ha sido corregida y se conservan controles antes de liberar la línea.
+        evidence_revealed:
+          - CPU en RUN.
+          - Estación integrada.
+          - No aparecen nuevos eventos críticos.
+        consequence: El sistema queda disponible para validación funcional.
+        next_stage: S5
+        time_cost_minutes: 5
+        risk_delta: -1
+        score_delta: 3
+
+  - id: S5
+    title: Validación y entrega
+    objective: Confirmar seguridad, señales y funcionamiento antes de volver a producción.
+    observations:
+      - CPU en RUN.
+      - Red PROFINET estable.
+      - Estación remota operativa.
+    decisions:
+      - id: S5-VALIDATE
+        action: Validar entradas, salidas, seguridad, drives, alarmas y ciclo automático antes de entregar a producción.
+        classification: strong
+        rationale: Arrancar no equivale a demostrar que la instalación está recuperada.
+        evidence_revealed:
+          - Señales coherentes.
+          - Seguridad funcional disponible.
+          - Ciclo automático correcto.
+        consequence: La línea se entrega de forma controlada y documentada.
+        next_stage: COMPLETE
+        time_cost_minutes: 10
+        risk_delta: -2
+        score_delta: 4
+
+debrief:
+  root_cause: La estación ET200SP_LINE_02 no conservaba o no presentaba el nombre PROFINET esperado, por lo que la CPU no podía asociarla con la configuración.
+  causal_chain:
+    - Se produce un microcorte.
+    - La estación remota reinicia.
+    - La identidad PROFINET esperada no está disponible.
+    - La CPU declara la estación como no accesible.
+    - La estrategia de diagnóstico no tolera adecuadamente el evento.
+    - La CPU permanece detenida y la línea no produce.
+  key_lessons:
+    - Conservar y leer la evidencia antes de reiniciar o descargar.
+    - Diferenciar presencia Ethernet, IP e identidad PROFINET.
+    - No confundir la causa de campo con la respuesta del controlador.
+    - Tratar OB86 como parte de la robustez, no como sustituto de la reparación.
+    - Validar señales y seguridad después de recuperar RUN.
+  prevention:
+    - Revisar la estrategia de OB de diagnóstico.
+    - Verificar el módulo de interfaz y su comportamiento tras pérdida de alimentación.
+    - Documentar la asignación de nombres PROFINET.
+    - Supervisar la calidad de la alimentación.
+  notebook_links:
+    - notebook/protocols/profinet-device-identity.md
+    - notebook/troubleshooting/siemens-diagnostic-buffer.md
+    - notebook/standards/siemens-diagnostic-organization-blocks.md
+  competencies_assessed:
+    - COMP-DIAG-001
+    - COMP-PN-001
+    - COMP-RCA-001

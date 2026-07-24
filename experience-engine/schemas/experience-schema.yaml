@@ -1,0 +1,216 @@
+schema:
+  name: Digital2Real Experience
+  version: 1.0.0
+  status: draft
+
+required:
+  - id
+  - title
+  - status
+  - language
+  - classification
+  - competencies
+  - scenario
+  - fault_model
+  - stages
+  - debrief
+
+fields:
+  id:
+    type: string
+    pattern: "^EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}$"
+
+  title:
+    type: string
+
+  status:
+    type: enum
+    values:
+      - draft
+      - technical-review
+      - pedagogical-review
+      - approved
+      - published
+      - deprecated
+
+  language:
+    type: string
+    example: es
+
+  version:
+    type: string
+    example: 1.0.0
+
+  classification:
+    type: object
+    required:
+      - domain
+      - platform
+      - difficulty
+    fields:
+      domain:
+        type: string
+      platform:
+        type: string
+      technology:
+        type: list
+        item_type: string
+      difficulty:
+        type: enum
+        values:
+          - foundation
+          - intermediate
+          - advanced
+          - expert
+
+  competencies:
+    type: list
+    min_items: 1
+    item:
+      type: object
+      required:
+        - id
+        - description
+      fields:
+        id:
+          type: string
+        description:
+          type: string
+        assessment:
+          type: string
+
+  scenario:
+    type: object
+    required:
+      - industry
+      - process
+      - controller
+      - operational_state
+      - impact
+    fields:
+      industry:
+        type: string
+      process:
+        type: string
+      machine:
+        type: string
+      controller:
+        type: string
+      network:
+        type: string
+      devices:
+        type: list
+      hmi_scada:
+        type: string
+      operational_state:
+        type: string
+      impact:
+        type: string
+      constraints:
+        type: list
+
+  fault_model:
+    type: object
+    required:
+      - trigger
+      - root_cause
+      - mechanism
+      - operational_effect
+      - recovery_condition
+    fields:
+      trigger:
+        type: string
+      root_cause:
+        type: string
+      mechanism:
+        type: string
+      symptoms:
+        type: list
+      vulnerability:
+        type: string
+      operational_effect:
+        type: string
+      recovery_condition:
+        type: string
+      prevention:
+        type: list
+      technical_uncertainty:
+        type: list
+
+  stages:
+    type: list
+    min_items: 1
+    item:
+      type: object
+      required:
+        - id
+        - title
+        - objective
+        - observations
+        - decisions
+      fields:
+        id:
+          type: string
+        title:
+          type: string
+        objective:
+          type: string
+        observations:
+          type: list
+        decisions:
+          type: list
+          item:
+            type: object
+            required:
+              - id
+              - action
+              - classification
+              - consequence
+              - next_stage
+            fields:
+              id:
+                type: string
+              action:
+                type: string
+              classification:
+                type: enum
+                values:
+                  - strong
+                  - acceptable
+                  - weak
+                  - unsafe
+              rationale:
+                type: string
+              evidence_revealed:
+                type: list
+              consequence:
+                type: string
+              next_stage:
+                type: string
+              time_cost_minutes:
+                type: integer
+              risk_delta:
+                type: integer
+              score_delta:
+                type: integer
+
+  debrief:
+    type: object
+    required:
+      - root_cause
+      - causal_chain
+      - key_lessons
+      - prevention
+    fields:
+      root_cause:
+        type: string
+      causal_chain:
+        type: list
+      key_lessons:
+        type: list
+      prevention:
+        type: list
+      notebook_links:
+        type: list
+      competencies_assessed:
+        type: list

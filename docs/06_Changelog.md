@@ -1,5 +1,19 @@
 # Changelog
 
+## Experience Engine — Experience Player v1
+
+### Added
+
+- Added a dependency-free headless Player for validated, normalized Experience Engine 2.0 models.
+- Added deterministic session progression, progressive evidence, decision history, score, safety, elapsed time, terminal states and reset.
+- Added learner-safe immutable snapshots that withhold private diagnosis and debrief content until termination.
+- Added native tests for lifecycle, privacy boundaries, references, progression, terminal outcomes, reset, immutability and deterministic replay.
+
+### Confirmed
+
+- The Player does not parse YAML, publish experiences, render UI, persist sessions, access browser APIs or modify static experience data.
+- Existing schemas, Briefs, prompts, workflows, integration contracts, experiences, Frontend and Backend remain unchanged.
+
 ## Academy Implementation Package 7 — Academy UI MVP
 
 ### Added

@@ -29,9 +29,16 @@ experience-engine/
 ├── architecture/
 │   └── experience-engine-principles.md
 ├── workflows/
-│   └── experience-creation-workflow.md
+│   ├── experience-creation-workflow.md
+│   └── automatic-experience-generation-workflow.md
 ├── schemas/
 │   └── experience-schema.yaml
+├── prompts/
+│   └── experience-generator-prompt.md
+├── validation/
+│   └── experience-validation-rules.md
+├── integration/
+│   └── web-integration-contract.md
 ├── templates/
 │   └── experience-template.md
 └── experiences/
@@ -90,9 +97,11 @@ Folder names use lowercase kebab-case.
 
 ## Source of truth
 
-The authoritative structured representation of an experience is `experience.yaml`.
+The authoritative structured representation of an experience is `experience.yaml`, governed by `schemas/experience-schema.yaml`.
 
 The Markdown files provide human-readable explanations and design rationale. They must remain consistent with the YAML source.
+
+Existing schema 1.0 experiences remain supported for Draft and technical review. New experiences use the canonical schema 2.0 profile, and legacy experiences must be normalized before approval or publication.
 
 ## Status
 

@@ -18,7 +18,7 @@ The workflow governs system architecture. It establishes:
 
 Automation assists the authoring process. It does not replace technical review, pedagogical review, or publication approval.
 
-`experience.yaml` is the structured source of truth. Every generated Markdown or JSON asset must be derived from it or validated against it.
+`experience.yaml` is the structured source of truth. Every generated Markdown asset must be derived from it and validated against it.
 
 ## High-Level Workflow
 
@@ -32,7 +32,6 @@ flowchart TD
     D --> G[decision-tree.md]
     D --> H[debrief.md]
     D --> I[README.md]
-    D --> J[metadata.json]
 ```
 
 The workflow has seven architectural phases:
@@ -82,13 +81,12 @@ Missing optional input may be proposed by the generator and marked for review. M
 The generator produces one bounded experience package:
 
 ```text
-experiences/<platform>/<experience-id>/
+experiences/<vendor-or-platform>/<experience-slug>/
 ├── README.md
 ├── experience.yaml
 ├── fault-model.md
 ├── decision-tree.md
-├── debrief.md
-└── metadata.json
+└── debrief.md
 ```
 
 Each asset has one responsibility:
@@ -100,9 +98,8 @@ Each asset has one responsibility:
 | `decision-tree.md` | Human-readable diagnostic paths and their consequences | Derived review asset |
 | `debrief.md` | Learner-facing explanation after completion | Derived publication asset |
 | `README.md` | Package identity, competency, context, status, and review notes | Derived package overview |
-| `metadata.json` | Machine-readable discovery and web-index projection | Derived integration asset |
 
-`metadata.json` must contain only indexable fields derived from `experience.yaml`. It must not define stages, evidence, decisions, or validation logic independently.
+Identity, classification, publication, review, and web metadata belong inside `experience.yaml`. The generator must not create a parallel metadata file.
 
 Generated files begin in Draft status. Generation never implies publication approval.
 
@@ -237,59 +234,15 @@ It must not introduce facts absent from the fault model or contradict consequenc
 
 ## Validation Rules
 
-Generation is complete only when all applicable validation gates pass.
+`experience-engine/validation/experience-validation-rules.md` is the single quality gate for generated and manually authored packages.
 
-### Structural validation
+Generation must run its checks before handoff and record only:
 
-- `experience.yaml` validates against `experience-schema.yaml`;
-- required files exist;
-- identifiers are unique and stable;
-- all references resolve;
-- the diagnostic tree has no unintended unreachable nodes;
-- derived metadata agrees with the YAML source.
+- `PASS`;
+- `PASS_WITH_WARNINGS`;
+- `BLOCKED`.
 
-### Consistency validation
-
-- the fault model, YAML, decision tree, README, and debrief describe the same root cause;
-- evidence appears only after its defined acquisition action;
-- decisions use only evidence available at their stage;
-- consequences lead to valid destinations;
-- completion conditions agree across all assets.
-
-### Technical validation
-
-- failure propagation is physically or logically plausible;
-- diagnostic behavior and terminology are accurate;
-- vendor-specific claims are supported by authoritative sources;
-- corrective actions address the root cause;
-- recovery and validation procedures are complete;
-- unresolved uncertainty is explicit.
-
-### Safety validation
-
-- unsafe intervention is never rewarded;
-- required isolation, authorization, and safe-state controls are represented;
-- restart occurs only after required safety checks;
-- production handover requires functional validation.
-
-### Pedagogical validation
-
-- the experience trains a defined competency;
-- evidence is progressive;
-- incorrect options are credible;
-- consequences teach rather than merely punish;
-- the learner must reason from evidence;
-- the debrief extracts a transferable engineering method.
-
-### Publication validation
-
-- the complete correct path is playable;
-- at least one weak path has been reviewed;
-- all derived assets have been regenerated or reconciled after SSOT changes;
-- technical and pedagogical reviewers approve the package;
-- publication status is explicitly authorized.
-
-Any failed gate returns the package to Draft.
+Generation never grants publication approval. Only a complete technical review with global result `PASS` permits a later publication decision. Warnings preserve review status, and any blocking result returns the package to Draft.
 
 ## Integration with Notebook
 
@@ -338,7 +291,7 @@ The web layer must not:
 - publish Draft experiences;
 - import generator internals into presentation code.
 
-`metadata.json` may support indexing and discovery. Runtime experience behavior must come from validated structured data derived from `experience.yaml`.
+Indexing and discovery must consume validated fields from `experience.yaml` through the web integration boundary. Runtime experience behavior must come from the same normalized structured model.
 
 Public integration requires its own implementation package and does not occur as a side effect of generation.
 

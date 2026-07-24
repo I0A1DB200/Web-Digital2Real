@@ -1,60 +1,65 @@
 schema:
   name: Digital2Real Experience
-  version: 1.0.0
-  status: draft
+  version: 2.0.0
+  status: official
+  format: declarative
+  authoritative_file: experience.yaml
 
 required:
-  - id
-  - title
-  - status
-  - language
+  - experience
   - classification
   - competencies
+  - learning_objectives
   - scenario
   - fault_model
   - stages
+  - evidence
+  - decisions
+  - diagnostic_model
+  - evaluation
   - debrief
+  - references
+  - web
+  - metadata
 
 fields:
-  id:
-    type: string
-    pattern: "^EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}$"
-
-  title:
-    type: string
-
-  status:
-    type: enum
-    values:
-      - draft
-      - technical-review
-      - pedagogical-review
-      - approved
-      - published
-      - deprecated
-
-  language:
-    type: string
-    example: es
-
-  version:
-    type: string
-    example: 1.0.0
-
-  classification:
+  experience:
     type: object
     required:
-      - domain
-      - platform
+      - id
+      - slug
+      - title
+      - summary
+      - version
+      - status
+      - language
       - difficulty
+      - estimated_duration
     fields:
-      domain:
+      id:
         type: string
-      platform:
+        pattern: "^EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}$"
+      slug:
         type: string
-      technology:
-        type: list
-        item_type: string
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      title:
+        type: string
+      summary:
+        type: string
+      version:
+        type: string
+        example: 1.0.0
+      status:
+        type: enum
+        values:
+          - draft
+          - technical_review
+          - approved
+          - published
+          - archived
+      language:
+        type: string
+        example: es
       difficulty:
         type: enum
         values:
@@ -62,6 +67,35 @@ fields:
           - intermediate
           - advanced
           - expert
+      estimated_duration:
+        type: integer
+        unit: minutes
+        minimum: 1
+
+  classification:
+    type: object
+    required:
+      - platform
+      - domain
+      - industry
+      - machine_type
+    fields:
+      platform:
+        type: string
+        description: Technology family or generic industrial platform.
+      vendor:
+        type: string
+        optional: true
+      domain:
+        type: string
+      industry:
+        type: string
+      machine_type:
+        type: string
+      technologies:
+        type: list
+        item_type: string
+        optional: true
 
   competencies:
     type: list
@@ -71,6 +105,7 @@ fields:
       required:
         - id
         - description
+        - assessment
       fields:
         id:
           type: string
@@ -79,63 +114,136 @@ fields:
         assessment:
           type: string
 
+  learning_objectives:
+    type: list
+    min_items: 1
+    item:
+      type: object
+      required:
+        - id
+        - description
+        - competency_ids
+      fields:
+        id:
+          type: string
+        description:
+          type: string
+        competency_ids:
+          type: list
+          item_type: string
+          min_items: 1
+
   scenario:
     type: object
     required:
-      - industry
-      - process
-      - controller
+      - initial_context
       - operational_state
-      - impact
+      - initiating_event
+      - learner_role
+      - safety_context
     fields:
-      industry:
-        type: string
-      process:
-        type: string
-      machine:
-        type: string
-      controller:
-        type: string
-      network:
-        type: string
-      devices:
-        type: list
-      hmi_scada:
+      initial_context:
         type: string
       operational_state:
         type: string
-      impact:
+      initiating_event:
         type: string
-      constraints:
-        type: list
+      learner_role:
+        type: string
+      safety_context:
+        type: object
+        required:
+          - safe_state
+          - intervention_constraints
+        fields:
+          safe_state:
+            type: string
+          intervention_constraints:
+            type: list
+            item_type: string
+          isolation_requirements:
+            type: list
+            item_type: string
+            optional: true
+      system_context:
+        type: object
+        optional: true
+        fields:
+          process:
+            type: string
+          controller:
+            type: string
+          network:
+            type: string
+          devices:
+            type: list
+            item_type: string
+          hmi_scada:
+            type: string
+      business_impact:
+        type: string
+        optional: true
 
   fault_model:
     type: object
     required:
-      - trigger
+      - initiating_event
+      - failure
+      - propagation_mechanism
+      - symptoms
+      - consequences
+      - vulnerabilities
       - root_cause
-      - mechanism
-      - operational_effect
-      - recovery_condition
+      - recovery_conditions
+      - preventive_actions
+      - uncertainties
     fields:
-      trigger:
+      initiating_event:
         type: string
-      root_cause:
+      failure:
         type: string
-      mechanism:
-        type: string
+      propagation_mechanism:
+        type: list
+        item_type: string
+        min_items: 1
       symptoms:
         type: list
-      vulnerability:
-        type: string
-      operational_effect:
-        type: string
-      recovery_condition:
-        type: string
-      prevention:
+        item_type: string
+        min_items: 1
+      consequences:
         type: list
-      technical_uncertainty:
+        item_type: string
+        min_items: 1
+      vulnerabilities:
         type: list
+        item_type: string
+      root_cause:
+        type: string
+      recovery_conditions:
+        type: list
+        item_type: string
+        min_items: 1
+      preventive_actions:
+        type: list
+        item_type: string
+      uncertainties:
+        type: list
+        item:
+          type: object
+          required:
+            - id
+            - statement
+            - review_required
+          fields:
+            id:
+              type: string
+            statement:
+              type: string
+            verification_source:
+              type: string
+              optional: true
+            review_required:
+              type: boolean
 
   stages:
     type: list
@@ -145,72 +253,418 @@ fields:
       required:
         - id
         - title
-        - objective
-        - observations
+        - situation
+        - available_evidence
         - decisions
       fields:
         id:
           type: string
         title:
           type: string
+        situation:
+          type: string
         objective:
           type: string
-        observations:
+          optional: true
+        available_evidence:
           type: list
+          item_type: reference
+          reference: evidence.id
         decisions:
           type: list
-          item:
-            type: object
-            required:
-              - id
-              - action
-              - classification
-              - consequence
-              - next_stage
-            fields:
-              id:
-                type: string
-              action:
-                type: string
-              classification:
-                type: enum
-                values:
-                  - strong
-                  - acceptable
-                  - weak
-                  - unsafe
-              rationale:
-                type: string
-              evidence_revealed:
-                type: list
-              consequence:
-                type: string
-              next_stage:
-                type: string
-              time_cost_minutes:
-                type: integer
-              risk_delta:
-                type: integer
-              score_delta:
-                type: integer
+          item_type: reference
+          reference: decisions.id
+
+  evidence:
+    type: list
+    item:
+      type: object
+      required:
+        - id
+        - type
+        - source
+        - content
+        - interpretation
+        - reliability
+        - revealed_by
+      fields:
+        id:
+          type: string
+        type:
+          type: enum
+          values:
+            - initial_observation
+            - operator_report
+            - diagnostic
+            - measurement
+            - documentation
+            - inspection
+            - functional_test
+        source:
+          type: string
+        content:
+          type: string
+        interpretation:
+          type: string
+        reliability:
+          type: enum
+          values:
+            - low
+            - medium
+            - high
+            - confirmed
+        revealed_by:
+          type: list
+          item_type: reference
+          reference: decisions.id
+          description: Empty only for evidence available at experience start.
+        hypotheses_strengthened:
+          type: list
+          item_type: reference
+          reference: diagnostic_model.hypotheses.id
+          optional: true
+        hypotheses_weakened:
+          type: list
+          item_type: reference
+          reference: diagnostic_model.hypotheses.id
+          optional: true
+
+  decisions:
+    type: list
+    min_items: 1
+    item:
+      type: object
+      required:
+        - id
+        - stage_id
+        - action
+        - rationale
+        - classification
+        - consequence
+        - evidence_revealed
+        - next_stage
+        - score_effect
+        - safety_effect
+      fields:
+        id:
+          type: string
+        stage_id:
+          type: reference
+          reference: stages.id
+        action:
+          type: string
+        rationale:
+          type: string
+        classification:
+          type: enum
+          values:
+            - strong
+            - acceptable
+            - weak
+            - unsafe
+        consequence:
+          type: string
+        evidence_revealed:
+          type: list
+          item_type: reference
+          reference: evidence.id
+        next_stage:
+          type: reference_or_terminal
+          reference: stages.id
+          terminal_values:
+            - COMPLETE
+            - BLOCKED
+        score_effect:
+          type: integer
+        safety_effect:
+          type: integer
+        time_cost:
+          type: integer
+          unit: minutes
+          minimum: 0
+          optional: true
+
+  diagnostic_model:
+    type: object
+    required:
+      - hypotheses
+      - confirmed_root_cause
+      - rejected_hypotheses
+      - critical_path
+    fields:
+      hypotheses:
+        type: list
+        min_items: 1
+        item:
+          type: object
+          required:
+            - id
+            - statement
+            - initial_status
+          fields:
+            id:
+              type: string
+            statement:
+              type: string
+            initial_status:
+              type: enum
+              values:
+                - possible
+                - likely
+                - unlikely
+      confirmed_root_cause:
+        type: reference
+        reference: diagnostic_model.hypotheses.id
+      rejected_hypotheses:
+        type: list
+        item_type: reference
+        reference: diagnostic_model.hypotheses.id
+      critical_path:
+        type: list
+        item_type: reference
+        reference: decisions.id
+        min_items: 1
+
+  evaluation:
+    type: object
+    required:
+      - dimensions
+      - scoring
+      - completion_conditions
+    fields:
+      dimensions:
+        type: list
+        min_items: 1
+        item:
+          type: object
+          required:
+            - id
+            - description
+            - weight
+          fields:
+            id:
+              type: string
+            description:
+              type: string
+            weight:
+              type: number
+      scoring:
+        type: object
+        required:
+          - initial_score
+          - minimum_score
+          - maximum_score
+          - safety_threshold
+        fields:
+          initial_score:
+            type: integer
+          minimum_score:
+            type: integer
+          maximum_score:
+            type: integer
+          safety_threshold:
+            type: integer
+      completion_conditions:
+        type: list
+        item_type: string
+        min_items: 1
 
   debrief:
     type: object
     required:
-      - root_cause
-      - causal_chain
-      - key_lessons
+      - fault_summary
+      - correct_reasoning
+      - common_errors
+      - recovery
       - prevention
+      - engineering_lessons
     fields:
-      root_cause:
+      fault_summary:
         type: string
-      causal_chain:
+      correct_reasoning:
         type: list
-      key_lessons:
+        item_type: string
+        min_items: 1
+      common_errors:
         type: list
+        item_type: string
+      recovery:
+        type: list
+        item_type: string
+        min_items: 1
       prevention:
         type: list
-      notebook_links:
+        item_type: string
+      engineering_lessons:
         type: list
-      competencies_assessed:
+        item_type: string
+        min_items: 1
+
+  references:
+    type: object
+    required:
+      - notebook
+      - vendor_documentation
+      - standards
+    fields:
+      notebook:
         type: list
+        item_type: string
+      vendor_documentation:
+        type: list
+        item:
+          type: object
+          required:
+            - title
+            - reference
+            - verified
+          fields:
+            title:
+              type: string
+            reference:
+              type: string
+            verified:
+              type: boolean
+      standards:
+        type: list
+        item:
+          type: object
+          required:
+            - identifier
+            - title
+            - verified
+          fields:
+            identifier:
+              type: string
+            title:
+              type: string
+            verified:
+              type: boolean
+
+  web:
+    type: object
+    required:
+      - publication_status
+      - route
+      - cover_image
+      - tags
+      - featured
+    fields:
+      publication_status:
+        type: enum
+        values:
+          - draft
+          - technical_review
+          - approved
+          - published
+          - archived
+      route:
+        type: string
+      cover_image:
+        type: string
+      tags:
+        type: list
+        item_type: string
+      featured:
+        type: boolean
+
+  metadata:
+    type: object
+    required:
+      - created_at
+      - updated_at
+      - author
+      - reviewer
+      - technical_validation
+    fields:
+      created_at:
+        type: date
+        format: YYYY-MM-DD
+      updated_at:
+        type: date
+        format: YYYY-MM-DD
+      author:
+        type: string
+      reviewer:
+        type: string
+      technical_validation:
+        type: object
+        required:
+          - status
+          - reviewed_at
+          - evidence
+        fields:
+          status:
+            type: enum
+            values:
+              - pending
+              - pass
+              - pass_with_warnings
+              - blocked
+          reviewed_at:
+            type: date_or_null
+          evidence:
+            type: list
+            item_type: string
+
+cross_field_rules:
+  - rule: experience.status must equal web.publication_status
+  - rule: only published experiences may be visible in production
+  - rule: published requires metadata.technical_validation.status equal to pass
+  - rule: every stage decision reference must resolve to a decision with the same stage_id
+  - rule: every evidence reference must resolve
+  - rule: every non-terminal next_stage must resolve
+  - rule: every competency referenced by a learning objective must resolve
+  - rule: every critical_path decision must resolve
+  - rule: fault_model.uncertainties requiring review block technical validation pass
+  - rule: Markdown assets must not define structured values that contradict experience.yaml
+
+compatibility:
+  legacy_schema_version: 1.0.0
+  detection: Absence of the top-level experience object.
+  status: supported_for_existing_drafts_and_technical_review
+  publication_rule: Legacy experiences must be normalized to schema 2.0.0 before approval or publication.
+  preserved_identifier_pattern: "^EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}$"
+  legacy_status_mapping:
+    technical-review: technical_review
+    pedagogical-review: technical_review
+    deprecated: archived
+  legacy_field_mapping:
+    id: experience.id
+    title: experience.title
+    version: experience.version
+    status: experience.status
+    language: experience.language
+    classification.difficulty: experience.difficulty
+    classification.platform: classification.platform
+    classification.domain: classification.domain
+    classification.technology: classification.technologies
+    scenario.industry: classification.industry
+    scenario.machine: classification.machine_type
+    scenario.operational_state: scenario.operational_state
+    scenario.constraints: scenario.safety_context.intervention_constraints
+    fault_model.trigger: fault_model.initiating_event
+    fault_model.mechanism: fault_model.propagation_mechanism
+    fault_model.vulnerability: fault_model.vulnerabilities
+    fault_model.operational_effect: fault_model.consequences
+    fault_model.recovery_condition: fault_model.recovery_conditions
+    fault_model.prevention: fault_model.preventive_actions
+    fault_model.technical_uncertainty: fault_model.uncertainties
+    stages[].observations: stages[].available_evidence
+    stages[].decisions[]: decisions[]
+    debrief.root_cause: debrief.fault_summary
+    debrief.causal_chain: debrief.correct_reasoning
+    debrief.key_lessons: debrief.engineering_lessons
+    debrief.notebook_links: references.notebook
+  unmapped_required_fields:
+    - experience.slug
+    - experience.summary
+    - experience.estimated_duration
+    - learning_objectives
+    - evidence
+    - diagnostic_model
+    - evaluation
+    - references.vendor_documentation
+    - references.standards
+    - web
+    - metadata

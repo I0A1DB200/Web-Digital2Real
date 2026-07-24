@@ -5,6 +5,7 @@ import { createNavbar } from "./components/navbar.js";
 import { createNotebookCard } from "./components/notebookCard.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
+import { createLab001View } from "./products/academy/components/lab001View.js";
 
 const app = document.querySelector("#app");
 
@@ -33,6 +34,7 @@ if (!validViews.has("engineering-notes")) {
 let currentView = null;
 let activeArticleViewer = null;
 let revealObserver = null;
+let activeAcademyView = null;
 
 function getRequestedView() {
   let requestedView = window.location.hash.slice(1);
@@ -73,6 +75,7 @@ function renderView(view) {
 
   disconnectRevealObserver();
   closeArticle();
+  closeAcademyView();
 
   const main = document.createElement("main");
   main.className = "app-main";
@@ -144,30 +147,13 @@ function renderEngineeringNotesView() {
 }
 
 function renderAcademyView() {
-  const section = document.createElement("section");
-  section.className = "academy-view";
-  section.setAttribute("aria-labelledby", "academy-title");
+  activeAcademyView = createLab001View();
+  return activeAcademyView.element;
+}
 
-  section.innerHTML = `
-    <header class="academy-hero reveal">
-      <span class="section-kicker">${site.academy.eyebrow}</span>
-      <h1 id="academy-title">${site.academy.title}</h1>
-      <div class="academy-hero__copy">
-        <p>${site.academy.introduction}</p>
-        <p>${site.academy.objective}</p>
-      </div>
-    </header>
-
-    <ul class="academy-principles reveal">
-      ${site.academy.principles.map(principle => `
-        <li>${principle}</li>
-      `).join("")}
-    </ul>
-
-    <p class="academy-status reveal">${site.academy.status}</p>
-  `;
-
-  return section;
+function closeAcademyView() {
+  activeAcademyView?.destroy();
+  activeAcademyView = null;
 }
 
 function openArticle(article, opener) {

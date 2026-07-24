@@ -19,7 +19,9 @@
 - [x] **Completed:** Academy Implementation Package 2 — Simulation Clock and Controller
 - [x] **Completed:** Academy Implementation Package 3 — Machine Runtime
 - [x] **Completed:** Academy Implementation Package 4 — PLC Runtime
-- [ ] **In Progress:** Academy Implementation Package 5 — Validation Engine
+- [x] **Completed:** Academy Implementation Package 5 — Validation Engine
+- [x] **Completed:** Academy Implementation Package 6 — Lab 001 Headless Vertical Slice
+- [x] **Completed:** Academy Implementation Package 7 — Academy UI MVP
 - [ ] **Planned:** RFC-002 structural migration
 
 ## Architecture Status
@@ -48,6 +50,7 @@
 |---|---|
 | Completed | Notes-first frontend operational |
 | Completed | Engineering Notes, Academy, and About routes |
+| Completed | Interactive Academy Lab 001 experience |
 | Planned | Approved structural migration |
 
 ## Backend Status
@@ -68,8 +71,10 @@
 | Completed | Simulation Clock and Controller |
 | Completed | Deterministic Machine Runtime |
 | Completed | Deterministic PLC Runtime |
-| In Progress | Deterministic Validation Engine |
-| Planned | Remaining headless MVP implementation packages |
+| Completed | Deterministic Validation Engine |
+| Completed | Lab 001 Start/Stop Conveyor headless vertical slice |
+| Completed | Lab 001 editorial UI MVP |
+| Planned | Product Owner browser review |
 
 ## Engineering Notes Status
 
@@ -130,8 +135,6 @@
 
 ## Pending Product Decisions
 
-- [ ] **Blocked:** Exact Lab 001 timing profile
-- [ ] **Blocked:** Hidden Emergency test policy
 - [ ] **Blocked:** Labs retain, reactivate, archive, or retire
 - [ ] **Blocked:** Missing Labs media disposition
 - [ ] **Blocked:** Unreferenced asset ownership
@@ -145,7 +148,7 @@
 
 | Status | Milestone |
 |---|---|
-| In Progress | Complete Academy Implementation Package 5 review |
+| Planned | Product Owner browser review of Academy Lab 001 |
 
 ## Recent Changes
 
@@ -157,6 +160,8 @@
 - [x] **Completed:** Academy Simulation Clock and Controller
 - [x] **Completed:** Academy Machine Runtime
 - [x] **Completed:** Academy PLC Runtime
-- [ ] **In Progress:** Academy Validation Engine
+- [x] **Completed:** Academy Validation Engine
+- [x] **Completed:** Academy Lab 001 headless vertical slice
+- [x] **Completed:** Academy Lab 001 UI MVP
 
 ## Project Metrics

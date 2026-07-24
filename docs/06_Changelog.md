@@ -1,5 +1,38 @@
 # Changelog
 
+## Academy Implementation Package 7 — Academy UI MVP
+
+### Added
+
+- Added the editorial Lab 001 view with an accessible conveyor stage, learner commands, process state and validation objectives.
+- Added a scoped responsive Academy stylesheet consuming the existing brand token SSOT.
+- Added dependency-free UI projection and integration tests against the real Lab 001 Session.
+
+### Changed
+
+- Connected the existing Academy route directly to the interactive Lab 001 experience.
+- Added explicit Academy view teardown during route changes and registered the Academy stylesheet in the existing CSS entry point.
+
+### Confirmed
+
+- Package 6 remains the sole process-state authority; no Core Engine public API or business logic changed.
+- No framework, dependency, browser timing authority, persistence, backend service, generic Lab Loader or website redesign was introduced.
+- Engineering Notes, About and navbar behavior remain operational.
+
+## Academy Implementation Package 6 — Lab 001 Headless Vertical Slice
+
+### Added
+
+- Added the immutable Lab 001 Start/Stop Conveyor definition, Signals, PLC memory/mappings/Program, Machine configuration and Validation rules.
+- Added a narrowly scoped Lab 001 Session composing the Signal Registry, Clock, Controller, PLC, Machine and Validation public APIs.
+- Added deterministic learner commands, canonical tick orchestration, ordered learning evidence, aggregate snapshots, diagnostics and coordinated reset.
+- Added dependency-free end-to-end tests for ownership, mappings, Start/Stop seal-in, priorities, Emergency, Reset, Validation completion and replay.
+
+### Confirmed
+
+- Packages 1 through 5 public behavior remains unchanged and all regression tests continue to pass.
+- No generic Lab Loader, UI, routing, persistence, additional Lab, browser dependency or backend behavior was added.
+
 ## Academy Implementation Package 5 — Validation Engine
 
 ### Added

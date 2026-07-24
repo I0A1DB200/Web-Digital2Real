@@ -253,5 +253,69 @@ export const notebook = [
           "A scalable PLC program grows by adding well-defined device instances, not by multiplying networks. Structured data and reusable behaviour make corrections consistent, testing repeatable and diagnostics predictable. Complexity belongs inside carefully designed components—not across hundreds of copies."
       }
     ]
+  },
+  {
+    id: "article-003",
+    slug: "what-is-io-link",
+
+    kicker: "Industrial Communication",
+    title: "What is IO-Link?",
+    excerpt:
+      "Modern sensors can provide much more than a simple ON/OFF signal.",
+
+    coverImage: "./assets/images/notebook/article-003-io-link.png",
+    coverAlt:
+      "IO-Link master connected to intelligent industrial sensors and actuators.",
+
+    readingTime: 1,
+
+    categories: ["Industrial Communication"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "Modern sensors can provide much more than a simple ON/OFF signal."
+      },
+      {
+        type: "paragraph",
+        content:
+          "IO-Link is a standardized point-to-point communication protocol defined by IEC 61131-9. It enables intelligent sensors and actuators to exchange process data, diagnostics and parameters with a PLC through an IO-Link Master."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Unlike a fieldbus, IO-Link can use standard three-wire sensor cabling. Installation remains similar to a conventional digital sensor while providing additional information such as device status, signal quality and configuration data."
+      },
+      {
+        type: "heading",
+        title: "Why use IO-Link?"
+      },
+      {
+        type: "list",
+        items: [
+          "Faster device replacement through automatic parameter restoration.",
+          "Remote diagnostics and improved maintenance visibility.",
+          "Standard sensor wiring without additional network complexity.",
+          "Reduced commissioning and troubleshooting time."
+        ]
+      },
+      {
+        type: "heading",
+        title: "Architecture"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "PLC\n  |\nPROFINET\n  |\nIO-Link Master\n  |-- Photoelectric sensor\n  |-- Pressure sensor\n  |-- RFID reader\n  `-- Valve island"
+      },
+      {
+        type: "engineering-note",
+        title: "IO-Link is not a fieldbus",
+        content:
+          "The PLC communicates with the IO-Link Master through an industrial network such as PROFINET, EtherNet/IP or EtherCAT. The Master manages an independent point-to-point connection with each IO-Link device."
+      }
+    ]
   }
 ];

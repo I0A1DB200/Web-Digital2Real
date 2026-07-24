@@ -1,0 +1,647 @@
+experience:
+  id: EXP-SIEMENS-DRIVE-002
+  slug: drive-reset-after-emergency-stop
+  title: Drive reset after emergency stop
+  summary: Diagnose why an infeed conveyor does not restart after an emergency-stop release even though its run command remains active.
+  version: "2.0"
+  status: technical_review
+  language: en
+  difficulty: intermediate
+  estimated_duration: 35
+
+classification:
+  platform: Siemens S7-1500 with SINAMICS G120 and WinCC Unified
+  vendor: Siemens
+  domain: Industrial drive diagnostics
+  industry: Packaging
+  machine_type: Infeed Conveyor
+  technologies:
+    - PLC control
+    - Variable-speed drive
+    - HMI
+    - Machine safety
+
+competencies:
+  - id: COMP-DRIVE-DIAGNOSTICS
+    description: Interpret command, permission, readiness, and operating-state evidence without treating them as equivalent.
+    assessment: Selects evidence that distinguishes an active run command from an operationally enabled drive.
+  - id: COMP-STATE-INTERPRETATION
+    description: Correlate PLC, drive, safety, and physical machine states.
+    assessment: Builds a consistent diagnosis from independent status sources and field observation.
+  - id: COMP-SAFETY-AWARENESS
+    description: Preserve safe intervention and restart conditions during diagnosis.
+    assessment: Confirms the safety chain and authorization before reset or controlled movement.
+  - id: COMP-RESET-REASONING
+    description: Reason about restart and reset as controlled sequences rather than isolated commands.
+    assessment: Identifies an incomplete recovery sequence and applies an authorized reset only after prerequisites are confirmed.
+  - id: COMP-EVIDENCE-TROUBLESHOOTING
+    description: Isolate a fault through progressive, proportionate evidence.
+    assessment: Prioritizes observations and diagnostics that reduce uncertainty without destroying useful evidence.
+  - id: COMP-CONTROLLED-RECOVERY
+    description: Validate safe return to operation before production handover.
+    assessment: Separates first movement from complete functional and safety validation.
+
+learning_objectives:
+  - id: OBJ-COMMAND-ENABLE
+    description: Distinguish a PLC run command from safety permission, drive enablement, drive readiness, and motor movement.
+    competency_ids:
+      - COMP-DRIVE-DIAGNOSTICS
+      - COMP-STATE-INTERPRETATION
+  - id: OBJ-RESET-SEQUENCE
+    description: Diagnose an incomplete drive recovery sequence using progressive evidence.
+    competency_ids:
+      - COMP-RESET-REASONING
+      - COMP-EVIDENCE-TROUBLESHOOTING
+  - id: OBJ-SAFE-RECOVERY
+    description: Perform and validate a controlled recovery without bypassing safety controls.
+    competency_ids:
+      - COMP-SAFETY-AWARENESS
+      - COMP-CONTROLLED-RECOVERY
+
+scenario:
+  initial_context: An infeed conveyor was stopped by an emergency stop during packaging production. The emergency stop has been physically released, but the conveyor does not restart.
+  operational_state: The PLC run command is reported active, communication loss is not reported, and the motor remains stationary.
+  initiating_event: An emergency stop interrupted conveyor operation.
+  learner_role: Automation engineer responsible for evidence-based diagnosis and controlled recovery.
+  safety_context:
+    safe_state: The machine must remain in a controlled non-moving state until the safety chain, drive permission, and restart conditions are verified.
+    intervention_constraints:
+      - Do not bypass or defeat any safety function.
+      - Obtain authorization before issuing a reset or controlled movement command.
+      - Preserve diagnostic evidence before applying a reset.
+      - Keep personnel clear of hazardous movement during controlled testing.
+      - Release the machine only after safety and functional validation.
+    isolation_requirements:
+      - Apply the site's approved isolation procedure before any intervention that enters a hazardous area or exposes stored or electrical energy.
+  system_context:
+    process: Packaging infeed
+    controller: Siemens S7-1500
+    network: Industrial communication is present with no known loss
+    devices:
+      - SINAMICS G120 drive
+      - Infeed conveyor motor
+      - Machine safety system
+    hmi_scada: WinCC Unified
+  business_impact: Packaging infeed is unavailable until safe operation is restored and validated.
+
+fault_model:
+  initiating_event: An emergency stop removed the conditions required for conveyor operation.
+  failure: The drive remains operationally inhibited after the emergency stop is released because the required recovery and reset sequence has not been completed correctly.
+  propagation_mechanism:
+    - The emergency stop causes torque removal or operational inhibition of the drive.
+    - Physical release of the emergency stop does not by itself complete every restart prerequisite.
+    - The PLC run command remains active while drive permission or readiness remains incomplete.
+    - The drive does not produce commanded motor movement.
+  symptoms:
+    - The conveyor does not restart after emergency-stop release.
+    - The PLC run command is active.
+    - The motor remains stationary.
+    - No communication loss is known.
+  consequences:
+    - The packaging infeed remains stopped.
+    - Repeated start commands cannot restore operation while recovery prerequisites remain incomplete.
+    - An uncontrolled reset attempt could remove evidence or create unsafe movement risk.
+  vulnerabilities:
+    - Command, safety, enable, readiness, and movement states may be interpreted as one condition.
+    - The required recovery sequence may not be sufficiently visible to the operator or maintainer.
+  root_cause: The drive remains inhibited because the required recovery and reset sequence after the emergency stop has not been completed correctly.
+  recovery_conditions:
+    - Establish and preserve a safe machine state.
+    - Confirm physical emergency-stop release and the applicable safety-chain state.
+    - Confirm that functional drive permission and readiness prerequisites are satisfied.
+    - Perform the authorized reset according to the validated machine recovery procedure.
+    - Confirm that the drive reaches an operational state suitable for a controlled start.
+    - Execute a controlled start with the hazardous area clear.
+    - Validate expected stop, restart, and safety behavior before production handover.
+  preventive_actions:
+    - Document the approved recovery sequence clearly.
+    - Present run command, safety state, drive permission, drive readiness, and movement as distinct operational information.
+    - Use functional messages that do not conflate symptoms with root cause.
+    - Include controlled recovery checks in maintenance and operator procedures.
+  uncertainties:
+    - id: UNC-DIFFICULTY
+      statement: The Brief declares difficulty as unknown; the generated intermediate classification requires pedagogical confirmation.
+      verification_source: Digital2Real pedagogical review
+      review_required: true
+    - id: UNC-RESET-SEQUENCE
+      statement: The exact reset and recovery sequence for the installed machine and drive configuration is not supplied.
+      verification_source: Approved machine documentation and authoritative manufacturer documentation
+      review_required: true
+    - id: UNC-DRIVE-STATE
+      statement: Exact manufacturer-specific state names, indications, and diagnostics are intentionally not asserted.
+      verification_source: Authoritative documentation for the installed drive configuration
+      review_required: true
+
+stages:
+  - id: STAGE-01-INCIDENT
+    title: Stabilize the incident
+    situation: The emergency stop has been released, the conveyor is stationary, and a run command is reported active.
+    objective: Preserve safety and establish the initial evidence boundary.
+    available_evidence:
+      - EVID-01-OPERATOR-REPORT
+      - EVID-02-FIELD-OBSERVATION
+    decisions:
+      - DEC-01-CONFIRM-SAFE-STATE
+      - DEC-02-IMMEDIATE-RESTART
+  - id: STAGE-02-COMMAND
+    title: Separate command from execution
+    situation: The machine is controlled and safe for non-invasive status inspection.
+    objective: Determine whether command presence corresponds to physical execution.
+    available_evidence:
+      - EVID-01-OPERATOR-REPORT
+      - EVID-02-FIELD-OBSERVATION
+      - EVID-03-SAFETY-CONTEXT
+    decisions:
+      - DEC-03-CORRELATE-STATES
+      - DEC-04-REPEAT-START
+  - id: STAGE-03-DRIVE
+    title: Inspect drive operating state
+    situation: The run command is confirmed active while the motor remains stationary.
+    objective: Determine whether communication or drive operational readiness better explains the symptom.
+    available_evidence:
+      - EVID-04-COMMAND-STATE
+      - EVID-05-MOVEMENT-STATE
+    decisions:
+      - DEC-05-INSPECT-DRIVE-STATE
+      - DEC-06-FOCUS-COMMUNICATION
+  - id: STAGE-04-HYPOTHESIS
+    title: Test the recovery hypothesis
+    situation: Communication is present, but the drive is not confirmed ready for controlled operation.
+    objective: Establish whether an incomplete recovery sequence explains the state mismatch.
+    available_evidence:
+      - EVID-06-COMMUNICATION-STATE
+      - EVID-07-DRIVE-READINESS
+    decisions:
+      - DEC-07-REVIEW-RECOVERY
+      - DEC-08-TRY-THEN-REVIEW
+  - id: STAGE-05-RESET
+    title: Perform an authorized reset
+    situation: The available evidence supports an incomplete recovery sequence rather than loss of command or communication.
+    objective: Restore drive readiness without bypassing safety or losing control of the restart.
+    available_evidence:
+      - EVID-08-RECOVERY-GAP
+    decisions:
+      - DEC-09-AUTHORIZED-RESET
+      - DEC-10-INDISCRIMINATE-RESET
+  - id: STAGE-06-START
+    title: Execute a controlled start
+    situation: The authorized reset has completed and the drive is confirmed operationally ready for controlled movement.
+    objective: Confirm that readiness produces expected motor and conveyor movement.
+    available_evidence:
+      - EVID-09-RESET-RESULT
+      - EVID-10-OPERATIONAL-STATE
+    decisions:
+      - DEC-11-CONTROLLED-START
+      - DEC-12-RELEASE-IMMEDIATELY
+  - id: STAGE-07-VALIDATION
+    title: Validate recovery
+    situation: The conveyor has moved during a controlled test, but production release still requires complete validation.
+    objective: Confirm safe, repeatable behavior and document the recovery before handover.
+    available_evidence:
+      - EVID-11-MOVEMENT-RESTORED
+    decisions:
+      - DEC-13-FULL-VALIDATION
+      - DEC-14-MINIMAL-VALIDATION
+
+evidence:
+  - id: EVID-01-OPERATOR-REPORT
+    type: operator_report
+    source: Packaging operator
+    content: The conveyor stopped when the emergency stop was used and did not restart after the device was released.
+    interpretation: Establishes the event sequence but does not identify the failed prerequisite.
+    reliability: medium
+    revealed_by: []
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened: []
+  - id: EVID-02-FIELD-OBSERVATION
+    type: initial_observation
+    source: Field observation
+    content: The conveyor and motor are stationary.
+    interpretation: Confirms lack of movement without distinguishing control, safety, drive, or mechanical cause.
+    reliability: high
+    revealed_by: []
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+      - HYP-COMMUNICATION-LOSS
+      - HYP-MECHANICAL-BLOCKAGE
+    hypotheses_weakened: []
+  - id: EVID-03-SAFETY-CONTEXT
+    type: inspection
+    source: Machine safety status and approved operating procedure
+    content: The emergency-stop actuator is physically released and the machine is held in a controlled non-moving state for diagnosis; further reset and restart prerequisites still require verification.
+    interpretation: Physical release is necessary but is not proof that every functional recovery condition is complete.
+    reliability: high
+    revealed_by:
+      - DEC-01-CONFIRM-SAFE-STATE
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened: []
+  - id: EVID-04-COMMAND-STATE
+    type: diagnostic
+    source: PLC and HMI status inspection
+    content: The conveyor run command is active.
+    interpretation: Confirms command intent but not safety permission, drive readiness, or physical movement.
+    reliability: high
+    revealed_by:
+      - DEC-03-CORRELATE-STATES
+      - DEC-04-REPEAT-START
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-RUN-COMMAND-ABSENT
+  - id: EVID-05-MOVEMENT-STATE
+    type: inspection
+    source: Field observation
+    content: The motor remains stationary while the run command is active.
+    interpretation: Establishes a command-to-execution mismatch that requires drive, safety, and machine-state diagnosis.
+    reliability: confirmed
+    revealed_by:
+      - DEC-03-CORRELATE-STATES
+      - DEC-04-REPEAT-START
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+      - HYP-MECHANICAL-BLOCKAGE
+    hypotheses_weakened:
+      - HYP-RUN-COMMAND-ABSENT
+  - id: EVID-06-COMMUNICATION-STATE
+    type: diagnostic
+    source: PLC and drive communication status inspection
+    content: No communication loss is indicated between the control system and the drive.
+    interpretation: Makes communication loss an unlikely explanation for the missing movement.
+    reliability: high
+    revealed_by:
+      - DEC-05-INSPECT-DRIVE-STATE
+      - DEC-06-FOCUS-COMMUNICATION
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-COMMUNICATION-LOSS
+  - id: EVID-07-DRIVE-READINESS
+    type: diagnostic
+    source: Generic drive operating-state inspection
+    content: The drive is communicating but is not confirmed operationally enabled and ready to produce movement.
+    interpretation: Separates communication health from the operational permission required to act on the run command.
+    reliability: high
+    revealed_by:
+      - DEC-05-INSPECT-DRIVE-STATE
+      - DEC-06-FOCUS-COMMUNICATION
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-COMMUNICATION-LOSS
+  - id: EVID-08-RECOVERY-GAP
+    type: documentation
+    source: Comparison with the approved functional recovery procedure
+    content: The required recovery sequence has not been confirmed complete after emergency-stop release.
+    interpretation: Supports incomplete recovery as the cause of continued drive inhibition without asserting a proprietary reset sequence.
+    reliability: confirmed
+    revealed_by:
+      - DEC-07-REVIEW-RECOVERY
+      - DEC-08-TRY-THEN-REVIEW
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-COMMUNICATION-LOSS
+      - HYP-MECHANICAL-BLOCKAGE
+  - id: EVID-09-RESET-RESULT
+    type: functional_test
+    source: Authorized recovery action
+    content: The approved reset action completes without bypassing the safety chain.
+    interpretation: Corrects the identified recovery gap while preserving the required safety boundary.
+    reliability: confirmed
+    revealed_by:
+      - DEC-09-AUTHORIZED-RESET
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened: []
+  - id: EVID-10-OPERATIONAL-STATE
+    type: diagnostic
+    source: Post-reset drive-state inspection
+    content: The drive is now confirmed operationally ready for a controlled start.
+    interpretation: The state change after the approved reset confirms that incomplete recovery caused the previous inhibition.
+    reliability: confirmed
+    revealed_by:
+      - DEC-09-AUTHORIZED-RESET
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-MECHANICAL-BLOCKAGE
+  - id: EVID-11-MOVEMENT-RESTORED
+    type: functional_test
+    source: Controlled conveyor start
+    content: The motor and conveyor move as expected during the authorized controlled test.
+    interpretation: Confirms restored execution, but first movement alone is not sufficient for production handover.
+    reliability: confirmed
+    revealed_by:
+      - DEC-11-CONTROLLED-START
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-MECHANICAL-BLOCKAGE
+  - id: EVID-12-VALIDATION-RESULT
+    type: functional_test
+    source: Controlled stop, restart, and safety validation
+    content: Expected stop, authorized recovery, restart, and safety behavior are confirmed and the intervention is documented for handover.
+    interpretation: Satisfies the functional and safety evidence required for controlled production release.
+    reliability: confirmed
+    revealed_by:
+      - DEC-13-FULL-VALIDATION
+    hypotheses_strengthened:
+      - HYP-INCOMPLETE-RECOVERY
+    hypotheses_weakened:
+      - HYP-COMMUNICATION-LOSS
+      - HYP-MECHANICAL-BLOCKAGE
+
+decisions:
+  - id: DEC-01-CONFIRM-SAFE-STATE
+    stage_id: STAGE-01-INCIDENT
+    action: Confirm the controlled safe state, physical emergency-stop release, applicable safety status, and authorization boundaries before diagnosis.
+    rationale: Safety conditions and intervention limits must be established before reset or movement.
+    classification: strong
+    consequence: The diagnostic boundary is established without bypassing safety or destroying evidence.
+    evidence_revealed:
+      - EVID-03-SAFETY-CONTEXT
+    next_stage: STAGE-02-COMMAND
+    score_effect: 10
+    safety_effect: 15
+    time_cost: 3
+  - id: DEC-02-IMMEDIATE-RESTART
+    stage_id: STAGE-01-INCIDENT
+    action: Attempt an immediate restart without confirming the safety chain or clearing the hazardous area.
+    rationale: This prioritizes production speed over required restart controls.
+    classification: unsafe
+    consequence: The action is blocked because safe restart prerequisites and authorization are not established.
+    evidence_revealed: []
+    next_stage: BLOCKED
+    score_effect: -25
+    safety_effect: -40
+    time_cost: 1
+  - id: DEC-03-CORRELATE-STATES
+    stage_id: STAGE-02-COMMAND
+    action: Correlate the PLC run command, HMI indication, and physical motor movement.
+    rationale: Independent command and field evidence distinguishes requested operation from executed operation.
+    classification: strong
+    consequence: The command-to-execution mismatch is confirmed without changing machine state.
+    evidence_revealed:
+      - EVID-04-COMMAND-STATE
+      - EVID-05-MOVEMENT-STATE
+    next_stage: STAGE-03-DRIVE
+    score_effect: 10
+    safety_effect: 5
+    time_cost: 3
+  - id: DEC-04-REPEAT-START
+    stage_id: STAGE-02-COMMAND
+    action: Repeat the start command before comparing command and movement states.
+    rationale: Repetition is plausible but does not test why the existing command is not producing movement.
+    classification: weak
+    consequence: No movement occurs; subsequent status comparison reveals the same mismatch after unnecessary delay.
+    evidence_revealed:
+      - EVID-04-COMMAND-STATE
+      - EVID-05-MOVEMENT-STATE
+    next_stage: STAGE-03-DRIVE
+    score_effect: -5
+    safety_effect: -2
+    time_cost: 4
+  - id: DEC-05-INSPECT-DRIVE-STATE
+    stage_id: STAGE-03-DRIVE
+    action: Inspect communication health and the drive's generic operational permission and readiness states.
+    rationale: A healthy connection and an operationally ready drive are separate conditions.
+    classification: strong
+    consequence: Communication remains present while incomplete drive readiness becomes the leading diagnostic direction.
+    evidence_revealed:
+      - EVID-06-COMMUNICATION-STATE
+      - EVID-07-DRIVE-READINESS
+    next_stage: STAGE-04-HYPOTHESIS
+    score_effect: 10
+    safety_effect: 5
+    time_cost: 4
+  - id: DEC-06-FOCUS-COMMUNICATION
+    stage_id: STAGE-03-DRIVE
+    action: Prioritize a communication-loss investigation despite the absence of a reported communication fault.
+    rationale: Communication failure could prevent control, but current evidence does not make it the best first hypothesis.
+    classification: acceptable
+    consequence: Inspection confirms communication is present and redirects attention to drive readiness after avoidable delay.
+    evidence_revealed:
+      - EVID-06-COMMUNICATION-STATE
+      - EVID-07-DRIVE-READINESS
+    next_stage: STAGE-04-HYPOTHESIS
+    score_effect: 0
+    safety_effect: 0
+    time_cost: 7
+  - id: DEC-07-REVIEW-RECOVERY
+    stage_id: STAGE-04-HYPOTHESIS
+    action: Compare the observed safety and drive states with the approved functional recovery procedure.
+    rationale: The comparison tests whether required recovery prerequisites remain incomplete.
+    classification: strong
+    consequence: The incomplete recovery sequence is identified without asserting undocumented manufacturer-specific behavior.
+    evidence_revealed:
+      - EVID-08-RECOVERY-GAP
+    next_stage: STAGE-05-RESET
+    score_effect: 15
+    safety_effect: 10
+    time_cost: 5
+  - id: DEC-08-TRY-THEN-REVIEW
+    stage_id: STAGE-04-HYPOTHESIS
+    action: Try another controlled start, then review the recovery procedure when movement still does not occur.
+    rationale: The action remains controlled but tests a command already known to be active before checking prerequisites.
+    classification: weak
+    consequence: The repeated attempt does not restore movement; procedure comparison then exposes the recovery gap.
+    evidence_revealed:
+      - EVID-08-RECOVERY-GAP
+    next_stage: STAGE-05-RESET
+    score_effect: -5
+    safety_effect: 0
+    time_cost: 7
+  - id: DEC-09-AUTHORIZED-RESET
+    stage_id: STAGE-05-RESET
+    action: With safety and permission prerequisites confirmed, perform the authorized reset defined by the approved machine procedure and inspect the resulting drive state.
+    rationale: The action corrects the evidenced recovery gap while keeping reset and restart as separate controlled steps.
+    classification: strong
+    consequence: The reset completes and the drive changes to an operationally ready state.
+    evidence_revealed:
+      - EVID-09-RESET-RESULT
+      - EVID-10-OPERATIONAL-STATE
+    next_stage: STAGE-06-START
+    score_effect: 15
+    safety_effect: 15
+    time_cost: 5
+  - id: DEC-10-INDISCRIMINATE-RESET
+    stage_id: STAGE-05-RESET
+    action: Issue repeated resets without confirming prerequisites or preserving the diagnostic state.
+    rationale: An indiscriminate reset may obscure evidence and cannot substitute for a controlled recovery sequence.
+    classification: unsafe
+    consequence: The action is blocked because authorization, prerequisites, and controlled restart conditions are not preserved.
+    evidence_revealed: []
+    next_stage: BLOCKED
+    score_effect: -25
+    safety_effect: -35
+    time_cost: 2
+  - id: DEC-11-CONTROLLED-START
+    stage_id: STAGE-06-START
+    action: Clear the hazardous area and execute an authorized controlled start while observing drive and machine response.
+    rationale: Controlled movement verifies that restored readiness now produces the intended physical result.
+    classification: strong
+    consequence: The motor and conveyor move as expected, allowing complete recovery validation to begin.
+    evidence_revealed:
+      - EVID-11-MOVEMENT-RESTORED
+    next_stage: STAGE-07-VALIDATION
+    score_effect: 10
+    safety_effect: 15
+    time_cost: 4
+  - id: DEC-12-RELEASE-IMMEDIATELY
+    stage_id: STAGE-06-START
+    action: Release the conveyor to production as soon as the drive reports ready, without a controlled movement test.
+    rationale: Drive readiness is not proof of safe, correct, and repeatable machine operation.
+    classification: unsafe
+    consequence: Production release is blocked because physical function and safety behavior have not been validated.
+    evidence_revealed: []
+    next_stage: BLOCKED
+    score_effect: -20
+    safety_effect: -30
+    time_cost: 1
+  - id: DEC-13-FULL-VALIDATION
+    stage_id: STAGE-07-VALIDATION
+    action: Validate controlled stop, authorized recovery, restart, safety behavior, and documentation before production handover.
+    rationale: Recovery is complete only when operation is safe, repeatable, and documented.
+    classification: strong
+    consequence: The recovery is validated and the experience completes with evidence suitable for controlled handover.
+    evidence_revealed:
+      - EVID-12-VALIDATION-RESULT
+    next_stage: COMPLETE
+    score_effect: 20
+    safety_effect: 20
+    time_cost: 7
+  - id: DEC-14-MINIMAL-VALIDATION
+    stage_id: STAGE-07-VALIDATION
+    action: End the intervention after observing one successful movement and record only that the conveyor restarted.
+    rationale: First movement demonstrates partial recovery but not repeatability, safety validation, or complete handover.
+    classification: weak
+    consequence: The session terminates with warnings because recovery evidence and handover quality remain incomplete.
+    evidence_revealed: []
+    next_stage: COMPLETE
+    score_effect: -10
+    safety_effect: -10
+    time_cost: 2
+
+diagnostic_model:
+  hypotheses:
+    - id: HYP-INCOMPLETE-RECOVERY
+      statement: The drive remains inhibited because the post-emergency-stop recovery and reset sequence is incomplete.
+      initial_status: likely
+    - id: HYP-RUN-COMMAND-ABSENT
+      statement: The conveyor does not move because no run command reaches the control logic.
+      initial_status: unlikely
+    - id: HYP-COMMUNICATION-LOSS
+      statement: Communication loss prevents the drive from receiving or reporting control state.
+      initial_status: unlikely
+    - id: HYP-MECHANICAL-BLOCKAGE
+      statement: A mechanical blockage prevents movement despite an operational drive.
+      initial_status: possible
+  confirmed_root_cause: HYP-INCOMPLETE-RECOVERY
+  rejected_hypotheses:
+    - HYP-RUN-COMMAND-ABSENT
+    - HYP-COMMUNICATION-LOSS
+    - HYP-MECHANICAL-BLOCKAGE
+  critical_path:
+    - DEC-01-CONFIRM-SAFE-STATE
+    - DEC-03-CORRELATE-STATES
+    - DEC-05-INSPECT-DRIVE-STATE
+    - DEC-07-REVIEW-RECOVERY
+    - DEC-09-AUTHORIZED-RESET
+    - DEC-11-CONTROLLED-START
+    - DEC-13-FULL-VALIDATION
+
+evaluation:
+  dimensions:
+    - id: EVAL-DIAGNOSTIC
+      description: Diagnostic reasoning and hypothesis quality
+      weight: 0.25
+    - id: EVAL-EVIDENCE
+      description: Proportionate use and interpretation of evidence
+      weight: 0.20
+    - id: EVAL-SAFETY
+      description: Preservation of safe intervention and restart controls
+      weight: 0.30
+    - id: EVAL-ISOLATION
+      description: Separation of command, communication, readiness, and movement
+      weight: 0.15
+    - id: EVAL-RECOVERY
+      description: Completeness of recovery, validation, and handover
+      weight: 0.10
+  scoring:
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 40
+  completion_conditions:
+    - Successful completion requires the complete critical path or equivalent evidence, confirmed root cause, authorized reset, controlled start, full validation, and safety score at or above the threshold.
+    - Completion with warnings may follow a valid terminal transition when movement is restored but validation or handover evidence remains incomplete.
+    - An unsafe action that violates a safety gate terminates at BLOCKED and cannot satisfy completion.
+
+debrief:
+  fault_summary: The run command remained active, but the drive stayed operationally inhibited because the required recovery and reset sequence after emergency-stop release was incomplete.
+  correct_reasoning:
+    - Treat command intent, safety permission, drive enablement, drive readiness, and motor movement as separate states.
+    - Preserve a controlled safe state before collecting non-invasive command and status evidence.
+    - Use communication and drive-state evidence to reject unsupported communication-loss assumptions.
+    - Compare the observed state with the approved recovery procedure before applying a reset.
+    - Separate authorized reset, controlled restart, validation, and handover.
+  common_errors:
+    - Assuming an active run command guarantees motor movement.
+    - Treating physical emergency-stop release as proof that all recovery conditions are complete.
+    - Investigating communication despite contrary evidence.
+    - Repeating start or reset commands without a hypothesis.
+    - Ending diagnosis after the first successful movement.
+  recovery:
+    - Establish the safe state and intervention authorization.
+    - Confirm emergency-stop release and applicable safety-chain conditions.
+    - Confirm functional permission and drive readiness prerequisites.
+    - Execute the approved authorized reset.
+    - Confirm the drive is operationally ready.
+    - Perform a controlled start with the hazardous area clear.
+    - Validate stop, restart, and safety behavior before documented handover.
+  prevention:
+    - Make the approved recovery sequence explicit in operating and maintenance documentation.
+    - Present command, safety, enablement, readiness, and movement as separate status concepts.
+    - Train operators and maintainers to preserve evidence before reset.
+  engineering_lessons:
+    - A command is intent; movement requires every downstream permission and operating condition.
+    - Reset is a controlled diagnostic and recovery action, not a universal cure.
+    - Evidence from control, safety, drive, and field layers must form one causal explanation.
+    - Safe recovery includes repeatable functional validation and production handover.
+
+references:
+  notebook:
+    - "Proposed topic: PROFINET drive diagnostics"
+    - "Proposed topic: SINAMICS operating states"
+    - "Proposed topic: Machine restart philosophy"
+    - "Proposed topic: Functional safety reset principles"
+    - "Proposed topic: PLC-drive command and status separation"
+  vendor_documentation: []
+  standards: []
+
+web:
+  publication_status: technical_review
+  route: /experiences/drive-reset-after-emergency-stop
+  cover_image: "none"
+  tags:
+    - drive diagnostics
+    - emergency stop
+    - controlled recovery
+    - packaging
+  featured: false
+
+metadata:
+  created_at: 2026-07-24
+  updated_at: 2026-07-24
+  author: Digital2Real Experience Engine
+  reviewer: Pending assignment
+  technical_validation:
+    status: pass_with_warnings
+    reviewed_at: null
+    evidence:
+      - "Generation source: experience-engine/briefs/EE-0002-drive-reset.yaml (Brief ID EE-0002)"
+      - "Validation target: PASS_WITH_WARNINGS pending human technical review"
+      - "Manufacturer-specific reset sequence and drive-state terminology require authoritative verification"
+      - "Intermediate difficulty classification requires pedagogical confirmation"

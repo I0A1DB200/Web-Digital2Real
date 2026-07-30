@@ -9,7 +9,7 @@ import {
 } from "../yamlExperienceAdapter.js";
 
 const realExperiencePath = new URL(
-  "../../experiences/siemens/EE-0002-drive-reset/experience.yaml",
+  "../../../content/experiences/siemens/EE-0002-drive-reset/experience.yaml",
   import.meta.url
 );
 

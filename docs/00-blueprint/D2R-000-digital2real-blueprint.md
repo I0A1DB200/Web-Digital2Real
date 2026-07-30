@@ -119,7 +119,7 @@ A lower-level document MUST NOT redefine a concept owned by a higher-level autho
 | Experience design requirements | D2R-003 plus Experience Engine contracts |
 | Assessment requirements | D2R-004 |
 | Profile, certification, and analytics models | D2R-005–D2R-007 |
-| Experience structured content | Canonical `experience.yaml` under `experience-engine/experiences/` |
+| Experience structured content | Canonical `experience.yaml` under `content/experiences/` |
 | Experience runtime behavior | `experience-engine/player/` |
 | Public presentation | Frontend presentation components |
 

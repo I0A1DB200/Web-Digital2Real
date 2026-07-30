@@ -107,7 +107,7 @@ OUTPUT
 
 Create exactly one directory:
 
-experience-engine/experiences/<vendor-or-platform>/<experience-slug>/
+content/experiences/<vendor-or-platform>/<experience-slug>/
 
 Create exactly these files inside it:
 

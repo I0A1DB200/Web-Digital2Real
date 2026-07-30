@@ -43,16 +43,8 @@ experience-engine/
 │   └── experience-validation-rules.md
 ├── integration/
 │   └── web-integration-contract.md
-├── templates/
-│   └── experience-template.md
-└── experiences/
-    └── siemens/
-        └── exp-sie-pn-001-cpu-stop-after-power-loss/
-            ├── README.md
-            ├── experience.yaml
-            ├── fault-model.md
-            ├── decision-tree.md
-            └── debrief.md
+└── templates/
+    └── experience-template.md
 ```
 
 ## Core rule
@@ -116,7 +108,7 @@ Folder names use lowercase kebab-case.
 
 An Experience Brief is the structured source of truth for the engineer's original input.
 
-The authoritative structured representation of an experience is `experience.yaml`, governed by `schemas/experience-schema.yaml`.
+The authoritative structured representation of an experience is `experience.yaml` under `content/experiences/`, governed by `schemas/experience-schema.yaml`.
 
 The Markdown files provide human-readable explanations and design rationale. They must remain consistent with the YAML source.
 
@@ -124,7 +116,7 @@ Existing schema 1.0 experiences remain supported for Draft and technical review.
 
 ## Browser packaging
 
-`experience-engine/` remains the authoring and runtime source of truth. The static frontend consumes generated, disposable browser artifacts.
+`content/experiences/` is the authoring source of truth. `experience-engine/` owns processing and runtime behavior. The static frontend consumes generated, disposable browser artifacts.
 
 Create a local review package:
 

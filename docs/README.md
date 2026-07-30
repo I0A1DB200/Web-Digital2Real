@@ -40,7 +40,7 @@ This directory contains current project documentation and the governed architect
 
 ## Product and engine sources
 
-- Notebook content is owned by `Frontend/data/notebook.js` under the current repository architecture.
+- Notebook content is owned by `content/notebooks/notebook.js`. The Frontend consumes only its generated publication artifact.
 - Experience Engine documentation and canonical Experiences are owned by [`experience-engine/`](../experience-engine/README.md).
 - The Headless Player contract is owned by [`experience-engine/player/`](../experience-engine/player/README.md).
 - Generated frontend artifacts are derived outputs and are not documentation authorities.
@@ -48,3 +48,5 @@ This directory contains current project documentation and the governed architect
 ## Legacy and historical documents
 
 Earlier numbered documents, RFCs, specifications, implementation reports, and changelogs remain available for history and their bounded responsibilities. A `Superseded by` header identifies documents whose active responsibility moved into this baseline. Historical statements MUST NOT override a current canonical document.
+
+The legacy [`05_Roadmap.md`](05_Roadmap.md) is retained for history only. Current delivery state belongs exclusively to [`PROJECT_STATUS.md`](PROJECT_STATUS.md).

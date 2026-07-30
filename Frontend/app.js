@@ -1,8 +1,8 @@
 import { site } from "./data/site.js";
-import { notebook } from "./data/notebook.js";
+import { notebook } from "./generated/notebooks/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
-import { createNotebookCard } from "./components/notebookCard.js";
+import { createNotebookCard } from "./products/notebook/components/notebookCard.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";

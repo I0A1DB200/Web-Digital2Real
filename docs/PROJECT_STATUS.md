@@ -4,100 +4,88 @@
 
 | Status | Value |
 |---|---|
-| Completed | v2.0.2 documented baseline |
+| Completed | v2.0.2 implementation baseline |
+| Completed | D2R architecture baseline v1 |
 
 ## Current Phase
 
 | Status | Value |
 |---|---|
-| In Progress | Digital2Real Academy MVP implementation |
+| In Progress | Repository physical migration |
 
 ## Current Sprint
 
-- [x] **Completed:** SPRINT-001 Repository Foundation
-- [x] **Completed:** Academy Implementation Package 1 — Core Contracts and Signal Registry
-- [x] **Completed:** Academy Implementation Package 2 — Simulation Clock and Controller
-- [x] **Completed:** Academy Implementation Package 3 — Machine Runtime
-- [x] **Completed:** Academy Implementation Package 4 — PLC Runtime
-- [x] **Completed:** Academy Implementation Package 5 — Validation Engine
-- [x] **Completed:** Academy Implementation Package 6 — Lab 001 Headless Vertical Slice
-- [x] **Completed:** Academy Implementation Package 7 — Academy UI MVP
-- [ ] **Planned:** RFC-002 structural migration
+- [x] **Completed:** Repository architecture audit
+- [x] **Completed:** Remove tracked browser-validation profiles
+- [x] **Completed:** Remove tracked temporary validation screenshots
+- [ ] **In Progress:** Reconcile live documentation with D2R-000
+- [ ] **Planned:** Establish physical Notebook and Experience Lab boundaries
 
 ## Architecture Status
 
 | Status | Item |
 |---|---|
-| Completed | RFC-001 target architecture approved |
-| Completed | Academy SPEC-001 through SPEC-005 approved |
-| Completed | Academy MVP Architecture Review approved |
-| Planned | Evolutionary product and shared-engine boundaries |
+| Completed | D2R-000 Digital2Real Blueprint |
+| Completed | D2R-001 Industrial Capability Framework |
+| Completed | D2R-002 through D2R-008 Standards and Governance |
+| Completed | Experience Engine 2.0 authoring, adapter, Player and packaging boundaries |
+| Planned | Physical repository alignment with the approved two-product model |
 
 ## Repository Status
 
 | Status | Item |
 |---|---|
-| Completed | Repository hygiene baseline |
-| Completed | RFC-002 migration ledger |
-| Completed | Dependency-free validation baseline |
-| Completed | Notes-first documentation reconciliation |
-| Planned | RFC-002 structural migration |
+| Completed | Architecture, dependency, asset and documentation audit |
+| Completed | Browser-validation artifacts removed from the working tree |
+| In Progress | Documentation reconciliation |
+| Planned | Product-boundary migration |
 | Blocked | None |
 
 ## Frontend Status
 
 | Status | Item |
 |---|---|
-| Completed | Notes-first frontend operational |
-| Completed | Engineering Notes, Academy, and About routes |
-| Completed | Interactive Academy Lab 001 experience |
-| Planned | Approved structural migration |
+| Completed | Static vanilla JavaScript ES Modules application |
+| Completed | Notebook, Experience Lab and About views |
+| Completed | Experience Workspace consumes generated Player artifacts |
+| Planned | Rename the physical Experience Lab presentation boundary |
+| Planned | Consolidate Notebook-owned files |
 
 ## Backend Status
 
 | Status | Item |
 |---|---|
-| Completed | Prototype identified and isolated |
-| Planned | Product Owner disposition |
-| Blocked | Production role not approved |
+| Completed | Disconnected FastAPI prototype identified |
+| Blocked | Retention and production role require a repository decision |
 
 ## Academy Status
 
 | Status | Item |
 |---|---|
-| Completed | Informational frontend view |
-| Completed | Domain specifications and MVP architecture review |
-| Completed | Core signal contracts and Signal Registry |
-| Completed | Simulation Clock and Controller |
-| Completed | Deterministic Machine Runtime |
-| Completed | Deterministic PLC Runtime |
-| Completed | Deterministic Validation Engine |
-| Completed | Lab 001 Start/Stop Conveyor headless vertical slice |
-| Completed | Lab 001 editorial UI MVP |
-| Planned | Product Owner browser review |
+| Completed | Historical runtime packages and Lab 001 preserved |
+| Planned | Evaluate migration, archival or deprecation |
+| Blocked | Academy is not an active Digital2Real product under D2R-000 |
 
 ## Engineering Notes Status
 
 | Status | Item |
 |---|---|
-| Completed | Active product experience |
-| Completed | Structured article content and viewer |
-| Planned | Dedicated product boundary |
+| Completed | Notebook content and article viewer operational |
+| Planned | Consolidate under the Notebook product boundary |
 
 ## Labs Status
 
 | Status | Item |
 |---|---|
-| Completed | Existing data and components audited |
-| Planned | Preserve as inactive bounded product |
-| Blocked | Product disposition and missing media decisions |
+| Completed | Disconnected gallery data, components and styles identified |
+| Planned | Isolate as legacy without activating it |
+| Blocked | Missing media and final disposition require a repository decision |
 
 ## Assistant Status
 
 | Status | Item |
 |---|---|
-| Planned | Product definition |
-| Blocked | Scope and requirements not approved |
+| Blocked | Assistant is not an approved Digital2Real product |
 
 ## Completed RFCs
 
@@ -105,13 +93,13 @@
 
 ## Pending RFCs
 
-- [ ] **In Progress:** RFC-002 Repository Refactor — foundation complete, structural migration not started
-- [ ] **Blocked:** Backend RFC pending product requirement
-- [ ] **Blocked:** Assistant RFC pending product definition
+- [ ] **In Progress:** RFC-002 Repository Refactor
+- [ ] **Blocked:** Backend disposition decision
+- [ ] **Blocked:** Legacy Academy runtime disposition decision
 
 ## Completed User Stories
 
-- [x] **Completed:** No formally tracked User Stories identified
+- [x] **Completed:** Experience Workspace vertical slice for `EXP-SIEMENS-DRIVE-002`
 
 ## Current User Stories
 
@@ -119,49 +107,41 @@
 
 ## Technical Debt
 
-- [ ] **Planned:** Reduce `app.js` responsibilities
-- [ ] **Planned:** Establish product and shared boundaries
-- [ ] **Planned:** Correct CSS token violations
-- [ ] **Planned:** Reconcile responsive CSS ownership
-- [ ] **Planned:** Expand automated testing across remaining Academy runtime packages
-- [ ] **Planned:** Establish CI and architectural enforcement
-- [ ] **Planned:** Declare backend dependencies if retained
+- [ ] **Planned:** Consolidate Notebook ownership
+- [ ] **Planned:** Rename Experience Lab presentation boundary
+- [ ] **Planned:** Isolate disconnected Labs code and CSS
+- [ ] **Planned:** Decide ownership of the legacy Academy runtimes
+- [ ] **Planned:** Implement executable full-schema validation before packaging
+- [ ] **Planned:** Declare Backend dependencies if retained
+- [ ] **Planned:** Establish CI and architecture enforcement
 
 ## Known Issues
 
-- [ ] **Blocked:** Three Labs video references are missing
+- [ ] **Blocked:** Three legacy Labs video references are missing
 - [ ] **Planned:** Inactive Labs CSS remains globally imported
-- [ ] **Planned:** Asset naming and ownership are inconsistent
+- [ ] **Planned:** Unused and duplicated assets require ownership decisions
+- [ ] **Planned:** One legacy Experience remains outside the canonical 2.0 schema
 
 ## Pending Product Decisions
 
-- [ ] **Blocked:** Labs retain, reactivate, archive, or retire
-- [ ] **Blocked:** Missing Labs media disposition
-- [ ] **Blocked:** Unreferenced asset ownership
-- [ ] **Blocked:** Validation screenshot retention
+- [ ] **Blocked:** Legacy Academy runtime migration, archival or deprecation
+- [ ] **Blocked:** Legacy Labs gallery disposition
 - [ ] **Blocked:** Backend prototype disposition
-- [ ] **Blocked:** Assistant scope
-- [ ] **Blocked:** Notebook naming
-- [ ] **Blocked:** Academy long-term deployment model
+- [ ] **Blocked:** Unreferenced and duplicated asset disposition
+- [ ] **Blocked:** Experience schema 1.0 migration
 
 ## Next Milestone
 
 | Status | Milestone |
 |---|---|
-| Planned | Product Owner browser review of Academy Lab 001 |
+| Planned | Establish the physical Notebook and Experience Lab product boundaries |
 
 ## Recent Changes
 
-- [x] **Completed:** Repository architecture audit and RFC-001 approval
-- [x] **Completed:** SPRINT-001 Repository Foundation
-- [x] **Completed:** Academy SPEC-001 through SPEC-005
-- [x] **Completed:** Academy MVP Architecture Review
-- [x] **Completed:** Academy Core Contracts and Signal Registry
-- [x] **Completed:** Academy Simulation Clock and Controller
-- [x] **Completed:** Academy Machine Runtime
-- [x] **Completed:** Academy PLC Runtime
-- [x] **Completed:** Academy Validation Engine
-- [x] **Completed:** Academy Lab 001 headless vertical slice
-- [x] **Completed:** Academy Lab 001 UI MVP
+- [x] **Completed:** D2R-000 through D2R-008 documentation baseline
+- [x] **Completed:** Experience Engine YAML Adapter, Headless Player and deterministic packaging
+- [x] **Completed:** Experience Workspace vertical slice
+- [x] **Completed:** Full physical repository audit
+- [x] **Completed:** Removal of tracked local browser profiles and validation screenshots
 
 ## Project Metrics

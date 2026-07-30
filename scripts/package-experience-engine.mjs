@@ -35,7 +35,8 @@ export async function packageExperienceEngine({
 
   const playerSource = path.join(sourceRoot, "player", "experiencePlayer.js");
   await access(playerSource);
-  const experienceFiles = await findExperienceFiles(path.join(sourceRoot, "experiences"));
+  const experienceRoot = path.join(root, "content", "experiences");
+  const experienceFiles = await findExperienceFiles(experienceRoot);
   const candidates = [];
   const skipped = [];
   const identifiers = new Set();
@@ -48,16 +49,17 @@ export async function packageExperienceEngine({
     }
 
     validateCanonicalCandidate(model);
+    if (identifiers.has(model.experience.id)) {
+      throw new Error(`Duplicate experience identifier: ${model.experience.id}.`);
+    }
+    identifiers.add(model.experience.id);
+
     if (!eligible(model, mode)) {
       skipped.push({ file: relative(root, file), reason: "publication_state" });
       continue;
     }
-    if (identifiers.has(model.experience.id)) {
-      throw new Error(`Duplicate experience identifier: ${model.experience.id}.`);
-    }
 
     new ExperiencePlayer({ experience: model });
-    identifiers.add(model.experience.id);
     candidates.push(model);
   }
 

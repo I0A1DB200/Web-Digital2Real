@@ -16,29 +16,96 @@ import { packageExperienceEngine } from "../package-experience-engine.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url);
 const playerSource = new URL("../../experience-engine/player/experiencePlayer.js", import.meta.url);
-const experienceSource = new URL(
-  "../../experience-engine/experiences/siemens/EE-0002-drive-reset/experience.yaml",
+const canonicalExperienceSource = new URL(
+  "../../content/experiences/siemens/EE-0002-drive-reset/experience.yaml",
   import.meta.url
 );
 
-async function createRepository({ published = false } = {}) {
+async function readRepositoryExperience() {
+  return readFile(canonicalExperienceSource, "utf8");
+}
+
+async function createRepository({ published = false, includeExperiences = true } = {}) {
   const root = await mkdtemp(path.join(os.tmpdir(), "d2r-package-"));
   const playerDirectory = path.join(root, "experience-engine", "player");
-  const experienceDirectory = path.join(root, "experience-engine", "experiences", "vendor", "experience");
+  const experienceDirectory = path.join(
+    root,
+    "content",
+    "experiences",
+    "vendor",
+    "experience"
+  );
   await mkdir(playerDirectory, { recursive: true });
-  await mkdir(experienceDirectory, { recursive: true });
   await mkdir(path.join(root, "Frontend"), { recursive: true });
   await cp(playerSource, path.join(playerDirectory, "experiencePlayer.js"));
 
-  let yaml = await readFile(experienceSource, "utf8");
-  if (published) {
-    yaml = yaml
-      .replaceAll("status: technical_review", "status: published")
-      .replace("status: pass_with_warnings", "status: pass");
+  if (includeExperiences) {
+    await mkdir(experienceDirectory, { recursive: true });
+    let yaml = await readRepositoryExperience();
+    if (published) {
+      yaml = yaml
+        .replaceAll("status: technical_review", "status: published")
+        .replace("status: pass_with_warnings", "status: pass");
+    }
+    await writeFile(path.join(experienceDirectory, "experience.yaml"), yaml, "utf8");
   }
-  await writeFile(path.join(experienceDirectory, "experience.yaml"), yaml, "utf8");
   return root;
 }
+
+test("packages the canonical content experience source", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+
+  const result = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+
+  assert.deepEqual(result.packaged, ["EXP-SIEMENS-DRIVE-002"]);
+});
+
+test("rejects duplicate identifiers within the canonical source", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const duplicateDirectory = path.join(
+    root,
+    "content",
+    "experiences",
+    "vendor",
+    "duplicate"
+  );
+  await mkdir(duplicateDirectory, { recursive: true });
+  await writeFile(
+    path.join(duplicateDirectory, "experience.yaml"),
+    await readRepositoryExperience(),
+    "utf8"
+  );
+
+  await assert.rejects(
+    () => packageExperienceEngine({ repositoryRoot: root, mode: "preview" }),
+    /Duplicate experience identifier: EXP-SIEMENS-DRIVE-002/
+  );
+});
+
+test("fails when the canonical experience root is missing without using a legacy fallback", async t => {
+  const root = await createRepository({ includeExperiences: false });
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const legacyDirectory = path.join(
+    root,
+    "experience-engine",
+    "experiences",
+    "vendor",
+    "experience"
+  );
+  await mkdir(legacyDirectory, { recursive: true });
+  await writeFile(
+    path.join(legacyDirectory, "experience.yaml"),
+    await readRepositoryExperience(),
+    "utf8"
+  );
+
+  await assert.rejects(
+    () => packageExperienceEngine({ repositoryRoot: root, mode: "preview" }),
+    error => error.code === "ENOENT"
+  );
+});
 
 test("preview packages review content and browser runtime deterministically", async t => {
   const root = await createRepository();
@@ -91,7 +158,7 @@ test("validation failure preserves the previous generated package", async t => {
   const sentinel = path.join(target, "preserved.txt");
   await writeFile(sentinel, "preserved", "utf8");
   await writeFile(
-    path.join(root, "experience-engine", "experiences", "vendor", "experience", "experience.yaml"),
+    path.join(root, "content", "experiences", "vendor", "experience", "experience.yaml"),
     "experience:\n   id: invalid\n  broken: true\n",
     "utf8"
   );

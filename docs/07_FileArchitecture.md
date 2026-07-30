@@ -71,7 +71,7 @@ Project governance, product documentation, architecture decisions, implementatio
 | Visual identity | `Frontend/styles/brand.css` |
 | Global site information | `Frontend/data/site.js` |
 | Laboratories | `Frontend/data/labs.js` |
-| Engineering Notes | `Frontend/data/notebook.js` |
+| Engineering Notes | `content/notebooks/notebook.js` |
 | Navbar | `Frontend/components/navbar.js` |
 | Lab card | `Frontend/components/labCard.js` |
 | Lab viewer | `Frontend/components/labViewer.js` |
@@ -127,7 +127,7 @@ Modify the relevant tokens in `Frontend/styles/brand.css` and reconcile `docs/08
 
 ### Add an Engineering Note
 
-Modify `Frontend/data/notebook.js` and add owned images beneath `Frontend/assets/images/notebook/`.
+Modify `content/notebooks/notebook.js`, run `node scripts/package-notebook.mjs`, and add owned images beneath `Frontend/assets/images/notebook/`.
 
 ### Change global site information
 

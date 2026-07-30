@@ -55,7 +55,7 @@ Codex must inspect the existing Notebook data model and add only the new article
 Current source of truth:
 
 ```text
-Frontend/data/notebook.js
+content/notebooks/notebook.js
 ```
 
 Codex may:

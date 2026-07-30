@@ -1,5 +1,28 @@
 # Changelog
 
+## Repository architecture baseline and hygiene
+
+### Added
+
+- Established D2R-000 through D2R-008 as the governed blueprint, Industrial Capability Framework, standards and architecture-governance baseline.
+- Added canonical capability, Experience Brief, assessment and ADR templates.
+- Added provisional indexes for ICF-01 through ICF-11 without creating speculative capability content.
+
+### Changed
+
+- Reconciled live Project Status with the approved Notebook and Experience Lab product model.
+- Marked the legacy roadmap as historical and linked current planning to `PROJECT_STATUS.md`.
+
+### Removed
+
+- Removed 789 tracked local Edge profile files from three browser-validation directories.
+- Removed three tracked temporary validation screenshots from the repository root.
+
+### Confirmed
+
+- Runtime source, Experience content, schemas, imports, UI behavior and Backend behavior remain unchanged.
+- Browser-validation profiles and `validation-*.png` remain covered by `.gitignore`.
+
 ## Experience Engine — Workspace foundation
 
 ### Added

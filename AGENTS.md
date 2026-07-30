@@ -41,7 +41,7 @@ Do not change this structure without an explicit architectural reason and prior 
 - Visual identity: Frontend/styles/brand.css
 - Global site information: Frontend/data/site.js
 - Laboratories: Frontend/data/labs.js
-- Notebook entries: Frontend/data/notebook.js
+- Notebook entries: content/notebooks/notebook.js
 - Navbar: Frontend/components/navbar.js
 - Lab Card: Frontend/components/labCard.js
 - Lab Viewer: Frontend/components/labViewer.js

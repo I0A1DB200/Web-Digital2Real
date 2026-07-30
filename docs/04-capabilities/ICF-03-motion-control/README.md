@@ -13,7 +13,7 @@ Diagnose drives, motors, axes, motion states, enable conditions, and controlled 
 
 ## Known dependencies
 
-No prerequisite is approved. The repository contains the related Experience [`EXP-SIEMENS-DRIVE-002`](../../../experience-engine/experiences/siemens/EE-0002-drive-reset/README.md), currently in technical review; its Experience class and formal competency mapping remain unapproved, and its existence does not change this capability from `planned`.
+No prerequisite is approved. The repository contains the related Experience [`EXP-SIEMENS-DRIVE-002`](../../../content/experiences/siemens/EE-0002-drive-reset/README.md), currently in technical review; its Experience class and formal competency mapping remain unapproved, and its existence does not change this capability from `planned`.
 
 ## Authority
 

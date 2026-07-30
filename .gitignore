@@ -13,6 +13,10 @@ validation-*.png
 Frontend/generated/experience-engine/
 Frontend/generated/.experience-engine-build/
 
+# Generated Notebook publication artifacts
+Frontend/generated/notebooks/
+Frontend/generated/.notebook-build/
+
 # Local operating-system and editor files
 .DS_Store
 Thumbs.db

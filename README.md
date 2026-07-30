@@ -12,7 +12,7 @@ The Industrial Capability Framework (ICF) is the planned canonical model connect
 | Area | Current canonical location |
 |---|---|
 | Web application | `Frontend/` |
-| Notebook content | `Frontend/data/notebook.js` |
+| Notebook content | `content/notebooks/notebook.js` |
 | Notebook assets | `Frontend/assets/images/notebook/` |
 | Experience Engine | `experience-engine/` |
 | Headless Experience Player | `experience-engine/player/` |

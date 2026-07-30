@@ -19,7 +19,6 @@ export function createExperienceWorkspace({
 
   let catalog = null;
   let player = null;
-  let sessionTimestamp = 0;
   let destroyed = false;
 
   async function initialise() {
@@ -36,25 +35,24 @@ export function createExperienceWorkspace({
 
   async function openExperience(experienceId) {
     if (destroyed) throw new Error("Experience Workspace has been destroyed.");
-    if (!catalog) {
-      catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
-      assertCatalog(catalog);
-    }
-
-    const item = catalog.experiences.find(experience => experience.id === experienceId);
-    if (!item) throw new Error(`Experience ${experienceId} is not available in this package.`);
-    renderStatus(`Loading ${item.title}…`);
 
     try {
-      const [model, playerModule] = await Promise.all([
+      if (!catalog) {
+        catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
+        assertCatalog(catalog);
+      }
+      const item = catalog.experiences.find(experience => experience.id === experienceId);
+      if (!item) throw new Error(`Experience ${experienceId} is not available.`);
+      renderStatus(`Loading ${item.title}…`);
+
+      const [artifact, playerModule] = await Promise.all([
         loadJson(`${baseUrl}/${item.path}`, fetchImpl),
         importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
       ]);
       if (typeof playerModule.ExperiencePlayer !== "function") {
         throw new Error("The generated package does not expose ExperiencePlayer.");
       }
-      player = new playerModule.ExperiencePlayer({ experience: model });
-      sessionTimestamp = 0;
+      player = new playerModule.ExperiencePlayer({ experience: artifact });
       renderPlayer();
       return player.getState();
     } catch (error) {
@@ -65,7 +63,7 @@ export function createExperienceWorkspace({
 
   function startExperience() {
     requirePlayer();
-    player.start({ timestamp: sessionTimestamp });
+    player.start();
     renderPlayer();
   }
 
@@ -77,31 +75,26 @@ export function createExperienceWorkspace({
 
   function selectDecision(decisionId) {
     requirePlayer();
-    sessionTimestamp += 1;
-    player.selectDecision(decisionId, { timestamp: sessionTimestamp });
+    player.selectDecision(decisionId);
     renderPlayer();
   }
 
   function restartExperience() {
     requirePlayer();
     player.reset();
-    sessionTimestamp = 0;
     renderPlayer();
   }
 
   function closeExperience() {
     player = null;
-    sessionTimestamp = 0;
     renderCatalog();
   }
 
   function renderPlayer() {
     const state = player.getState();
-    const projection = createWorkspaceProjection(state);
     element.replaceChildren(ExperienceWorkspace({
       documentRef,
-      projection,
-      state,
+      projection: createWorkspaceProjection(state),
       onStart: startExperience,
       onContinue: continueExperience,
       onDecision: selectDecision,
@@ -126,14 +119,13 @@ export function createExperienceWorkspace({
 
     const list = createElement(documentRef, "div", "experience-workspace__catalog");
     if (!catalog.experiences.length) {
-      appendText(documentRef, list, "p", "experience-workspace__empty", "No experiences are available in this package.");
+      appendText(documentRef, list, "p", "experience-workspace__empty", "No experiences are available.");
     }
     catalog.experiences.forEach(item => {
       const article = createElement(documentRef, "article", "experience-card");
       const meta = createElement(documentRef, "div", "experience-card__meta");
-      appendText(documentRef, meta, "span", "", item.difficulty);
+      appendText(documentRef, meta, "span", "", item.class);
       appendText(documentRef, meta, "span", "", `${item.estimatedDuration} min`);
-      appendText(documentRef, meta, "span", "", item.status.replaceAll("_", " "));
       article.appendChild(meta);
       appendText(documentRef, article, "h2", "", item.title);
       appendText(documentRef, article, "p", "", item.summary);
@@ -158,7 +150,7 @@ export function createExperienceWorkspace({
     panel.setAttribute("role", "alert");
     appendText(documentRef, panel, "span", "experience-workspace__eyebrow", "Experience unavailable");
     appendText(documentRef, panel, "h2", "", "The Experience Lab could not be loaded.");
-    appendText(documentRef, panel, "p", "", error instanceof Error ? error.message : String(error));
+    appendText(documentRef, panel, "p", "", safeErrorMessage(error));
     const back = createButton(documentRef, "Back to Experience Lab", "experience-action");
     back.addEventListener("click", renderCatalog);
     panel.appendChild(back);
@@ -196,21 +188,17 @@ export function createWorkspaceProjection(state) {
     progress: state.progress,
     context: state.context,
     stage: state.currentStage,
-    evidence: state.revealedEvidence,
-    decisions: state.currentStage?.decisions ?? [],
-    consequence: state.lastOutcome,
-    result: state.completionStatus,
-    selectedDecisions: state.selectedDecisions,
+    selectedDecision: state.currentStage?.decisions.find(
+      decision => decision.id === state.selectedDecision
+    ) ?? null,
     decisionHistory: state.decisionHistory,
-    debrief: state.debrief,
-    notebookReferences: state.notebookReferences
+    visual: state.visual
   });
 }
 
 export function ExperienceWorkspace({
   documentRef,
   projection,
-  state,
   onStart,
   onContinue,
   onDecision,
@@ -220,8 +208,8 @@ export function ExperienceWorkspace({
   const shell = createElement(documentRef, "div", "experience-workspace__shell");
   shell.appendChild(ExperienceHeader({ documentRef, projection, onClose }));
 
-  if (projection.phase !== "start") {
-    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress, phase: projection.phase }));
+  if (!["start", "completion"].includes(projection.phase)) {
+    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress }));
   }
 
   if (projection.phase === "start") {
@@ -230,18 +218,16 @@ export function ExperienceWorkspace({
     shell.appendChild(createIntroduction(documentRef, projection, onContinue, false));
   } else if (projection.phase === "stage") {
     shell.appendChild(StagePanel({ documentRef, stage: projection.stage }));
-    shell.appendChild(EvidencePanel({ documentRef, evidence: projection.evidence }));
-    shell.appendChild(DecisionPanel({ documentRef, decisions: projection.decisions, onDecision }));
-  } else if (projection.phase === "consequence") {
-    shell.appendChild(ConsequencePanel({
+    shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, onDecision }));
+  } else if (projection.phase === "selection") {
+    shell.appendChild(SelectionPanel({
       documentRef,
-      consequence: projection.consequence,
+      decision: projection.selectedDecision,
       onContinue,
-      isTerminal: state.state === "Completed" || state.state === "Blocked"
+      finalStage: projection.progress.currentStage === projection.progress.totalStages
     }));
-    shell.appendChild(EvidencePanel({ documentRef, evidence: projection.evidence }));
-  } else if (projection.phase === "debrief") {
-    shell.appendChild(DebriefPanel({ documentRef, projection, onRestart }));
+  } else if (projection.phase === "completion") {
+    shell.appendChild(CompletionPanel({ documentRef, projection, onRestart }));
   }
 
   return shell;
@@ -271,25 +257,6 @@ export function StagePanel({ documentRef, stage }) {
   return panel;
 }
 
-export function EvidencePanel({ documentRef, evidence }) {
-  const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Evidence discovered");
-  appendText(documentRef, panel, "h2", "", `${evidence.length} observations`);
-  const list = createElement(documentRef, "div", "experience-evidence");
-  evidence.forEach(item => {
-    const article = createElement(documentRef, "article", "experience-evidence__item");
-    const meta = createElement(documentRef, "div", "experience-evidence__meta");
-    appendText(documentRef, meta, "span", "", item.type.replaceAll("_", " "));
-    appendText(documentRef, meta, "span", "", item.reliability);
-    article.appendChild(meta);
-    appendText(documentRef, article, "h3", "", item.source);
-    appendText(documentRef, article, "p", "", item.content);
-    list.appendChild(article);
-  });
-  panel.appendChild(list);
-  return panel;
-}
-
 export function DecisionPanel({ documentRef, decisions, onDecision }) {
   const panel = createElement(documentRef, "section", "experience-panel");
   appendText(documentRef, panel, "span", "experience-panel__label", "Engineering decision");
@@ -306,15 +273,20 @@ export function DecisionPanel({ documentRef, decisions, onDecision }) {
   return panel;
 }
 
-export function ConsequencePanel({ documentRef, consequence, onContinue, isTerminal }) {
-  const panel = createElement(documentRef, "section", "experience-panel experience-consequence");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Consequence");
-  appendText(documentRef, panel, "h2", "", consequence.classification.replaceAll("_", " "));
-  appendText(documentRef, panel, "p", "experience-consequence__text", consequence.consequence);
-  appendText(documentRef, panel, "p", "experience-consequence__reason", consequence.rationale);
+export function SelectionPanel({ documentRef, decision, onContinue, finalStage }) {
+  const panel = createElement(documentRef, "section", "experience-panel");
+  appendText(documentRef, panel, "span", "experience-panel__label", "Decision recorded");
+  appendText(documentRef, panel, "h2", "", decision.action);
+  appendText(
+    documentRef,
+    panel,
+    "p",
+    "experience-stage__situation",
+    "Your selection has been recorded for this local session."
+  );
   const button = createButton(
     documentRef,
-    isTerminal ? "Open debrief" : "Continue",
+    finalStage ? "Complete experience" : "Continue",
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", onContinue);
@@ -322,12 +294,9 @@ export function ConsequencePanel({ documentRef, consequence, onContinue, isTermi
   return panel;
 }
 
-export function ProgressIndicator({ documentRef, progress, phase }) {
+export function ProgressIndicator({ documentRef, progress }) {
   const wrapper = createElement(documentRef, "div", "experience-progress");
-  const label = phase === "debrief"
-    ? "Debrief"
-    : `Stage ${progress.currentStage} / ${progress.totalStages}`;
-  appendText(documentRef, wrapper, "span", "", label);
+  appendText(documentRef, wrapper, "span", "", `Stage ${progress.currentStage} / ${progress.totalStages}`);
   const track = createElement(documentRef, "div", "experience-progress__track");
   const fill = createElement(documentRef, "span", "experience-progress__fill");
   fill.style.setProperty("--experience-progress", `${(progress.currentStage / progress.totalStages) * 100}%`);
@@ -336,27 +305,23 @@ export function ProgressIndicator({ documentRef, progress, phase }) {
   return wrapper;
 }
 
-export function DebriefPanel({ documentRef, projection, onRestart }) {
-  const panel = createElement(documentRef, "section", "experience-panel experience-debrief");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Diagnostic debrief");
-  appendText(documentRef, panel, "h2", "", formatStatus(projection.result));
-  appendText(documentRef, panel, "p", "experience-debrief__diagnosis", projection.debrief.fault_summary);
-
+export function CompletionPanel({ documentRef, projection, onRestart }) {
+  const panel = createElement(documentRef, "section", "experience-panel");
+  appendText(documentRef, panel, "span", "experience-panel__label", "Experience complete");
+  appendText(documentRef, panel, "h2", "", "Diagnostic session completed");
+  appendText(
+    documentRef,
+    panel,
+    "p",
+    "experience-stage__situation",
+    `You completed ${projection.progress.totalStages} stages.`
+  );
   appendList(
     documentRef,
     panel,
     "Decisions taken",
     projection.decisionHistory.map(record => record.action)
   );
-  appendList(
-    documentRef,
-    panel,
-    "Evidence found",
-    projection.evidence.map(item => `${item.source}: ${item.content}`)
-  );
-  appendList(documentRef, panel, "Correct reasoning", projection.debrief.correct_reasoning);
-  appendList(documentRef, panel, "Recovery", projection.debrief.recovery);
-
   const restart = createButton(documentRef, "Restart experience", "experience-action experience-action--primary");
   restart.addEventListener("click", onRestart);
   panel.appendChild(restart);
@@ -366,16 +331,22 @@ export function DebriefPanel({ documentRef, projection, onRestart }) {
 function createIntroduction(documentRef, projection, action, isStart) {
   const panel = createElement(documentRef, "section", "experience-panel experience-introduction");
   appendText(documentRef, panel, "span", "experience-panel__label", isStart ? "Ready to begin" : "Incident brief");
-  appendText(documentRef, panel, "h2", "", projection.context.learnerRole);
-  appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initialContext);
+  appendText(documentRef, panel, "h2", "", projection.context.learner_role);
+  appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initial_context);
 
   const facts = createElement(documentRef, "dl", "experience-facts");
-  appendFact(documentRef, facts, "Operational state", projection.context.operationalState);
-  appendFact(documentRef, facts, "Initiating event", projection.context.initiatingEvent);
-  if (projection.context.businessImpact) {
-    appendFact(documentRef, facts, "Operational impact", projection.context.businessImpact);
-  }
+  appendFact(documentRef, facts, "Operational state", projection.context.operational_state);
+  appendFact(documentRef, facts, "Initiating event", projection.context.initiating_event);
   panel.appendChild(facts);
+  if (projection.visual?.educational_purpose) {
+    appendText(
+      documentRef,
+      panel,
+      "p",
+      "experience-stage__objective",
+      projection.visual.educational_purpose
+    );
+  }
 
   const button = createButton(
     documentRef,
@@ -389,14 +360,19 @@ function createIntroduction(documentRef, projection, action, isStart) {
 
 async function loadJson(location, fetchImpl) {
   const response = await fetchImpl(location, { headers: { Accept: "application/json" } });
-  if (!response.ok) throw new Error(`Could not load ${location} (${response.status}).`);
+  if (!response.ok) throw new Error(`Could not load the requested experience (${response.status}).`);
   return response.json();
 }
 
 function assertCatalog(catalog) {
-  if (!catalog || !Array.isArray(catalog.experiences)) {
+  if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)) {
     throw new Error("The generated Experience Engine catalog is invalid.");
   }
+}
+
+function safeErrorMessage(error) {
+  if (!error || typeof error.message !== "string") return "The requested experience is unavailable.";
+  return error.message;
 }
 
 function resolveModuleUrl(location, documentRef) {
@@ -429,14 +405,10 @@ function appendFact(documentRef, list, term, description) {
 }
 
 function appendList(documentRef, parent, title, items) {
-  const section = createElement(documentRef, "section", "experience-debrief__section");
+  const section = createElement(documentRef, "section", "");
   appendText(documentRef, section, "h3", "", title);
   const list = createElement(documentRef, "ul", "");
   items.forEach(item => appendText(documentRef, list, "li", "", item));
   section.appendChild(list);
   parent.appendChild(section);
-}
-
-function formatStatus(status) {
-  return status.split("_").map(word => `${word[0].toUpperCase()}${word.slice(1)}`).join(" ");
 }

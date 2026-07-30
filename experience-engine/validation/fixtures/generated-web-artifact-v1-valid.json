@@ -1,0 +1,83 @@
+{
+  "web_artifact_version": "1.0.0",
+  "identity": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning"
+  },
+  "metadata": {
+    "slug": "generic-diagnostic-experience",
+    "title": "Generic diagnostic experience",
+    "summary": "Diagnose a stopped industrial machine through public evidence.",
+    "estimated_duration": 20,
+    "language": "en"
+  },
+  "capabilities": [
+    {
+      "capability_id": "ICF-01",
+      "competency_ids": [
+        "DIAG-EVIDENCE-01"
+      ]
+    }
+  ],
+  "public": {
+    "scenario": {
+      "initial_context": "A material handling machine has stopped during production.",
+      "operational_state": "The machine is stationary in a controlled state.",
+      "initiating_event": "A process interruption occurred.",
+      "learner_role": "Automation engineer",
+      "safety_context": {
+        "safe_state": "No hazardous movement is permitted before authorization.",
+        "intervention_constraints": [
+          "Preserve evidence before changing machine state."
+        ]
+      }
+    },
+    "stages": [
+      {
+        "id": "STAGE-INCIDENT",
+        "title": "Incident",
+        "situation": "The machine is stopped.",
+        "decisions": [
+          {
+            "id": "DEC-INSPECT",
+            "action": "Inspect available evidence."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-VALIDATE",
+        "title": "Validation",
+        "situation": "Public evidence supports controlled validation.",
+        "decisions": [
+          {
+            "id": "DEC-COMPLETE",
+            "action": "Validate the observable machine state."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "EVID-INITIAL",
+        "type": "initial_observation",
+        "source": "Machine observation",
+        "content": "The machine is stationary.",
+        "reliability": "high",
+        "visibility": "public"
+      }
+    ],
+    "feedback": [
+      {
+        "id": "FEEDBACK-OBSERVATION",
+        "decision_id": "DEC-INSPECT",
+        "content": "The observation has been recorded.",
+        "visibility": "public"
+      }
+    ],
+    "visual": {
+      "educational_purpose": "Show the observable stopped machine state.",
+      "representation": "planned"
+    }
+  }
+}

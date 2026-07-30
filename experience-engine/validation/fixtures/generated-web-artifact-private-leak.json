@@ -1,0 +1,67 @@
+{
+  "web_artifact_version": "1.0.0",
+  "identity": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning"
+  },
+  "metadata": {
+    "slug": "generic-diagnostic-experience",
+    "title": "Generic diagnostic experience",
+    "summary": "Unsafe fixture containing deliberately leaked private information.",
+    "estimated_duration": 20,
+    "language": "en"
+  },
+  "capabilities": [],
+  "public": {
+    "scenario": {
+      "initial_context": "A machine has stopped.",
+      "operational_state": "Stopped",
+      "initiating_event": "A process interruption occurred.",
+      "learner_role": "Automation engineer",
+      "safety_context": {
+        "safe_state": "Stopped",
+        "intervention_constraints": []
+      }
+    },
+    "stages": [
+      {
+        "id": "STAGE-INCIDENT",
+        "title": "Incident",
+        "situation": "The machine is stopped.",
+        "decisions": [
+          {
+            "id": "DEC-ANSWER",
+            "action": "Select an action.",
+            "correct_answer": true,
+            "destination": "COMPLETE",
+            "score_effect": 100
+          }
+        ]
+      }
+    ],
+    "evidence": [],
+    "feedback": [
+      {
+        "id": "FEEDBACK-PRIVATE",
+        "decision_id": "DEC-ANSWER",
+        "content": "This reveals the private diagnostic explanation.",
+        "visibility": "private",
+        "rationale": "This is the correct diagnostic path."
+      }
+    ],
+    "visual": {
+      "educational_purpose": "Show a stopped state.",
+      "representation": "planned"
+    },
+    "scoring": {
+      "safety_threshold": 20
+    },
+    "diagnosis": {
+      "root_cause": "Private root cause"
+    }
+  },
+  "private": {
+    "solution": "Private solution"
+  }
+}

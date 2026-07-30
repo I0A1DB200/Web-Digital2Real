@@ -1,0 +1,67 @@
+{
+  "web_artifact_version": "1.0.0",
+  "identity": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning"
+  },
+  "metadata": {
+    "slug": "generic-diagnostic-experience",
+    "title": "Generic diagnostic experience",
+    "summary": "Diagnose a stopped industrial machine through progressive evidence.",
+    "estimated_duration": 20,
+    "language": "en"
+  },
+  "capabilities": [
+    {
+      "capability_id": "ICF-01",
+      "competency_ids": [
+        "DIAG-EVIDENCE-01"
+      ]
+    }
+  ],
+  "public": {
+    "scenario": {
+      "initial_context": "A material handling machine has stopped during production.",
+      "operational_state": "The machine is stationary in a controlled state.",
+      "initiating_event": "A process interruption occurred.",
+      "learner_role": "Automation engineer",
+      "safety_context": {
+        "safe_state": "No hazardous movement is permitted before authorization.",
+        "intervention_constraints": [
+          "Preserve evidence before changing machine state."
+        ]
+      }
+    },
+    "stages": [
+      {
+        "id": "STAGE-INCIDENT",
+        "title": "Incident",
+        "situation": "The machine is stopped.",
+        "decisions": [
+          {
+            "id": "DEC-INSPECT",
+            "action": "Inspect available evidence."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-VALIDATE",
+        "title": "Validation",
+        "situation": "Evidence supports a controlled recovery.",
+        "decisions": [
+          {
+            "id": "DEC-COMPLETE",
+            "action": "Validate recovery and complete the experience."
+          }
+        ]
+      }
+    ],
+    "evidence": [],
+    "feedback": [],
+    "visual": {
+      "educational_purpose": "Show the observable difference between the stopped state and controlled recovery.",
+      "representation": "planned"
+    }
+  }
+}

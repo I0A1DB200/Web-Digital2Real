@@ -1,0 +1,174 @@
+{
+  "web_artifact_version": "1.0.0",
+  "identity": {
+    "id": "EXP-SIEMENS-DRIVE-002",
+    "content_version": "2.0",
+    "class": "learning"
+  },
+  "metadata": {
+    "slug": "drive-reset-after-emergency-stop",
+    "title": "Drive reset after emergency stop",
+    "summary": "Diagnose why an infeed conveyor does not restart after an emergency-stop release even though its run command remains active.",
+    "estimated_duration": 35,
+    "language": "en"
+  },
+  "capabilities": [
+    {
+      "capability_id": "ICF-01",
+      "competency_ids": [
+        "COMP-STATE-INTERPRETATION"
+      ]
+    },
+    {
+      "capability_id": "ICF-03",
+      "competency_ids": [
+        "COMP-DRIVE-DIAGNOSTICS",
+        "COMP-RESET-REASONING"
+      ]
+    },
+    {
+      "capability_id": "ICF-05",
+      "competency_ids": [
+        "COMP-SAFETY-AWARENESS"
+      ]
+    },
+    {
+      "capability_id": "ICF-11",
+      "competency_ids": [
+        "COMP-EVIDENCE-TROUBLESHOOTING",
+        "COMP-CONTROLLED-RECOVERY"
+      ]
+    }
+  ],
+  "public": {
+    "scenario": {
+      "initial_context": "An infeed conveyor was stopped by an emergency stop during packaging production. The emergency stop has been physically released, but the conveyor does not restart.",
+      "operational_state": "The PLC run command is reported active, communication loss is not reported, and the motor remains stationary.",
+      "initiating_event": "An emergency stop interrupted conveyor operation.",
+      "learner_role": "Automation engineer responsible for evidence-based diagnosis and controlled recovery.",
+      "safety_context": {
+        "safe_state": "The machine must remain in a controlled non-moving state until the safety chain, drive permission, and restart conditions are verified.",
+        "intervention_constraints": [
+          "Do not bypass or defeat any safety function.",
+          "Obtain authorization before issuing a reset or controlled movement command.",
+          "Preserve diagnostic evidence before applying a reset.",
+          "Keep personnel clear of hazardous movement during controlled testing.",
+          "Release the machine only after safety and functional validation."
+        ]
+      }
+    },
+    "stages": [
+      {
+        "id": "STAGE-01-INCIDENT",
+        "title": "Stabilize the incident",
+        "situation": "The emergency stop has been released, the conveyor is stationary, and a run command is reported active.",
+        "decisions": [
+          {
+            "id": "DEC-01-CONFIRM-SAFE-STATE",
+            "action": "Confirm the controlled safe state, physical emergency-stop release, applicable safety status, and authorization boundaries before diagnosis."
+          },
+          {
+            "id": "DEC-02-IMMEDIATE-RESTART",
+            "action": "Attempt an immediate restart without confirming the safety chain or clearing the hazardous area."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-02-COMMAND",
+        "title": "Separate command from execution",
+        "situation": "The machine is controlled and safe for non-invasive status inspection.",
+        "decisions": [
+          {
+            "id": "DEC-03-CORRELATE-STATES",
+            "action": "Correlate the PLC run command, HMI indication, and physical motor movement."
+          },
+          {
+            "id": "DEC-04-REPEAT-START",
+            "action": "Repeat the start command before comparing command and movement states."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-03-DRIVE",
+        "title": "Inspect drive operating state",
+        "situation": "The run command is confirmed active while the motor remains stationary.",
+        "decisions": [
+          {
+            "id": "DEC-05-INSPECT-DRIVE-STATE",
+            "action": "Inspect communication health and the drive's generic operational permission and readiness states."
+          },
+          {
+            "id": "DEC-06-FOCUS-COMMUNICATION",
+            "action": "Prioritize a communication-loss investigation despite the absence of a reported communication fault."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-04-HYPOTHESIS",
+        "title": "Test the recovery hypothesis",
+        "situation": "Communication is present, but the drive is not confirmed ready for controlled operation.",
+        "decisions": [
+          {
+            "id": "DEC-07-REVIEW-RECOVERY",
+            "action": "Compare the observed safety and drive states with the approved functional recovery procedure."
+          },
+          {
+            "id": "DEC-08-TRY-THEN-REVIEW",
+            "action": "Try another controlled start, then review the recovery procedure when movement still does not occur."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-05-RESET",
+        "title": "Perform an authorized reset",
+        "situation": "The available evidence supports an incomplete recovery sequence rather than loss of command or communication.",
+        "decisions": [
+          {
+            "id": "DEC-09-AUTHORIZED-RESET",
+            "action": "With safety and permission prerequisites confirmed, perform the authorized reset defined by the approved machine procedure and inspect the resulting drive state."
+          },
+          {
+            "id": "DEC-10-INDISCRIMINATE-RESET",
+            "action": "Issue repeated resets without confirming prerequisites or preserving the diagnostic state."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-06-START",
+        "title": "Execute a controlled start",
+        "situation": "The authorized reset has completed and the drive is confirmed operationally ready for controlled movement.",
+        "decisions": [
+          {
+            "id": "DEC-11-CONTROLLED-START",
+            "action": "Clear the hazardous area and execute an authorized controlled start while observing drive and machine response."
+          },
+          {
+            "id": "DEC-12-RELEASE-IMMEDIATELY",
+            "action": "Release the conveyor to production as soon as the drive reports ready, without a controlled movement test."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-07-VALIDATION",
+        "title": "Validate recovery",
+        "situation": "The conveyor has moved during a controlled test, but production release still requires complete validation.",
+        "decisions": [
+          {
+            "id": "DEC-13-FULL-VALIDATION",
+            "action": "Validate controlled stop, authorized recovery, restart, safety behavior, and documentation before production handover."
+          },
+          {
+            "id": "DEC-14-MINIMAL-VALIDATION",
+            "action": "End the intervention after observing one successful movement and record only that the conveyor restarted."
+          }
+        ]
+      }
+    ],
+    "evidence": [],
+    "feedback": [],
+    "visual": {
+      "educational_purpose": "Show command intent, safety permission, drive readiness, and physical movement as distinct observable states during controlled recovery.",
+      "representation": "planned"
+    }
+  }
+}

@@ -1,225 +1,134 @@
-const plainObject = value => value !== null
-  && typeof value === "object"
-  && Object.getPrototypeOf(value) === Object.prototype;
-
-function immutableCopy(value) {
-  if (Array.isArray(value)) return Object.freeze(value.map(immutableCopy));
-  if (plainObject(value)) {
-    return Object.freeze(Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, immutableCopy(item)])
-    ));
-  }
-  return value;
-}
+const SUPPORTED_WEB_ARTIFACT_VERSION = "1.0.0";
 
 export const ExperiencePlayerState = Object.freeze({
   NotStarted: "NotStarted",
   Active: "Active",
-  Completed: "Completed",
-  Blocked: "Blocked"
+  Completed: "Completed"
 });
 
 export const ExperienceCompletionStatus = Object.freeze({
   NotStarted: "not_started",
   Active: "active",
-  Completed: "completed",
-  CompletedWithWarnings: "completed_with_warnings",
-  Blocked: "blocked"
+  Completed: "completed"
 });
 
 export class ExperiencePlayerError extends Error {
-  constructor(code, message, context = {}) {
+  constructor(code, message, details = {}) {
     super(message);
     this.name = "ExperiencePlayerError";
     this.code = code;
-    this.context = immutableCopy(context);
+    this.details = deepFreeze(clone(details));
   }
 }
 
 export class ExperiencePlayer {
   #model;
   #stages;
-  #evidence;
-  #decisions;
   #state;
 
   constructor({ experience } = {}) {
     validateExperience(experience);
-    this.#model = immutableCopy(experience);
-    this.#stages = new Map(this.#model.stages.map(stage => [stage.id, stage]));
-    this.#evidence = new Map(this.#model.evidence.map(item => [item.id, item]));
-    this.#decisions = new Map(this.#model.decisions.map(decision => [decision.id, decision]));
+    this.#model = deepFreeze(clone(experience));
+    this.#stages = new Map(this.#model.public.stages.map(stage => [stage.id, stage]));
     this.#state = this.#createInitialState();
   }
 
-  start({ timestamp = 0 } = {}) {
-    this.#assertState("start", [ExperiencePlayerState.NotStarted]);
-    validateTimestamp(timestamp, null);
+  start() {
+    this.#assertInteraction("start", ["start"]);
     this.#state = {
       ...this.#state,
       state: ExperiencePlayerState.Active,
       completionStatus: ExperienceCompletionStatus.Active,
-      interaction: "introduction",
-      startedAt: timestamp,
-      lastTimestamp: timestamp
+      interaction: "introduction"
     };
-    return this.getSnapshot();
-  }
-
-  selectDecision(decisionId, { timestamp } = {}) {
-    this.#assertState("selectDecision", [ExperiencePlayerState.Active]);
-    validateTimestamp(timestamp, this.#state.lastTimestamp);
-
-    const decision = this.#decisions.get(decisionId);
-    if (!decision || decision.stage_id !== this.#state.currentStage) {
-      throw new ExperiencePlayerError(
-        "DECISION_NOT_AVAILABLE",
-        `Decision ${decisionId} is not available in the current stage.`,
-        { decisionId, currentStage: this.#state.currentStage }
-      );
-    }
-
-    const scoring = this.#model.evaluation.scoring;
-    const score = clamp(
-      this.#state.score + decision.score_effect,
-      scoring.minimum_score,
-      scoring.maximum_score
-    );
-    const safetyScore = this.#state.safetyScore + decision.safety_effect;
-    const revealedEvidence = new Set(this.#state.revealedEvidence);
-    decision.evidence_revealed.forEach(id => revealedEvidence.add(id));
-    const safetyBlocked = decision.next_stage === "COMPLETE"
-      && safetyScore < scoring.safety_threshold;
-    const destination = safetyBlocked ? "BLOCKED" : decision.next_stage;
-    const terminal = destination === "COMPLETE" || destination === "BLOCKED";
-    const completionStatus = terminal
-      ? terminalStatus(decision, destination)
-      : ExperienceCompletionStatus.Active;
-    const state = terminal
-      ? destination === "BLOCKED"
-        ? ExperiencePlayerState.Blocked
-        : ExperiencePlayerState.Completed
-      : ExperiencePlayerState.Active;
-    const record = immutableCopy({
-      decisionId: decision.id,
-      action: decision.action,
-      originatingStage: decision.stage_id,
-      timestamp,
-      resultingStage: destination,
-      evidenceRevealed: [...decision.evidence_revealed],
-      scoreEffect: decision.score_effect,
-      safetyEffect: decision.safety_effect,
-      timeCost: decision.time_cost ?? 0
-    });
-
-    this.#state = {
-      ...this.#state,
-      state,
-      completionStatus,
-      currentStage: terminal ? null : destination,
-      revealedEvidence: [...revealedEvidence],
-      selectedDecisions: [...this.#state.selectedDecisions, decision.id],
-      decisionHistory: [...this.#state.decisionHistory, record],
-      visitedStages: terminal || this.#state.visitedStages.includes(destination)
-        ? this.#state.visitedStages
-        : [...this.#state.visitedStages, destination],
-      score,
-      safetyScore,
-      elapsedTime: this.#state.elapsedTime + (decision.time_cost ?? 0),
-      lastTimestamp: timestamp,
-      interaction: "consequence",
-      lastOutcome: {
-        decisionId: decision.id,
-        rationale: decision.rationale,
-        classification: decision.classification,
-        consequence: decision.consequence,
-        resultingStage: destination
-      }
-    };
-
-    return this.getSnapshot();
+    return this.getState();
   }
 
   continue() {
-    const allowedStates = [
-      ExperiencePlayerState.Active,
-      ExperiencePlayerState.Completed,
-      ExperiencePlayerState.Blocked
-    ];
-    this.#assertState("continue", allowedStates);
+    this.#assertInteraction("continue", ["introduction", "selection"]);
 
     if (this.#state.interaction === "introduction") {
       this.#state = { ...this.#state, interaction: "stage" };
-    } else if (this.#state.interaction === "consequence") {
-      const terminal = this.#state.state === ExperiencePlayerState.Completed
-        || this.#state.state === ExperiencePlayerState.Blocked;
-      this.#state = { ...this.#state, interaction: terminal ? "debrief" : "stage" };
-    } else {
+      return this.getState();
+    }
+
+    const nextIndex = this.#state.stageIndex + 1;
+    if (nextIndex >= this.#model.public.stages.length) {
+      this.#state = {
+        ...this.#state,
+        state: ExperiencePlayerState.Completed,
+        completionStatus: ExperienceCompletionStatus.Completed,
+        interaction: "completion"
+      };
+      return this.getState();
+    }
+
+    this.#state = {
+      ...this.#state,
+      interaction: "stage",
+      stageIndex: nextIndex,
+      selectedDecision: null
+    };
+    return this.getState();
+  }
+
+  selectDecision(decisionId) {
+    this.#assertInteraction("selectDecision", ["stage"]);
+    requireText(decisionId, "decisionId");
+
+    const stage = this.#model.public.stages[this.#state.stageIndex];
+    const decision = stage.decisions.find(item => item.id === decisionId);
+    if (!decision) {
       throw new ExperiencePlayerError(
-        "NOTHING_TO_CONTINUE",
-        "No introduction or consequence is waiting to continue.",
-        { interaction: this.#state.interaction }
+        "INVALID_DECISION",
+        `Decision ${decisionId} is not available in the current stage.`,
+        { decisionId, stageId: stage.id }
       );
     }
 
-    return this.getSnapshot();
+    this.#state = {
+      ...this.#state,
+      interaction: "selection",
+      selectedDecision: decision.id,
+      decisionHistory: [...this.#state.decisionHistory, {
+        stageId: stage.id,
+        decisionId: decision.id,
+        action: decision.action
+      }]
+    };
+    return this.getState();
   }
 
   reset() {
     this.#state = this.#createInitialState();
-    return this.getSnapshot();
+    return this.getState();
   }
 
   getSnapshot() {
-    const currentStage = this.#state.currentStage
-      ? this.#createStageProjection(this.#stages.get(this.#state.currentStage))
-      : null;
-    const terminal = this.#state.state === ExperiencePlayerState.Completed
-      || this.#state.state === ExperiencePlayerState.Blocked;
-    const currentStageNumber = this.#state.currentStage
-      ? this.#model.stages.findIndex(stage => stage.id === this.#state.currentStage) + 1
-      : this.#model.stages.length;
-
-    return immutableCopy({
+    const stage = this.#model.public.stages[this.#state.stageIndex];
+    return deepFreeze({
       experience: {
-        id: this.#model.experience.id,
-        version: this.#model.experience.version,
-        slug: this.#model.experience.slug,
-        title: this.#model.experience.title,
-        summary: this.#model.experience.summary,
-        difficulty: this.#model.experience.difficulty,
-        estimatedDuration: this.#model.experience.estimated_duration
+        id: this.#model.identity.id,
+        contentVersion: this.#model.identity.content_version,
+        class: this.#model.identity.class,
+        slug: this.#model.metadata.slug,
+        title: this.#model.metadata.title,
+        summary: this.#model.metadata.summary,
+        estimatedDuration: this.#model.metadata.estimated_duration,
+        language: this.#model.metadata.language
       },
       state: this.#state.state,
       completionStatus: this.#state.completionStatus,
       interaction: this.#state.interaction,
-      startedAt: this.#state.startedAt,
-      context: {
-        initialContext: this.#model.scenario.initial_context,
-        operationalState: this.#model.scenario.operational_state,
-        initiatingEvent: this.#model.scenario.initiating_event,
-        learnerRole: this.#model.scenario.learner_role,
-        safetyContext: this.#model.scenario.safety_context,
-        businessImpact: this.#model.scenario.business_impact ?? null
-      },
+      context: clone(this.#model.public.scenario),
       progress: {
-        currentStage: currentStageNumber,
-        totalStages: this.#model.stages.length,
-        visitedStages: this.#state.visitedStages.length
+        currentStage: this.#state.stageIndex + 1,
+        totalStages: this.#model.public.stages.length
       },
-      currentStage,
-      revealedEvidence: this.#state.revealedEvidence.map(id => publicEvidence(this.#evidence.get(id))),
-      selectedDecisions: [...this.#state.selectedDecisions],
-      decisionHistory: [...this.#state.decisionHistory],
-      visitedStages: [...this.#state.visitedStages],
-      score: this.#state.score,
-      safetyScore: this.#state.safetyScore,
-      safetyThreshold: this.#model.evaluation.scoring.safety_threshold,
-      elapsedTime: this.#state.elapsedTime,
-      lastTimestamp: this.#state.lastTimestamp,
-      lastOutcome: this.#state.lastOutcome,
-      debrief: terminal ? this.#model.debrief : null,
-      notebookReferences: terminal ? this.#model.references.notebook : []
+      currentStage: this.#state.interaction === "completion" ? null : clone(stage),
+      selectedDecision: this.#state.selectedDecision,
+      decisionHistory: clone(this.#state.decisionHistory),
+      visual: clone(this.#model.public.visual)
     });
   }
 
@@ -228,179 +137,73 @@ export class ExperiencePlayer {
   }
 
   #createInitialState() {
-    const initialStage = this.#model.stages[0].id;
     return {
       state: ExperiencePlayerState.NotStarted,
       completionStatus: ExperienceCompletionStatus.NotStarted,
       interaction: "start",
-      startedAt: null,
-      currentStage: initialStage,
-      revealedEvidence: this.#model.evidence
-        .filter(item => item.revealed_by.length === 0)
-        .map(item => item.id),
-      selectedDecisions: [],
-      decisionHistory: [],
-      visitedStages: [initialStage],
-      score: this.#model.evaluation.scoring.initial_score,
-      safetyScore: 0,
-      elapsedTime: 0,
-      lastTimestamp: null,
-      lastOutcome: null
+      stageIndex: 0,
+      selectedDecision: null,
+      decisionHistory: []
     };
   }
 
-  #createStageProjection(stage) {
-    const revealed = new Set(this.#state.revealedEvidence);
-    return {
-      id: stage.id,
-      title: stage.title,
-      situation: stage.situation,
-      objective: stage.objective ?? null,
-      evidence: stage.available_evidence
-        .filter(id => revealed.has(id))
-        .map(id => publicEvidence(this.#evidence.get(id))),
-      decisions: stage.decisions.map(id => {
-        const decision = this.#decisions.get(id);
-        return { id: decision.id, action: decision.action };
-      })
-    };
-  }
-
-  #assertState(operation, allowedStates) {
-    if (allowedStates.includes(this.#state.state)) return;
+  #assertInteraction(operation, allowed) {
+    if (allowed.includes(this.#state.interaction)) return;
     throw new ExperiencePlayerError(
       "INVALID_PLAYER_STATE",
-      `Operation ${operation} is invalid while the player is ${this.#state.state}.`,
-      { operation, state: this.#state.state, allowedStates }
-    );
-  }
-}
-
-function publicEvidence(evidence) {
-  return {
-    id: evidence.id,
-    type: evidence.type,
-    source: evidence.source,
-    content: evidence.content,
-    reliability: evidence.reliability
-  };
-}
-
-function terminalStatus(decision, destination) {
-  if (destination === "BLOCKED") return ExperienceCompletionStatus.Blocked;
-  return decision.classification === "strong"
-    ? ExperienceCompletionStatus.Completed
-    : ExperienceCompletionStatus.CompletedWithWarnings;
-}
-
-function clamp(value, minimum, maximum) {
-  return Math.min(maximum, Math.max(minimum, value));
-}
-
-function validateTimestamp(timestamp, previousTimestamp) {
-  if (typeof timestamp !== "number" || !Number.isFinite(timestamp) || timestamp < 0) {
-    throw new ExperiencePlayerError(
-      "INVALID_TIMESTAMP",
-      "timestamp must be a caller-supplied finite non-negative number.",
-      { timestamp }
-    );
-  }
-  if (previousTimestamp !== null && timestamp < previousTimestamp) {
-    throw new ExperiencePlayerError(
-      "NON_MONOTONIC_TIMESTAMP",
-      "timestamp must not precede the previous session timestamp.",
-      { timestamp, previousTimestamp }
+      `Operation ${operation} is unavailable during ${this.#state.interaction}.`,
+      { operation, interaction: this.#state.interaction, allowed }
     );
   }
 }
 
 function validateExperience(candidate) {
-  if (!plainObject(candidate)) invalidModel("experience must be a plain normalized object.");
+  if (!plainObject(candidate)) invalidModel("The experience must be a generated web artifact.");
+  if (candidate.web_artifact_version !== SUPPORTED_WEB_ARTIFACT_VERSION) {
+    throw new ExperiencePlayerError(
+      "UNSUPPORTED_CONTRACT_VERSION",
+      `Supported web artifact version is ${SUPPORTED_WEB_ARTIFACT_VERSION}.`,
+      { received: candidate.web_artifact_version ?? null }
+    );
+  }
 
-  ["experience", "scenario", "evaluation", "debrief", "references"].forEach(field => {
+  ["identity", "metadata", "public"].forEach(field => {
     if (!plainObject(candidate[field])) invalidModel(`${field} must be an object.`);
   });
-  ["competencies", "learning_objectives", "stages", "evidence", "decisions"].forEach(field => {
-    if (!Array.isArray(candidate[field])) invalidModel(`${field} must be an array.`);
+  ["scenario", "visual"].forEach(field => {
+    if (!plainObject(candidate.public[field])) invalidModel(`public.${field} must be an object.`);
   });
-  if (!candidate.stages.length) invalidModel("stages must contain an initial stage.");
-  if (!plainObject(candidate.evaluation.scoring)) invalidModel("evaluation.scoring must be an object.");
-  if (!Array.isArray(candidate.references.notebook)) invalidModel("references.notebook must be an array.");
-
-  ["id", "version", "slug", "title", "summary", "difficulty"].forEach(field => {
-    requireText(candidate.experience[field], `experience.${field}`);
-  });
-  if (!Number.isInteger(candidate.experience.estimated_duration) || candidate.experience.estimated_duration < 1) {
-    invalidModel("experience.estimated_duration must be a positive integer.");
+  if (!Array.isArray(candidate.public.stages) || candidate.public.stages.length === 0) {
+    invalidModel("public.stages must contain at least one stage.");
   }
 
-  const stageIds = uniqueIds(candidate.stages, "stage");
-  const evidenceIds = uniqueIds(candidate.evidence, "evidence");
-  const decisionIds = uniqueIds(candidate.decisions, "decision");
-  uniqueIds(candidate.competencies, "competency");
-  uniqueIds(candidate.learning_objectives, "learning objective");
-
-  candidate.evidence.forEach(item => {
-    if (!Array.isArray(item.revealed_by)) invalidModel(`Evidence ${item.id} must define revealed_by.`);
-    item.revealed_by.forEach(id => {
-      if (!decisionIds.has(id)) invalidModel(`Evidence ${item.id} references unknown decision ${id}.`);
-    });
-  });
-
-  candidate.stages.forEach(stage => {
-    if (!Array.isArray(stage.available_evidence) || !Array.isArray(stage.decisions)) {
-      invalidModel(`Stage ${stage.id} must define evidence and decisions.`);
-    }
-    stage.available_evidence.forEach(id => {
-      if (!evidenceIds.has(id)) invalidModel(`Stage ${stage.id} references unknown evidence ${id}.`);
-    });
-    stage.decisions.forEach(id => {
-      const decision = candidate.decisions.find(item => item.id === id);
-      if (!decision || decision.stage_id !== stage.id) {
-        invalidModel(`Stage ${stage.id} has invalid decision reference ${id}.`);
-      }
-    });
-  });
-
-  candidate.decisions.forEach(decision => {
-    if (!stageIds.has(decision.stage_id)) invalidModel(`Decision ${decision.id} has an unknown stage.`);
-    if (!Array.isArray(decision.evidence_revealed)) {
-      invalidModel(`Decision ${decision.id} must define evidence_revealed.`);
-    }
-    decision.evidence_revealed.forEach(id => {
-      if (!evidenceIds.has(id)) invalidModel(`Decision ${decision.id} references unknown evidence ${id}.`);
-    });
-    if (!stageIds.has(decision.next_stage) && !["COMPLETE", "BLOCKED"].includes(decision.next_stage)) {
-      invalidModel(`Decision ${decision.id} has an invalid destination.`);
-    }
-    ["score_effect", "safety_effect"].forEach(field => {
-      if (!Number.isInteger(decision[field])) invalidModel(`Decision ${decision.id} must define integer ${field}.`);
-    });
-    if (decision.time_cost !== undefined && (!Number.isInteger(decision.time_cost) || decision.time_cost < 0)) {
-      invalidModel(`Decision ${decision.id} has an invalid time_cost.`);
-    }
-  });
-
-  const scoring = candidate.evaluation.scoring;
-  ["initial_score", "minimum_score", "maximum_score", "safety_threshold"].forEach(field => {
-    if (!Number.isInteger(scoring[field])) invalidModel(`evaluation.scoring.${field} must be an integer.`);
-  });
-  if (scoring.minimum_score > scoring.maximum_score
-    || scoring.initial_score < scoring.minimum_score
-    || scoring.initial_score > scoring.maximum_score) {
-    invalidModel("evaluation scoring bounds are inconsistent.");
+  ["id", "content_version", "class"].forEach(field => requireText(candidate.identity[field], `identity.${field}`));
+  ["slug", "title", "summary", "language"].forEach(field => requireText(candidate.metadata[field], `metadata.${field}`));
+  if (!Number.isInteger(candidate.metadata.estimated_duration) || candidate.metadata.estimated_duration < 1) {
+    invalidModel("metadata.estimated_duration must be a positive integer.");
   }
+
+  const stageIds = new Set();
+  const decisionIds = new Set();
+  candidate.public.stages.forEach((stage, stageIndex) => {
+    if (!plainObject(stage)) invalidModel(`public.stages[${stageIndex}] must be an object.`);
+    ["id", "title", "situation"].forEach(field => requireText(stage[field], `public.stages[${stageIndex}].${field}`));
+    if (stageIds.has(stage.id)) invalidModel(`Duplicate stage identifier ${stage.id}.`);
+    stageIds.add(stage.id);
+    if (!Array.isArray(stage.decisions) || stage.decisions.length === 0) {
+      invalidModel(`Stage ${stage.id} must contain at least one decision.`);
+    }
+    stage.decisions.forEach((decision, decisionIndex) => {
+      if (!plainObject(decision)) invalidModel(`Stage ${stage.id} decision ${decisionIndex} must be an object.`);
+      ["id", "action"].forEach(field => requireText(decision[field], `Stage ${stage.id} decision ${field}`));
+      if (decisionIds.has(decision.id)) invalidModel(`Duplicate decision identifier ${decision.id}.`);
+      decisionIds.add(decision.id);
+    });
+  });
 }
 
-function uniqueIds(items, label) {
-  const ids = new Set();
-  items.forEach(item => {
-    if (!plainObject(item)) invalidModel(`Every ${label} must be an object.`);
-    requireText(item.id, `${label}.id`);
-    if (ids.has(item.id)) invalidModel(`Duplicate ${label} id ${item.id}.`);
-    ids.add(item.id);
-  });
-  return ids;
+function plainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 function requireText(value, field) {
@@ -409,4 +212,20 @@ function requireText(value, field) {
 
 function invalidModel(message) {
   throw new ExperiencePlayerError("INVALID_EXPERIENCE_MODEL", message);
+}
+
+function clone(value) {
+  return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+}
+
+function deepFreeze(value) {
+  if (Array.isArray(value)) {
+    value.forEach(deepFreeze);
+    return Object.freeze(value);
+  }
+  if (value && typeof value === "object") {
+    Object.values(value).forEach(deepFreeze);
+    return Object.freeze(value);
+  }
+  return value;
 }

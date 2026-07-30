@@ -12,7 +12,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { parseExperienceYaml } from "../experience-engine/adapter/yamlExperienceAdapter.js";
-import { ExperiencePlayer } from "../experience-engine/player/experiencePlayer.js";
+import { packageExperience } from "../experience-engine/packaging/experiencePackagingPipeline.js";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const defaultRepositoryRoot = path.resolve(scriptDirectory, "..");
@@ -25,45 +25,38 @@ export async function packageExperienceEngine({
   if (!supportedModes.has(mode)) throw new Error(`Unsupported packaging mode: ${mode}.`);
 
   const root = path.resolve(repositoryRoot);
-  const sourceRoot = path.join(root, "experience-engine");
   const frontendRoot = path.join(root, "Frontend");
-  const generatedRoot = path.join(frontendRoot, "generated");
-  const targetRoot = path.join(generatedRoot, "experience-engine");
-  const temporaryRoot = path.join(generatedRoot, ".experience-engine-build");
+  const targetRoot = path.join(frontendRoot, "generated", "experience-engine");
+  const temporaryRoot = path.join(frontendRoot, "generated", ".experience-engine-build");
+  const playerSource = path.join(root, "experience-engine", "player", "experiencePlayer.js");
+  const experienceRoot = path.join(root, "content", "experiences");
   assertInside(frontendRoot, targetRoot);
   assertInside(frontendRoot, temporaryRoot);
-
-  const playerSource = path.join(sourceRoot, "player", "experiencePlayer.js");
   await access(playerSource);
-  const experienceRoot = path.join(root, "content", "experiences");
+
   const experienceFiles = await findExperienceFiles(experienceRoot);
   const candidates = [];
   const skipped = [];
   const identifiers = new Set();
 
   for (const file of experienceFiles) {
-    const model = parseExperienceYaml(await readFile(file, "utf8"));
-    if (!model.experience) {
-      skipped.push({ file: relative(root, file), reason: "legacy_schema" });
-      continue;
-    }
+    const authoring = parseExperienceYaml(await readFile(file, "utf8"));
+    const id = authoring?.metadata?.id ?? relative(root, file);
 
-    validateCanonicalCandidate(model);
-    if (identifiers.has(model.experience.id)) {
-      throw new Error(`Duplicate experience identifier: ${model.experience.id}.`);
-    }
-    identifiers.add(model.experience.id);
-
-    if (!eligible(model, mode)) {
+    if (!eligible(authoring, mode)) {
       skipped.push({ file: relative(root, file), reason: "publication_state" });
       continue;
     }
 
-    new ExperiencePlayer({ experience: model });
-    candidates.push(model);
+    const artifact = packageExperience(authoring);
+    if (identifiers.has(artifact.identity.id)) {
+      throw new Error(`Duplicate experience identifier: ${artifact.identity.id}.`);
+    }
+    identifiers.add(artifact.identity.id);
+    candidates.push(artifact);
   }
 
-  candidates.sort((left, right) => left.experience.id.localeCompare(right.experience.id));
+  candidates.sort((left, right) => left.identity.id.localeCompare(right.identity.id));
   await rm(temporaryRoot, { recursive: true, force: true });
 
   try {
@@ -72,27 +65,25 @@ export async function packageExperienceEngine({
     await cp(playerSource, path.join(temporaryRoot, "player", "experiencePlayer.js"));
 
     const catalog = {
-      format: "Digital2Real Experience Package",
+      format: "Digital2Real Generated Web Artifact Catalog",
       version: 1,
       mode,
       experiences: []
     };
 
-    for (const model of candidates) {
-      const fileName = `${model.experience.id}.json`;
+    for (const artifact of candidates) {
+      const fileName = `${artifact.identity.id}.json`;
       await writeFile(
         path.join(temporaryRoot, "experiences", fileName),
-        `${JSON.stringify(model, null, 2)}\n`,
+        `${JSON.stringify(artifact, null, 2)}\n`,
         "utf8"
       );
       catalog.experiences.push({
-        id: model.experience.id,
-        slug: model.experience.slug,
-        title: model.experience.title,
-        summary: model.experience.summary,
-        difficulty: model.experience.difficulty,
-        estimatedDuration: model.experience.estimated_duration,
-        status: model.experience.status,
+        id: artifact.identity.id,
+        class: artifact.identity.class,
+        title: artifact.metadata.title,
+        summary: artifact.metadata.summary,
+        estimatedDuration: artifact.metadata.estimated_duration,
         path: `experiences/${fileName}`
       });
     }
@@ -113,24 +104,14 @@ export async function packageExperienceEngine({
   return Object.freeze({
     mode,
     output: relative(root, targetRoot),
-    packaged: Object.freeze(candidates.map(model => model.experience.id)),
+    packaged: Object.freeze(candidates.map(artifact => artifact.identity.id)),
     skipped: Object.freeze(skipped.map(item => Object.freeze(item)))
   });
 }
 
-function validateCanonicalCandidate(model) {
-  const id = model.experience.id;
-  if (model.experience.status !== model.web?.publication_status) {
-    throw new Error(`Publication status mismatch in ${id}.`);
-  }
-  if (!model.metadata?.technical_validation) {
-    throw new Error(`Missing technical validation metadata in ${id}.`);
-  }
-}
-
-function eligible(model, mode) {
-  const status = model.experience.status;
-  const validation = model.metadata.technical_validation.status;
+function eligible(authoring, mode) {
+  const status = authoring?.metadata?.status;
+  const validation = authoring?.private?.technical_validation?.status;
   if (mode === "publish") return status === "published" && validation === "pass";
   return ["technical_review", "approved", "published"].includes(status)
     && ["pending", "pass_with_warnings", "pass"].includes(validation);

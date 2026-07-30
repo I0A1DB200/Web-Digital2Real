@@ -5,7 +5,6 @@ import test from "node:test";
 import {
   normalizeExperienceDefinition
 } from "../experienceDefinitionNormalizer.js";
-import { parseExperienceYaml } from "../../adapter/yamlExperienceAdapter.js";
 import {
   validateNormalizedExperience
 } from "../../validation/normalizedExperienceValidator.js";
@@ -26,11 +25,6 @@ const runtimeInputUrl = new URL(
   "../../validation/fixtures/normalized-experience-v1-valid.json",
   import.meta.url
 );
-const ee0002Url = new URL(
-  "../../../content/experiences/siemens/EE-0002-drive-reset/experience.yaml",
-  import.meta.url
-);
-
 const readJson = async url => JSON.parse(await readFile(url, "utf8"));
 const clone = value => JSON.parse(JSON.stringify(value));
 const codes = result => result.errors.map(error => error.code);
@@ -81,17 +75,13 @@ test("rejects an unsupported Authoring contract version", async () => {
   assert.ok(codes(result).includes("CONTRACT_VERSION_UNSUPPORTED"));
 });
 
-test("rejects legacy content and EE-0002 without adapting either", async () => {
+test("rejects legacy content without adapting it", async () => {
   const legacy = await readJson(legacyFixtureUrl);
-  const ee0002 = parseExperienceYaml(await readFile(ee0002Url, "utf8"));
 
   const legacyResult = normalizeExperienceDefinition(legacy);
-  const ee0002Result = normalizeExperienceDefinition(ee0002);
 
   assert.equal(legacyResult.inputProfile, "legacy_unadapted");
   assert.deepEqual(codes(legacyResult), ["LEGACY_CONTRACT_UNSUPPORTED"]);
-  assert.equal(ee0002Result.inputProfile, "legacy_unadapted");
-  assert.deepEqual(codes(ee0002Result), ["LEGACY_CONTRACT_UNSUPPORTED"]);
 });
 
 test("rejects Runtime, Generated Artifact, Player state and unknown inputs", async () => {

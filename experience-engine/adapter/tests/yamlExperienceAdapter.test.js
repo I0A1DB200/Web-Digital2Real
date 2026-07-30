@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { ExperiencePlayer } from "../../player/experiencePlayer.js";
+import { validateExperienceDefinition } from "../../validation/experienceDefinitionValidator.js";
 import {
   createExperienceYamlAdapter,
   parseExperienceYaml
@@ -13,17 +13,17 @@ const realExperiencePath = new URL(
   import.meta.url
 );
 
-test("parses the canonical drive-reset experience into a Player-compatible model", async () => {
+test("parses the canonical drive-reset Authoring Definition v1", async () => {
   const source = await readFile(realExperiencePath, "utf8");
-  const experience = parseExperienceYaml(source);
-  const player = new ExperiencePlayer({ experience });
+  const authoring = parseExperienceYaml(source);
+  const validation = validateExperienceDefinition(authoring);
 
-  assert.equal(experience.experience.id, "EXP-SIEMENS-DRIVE-002");
-  assert.equal(experience.stages.length, 7);
-  assert.equal(experience.decisions.length, 14);
-  assert.equal(player.getState().experience.id, "EXP-SIEMENS-DRIVE-002");
-  assert.equal(Object.isFrozen(experience), true);
-  assert.equal(Object.isFrozen(experience.stages), true);
+  assert.equal(validation.compatible, true);
+  assert.equal(authoring.metadata.id, "EXP-SIEMENS-DRIVE-002");
+  assert.equal(authoring.public.stages.length, 7);
+  assert.equal(authoring.public.decisions.length, 14);
+  assert.equal(Object.isFrozen(authoring), true);
+  assert.equal(Object.isFrozen(authoring.public.stages), true);
 });
 
 test("supports mappings, sequences, quoted values and block scalars", () => {

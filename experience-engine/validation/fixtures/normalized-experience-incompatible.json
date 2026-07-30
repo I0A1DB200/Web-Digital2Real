@@ -1,0 +1,11 @@
+{
+  "contract_version": "1.0.0",
+  "metadata": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning"
+  },
+  "capability_references": [],
+  "public": {},
+  "private": {}
+}

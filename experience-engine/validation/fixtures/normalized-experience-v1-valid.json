@@ -1,0 +1,143 @@
+{
+  "runtime_contract_version": "1.0.0",
+  "identity": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning"
+  },
+  "capabilities": [
+    {
+      "capability_id": "ICF-01",
+      "competency_ids": [
+        "DIAG-EVIDENCE-01"
+      ]
+    }
+  ],
+  "public": {
+    "metadata": {
+      "slug": "generic-diagnostic-experience",
+      "title": "Generic diagnostic experience",
+      "summary": "Diagnose a stopped industrial machine through progressive evidence.",
+      "estimated_duration": 20,
+      "language": "en"
+    },
+    "scenario": {
+      "initial_context": "A material handling machine has stopped during production.",
+      "operational_state": "The machine is stationary in a controlled state.",
+      "initiating_event": "A process interruption occurred.",
+      "learner_role": "Automation engineer",
+      "safety_context": {
+        "safe_state": "No hazardous movement is permitted before authorization.",
+        "intervention_constraints": [
+          "Preserve evidence before changing machine state."
+        ]
+      }
+    },
+    "stages": [
+      {
+        "id": "STAGE-INCIDENT",
+        "title": "Incident",
+        "situation": "The machine is stopped.",
+        "decisions": [
+          {
+            "id": "DEC-INSPECT",
+            "action": "Inspect available evidence."
+          }
+        ]
+      },
+      {
+        "id": "STAGE-VALIDATE",
+        "title": "Validation",
+        "situation": "Evidence supports a controlled recovery.",
+        "decisions": [
+          {
+            "id": "DEC-COMPLETE",
+            "action": "Validate recovery and complete the experience."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "EVID-INITIAL",
+        "type": "initial_observation",
+        "source": "Machine observation",
+        "content": "The machine is stationary.",
+        "reliability": "high"
+      },
+      {
+        "id": "EVID-DIAGNOSTIC",
+        "type": "diagnostic",
+        "source": "Controlled inspection",
+        "content": "The interruption condition is confirmed.",
+        "reliability": "confirmed"
+      }
+    ],
+    "visual": {
+      "educational_purpose": "Show the observable difference between the stopped state and controlled recovery.",
+      "representation": "planned"
+    }
+  },
+  "private": {
+    "relations": [
+      {
+        "stage_id": "STAGE-INCIDENT",
+        "decision_id": "DEC-INSPECT",
+        "destination": "STAGE-VALIDATE",
+        "evidence_revealed": [
+          "EVID-DIAGNOSTIC"
+        ],
+        "feedback_id": "FEEDBACK-INSPECT",
+        "score_effect": 10,
+        "safety_effect": 10,
+        "time_cost": 3
+      },
+      {
+        "stage_id": "STAGE-VALIDATE",
+        "decision_id": "DEC-COMPLETE",
+        "destination": "COMPLETE",
+        "evidence_revealed": [],
+        "feedback_id": "FEEDBACK-COMPLETE",
+        "score_effect": 10,
+        "safety_effect": 10,
+        "time_cost": 5
+      }
+    ],
+    "diagnosis": {
+      "root_cause": "A confirmed process interruption prevents operation.",
+      "recovery_conditions": [
+        "Confirm the cause and validate controlled operation."
+      ]
+    },
+    "feedback": [
+      {
+        "id": "FEEDBACK-INSPECT",
+        "classification": "strong",
+        "rationale": "Inspection reduces uncertainty without changing machine state.",
+        "consequence": "Diagnostic evidence becomes available."
+      },
+      {
+        "id": "FEEDBACK-COMPLETE",
+        "classification": "strong",
+        "rationale": "Recovery is complete only after validation.",
+        "consequence": "The experience completes after controlled validation."
+      }
+    ],
+    "scoring": {
+      "purpose": "session_feedback",
+      "initial_score": 50,
+      "minimum_score": 0,
+      "maximum_score": 100,
+      "safety_threshold": 20
+    },
+    "debrief": {
+      "fault_summary": "A process interruption stopped the machine.",
+      "correct_reasoning": [
+        "Establish the safe state and inspect evidence before recovery."
+      ],
+      "recovery": [
+        "Confirm the cause and validate controlled operation."
+      ]
+    }
+  }
+}

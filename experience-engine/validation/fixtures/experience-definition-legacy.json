@@ -1,0 +1,16 @@
+{
+  "id": "EXP-SIE-PN-001",
+  "title": "CPU STOP after power loss",
+  "status": "technical-review",
+  "language": "es",
+  "version": "0.1.0",
+  "classification": {
+    "platform": "Siemens",
+    "domain": "industrial-automation",
+    "difficulty": "intermediate"
+  },
+  "scenario": {
+    "operational_state": "Production stopped after a short power interruption."
+  },
+  "stages": []
+}

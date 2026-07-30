@@ -1,0 +1,180 @@
+{
+  "contract_version": "1.0.0",
+  "metadata": {
+    "id": "EXP-GENERIC-DIAG-001",
+    "content_version": "1.0.0",
+    "class": "learning",
+    "status": "technical_review",
+    "language": "en"
+  },
+  "classification": {
+    "platform": "Vendor-neutral industrial control",
+    "domain": "Industrial diagnostics",
+    "industry": "Manufacturing",
+    "machine_type": "Material handling machine",
+    "difficulty": "intermediate"
+  },
+  "capability_references": [
+    {
+      "capability_id": "ICF-01",
+      "competency_ids": [
+        "DIAG-EVIDENCE-01"
+      ]
+    }
+  ],
+  "public": {
+    "slug": "generic-diagnostic-experience",
+    "title": "Generic diagnostic experience",
+    "summary": "Diagnose a stopped industrial machine through progressive evidence.",
+    "estimated_duration": 20,
+    "scenario": {
+      "initial_context": "A material handling machine has stopped during production.",
+      "operational_state": "The machine is stationary in a controlled state.",
+      "initiating_event": "A process interruption occurred.",
+      "learner_role": "Automation engineer",
+      "safety_context": {
+        "safe_state": "No hazardous movement is permitted before authorization.",
+        "intervention_constraints": [
+          "Preserve evidence before changing machine state."
+        ]
+      }
+    },
+    "learning_objectives": [
+      {
+        "id": "OBJ-EVIDENCE",
+        "description": "Use evidence before selecting a recovery action.",
+        "capability_id": "ICF-01",
+        "competency_id": "DIAG-EVIDENCE-01"
+      }
+    ],
+    "stages": [
+      {
+        "id": "STAGE-INCIDENT",
+        "title": "Incident",
+        "situation": "The machine is stopped.",
+        "evidence_ids": [
+          "EVID-INITIAL"
+        ],
+        "decision_ids": [
+          "DEC-INSPECT"
+        ]
+      },
+      {
+        "id": "STAGE-VALIDATE",
+        "title": "Validation",
+        "situation": "Evidence supports a controlled recovery.",
+        "evidence_ids": [
+          "EVID-INITIAL",
+          "EVID-DIAGNOSTIC"
+        ],
+        "decision_ids": [
+          "DEC-COMPLETE"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "EVID-INITIAL",
+        "type": "initial_observation",
+        "source": "Machine observation",
+        "content": "The machine is stationary.",
+        "reliability": "high",
+        "revealed_by": []
+      },
+      {
+        "id": "EVID-DIAGNOSTIC",
+        "type": "diagnostic",
+        "source": "Controlled inspection",
+        "content": "The interruption condition is confirmed.",
+        "reliability": "confirmed",
+        "revealed_by": [
+          "DEC-INSPECT"
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "id": "DEC-INSPECT",
+        "stage_id": "STAGE-INCIDENT",
+        "action": "Inspect available evidence."
+      },
+      {
+        "id": "DEC-COMPLETE",
+        "stage_id": "STAGE-VALIDATE",
+        "action": "Validate recovery and complete the experience."
+      }
+    ],
+    "visual": {
+      "educational_purpose": "Show the observable difference between the stopped state and controlled recovery.",
+      "representation": "planned"
+    }
+  },
+  "private": {
+    "fault_model": {
+      "root_cause": "A confirmed process interruption prevents operation.",
+      "recovery_conditions": [
+        "Confirm the cause and validate controlled operation."
+      ]
+    },
+    "diagnostic_model": {
+      "hypotheses": [
+        {
+          "id": "HYP-INTERRUPTION",
+          "statement": "A process interruption prevents operation.",
+          "initial_status": "likely"
+        }
+      ],
+      "confirmed_root_cause": "HYP-INTERRUPTION",
+      "critical_path": [
+        "DEC-INSPECT",
+        "DEC-COMPLETE"
+      ]
+    },
+    "decision_logic": [
+      {
+        "decision_id": "DEC-INSPECT",
+        "rationale": "Inspection reduces uncertainty without changing machine state.",
+        "classification": "strong",
+        "consequence": "Diagnostic evidence becomes available.",
+        "evidence_revealed": [
+          "EVID-DIAGNOSTIC"
+        ],
+        "next_stage": "STAGE-VALIDATE",
+        "score_effect": 10,
+        "safety_effect": 10,
+        "time_cost": 3
+      },
+      {
+        "decision_id": "DEC-COMPLETE",
+        "rationale": "Recovery is complete only after validation.",
+        "classification": "strong",
+        "consequence": "The experience completes after controlled validation.",
+        "evidence_revealed": [],
+        "next_stage": "COMPLETE",
+        "score_effect": 10,
+        "safety_effect": 10,
+        "time_cost": 5
+      }
+    ],
+    "scoring": {
+      "purpose": "session_feedback",
+      "initial_score": 50,
+      "minimum_score": 0,
+      "maximum_score": 100,
+      "safety_threshold": 20
+    },
+    "debrief": {
+      "fault_summary": "A process interruption stopped the machine.",
+      "correct_reasoning": [
+        "Establish the safe state and inspect evidence before recovery."
+      ],
+      "recovery": [
+        "Confirm the cause and validate controlled operation."
+      ]
+    },
+    "technical_validation": {
+      "status": "pending",
+      "evidence": []
+    }
+  }
+}

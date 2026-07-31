@@ -83,6 +83,13 @@ test("preview packages canonical Experiences and preserves the exact EE-0002 art
     catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008").cover,
     "assets/EXP-IOLINK-DEVICE-008/cover.webp"
   );
+  const ioLink = catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008");
+  assert.equal(ioLink.locales.es, "experiences/EXP-IOLINK-DEVICE-008.es.json");
+  assert.equal(ioLink.locales.en, "experiences/EXP-IOLINK-DEVICE-008.en.json");
+  assert.equal(ioLink.localizedMetadata.en.title, "IO-Link Device Offline");
+  await access(path.join(generatedRoot, ioLink.locales.es));
+  await access(path.join(generatedRoot, ioLink.locales.en));
+  await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
 });
 
@@ -161,6 +168,45 @@ test("publish excludes a technical-review experience while preview includes it",
     "EXP-IOLINK-DEVICE-008",
     "EXP-SIEMENS-DRIVE-002"
   ]);
+});
+
+test("catalog modes enforce the complete approved publication-state boundary", async t => {
+  const scenarios = [
+    { status: "technical_review", validation: "pass_with_warnings", preview: true, publish: false },
+    { status: "approved", validation: "pass", preview: true, publish: false },
+    { status: "published", validation: "pass", preview: true, publish: true },
+    { status: "published", validation: "pass_with_warnings", preview: true, publish: false }
+  ];
+
+  for (const scenario of scenarios) {
+    const root = await createRepository();
+    t.after(() => rm(root, { recursive: true, force: true }));
+    const source = path.join(
+      root,
+      "content",
+      "experiences",
+      "siemens",
+      "EE-0002-drive-reset",
+      "experience.yaml"
+    );
+    const authoring = (await readFile(source, "utf8"))
+      .replace('  status: "technical_review"', `  status: "${scenario.status}"`)
+      .replace('    status: "pass_with_warnings"', `    status: "${scenario.validation}"`);
+    await writeFile(source, authoring, "utf8");
+
+    const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+    const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
+    assert.equal(
+      preview.packaged.includes("EXP-SIEMENS-DRIVE-002"),
+      scenario.preview,
+      `preview/${scenario.status}/${scenario.validation}`
+    );
+    assert.equal(
+      publish.packaged.includes("EXP-SIEMENS-DRIVE-002"),
+      scenario.publish,
+      `publish/${scenario.status}/${scenario.validation}`
+    );
+  }
 });
 
 test("duplicate identifiers fail and no legacy fallback is used", async t => {

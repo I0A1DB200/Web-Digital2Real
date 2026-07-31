@@ -1,5 +1,25 @@
 # Changelog
 
+## Platform Foundation RC1
+
+### Confirmed
+
+- Finalized the deterministic catalog boundary: preview accepts technically reviewable, approved and published Experiences, while production accepts only published Experiences with passing technical validation.
+- Preserved EE-0002 as canonical regression content and EE-0008 as the D2R-STD-001 reference package without changing either Experience, the Engine contracts or the Player.
+- Completed the Platform Foundation validation baseline for Experience content production.
+
+## Experience Package v1 pilot
+
+### Added
+
+- Established D2R-STD-001 and migrated EE-0008 to the minimum Experience Package structure with ES/EN locale documents, documented media provenance and controlled fallback.
+- Added deterministic localization resolution and localized Generated Web Artifact variants without duplicating Experience logic.
+
+### Changed
+
+- Experience packaging now validates standardized packages, publishes only declared web derivatives and keeps legacy Experiences compatible until explicitly migrated.
+- Experience Lab selects localized artifacts from the document language while preserving the generic Player and EE-0002 behavior.
+
 ## Repository architecture baseline and hygiene
 
 ### Added

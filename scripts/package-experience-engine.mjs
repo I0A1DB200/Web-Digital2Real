@@ -6,12 +6,17 @@ import {
   readFile,
   rename,
   rm,
+  stat,
   writeFile
 } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { parseExperienceYaml } from "../experience-engine/adapter/yamlExperienceAdapter.js";
+import {
+  resolveExperienceLocalization,
+  selectLocaleDocument
+} from "../experience-engine/localization/experienceLocalization.js";
 import { packageExperience } from "../experience-engine/packaging/experiencePackagingPipeline.js";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -48,12 +53,30 @@ export async function packageExperienceEngine({
       continue;
     }
 
-    const artifact = packageExperience(authoring);
+    const localized = await resolvePackageLocales(authoring, path.dirname(file));
+    const defaultAuthoring = localized
+      ? resolveExperienceLocalization(
+          authoring,
+          selectLocaleDocument(localized.defaultLocale, localized.documents, localized.defaultLocale)
+        )
+      : authoring;
+    const artifact = packageExperience(defaultAuthoring);
     if (identifiers.has(artifact.identity.id)) {
       throw new Error(`Duplicate experience identifier: ${artifact.identity.id}.`);
     }
     identifiers.add(artifact.identity.id);
-    candidates.push({ artifact, sourceDirectory: path.dirname(file) });
+    const localizedArtifacts = localized
+      ? Object.fromEntries(Object.entries(localized.documents).map(([locale, document]) => [
+          locale,
+          packageExperience(resolveExperienceLocalization(authoring, document))
+        ]))
+      : null;
+    candidates.push({
+      artifact,
+      localizedArtifacts,
+      defaultLocale: localized?.defaultLocale ?? null,
+      sourceDirectory: path.dirname(file)
+    });
   }
 
   candidates.sort((left, right) => left.artifact.identity.id.localeCompare(right.artifact.identity.id));
@@ -72,14 +95,18 @@ export async function packageExperienceEngine({
     };
 
     for (const candidate of candidates) {
-      const { artifact, sourceDirectory } = candidate;
+      const { artifact, localizedArtifacts, defaultLocale, sourceDirectory } = candidate;
       await copyMediaAssets({ artifact, sourceDirectory, temporaryRoot });
-      const fileName = `${artifact.identity.id}.json`;
-      await writeFile(
-        path.join(temporaryRoot, "experiences", fileName),
-        `${JSON.stringify(artifact, null, 2)}\n`,
-        "utf8"
-      );
+      const localePaths = {};
+      if (localizedArtifacts) {
+        for (const [locale, localizedArtifact] of Object.entries(localizedArtifacts)) {
+          const localizedFile = `${artifact.identity.id}.${locale}.json`;
+          await writeArtifact(temporaryRoot, localizedFile, localizedArtifact);
+          localePaths[locale] = `experiences/${localizedFile}`;
+        }
+      } else {
+        await writeArtifact(temporaryRoot, `${artifact.identity.id}.json`, artifact);
+      }
       catalog.experiences.push({
         id: artifact.identity.id,
         class: artifact.identity.class,
@@ -87,7 +114,21 @@ export async function packageExperienceEngine({
         summary: artifact.metadata.summary,
         estimatedDuration: artifact.metadata.estimated_duration,
         cover: findCover(artifact),
-        path: `experiences/${fileName}`
+        ...(localizedArtifacts
+          ? {
+              defaultLocale,
+              locales: localePaths,
+              localizedMetadata: Object.fromEntries(
+                Object.entries(localizedArtifacts).map(([locale, localizedArtifact]) => [
+                  locale,
+                  {
+                    title: localizedArtifact.metadata.title,
+                    summary: localizedArtifact.metadata.summary
+                  }
+                ])
+              )
+            }
+          : { path: `experiences/${artifact.identity.id}.json` })
       });
     }
 
@@ -110,6 +151,59 @@ export async function packageExperienceEngine({
     packaged: Object.freeze(candidates.map(candidate => candidate.artifact.identity.id)),
     skipped: Object.freeze(skipped.map(item => Object.freeze(item)))
   });
+}
+
+async function writeArtifact(temporaryRoot, fileName, artifact) {
+  await writeFile(
+    path.join(temporaryRoot, "experiences", fileName),
+    `${JSON.stringify(artifact, null, 2)}\n`,
+    "utf8"
+  );
+}
+
+async function resolvePackageLocales(authoring, packageDirectory) {
+  if (!authoring.localization) return null;
+  const folderName = path.basename(packageDirectory);
+  if (!/^EE-[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(folderName)) {
+    throw new Error(`Invalid Experience Package folder name: ${folderName}.`);
+  }
+  for (const required of ["experience.yaml", "README.md", "locales", "media-source", "assets"]) {
+    await access(path.join(packageDirectory, required));
+  }
+  const config = authoring.localization;
+  if (typeof config.default_locale !== "string"
+    || !Array.isArray(config.supported_locales)
+    || !config.supported_locales.includes(config.default_locale)
+    || !config.locale_files) {
+    throw new Error(`Invalid localization configuration in ${folderName}.`);
+  }
+  const documents = {};
+  for (const locale of config.supported_locales) {
+    const relativeFile = config.locale_files[locale];
+    if (typeof relativeFile !== "string") throw new Error(`Missing locale file for ${locale}.`);
+    const localeFile = path.resolve(packageDirectory, relativeFile);
+    assertInside(packageDirectory, localeFile);
+    const localeStats = await stat(localeFile);
+    if (!localeStats.isFile()) throw new Error(`Locale path is not a file: ${relativeFile}.`);
+    const document = parseExperienceYaml(await readFile(localeFile, "utf8"));
+    if (document.locale !== locale) throw new Error(`Locale identity mismatch for ${relativeFile}.`);
+    documents[locale] = document;
+    resolveExperienceLocalization(authoring, document);
+  }
+  await validateAssetReferences(authoring, packageDirectory);
+  return { defaultLocale: config.default_locale, documents };
+}
+
+async function validateAssetReferences(authoring, packageDirectory) {
+  for (const asset of authoring.public?.visual?.assets ?? []) {
+    if (typeof asset.src !== "string" || asset.src.includes("..")
+      || !asset.src.startsWith(`assets/${authoring.metadata.id}/`)) {
+      throw new Error(`Invalid asset path in ${authoring.metadata.id}: ${String(asset.src)}.`);
+    }
+    const source = path.resolve(packageDirectory, "assets", path.basename(asset.src));
+    assertInside(packageDirectory, source);
+    await access(source);
+  }
 }
 
 async function copyMediaAssets({ artifact, sourceDirectory, temporaryRoot }) {

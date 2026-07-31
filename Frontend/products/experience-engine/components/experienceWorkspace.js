@@ -41,12 +41,16 @@ export function createExperienceWorkspace({
         catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
         assertCatalog(catalog);
       }
-      const item = catalog.experiences.find(experience => experience.id === experienceId);
+      const item = localizeCatalogItem(
+        catalog.experiences.find(experience => experience.id === experienceId),
+        documentRef.documentElement?.lang
+      );
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
       renderStatus(`Loading ${item.title}…`);
 
+      const artifactPath = selectArtifactPath(item, documentRef.documentElement?.lang);
       const [artifact, playerModule] = await Promise.all([
-        loadJson(`${baseUrl}/${item.path}`, fetchImpl),
+        loadJson(`${baseUrl}/${artifactPath}`, fetchImpl),
         importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
       ]);
       if (typeof playerModule.ExperiencePlayer !== "function") {
@@ -121,7 +125,9 @@ export function createExperienceWorkspace({
     if (!catalog.experiences.length) {
       appendText(documentRef, list, "p", "experience-workspace__empty", "No experiences are available.");
     }
-    catalog.experiences.forEach(item => {
+    catalog.experiences
+      .map(item => localizeCatalogItem(item, documentRef.documentElement?.lang))
+      .forEach(item => {
       const article = createElement(documentRef, "article", "experience-card");
       if (item.cover) {
         const cover = createElement(documentRef, "img", "experience-card__cover");
@@ -440,6 +446,26 @@ function assertCatalog(catalog) {
   if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)) {
     throw new Error("The generated Experience Engine catalog is invalid.");
   }
+}
+
+function selectArtifactPath(item, requestedLocale) {
+  if (!item.locales) return item.path;
+  const normalized = typeof requestedLocale === "string"
+    ? requestedLocale.toLowerCase().split("-")[0]
+    : "";
+  const path = item.locales[normalized] ?? item.locales[item.defaultLocale];
+  if (!path) throw new Error(`No localized artifact is available for ${item.id}.`);
+  return path;
+}
+
+function localizeCatalogItem(item, requestedLocale) {
+  if (!item || !item.localizedMetadata) return item;
+  const normalized = typeof requestedLocale === "string"
+    ? requestedLocale.toLowerCase().split("-")[0]
+    : "";
+  const copy = item.localizedMetadata[normalized]
+    ?? item.localizedMetadata[item.defaultLocale];
+  return copy ? { ...item, ...copy } : item;
 }
 
 function safeErrorMessage(error) {

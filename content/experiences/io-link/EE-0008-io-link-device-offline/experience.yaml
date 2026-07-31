@@ -7,6 +7,15 @@ metadata:
   status: "technical_review"
   language: "es"
 
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
 classification:
   platform: "IO-Link"
   domain: "Field device diagnostics"

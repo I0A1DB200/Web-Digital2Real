@@ -146,6 +146,53 @@ test("renders safe errors for missing experiences and unsupported contracts", as
   assert.doesNotMatch(workspace.element.text, /root_cause|scoring|fault_model/);
 });
 
+test("selects the document locale and falls back through generated catalog metadata", async () => {
+  const artifact = await readArtifact();
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "en-GB" };
+  const requests = [];
+  const catalog = {
+    version: 1,
+    experiences: [{
+      id: artifact.identity.id,
+      class: artifact.identity.class,
+      title: "Título por defecto",
+      summary: "Resumen por defecto",
+      estimatedDuration: 35,
+      defaultLocale: "es",
+      locales: {
+        es: "experiences/item.es.json",
+        en: "experiences/item.en.json"
+      },
+      localizedMetadata: {
+        es: { title: "Título por defecto", summary: "Resumen por defecto" },
+        en: { title: "English title", summary: "English summary" }
+      }
+    }]
+  };
+  const responses = new Map([
+    ["./generated/experience-engine/catalog.json", catalog],
+    ["./generated/experience-engine/experiences/item.en.json", artifact]
+  ]);
+  const workspace = createExperienceWorkspace({
+    documentRef,
+    fetchImpl: async location => {
+      requests.push(location);
+      return {
+        ok: responses.has(location),
+        status: responses.has(location) ? 200 : 404,
+        json: async () => structuredClone(responses.get(location))
+      };
+    },
+    importPlayer: async () => ({ ExperiencePlayer })
+  });
+
+  await workspace.initialise();
+  assert.match(workspace.element.text, /English title/);
+  await workspace.openExperience(artifact.identity.id);
+  assert.ok(requests.includes("./generated/experience-engine/experiences/item.en.json"));
+});
+
 test("workspace and application use generated JSON without ID-specific handling", async () => {
   const workspaceSource = await readFile(
     new URL("../components/experienceWorkspace.js", import.meta.url),

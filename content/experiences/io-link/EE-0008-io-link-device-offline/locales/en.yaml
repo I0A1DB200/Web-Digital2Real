@@ -1,0 +1,188 @@
+locale: "en"
+translations:
+  title: "IO-Link Device Offline"
+  summary: "Use evidence to diagnose why an IO-Link sensor is offline and recover the station without unjustified restarts or replacement."
+  scenario:
+    initial_context: "At 08:17, station 3 of an automated conveying and sorting line stops during normal production. Boxes are accumulating and the operator reports: ‘The conveyor has stopped and the boxes are no longer moving. It looks like the sensor is not detecting.’"
+    operational_state: "Station 3 is stopped; the other stations are running, no emergency stop is active, the PLC is in RUN, and the HMI reports lost communication with an IO-Link device."
+    initiating_event: "The presence sensor stops confirming product passage during normal production, with no previous intervention recorded."
+    learner_role: "Automation technician responsible for locating the fault through observation, hypotheses, evidence, elimination, repair, and verification."
+    safety_context:
+      safe_state: "The station must remain stopped and secured before inspecting, measuring, or handling the device and its connection."
+      intervention_constraints:
+        - "Do not bypass safety functions or force signals."
+        - "Secure the area before accessing the sensor or connector."
+        - "Preserve alarms and diagnostic states before restarting equipment."
+        - "Perform electrical measurements using the authorized procedure and equipment."
+        - "Confirm complete recovery before returning the station to production."
+  learning_objectives:
+    COMP-STATE-INTERPRETATION:
+      description: "Interpret the PLC, HMI, sensor, and master-port states together."
+    COMP-EVIDENCE-TROUBLESHOOTING:
+      description: "Prioritize observations and measurements that distinguish device, power, and communication faults."
+    COMP-CONTROLLED-RECOVERY:
+      description: "Repair the connection and verify the device, signal, and station operation under controlled conditions."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Station 3 stopped"
+      situation: "It is 08:17. The line has stopped at station 3, boxes are accumulating, and the presence sensor is not confirming product passage. The other stations remain operational."
+    STAGE-02-HMI-ALARM:
+      title: "First available information"
+      situation: "The HMI shows: Station 3 — Sensor communication lost — IO-Link Port 3."
+    STAGE-03-SENSOR:
+      title: "Sensor inspection"
+      situation: "The sensor is correctly mounted and shows no visible damage. Its status LED remains off."
+    STAGE-04-MASTER:
+      title: "IO-Link master status"
+      situation: "The master is operational. Power and RUN are active; port 3 flashes red while the other ports remain operational."
+    STAGE-05-DIAGNOSTICS:
+      title: "Online diagnostics"
+      situation: "Online diagnostics show: IO-Link Master — Port 3 — Device not reachable. The topology confirms PLC → IO-Link Master → Port 3 → Presence Sensor."
+    STAGE-06-ELECTRICAL:
+      title: "Electrical verification"
+      situation: "The authorized voltage measurement at the sensor connector reads 0.0 VDC."
+    STAGE-07-ROOT-CAUSE:
+      title: "Cause located"
+      situation: "Physical inspection shows that the M12 connector is partially unscrewed. It is not fully disconnected, but electrical contact has been lost."
+    STAGE-08-RECOVERY:
+      title: "Recovery verification"
+      situation: "After securing the connector, sensor power returns, the LED illuminates, port 3 becomes operational, the alarm clears, and the station detects boxes again."
+  evidence:
+    EVID-01-OPERATOR-REPORT:
+      source: "Line operator"
+      content: "The conveyor has stopped, the boxes are no longer moving, and it looks like the sensor is not detecting."
+    EVID-02-HMI-ALARM:
+      source: "Station HMI"
+      content: "Station 3 — Sensor communication lost — IO-Link Port 3."
+    EVID-03-SENSOR-LED:
+      source: "Sensor inspection"
+      content: "The sensor has no visible damage and its status LED is off."
+    EVID-04-MASTER-PORT:
+      source: "IO-Link master"
+      content: "Power and RUN active; ports 1, 2, and 4 operational; port 3 flashing red."
+    EVID-05-ONLINE-DIAGNOSTIC:
+      source: "Online diagnostics"
+      content: "IO-Link Master — Port 3 — Device not reachable."
+    EVID-06-TOPOLOGY:
+      source: "Station topology"
+      content: "PLC → IO-Link Master → Port 3 → Presence Sensor."
+    EVID-07-ZERO-VOLTAGE:
+      source: "Measurement at sensor connector"
+      content: "The authorized measurement reads 0.0 VDC."
+    EVID-08-LOOSE-M12:
+      source: "M12 connector"
+      content: "The connector is partially unscrewed and has lost electrical contact."
+    EVID-09-RECOVERY:
+      source: "Controlled functional test"
+      content: "Sensor powered, LED active, port 3 operational, alarm cleared, and box detection restored."
+  decisions:
+    DEC-D1-A-INSPECT-DEVICE:
+      action: "Inspect the status of the affected device."
+    DEC-D1-B-RESTART-PLC:
+      action: "Restart the PLC."
+    DEC-D1-C-CLEAR-ALARM:
+      action: "Clear the alarm and start again."
+    DEC-D1-D-REPLACE-SENSOR:
+      action: "Replace the sensor immediately."
+    DEC-D2-A-LED-OFF:
+      action: "Prioritize the sensor LED being off as evidence."
+    DEC-D2-B-DIRTY-BRACKET:
+      action: "Prioritize the dirt observed on the bracket."
+    DEC-D2-C-GUIDE-PROXIMITY:
+      action: "Prioritize the sensor being close to the guide."
+    DEC-D2-D-CABLE-COLOR:
+      action: "Prioritize the cable being black."
+    DEC-D3-A-LOCALIZE-PORT:
+      action: "Localize the problem to the device or connection on port 3."
+    DEC-D3-B-PLC-FAULT:
+      action: "Conclude that the PLC has failed."
+    DEC-D3-C-NETWORK-DOWN:
+      action: "Conclude that the entire IO-Link network is down."
+    DEC-D3-D-PROFINET-FAULT:
+      action: "Conclude that there is a general Profinet fault."
+    DEC-D4-A-POWER-CONNECTION:
+      action: "Prioritize loss of power or a connection problem at the device."
+    DEC-D4-B-PLC-PROGRAM:
+      action: "Prioritize a PLC programming error."
+    DEC-D4-C-CONTROLLER-FAULT:
+      action: "Prioritize a complete controller failure."
+    DEC-D4-D-DRIVE-FAULT:
+      action: "Prioritize a conveyor-drive fault."
+    DEC-D5-A-CHECK-M12:
+      action: "Inspect the sensor cable and M12 connector."
+    DEC-D5-B-PLC-IP:
+      action: "Inspect the PLC IP address."
+    DEC-D5-C-DRIVE-PROGRAM:
+      action: "Inspect the drive program."
+    DEC-D5-D-HMI-CONFIG:
+      action: "Inspect the HMI configuration."
+    DEC-D6-A-SECURE-CONNECTOR:
+      action: "Secure the connector, verify its seating, and check the status again."
+    DEC-D6-B-REPLACE-PLC:
+      action: "Replace the PLC."
+    DEC-D6-C-FACTORY-RESET:
+      action: "Restore the IO-Link master to factory settings."
+    DEC-D6-D-IGNORE-ALARM:
+      action: "Modify the logic to ignore the alarm."
+    DEC-D7-A-FULL-VERIFICATION:
+      action: "Confirm the device is operational, the signal reaches control, and the station runs normally."
+    DEC-D7-B-ALARM-ACK:
+      action: "Treat acknowledgment of the HMI alarm as sufficient."
+    DEC-D7-C-PLC-RUN:
+      action: "Treat the PLC remaining in RUN as sufficient."
+    DEC-D7-D-OPERATOR-GUESS:
+      action: "Accept the operator's impression that it probably works."
+  visual:
+    educational_purpose: "Show the progression from a station symptom to electrical localization and verified IO-Link device recovery."
+  assets:
+    MEDIA-COVER:
+      alt: "Industrial sorting station with conveyor, sensor, electrical cabinet, and yellow beacon."
+      caption: "Station 3 stopped during production."
+    MEDIA-INTRO-INCIDENT:
+      alt: "A box reaches the sensor without being detected before the conveyor stops."
+      caption: "Incident begins at station 3."
+    MEDIA-SENSOR-LED:
+      alt: "Presence sensor with its LED off while a box remains in front of it."
+      caption: "Visual inspection of the sensor."
+    MEDIA-MASTER-PORT:
+      alt: "IO-Link master with port 3 flashing red while the other ports remain operational."
+      caption: "Fault localized to port 3."
+    MEDIA-ONLINE-DIAGNOSTICS:
+      alt: "Generic online diagnostics showing Port 3 Device not reachable."
+      caption: "Online master diagnostics."
+    MEDIA-TOPOLOGY:
+      alt: "Topology from PLC to IO-Link master, port 3, and presence sensor."
+      caption: "Station functional topology."
+    MEDIA-VOLTAGE-CHECK:
+      alt: "Multimeter connected to the sensor connector and reading zero volts DC."
+      caption: "Sensor supply measurement."
+    MEDIA-LOOSE-M12:
+      alt: "Partially unscrewed M12 connector with a visible gap."
+      caption: "Defective physical connection located."
+    MEDIA-OUTRO-RECOVERY:
+      alt: "Powered sensor, operational port 3, and box moving with a green beacon."
+      caption: "Functional recovery verified."
+  completion:
+    title: "Industrial lesson"
+    summary: "Loss of power and communication was caused by a partially unscrewed M12 connector. Securing it and verifying the complete chain restored the device and station."
+    process:
+      - "Interpret the alarm."
+      - "Observe the sensor status."
+      - "Inspect the master port."
+      - "Consult online diagnostics."
+      - "Measure the power supply."
+      - "Inspect the cable and connector."
+      - "Repair."
+      - "Confirm complete recovery."
+    lesson: "An unreachable device should not be replaced automatically. When the master is running and the fault is localized to one port, check power, cabling, and connectors first."
+    avoided_errors:
+      - "Restarting the PLC without evidence."
+      - "Clearing alarms as the only action."
+      - "Replacing the sensor without measuring."
+      - "Changing software for a physical fault."
+      - "Closing the incident without verifying production."
+    industrial_value:
+      - "Reduced MTTR."
+      - "Fewer unnecessary component replacements."
+      - "Reproducible diagnosis."
+      - "Better cause documentation."

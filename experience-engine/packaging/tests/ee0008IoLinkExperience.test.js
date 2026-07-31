@@ -5,6 +5,10 @@ import test from "node:test";
 
 import { parseExperienceYaml } from "../../adapter/yamlExperienceAdapter.js";
 import { normalizeExperienceDefinition } from "../../normalization/experienceDefinitionNormalizer.js";
+import {
+  resolveExperienceLocalization,
+  selectLocaleDocument
+} from "../../localization/experienceLocalization.js";
 import { ExperiencePlayer } from "../../player/experiencePlayer.js";
 import { validateExperienceDefinition } from "../../validation/experienceDefinitionValidator.js";
 import { validateGeneratedWebArtifact } from "../../validation/generatedWebArtifactValidator.js";
@@ -57,6 +61,39 @@ test("EE-0008 is a valid Authoring Definition using only governed references", a
   assert.equal(authoring.public.stages.length, 8);
   assert.equal(authoring.public.decisions.length, 28);
   assert.equal(authoring.public.visual.assets.length, 9);
+});
+
+test("EE-0008 complies with Experience Package v1 and resolves ES/EN with controlled fallback", async () => {
+  for (const required of [
+    "experience.yaml",
+    "locales/es.yaml",
+    "locales/en.yaml",
+    "media-source/",
+    "assets/",
+    "README.md"
+  ]) await access(new URL(required, experienceDirectory));
+
+  const authoring = await readAuthoring();
+  const es = parseExperienceYaml(await readFile(new URL("locales/es.yaml", experienceDirectory), "utf8"));
+  const en = parseExperienceYaml(await readFile(new URL("locales/en.yaml", experienceDirectory), "utf8"));
+  const spanish = resolveExperienceLocalization(authoring, es);
+  const english = resolveExperienceLocalization(authoring, en);
+
+  assert.equal(spanish.public.title, "Dispositivo IO-Link fuera de línea");
+  assert.equal(english.public.title, "IO-Link Device Offline");
+  assert.equal(english.public.stages[0].title, "Station 3 stopped");
+  assert.equal(english.public.decisions.length, spanish.public.decisions.length);
+  assert.equal(
+    selectLocaleDocument("de", { es, en }, "es").locale,
+    "es"
+  );
+
+  const incomplete = clone(en);
+  delete incomplete.translations.title;
+  assert.throws(
+    () => resolveExperienceLocalization(authoring, incomplete),
+    error => error.code === "MISSING_TRANSLATION"
+  );
 });
 
 test("EE-0008 normalizes to a valid immutable Runtime with media associations", async () => {

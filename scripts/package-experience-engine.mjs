@@ -53,10 +53,10 @@ export async function packageExperienceEngine({
       throw new Error(`Duplicate experience identifier: ${artifact.identity.id}.`);
     }
     identifiers.add(artifact.identity.id);
-    candidates.push(artifact);
+    candidates.push({ artifact, sourceDirectory: path.dirname(file) });
   }
 
-  candidates.sort((left, right) => left.identity.id.localeCompare(right.identity.id));
+  candidates.sort((left, right) => left.artifact.identity.id.localeCompare(right.artifact.identity.id));
   await rm(temporaryRoot, { recursive: true, force: true });
 
   try {
@@ -71,7 +71,9 @@ export async function packageExperienceEngine({
       experiences: []
     };
 
-    for (const artifact of candidates) {
+    for (const candidate of candidates) {
+      const { artifact, sourceDirectory } = candidate;
+      await copyMediaAssets({ artifact, sourceDirectory, temporaryRoot });
       const fileName = `${artifact.identity.id}.json`;
       await writeFile(
         path.join(temporaryRoot, "experiences", fileName),
@@ -84,6 +86,7 @@ export async function packageExperienceEngine({
         title: artifact.metadata.title,
         summary: artifact.metadata.summary,
         estimatedDuration: artifact.metadata.estimated_duration,
+        cover: findCover(artifact),
         path: `experiences/${fileName}`
       });
     }
@@ -104,9 +107,27 @@ export async function packageExperienceEngine({
   return Object.freeze({
     mode,
     output: relative(root, targetRoot),
-    packaged: Object.freeze(candidates.map(artifact => artifact.identity.id)),
+    packaged: Object.freeze(candidates.map(candidate => candidate.artifact.identity.id)),
     skipped: Object.freeze(skipped.map(item => Object.freeze(item)))
   });
+}
+
+async function copyMediaAssets({ artifact, sourceDirectory, temporaryRoot }) {
+  const assets = artifact.public.visual.assets ?? [];
+  for (const asset of assets) {
+    const source = path.join(sourceDirectory, "assets", path.basename(asset.src));
+    const destination = path.join(temporaryRoot, ...asset.src.split("/"));
+    assertInside(temporaryRoot, destination);
+    await access(source);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await cp(source, destination);
+  }
+}
+
+function findCover(artifact) {
+  const coverId = artifact.public.visual.cover_asset_id;
+  const cover = (artifact.public.visual.assets ?? []).find(asset => asset.id === coverId);
+  return cover?.src ?? null;
 }
 
 function eligible(authoring, mode) {

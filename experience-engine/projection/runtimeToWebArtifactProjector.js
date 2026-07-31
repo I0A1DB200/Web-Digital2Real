@@ -79,6 +79,7 @@ function project(runtime) {
         id: stage.id,
         title: stage.title,
         situation: stage.situation,
+        ...(Array.isArray(stage.media_ids) ? { media_ids: [...stage.media_ids] } : {}),
         decisions: stage.decisions.map(decision => ({
           id: decision.id,
           action: decision.action
@@ -88,8 +89,17 @@ function project(runtime) {
       feedback: [],
       visual: {
         educational_purpose: runtime.public.visual.educational_purpose,
-        representation: runtime.public.visual.representation
-      }
+        representation: runtime.public.visual.representation,
+        ...(typeof runtime.public.visual.cover_asset_id === "string"
+          ? { cover_asset_id: runtime.public.visual.cover_asset_id }
+          : {}),
+        ...(Array.isArray(runtime.public.visual.assets)
+          ? { assets: immutableCopy(runtime.public.visual.assets) }
+          : {})
+      },
+      ...(plainObject(runtime.public.completion)
+        ? { completion: immutableCopy(runtime.public.completion) }
+        : {})
     }
   };
 }

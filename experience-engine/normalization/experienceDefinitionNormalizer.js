@@ -94,6 +94,7 @@ function transform(authoring) {
         id: stage.id,
         title: stage.title,
         situation: stage.situation,
+        ...(Array.isArray(stage.media_ids) ? { media_ids: [...stage.media_ids] } : {}),
         decisions: stage.decision_ids.map(decisionId => {
           const decision = publicDecisions.get(decisionId);
           return {
@@ -111,8 +112,17 @@ function transform(authoring) {
       })),
       visual: {
         educational_purpose: authoring.public.visual.educational_purpose,
-        representation: authoring.public.visual.representation
-      }
+        representation: authoring.public.visual.representation,
+        ...(typeof authoring.public.visual.cover_asset_id === "string"
+          ? { cover_asset_id: authoring.public.visual.cover_asset_id }
+          : {}),
+        ...(Array.isArray(authoring.public.visual.assets)
+          ? { assets: immutableCopy(authoring.public.visual.assets) }
+          : {})
+      },
+      ...(plainObject(authoring.public.completion)
+        ? { completion: immutableCopy(authoring.public.completion) }
+        : {})
     },
     private: {
       relations: authoring.private.decision_logic.map(logic => {

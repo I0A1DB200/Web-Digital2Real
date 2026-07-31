@@ -72,6 +72,36 @@
   padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+.experience-card__cover,
+.experience-media__asset {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  background: var(--color-surface);
+}
+
+.experience-card__cover {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.experience-media {
+  display: grid;
+  gap: 1rem;
+}
+
+.experience-media__item {
+  margin: 0;
+}
+
+.experience-media__item figcaption {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .experience-card__meta,
 .experience-evidence__meta {
   display: flex;

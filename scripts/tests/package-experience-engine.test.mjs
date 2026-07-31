@@ -46,7 +46,7 @@ async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
 }
 
-test("preview packages EE-0002 exclusively as its exact Generated Web Artifact", async t => {
+test("preview packages canonical Experiences and preserves the exact EE-0002 artifact", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -58,20 +58,31 @@ test("preview packages EE-0002 exclusively as its exact Generated Web Artifact",
   const expected = await readJson(expectedArtifactUrl);
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-SIEMENS-DRIVE-002"]);
+  assert.deepEqual(result.packaged, [
+    "EXP-IOLINK-DEVICE-008",
+    "EXP-SIEMENS-DRIVE-002"
+  ]);
   assert.deepEqual(result.skipped, [{
     file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
     reason: "publication_state"
   }]);
   assert.deepEqual(artifact, expected);
-  assert.deepEqual(catalog.experiences, [{
+  assert.deepEqual(
+    catalog.experiences.find(item => item.id === "EXP-SIEMENS-DRIVE-002"),
+    {
     id: "EXP-SIEMENS-DRIVE-002",
     class: "learning",
     title: "Drive reset after emergency stop",
     summary: "Diagnose why an infeed conveyor does not restart after an emergency-stop release even though its run command remains active.",
     estimatedDuration: 35,
+    cover: null,
     path: "experiences/EXP-SIEMENS-DRIVE-002.json"
-  }]);
+    }
+  );
+  assert.equal(
+    catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008").cover,
+    "assets/EXP-IOLINK-DEVICE-008/cover.webp"
+  );
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
 });
 
@@ -146,7 +157,10 @@ test("publish excludes a technical-review experience while preview includes it",
 
   assert.deepEqual(publish.packaged, []);
   assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, ["EXP-SIEMENS-DRIVE-002"]);
+  assert.deepEqual(preview.packaged, [
+    "EXP-IOLINK-DEVICE-008",
+    "EXP-SIEMENS-DRIVE-002"
+  ]);
 });
 
 test("duplicate identifiers fail and no legacy fallback is used", async t => {

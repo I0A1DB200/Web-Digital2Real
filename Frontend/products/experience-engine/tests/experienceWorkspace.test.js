@@ -38,6 +38,8 @@ function createState(overrides = {}) {
     },
     selectedDecision: null,
     decisionHistory: [],
+    media: [],
+    completion: null,
     visual: {
       educational_purpose: "Compare observable states.",
       representation: "planned"

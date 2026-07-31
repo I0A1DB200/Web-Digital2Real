@@ -94,7 +94,7 @@ export function createExperienceWorkspace({
     const state = player.getState();
     element.replaceChildren(ExperienceWorkspace({
       documentRef,
-      projection: createWorkspaceProjection(state),
+      projection: createWorkspaceProjection(state, baseUrl),
       onStart: startExperience,
       onContinue: continueExperience,
       onDecision: selectDecision,
@@ -123,6 +123,12 @@ export function createExperienceWorkspace({
     }
     catalog.experiences.forEach(item => {
       const article = createElement(documentRef, "article", "experience-card");
+      if (item.cover) {
+        const cover = createElement(documentRef, "img", "experience-card__cover");
+        cover.src = `${baseUrl}/${item.cover}`;
+        cover.alt = "";
+        article.appendChild(cover);
+      }
       const meta = createElement(documentRef, "div", "experience-card__meta");
       appendText(documentRef, meta, "span", "", item.class);
       appendText(documentRef, meta, "span", "", `${item.estimatedDuration} min`);
@@ -178,7 +184,7 @@ export function createExperienceWorkspace({
   return controller;
 }
 
-export function createWorkspaceProjection(state) {
+export function createWorkspaceProjection(state, baseUrl = "") {
   if (!state) return Object.freeze({ phase: "catalog" });
   return Object.freeze({
     phase: state.interaction,
@@ -192,7 +198,12 @@ export function createWorkspaceProjection(state) {
       decision => decision.id === state.selectedDecision
     ) ?? null,
     decisionHistory: state.decisionHistory,
-    visual: state.visual
+    visual: state.visual,
+    media: state.media.map(asset => ({
+      ...asset,
+      src: baseUrl ? `${baseUrl}/${asset.src}` : asset.src
+    })),
+    completion: state.completion
   });
 }
 
@@ -218,7 +229,14 @@ export function ExperienceWorkspace({
     shell.appendChild(createIntroduction(documentRef, projection, onContinue, false));
   } else if (projection.phase === "stage") {
     shell.appendChild(StagePanel({ documentRef, stage: projection.stage }));
-    shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, onDecision }));
+    if (projection.media.length) {
+      shell.appendChild(MediaPanel({ documentRef, media: projection.media }));
+    }
+    if (projection.stage.decisions.length) {
+      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, onDecision }));
+    } else {
+      shell.appendChild(ContinuePanel({ documentRef, onContinue }));
+    }
   } else if (projection.phase === "selection") {
     shell.appendChild(SelectionPanel({
       documentRef,
@@ -273,6 +291,45 @@ export function DecisionPanel({ documentRef, decisions, onDecision }) {
   return panel;
 }
 
+export function ContinuePanel({ documentRef, onContinue }) {
+  const panel = createElement(documentRef, "section", "experience-panel");
+  appendText(documentRef, panel, "span", "experience-panel__label", "Incident observed");
+  const button = createButton(
+    documentRef,
+    "Continue",
+    "experience-action experience-action--primary"
+  );
+  button.addEventListener("click", onContinue);
+  panel.appendChild(button);
+  return panel;
+}
+
+export function MediaPanel({ documentRef, media }) {
+  const panel = createElement(documentRef, "section", "experience-panel experience-media");
+  panel.setAttribute("aria-label", "Multimedia de la etapa");
+  media.forEach(asset => {
+    const figure = createElement(documentRef, "figure", "experience-media__item");
+    let element;
+    if (asset.type === "video") {
+      element = createElement(documentRef, "video", "experience-media__asset");
+      element.autoplay = asset.autoplay === true;
+      element.loop = asset.loop === true;
+      element.muted = true;
+      element.playsInline = true;
+      element.controls = true;
+      element.setAttribute("aria-label", asset.alt);
+    } else {
+      element = createElement(documentRef, "img", "experience-media__asset");
+      element.alt = asset.alt;
+    }
+    element.src = asset.src;
+    figure.appendChild(element);
+    if (asset.caption) appendText(documentRef, figure, "figcaption", "", asset.caption);
+    panel.appendChild(figure);
+  });
+  return panel;
+}
+
 export function SelectionPanel({ documentRef, decision, onContinue, finalStage }) {
   const panel = createElement(documentRef, "section", "experience-panel");
   appendText(documentRef, panel, "span", "experience-panel__label", "Decision recorded");
@@ -308,20 +365,35 @@ export function ProgressIndicator({ documentRef, progress }) {
 export function CompletionPanel({ documentRef, projection, onRestart }) {
   const panel = createElement(documentRef, "section", "experience-panel");
   appendText(documentRef, panel, "span", "experience-panel__label", "Experience complete");
-  appendText(documentRef, panel, "h2", "", "Diagnostic session completed");
+  appendText(documentRef, panel, "h2", "", projection.completion?.title ?? "Diagnostic session completed");
   appendText(
     documentRef,
     panel,
     "p",
     "experience-stage__situation",
-    `You completed ${projection.progress.totalStages} stages.`
+    projection.completion?.summary ?? `You completed ${projection.progress.totalStages} stages.`
   );
+  if (projection.completion?.process) {
+    appendList(documentRef, panel, "Proceso correcto", projection.completion.process);
+  }
+  if (projection.completion?.lesson) {
+    appendText(documentRef, panel, "p", "experience-stage__objective", projection.completion.lesson);
+  }
+  if (projection.completion?.avoided_errors) {
+    appendList(documentRef, panel, "Errores evitados", projection.completion.avoided_errors);
+  }
+  if (projection.completion?.industrial_value) {
+    appendList(documentRef, panel, "Valor industrial", projection.completion.industrial_value);
+  }
   appendList(
     documentRef,
     panel,
     "Decisions taken",
     projection.decisionHistory.map(record => record.action)
   );
+  if (projection.media.length) {
+    panel.appendChild(MediaPanel({ documentRef, media: projection.media }));
+  }
   const restart = createButton(documentRef, "Restart experience", "experience-action experience-action--primary");
   restart.addEventListener("click", onRestart);
   panel.appendChild(restart);

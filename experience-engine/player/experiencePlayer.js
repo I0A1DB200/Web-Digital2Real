@@ -45,11 +45,22 @@ export class ExperiencePlayer {
   }
 
   continue() {
-    this.#assertInteraction("continue", ["introduction", "selection"]);
+    this.#assertInteraction("continue", ["introduction", "stage", "selection"]);
 
     if (this.#state.interaction === "introduction") {
       this.#state = { ...this.#state, interaction: "stage" };
       return this.getState();
+    }
+
+    if (this.#state.interaction === "stage") {
+      const stage = this.#model.public.stages[this.#state.stageIndex];
+      if (stage.decisions.length > 0) {
+        throw new ExperiencePlayerError(
+          "DECISION_REQUIRED",
+          "A decision must be selected before continuing.",
+          { stageId: stage.id }
+        );
+      }
     }
 
     const nextIndex = this.#state.stageIndex + 1;
@@ -128,7 +139,11 @@ export class ExperiencePlayer {
       currentStage: this.#state.interaction === "completion" ? null : clone(stage),
       selectedDecision: this.#state.selectedDecision,
       decisionHistory: clone(this.#state.decisionHistory),
-      visual: clone(this.#model.public.visual)
+      visual: clone(this.#model.public.visual),
+      media: clone(resolveMedia(this.#model, stage?.media_ids ?? [])),
+      completion: this.#state.interaction === "completion"
+        ? clone(this.#model.public.completion ?? null)
+        : null
     });
   }
 
@@ -190,9 +205,7 @@ function validateExperience(candidate) {
     ["id", "title", "situation"].forEach(field => requireText(stage[field], `public.stages[${stageIndex}].${field}`));
     if (stageIds.has(stage.id)) invalidModel(`Duplicate stage identifier ${stage.id}.`);
     stageIds.add(stage.id);
-    if (!Array.isArray(stage.decisions) || stage.decisions.length === 0) {
-      invalidModel(`Stage ${stage.id} must contain at least one decision.`);
-    }
+    if (!Array.isArray(stage.decisions)) invalidModel(`Stage ${stage.id} decisions must be an array.`);
     stage.decisions.forEach((decision, decisionIndex) => {
       if (!plainObject(decision)) invalidModel(`Stage ${stage.id} decision ${decisionIndex} must be an object.`);
       ["id", "action"].forEach(field => requireText(decision[field], `Stage ${stage.id} decision ${field}`));
@@ -200,6 +213,31 @@ function validateExperience(candidate) {
       decisionIds.add(decision.id);
     });
   });
+
+  const assets = candidate.public.visual.assets ?? [];
+  if (!Array.isArray(assets)) invalidModel("public.visual.assets must be an array.");
+  const assetIds = new Set();
+  assets.forEach((asset, position) => {
+    if (!plainObject(asset)) invalidModel(`public.visual.assets[${position}] must be an object.`);
+    ["id", "type", "src", "alt", "purpose"].forEach(field => {
+      requireText(asset[field], `public.visual.assets[${position}].${field}`);
+    });
+    if (assetIds.has(asset.id)) invalidModel(`Duplicate media identifier ${asset.id}.`);
+    if (asset.src.includes("..") || /^(?:[a-z]+:|\/|\\\\)/i.test(asset.src)) {
+      invalidModel(`Media ${asset.id} must use a safe package-relative source.`);
+    }
+    assetIds.add(asset.id);
+  });
+  candidate.public.stages.forEach(stage => {
+    (stage.media_ids ?? []).forEach(id => {
+      if (!assetIds.has(id)) invalidModel(`Stage ${stage.id} references unknown media ${id}.`);
+    });
+  });
+}
+
+function resolveMedia(model, identifiers) {
+  const requested = new Set(identifiers);
+  return (model.public.visual.assets ?? []).filter(asset => requested.has(asset.id));
 }
 
 function plainObject(value) {

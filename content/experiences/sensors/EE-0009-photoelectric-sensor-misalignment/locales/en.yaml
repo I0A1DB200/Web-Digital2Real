@@ -1,0 +1,5 @@
+locale: "en"
+translation_status: "draft"
+translations:
+  title: "Photoelectric Sensor Misalignment"
+  summary: "Preliminary Experience about diagnosing the alignment of a photoelectric sensor."

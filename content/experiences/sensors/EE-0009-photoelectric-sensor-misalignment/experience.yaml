@@ -1,0 +1,28 @@
+# NON-BUILDABLE DRAFT
+# Authoring Definition v1 requires a complete Experience model. This scaffold is
+# intentionally incomplete and must remain excluded from packaging while draft.
+contract_version: "1.0.0"
+
+metadata:
+  id: "EXP-SENSOR-PHOTOELECTRIC-009"
+  content_version: "0.1.0"
+  class: "learning"
+  status: "draft"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: []
+
+public:
+  slug: "photoelectric-sensor-misalignment"
+  title: "Desalineación de sensor fotoeléctrico"

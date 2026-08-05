@@ -1,0 +1,5 @@
+locale: "es"
+translation_status: "draft"
+translations:
+  title: "Desalineación de sensor fotoeléctrico"
+  summary: "Experience preliminar sobre el diagnóstico de alineación de un sensor fotoeléctrico."

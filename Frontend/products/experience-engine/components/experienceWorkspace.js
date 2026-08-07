@@ -128,23 +128,35 @@ export function createExperienceWorkspace({
     catalog.experiences
       .map(item => localizeCatalogItem(item, documentRef.documentElement?.lang))
       .forEach(item => {
-      const article = createElement(documentRef, "article", "experience-card");
+      const card = createElement(documentRef, "a", "experience-card");
+      card.setAttribute("href", "#experience-lab");
+      card.setAttribute("aria-label", `Begin investigation: ${item.title}`);
+      card.addEventListener("click", event => {
+        event?.preventDefault?.();
+        return openExperience(item.id);
+      });
+
+      const visual = createElement(documentRef, "div", "experience-card__visual");
       if (item.cover) {
         const cover = createElement(documentRef, "img", "experience-card__cover");
         cover.src = `${baseUrl}/${item.cover}`;
         cover.alt = "";
-        article.appendChild(cover);
+        visual.appendChild(cover);
       }
-      const meta = createElement(documentRef, "div", "experience-card__meta");
-      appendText(documentRef, meta, "span", "", item.class);
-      appendText(documentRef, meta, "span", "", `${item.estimatedDuration} min`);
-      article.appendChild(meta);
-      appendText(documentRef, article, "h2", "", item.title);
-      appendText(documentRef, article, "p", "", item.summary);
-      const button = createButton(documentRef, "Open experience", "experience-action experience-action--primary");
-      button.addEventListener("click", () => openExperience(item.id));
-      article.appendChild(button);
-      list.appendChild(article);
+      card.appendChild(visual);
+
+      const content = createElement(documentRef, "div", "experience-card__content");
+      appendText(documentRef, content, "h2", "", item.title);
+      appendText(documentRef, content, "p", "", item.summary);
+      appendText(
+        documentRef,
+        content,
+        "span",
+        "experience-card__cta",
+        "→ Begin Investigation"
+      );
+      card.appendChild(content);
+      list.appendChild(card);
     });
     shell.appendChild(list);
     element.replaceChildren(shell);

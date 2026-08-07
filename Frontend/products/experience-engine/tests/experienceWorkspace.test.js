@@ -77,6 +77,9 @@ test("projects a selected decision and public completion", () => {
 
 test("a generated artifact opens and completes through Experience Lab without console access", async () => {
   const artifact = await readArtifact();
+  artifact.identity.id = "EXP-SENSOR-PHOTOELECTRIC-009";
+  artifact.metadata.title = "Photoelectric Sensor Misalignment";
+  artifact.metadata.summary = "A packaging station intermittently fails to detect incoming boxes.";
   const catalog = {
     format: "Digital2Real Generated Web Artifact Catalog",
     version: 1,
@@ -87,6 +90,7 @@ test("a generated artifact opens and completes through Experience Lab without co
       title: artifact.metadata.title,
       summary: artifact.metadata.summary,
       estimatedDuration: artifact.metadata.estimated_duration,
+      cover: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-001-machine-overview.png",
       path: `experiences/${artifact.identity.id}.json`
     }]
   };
@@ -106,8 +110,19 @@ test("a generated artifact opens and completes through Experience Lab without co
   });
 
   await workspace.initialise();
-  assert.match(workspace.element.text, /Generic diagnostic experience/);
-  await findButton(workspace.element, "Open experience").click();
+  const card = workspace.element.find(element => element.className === "experience-card");
+  assert.ok(card);
+  assert.equal(card.tagName, "A");
+  assert.equal(card.attributes.href, "#experience-lab");
+  assert.equal(card.attributes["aria-label"], "Begin investigation: Photoelectric Sensor Misalignment");
+  assert.match(card.text, /Photoelectric Sensor Misalignment/);
+  assert.match(card.text, /A packaging station intermittently fails to detect incoming boxes/);
+  assert.match(card.text, /→ Begin Investigation/);
+  assert.doesNotMatch(card.text, /EXP-SENSOR-PHOTOELECTRIC-009|learning|20 min|CASE/);
+  assert.equal(card.find(element => element.className === "experience-card__meta"), null);
+  assert.equal(card.find(element => element.className.includes("experience-action")), null);
+
+  await card.click();
   assert.equal(workspace.getState().interaction, "start");
   assert.match(workspace.element.text, /material handling machine has stopped/i);
 
@@ -199,6 +214,7 @@ test("workspace and application use generated JSON without ID-specific handling"
   );
   const app = await readFile(new URL("../../../app.js", import.meta.url), "utf8");
   const site = await readFile(new URL("../../../data/site.js", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
 
   assert.match(workspaceSource, /generated\/experience-engine/);
   assert.match(workspaceSource, /new playerModule\.ExperiencePlayer\(\{ experience: artifact \}\)/);
@@ -207,6 +223,10 @@ test("workspace and application use generated JSON without ID-specific handling"
     workspaceSource,
     /private|root_cause|scoring|correct_answer|rationale|consequence|debrief|fault_model|diagnostic_model/
   );
+  assert.match(styles, /grid-template-columns:\s*minmax\(14rem, 3fr\) minmax\(0, 7fr\)/);
+  assert.match(styles, /@media \(max-width: 760px\)/);
+  assert.match(styles, /\.experience-card:focus-visible/);
+  assert.doesNotMatch(styles, /EXP-SENSOR-PHOTOELECTRIC-009|EE-0009/);
   assert.match(app, /export async function openExperience\(experienceId\)/);
   assert.match(app, /"experience-lab": renderExperienceLabView/);
   assert.match(site, /view: "experience-lab"/);

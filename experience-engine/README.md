@@ -30,8 +30,7 @@ experience-engine/
 │   └── experience-engine-principles.md
 ├── briefs/
 │   ├── README.md
-│   ├── experience-brief-schema.yaml
-│   └── EE-0002-drive-reset.yaml
+│   └── experience-brief-schema.yaml
 ├── workflows/
 │   ├── experience-creation-workflow.md
 │   └── automatic-experience-generation-workflow.md

@@ -10,7 +10,7 @@ import {
 } from "../experiencePlayer.js";
 
 const fixtureUrl = new URL(
-  "../../packaging/fixtures/ee0002-generated-web-artifact-v1.json",
+  "../../validation/fixtures/generated-web-artifact-v1-valid.json",
   import.meta.url
 );
 
@@ -24,8 +24,8 @@ test("starts a local session from Generated Web Artifact v1", async () => {
 
   assert.equal(initial.state, ExperiencePlayerState.NotStarted);
   assert.equal(initial.interaction, "start");
-  assert.equal(initial.experience.id, "EXP-SIEMENS-DRIVE-002");
-  assert.equal(initial.currentStage.id, "STAGE-01-INCIDENT");
+  assert.equal(initial.experience.id, "EXP-GENERIC-DIAG-001");
+  assert.equal(initial.currentStage.id, "STAGE-INCIDENT");
   assert.deepEqual(artifact, await readArtifact());
 
   const introduction = player.start();
@@ -39,22 +39,22 @@ test("records a valid public decision and advances in public stage order", async
   player.start();
   player.continue();
 
-  const selection = player.selectDecision("DEC-01-CONFIRM-SAFE-STATE");
+  const selection = player.selectDecision("DEC-INSPECT");
   assert.equal(selection.interaction, "selection");
-  assert.equal(selection.selectedDecision, "DEC-01-CONFIRM-SAFE-STATE");
+  assert.equal(selection.selectedDecision, "DEC-INSPECT");
   assert.deepEqual(selection.decisionHistory, [{
-    stageId: "STAGE-01-INCIDENT",
-    decisionId: "DEC-01-CONFIRM-SAFE-STATE",
-    action: "Confirm the controlled safe state, physical emergency-stop release, applicable safety status, and authorization boundaries before diagnosis."
+    stageId: "STAGE-INCIDENT",
+    decisionId: "DEC-INSPECT",
+    action: "Inspect available evidence."
   }]);
 
   const next = player.continue();
   assert.equal(next.interaction, "stage");
-  assert.equal(next.currentStage.id, "STAGE-02-COMMAND");
-  assert.deepEqual(next.progress, { currentStage: 2, totalStages: 7 });
+  assert.equal(next.currentStage.id, "STAGE-VALIDATE");
+  assert.deepEqual(next.progress, { currentStage: 2, totalStages: 2 });
 });
 
-test("completes all seven stages and restarts without persistence", async () => {
+test("completes every stage and restarts without persistence", async () => {
   const artifact = await readArtifact();
   const player = new ExperiencePlayer({ experience: artifact });
   player.start();
@@ -73,7 +73,7 @@ test("completes all seven stages and restarts without persistence", async () => 
   assert.equal(completed.completionStatus, ExperienceCompletionStatus.Completed);
   assert.equal(completed.interaction, "completion");
   assert.equal(completed.currentStage, null);
-  assert.equal(completed.decisionHistory.length, 7);
+  assert.equal(completed.decisionHistory.length, 2);
 
   const reset = player.reset();
   assert.equal(reset.state, ExperiencePlayerState.NotStarted);
@@ -133,7 +133,7 @@ test("supports future Generated Web Artifact v1 experiences without ID-specific 
   assert.equal(player.getState().experience.id, "EXP-GENERIC-MACHINE-001");
 
   const source = await readFile(new URL("../experiencePlayer.js", import.meta.url), "utf8");
-  assert.doesNotMatch(source, /EE-0002|EXP-SIEMENS-DRIVE-002/);
+  assert.doesNotMatch(source, /EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}/);
 });
 
 test("is deterministic, non-mutating and returns deeply immutable state", async () => {
@@ -145,7 +145,7 @@ test("is deterministic, non-mutating and returns deeply immutable state", async 
   [first, second].forEach(player => {
     player.start();
     player.continue();
-    player.selectDecision("DEC-01-CONFIRM-SAFE-STATE");
+    player.selectDecision("DEC-INSPECT");
     player.continue();
   });
 

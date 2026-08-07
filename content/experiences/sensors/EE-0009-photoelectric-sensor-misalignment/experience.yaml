@@ -1,28 +1,575 @@
-# NON-BUILDABLE DRAFT
-# Authoring Definition v1 requires a complete Experience model. This scaffold is
-# intentionally incomplete and must remain excluded from packaging while draft.
-contract_version: "1.0.0"
+﻿contract_version: "1.0.0"
 
 metadata:
   id: "EXP-SENSOR-PHOTOELECTRIC-009"
-  content_version: "0.1.0"
-  class: "learning"
-  status: "draft"
+  content_version: "1.0"
+  class: "practice"
+  status: "technical_review"
   language: "es"
 
 localization:
   default_locale: "es"
-  supported_locales:
-    - "es"
-    - "en"
+  supported_locales: ["es", "en"]
   locale_files:
     es: "locales/es.yaml"
     en: "locales/en.yaml"
 
+classification:
+  platform: "Industrial I/O"
+  domain: "Photoelectric sensing"
+  industry: "Packaging"
+  machine_type: "Infeed conveyor"
+  difficulty: "foundation"
+
 capability_references:
   - capability_id: "ICF-02"
-    competency_ids: []
+    competency_ids:
+      - "COMP-IIO-SIGNAL-TRACEABILITY"
+      - "COMP-IIO-STATE-INTERPRETATION"
+      - "COMP-IIO-CONTROLLED-RECOVERY"
 
 public:
   slug: "photoelectric-sensor-misalignment"
   title: "Desalineación de sensor fotoeléctrico"
+  summary: "Diagnostica por evidencias una detección intermitente y recupera la estación sin sustituir componentes injustificadamente."
+  estimated_duration: 12
+  scenario:
+    initial_context: "En ST03, varias cajas llegan al punto de detección pero la secuencia no continúa porque B3 no confirma su presencia de forma estable."
+    operational_state: "PLC_1 está en RUN, la máquina está en AUTO, la seguridad está saludable, el accionamiento está listo y no existen fallos de comunicación ni disparos eléctricos."
+    initiating_event: "El operador informa de detecciones intermitentes en el transportador de entrada."
+    learner_role: "Técnico de automatización encargado de relacionar campo, esquema, PLC y HMI antes de intervenir."
+    safety_context:
+      safe_state: "Detener y asegurar ST03 antes de acceder al sensor o ajustar su soporte."
+      intervention_constraints:
+        - "No forzar señales ni modificar la lógica."
+        - "No sustituir B3 sin evidencia de fallo interno."
+        - "Aplicar el procedimiento autorizado antes de una inspección mecánica."
+        - "Verificar varios ciclos antes de devolver la estación a producción."
+  learning_objectives:
+    - id: "OBJ-SIGNAL-TRACEABILITY"
+      description: "Trazar B3 desde campo y X10 hasta %I0.3 y Sensor_BoxDetected."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-STATE-INTERPRETATION"
+      description: "Interpretar conjuntamente el estado físico, la Watch Table y la HMI."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-CONTROLLED-RECOVERY"
+      description: "Realinear B3 y verificar una recuperación estable mediante ciclos repetidos."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      title: "Incidente en ST03"
+      situation: "Una caja está en el punto de detección, pero el transportador permanece detenido por ausencia de confirmación."
+      evidence_ids: ["EVID-01-OPERATOR"]
+      decision_ids: []
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-FIRST-ACTION"
+      title: "Primera acción diagnóstica"
+      situation: "La seguridad está saludable y no hay fallos generales. Debes decidir cómo conservar y ampliar la evidencia."
+      evidence_ids: ["EVID-02-INITIAL-STATE"]
+      decision_ids: ["DEC-01-TRACE", "DEC-01-REPLACE", "DEC-01-FORCE"]
+    - id: "STAGE-03-SENSOR"
+      title: "Inspección de B3"
+      situation: "B3 está alimentado, conectado y sin daños visibles. La caja está próxima, pero la salida no conmuta de forma estable."
+      evidence_ids: ["EVID-03-SENSOR"]
+      decision_ids: ["DEC-02-IDENTIFY", "DEC-02-ASSUME", "DEC-02-ADJUST"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-04-ELECTRICAL"
+      title: "Trazabilidad eléctrica"
+      situation: "El esquema permite seguir B3 a través de X10 hasta el canal de entrada asignado."
+      evidence_ids: ["EVID-04-ELECTRICAL"]
+      decision_ids: ["DEC-03-MAP", "DEC-03-IGNORE", "DEC-03-CHANGE"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-05-PLC"
+      title: "Estado en PLC_1"
+      situation: "La Watch Table muestra Sensor_BoxDetected en FALSE mientras la caja permanece junto al punto de detección."
+      evidence_ids: ["EVID-05-PLC"]
+      decision_ids: ["DEC-04-CORRELATE", "DEC-04-LOGIC", "DEC-04-INPUT"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-06-HMI"
+      title: "Contexto operativo"
+      situation: "La HMI muestra ST03 detenida y Box detected en No; no informa de pérdida de comunicación ni fallo general."
+      evidence_ids: ["EVID-06-HMI"]
+      decision_ids: ["DEC-05-SYMPTOM", "DEC-05-HMI-CAUSE", "DEC-05-RESET"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-07-BEFORE-REPLACEMENT"
+      title: "Comprobaciones previas"
+      situation: "Campo, documentación y PLC son coherentes. Falta discriminar entre un sensor averiado y una condición mecánica de detección."
+      evidence_ids: ["EVID-07-CONSISTENCY"]
+      decision_ids: ["DEC-06-INSPECT-PATH", "DEC-06-REPLACE", "DEC-06-BYPASS"]
+    - id: "STAGE-08-MECHANICAL"
+      title: "Inspección mecánica"
+      situation: "Con ST03 asegurada, la inspección revela que el eje óptico de B3 pasa fuera de la zona estable de la caja."
+      evidence_ids: ["EVID-08-MISALIGNMENT"]
+      decision_ids: ["DEC-07-ROOT-CAUSE", "DEC-07-SENSOR-FAULT", "DEC-07-PLC-FAULT"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-09-RECOVERY"
+      title: "Recuperación controlada"
+      situation: "La evidencia confirma un desplazamiento del soporte por vibración. Selecciona la intervención justificada."
+      evidence_ids: []
+      decision_ids: ["DEC-08-REALIGN"]
+    - id: "STAGE-10-VERIFICATION"
+      title: "Verificación final"
+      situation: "B3 ha sido realineado y fijado. Campo, %I0.3, Sensor_BoxDetected y HMI responden de nuevo."
+      evidence_ids: ["EVID-09-RECOVERY"]
+      decision_ids: ["DEC-09-REPEAT", "DEC-09-SINGLE", "DEC-09-ACK"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-OPERATOR"
+      type: "operator_report"
+      source: "Operador de ST03"
+      content: "Algunas cajas no se detectan y la cinta no continúa."
+      reliability: "medium"
+      revealed_by: []
+    - id: "EVID-02-INITIAL-STATE"
+      type: "initial_observation"
+      source: "Estado de máquina"
+      content: "PLC_1 en RUN, AUTO activo, seguridad saludable y accionamiento listo."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-03-SENSOR"
+      type: "inspection"
+      source: "B3"
+      content: "Sensor alimentado y conectado, sin daños visibles y sin conmutación estable ante la caja."
+      reliability: "high"
+      revealed_by: ["DEC-01-TRACE"]
+    - id: "EVID-04-ELECTRICAL"
+      type: "documentation"
+      source: "Esquema eléctrico"
+      content: "B3 se conecta mediante X10 al canal %I0.3 asociado a Sensor_BoxDetected."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-IDENTIFY"]
+    - id: "EVID-05-PLC"
+      type: "diagnostic"
+      source: "Watch Table de PLC_1"
+      content: "Sensor_BoxDetected (%I0.3) permanece FALSE con la caja en posición."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-MAP"]
+    - id: "EVID-06-HMI"
+      type: "diagnostic"
+      source: "HMI de ST03"
+      content: "ST03 está detenida y Box detected indica No, sin fallo de comunicación."
+      reliability: "high"
+      revealed_by: ["DEC-04-CORRELATE"]
+    - id: "EVID-07-CONSISTENCY"
+      type: "diagnostic"
+      source: "Correlación de evidencias"
+      content: "Campo, esquema, dirección, tag y HMI describen de forma consistente una ausencia real de detección."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-SYMPTOM"]
+    - id: "EVID-08-MISALIGNMENT"
+      type: "inspection"
+      source: "Soporte de B3"
+      content: "El soporte se ha desplazado y el eje óptico no intersecta de forma estable la caja."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-INSPECT-PATH"]
+    - id: "EVID-09-RECOVERY"
+      type: "functional_test"
+      source: "Prueba funcional"
+      content: "Tras realinear y fijar B3, la detección es estable en campo, PLC y HMI."
+      reliability: "confirmed"
+      revealed_by: ["DEC-08-REALIGN"]
+  decisions:
+    - id: "DEC-01-TRACE"
+      stage_id: "STAGE-02-FIRST-ACTION"
+      action: "Conservar el estado y comenzar la trazabilidad desde B3."
+    - id: "DEC-01-REPLACE"
+      stage_id: "STAGE-02-FIRST-ACTION"
+      action: "Sustituir B3 inmediatamente."
+    - id: "DEC-01-FORCE"
+      stage_id: "STAGE-02-FIRST-ACTION"
+      action: "Forzar Sensor_BoxDetected para reanudar producción."
+    - id: "DEC-02-IDENTIFY"
+      stage_id: "STAGE-03-SENSOR"
+      action: "Identificar B3 en el esquema antes de interpretar la señal."
+    - id: "DEC-02-ASSUME"
+      stage_id: "STAGE-03-SENSOR"
+      action: "Asumir que el sensor está averiado porque no conmuta."
+    - id: "DEC-02-ADJUST"
+      stage_id: "STAGE-03-SENSOR"
+      action: "Mover el sensor sin registrar su posición inicial."
+    - id: "DEC-03-MAP"
+      stage_id: "STAGE-04-ELECTRICAL"
+      action: "Confirmar B3 → X10 → %I0.3 → Sensor_BoxDetected."
+    - id: "DEC-03-IGNORE"
+      stage_id: "STAGE-04-ELECTRICAL"
+      action: "Ignorar el esquema y buscar tags similares online."
+    - id: "DEC-03-CHANGE"
+      stage_id: "STAGE-04-ELECTRICAL"
+      action: "Cambiar la dirección del tag para probar otro canal."
+    - id: "DEC-04-CORRELATE"
+      stage_id: "STAGE-05-PLC"
+      action: "Correlacionar FALSE con la condición física y continuar reuniendo evidencia."
+    - id: "DEC-04-LOGIC"
+      stage_id: "STAGE-05-PLC"
+      action: "Concluir que la secuencia PLC es incorrecta."
+    - id: "DEC-04-INPUT"
+      stage_id: "STAGE-05-PLC"
+      action: "Concluir que el módulo de entradas está averiado."
+    - id: "DEC-05-SYMPTOM"
+      stage_id: "STAGE-06-HMI"
+      action: "Tratar la HMI como confirmación del síntoma, no como causa raíz."
+    - id: "DEC-05-HMI-CAUSE"
+      stage_id: "STAGE-06-HMI"
+      action: "Atribuir el fallo a la HMI."
+    - id: "DEC-05-RESET"
+      stage_id: "STAGE-06-HMI"
+      action: "Reconocer alarmas y reiniciar sin inspección adicional."
+    - id: "DEC-06-INSPECT-PATH"
+      stage_id: "STAGE-07-BEFORE-REPLACEMENT"
+      action: "Asegurar ST03 e inspeccionar montaje, trayectoria óptica y posición de la caja."
+    - id: "DEC-06-REPLACE"
+      stage_id: "STAGE-07-BEFORE-REPLACEMENT"
+      action: "Sustituir B3 sin comprobar su alineación."
+    - id: "DEC-06-BYPASS"
+      stage_id: "STAGE-07-BEFORE-REPLACEMENT"
+      action: "Puentear la entrada para confirmar la secuencia."
+    - id: "DEC-07-ROOT-CAUSE"
+      stage_id: "STAGE-08-MECHANICAL"
+      action: "Identificar la desalineación del soporte como causa raíz confirmada."
+    - id: "DEC-07-SENSOR-FAULT"
+      stage_id: "STAGE-08-MECHANICAL"
+      action: "Mantener como causa un fallo interno del sensor."
+    - id: "DEC-07-PLC-FAULT"
+      stage_id: "STAGE-08-MECHANICAL"
+      action: "Mantener como causa un fallo del canal PLC."
+    - id: "DEC-08-REALIGN"
+      stage_id: "STAGE-09-RECOVERY"
+      action: "Realinear B3, fijar el soporte y restaurar la estación de forma controlada."
+    - id: "DEC-09-REPEAT"
+      stage_id: "STAGE-10-VERIFICATION"
+      action: "Verificar varios ciclos y confirmar campo, PLC, HMI y secuencia."
+    - id: "DEC-09-SINGLE"
+      stage_id: "STAGE-10-VERIFICATION"
+      action: "Cerrar la intervención después de una única detección."
+    - id: "DEC-09-ACK"
+      stage_id: "STAGE-10-VERIFICATION"
+      action: "Considerar suficiente que la HMI ya no muestre el síntoma."
+  visual:
+    educational_purpose: "Presentar evidencias progresivas sin anticipar la desalineación ni la recuperación."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-001-machine-overview.png"
+        alt: "Vista general de ST03 con caja, transportador y sensor B3."
+        caption: "Observación inicial de ST03."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-002-sensor-close-up.png"
+        alt: "Primer plano del sensor fotoeléctrico B3 alimentado."
+        caption: "Inspección inicial de B3."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-003-electrical-drawing.png"
+        alt: "Esquema eléctrico que relaciona B3 con la entrada %I0.3."
+        caption: "Trazabilidad eléctrica de B3."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-004-plc-watch-table.png"
+        alt: "Watch Table con Sensor_BoxDetected en FALSE."
+        caption: "Estado online de %I0.3."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-005-hmi-overview.png"
+        alt: "HMI de ST03 detenida por ausencia de detección."
+        caption: "Contexto operativo de ST03."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-006-mechanical-evidence.png"
+        alt: "Inspección mecánica que muestra el eje óptico desalineado."
+        caption: "Causa mecánica confirmada."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-007-recovery-verification.png"
+        alt: "Verificación conjunta de sensor, PLC, HMI y transportador recuperados."
+        caption: "Recuperación funcional verificada."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "B3 estaba alimentado y correctamente mapeado, pero su soporte desplazado situaba el eje óptico fuera de la zona estable de detección."
+    process:
+      - "Separar el síntoma de la causa."
+      - "Trazar B3 hasta Sensor_BoxDetected."
+      - "Correlacionar campo, PLC y HMI."
+      - "Inspeccionar la trayectoria óptica antes de sustituir."
+      - "Realinear, fijar y verificar ciclos repetidos."
+    lesson: "Una señal eléctricamente sana puede incumplir su función de proceso por una condición mecánica."
+    avoided_errors:
+      - "Sustituir el sensor sin evidencia."
+      - "Forzar la entrada."
+      - "Modificar lógica o direccionamiento."
+      - "Cerrar la intervención tras una sola detección."
+    industrial_value:
+      - "Diagnóstico trazable."
+      - "Menor sustitución innecesaria."
+      - "Recuperación segura y repetible."
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "El soporte de B3 se desplazó por vibración y el eje óptico dejó de intersectar establemente la caja."
+    recovery_conditions:
+      - "ST03 asegurada antes del ajuste."
+      - "B3 realineado y soporte fijado."
+      - "%I0.3 y Sensor_BoxDetected coherentes con campo."
+      - "HMI y secuencia recuperadas."
+      - "Detección estable durante ciclos repetidos."
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-SENSOR-FAULT"
+        statement: "B3 presenta un fallo interno."
+        initial_status: "possible"
+      - id: "HYP-POWER-LOSS"
+        statement: "B3 ha perdido 24 VDC."
+        initial_status: "possible"
+      - id: "HYP-WIRING"
+        statement: "Cable o conector interrumpen la señal."
+        initial_status: "possible"
+      - id: "HYP-PLC-INPUT"
+        statement: "El canal de entrada PLC es defectuoso."
+        initial_status: "unlikely"
+      - id: "HYP-LOGIC"
+        statement: "La lógica procesa incorrectamente la entrada."
+        initial_status: "unlikely"
+      - id: "HYP-BOX-POSITION"
+        statement: "La caja queda fuera de la zona prevista."
+        initial_status: "possible"
+      - id: "HYP-MISALIGNMENT"
+        statement: "El soporte de B3 está desalineado."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-MISALIGNMENT"
+    critical_path: ["DEC-01-TRACE", "DEC-02-IDENTIFY", "DEC-03-MAP", "DEC-04-CORRELATE", "DEC-05-SYMPTOM", "DEC-06-INSPECT-PATH", "DEC-07-ROOT-CAUSE", "DEC-08-REALIGN", "DEC-09-REPEAT"]
+  decision_logic:
+    - decision_id: "DEC-01-TRACE"
+      rationale: "Conserva evidencia y delimita la señal."
+      classification: "strong"
+      consequence: "Se inicia la trazabilidad desde B3."
+      evidence_revealed: ["EVID-03-SENSOR"]
+      next_stage: "STAGE-03-SENSOR"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE"
+      rationale: "No existe evidencia de fallo interno."
+      classification: "weak"
+      consequence: "La sustitución anticipada no explica el síntoma."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SENSOR"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-FORCE"
+      rationale: "Un forzado oculta el fallo y crea riesgo operativo."
+      classification: "unsafe"
+      consequence: "La intervención se detiene por incumplir el límite de seguridad."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SENSOR"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-02-IDENTIFY"
+      rationale: "La referencia correcta evita observar otra señal."
+      classification: "strong"
+      consequence: "B3 queda identificado documentalmente."
+      evidence_revealed: ["EVID-04-ELECTRICAL"]
+      next_stage: "STAGE-04-ELECTRICAL"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-ASSUME"
+      rationale: "Ausencia de conmutación no demuestra avería interna."
+      classification: "weak"
+      consequence: "La hipótesis carece de trazabilidad."
+      evidence_revealed: []
+      next_stage: "STAGE-04-ELECTRICAL"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-02-ADJUST"
+      rationale: "Mover el dispositivo destruye evidencia inicial."
+      classification: "unsafe"
+      consequence: "La posición original deja de ser verificable."
+      evidence_revealed: []
+      next_stage: "STAGE-04-ELECTRICAL"
+      score_effect: -8
+      safety_effect: -4
+    - decision_id: "DEC-03-MAP"
+      rationale: "Confirma la cadena completa de identidad de la señal."
+      classification: "strong"
+      consequence: "La Watch Table puede observarse con certeza."
+      evidence_revealed: ["EVID-05-PLC"]
+      next_stage: "STAGE-05-PLC"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-03-IGNORE"
+      rationale: "Un tag parecido no garantiza identidad física."
+      classification: "weak"
+      consequence: "La observación puede corresponder a otro dispositivo."
+      evidence_revealed: []
+      next_stage: "STAGE-05-PLC"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-CHANGE"
+      rationale: "Cambiar direccionamiento altera un sistema coherente."
+      classification: "unsafe"
+      consequence: "Se introduce un fallo nuevo."
+      evidence_revealed: []
+      next_stage: "STAGE-05-PLC"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-04-CORRELATE"
+      rationale: "FALSE es evidencia solo al relacionarlo con la caja."
+      classification: "strong"
+      consequence: "Se confirma una ausencia física de detección."
+      evidence_revealed: ["EVID-06-HMI"]
+      next_stage: "STAGE-06-HMI"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-04-LOGIC"
+      rationale: "La lógica refleja correctamente la entrada."
+      classification: "weak"
+      consequence: "La conclusión no explica el estado físico."
+      evidence_revealed: []
+      next_stage: "STAGE-06-HMI"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-04-INPUT"
+      rationale: "No hay evidencia de fallo del canal."
+      classification: "weak"
+      consequence: "La hipótesis permanece sin confirmar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-HMI"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-05-SYMPTOM"
+      rationale: "La HMI comunica el efecto operativo, no su causa."
+      classification: "strong"
+      consequence: "La evidencia queda integrada sin sobrediagnóstico."
+      evidence_revealed: ["EVID-07-CONSISTENCY"]
+      next_stage: "STAGE-07-BEFORE-REPLACEMENT"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-05-HMI-CAUSE"
+      rationale: "La HMI coincide con PLC y campo."
+      classification: "weak"
+      consequence: "Culpar a la interfaz contradice las evidencias."
+      evidence_revealed: []
+      next_stage: "STAGE-07-BEFORE-REPLACEMENT"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-05-RESET"
+      rationale: "Un reset no corrige una condición física."
+      classification: "weak"
+      consequence: "El síntoma reaparece sin nueva evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-07-BEFORE-REPLACEMENT"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-06-INSPECT-PATH"
+      rationale: "La trayectoria óptica discrimina fallo interno y montaje."
+      classification: "strong"
+      consequence: "La inspección segura revela la geometría real."
+      evidence_revealed: ["EVID-08-MISALIGNMENT"]
+      next_stage: "STAGE-08-MECHANICAL"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-REPLACE"
+      rationale: "B3 está alimentado y aún no se ha evaluado su trayectoria."
+      classification: "weak"
+      consequence: "Un sensor nuevo conservaría la desalineación."
+      evidence_revealed: []
+      next_stage: "STAGE-08-MECHANICAL"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-BYPASS"
+      rationale: "Puentear la entrada elimina protección diagnóstica."
+      classification: "unsafe"
+      consequence: "Se simula detección sin conocer el proceso."
+      evidence_revealed: []
+      next_stage: "STAGE-08-MECHANICAL"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-07-ROOT-CAUSE"
+      rationale: "La trayectoria observada explica directamente la falta de detección."
+      classification: "strong"
+      consequence: "La desalineación queda confirmada."
+      evidence_revealed: []
+      next_stage: "STAGE-09-RECOVERY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-07-SENSOR-FAULT"
+      rationale: "La inspección demuestra una causa externa suficiente."
+      classification: "weak"
+      consequence: "La sustitución no está justificada."
+      evidence_revealed: []
+      next_stage: "STAGE-09-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-07-PLC-FAULT"
+      rationale: "El canal reproduce coherentemente el estado de campo."
+      classification: "weak"
+      consequence: "La hipótesis contradice la trazabilidad."
+      evidence_revealed: []
+      next_stage: "STAGE-09-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-08-REALIGN"
+      rationale: "Corrige la causa confirmada sin alterar la función eléctrica."
+      classification: "strong"
+      consequence: "B3 queda alineado y el soporte fijado."
+      evidence_revealed: ["EVID-09-RECOVERY"]
+      next_stage: "STAGE-10-VERIFICATION"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-09-REPEAT"
+      rationale: "Los ciclos repetidos demuestran estabilidad de proceso."
+      classification: "strong"
+      consequence: "La recuperación completa queda verificada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-09-SINGLE"
+      rationale: "Una detección aislada no demuestra estabilidad."
+      classification: "acceptable"
+      consequence: "La verificación resulta insuficiente."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -2
+      safety_effect: 0
+    - decision_id: "DEC-09-ACK"
+      rationale: "La ausencia del síntoma HMI no verifica toda la cadena."
+      classification: "weak"
+      consequence: "Campo y secuencia quedan sin comprobar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  debrief:
+    fault_summary: "B3 estaba sano y correctamente mapeado; la vibración desplazó su soporte y desvió el eje óptico."
+    correct_reasoning:
+      - "Identificar y trazar B3 antes de interpretar estados."
+      - "Correlacionar campo, esquema, PLC y HMI."
+      - "Inspeccionar la trayectoria óptica antes de sustituir."
+      - "Corregir la causa y verificar ciclos repetidos."
+    recovery:
+      - "Asegurar ST03."
+      - "Realinear B3 y fijar el soporte."
+      - "Confirmar %I0.3 y Sensor_BoxDetected."
+      - "Confirmar HMI, secuencia y varios ciclos."
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence:
+      - "El caso mantiene coherencia entre B3, X10, %I0.3 y Sensor_BoxDetected."
+      - "Los textos incrustados en los PNG aprobados permanecen en su idioma original."

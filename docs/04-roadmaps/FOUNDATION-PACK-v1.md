@@ -29,7 +29,6 @@ The initial portfolio assigns one principal Capability to each Experience. Title
 
 | ID | Capability | Title | Status |
 |---|---|---|---|
-| EE-0008 | ICF-01 — PLC Diagnostics | IO-Link Device Offline | Technical review |
 | EE-0009 | ICF-02 — Industrial I/O | Sensor Signal Missing | Planned |
 | EE-0010 | ICF-03 — Motion Control | Drive Fails to Reach Commanded Speed | Planned |
 | EE-0011 | ICF-04 — Industrial Communications | Remote Station Unavailable | Planned |
@@ -40,8 +39,6 @@ The initial portfolio assigns one principal Capability to each Experience. Title
 | EE-0016 | ICF-09 — HMI & SCADA Diagnostics | HMI Value Frozen During Production | Planned |
 | EE-0017 | ICF-10 — PLC Architecture | Sequence State Lost After Restart | Planned |
 | EE-0018 | ICF-11 — Advanced Industrial Troubleshooting | Intermittent Multi-System Production Stop | Planned |
-
-EE-0008 retains its current governed references and review state. The principal Capability in this roadmap identifies the pack's primary production objective; it does not replace the complete Capability and competency references owned by each future Experience definition.
 
 # 4. Deliverables
 

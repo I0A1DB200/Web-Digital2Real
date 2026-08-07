@@ -15,10 +15,6 @@ import test from "node:test";
 import { packageExperienceEngine } from "../package-experience-engine.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url);
-const expectedArtifactUrl = new URL(
-  "../../experience-engine/packaging/fixtures/ee0002-generated-web-artifact-v1.json",
-  import.meta.url
-);
 const reservedTerms = [
   "root_cause",
   "scoring",
@@ -46,49 +42,27 @@ async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
 }
 
-test("preview packages canonical Experiences and preserves the exact EE-0002 artifact", async t => {
+test("preview packages only the remaining canonical Experience", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
   const result = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
-  const artifact = await readJson(
-    path.join(generatedRoot, "experiences", "EXP-SIEMENS-DRIVE-002.json")
-  );
-  const expected = await readJson(expectedArtifactUrl);
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, [
-    "EXP-IOLINK-DEVICE-008",
-    "EXP-SIEMENS-DRIVE-002"
-  ]);
+  assert.deepEqual(result.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
   assert.deepEqual(result.skipped, [{
     file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
     reason: "publication_state"
   }]);
-  assert.deepEqual(artifact, expected);
-  assert.deepEqual(
-    catalog.experiences.find(item => item.id === "EXP-SIEMENS-DRIVE-002"),
-    {
-    id: "EXP-SIEMENS-DRIVE-002",
-    class: "learning",
-    title: "Drive reset after emergency stop",
-    summary: "Diagnose why an infeed conveyor does not restart after an emergency-stop release even though its run command remains active.",
-    estimatedDuration: 35,
-    cover: null,
-    path: "experiences/EXP-SIEMENS-DRIVE-002.json"
-    }
-  );
-  assert.equal(
-    catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008").cover,
-    "assets/EXP-IOLINK-DEVICE-008/cover.webp"
-  );
-  const ioLink = catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008");
-  assert.equal(ioLink.locales.es, "experiences/EXP-IOLINK-DEVICE-008.es.json");
-  assert.equal(ioLink.locales.en, "experiences/EXP-IOLINK-DEVICE-008.en.json");
-  assert.equal(ioLink.localizedMetadata.en.title, "IO-Link Device Offline");
-  await access(path.join(generatedRoot, ioLink.locales.es));
-  await access(path.join(generatedRoot, ioLink.locales.en));
+  assert.equal(catalog.experiences.length, 1);
+  const remaining = catalog.experiences[0];
+  assert.equal(remaining.id, "EXP-SENSOR-PHOTOELECTRIC-009");
+  assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.es.json");
+  assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.en.json");
+  assert.equal(remaining.localizedMetadata.en.title, "Photoelectric Sensor Misalignment");
+  await access(path.join(generatedRoot, remaining.locales.es));
+  await access(path.join(generatedRoot, remaining.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
 });
@@ -100,7 +74,7 @@ test("published browser files contain no reserved runtime data or authoring docu
 
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const artifactText = await readFile(
-    path.join(generatedRoot, "experiences", "EXP-SIEMENS-DRIVE-002.json"),
+    path.join(generatedRoot, "experiences", "EXP-SENSOR-PHOTOELECTRIC-009.es.json"),
     "utf8"
   );
   const playerText = await readFile(path.join(generatedRoot, "player", "experiencePlayer.js"), "utf8");
@@ -139,8 +113,8 @@ test("a validation failure preserves the previous generated package", async t =>
     root,
     "content",
     "experiences",
-    "siemens",
-    "EE-0002-drive-reset",
+    "sensors",
+    "EE-0009-photoelectric-sensor-misalignment",
     "experience.yaml"
   );
   const invalid = (await readFile(source, "utf8")).replace(
@@ -164,10 +138,7 @@ test("publish excludes a technical-review experience while preview includes it",
 
   assert.deepEqual(publish.packaged, []);
   assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, [
-    "EXP-IOLINK-DEVICE-008",
-    "EXP-SIEMENS-DRIVE-002"
-  ]);
+  assert.deepEqual(preview.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {
@@ -185,8 +156,8 @@ test("catalog modes enforce the complete approved publication-state boundary", a
       root,
       "content",
       "experiences",
-      "siemens",
-      "EE-0002-drive-reset",
+      "sensors",
+      "EE-0009-photoelectric-sensor-misalignment",
       "experience.yaml"
     );
     const authoring = (await readFile(source, "utf8"))
@@ -197,12 +168,12 @@ test("catalog modes enforce the complete approved publication-state boundary", a
     const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
     const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
     assert.equal(
-      preview.packaged.includes("EXP-SIEMENS-DRIVE-002"),
+      preview.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
       scenario.preview,
       `preview/${scenario.status}/${scenario.validation}`
     );
     assert.equal(
-      publish.packaged.includes("EXP-SIEMENS-DRIVE-002"),
+      publish.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
       scenario.publish,
       `publish/${scenario.status}/${scenario.validation}`
     );
@@ -216,10 +187,14 @@ test("duplicate identifiers fail and no legacy fallback is used", async t => {
     root,
     "content",
     "experiences",
-    "siemens",
-    "EE-0002-drive-reset"
+    "sensors",
+    "EE-0009-photoelectric-sensor-misalignment"
   );
-  await cp(source, path.join(root, "content", "experiences", "duplicate"), { recursive: true });
+  await cp(
+    source,
+    path.join(root, "content", "experiences", "sensors", "EE-9999-duplicate-package"),
+    { recursive: true }
+  );
 
   await assert.rejects(
     packageExperienceEngine({ repositoryRoot: root, mode: "preview" }),
@@ -227,8 +202,4 @@ test("duplicate identifiers fail and no legacy fallback is used", async t => {
   );
   await rm(path.join(root, "content", "experiences"), { recursive: true, force: true });
   await assert.rejects(packageExperienceEngine({ repositoryRoot: root, mode: "preview" }));
-});
-
-test("the repository Generated Web Artifact fixture remains available", async () => {
-  await access(expectedArtifactUrl);
 });

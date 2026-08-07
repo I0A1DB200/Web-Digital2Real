@@ -7,7 +7,46 @@ phase: 1
 target_experience_count: 15
 assessment_required: true
 prerequisites: []
-competencies: []
+competencies:
+  - id: COMP-IIO-SIGNAL-TRACEABILITY
+    title:
+      es: Trazabilidad de señales de I/O
+      en: I/O Signal Traceability
+    definition:
+      es: Capacidad para seguir una señal industrial desde el dispositivo de campo, a través de la documentación eléctrica y el direccionamiento físico, hasta su representación en el sistema de control.
+      en: Ability to trace an industrial signal from the field device, through electrical documentation and physical addressing, to its representation in the control system.
+    observable_behaviors:
+      - identifica correctamente el dispositivo de campo
+      - localiza su referencia en la documentación eléctrica
+      - determina canal, dirección y tag asociados
+      - verifica consistencia entre campo, esquema y PLC
+      - evita diagnosticar una señal sin conocer previamente su trazabilidad
+  - id: COMP-IIO-STATE-INTERPRETATION
+    title:
+      es: Interpretación de estados de I/O
+      en: I/O State Interpretation
+    definition:
+      es: Capacidad para interpretar el estado de una entrada o salida industrial dentro del contexto físico, lógico y operativo de la máquina.
+      en: Ability to interpret the state of an industrial input or output within the physical, logical and operational context of the machine.
+    observable_behaviors:
+      - diferencia estado físico, dirección PLC, tag y estado procesado
+      - relaciona valores online con la condición real del proceso
+      - distingue síntoma, evidencia y conclusión
+      - rechaza interpretaciones incompatibles con las evidencias disponibles
+      - utiliza información de campo, PLC y HMI de forma coherente
+  - id: COMP-IIO-CONTROLLED-RECOVERY
+    title:
+      es: Recuperación controlada de señales de I/O
+      en: Controlled I/O Recovery
+    definition:
+      es: Capacidad para restaurar una función de I/O mediante una intervención técnicamente justificada y verificar la recuperación completa del proceso.
+      en: Ability to restore an I/O function through a technically justified intervention and verify complete process recovery.
+    observable_behaviors:
+      - selecciona una intervención respaldada por evidencias
+      - evita forzados o modificaciones que oculten el fallo
+      - confirma la señal en campo y PLC
+      - verifica el estado procesado y la secuencia
+      - valida la recuperación mediante ciclos repetidos
 notebook_entries: []
 learning_experiences: []
 practice_experiences: []

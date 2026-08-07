@@ -99,7 +99,7 @@
 
 ## Completed User Stories
 
-- [x] **Completed:** Experience Workspace vertical slice for `EXP-SIEMENS-DRIVE-002`
+- [x] **Completed:** Generic Experience Workspace vertical slice
 
 ## Current User Stories
 

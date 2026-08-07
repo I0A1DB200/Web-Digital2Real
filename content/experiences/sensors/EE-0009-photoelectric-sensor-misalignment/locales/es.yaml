@@ -1,5 +1,164 @@
-locale: "es"
-translation_status: "draft"
+﻿locale: "es"
 translations:
   title: "Desalineación de sensor fotoeléctrico"
-  summary: "Experience preliminar sobre el diagnóstico de alineación de un sensor fotoeléctrico."
+  summary: "Diagnostica por evidencias una detección intermitente y recupera la estación sin sustituir componentes injustificadamente."
+  scenario:
+    initial_context: "En ST03, varias cajas llegan al punto de detección pero la secuencia no continúa porque B3 no confirma su presencia de forma estable."
+    operational_state: "PLC_1 está en RUN, la máquina está en AUTO, la seguridad está saludable, el accionamiento está listo y no existen fallos de comunicación ni disparos eléctricos."
+    initiating_event: "El operador informa de detecciones intermitentes en el transportador de entrada."
+    learner_role: "Técnico de automatización encargado de relacionar campo, esquema, PLC y HMI antes de intervenir."
+    safety_context:
+      safe_state: "Detener y asegurar ST03 antes de acceder al sensor o ajustar su soporte."
+      intervention_constraints:
+        - "No forzar señales ni modificar la lógica."
+        - "No sustituir B3 sin evidencia de fallo interno."
+        - "Aplicar el procedimiento autorizado antes de una inspección mecánica."
+        - "Verificar varios ciclos antes de devolver la estación a producción."
+  learning_objectives:
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Trazar B3 desde campo y X10 hasta %I0.3 y Sensor_BoxDetected."
+    OBJ-STATE-INTERPRETATION:
+      description: "Interpretar conjuntamente el estado físico, la Watch Table y la HMI."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Realinear B3 y verificar una recuperación estable mediante ciclos repetidos."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Incidente en ST03"
+      situation: "Una caja está en el punto de detección, pero el transportador permanece detenido por ausencia de confirmación."
+    STAGE-02-FIRST-ACTION:
+      title: "Primera acción diagnóstica"
+      situation: "La seguridad está saludable y no hay fallos generales. Debes decidir cómo conservar y ampliar la evidencia."
+    STAGE-03-SENSOR:
+      title: "Inspección de B3"
+      situation: "B3 está alimentado, conectado y sin daños visibles. La caja está próxima, pero la salida no conmuta de forma estable."
+    STAGE-04-ELECTRICAL:
+      title: "Trazabilidad eléctrica"
+      situation: "El esquema permite seguir B3 a través de X10 hasta el canal de entrada asignado."
+    STAGE-05-PLC:
+      title: "Estado en PLC_1"
+      situation: "La Watch Table muestra Sensor_BoxDetected en FALSE mientras la caja permanece junto al punto de detección."
+    STAGE-06-HMI:
+      title: "Contexto operativo"
+      situation: "La HMI muestra ST03 detenida y Box detected en No; no informa de pérdida de comunicación ni fallo general."
+    STAGE-07-BEFORE-REPLACEMENT:
+      title: "Comprobaciones previas"
+      situation: "Campo, documentación y PLC son coherentes. Falta discriminar entre un sensor averiado y una condición mecánica de detección."
+    STAGE-08-MECHANICAL:
+      title: "Inspección mecánica"
+      situation: "Con ST03 asegurada, la inspección revela que el eje óptico de B3 pasa fuera de la zona estable de la caja."
+    STAGE-09-RECOVERY:
+      title: "Recuperación controlada"
+      situation: "La evidencia confirma un desplazamiento del soporte por vibración. Selecciona la intervención justificada."
+    STAGE-10-VERIFICATION:
+      title: "Verificación final"
+      situation: "B3 ha sido realineado y fijado. Campo, %I0.3, Sensor_BoxDetected y HMI responden de nuevo."
+  evidence:
+    EVID-01-OPERATOR:
+      source: "Operador de ST03"
+      content: "Algunas cajas no se detectan y la cinta no continúa."
+    EVID-02-INITIAL-STATE:
+      source: "Estado de máquina"
+      content: "PLC_1 en RUN, AUTO activo, seguridad saludable y accionamiento listo."
+    EVID-03-SENSOR:
+      source: "B3"
+      content: "Sensor alimentado y conectado, sin daños visibles y sin conmutación estable ante la caja."
+    EVID-04-ELECTRICAL:
+      source: "Esquema eléctrico"
+      content: "B3 se conecta mediante X10 al canal %I0.3 asociado a Sensor_BoxDetected."
+    EVID-05-PLC:
+      source: "Watch Table de PLC_1"
+      content: "Sensor_BoxDetected (%I0.3) permanece FALSE con la caja en posición."
+    EVID-06-HMI:
+      source: "HMI de ST03"
+      content: "ST03 está detenida y Box detected indica No, sin fallo de comunicación."
+    EVID-07-CONSISTENCY:
+      source: "Correlación de evidencias"
+      content: "Campo, esquema, dirección, tag y HMI describen de forma consistente una ausencia real de detección."
+    EVID-08-MISALIGNMENT:
+      source: "Soporte de B3"
+      content: "El soporte se ha desplazado y el eje óptico no intersecta de forma estable la caja."
+    EVID-09-RECOVERY:
+      source: "Prueba funcional"
+      content: "Tras realinear y fijar B3, la detección es estable en campo, PLC y HMI."
+  decisions:
+    DEC-01-TRACE:
+      action: "Conservar el estado y comenzar la trazabilidad desde B3."
+    DEC-01-REPLACE:
+      action: "Sustituir B3 inmediatamente."
+    DEC-01-FORCE:
+      action: "Forzar Sensor_BoxDetected para reanudar producción."
+    DEC-02-IDENTIFY:
+      action: "Identificar B3 en el esquema antes de interpretar la señal."
+    DEC-02-ASSUME:
+      action: "Asumir que el sensor está averiado porque no conmuta."
+    DEC-02-ADJUST:
+      action: "Mover el sensor sin registrar su posición inicial."
+    DEC-03-MAP:
+      action: "Confirmar B3 → X10 → %I0.3 → Sensor_BoxDetected."
+    DEC-03-IGNORE:
+      action: "Ignorar el esquema y buscar tags similares online."
+    DEC-03-CHANGE:
+      action: "Cambiar la dirección del tag para probar otro canal."
+    DEC-04-CORRELATE:
+      action: "Correlacionar FALSE con la condición física y continuar reuniendo evidencia."
+    DEC-04-LOGIC:
+      action: "Concluir que la secuencia PLC es incorrecta."
+    DEC-04-INPUT:
+      action: "Concluir que el módulo de entradas está averiado."
+    DEC-05-SYMPTOM:
+      action: "Tratar la HMI como confirmación del síntoma, no como causa raíz."
+    DEC-05-HMI-CAUSE:
+      action: "Atribuir el fallo a la HMI."
+    DEC-05-RESET:
+      action: "Reconocer alarmas y reiniciar sin inspección adicional."
+    DEC-06-INSPECT-PATH:
+      action: "Asegurar ST03 e inspeccionar montaje, trayectoria óptica y posición de la caja."
+    DEC-06-REPLACE:
+      action: "Sustituir B3 sin comprobar su alineación."
+    DEC-06-BYPASS:
+      action: "Puentear la entrada para confirmar la secuencia."
+    DEC-07-ROOT-CAUSE:
+      action: "Identificar la desalineación del soporte como causa raíz confirmada."
+    DEC-07-SENSOR-FAULT:
+      action: "Mantener como causa un fallo interno del sensor."
+    DEC-07-PLC-FAULT:
+      action: "Mantener como causa un fallo del canal PLC."
+    DEC-08-REALIGN:
+      action: "Realinear B3, fijar el soporte y restaurar la estación de forma controlada."
+    DEC-09-REPEAT:
+      action: "Verificar varios ciclos y confirmar campo, PLC, HMI y secuencia."
+    DEC-09-SINGLE:
+      action: "Cerrar la intervención después de una única detección."
+    DEC-09-ACK:
+      action: "Considerar suficiente que la HMI ya no muestre el síntoma."
+  visual:
+    educational_purpose: "Presentar evidencias progresivas sin anticipar la desalineación ni la recuperación."
+  assets:
+    ART-001:
+      alt: "Vista general de ST03 con caja, transportador y sensor B3."
+      caption: "Observación inicial de ST03."
+    ART-002:
+      alt: "Primer plano del sensor fotoeléctrico B3 alimentado."
+      caption: "Inspección inicial de B3."
+    ART-003:
+      alt: "Esquema eléctrico que relaciona B3 con la entrada %I0.3."
+      caption: "Trazabilidad eléctrica de B3."
+    ART-004:
+      alt: "Watch Table con Sensor_BoxDetected en FALSE."
+      caption: "Estado online de %I0.3."
+    ART-005:
+      alt: "HMI de ST03 detenida por ausencia de detección."
+      caption: "Contexto operativo de ST03."
+    ART-006:
+      alt: "Inspección mecánica que muestra el eje óptico desalineado."
+      caption: "Causa mecánica confirmada."
+    ART-007:
+      alt: "Verificación conjunta de sensor, PLC, HMI y transportador recuperados."
+      caption: "Recuperación funcional verificada."
+  completion:
+    title: "Debrief técnico"
+    summary: "B3 estaba alimentado y correctamente mapeado, pero su soporte desplazado situaba el eje óptico fuera de la zona estable de detección."
+    process: ["Separar el síntoma de la causa.", "Trazar B3 hasta Sensor_BoxDetected.", "Correlacionar campo, PLC y HMI.", "Inspeccionar la trayectoria óptica antes de sustituir.", "Realinear, fijar y verificar ciclos repetidos."]
+    lesson: "Una señal eléctricamente sana puede incumplir su función de proceso por una condición mecánica."
+    avoided_errors: ["Sustituir el sensor sin evidencia.", "Forzar la entrada.", "Modificar lógica o direccionamiento.", "Cerrar la intervención tras una sola detección."]
+    industrial_value: ["Diagnóstico trazable.", "Menor sustitución innecesaria.", "Recuperación segura y repetible."]

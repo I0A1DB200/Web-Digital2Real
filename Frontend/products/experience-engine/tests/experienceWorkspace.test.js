@@ -9,7 +9,7 @@ import {
 } from "../components/experienceWorkspace.js";
 
 const artifactUrl = new URL(
-  "../../../../experience-engine/packaging/fixtures/ee0002-generated-web-artifact-v1.json",
+  "../../../../experience-engine/validation/fixtures/generated-web-artifact-v1-valid.json",
   import.meta.url
 );
 const readArtifact = async () => JSON.parse(await readFile(artifactUrl, "utf8"));
@@ -75,7 +75,7 @@ test("projects a selected decision and public completion", () => {
   assert.equal(completion.stage, null);
 });
 
-test("EE-0002 opens and completes through Experience Lab without console access", async () => {
+test("a generated artifact opens and completes through Experience Lab without console access", async () => {
   const artifact = await readArtifact();
   const catalog = {
     format: "Digital2Real Generated Web Artifact Catalog",
@@ -106,10 +106,10 @@ test("EE-0002 opens and completes through Experience Lab without console access"
   });
 
   await workspace.initialise();
-  assert.match(workspace.element.text, /Drive reset after emergency stop/);
+  assert.match(workspace.element.text, /Generic diagnostic experience/);
   await findButton(workspace.element, "Open experience").click();
   assert.equal(workspace.getState().interaction, "start");
-  assert.match(workspace.element.text, /emergency stop has been physically released/i);
+  assert.match(workspace.element.text, /material handling machine has stopped/i);
 
   findButton(workspace.element, "Start experience").click();
   findButton(workspace.element, "Begin diagnosis").click();
@@ -124,8 +124,7 @@ test("EE-0002 opens and completes through Experience Lab without console access"
   });
 
   assert.equal(workspace.getState().interaction, "completion");
-  assert.match(workspace.element.text, /Diagnostic session completed/);
-  assert.equal(workspace.getState().decisionHistory.length, 7);
+  assert.equal(workspace.getState().decisionHistory.length, 2);
 
   findButton(workspace.element, "Restart experience").click();
   assert.equal(workspace.getState().interaction, "start");
@@ -203,7 +202,7 @@ test("workspace and application use generated JSON without ID-specific handling"
 
   assert.match(workspaceSource, /generated\/experience-engine/);
   assert.match(workspaceSource, /new playerModule\.ExperiencePlayer\(\{ experience: artifact \}\)/);
-  assert.doesNotMatch(workspaceSource, /ya?ml|EE-0002|EXP-SIEMENS-DRIVE-002/i);
+  assert.doesNotMatch(workspaceSource, /ya?ml|EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}/i);
   assert.doesNotMatch(
     workspaceSource,
     /private|root_cause|scoring|correct_answer|rationale|consequence|debrief|fault_model|diagnostic_model/

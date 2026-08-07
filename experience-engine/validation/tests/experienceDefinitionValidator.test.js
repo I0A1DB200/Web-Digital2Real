@@ -58,7 +58,7 @@ test("rejects an unsupported contract version", async () => {
 
 test("rejects an invalid Experience identifier", async () => {
   const definition = await readJson(validFixtureUrl);
-  definition.metadata.id = "EE-0002";
+  definition.metadata.id = "INVALID-ID";
 
   const result = validateExperienceDefinition(definition);
 

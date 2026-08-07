@@ -6,11 +6,11 @@
 | Technical ID | `EXP-SENSOR-PHOTOELECTRIC-009` |
 | Domain | Industrial I/O — photoelectric sensing |
 | Preliminary objective | Develop evidence-led reasoning about photoelectric sensor alignment |
-| Status | Draft — non-buildable |
+| Status | Technical review — Preview eligible |
 | Principal Capability | `ICF-02` — Industrial I/O |
-| Competencies | Pending governed ICF-02 competency definitions |
-| Languages | Spanish (`es`) and English (`en`), both draft |
-| Masters | [`media-source/`](media-source/) |
+| Competencies | `COMP-IIO-SIGNAL-TRACEABILITY`, `COMP-IIO-STATE-INTERPRETATION`, `COMP-IIO-CONTROLLED-RECOVERY` |
+| Languages | Spanish (`es`) and English (`en`) complete; Spanish fallback |
+| Approved source media | [`media/`](media/) |
 | Web derivatives | [`assets/`](assets/) |
 
 ## Workflow
@@ -26,30 +26,24 @@ Approved Blueprint
 → Publication
 ```
 
-`experience.yaml` is currently an intentionally incomplete Authoring v1 scaffold. Its `draft` lifecycle state excludes it from preview and production packaging without an Experience-specific list or Frontend rule.
+`experience.yaml` is a complete Authoring Definition v1 in `technical_review`. Generic catalog policy includes it in Preview and excludes it from Production.
 
-## Expected masters
+## Approved source and derivatives
 
-- `cover-master.png`
-- `intro-master.mp4`
-- `sensor-led-master.mp4`
-- `beam-alignment-master.mp4`
-- `plc-input-master.mp4`
-- `support-alignment-master.png`
-- `top-view-master.png`
-- `hmi-diagnostics-master.png`
-- `outro-master.mp4`
+- `media/` owns the seven approved PNG sources (`ART-001` through `ART-007`).
+- `assets/` contains byte-identical browser-consumable derivatives used by packaging.
+- Text embedded in the approved PNG files remains in its original language.
 
-Do not create placeholders or reconstruct masters from derivatives.
+Do not edit the approved sources or reconstruct them from derivatives.
 
 ## Build gate
 
-Build may begin only when all of the following exist and are approved:
+The technical-review build is valid when all of the following remain true:
 
 - the Experience Blueprint;
 - complete Spanish and English learner-facing content;
-- every required master listed above;
-- the complete Authoring Definition v1, including governed competency references;
+- all seven approved source images and their referenced derivatives;
+- the complete Authoring Definition v1 with governed ICF-02 competency references;
 - technical validation evidence.
 
-Until then, do not generate Runtime, Web Artifact, catalog entries, Experience Lab integration, or public assets.
+The associated Notebook is pending and no broken Notebook route is published. Publication remains prohibited until the normal technical and Product review gates are complete.

@@ -49,7 +49,7 @@ test("rejects unsupported Web Artifact versions explicitly", async () => {
 
 test("rejects invalid Experience identifiers and classes", async () => {
   const artifact = await readJson(validFixtureUrl);
-  artifact.identity.id = "EE-0002";
+  artifact.identity.id = "INVALID-ID";
   artifact.identity.class = "challenge";
 
   const result = validateGeneratedWebArtifact(artifact);

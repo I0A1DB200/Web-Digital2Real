@@ -1,5 +1,160 @@
-locale: "en"
-translation_status: "draft"
+﻿locale: "en"
 translations:
   title: "Photoelectric Sensor Misalignment"
-  summary: "Preliminary Experience about diagnosing the alignment of a photoelectric sensor."
+  summary: "Use evidence to diagnose intermittent detection and recover the station without unjustified component replacement."
+  scenario:
+    initial_context: "At ST03, several boxes reach the detection point but the sequence cannot continue because B3 does not confirm their presence reliably."
+    operational_state: "PLC_1 is in RUN, the machine is in AUTO, safety is healthy, the drive is ready, and there are no communication faults or electrical trips."
+    initiating_event: "The operator reports intermittent detection at the infeed conveyor."
+    learner_role: "Automation technician responsible for correlating field, drawing, PLC, and HMI evidence before intervening."
+    safety_context:
+      safe_state: "Stop and secure ST03 before accessing the sensor or adjusting its bracket."
+      intervention_constraints: ["Do not force signals or modify logic.", "Do not replace B3 without evidence of internal failure.", "Apply the authorized procedure before mechanical inspection.", "Verify multiple cycles before returning the station to production."]
+  learning_objectives:
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Trace B3 from the field and X10 to %I0.3 and Sensor_BoxDetected."
+    OBJ-STATE-INTERPRETATION:
+      description: "Interpret the physical state, Watch Table, and HMI together."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Realign B3 and verify stable recovery through repeated cycles."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Incident at ST03"
+      situation: "A box is at the detection point, but the conveyor remains stopped because confirmation is absent."
+    STAGE-02-FIRST-ACTION:
+      title: "First diagnostic action"
+      situation: "Safety is healthy and no general faults are present. Decide how to preserve and extend the evidence."
+    STAGE-03-SENSOR:
+      title: "B3 inspection"
+      situation: "B3 is powered, connected, and visibly undamaged. The box is nearby, but the output does not switch reliably."
+    STAGE-04-ELECTRICAL:
+      title: "Electrical traceability"
+      situation: "The drawing traces B3 through X10 to the assigned input channel."
+    STAGE-05-PLC:
+      title: "PLC_1 state"
+      situation: "The Watch Table shows Sensor_BoxDetected FALSE while the box remains at the detection point."
+    STAGE-06-HMI:
+      title: "Operational context"
+      situation: "The HMI shows ST03 stopped and Box detected as No, with no communication or general fault."
+    STAGE-07-BEFORE-REPLACEMENT:
+      title: "Checks before replacement"
+      situation: "Field, documentation, and PLC evidence agree. An internal sensor fault must now be distinguished from a mechanical detection condition."
+    STAGE-08-MECHANICAL:
+      title: "Mechanical inspection"
+      situation: "With ST03 secured, inspection reveals that the optical axis passes outside the stable box detection area."
+    STAGE-09-RECOVERY:
+      title: "Controlled recovery"
+      situation: "Evidence confirms bracket displacement caused by vibration. Select the justified intervention."
+    STAGE-10-VERIFICATION:
+      title: "Final verification"
+      situation: "B3 has been realigned and secured. Field, %I0.3, Sensor_BoxDetected, and the HMI respond again."
+  evidence:
+    EVID-01-OPERATOR:
+      source: "ST03 operator"
+      content: "Some boxes are not detected and the conveyor does not continue."
+    EVID-02-INITIAL-STATE:
+      source: "Machine state"
+      content: "PLC_1 in RUN, AUTO active, safety healthy, and drive ready."
+    EVID-03-SENSOR:
+      source: "B3"
+      content: "The sensor is powered, connected, visibly undamaged, and does not switch reliably for the box."
+    EVID-04-ELECTRICAL:
+      source: "Electrical drawing"
+      content: "B3 connects through X10 to %I0.3, associated with Sensor_BoxDetected."
+    EVID-05-PLC:
+      source: "PLC_1 Watch Table"
+      content: "Sensor_BoxDetected (%I0.3) remains FALSE with the box in position."
+    EVID-06-HMI:
+      source: "ST03 HMI"
+      content: "ST03 is stopped and Box detected shows No, without a communication fault."
+    EVID-07-CONSISTENCY:
+      source: "Evidence correlation"
+      content: "Field, drawing, address, tag, and HMI consistently describe a real absence of detection."
+    EVID-08-MISALIGNMENT:
+      source: "B3 bracket"
+      content: "The bracket has moved and the optical axis no longer intersects the box reliably."
+    EVID-09-RECOVERY:
+      source: "Functional test"
+      content: "After realigning and securing B3, detection is stable in the field, PLC, and HMI."
+  decisions:
+    DEC-01-TRACE:
+      action: "Preserve the state and begin tracing from B3."
+    DEC-01-REPLACE:
+      action: "Replace B3 immediately."
+    DEC-01-FORCE:
+      action: "Force Sensor_BoxDetected to resume production."
+    DEC-02-IDENTIFY:
+      action: "Identify B3 in the drawing before interpreting the signal."
+    DEC-02-ASSUME:
+      action: "Assume the sensor is faulty because it does not switch."
+    DEC-02-ADJUST:
+      action: "Move the sensor without recording its initial position."
+    DEC-03-MAP:
+      action: "Confirm B3 → X10 → %I0.3 → Sensor_BoxDetected."
+    DEC-03-IGNORE:
+      action: "Ignore the drawing and search for similar online tags."
+    DEC-03-CHANGE:
+      action: "Change the tag address to test another channel."
+    DEC-04-CORRELATE:
+      action: "Correlate FALSE with the physical condition and continue gathering evidence."
+    DEC-04-LOGIC:
+      action: "Conclude that the PLC sequence is incorrect."
+    DEC-04-INPUT:
+      action: "Conclude that the input module is faulty."
+    DEC-05-SYMPTOM:
+      action: "Treat the HMI as confirmation of the symptom, not the root cause."
+    DEC-05-HMI-CAUSE:
+      action: "Attribute the fault to the HMI."
+    DEC-05-RESET:
+      action: "Acknowledge alarms and restart without further inspection."
+    DEC-06-INSPECT-PATH:
+      action: "Secure ST03 and inspect the mounting, optical path, and box position."
+    DEC-06-REPLACE:
+      action: "Replace B3 without checking alignment."
+    DEC-06-BYPASS:
+      action: "Bridge the input to confirm the sequence."
+    DEC-07-ROOT-CAUSE:
+      action: "Identify bracket misalignment as the confirmed root cause."
+    DEC-07-SENSOR-FAULT:
+      action: "Retain an internal sensor fault as the cause."
+    DEC-07-PLC-FAULT:
+      action: "Retain a PLC channel fault as the cause."
+    DEC-08-REALIGN:
+      action: "Realign B3, secure the bracket, and restore the station under control."
+    DEC-09-REPEAT:
+      action: "Verify multiple cycles and confirm field, PLC, HMI, and sequence."
+    DEC-09-SINGLE:
+      action: "Close the intervention after one successful detection."
+    DEC-09-ACK:
+      action: "Consider it sufficient that the HMI no longer shows the symptom."
+  visual:
+    educational_purpose: "Present progressive evidence without anticipating the misalignment or recovery."
+  assets:
+    ART-001:
+      alt: "Overview of ST03 with a box, conveyor, and B3 sensor."
+      caption: "Initial observation of ST03."
+    ART-002:
+      alt: "Close-up of the powered B3 photoelectric sensor."
+      caption: "Initial inspection of B3."
+    ART-003:
+      alt: "Electrical drawing mapping B3 to input %I0.3."
+      caption: "Electrical traceability of B3."
+    ART-004:
+      alt: "Watch Table showing Sensor_BoxDetected FALSE."
+      caption: "Online state of %I0.3."
+    ART-005:
+      alt: "HMI showing ST03 stopped due to missing detection."
+      caption: "Operational context of ST03."
+    ART-006:
+      alt: "Mechanical inspection showing the misaligned optical axis."
+      caption: "Confirmed mechanical cause."
+    ART-007:
+      alt: "Combined verification of the recovered sensor, PLC, HMI, and conveyor."
+      caption: "Verified functional recovery."
+  completion:
+    title: "Technical debrief"
+    summary: "B3 was powered and correctly mapped, but bracket displacement moved its optical axis outside the stable detection area."
+    process: ["Separate the symptom from the cause.", "Trace B3 to Sensor_BoxDetected.", "Correlate field, PLC, and HMI evidence.", "Inspect the optical path before replacement.", "Realign, secure, and verify repeated cycles."]
+    lesson: "An electrically healthy signal can fail its process function because of a mechanical condition."
+    avoided_errors: ["Replacing the sensor without evidence.", "Forcing the input.", "Changing logic or addressing.", "Closing after one detection."]
+    industrial_value: ["Traceable diagnosis.", "Fewer unnecessary replacements.", "Safe and repeatable recovery."]

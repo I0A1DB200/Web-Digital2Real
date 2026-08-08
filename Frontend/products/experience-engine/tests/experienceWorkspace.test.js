@@ -223,7 +223,10 @@ test("workspace and application use generated JSON without ID-specific handling"
     workspaceSource,
     /private|root_cause|scoring|correct_answer|rationale|consequence|debrief|fault_model|diagnostic_model/
   );
-  assert.match(styles, /grid-template-columns:\s*minmax\(14rem, 3fr\) minmax\(0, 7fr\)/);
+  assert.match(
+    styles,
+    /grid-template-columns:\s*clamp\(220px, 28vw, 280px\) minmax\(0, 1fr\)/
+  );
   assert.match(styles, /@media \(max-width: 760px\)/);
   assert.match(styles, /\.experience-card:focus-visible/);
   assert.doesNotMatch(styles, /EXP-SENSOR-PHOTOELECTRIC-009|EE-0009/);

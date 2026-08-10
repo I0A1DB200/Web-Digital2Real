@@ -632,5 +632,393 @@ export const notebook = [
           "A 4–20 mA loop is not just a signal. It is a measurement chain connecting the physical process to the automation system. When troubleshooting, identify the first point where the measurement stops representing reality correctly."
       }
     ]
+  },
+  {
+    id: "article-006",
+    slug: "building-scalable-plc-architectures",
+
+    kicker: "Engineering Note #006",
+    title: "Building Scalable PLC Architectures",
+    excerpt:
+      "A maintainable PLC project is organized by responsibility rather than by execution order. Separate I/O, coordination, equipment behavior and data models to create software that can grow without becoming harder to maintain.",
+
+    coverImage: "./assets/images/notebook/article-006-building-scalable-plc-architectures.png",
+    coverAlt:
+      "Technical TIA Portal representation of a scalable PLC software architecture organized into I/O mapping, process coordination, equipment Function Blocks, instance DBs and structured UDT data.",
+
+    readingTime: 3,
+
+    categories: ["PLC Software Architecture"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "A PLC program can work correctly and still be badly designed. The difference often becomes visible during commissioning, troubleshooting, modification or project growth."
+      },
+      {
+        type: "paragraph",
+        content:
+          "A scalable PLC architecture gives each part of the project a clear responsibility. The objective is not to create more blocks, but to make the system easier to understand, diagnose, reuse and extend."
+      },
+      {
+        type: "heading",
+        title: "The Problem with Execution-Order Design"
+      },
+      {
+        type: "paragraph",
+        content:
+          "PLC programs execute in a defined order. That does not mean the software architecture should be designed only around that order."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "OB1\n |\n +-- Network 1\n +-- Network 2\n +-- Network 3\n +-- Network 4\n ...\n +-- Network 500"
+      },
+      {
+        type: "paragraph",
+        content:
+          "This may execute correctly, but execution order does not explain responsibility. As complexity grows, engineers need predictable answers about I/O mapping, sequencing, equipment state, alarms and data ownership."
+      },
+      {
+        type: "heading",
+        title: "Organize by Responsibility"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "OB1\n │\n ├── 01_IO\n │     └── FC_IO_Map\n │\n ├── 02_COORDINATION\n │     └── FB_MachineCtrl\n │\n ├── 03_EQUIPMENT\n │     ├── FB_Conveyor\n │     ├── FB_Pusher\n │     └── FB_Weighing\n │\n ├── 04_TYPES\n │     ├── UDT_Conveyor\n │     ├── UDT_Pusher\n │     └── UDT_Weighing\n │\n └── 05_UTILITIES\n       ├── FC_Alarms\n       └── FC_Scaling"
+      },
+      {
+        type: "paragraph",
+        content:
+          "These names are examples, not mandatory Siemens conventions. The architectural principle is the separation of responsibility."
+      },
+      {
+        type: "heading",
+        title: "OB1 — Execution Coordination"
+      },
+      {
+        type: "paragraph",
+        content:
+          "OB1 is the cyclic entry point for the PLC application. In a maintainable architecture, it can make the execution structure visible without becoming the location where the complete machine behavior is implemented."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Keeping OB1 lean is a useful pattern, not an absolute rule that prohibits all logic. A technician opening it should quickly understand the major software layers and their call order."
+      },
+      {
+        type: "heading",
+        title: "I/O Mapping"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Physical I/O represents hardware, while machine logic represents behavior. Separating them reduces coupling between application logic and physical addresses."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "Physical input\n%I0.0\n\nApplication representation\nConveyor_1.Sts.SensorPE"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Equipment logic can reason about SensorPE rather than repeatedly depending on %I0.0. The mapping layer becomes an explicit boundary, making navigation clearer and hardware changes easier to localize."
+      },
+      {
+        type: "heading",
+        title: "Coordination Layer"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Individual equipment blocks know how their equipment behaves, but they do not necessarily own the complete production sequence. A coordination layer can manage machine modes, sequence state, production flow, high-level permissives and interactions between equipment."
+      },
+      {
+        type: "paragraph",
+        content:
+          "For example, FB_MachineCtrl may coordinate FB_Conveyor, FB_Pusher and FB_Weighing without implementing the internal behavior of each device. This prevents one large block from accumulating every responsibility."
+      },
+      {
+        type: "heading",
+        title: "Equipment Modules"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Physical equipment often provides a useful software boundary. A reusable Function Block can encapsulate the behavior associated with a conveyor, pusher, valve, pump, weighing station or robot interface."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "FB_Conveyor\n     │\n     ├── Commands\n     ├── Status\n     ├── Interlocks\n     ├── Internal state\n     └── Diagnostics"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Multiple conveyors can reuse the same behavior while maintaining independent instance data. This is a scalable pattern, not a requirement that every physical object must have its own FB."
+      },
+      {
+        type: "heading",
+        title: "Data Ownership"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Architecture is not only about program blocks. Data also needs clear ownership. Instance DBs hold instance data associated with FBs. UDTs define consistent data types and structured interfaces; they do not contain behavior."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Global DBs remain appropriate for information that is genuinely shared across the application. The engineering question is not whether one storage form is universally better, but who owns the data and which responsibility requires it."
+      },
+      {
+        type: "heading",
+        title: "Software Should Reflect the Machine"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "MACHINE                         SOFTWARE\n │                               │\n ├── Conveyor_1                  ├── FB_Conveyor / DB_Conveyor_1\n ├── Conveyor_2                  ├── FB_Conveyor / DB_Conveyor_2\n ├── Pusher_1                    ├── FB_Pusher   / DB_Pusher_1\n └── Weighing_1                  └── FB_Weighing / DB_Weighing_1"
+      },
+      {
+        type: "paragraph",
+        content:
+          "This correspondence reduces the mental translation required during troubleshooting. When Conveyor_2 fails, the engineer has a predictable place to investigate its behavior and data."
+      },
+      {
+        type: "heading",
+        title: "Scalability"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Scalability means that adding functionality does not cause software complexity to grow uncontrollably. A scalable architecture makes common changes local."
+      },
+      {
+        type: "list",
+        items: [
+          "Adding another conveyor primarily adds another conveyor instance.",
+          "Changing conveyor behavior primarily affects its equipment implementation.",
+          "Changing an I/O address primarily affects the mapping layer.",
+          "Changing sequence behavior primarily affects coordination logic."
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "These boundaries reduce unintended side effects while connecting the reusable behavior introduced in Engineering Note #002 with the structured data model introduced in Engineering Note #004."
+      },
+      {
+        type: "heading",
+        title: "Engineering Note"
+      },
+      {
+        type: "engineering-note",
+        title: "Clear responsibilities create maintainable systems",
+        content:
+          "A good PLC architecture is not about creating more blocks. When I/O mapping, coordination, equipment behavior and data ownership have predictable boundaries, the project becomes easier to understand, diagnose and extend. The architecture has succeeded when a future engineer can quickly determine where a change belongs."
+      }
+    ]
+  },
+  {
+    id: "article-007",
+    slug: "function-blocks-vs-functions",
+
+    kicker: "Engineering Note #007",
+    title: "Function Blocks vs Functions",
+    excerpt:
+      "FCs and FBs can both execute PLC logic, but they solve different architectural problems. The key distinction is whether the responsibility requires instance-specific state that must persist between PLC cycles.",
+
+    coverImage: "./assets/images/notebook/article-007-function-blocks-vs-functions.png",
+    coverAlt:
+      "Technical PLC software architecture comparison showing a stateless Function and a Function Block with persistent instance data.",
+
+    readingTime: 3,
+
+    categories: ["PLC Software Architecture"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "Functions and Function Blocks can both execute PLC logic. The architectural difference is not simply whether the logic is simple or complex. The essential question is whether the responsibility needs instance-specific state that persists between PLC cycles."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Choosing between an FC and an FB according to responsibility makes software ownership clearer and helps repeated equipment behave independently without duplicating its implementation."
+      },
+      {
+        type: "heading",
+        title: "Function — Operation Without FB Instance State"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A Function is a natural fit for an operation that does not require its own FB instance state. It receives information, performs a defined responsibility and returns or writes a result without an associated instance data block."
+      },
+      {
+        type: "list",
+        items: [
+          "Scaling and unit conversion.",
+          "Mathematical calculations.",
+          "I/O mapping.",
+          "Data transformations and comparisons.",
+          "Reusable utility operations."
+        ]
+      },
+      {
+        type: "code",
+        language: "text",
+        content: "INPUTS\n   │\n   ▼\n  FC\n   │\n   ▼\nOUTPUTS"
+      },
+      {
+        type: "paragraph",
+        content:
+          "The same FC can be called repeatedly with different data. It may read or modify persistent information supplied through its interface or stored elsewhere, but that persistence is not owned as FB instance state by the Function itself."
+      },
+      {
+        type: "heading",
+        title: "Function Block — Behavior with Instance State"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A Function Block is a natural fit when a responsibility represents behavior that must remember its own condition between cycles. Conveyors, pumps, valves, axes and other equipment modules often need independent state, timers, interlocks and diagnostics."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "                 FB_Conveyor\n        ┌─────────────────────────┐\nCmd ───►│                         │───► Status\nI/O ───►│   Equipment behavior    │───► Outputs\n        │                         │\n        │   Internal state        │\n        │   Timers                │\n        │   Interlocks            │\n        │   Diagnostics           │\n        └────────────┬────────────┘\n                     │\n                     ▼\n              DB_Conveyor_1\n               Instance DB"
+      },
+      {
+        type: "paragraph",
+        content:
+          "The instance DB stores the data belonging to that FB instance across PLC cycles. This allows one shared implementation to represent multiple pieces of equipment while each instance retains independent operating state."
+      },
+      {
+        type: "heading",
+        title: "Same Behavior, Different Instances"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "FB_Conveyor\n   │\n   ├── DB_Conveyor_1 → Running\n   ├── DB_Conveyor_2 → Stopped\n   └── DB_Conveyor_3 → Faulted"
+      },
+      {
+        type: "paragraph",
+        content:
+          "All three conveyors reuse the same behavior, but their commands, status, timers and diagnostic conditions remain independent. Reuse applies to the implementation; state belongs to each instance."
+      },
+      {
+        type: "heading",
+        title: "Instance State"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Instance state is information owned by one occurrence of a Function Block and preserved between calls. It describes where that instance is now or what it remembers from previous cycles."
+      },
+      {
+        type: "list",
+        items: [
+          "Current operating state and mode.",
+          "Latched commands and previous signal conditions.",
+          "Timer and sequence progress.",
+          "Interlock, fault and diagnostic state.",
+          "Instance-specific configuration when ownership belongs to the equipment."
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "Static variables form part of FB instance data and can preserve this information across calls. Not every persistent value belongs in an instance DB, however; genuinely shared or externally owned data should remain with its proper architectural owner."
+      },
+      {
+        type: "heading",
+        title: "Decision Guide"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "Does the responsibility need\ninstance-specific state?\n        │\n   ┌────┴────┐\n   │         │\n  NO        YES\n   │         │\n   ▼         ▼\n  FC         FB"
+      },
+      {
+        type: "paragraph",
+        content:
+          "This is a practical heuristic rather than an absolute rule. An operation without owned instance state generally points toward an FC. Reusable behavior that must retain state for each instance generally points toward an FB. Block size alone is not a sound selection criterion."
+      },
+      {
+        type: "heading",
+        title: "Bad Decision Rules"
+      },
+      {
+        type: "list",
+        items: [
+          "Use an FC because the logic is short.",
+          "Use an FB because the logic is complex.",
+          "Use an FB for every physical device.",
+          "Use an FC whenever outputs can be calculated."
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "These shortcuts confuse implementation size with architectural responsibility. The better decision considers data ownership, lifecycle, persistence, reuse and whether multiple independent instances must coexist."
+      },
+      {
+        type: "heading",
+        title: "Example — Scaling"
+      },
+      {
+        type: "code",
+        language: "text",
+        content: "Raw value\n    │\n    ▼\n FC_Scale\n    │\n    ▼\nEngineering value"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Scaling transforms an input value into engineering units according to supplied limits. When the operation does not need to retain its own instance-specific history, an FC is a natural candidate."
+      },
+      {
+        type: "heading",
+        title: "Example — Conveyor"
+      },
+      {
+        type: "list",
+        items: [
+          "Remember whether the conveyor is starting, running, stopping or faulted.",
+          "Maintain independent timing and edge history.",
+          "Evaluate instance-specific interlocks and diagnostics.",
+          "Expose commands and status through a consistent equipment interface."
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "A conveyor behavior with these responsibilities is a natural FB candidate. Multiple conveyors can use the same block while their instance DBs preserve separate state."
+      },
+      {
+        type: "heading",
+        title: "Engineering Note"
+      },
+      {
+        type: "engineering-note",
+        title: "Choose blocks according to responsibility, not size",
+        content:
+          "Use an FC when the responsibility is an operation that does not own FB instance state. Use an FB when the responsibility is reusable behavior that must remember independent state for each instance. This distinction keeps persistence, ownership and reuse explicit as the PLC application grows."
+      }
+    ]
   }
 ];

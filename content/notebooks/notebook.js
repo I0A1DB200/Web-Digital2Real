@@ -315,5 +315,167 @@ export const notebook = [
           "The PLC communicates with the IO-Link Master through an industrial network such as PROFINET, EtherNet/IP or EtherCAT. The Master manages an independent point-to-point connection with each IO-Link device."
       }
     ]
+  },
+  {
+    id: "article-004",
+    slug: "udt-driven-plc-design",
+
+    kicker: "Engineering Note #004",
+    title: "UDT-Driven PLC Design",
+    excerpt:
+      "User-Defined Types provide a structured data model for machine elements, making PLC software easier to understand, reuse, maintain and scale.",
+
+    coverImage: "./assets/images/notebook/article-004-udt-driven-plc-design.png",
+    coverAlt:
+      "UDT-driven PLC software architecture showing structured machine data, function blocks and physical machine elements.",
+
+    readingTime: 3,
+
+    categories: ["PLC Software Architecture"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "As PLC applications grow, managing hundreds of individual variables becomes increasingly difficult."
+      },
+      {
+        type: "paragraph",
+        content:
+          "User-Defined Types (UDTs) solve this problem by defining consistent data structures for the physical elements of a machine."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Instead of treating every signal as an isolated variable, related commands, status information and parameters can be represented as one engineering object."
+      },
+      {
+        type: "heading",
+        title: "From Signals to Objects"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Consider a conveyor. A flat implementation might contain independent variables such as Conveyor_Start, Conveyor_Stop, Conveyor_Running, Conveyor_Fault, Conveyor_SpeedSetpoint and Conveyor_ActualSpeed."
+      },
+      {
+        type: "paragraph",
+        content:
+          "These variables describe the same physical object but the relationship exists only through naming. A UDT makes that relationship explicit."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "UDT_Conveyor\n|\n+-- Cmd\n|   +-- Start\n|   +-- Stop\n|   +-- Reset\n|\n+-- Sts\n|   +-- Running\n|   +-- AtSpeed\n|   +-- HasFault\n|\n+-- Par\n    +-- SpeedSet\n    +-- Accel\n    +-- Decel"
+      },
+      {
+        type: "heading",
+        title: "Data Model"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A machine can then be represented using structured objects:"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "UDT_System\n|\n+-- EntryConveyors[]\n+-- Pushers[]\n+-- Weighing\n+-- Sorters[]\n+-- Alarms"
+      },
+      {
+        type: "paragraph",
+        content:
+          "The PLC data model now reflects the physical architecture of the machine."
+      },
+      {
+        type: "paragraph",
+        content:
+          "This makes the software easier to navigate because engineers can reason about machine elements instead of searching through unrelated variables."
+      },
+      {
+        type: "heading",
+        title: "UDTs and Function Blocks"
+      },
+      {
+        type: "paragraph",
+        content:
+          "UDTs define data structure. Function Blocks define behavior. Keeping these responsibilities distinct creates a powerful architecture."
+      },
+      {
+        type: "paragraph",
+        content: "UDT → What data represents the equipment."
+      },
+      {
+        type: "paragraph",
+        content: "FB → How the equipment behaves."
+      },
+      {
+        type: "paragraph",
+        content:
+          "For example, FB_Conveyor can operate on a UDT_Conveyor interface while the same structure is reused for multiple conveyors."
+      },
+      {
+        type: "paragraph",
+        content:
+          "The objective is not to create abstraction for its own sake. The objective is to establish a predictable software contract for every machine element. This is a scalable engineering pattern, not the only valid PLC architecture."
+      },
+      {
+        type: "heading",
+        title: "System Architecture"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "                 OB1\n                  |\n       +----------+----------+\n       |          |          |\n     FC_IO    FB_Conveyor  FB_Pusher\n                  |\n              UDT_System\n                  |\n           Physical Machine"
+      },
+      {
+        type: "list",
+        items: [
+          "OB1 coordinates execution.",
+          "FC_IO isolates physical I/O mapping.",
+          "Function Blocks encapsulate equipment behavior.",
+          "UDTs provide the structured data model connecting the software architecture to the machine."
+        ]
+      },
+      {
+        type: "heading",
+        title: "Why It Scales"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Structured data provides several engineering benefits:"
+      },
+      {
+        type: "list",
+        items: [
+          "Consistent interfaces",
+          "Easier navigation",
+          "Reduced naming ambiguity",
+          "Reusable Function Blocks",
+          "Predictable diagnostics",
+          "Easier expansion of machine modules",
+          "Clearer ownership of process data"
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "When another conveyor or pusher is added, the architecture can reuse the existing type and behavior instead of creating another collection of unrelated variables."
+      },
+      {
+        type: "heading",
+        title: "Engineering Note"
+      },
+      {
+        type: "engineering-note",
+        title: "Structure today creates scalability tomorrow",
+        content:
+          "A UDT is not simply a convenient way to group PLC tags. It is part of the software architecture. A good data model describes the machine in a way that both the PLC and the engineer can understand. When the data model reflects the physical system, software becomes easier to diagnose, extend and maintain."
+      }
+    ]
   }
 ];

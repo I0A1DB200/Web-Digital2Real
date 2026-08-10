@@ -477,5 +477,160 @@ export const notebook = [
           "A UDT is not simply a convenient way to group PLC tags. It is part of the software architecture. A good data model describes the machine in a way that both the PLC and the engineer can understand. When the data model reflects the physical system, software becomes easier to diagnose, extend and maintain."
       }
     ]
+  },
+  {
+    id: "article-005",
+    slug: "4-20ma-industrial-current-loop",
+
+    kicker: "Engineering Note #005",
+    title: "Understanding the 4–20 mA Industrial Current Loop",
+    excerpt:
+      "The 4–20 mA current loop provides a reliable interface between field instrumentation and the control system. Understanding the complete measurement chain is essential for commissioning and troubleshooting analog signals.",
+
+    coverImage: "./assets/images/notebook/article-005-4-20ma-current-loop.png",
+    coverAlt:
+      "4–20 mA industrial current loop showing a two-wire pressure transmitter connected to an analog input module in an S7-1500 station and an HMI displaying the engineering value.",
+
+    readingTime: 2,
+
+    categories: ["Industrial Automation"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "The 4–20 mA current loop is one of the most established methods for transmitting analog process measurements in industrial automation."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Pressure, temperature, flow and level transmitters commonly use it to communicate a measured process variable to a PLC or DCS. The signal itself is simple. The engineering challenge is understanding the complete measurement chain."
+      },
+      {
+        type: "heading",
+        title: "The Measurement Chain"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A process value passes through several representations before reaching the operator."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "PHYSICAL PROCESS\n      ↓\nTRANSMITTER\n      ↓\n4–20 mA\n      ↓\nANALOG INPUT\n      ↓\nRAW PLC VALUE\n      ↓\nSCALING\n      ↓\nENGINEERING VALUE"
+      },
+      {
+        type: "paragraph",
+        content:
+          "These values are related, but they are not the same thing. A pressure value in bar is not transmitted directly through the cable."
+      },
+      {
+        type: "paragraph",
+        content:
+          "The transmitter converts the physical measurement into current. The analog input converts that current into a numerical value available to the PLC. The PLC can then scale that value into engineering units."
+      },
+      {
+        type: "heading",
+        title: "Why 4–20 mA?"
+      },
+      {
+        type: "list",
+        items: [
+          "4 mA represents the minimum calibrated value.",
+          "20 mA represents the maximum calibrated value.",
+          "12 mA corresponds approximately to the midpoint of a linear span."
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "Using 4 mA instead of 0 mA provides a live zero. A valid minimum measurement therefore remains electrically distinguishable from an abnormal condition where loop current disappears. A reading near 0 mA is an abnormal loop condition requiring diagnosis; it does not uniquely identify one specific fault."
+      },
+      {
+        type: "heading",
+        title: "Pressure Transmitter Example"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Consider a pressure transmitter configured for a calibrated range of 0–20 bar."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "4 mA  → 0 bar\n12 mA → 10 bar\n20 mA → 20 bar"
+      },
+      {
+        type: "paragraph",
+        content:
+          "The transmitter measures pressure. The loop transports current. The analog input measures that electrical signal. The PLC converts the resulting raw value into the engineering value used by the application."
+      },
+      {
+        type: "heading",
+        title: "Electrical Loop"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A common two-wire transmitter loop can be represented conceptually as follows:"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "+24 VDC\n   │\n   ▼\n2-WIRE TRANSMITTER\n   │\n   │ 4–20 mA\n   ▼\nANALOG INPUT CHANNEL\n   │\n   ▼\n0 VDC"
+      },
+      {
+        type: "paragraph",
+        content:
+          "The 4–20 mA signal terminates at the analog input module, not directly at the PLC CPU. In a local S7-1500 station, the module may be installed alongside the CPU as part of the same station."
+      },
+      {
+        type: "paragraph",
+        content:
+          "The analog module performs the input conversion and makes the resulting process value available to the controller. Exact terminal arrangements depend on the selected module, transmitter and loop configuration."
+      },
+      {
+        type: "heading",
+        title: "Troubleshooting the Measurement Chain"
+      },
+      {
+        type: "paragraph",
+        content:
+          "When an analog measurement is incorrect, diagnose the chain from the physical signal toward the software."
+      },
+      {
+        type: "list",
+        items: [
+          "Verify transmitter supply.",
+          "Verify loop continuity.",
+          "Measure actual loop current.",
+          "Check transmitter configuration and measuring range.",
+          "Verify analog input configuration.",
+          "Inspect the raw PLC value.",
+          "Verify scaling.",
+          "Compare the final engineering value with the real process."
+        ]
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "Wrong loop current\n→ Investigate transmitter, wiring, supply or process measurement.\n\nCorrect loop current + wrong raw PLC value\n→ Investigate analog input hardware or configuration.\n\nCorrect raw PLC value + wrong engineering value\n→ Investigate PLC scaling or software."
+      },
+      {
+        type: "heading",
+        title: "Engineering Note"
+      },
+      {
+        type: "engineering-note",
+        title: "Measure the loop before changing the software",
+        content:
+          "A 4–20 mA loop is not just a signal. It is a measurement chain connecting the physical process to the automation system. When troubleshooting, identify the first point where the measurement stops representing reality correctly."
+      }
+    ]
   }
 ];

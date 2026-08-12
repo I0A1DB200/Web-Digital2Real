@@ -1,0 +1,146 @@
+locale: "en"
+translations:
+  title: "Sensor ON, PLC Input OFF"
+  summary: "Trace a digital signal from B1 to I0.3, locate an open conductor and verify complete recovery before closing the intervention."
+  scenario:
+    initial_context: "A packaging station remains waiting for box presence although B1 detects the target and its local indicator is active."
+    operational_state: "The machine waits for Tag_BoxPresent_B1; B1 indicates detection, but I0.3 and Tag_BoxPresent_B1 remain FALSE."
+    initiating_event: "The operator reports that the sequence does not continue with a box positioned in front of B1."
+    learner_role: "Automation technician responsible for tracing the signal before replacing components or modifying software."
+    safety_context:
+      safe_state: "Apply the authorized isolation and absence-of-voltage procedure before handling conductors or performing a continuity test."
+      intervention_constraints: ["Do not replace B1 or the input module without evidence.", "Do not force, bridge or reassign I0.3.", "Do not modify PLC logic.", "Restore power only for authorized measurements and functional verification."]
+  learning_objectives:
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Trace B1 from BK and X1:17 to I0.3 and Tag_BoxPresent_B1."
+    OBJ-STATE-INTERPRETATION:
+      description: "Differentiate local detection, signal voltage, physical input and processed tag."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Repair the damaged section and verify the complete chain through to the sequence."
+  stages:
+    STAGE-01-OBSERVE:
+      title: "Observe the incident"
+      situation: "The box is in front of B1 and the sensor indicator is active, but the station continues waiting for presence."
+    STAGE-02-FIELD:
+      title: "Check B1 in the field"
+      situation: "The local indication on B1 confirms that the target is detected. You must decide what this observation actually proves."
+    STAGE-03-ELECTRICAL:
+      title: "Identify the electrical path"
+      situation: "The schematic shows BN to +24 VDC, BU to 0 VDC and BK from B1 through X1:17 to I0.3."
+    STAGE-04-PLC:
+      title: "Compare the PLC state"
+      situation: "The Watch Table shows I0.3 and Tag_BoxPresent_B1 as FALSE while B1 continues detecting."
+    STAGE-05-MEASURE:
+      title: "Measure the signal"
+      situation: "Measurement shows approximately 24.1 VDC at B1 BK output and 0.0 VDC at the PLC side of X1:17."
+    STAGE-06-CONTINUITY:
+      title: "Test continuity"
+      situation: "With the circuit in a safe state, the test between X1:17 and PLC I0.3 reads OL."
+    STAGE-07-LOCALIZE:
+      title: "Locate the root cause"
+      situation: "Physical tracing of the BK conductor reveals a cut section between X1:17 and the PLC input."
+    STAGE-08-VERIFY:
+      title: "Verify recovery"
+      situation: "The damaged section has been repaired according to authorized practice. You must validate the complete path before closing."
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Packaging station"
+      content: "B1 indicates detection, but the box-presence condition is not satisfied."
+    EVID-02-SENSOR:
+      source: "Sensor B1"
+      content: "The local B1 indicator is active with the box present; this confirms local detection, not the complete electrical path."
+    EVID-03-SCHEMATIC:
+      source: "Electrical schematic"
+      content: "The B1 BK output follows X1:17 → PLC I0.3 → Tag_BoxPresent_B1."
+    EVID-04-PLC:
+      source: "Watch Table"
+      content: "I0.3 and Tag_BoxPresent_B1 remain FALSE during local detection at B1."
+    EVID-05-VOLTAGE:
+      source: "Voltage measurement"
+      content: "B1 BK measures approximately 24.1 VDC; the PLC side of X1:17 measures 0.0 VDC."
+    EVID-06-OPEN:
+      source: "Continuity test"
+      content: "The measurement between X1:17 and PLC I0.3 reads OL: open circuit."
+    EVID-07-DAMAGE:
+      source: "BK conductor"
+      content: "Physical damage and an open conductor are located between X1:17 and PLC I0.3."
+    EVID-08-RECOVERY:
+      source: "Post-repair verification"
+      content: "B1 detects, the signal reaches the PLC, I0.3 and Tag_BoxPresent_B1 are TRUE and the sequence recovers."
+  decisions:
+    DEC-01-TRACE:
+      action: "Preserve the evidence and trace the signal from B1."
+    DEC-01-REPLACE:
+      action: "Replace B1 because the sequence does not continue."
+    DEC-01-PROGRAM:
+      action: "Modify the logic to ignore Tag_BoxPresent_B1."
+    DEC-02-MAP:
+      action: "Confirm B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1."
+    DEC-02-GUESS:
+      action: "Search for a similar input without using the schematic."
+    DEC-02-BYPASS:
+      action: "Bridge I0.3 to test the sequence."
+    DEC-03-COMPARE:
+      action: "Record the discrepancy and measure successive points along the path."
+    DEC-03-PLC-FAULT:
+      action: "Conclude that the PLC channel has failed because I0.3 is FALSE."
+    DEC-03-CHANGE:
+      action: "Reassign Tag_BoxPresent_B1 to another input."
+    DEC-04-LOCALIZE:
+      action: "Localize the loss between B1 and the PLC side using a safe continuity test."
+    DEC-04-SENSOR:
+      action: "Replace B1 although it delivers 24.1 VDC."
+    DEC-04-MODULE:
+      action: "Replace the PLC module before testing the conductor."
+    DEC-05-OPEN:
+      action: "Interpret OL as an open circuit and physically trace BK."
+    DEC-05-IGNORE:
+      action: "Ignore OL and repeat the start attempt."
+    DEC-05-FORCE:
+      action: "Force Tag_BoxPresent_B1 to hide the interruption."
+    DEC-06-REPAIR:
+      action: "Repair or replace the damaged section according to authorized electrical practice."
+    DEC-06-REPLACE-SENSOR:
+      action: "Replace B1 although conductor damage is confirmed."
+    DEC-06-REPLACE-PLC:
+      action: "Replace the PLC input although conductor damage is confirmed."
+    DEC-07-VERIFY-CHAIN:
+      action: "Verify B1, PLC-side voltage, I0.3, Tag_BoxPresent_B1 and the sequence."
+    DEC-07-INPUT-ONLY:
+      action: "Close after observing only I0.3 as TRUE."
+    DEC-07-CLOSE:
+      action: "Close without repeating the functional machine condition."
+  visual:
+    educational_purpose: "Present the signal progressively without revealing the damaged conductor before localization."
+  assets:
+    ART-001:
+      alt: "Overview of the EE-0001 station with B1 and the PLC cabinet."
+      caption: "Initial EE-0001 incident."
+    ART-002:
+      alt: "Close-up of B1 detecting the box."
+      caption: "Active local indication on B1."
+    ART-003:
+      alt: "Schematic showing B1, X1:17 and I0.3."
+      caption: "Electrical path of the BK signal."
+    ART-004:
+      alt: "Watch Table with I0.3 and Tag_BoxPresent_B1 as FALSE."
+      caption: "State observed in the PLC."
+    ART-005:
+      alt: "Measurement of 24.1 VDC at B1 and 0.0 VDC at the PLC side."
+      caption: "Voltage comparison along the path."
+    ART-006:
+      alt: "Continuity test reading OL between X1:17 and I0.3."
+      caption: "Open circuit confirmed."
+    ART-007:
+      alt: "Physical damage located in the BK conductor."
+      caption: "Root cause located."
+    ART-008:
+      alt: "Complete repair and signal verification."
+      caption: "Functional recovery verified."
+  completion:
+    title: "Technical debrief"
+    summary: "B1 detected and generated the signal, but physical damage opened the BK conductor between X1:17 and I0.3."
+    process: ["Observe without assuming.", "Identify and trace the signal.", "Compare field and PLC states.", "Measure and test continuity.", "Locate, repair and verify the complete chain."]
+    lesson: "A sensor's local indication does not prove that its signal has reached the PLC."
+    avoided_errors: ["Replacing B1.", "Replacing the PLC input.", "Bridging or forcing I0.3.", "Modifying the logic."]
+    industrial_value: ["Traceable diagnosis.", "Fewer unjustified replacements.", "Safe and verifiable recovery."]

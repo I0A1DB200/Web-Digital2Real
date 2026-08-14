@@ -10,12 +10,25 @@
 }
 
 .topbar__inner {
+  position: relative;
   width: var(--container);
   height: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.topbar__menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 /* Brand control */
@@ -73,4 +86,10 @@
 .topbar__link:hover::after,
 .topbar__link.is-active::after {
   right: 0;
+}
+
+.topbar__menu-toggle:focus-visible,
+.topbar__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
 }

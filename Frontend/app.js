@@ -34,6 +34,7 @@ if (!validViews.has("engineering-notes")) {
 let currentView = null;
 let activeArticleViewer = null;
 let activeExperienceWorkspace = null;
+let activeNavbar = null;
 let pendingExperienceId = null;
 let revealObserver = null;
 
@@ -91,7 +92,9 @@ function renderView(view) {
   currentView = view;
 
   main.appendChild(renderCurrentView());
-  app.replaceChildren(createNavbar(site, currentView, navigateTo), main);
+  activeNavbar?.destroy?.();
+  activeNavbar = createNavbar(site, currentView, navigateTo);
+  app.replaceChildren(activeNavbar, main);
 
   document.title = getDocumentTitle();
   initialiseRevealAnimations();
@@ -115,7 +118,6 @@ function renderEngineeringNotesView() {
 
   section.innerHTML = `
     <header class="editorial-hero reveal">
-      <span class="section-kicker">${site.home.eyebrow}</span>
       <h1 id="home-title">${site.home.title}</h1>
       <div class="editorial-hero__support">
         <p>${site.home.introduction}</p>

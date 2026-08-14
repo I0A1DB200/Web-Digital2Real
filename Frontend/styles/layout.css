@@ -54,10 +54,10 @@
 
 /* Platform editorial views */
 .editorial-hero {
-  min-height: calc(100vh - var(--topbar-h) - 36px);
+  min-height: auto;
   display: grid;
-  align-content: center;
-  padding: clamp(72px, 10vw, 150px) 0;
+  align-content: start;
+  padding: clamp(56px, 6vw, 88px) 0 clamp(72px, 10vw, 150px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -80,7 +80,7 @@
   margin: 0;
   color: var(--ink-soft);
   font-size: clamp(1rem, 1.3vw, 1.18rem);
-  line-height: 1.8;
+  line-height: var(--line-height-body);
 }
 
 .notes-section { padding-top: clamp(76px, 10vw, 150px); }
@@ -117,7 +117,7 @@
   margin: 0;
   color: var(--ink-soft);
   font-size: clamp(1rem, 1.3vw, 1.18rem);
-  line-height: 1.82;
+  line-height: var(--line-height-body);
 }
 
 .about-block p + p { margin-top: 24px; }

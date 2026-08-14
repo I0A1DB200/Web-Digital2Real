@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-14 — Responsive navigation and editorial rhythm
+
+- Added an accessible small-screen navigation menu while preserving the existing desktop navigation and data source.
+- Simplified Engineering Note headers to retain the note identifier and title without a duplicated kicker.
+- Consolidated editorial body copy around the governed body line-height token.
+
 ## 2026-08-14 — Experience Environment Data Contract
 
 - Registered `content/environments/` as the canonical owner of Environment content.

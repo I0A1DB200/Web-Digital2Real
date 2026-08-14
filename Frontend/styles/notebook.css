@@ -84,6 +84,10 @@
   padding: clamp(20px, 2.5vw, 30px);
 }
 
+.notebook-carousel .notebook-card__kicker {
+  display: none;
+}
+
 .notebook-carousel .notebook-card h2 {
   margin: 11px 0 9px;
   font-size: clamp(1.55rem, 2.6vw, 2.55rem);
@@ -107,26 +111,26 @@
 
 .notebook-carousel .notebook-card[data-position="-1"] {
   z-index: 4;
-  opacity: 0.78;
-  transform: translateX(-112%) scale(0.9);
+  opacity: 0.82;
+  transform: translateX(-128%) scale(0.88);
 }
 
 .notebook-carousel .notebook-card[data-position="1"] {
   z-index: 4;
-  opacity: 0.78;
-  transform: translateX(12%) scale(0.9);
+  opacity: 0.82;
+  transform: translateX(28%) scale(0.88);
 }
 
 .notebook-carousel .notebook-card[data-position="-2"] {
   z-index: 3;
-  opacity: 0.44;
-  transform: translateX(-165%) scale(0.8);
+  opacity: 0.56;
+  transform: translateX(-198%) scale(0.76);
 }
 
 .notebook-carousel .notebook-card[data-position="2"] {
   z-index: 3;
-  opacity: 0.44;
-  transform: translateX(65%) scale(0.8);
+  opacity: 0.56;
+  transform: translateX(98%) scale(0.76);
 }
 
 .notebook-carousel__controls {
@@ -245,7 +249,7 @@
   max-width: 760px;
   margin: 0;
   color: var(--ink-soft);
-  line-height: 1.65;
+  line-height: var(--line-height-body);
 }
 
 .notebook-card__meta {
@@ -334,16 +338,6 @@
   margin-top: 34px;
 }
 
-.article-viewer__kicker {
-  display: block;
-  margin-bottom: 14px;
-  color: var(--accent);
-  font-size: 0.66rem;
-  font-weight: 760;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .article-viewer__header h1 {
   max-width: 880px;
   margin: 0;
@@ -386,7 +380,7 @@
 .article-section--introduction {
   color: var(--ink);
   font-size: clamp(1.15rem, 1.8vw, 1.42rem);
-  line-height: 1.68;
+  line-height: var(--line-height-body);
 }
 
 .article-viewer__hero {
@@ -412,7 +406,7 @@
   margin-top: 20px;
   color: var(--ink-soft);
   font-size: 1.03rem;
-  line-height: 1.78;
+  line-height: var(--line-height-body);
 }
 
 .article-section--callout,
@@ -454,7 +448,7 @@
 .article-section--engineering-note p {
   margin: 0;
   color: var(--ink-soft);
-  line-height: 1.68;
+  line-height: var(--line-height-body);
 }
 
 .article-section--list {

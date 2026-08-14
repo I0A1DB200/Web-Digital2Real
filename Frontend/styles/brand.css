@@ -26,6 +26,7 @@
   /* Typography */
   --font-brand: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", "Inter", system-ui, sans-serif;
+  --line-height-body: 1.55;
 
   /* Layout */
   --container: min(1520px, calc(100vw - 72px));

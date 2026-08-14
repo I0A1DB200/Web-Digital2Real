@@ -1,9 +1,11 @@
 {
-  "contract_version": "1.0.0",
+  "contract_version": "1.1.0",
   "metadata": {
     "id": "EXP-GENERIC-DIAG-001",
+    "editorial_id": "EE-0001",
     "content_version": "1.0.0",
     "class": "learning",
+    "access": "premium",
     "status": "technical_review",
     "language": "en"
   },

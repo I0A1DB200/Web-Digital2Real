@@ -75,12 +75,26 @@ function validateMetadata(metadata, add) {
   if (!requireObject(metadata, "$.metadata", add)) return;
   requireFields(metadata, ExperienceDefinitionV1Schema.required.metadata, "$.metadata", add);
   requirePattern(metadata.id, patterns.experience, "$.metadata.id", "EXPERIENCE_ID_INVALID", add);
+  requirePattern(
+    metadata.editorial_id,
+    patterns.experienceEditorial,
+    "$.metadata.editorial_id",
+    "EXPERIENCE_EDITORIAL_ID_INVALID",
+    add
+  );
   requireText(metadata.content_version, "$.metadata.content_version", add);
   requireEnum(
     metadata.class,
     ExperienceDefinitionV1Schema.enums.experienceClass,
     "$.metadata.class",
     "EXPERIENCE_CLASS_INVALID",
+    add
+  );
+  requireEnum(
+    metadata.access,
+    ExperienceDefinitionV1Schema.enums.access,
+    "$.metadata.access",
+    "EXPERIENCE_ACCESS_INVALID",
     add
   );
   requireEnum(

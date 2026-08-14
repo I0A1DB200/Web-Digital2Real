@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-14 — Experience Environment Data Contract
+
+- Registered `content/environments/` as the canonical owner of Environment content.
+- Added governed Experience editorial identity and access classification across Authoring, Runtime, Web Artifact, and generated catalogue contracts.
+- Added the Environment Definition v1 schema and deterministic validation boundary for draft and published Environments.
+
 ## Platform Foundation RC1
 
 ### Confirmed

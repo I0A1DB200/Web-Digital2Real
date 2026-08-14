@@ -25,7 +25,7 @@ test("accepts a valid Experience Authoring Definition v1", async () => {
   assert.equal(result.valid, true);
   assert.equal(result.compatible, true);
   assert.equal(result.profile, "authoring_v1");
-  assert.equal(result.authoring_contract_version, "1.0.0");
+  assert.equal(result.authoring_contract_version, "1.1.0");
   assert.equal(result.definition_id, "EXP-GENERIC-DIAG-001");
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.warnings, []);
@@ -67,6 +67,17 @@ test("rejects an invalid Experience identifier", async () => {
     result.incidents.find(item => item.code === "EXPERIENCE_ID_INVALID").path,
     "$.metadata.id"
   );
+});
+
+test("requires governed editorial identity and access classification", async () => {
+  const definition = await readJson(validFixtureUrl);
+  definition.metadata.editorial_id = "EE-1";
+  definition.metadata.access = "restricted";
+
+  const result = validateExperienceDefinition(definition);
+
+  assert.ok(codes(result).includes("EXPERIENCE_EDITORIAL_ID_INVALID"));
+  assert.ok(codes(result).includes("EXPERIENCE_ACCESS_INVALID"));
 });
 
 test("accepts only the three approved Experience classes", async () => {

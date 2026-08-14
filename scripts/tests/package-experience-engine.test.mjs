@@ -42,7 +42,7 @@ async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
 }
 
-test("preview packages only the remaining canonical Experience", async t => {
+test("preview packages every eligible canonical Experience", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -50,13 +50,16 @@ test("preview packages only the remaining canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
+  assert.deepEqual(result.packaged, [
+    "EXP-SENSOR-PHOTOELECTRIC-009",
+    "EXP-SENSOR-SIGNAL-001"
+  ]);
   assert.deepEqual(result.skipped, [{
     file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
     reason: "publication_state"
   }]);
-  assert.equal(catalog.experiences.length, 1);
-  const remaining = catalog.experiences[0];
+  assert.equal(catalog.experiences.length, 2);
+  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-PHOTOELECTRIC-009");
   assert.equal(remaining.id, "EXP-SENSOR-PHOTOELECTRIC-009");
   assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.es.json");
   assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.en.json");
@@ -129,7 +132,7 @@ test("a validation failure preserves the previous generated package", async t =>
   assert.equal(await readFile(path.join(target, "sentinel.txt"), "utf8"), "preserve");
 });
 
-test("publish excludes a technical-review experience while preview includes it", async t => {
+test("publish excludes technical-review experiences while preview includes them", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -138,7 +141,10 @@ test("publish excludes a technical-review experience while preview includes it",
 
   assert.deepEqual(publish.packaged, []);
   assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
+  assert.deepEqual(preview.packaged, [
+    "EXP-SENSOR-PHOTOELECTRIC-009",
+    "EXP-SENSOR-SIGNAL-001"
+  ]);
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {

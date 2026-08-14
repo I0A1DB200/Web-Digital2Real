@@ -2,7 +2,7 @@ import { site } from "./data/site.js";
 import { notebook } from "./generated/notebooks/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
-import { createNotebookCard } from "./products/notebook/components/notebookCard.js";
+import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
@@ -129,20 +129,18 @@ function renderEngineeringNotesView() {
           <p>${site.engineeringNotes.introduction}</p>
         </div>
       </header>
-      <div class="notebook-list" aria-label="Engineering Notes"></div>
+      <div class="notebook-carousel-host"></div>
     </section>
 
   `;
 
-  const list = section.querySelector(".notebook-list");
+  const carouselHost = section.querySelector(".notebook-carousel-host");
 
-  if (!(list instanceof HTMLElement)) {
-    throw new Error("Digital2Real could not render the Engineering Notes list.");
+  if (!(carouselHost instanceof HTMLElement)) {
+    throw new Error("Digital2Real could not render the Engineering Notes carousel.");
   }
 
-  notebook.forEach(note => {
-    list.appendChild(createNotebookCard(note, openArticle));
-  });
+  carouselHost.appendChild(createNotebookCarousel(notebook, openArticle).element);
 
   return section;
 }

@@ -120,10 +120,12 @@ test("a validation failure preserves the previous generated package", async t =>
     "EE-0009-photoelectric-sensor-misalignment",
     "experience.yaml"
   );
-  const invalid = (await readFile(source, "utf8")).replace(
-    'contract_version: "1.0.0"',
+  const original = await readFile(source, "utf8");
+  const invalid = original.replace(
+    /contract_version:\s*"[^"]+"/u,
     'contract_version: "unsupported"'
   );
+  assert.notEqual(invalid, original, "The test fixture contract version must be invalidated.");
   await writeFile(source, invalid, "utf8");
 
   await assert.rejects(

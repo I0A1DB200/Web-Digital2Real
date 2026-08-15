@@ -1,6 +1,7 @@
 import { createNotebookCard } from "./notebookCard.js";
 
 const ALL_CATEGORIES = "__all__";
+const CATEGORY_MENU_ID = "notebook-carousel-category-menu";
 const SWIPE_THRESHOLD = 48;
 const VISIBLE_RADIUS = 2;
 
@@ -22,6 +23,7 @@ export function createNotebookCarousel(articles, onOpen, {
   const categories = deriveCategories(source);
   let activeCategory = ALL_CATEGORIES;
   let activeIndex = 0;
+  let menuExpanded = false;
   let pointerStart = null;
 
   const element = documentRef.createElement("section");
@@ -32,6 +34,22 @@ export function createNotebookCarousel(articles, onOpen, {
   const filters = documentRef.createElement("div");
   filters.className = "notebook-carousel__filters";
   filters.setAttribute("aria-label", "Filter Engineering Notes by category");
+
+  const responsiveFilters = documentRef.createElement("div");
+  responsiveFilters.className = "notebook-carousel__responsive-filters";
+
+  const filterToggle = documentRef.createElement("button");
+  filterToggle.type = "button";
+  filterToggle.className = "notebook-carousel__filter-toggle";
+  filterToggle.textContent = "☰";
+  filterToggle.setAttribute("aria-label", "Choose Engineering Notes category");
+  filterToggle.setAttribute("aria-controls", CATEGORY_MENU_ID);
+
+  const filterMenu = documentRef.createElement("div");
+  filterMenu.id = CATEGORY_MENU_ID;
+  filterMenu.className = "notebook-carousel__filter-menu";
+  filterMenu.setAttribute("aria-label", "Filter Engineering Notes by category");
+  responsiveFilters.append(filterToggle, filterMenu);
 
   const viewport = documentRef.createElement("div");
   viewport.className = "notebook-carousel__viewport";
@@ -53,7 +71,7 @@ export function createNotebookCarousel(articles, onOpen, {
   const next = createControl(documentRef, "Next Engineering Note", "→");
   next.classList.add("notebook-carousel__control--next");
   controls.append(previous, position, next);
-  element.append(filters, viewport, controls);
+  element.append(filters, responsiveFilters, viewport, controls);
 
   function filteredArticles() {
     if (activeCategory === ALL_CATEGORIES) return source;
@@ -62,31 +80,40 @@ export function createNotebookCarousel(articles, onOpen, {
 
   function move(delta) {
     const collection = filteredArticles();
-    const nextIndex = Math.min(Math.max(activeIndex + delta, 0), Math.max(collection.length - 1, 0));
-    if (nextIndex === activeIndex) return;
-    activeIndex = nextIndex;
+    if (collection.length < 2) return;
+    activeIndex = modulo(activeIndex + delta, collection.length);
     renderCollection();
   }
 
   function selectCategory(category) {
-    if (category === activeCategory) return;
     activeCategory = category;
     activeIndex = 0;
-    render();
+    setMenuExpanded(false);
+    renderFilters();
+    renderCollection();
   }
 
   function renderFilters() {
     filters.replaceChildren();
-    [[ALL_CATEGORIES, "All"], ...categories.map(category => [category, category])]
-      .forEach(([value, label]) => {
-        const button = documentRef.createElement("button");
-        button.type = "button";
-        button.className = "notebook-carousel__filter";
-        button.textContent = label;
-        button.setAttribute("aria-pressed", String(value === activeCategory));
-        button.addEventListener("click", () => selectCategory(value));
-        filters.appendChild(button);
-      });
+    filterMenu.replaceChildren();
+    categoryEntries(categories).forEach(([value, label]) => {
+      filters.appendChild(createFilterButton(documentRef, value, label, activeCategory, selectCategory));
+      filterMenu.appendChild(createFilterButton(
+        documentRef,
+        value,
+        label,
+        activeCategory,
+        selectCategory,
+        "notebook-carousel__filter-menu-option"
+      ));
+    });
+    setMenuExpanded(menuExpanded);
+  }
+
+  function setMenuExpanded(expanded) {
+    menuExpanded = Boolean(expanded);
+    filterToggle.setAttribute("aria-expanded", String(menuExpanded));
+    filterMenu.hidden = !menuExpanded;
   }
 
   function renderCollection() {
@@ -104,13 +131,11 @@ export function createNotebookCarousel(articles, onOpen, {
       return;
     }
 
-    activeIndex = Math.min(activeIndex, collection.length - 1);
-    const first = Math.max(0, activeIndex - VISIBLE_RADIUS);
-    const last = Math.min(collection.length - 1, activeIndex + VISIBLE_RADIUS);
+    activeIndex = modulo(activeIndex, collection.length);
 
-    for (let index = first; index <= last; index += 1) {
+    for (const relativePosition of visiblePositions(collection.length)) {
+      const index = modulo(activeIndex + relativePosition, collection.length);
       const article = collection[index];
-      const relativePosition = index - activeIndex;
       const card = cardFactory(article, (selectedArticle, opener) => {
         if (index === activeIndex) {
           onOpen(selectedArticle, opener);
@@ -132,8 +157,8 @@ export function createNotebookCarousel(articles, onOpen, {
       track.appendChild(card);
     }
 
-    previous.disabled = activeIndex === 0;
-    next.disabled = activeIndex === collection.length - 1;
+    previous.disabled = collection.length < 2;
+    next.disabled = collection.length < 2;
     position.textContent = `${activeIndex + 1} of ${collection.length}`;
   }
 
@@ -143,7 +168,11 @@ export function createNotebookCarousel(articles, onOpen, {
   }
 
   function handleKeydown(event) {
-    if (event.key === "ArrowLeft") {
+    if (event.key === "Escape" && menuExpanded) {
+      event.preventDefault();
+      setMenuExpanded(false);
+      if (typeof filterToggle.focus === "function") filterToggle.focus();
+    } else if (event.key === "ArrowLeft") {
       event.preventDefault();
       move(-1);
     } else if (event.key === "ArrowRight") {
@@ -172,6 +201,7 @@ export function createNotebookCarousel(articles, onOpen, {
 
   previous.addEventListener("click", () => move(-1));
   next.addEventListener("click", () => move(1));
+  filterToggle.addEventListener("click", () => setMenuExpanded(!menuExpanded));
   element.addEventListener("keydown", handleKeydown);
   viewport.addEventListener("pointerdown", handlePointerDown);
   viewport.addEventListener("pointerup", handlePointerUp);
@@ -214,4 +244,38 @@ function createControl(documentRef, label, text) {
   button.setAttribute("aria-label", label);
   button.textContent = text;
   return button;
+}
+
+function categoryEntries(categories) {
+  return [[ALL_CATEGORIES, "All"], ...categories.map(category => [category, category])];
+}
+
+function createFilterButton(
+  documentRef,
+  value,
+  label,
+  activeCategory,
+  onSelect,
+  className = "notebook-carousel__filter"
+) {
+  const button = documentRef.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.textContent = label;
+  button.setAttribute("aria-pressed", String(value === activeCategory));
+  button.addEventListener("click", () => onSelect(value));
+  return button;
+}
+
+function visiblePositions(collectionLength) {
+  if (collectionLength <= 0) return [];
+  if (collectionLength === 1) return [0];
+  if (collectionLength === 2) return [0, 1];
+  if (collectionLength === 3) return [-1, 0, 1];
+  if (collectionLength === 4) return [-1, 0, 1, 2];
+  return Array.from({ length: (VISIBLE_RADIUS * 2) + 1 }, (_, index) => index - VISIBLE_RADIUS);
+}
+
+function modulo(value, divisor) {
+  return ((value % divisor) + divisor) % divisor;
 }

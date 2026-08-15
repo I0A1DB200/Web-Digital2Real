@@ -186,13 +186,19 @@ function activeCard(root) {
     .find(card => card.getAttribute("aria-current") === "true");
 }
 
+function visibleArticles(root) {
+  return byClass(root, "notebook-carousel__card")
+    .map(card => [card.getAttribute("data-position"), card.getAttribute("data-article-id")]);
+}
+
 test("derives categories dynamically in canonical first-seen order without mutation", () => {
   const before = JSON.stringify(articles);
   assert.deepEqual(deriveNotebookCategories(articles), ["Controls", "Networks", "Safety"]);
   assert.equal(JSON.stringify(articles), before);
 });
 
-test("has deterministic All state and renders only the bounded visible window", () => {
+test("has deterministic All state and renders a circular five-card window without mutation", () => {
+  const before = JSON.stringify(articles);
   const { carousel } = setup();
   assert.deepEqual(carousel.getState(), {
     activeCategory: "All",
@@ -200,9 +206,16 @@ test("has deterministic All state and renders only the bounded visible window", 
     categories: ["Controls", "Networks", "Safety"],
     filteredCount: 7
   });
-  assert.equal(byClass(carousel.element, "notebook-carousel__card").length, 3);
+  assert.deepEqual(visibleArticles(carousel.element), [
+    ["-2", "article-006"],
+    ["-1", "article-007"],
+    ["0", "article-001"],
+    ["1", "article-002"],
+    ["2", "article-003"]
+  ]);
   assert.equal(activeCard(carousel.element).getAttribute("data-article-id"), "article-001");
   assert.equal(activeCard(carousel.element).classList.contains("reveal"), false);
+  assert.equal(JSON.stringify(articles), before);
 });
 
 test("filters from canonical categories and resets the active index", () => {
@@ -220,19 +233,96 @@ test("filters from canonical categories and resets the active index", () => {
   assert.equal(carousel.getState().activeIndex, 0);
   assert.equal(carousel.getState().filteredCount, 2);
   assert.equal(activeCard(carousel.element).getAttribute("data-article-id"), "article-002");
+  assert.deepEqual(visibleArticles(carousel.element), [
+    ["0", "article-002"],
+    ["1", "article-004"]
+  ]);
+  byText(carousel.element, "←").click();
+  assert.equal(activeCard(carousel.element).getAttribute("data-article-id"), "article-004");
 });
 
-test("Previous and Next move once and expose disabled boundaries", () => {
+test("responsive filters share canonical categories and active state with desktop pills", () => {
+  const { carousel } = setup();
+  const desktopLabels = byClass(carousel.element, "notebook-carousel__filter")
+    .map(button => button.textContent);
+  const menuLabels = byClass(carousel.element, "notebook-carousel__filter-menu-option")
+    .map(button => button.textContent);
+  assert.deepEqual(desktopLabels, ["All", "Controls", "Networks", "Safety"]);
+  assert.deepEqual(menuLabels, desktopLabels);
+
+  byText(carousel.element, "→").click();
+  byText(carousel.element, "→").click();
+  const toggle = byClass(carousel.element, "notebook-carousel__filter-toggle")[0];
+  const menu = byClass(carousel.element, "notebook-carousel__filter-menu")[0];
+  assert.equal(toggle.getAttribute("aria-label"), "Choose Engineering Notes category");
+  assert.equal(toggle.getAttribute("aria-controls"), menu.id);
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(menu.hidden, true);
+
+  toggle.click();
+  assert.equal(toggle.getAttribute("aria-expanded"), "true");
+  assert.equal(menu.hidden, false);
+  byClass(menu, "notebook-carousel__filter-menu-option")
+    .find(button => button.textContent === "Networks")
+    .click();
+
+  assert.equal(carousel.getState().activeCategory, "Networks");
+  assert.equal(carousel.getState().activeIndex, 0);
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(menu.hidden, true);
+  assert.equal(
+    byClass(carousel.element, "notebook-carousel__filter")
+      .find(button => button.textContent === "Networks")
+      .getAttribute("aria-pressed"),
+    "true"
+  );
+  assert.equal(
+    byClass(carousel.element, "notebook-carousel__filter-menu-option")
+      .find(button => button.textContent === "Networks")
+      .getAttribute("aria-pressed"),
+    "true"
+  );
+});
+
+test("responsive filter menu toggles and closes on Escape", () => {
+  const { carousel } = setup();
+  const toggle = byClass(carousel.element, "notebook-carousel__filter-toggle")[0];
+  toggle.click();
+  assert.equal(toggle.getAttribute("aria-expanded"), "true");
+
+  const escape = createEvent("keydown", { key: "Escape" });
+  toggle.dispatchEvent(escape);
+  assert.equal(escape.defaultPrevented, true);
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(byClass(carousel.element, "notebook-carousel__filter-menu")[0].hidden, true);
+});
+
+test("Previous and Next wrap circularly while preserving canonical order", () => {
   const { carousel } = setup();
   const previous = byText(carousel.element, "←");
-  assert.equal(previous.disabled, true);
+  assert.equal(previous.disabled, false);
   previous.click();
-  assert.equal(carousel.getState().activeIndex, 0);
-
-  for (let index = 0; index < articles.length; index += 1) byText(carousel.element, "→").click();
   assert.equal(carousel.getState().activeIndex, articles.length - 1);
-  assert.equal(byText(carousel.element, "→").disabled, true);
+  assert.deepEqual(visibleArticles(carousel.element), [
+    ["-2", "article-005"],
+    ["-1", "article-006"],
+    ["0", "article-007"],
+    ["1", "article-001"],
+    ["2", "article-002"]
+  ]);
+  byText(carousel.element, "→").click();
+  assert.equal(carousel.getState().activeIndex, 0);
+  assert.equal(byText(carousel.element, "→").disabled, false);
   assert.equal(byText(carousel.element, "←").disabled, false);
+
+  for (let step = 0; step < 3; step += 1) byText(carousel.element, "→").click();
+  assert.deepEqual(visibleArticles(carousel.element), [
+    ["-2", "article-002"],
+    ["-1", "article-003"],
+    ["0", "article-004"],
+    ["1", "article-005"],
+    ["2", "article-006"]
+  ]);
 });
 
 test("a neighboring card centers while the active card opens exactly once with its opener", () => {
@@ -262,6 +352,10 @@ test("Left and Right navigation is scoped to events dispatched inside the carous
   assert.equal(carousel.getState().activeIndex, 1);
   activeCard(carousel.element).dispatchEvent(createEvent("keydown", { key: "ArrowLeft" }));
   assert.equal(carousel.getState().activeIndex, 0);
+  activeCard(carousel.element).dispatchEvent(createEvent("keydown", { key: "ArrowLeft" }));
+  assert.equal(carousel.getState().activeIndex, articles.length - 1);
+  activeCard(carousel.element).dispatchEvent(createEvent("keydown", { key: "ArrowRight" }));
+  assert.equal(carousel.getState().activeIndex, 0);
 });
 
 test("horizontal touch swipe moves one article and ignores short or vertical gestures", () => {
@@ -278,6 +372,11 @@ test("horizontal touch swipe moves one article and ignores short or vertical ges
   viewport.dispatchEvent(createEvent("pointerdown", { pointerType: "touch", clientX: 120, clientY: 100 }));
   viewport.dispatchEvent(createEvent("pointerup", { pointerType: "touch", clientX: 60, clientY: 190 }));
   assert.equal(carousel.getState().activeIndex, 1);
+
+  byText(carousel.element, "←").click();
+  viewport.dispatchEvent(createEvent("pointerdown", { pointerType: "touch", clientX: 120, clientY: 100 }));
+  viewport.dispatchEvent(createEvent("pointerup", { pointerType: "touch", clientX: 200, clientY: 105 }));
+  assert.equal(carousel.getState().activeIndex, articles.length - 1);
 });
 
 test("exposes accessible carousel, filter, active-card and position semantics", () => {
@@ -290,7 +389,7 @@ test("exposes accessible carousel, filter, active-card and position semantics", 
   assert.ok(byClass(carousel.element, "notebook-carousel__card").length <= 5);
 });
 
-test("handles empty, one, two, long-title and coverless collections", () => {
+test("handles empty and one-article collections without navigation or visual clones", () => {
   const empty = setup([]).carousel;
   assert.equal(empty.getState().filteredCount, 0);
   assert.equal(byText(empty.element, "←").disabled, true);
@@ -298,17 +397,32 @@ test("handles empty, one, two, long-title and coverless collections", () => {
 
   const one = setup([articles[5]]).carousel;
   assert.equal(activeCard(one.element).textContent, articles[5].title);
+  assert.equal(byClass(one.element, "notebook-carousel__card").length, 1);
   assert.equal(byText(one.element, "←").disabled, true);
   assert.equal(byText(one.element, "→").disabled, true);
+});
 
-  const two = setup([articles[0], articles[6]]).carousel;
-  assert.equal(byClass(two.element, "notebook-carousel__card").length, 2);
-  byText(two.element, "→").click();
-  assert.equal(activeCard(two.element).getAttribute("data-article-id"), "article-007");
+test("small collections render each article once and wrap deterministically", () => {
+  for (const count of [2, 3, 4, 5]) {
+    const { carousel } = setup(articles.slice(0, count));
+    const visible = visibleArticles(carousel.element);
+    const identifiers = visible.map(([, identifier]) => identifier);
+    assert.equal(visible.length, count);
+    assert.equal(new Set(identifiers).size, count);
+    assert.equal(byText(carousel.element, "←").disabled, false);
+    assert.equal(byText(carousel.element, "→").disabled, false);
+
+    byText(carousel.element, "←").click();
+    assert.equal(carousel.getState().activeIndex, count - 1);
+    byText(carousel.element, "→").click();
+    assert.equal(carousel.getState().activeIndex, 0);
+  }
 });
 
 test("contains no autoplay, timer or wheel interception", async () => {
   const source = await readFile(new URL("../components/notebookCarousel.js", import.meta.url), "utf8");
   assert.doesNotMatch(source, /setInterval|setTimeout|autoplay/u);
   assert.doesNotMatch(source, /(?:wheel|mousewheel)/u);
+  assert.doesNotMatch(source, /Controls|Networks|Safety/u);
+  assert.equal((source.match(/let activeCategory/gu) ?? []).length, 1);
 });

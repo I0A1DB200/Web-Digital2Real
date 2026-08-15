@@ -30,10 +30,75 @@
   color: var(--accent);
 }
 
+.notebook-carousel__responsive-filters {
+  position: relative;
+  display: none;
+  margin-bottom: clamp(34px, 5vw, 58px);
+}
+
+.notebook-carousel__filter-toggle {
+  display: inline-grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.25rem;
+}
+
+.notebook-carousel__filter-toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.notebook-carousel__filter-menu {
+  display: grid;
+  width: min(100%, 360px);
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  background: var(--color-surface);
+}
+
+.notebook-carousel__filter-menu[hidden] {
+  display: none;
+}
+
+.notebook-carousel__filter-menu-option {
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 720;
+  letter-spacing: 0.09em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.notebook-carousel__filter-menu-option:last-child {
+  border-bottom: 0;
+}
+
+.notebook-carousel__filter-menu-option[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.notebook-carousel__filter-menu-option[aria-pressed="true"]::before {
+  content: "→";
+  margin-right: 8px;
+}
+
 .notebook-carousel__viewport {
   position: relative;
   width: 100%;
-  min-height: clamp(580px, 57vw, 740px);
   overflow: hidden;
   touch-action: pan-y;
 }
@@ -41,7 +106,6 @@
 .notebook-carousel__track {
   position: relative;
   width: 100%;
-  min-height: inherit;
   perspective: 1400px;
 }
 
@@ -103,6 +167,7 @@
 }
 
 .notebook-carousel .notebook-card[data-position="0"] {
+  position: relative;
   z-index: 5;
   border-color: var(--accent);
   opacity: 1;
@@ -111,26 +176,26 @@
 
 .notebook-carousel .notebook-card[data-position="-1"] {
   z-index: 4;
-  opacity: 0.82;
-  transform: translateX(-128%) scale(0.88);
+  opacity: 0.86;
+  transform: translateX(-136%) rotateY(3deg) scale(0.86);
 }
 
 .notebook-carousel .notebook-card[data-position="1"] {
   z-index: 4;
-  opacity: 0.82;
-  transform: translateX(28%) scale(0.88);
+  opacity: 0.86;
+  transform: translateX(36%) rotateY(-3deg) scale(0.86);
 }
 
 .notebook-carousel .notebook-card[data-position="-2"] {
   z-index: 3;
-  opacity: 0.56;
-  transform: translateX(-198%) scale(0.76);
+  opacity: 0.64;
+  transform: translateX(-214%) rotateY(5deg) scale(0.72);
 }
 
 .notebook-carousel .notebook-card[data-position="2"] {
   z-index: 3;
-  opacity: 0.56;
-  transform: translateX(98%) scale(0.76);
+  opacity: 0.64;
+  transform: translateX(114%) rotateY(-5deg) scale(0.72);
 }
 
 .notebook-carousel__controls {
@@ -139,7 +204,7 @@
   justify-content: center;
   align-items: center;
   gap: 18px;
-  margin-top: 22px;
+  margin-top: 40px;
 }
 
 .notebook-carousel__control {
@@ -175,6 +240,8 @@
 }
 
 .notebook-carousel__filter:focus-visible,
+.notebook-carousel__filter-toggle:focus-visible,
+.notebook-carousel__filter-menu-option:focus-visible,
 .notebook-carousel__control:focus-visible,
 .notebook-carousel .notebook-card:focus-visible {
   outline: 2px solid var(--accent);
@@ -489,25 +556,27 @@
 }
 
 /* Responsive editorial presentation */
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .notebook-carousel__filters {
-    flex-wrap: nowrap;
-    margin-right: calc(50% - 50vw);
-    margin-left: calc(50% - 50vw);
-    padding: 0 max(18px, calc((100vw - var(--container)) / 2));
-    overflow-x: auto;
+    display: none;
   }
 
-  .notebook-carousel__filter {
-    flex: 0 0 auto;
+  .notebook-carousel__responsive-filters {
+    display: block;
   }
+}
 
-  .notebook-carousel__viewport {
-    min-height: 570px;
+@media (max-width: 720px) {
+  .notebook-carousel__responsive-filters {
+    margin-bottom: 30px;
   }
 
   .notebook-carousel .notebook-card {
     width: min(82vw, 390px);
+  }
+
+  .notebook-carousel__controls {
+    margin-top: 32px;
   }
 
   .notebook-carousel .notebook-card[data-position="-1"] {
@@ -578,12 +647,12 @@
 }
 
 @media (min-width: 721px) and (max-width: 1024px) {
-  .notebook-carousel__viewport {
-    min-height: 620px;
-  }
-
   .notebook-carousel .notebook-card {
     width: min(460px, 52vw);
+  }
+
+  .notebook-carousel__controls {
+    margin-top: 32px;
   }
 
   .notebook-carousel .notebook-card[data-position="-1"] {

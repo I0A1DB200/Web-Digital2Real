@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-26 — Compact Experience Lab selector
+
+- Scoped selector-only spacing to the existing Environment catalog, removing stacked workspace padding and viewport-based minimum height without changing internal ENV or Player layouts.
+- Set desktop navigation-to-introduction spacing to 48–64px, reduced the heading maximum from 5.8rem to 4.25rem with balanced wrapping across the existing shell width, and tightened subtitle-to-card spacing to 36–48px.
+- Preserved card dimensions, image proportions, responsive stacking, content and all navigation behavior; no fixed heights, negative margins or content-clipping workarounds were added.
+
 ## 2026-08-26 — Compact Environment progress
 
 - Integrated a responsive progress card beside the Environment title, using existing graphite and corporate copper tokens with a subtle endpoint glow.

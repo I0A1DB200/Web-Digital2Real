@@ -58,6 +58,31 @@
   gap: 0;
 }
 
+/* Only the Environment selector: internal ENV and Player spacing is unchanged. */
+.app-main:has(.environment-catalog) {
+  padding-block: calc(var(--topbar-h) + clamp(3rem, 4vw, 4rem)) clamp(2rem, 4vw, 3rem);
+}
+
+.experience-workspace:has(.environment-catalog) {
+  min-height: 0;
+  padding-block: 0;
+}
+
+.experience-workspace__shell:has(> .environment-catalog) {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.experience-workspace__shell:has(> .environment-catalog) > .experience-workspace__catalog-header {
+  padding-bottom: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+.experience-workspace__shell:has(> .environment-catalog) > .experience-workspace__catalog-header h1 {
+  max-width: 100%;
+  margin-block: clamp(1.25rem, 2vw, 1.75rem) clamp(1.125rem, 1.5vw, 1.5rem);
+  font-size: clamp(2.5rem, 4.8vw, 4.25rem);
+  text-wrap: balance;
+}
+
 .environment-catalog {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

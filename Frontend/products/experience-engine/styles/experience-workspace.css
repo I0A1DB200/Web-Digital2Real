@@ -112,6 +112,17 @@
   line-height: 1.3;
 }
 
+.environment-view__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.environment-view__title {
+  min-width: 0;
+}
+
 .environment-view__header h1 {
   margin: 0.35rem 0 0;
   font-size: clamp(2rem, 4vw, 4rem);
@@ -184,50 +195,87 @@
 }
 
 .environment-progress {
+  position: relative;
   display: grid;
   gap: 0.65rem;
+  flex: 0 0 19rem;
+  box-sizing: border-box;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  background: var(--color-bg-soft);
+}
+
+.environment-progress::before {
+  position: absolute;
+  inset: 1rem auto 1rem -1px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--brand-primary);
+  content: "";
 }
 
 .environment-progress__heading {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   color: var(--ink-soft);
-  font-size: 0.78rem;
+  font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .environment-progress__heading strong {
   color: var(--ink);
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
 }
 
-.environment-progress__segments {
-  display: grid;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-auto-flow: column;
-  gap: clamp(0.25rem, 1vw, 0.55rem);
+.environment-progress__track {
+  height: 0.3rem;
+  border-radius: 1rem;
+  background: var(--color-line);
 }
 
-.environment-progress__segment {
-  height: 0.35rem;
-  border: 1px solid var(--line);
-  background: transparent;
+.environment-progress__fill {
+  position: relative;
+  display: block;
+  width: var(--environment-progress, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand-primary);
 }
 
-.environment-progress__segment--available {
-  border-color: var(--color-technical-signal);
+.environment-progress__fill:not([data-empty="true"])::after {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(3px, 100%);
+  border-radius: inherit;
+  box-shadow: 0 0 5px 1px var(--brand-primary-muted);
+  content: "";
 }
 
-.environment-progress__segment--completed {
-  border-color: var(--color-technical-signal);
-  background: var(--color-technical-signal);
+.environment-progress__summary {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
 }
 
-.environment-progress__segment--unavailable {
-  border-color: var(--line-soft);
-  background: var(--line-soft);
+@media (max-width: 960px) {
+  .environment-view__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .environment-progress {
+    flex-basis: auto;
+    width: 100%;
+  }
 }
 
 .environment-popover {

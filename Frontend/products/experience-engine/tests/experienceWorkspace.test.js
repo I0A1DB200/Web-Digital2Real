@@ -137,17 +137,17 @@ test("a generated artifact opens and completes through Experience Lab without co
   assert.equal(workspace.element.findAll(element => element.className === "environment-card").length, 3);
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Motion Cell").click();
   assert.match(workspace.element.text, /being prepared/);
-  assert.match(workspace.element.text, /0 \/ 10/);
+  assert.match(workspace.element.text, /0 \/ 0/);
   findButton(workspace.element, "Back to environments").click();
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Diagnostic Cell").click();
   assert.match(workspace.element.text, /being prepared/);
-  assert.match(workspace.element.text, /0 \/ 10/);
+  assert.match(workspace.element.text, /0 \/ 0/);
   findButton(workspace.element, "Back to environments").click();
   const environment = workspace.element.find(
     element => element.attributes["aria-label"] === "Open environment: Automated Factory"
   );
   environment.click();
-  assert.match(workspace.element.text, /0 \/ 10/);
+  assert.match(workspace.element.text, /0 \/ 1/);
   const hotspot = workspace.element.find(element => element.className === "environment-hotspot");
   assert.equal(hotspot.tagName, "BUTTON");
   assert.equal(hotspot.attributes["aria-label"], "Inspect Sensor ON, PLC Input OFF");
@@ -164,7 +164,7 @@ test("a generated artifact opens and completes through Experience Lab without co
   assert.match(workspace.element.text, /material handling machine has stopped/i);
 
   findButton(workspace.element, "All experiences").click();
-  assert.match(workspace.element.text, /0 \/ 10/);
+  assert.match(workspace.element.text, /0 \/ 1/);
   workspace.element.find(element => element.className === "environment-hotspot").click();
   await findButton(workspace.element, "Begin investigation").click();
 
@@ -186,7 +186,7 @@ test("a generated artifact opens and completes through Experience Lab without co
   findButton(workspace.element, "Restart experience").click();
   assert.equal(workspace.getState().interaction, "start");
   findButton(workspace.element, "All experiences").click();
-  assert.match(workspace.element.text, /1 \/ 10/);
+  assert.match(workspace.element.text, /1 \/ 1/);
 });
 
 test("renders safe errors for missing experiences and unsupported contracts", async () => {
@@ -354,6 +354,75 @@ test("persists idempotent completion without storing Player content", () => {
   assert.equal(second.isCompleted("EXP-TEST-A-101"), true);
   assert.deepEqual(second.getSnapshot().completedExperienceIds, ["EXP-TEST-A-101"]);
   assert.doesNotMatch([...values.values()][0], /stage|decision|feedback|private/);
+});
+
+test("environment progress counts unique active assignments and updates without navigation", () => {
+  const experiences = Array.from({ length: 10 }, (_, index) => ({
+    id: `EXP-TEST-${index}`, editorialId: `EE-TEST-${index}`, title: `Test ${index}`
+  }));
+  const excluded = [
+    { id: "archived", editorialId: "EE-0009", status: "archived" },
+    { id: "disabled", editorialId: "EE-DISABLED", status: "disabled" },
+    { id: "off", editorialId: "EE-OFF", enabled: false }
+  ];
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  excluded.forEach(item => progressStore.complete(item.id));
+  const navigator = createEnvironmentNavigator({
+    documentRef: new FakeDocument(), baseUrl: ".", windowRef: null,
+    experiences: [...experiences, ...excluded], progressStore,
+    environments: [{
+      id: "ENV-TEST", title: "Test environment", capacity: 99,
+      width: 100, height: 50, background: "test.png",
+      hotspots: [...experiences, ...excluded, experiences[0], { editorialId: "missing" }]
+        .map(item => ({ experienceEditorialId: item.editorialId, x: 50, y: 50 }))
+    }, { id: "ENV-EMPTY", title: "Empty", width: 100, height: 50, hotspots: [] }]
+  });
+  navigator.renderEnvironment("ENV-TEST");
+  const check = (completed, total) => {
+    const bar = navigator.element.find(item => item.attributes.role === "progressbar");
+    assert.equal(bar.attributes["aria-valuemin"], "0");
+    assert.equal(bar.attributes["aria-valuemax"], String(total));
+    assert.equal(bar.attributes["aria-valuenow"], String(completed));
+    assert.match(bar.attributes["aria-label"], /ENV-/);
+    assert.equal(bar.children[0].style.properties["--environment-progress"], `${total ? completed / total * 100 : 0}%`);
+    assert.equal(bar.children[0].dataset.empty, String(completed === 0));
+    const card = navigator.element.find(item => item.className === "environment-progress");
+    assert.equal(card.parent.className, "environment-view__header");
+    assert.equal(card.children[0].children[1].text, `${completed} / ${total}`);
+    assert.equal(card.children[2].text, `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`);
+  };
+  check(0, 10);
+  experiences.forEach((item, index) => {
+    progressStore.complete(item.id);
+    if ([1, 2, 5, 10].includes(index + 1)) check(index + 1, 10);
+  });
+  progressStore.complete(experiences[0].id);
+  check(10, 10);
+  navigator.renderEnvironment("ENV-EMPTY");
+  check(0, 0);
+  navigator.destroy();
+  progressStore.complete("unassigned");
+  assert.equal(navigator.element.children.length, 0);
+});
+
+test("progress subscriptions notify once and can unsubscribe", () => {
+  const store = createEnvironmentProgressStore({ storage: null });
+  let calls = 0;
+  const unsubscribe = store.subscribe(() => { calls += 1; });
+  store.complete("first");
+  store.complete("first");
+  assert.equal(calls, 1);
+  unsubscribe();
+  store.complete("second");
+  assert.equal(calls, 1);
+});
+
+test("the canonical archived EE-0009 stays outside the generated catalog", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0009"), false);
+  assert.equal(catalog.environments.some(item => item.hotspots.some(hotspot => hotspot.experienceEditorialId === "EE-0009")), false);
+  const source = await readFile(new URL("../../../../content/experiences/sensors/EE-0009-photoelectric-sensor-misalignment/experience.yaml", import.meta.url), "utf8");
+  assert.match(source, /status: "archived"/);
 });
 
 test("workspace and application use generated JSON without ID-specific handling", async () => {

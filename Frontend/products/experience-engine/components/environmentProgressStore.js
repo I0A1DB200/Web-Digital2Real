@@ -2,12 +2,14 @@ export const environmentProgressStorageKey = "digital2real.environment-progress.
 
 export function createEnvironmentProgressStore({ storage = resolveStorage() } = {}) {
   const completed = new Set(readCompleted(storage));
+  const listeners = new Set();
 
   function complete(experienceId) {
     requireIdentity(experienceId);
     if (completed.has(experienceId)) return false;
     completed.add(experienceId);
     persist(storage, completed);
+    listeners.forEach(listener => listener());
     return true;
   }
 
@@ -23,7 +25,12 @@ export function createEnvironmentProgressStore({ storage = resolveStorage() } = 
     });
   }
 
-  return Object.freeze({ complete, isCompleted, getSnapshot });
+  function subscribe(listener) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  }
+
+  return Object.freeze({ complete, isCompleted, getSnapshot, subscribe });
 }
 
 function readCompleted(storage) {

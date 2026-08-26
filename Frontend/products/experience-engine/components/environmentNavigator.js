@@ -14,7 +14,9 @@ export function createEnvironmentNavigator({
   const element = documentRef.createElement("div");
   element.className = "environment-navigator";
   const experienceByEditorialId = new Map(
-    experiences.map(experience => [experience.editorialId, experience])
+    experiences.filter(experience => experience.enabled !== false
+      && !["archived", "disabled"].includes(experience.status))
+      .map(experience => [experience.editorialId, experience])
   );
   let selectedEnvironment = null;
   let stage = null;
@@ -24,6 +26,7 @@ export function createEnvironmentNavigator({
   let activePopover = null;
   let activeConnector = null;
   let resizeObserver = null;
+  const unsubscribeProgress = progressStore.subscribe?.(renderProgress);
 
   function renderCatalog() {
     leaveEnvironment();
@@ -62,11 +65,13 @@ export function createEnvironmentNavigator({
     back.addEventListener("click", renderCatalog);
     shell.appendChild(back);
     const heading = createElement(documentRef, "header", "environment-view__header");
-    appendText(documentRef, heading, "span", "experience-workspace__eyebrow", environment.id);
-    appendText(documentRef, heading, "h1", "", environment.title);
+    const title = createElement(documentRef, "div", "environment-view__title");
+    appendText(documentRef, title, "span", "experience-workspace__eyebrow", environment.id);
+    appendText(documentRef, title, "h1", "", environment.title);
+    heading.appendChild(title);
     shell.appendChild(heading);
     progressElement = createElement(documentRef, "section", "environment-progress");
-    shell.appendChild(progressElement);
+    heading.appendChild(progressElement);
     renderProgress();
 
     stage = createElement(documentRef, "div", "environment-stage");
@@ -219,28 +224,29 @@ export function createEnvironmentNavigator({
 
   function renderProgress() {
     if (!selectedEnvironment || !progressElement) return;
-    const available = selectedEnvironment.hotspots
+    const available = [...new Set(selectedEnvironment.hotspots
       .map(item => experienceByEditorialId.get(item.experienceEditorialId))
-      .filter(Boolean);
+      .filter(Boolean))];
     const completed = available.filter(item => progressStore.isCompleted(item.id)).length;
+    const total = available.length;
+    const percentage = total ? Math.min(100, Math.max(0, completed / total * 100)) : 0;
     const heading = createElement(documentRef, "div", "environment-progress__heading");
     appendText(documentRef, heading, "span", "", "Environment progress");
-    appendText(documentRef, heading, "strong", "", `${completed} / ${selectedEnvironment.capacity}`);
-    const segments = createElement(documentRef, "div", "environment-progress__segments");
-    segments.setAttribute(
-      "aria-label",
-      `Environment progress: ${completed} of ${selectedEnvironment.capacity} completed on this browser.`
-    );
-    Array.from({ length: selectedEnvironment.capacity }, (_, index) => {
-      const experience = available[index];
-      const state = experience
-        ? (progressStore.isCompleted(experience.id) ? "completed" : "available")
-        : "unavailable";
-      const segment = createElement(documentRef, "span", `environment-progress__segment environment-progress__segment--${state}`);
-      segment.setAttribute("aria-hidden", "true");
-      segments.appendChild(segment);
-    });
-    progressElement.replaceChildren(heading, segments);
+    appendText(documentRef, heading, "strong", "", `${completed} / ${total}`);
+    const track = createElement(documentRef, "div", "environment-progress__track");
+    track.setAttribute("role", "progressbar");
+    track.setAttribute("aria-valuemin", "0");
+    track.setAttribute("aria-valuemax", String(total));
+    track.setAttribute("aria-valuenow", String(completed));
+    track.setAttribute("aria-label", `${selectedEnvironment.id} ${selectedEnvironment.title}: Environment progress`);
+    track.setAttribute("aria-valuetext", `${completed} of ${total} Experiences completed`);
+    const fill = createElement(documentRef, "span", "environment-progress__fill");
+    fill.style.setProperty("--environment-progress", `${percentage}%`);
+    fill.dataset.empty = String(percentage === 0);
+    track.appendChild(fill);
+    const summary = createElement(documentRef, "p", "environment-progress__summary");
+    summary.textContent = `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`;
+    progressElement.replaceChildren(heading, track, summary);
   }
 
   function completeExperience(experienceId) {
@@ -266,6 +272,7 @@ export function createEnvironmentNavigator({
   }
 
   function destroy() {
+    unsubscribeProgress?.();
     leaveEnvironment();
     selectedEnvironment = null;
     element.replaceChildren();

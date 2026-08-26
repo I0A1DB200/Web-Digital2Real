@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-26 — Compact Environment progress
+
+- Integrated a responsive progress card beside the Environment title, using existing graphite and corporate copper tokens with a subtle endpoint glow.
+- Replaced capacity-based segments with an accessible continuous bar counting unique active catalog Experiences assigned through Environment hotspots; empty Environments show 0 / 0.
+- Reused browser-local completion storage and added change subscriptions without storing derived totals or percentages.
+- Added coverage for empty, partial and complete progress, singular/plural labels, subscriptions and archived EE-0009 exclusion. Player, images, hotspot coordinates and generated content remain unchanged.
+
 ## 2026-08-15 — Experience Environment vertical slice
 
 - Added three canonical Environment definitions and deterministic Environment publication through the existing Experience Engine packaging pipeline.

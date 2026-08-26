@@ -1,0 +1,17 @@
+environment:
+  id: "ENV-001"
+  slug: "automated-factory"
+  title: "Automated Factory"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+
+visual:
+  background: "media/ENV-001-automated-factory.png"
+  width: 1672
+  height: 941
+
+hotspots:
+  - experience_editorial_id: "EE-0001"
+    x: 8.6
+    y: 36.8

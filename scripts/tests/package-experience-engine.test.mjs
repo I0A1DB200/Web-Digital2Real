@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import {
   access,
   cp,
@@ -34,12 +35,19 @@ async function createRepository() {
   await cp(new URL("../../content/experiences/", import.meta.url), path.join(root, "content", "experiences"), {
     recursive: true
   });
+  await cp(new URL("../../content/environments/", import.meta.url), path.join(root, "content", "environments"), {
+    recursive: true
+  });
   await mkdir(path.join(root, "Frontend", "generated"), { recursive: true });
   return root;
 }
 
 async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
+}
+
+async function sha256(location) {
+  return createHash("sha256").update(await readFile(location)).digest("hex");
 }
 
 test("preview packages every eligible canonical Experience", async t => {
@@ -50,20 +58,56 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, [
-    "EXP-SENSOR-PHOTOELECTRIC-009",
-    "EXP-SENSOR-SIGNAL-001"
-  ]);
-  assert.deepEqual(result.skipped, [{
-    file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
-    reason: "publication_state"
+  assert.deepEqual(result.packaged, ["EXP-SENSOR-SIGNAL-001"]);
+  assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
+  assert.equal(result.skipped.length, 2);
+  assert.equal(catalog.experiences.length, 1);
+  const remaining = catalog.experiences[0];
+  assert.equal(remaining.id, "EXP-SENSOR-SIGNAL-001");
+  assert.equal(remaining.editorialId, "EE-0001");
+  assert.equal(remaining.access, "free");
+  assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-SIGNAL-001.es.json");
+  assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-SIGNAL-001.en.json");
+  assert.equal(catalog.environments.length, 3);
+  assert.deepEqual(catalog.environments[0].hotspots, [{
+    experienceEditorialId: "EE-0001",
+    x: 8.6,
+    y: 36.8
   }]);
-  assert.equal(catalog.experiences.length, 2);
-  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-PHOTOELECTRIC-009");
-  assert.equal(remaining.id, "EXP-SENSOR-PHOTOELECTRIC-009");
-  assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.es.json");
-  assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.en.json");
-  assert.equal(remaining.localizedMetadata.en.title, "Photoelectric Sensor Misalignment");
+  assert.equal(catalog.environments[1].hotspots.length, 0);
+  assert.equal(catalog.environments[2].hotspots.length, 0);
+  for (const environment of catalog.environments) {
+    assert.equal(environment.capacity, 10);
+    assert.equal(environment.width, 1672);
+    assert.equal(environment.height, 941);
+    assert.equal(Object.hasOwn(environment, "summary"), false);
+    assert.equal(Object.hasOwn(environment, "access"), false);
+    assert.equal(Object.hasOwn(environment, "completed"), false);
+    const generatedImage = path.join(generatedRoot, environment.background);
+    const sourceImage = path.join(
+      root,
+      "content",
+      "environments",
+      `${environment.id}-${environment.slug}`,
+      "media",
+      path.basename(environment.background)
+    );
+    assert.equal(await sha256(generatedImage), await sha256(sourceImage));
+  }
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0009"), false);
+  await access(path.join(
+    root,
+    "content",
+    "experiences",
+    "sensors",
+    "EE-0009-photoelectric-sensor-misalignment",
+    "experience.yaml"
+  ));
+  await assert.rejects(access(path.join(
+    generatedRoot,
+    "experiences",
+    "EXP-SENSOR-PHOTOELECTRIC-009.es.json"
+  )));
   await access(path.join(generatedRoot, remaining.locales.es));
   await access(path.join(generatedRoot, remaining.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
@@ -77,7 +121,7 @@ test("published browser files contain no reserved runtime data or authoring docu
 
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const artifactText = await readFile(
-    path.join(generatedRoot, "experiences", "EXP-SENSOR-PHOTOELECTRIC-009.es.json"),
+    path.join(generatedRoot, "experiences", "EXP-SENSOR-SIGNAL-001.es.json"),
     "utf8"
   );
   const playerText = await readFile(path.join(generatedRoot, "player", "experiencePlayer.js"), "utf8");
@@ -117,7 +161,7 @@ test("a validation failure preserves the previous generated package", async t =>
     "content",
     "experiences",
     "sensors",
-    "EE-0009-photoelectric-sensor-misalignment",
+    "EE-0001-sensor-on-plc-input-off",
     "experience.yaml"
   );
   const original = await readFile(source, "utf8");
@@ -143,10 +187,9 @@ test("publish excludes technical-review experiences while preview includes them"
 
   assert.deepEqual(publish.packaged, []);
   assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, [
-    "EXP-SENSOR-PHOTOELECTRIC-009",
-    "EXP-SENSOR-SIGNAL-001"
-  ]);
+  assert.deepEqual(preview.packaged, ["EXP-SENSOR-SIGNAL-001"]);
+  assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
+  assert.deepEqual(publish.environments, []);
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {
@@ -165,7 +208,7 @@ test("catalog modes enforce the complete approved publication-state boundary", a
       "content",
       "experiences",
       "sensors",
-      "EE-0009-photoelectric-sensor-misalignment",
+      "EE-0001-sensor-on-plc-input-off",
       "experience.yaml"
     );
     const authoring = (await readFile(source, "utf8"))
@@ -176,12 +219,12 @@ test("catalog modes enforce the complete approved publication-state boundary", a
     const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
     const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
     assert.equal(
-      preview.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
+      preview.packaged.includes("EXP-SENSOR-SIGNAL-001"),
       scenario.preview,
       `preview/${scenario.status}/${scenario.validation}`
     );
     assert.equal(
-      publish.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
+      publish.packaged.includes("EXP-SENSOR-SIGNAL-001"),
       scenario.publish,
       `publish/${scenario.status}/${scenario.validation}`
     );
@@ -196,7 +239,7 @@ test("duplicate identifiers fail and no legacy fallback is used", async t => {
     "content",
     "experiences",
     "sensors",
-    "EE-0009-photoelectric-sensor-misalignment"
+    "EE-0001-sensor-on-plc-input-off"
   );
   await cp(
     source,

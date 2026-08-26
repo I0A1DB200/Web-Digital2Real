@@ -7,8 +7,10 @@ const draft = () => ({
   environment: {
     id: "ENV-001",
     slug: "automated-factory",
+    title: "Automated Factory",
     lifecycle: "draft",
-    version: "1.0"
+    version: "1.0",
+    capacity: 10
   },
   visual: {
     background: "media/ENV-001-automated-factory.png",
@@ -36,6 +38,24 @@ test("accepts a complete published Environment when every Experience resolves", 
   const candidate = published();
   const ids = candidate.hotspots.map(item => item.experience_editorial_id);
   assert.equal(validateEnvironmentDefinition(candidate, { experienceEditorialIds: ids }).valid, true);
+});
+
+test("accepts a preview Environment with a partial resolved hotspot catalogue", () => {
+  const candidate = draft();
+  candidate.environment.lifecycle = "preview";
+  candidate.hotspots = [{ experience_editorial_id: "EE-0001", x: 8.6, y: 36.8 }];
+  assert.equal(validateEnvironmentDefinition(candidate, {
+    experienceEditorialIds: ["EE-0001"]
+  }).valid, true);
+});
+
+test("rejects unresolved Preview hotspot references", () => {
+  const candidate = draft();
+  candidate.environment.lifecycle = "preview";
+  candidate.hotspots = [{ experience_editorial_id: "EE-0001", x: 8.6, y: 36.8 }];
+  const result = validateEnvironmentDefinition(candidate, { experienceEditorialIds: [] });
+  assert.equal(result.valid, false);
+  assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_EXPERIENCE_UNRESOLVED"));
 });
 
 test("enforces published count and reference resolution", () => {
@@ -69,11 +89,25 @@ test("rejects invalid identity and visual dimensions", () => {
   candidate.environment.id = "ENV-1";
   candidate.visual.width = 0;
   candidate.visual.height = 941.5;
+  candidate.environment.capacity = 0;
   const result = validateEnvironmentDefinition(candidate);
   assert.equal(result.valid, false);
   assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_ID_INVALID"));
   assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_WIDTH_INVALID"));
   assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_HEIGHT_INVALID"));
+  assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_CAPACITY_INVALID"));
+});
+
+test("governs capacity independently from the currently available hotspots", () => {
+  const candidate = draft();
+  candidate.environment.capacity = 1;
+  candidate.hotspots = [
+    { experience_editorial_id: "EE-0001", x: 10, y: 10 },
+    { experience_editorial_id: "EE-0002", x: 20, y: 20 }
+  ];
+  const result = validateEnvironmentDefinition(candidate);
+  assert.equal(result.valid, false);
+  assert.ok(result.incidents.some(item => item.code === "ENVIRONMENT_CAPACITY_MISMATCH"));
 });
 
 test("is deterministic, immutable and does not mutate input", () => {

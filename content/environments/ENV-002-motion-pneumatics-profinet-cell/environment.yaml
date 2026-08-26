@@ -1,0 +1,14 @@
+environment:
+  id: "ENV-002"
+  slug: "motion-pneumatics-profinet-cell"
+  title: "Motion, Pneumatics & PROFINET Cell"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+
+visual:
+  background: "media/ENV-002-motion-pneumatics-profinet-cell.png"
+  width: 1672
+  height: 941
+
+hotspots: []

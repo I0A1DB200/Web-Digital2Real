@@ -57,7 +57,7 @@ test("EE-0009 is valid Authoring v1 with governed ICF-02 competencies", async ()
 
   assert.equal(result.valid, true);
   assert.equal(authoring.metadata.class, "practice");
-  assert.equal(authoring.metadata.status, "technical_review");
+  assert.equal(authoring.metadata.status, "archived");
   assert.deepEqual(authoring.capability_references, [{
     capability_id: "ICF-02",
     competency_ids: [

@@ -1,0 +1,14 @@
+environment:
+  id: "ENV-003"
+  slug: "sequence-safety-hmi-diagnostic-cell"
+  title: "Sequence, Safety & HMI Diagnostic Cell"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+
+visual:
+  background: "media/ENV-003-sequence-safety-hmi-diagnostic-cell.png"
+  width: 1672
+  height: 941
+
+hotspots: []

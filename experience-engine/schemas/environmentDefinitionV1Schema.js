@@ -21,17 +21,18 @@ export const EnvironmentDefinitionV1Schema = deepFreeze({
     background: "^media/[A-Za-z0-9][A-Za-z0-9._-]*$"
   },
   enums: {
-    lifecycle: ["draft", "published"]
+    lifecycle: ["draft", "preview", "published"]
   },
   required: {
     root: ["environment", "visual", "hotspots"],
-    environment: ["id", "slug", "lifecycle", "version"],
+    environment: ["id", "slug", "title", "lifecycle", "version", "capacity"],
     visual: ["background", "width", "height"],
     hotspot: ["experience_editorial_id", "x", "y"]
   },
   hotspotFields: ["experience_editorial_id", "x", "y"],
   lifecycleRules: {
     draft: { minimumHotspots: 0, maximumHotspots: 10, requiresResolution: false },
+    preview: { minimumHotspots: 0, maximumHotspots: 10, requiresResolution: true },
     published: { minimumHotspots: 10, maximumHotspots: 10, requiresResolution: true }
   },
   aspectRatio: {

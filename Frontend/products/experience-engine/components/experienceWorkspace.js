@@ -1,10 +1,14 @@
+import { createEnvironmentNavigator } from "./environmentNavigator.js";
+import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
+
 const defaultBaseUrl = "./generated/experience-engine";
 
 export function createExperienceWorkspace({
   baseUrl = defaultBaseUrl,
   fetchImpl = globalThis.fetch?.bind(globalThis),
   importPlayer = location => import(location),
-  documentRef = globalThis.document
+  documentRef = globalThis.document,
+  progressStore = createEnvironmentProgressStore()
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -19,6 +23,9 @@ export function createExperienceWorkspace({
 
   let catalog = null;
   let player = null;
+  let navigator = null;
+  let activeExperienceId = null;
+  let completionRecorded = false;
   let destroyed = false;
 
   async function initialise() {
@@ -57,6 +64,8 @@ export function createExperienceWorkspace({
         throw new Error("The generated package does not expose ExperiencePlayer.");
       }
       player = new playerModule.ExperiencePlayer({ experience: artifact });
+      activeExperienceId = item.id;
+      completionRecorded = false;
       renderPlayer();
       return player.getState();
     } catch (error) {
@@ -91,11 +100,20 @@ export function createExperienceWorkspace({
 
   function closeExperience() {
     player = null;
-    renderCatalog();
+    navigator.restore();
+    element.replaceChildren(navigator.element);
+    activeExperienceId = null;
+    completionRecorded = false;
   }
 
   function renderPlayer() {
     const state = player.getState();
+    if (state.interaction === "completion" && state.completionStatus === "completed"
+      && activeExperienceId && !completionRecorded) {
+      progressStore.complete(activeExperienceId);
+      navigator?.completeExperience(activeExperienceId);
+      completionRecorded = true;
+    }
     element.replaceChildren(ExperienceWorkspace({
       documentRef,
       projection: createWorkspaceProjection(state, baseUrl),
@@ -108,58 +126,17 @@ export function createExperienceWorkspace({
   }
 
   function renderCatalog() {
-    const shell = createElement(documentRef, "div", "experience-workspace__shell");
-    const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
-    appendText(documentRef, header, "span", "experience-workspace__eyebrow", "Experience Lab");
-    appendText(documentRef, header, "h1", "", "Industrial diagnosis through evidence and decisions.");
-    appendText(
+    navigator = createEnvironmentNavigator({
       documentRef,
-      header,
-      "p",
-      "experience-workspace__lede",
-      "Select an experience and work through the incident as a controlled diagnostic session."
-    );
-    shell.appendChild(header);
-
-    const list = createElement(documentRef, "div", "experience-workspace__catalog");
-    if (!catalog.experiences.length) {
-      appendText(documentRef, list, "p", "experience-workspace__empty", "No experiences are available.");
-    }
-    catalog.experiences
-      .map(item => localizeCatalogItem(item, documentRef.documentElement?.lang))
-      .forEach(item => {
-      const card = createElement(documentRef, "a", "experience-card");
-      card.setAttribute("href", "#experience-lab");
-      card.setAttribute("aria-label", `Begin investigation: ${item.title}`);
-      card.addEventListener("click", event => {
-        event?.preventDefault?.();
-        return openExperience(item.id);
-      });
-
-      const visual = createElement(documentRef, "div", "experience-card__visual");
-      if (item.cover) {
-        const cover = createElement(documentRef, "img", "experience-card__cover");
-        cover.src = `${baseUrl}/${item.cover}`;
-        cover.alt = "";
-        visual.appendChild(cover);
-      }
-      card.appendChild(visual);
-
-      const content = createElement(documentRef, "div", "experience-card__content");
-      appendText(documentRef, content, "h2", "", item.title);
-      appendText(documentRef, content, "p", "", item.summary);
-      appendText(
-        documentRef,
-        content,
-        "span",
-        "experience-card__cta",
-        "→ Begin Investigation"
-      );
-      card.appendChild(content);
-      list.appendChild(card);
+      baseUrl,
+      environments: catalog.environments,
+      experiences: catalog.experiences.map(item => (
+        localizeCatalogItem(item, documentRef.documentElement?.lang)
+      )),
+      onOpenExperience: openExperience,
+      progressStore
     });
-    shell.appendChild(list);
-    element.replaceChildren(shell);
+    element.replaceChildren(navigator.element);
   }
 
   function renderStatus(message) {
@@ -187,8 +164,11 @@ export function createExperienceWorkspace({
 
   function destroy() {
     destroyed = true;
+    navigator?.destroy();
     player = null;
     catalog = null;
+    navigator = null;
+    activeExperienceId = null;
     element.replaceChildren();
   }
 
@@ -455,7 +435,8 @@ async function loadJson(location, fetchImpl) {
 }
 
 function assertCatalog(catalog) {
-  if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)) {
+  if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)
+    || !Array.isArray(catalog.environments)) {
     throw new Error("The generated Experience Engine catalog is invalid.");
   }
 }

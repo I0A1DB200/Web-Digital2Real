@@ -18,6 +18,7 @@ import {
   selectLocaleDocument
 } from "../experience-engine/localization/experienceLocalization.js";
 import { packageExperience } from "../experience-engine/packaging/experiencePackagingPipeline.js";
+import { validateEnvironmentDefinition } from "../experience-engine/validation/environmentDefinitionValidator.js";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const defaultRepositoryRoot = path.resolve(scriptDirectory, "..");
@@ -35,6 +36,7 @@ export async function packageExperienceEngine({
   const temporaryRoot = path.join(frontendRoot, "generated", ".experience-engine-build");
   const playerSource = path.join(root, "experience-engine", "player", "experiencePlayer.js");
   const experienceRoot = path.join(root, "content", "experiences");
+  const environmentRoot = path.join(root, "content", "environments");
   assertInside(frontendRoot, targetRoot);
   assertInside(frontendRoot, temporaryRoot);
   await access(playerSource);
@@ -43,6 +45,7 @@ export async function packageExperienceEngine({
   const candidates = [];
   const skipped = [];
   const identifiers = new Set();
+  const editorialIdentifiers = new Set();
 
   for (const file of experienceFiles) {
     const authoring = parseExperienceYaml(await readFile(file, "utf8"));
@@ -65,6 +68,11 @@ export async function packageExperienceEngine({
       throw new Error(`Duplicate experience identifier: ${artifact.identity.id}.`);
     }
     identifiers.add(artifact.identity.id);
+    const editorialId = authoring.metadata.editorial_id;
+    if (editorialIdentifiers.has(editorialId)) {
+      throw new Error(`Duplicate Experience editorial identifier: ${editorialId}.`);
+    }
+    editorialIdentifiers.add(editorialId);
     const localizedArtifacts = localized
       ? Object.fromEntries(Object.entries(localized.documents).map(([locale, document]) => [
           locale,
@@ -75,23 +83,33 @@ export async function packageExperienceEngine({
       artifact,
       localizedArtifacts,
       defaultLocale: localized?.defaultLocale ?? null,
-      sourceDirectory: path.dirname(file)
+      sourceDirectory: path.dirname(file),
+      editorialId,
+      access: authoring.metadata.access
     });
   }
 
   candidates.sort((left, right) => left.artifact.identity.id.localeCompare(right.artifact.identity.id));
+  const environments = await resolveEnvironments({
+    environmentRoot,
+    experienceEditorialIds: editorialIdentifiers,
+    mode,
+    root
+  });
   await rm(temporaryRoot, { recursive: true, force: true });
 
   try {
     await mkdir(path.join(temporaryRoot, "player"), { recursive: true });
     await mkdir(path.join(temporaryRoot, "experiences"), { recursive: true });
+    await mkdir(path.join(temporaryRoot, "environments"), { recursive: true });
     await cp(playerSource, path.join(temporaryRoot, "player", "experiencePlayer.js"));
 
     const catalog = {
       format: "Digital2Real Generated Web Artifact Catalog",
       version: 1,
       mode,
-      experiences: []
+      experiences: [],
+      environments: []
     };
 
     for (const candidate of candidates) {
@@ -109,6 +127,8 @@ export async function packageExperienceEngine({
       }
       catalog.experiences.push({
         id: artifact.identity.id,
+        editorialId: candidate.editorialId,
+        access: candidate.access,
         class: artifact.identity.class,
         title: artifact.metadata.title,
         summary: artifact.metadata.summary,
@@ -132,6 +152,26 @@ export async function packageExperienceEngine({
       });
     }
 
+    for (const item of environments) {
+      const backgroundFile = path.basename(item.definition.visual.background);
+      await cp(item.backgroundSource, path.join(temporaryRoot, "environments", backgroundFile));
+      catalog.environments.push({
+        id: item.definition.environment.id,
+        slug: item.definition.environment.slug,
+        title: item.definition.environment.title,
+        lifecycle: item.definition.environment.lifecycle,
+        capacity: item.definition.environment.capacity,
+        background: `environments/${backgroundFile}`,
+        width: item.definition.visual.width,
+        height: item.definition.visual.height,
+        hotspots: item.definition.hotspots.map(hotspot => ({
+          experienceEditorialId: hotspot.experience_editorial_id,
+          x: hotspot.x,
+          y: hotspot.y
+        }))
+      });
+    }
+
     await writeFile(
       path.join(temporaryRoot, "catalog.json"),
       `${JSON.stringify(catalog, null, 2)}\n`,
@@ -149,8 +189,49 @@ export async function packageExperienceEngine({
     mode,
     output: relative(root, targetRoot),
     packaged: Object.freeze(candidates.map(candidate => candidate.artifact.identity.id)),
+    environments: Object.freeze(environments.map(item => item.definition.environment.id)),
     skipped: Object.freeze(skipped.map(item => Object.freeze(item)))
   });
+}
+
+async function resolveEnvironments({ environmentRoot, experienceEditorialIds, mode, root }) {
+  const files = await findNamedFiles(environmentRoot, "environment.yaml");
+  const environments = [];
+  for (const file of files) {
+    const definition = parseExperienceYaml(await readFile(file, "utf8"));
+    if (!environmentEligible(definition, mode)) continue;
+    const validation = validateEnvironmentDefinition(definition, {
+      experienceEditorialIds: [...experienceEditorialIds]
+    });
+    if (!validation.valid) {
+      const details = validation.incidents.map(issue => `${issue.path}: ${issue.message}`).join("; ");
+      throw new Error(`Invalid Environment ${relative(root, file)}: ${details}`);
+    }
+    const packageDirectory = path.dirname(file);
+    const backgroundSource = path.resolve(packageDirectory, definition.visual.background);
+    assertInside(packageDirectory, backgroundSource);
+    const dimensions = await readPngDimensions(backgroundSource);
+    if (dimensions.width !== definition.visual.width || dimensions.height !== definition.visual.height) {
+      throw new Error(`Environment image dimensions do not match ${relative(root, file)}.`);
+    }
+    environments.push({ definition, backgroundSource });
+  }
+  environments.sort((left, right) => left.definition.environment.id.localeCompare(right.definition.environment.id));
+  return environments;
+}
+
+async function readPngDimensions(file) {
+  const buffer = await readFile(file);
+  const signature = "89504e470d0a1a0a";
+  if (buffer.length < 24 || buffer.subarray(0, 8).toString("hex") !== signature) {
+    throw new Error(`Environment background must be a PNG: ${file}.`);
+  }
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+}
+
+function environmentEligible(definition, mode) {
+  const lifecycle = definition?.environment?.lifecycle;
+  return mode === "publish" ? lifecycle === "published" : ["preview", "published"].includes(lifecycle);
 }
 
 async function writeArtifact(temporaryRoot, fileName, artifact) {
@@ -233,13 +314,17 @@ function eligible(authoring, mode) {
 }
 
 async function findExperienceFiles(directory) {
+  return findNamedFiles(directory, "experience.yaml");
+}
+
+async function findNamedFiles(directory, fileName) {
   const files = [];
   const entries = await readdir(directory, { withFileTypes: true });
   entries.sort((left, right) => left.name.localeCompare(right.name));
   for (const entry of entries) {
     const location = path.join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...await findExperienceFiles(location));
-    else if (entry.isFile() && entry.name === "experience.yaml") files.push(location);
+    if (entry.isDirectory()) files.push(...await findNamedFiles(location, fileName));
+    else if (entry.isFile() && entry.name === fileName) files.push(location);
   }
   return files;
 }

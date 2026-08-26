@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-15 — Experience Environment vertical slice
+
+- Added three canonical Environment definitions and deterministic Environment publication through the existing Experience Engine packaging pipeline.
+- Changed Experience Lab entry from a flat Experience list to an Environment selector with percentage-based hotspots and generic empty states.
+- Anchored Experience details to their hotspot with collision-aware placement, accessible single-popover behavior, and versioned browser-local completion progress.
+- Retired EE-0009 from generated catalogs through the governed `archived` lifecycle while preserving its canonical package and regression coverage.
+
 ## 2026-08-14 — Responsive navigation and editorial rhythm
 
 - Added an accessible small-screen navigation menu while preserving the existing desktop navigation and data source.

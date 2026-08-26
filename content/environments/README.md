@@ -15,9 +15,10 @@
 
 ## Data boundaries
 
-Future `environment.yaml` files will own only:
+Each `environment.yaml` owns only:
 
 - Environment identity;
+- intended Experience capacity;
 - background reference;
 - aspect ratio;
 - Experience references;
@@ -36,19 +37,19 @@ Those fields remain owned by canonical Experience content.
 
 ## Coordinate contract
 
-Future hotspots use percentage coordinates relative to the full uncropped image:
+Hotspots use percentage coordinates relative to the full uncropped image:
 
 ```text
 x: 0–100
 y: 0–100
 ```
 
-## Current mapping
+## Publication boundary
 
-```text
-ENV-001 → EE-0001 to EE-0010
-ENV-002 → EE-0011 to EE-0020
-ENV-003 → EE-0021 to EE-0030
-```
+- `draft` remains canonical but is not browser-consumable.
+- `preview` may expose a partial set of validated hotspots in Preview packaging.
+- `published` requires the complete governed hotspot set and may enter Production packaging.
 
-This mapping is architectural. It does not authorize inventing missing Experiences or making them playable.
+The generated catalog resolves every hotspot through the canonical Experience editorial ID. Environment content never owns Experience titles, summaries, access rules, or technical identifiers.
+
+Capacity describes the intended size of an Environment. Completion is user runtime state and is never authored in this directory or emitted as static catalog metadata.

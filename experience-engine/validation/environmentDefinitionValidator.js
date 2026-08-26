@@ -35,7 +35,13 @@ export function validateEnvironmentDefinition(candidate, {
   requireFields(candidate, EnvironmentDefinitionV1Schema.required.root, "$", add);
   validateIdentity(candidate.environment, add);
   validateVisual(candidate.visual, add);
-  validateHotspots(candidate.hotspots, candidate.environment?.lifecycle, experienceEditorialIds, add);
+  validateHotspots(
+    candidate.hotspots,
+    candidate.environment?.lifecycle,
+    candidate.environment?.capacity,
+    experienceEditorialIds,
+    add
+  );
 
   return createResult("environment_v1", incidents);
 }
@@ -45,8 +51,10 @@ function validateIdentity(environment, add) {
   requireFields(environment, EnvironmentDefinitionV1Schema.required.environment, "$.environment", add);
   requirePattern(environment.id, patterns.environment, "$.environment.id", "ENVIRONMENT_ID_INVALID", add);
   requirePattern(environment.slug, patterns.slug, "$.environment.slug", "ENVIRONMENT_SLUG_INVALID", add);
+  requireText(environment.title, "$.environment.title", add);
   requireEnum(environment.lifecycle, EnvironmentDefinitionV1Schema.enums.lifecycle, "$.environment.lifecycle", "ENVIRONMENT_LIFECYCLE_INVALID", add);
   requireText(environment.version, "$.environment.version", add);
+  requirePositiveInteger(environment.capacity, "$.environment.capacity", "ENVIRONMENT_CAPACITY_INVALID", add);
 }
 
 function validateVisual(visual, add) {
@@ -57,7 +65,7 @@ function validateVisual(visual, add) {
   requirePositiveInteger(visual.height, "$.visual.height", "ENVIRONMENT_HEIGHT_INVALID", add);
 }
 
-function validateHotspots(hotspots, lifecycle, experienceEditorialIds, add) {
+function validateHotspots(hotspots, lifecycle, capacity, experienceEditorialIds, add) {
   if (!Array.isArray(hotspots)) {
     add("error", "ENVIRONMENT_HOTSPOTS_INVALID_TYPE", "$.hotspots", "hotspots must be an array.");
     return;
@@ -71,6 +79,18 @@ function validateHotspots(hotspots, lifecycle, experienceEditorialIds, add) {
       "$.hotspots",
       `${lifecycle} Environment requires ${rule.minimumHotspots === rule.maximumHotspots ? `exactly ${rule.minimumHotspots}` : `${rule.minimumHotspots}-${rule.maximumHotspots}`} hotspots.`
     );
+  }
+  if (Number.isInteger(capacity) && capacity > 0) {
+    if (hotspots.length > capacity || (lifecycle === "published" && hotspots.length !== capacity)) {
+      add(
+        "error",
+        "ENVIRONMENT_CAPACITY_MISMATCH",
+        "$.hotspots",
+        lifecycle === "published"
+          ? `Published Environment requires exactly its capacity of ${capacity} hotspots.`
+          : `Environment hotspots cannot exceed its capacity of ${capacity}.`
+      );
+    }
   }
 
   const references = new Set();
@@ -94,7 +114,7 @@ function validateHotspots(hotspots, lifecycle, experienceEditorialIds, add) {
       }
       references.add(hotspot.experience_editorial_id);
       if (rule?.requiresResolution && !resolvable.has(hotspot.experience_editorial_id)) {
-        add("error", "ENVIRONMENT_EXPERIENCE_UNRESOLVED", `${path}.experience_editorial_id`, `Published Environment reference does not resolve: ${hotspot.experience_editorial_id}.`);
+        add("error", "ENVIRONMENT_EXPERIENCE_UNRESOLVED", `${path}.experience_editorial_id`, `Environment reference does not resolve: ${hotspot.experience_editorial_id}.`);
       }
     }
   });

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-26 — Environment & Experience Learning Model V2 draft
+
+- Added D2R-DESIGN-002 as a DRAFT product and learning design for ENV-owned Theory, ten Experiences, the four-phase Experience model, correct-decision progression, retry feedback, attempt tracking, provisional evaluation outcomes, and completion/mastery separation.
+- Kept D2R-003 and EXP-MODEL-001 as existing design and contract authorities, Notebook independent from ENV Theory, and all V2 implementation explicitly out of scope.
+
 ## 2026-08-26 — Compact Experience Lab selector
 
 - Scoped selector-only spacing to the existing Environment catalog, removing stacked workspace padding and viewport-based minimum height without changing internal ENV or Player layouts.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-27 — Versioned Experience V2 contract boundaries
+
+- Added explicit Authoring, Normalized Runtime and Web Artifact V2 contract boundaries with version dispatch while preserving V1 behavior.
+- Added contractual validation for ordered V2 phase semantics, exactly one explicitly correct option per decision point, learner-safe retry feedback, and complete provisional evaluation thresholds.
+- Kept V2 correctness, feedback and evaluation policy private during normalization; the Phase 1 Web Artifact V2 allowlist publishes phase semantics only and implements no Player behavior.
+
 ## 2026-08-26 — Environment & Experience Learning Model V2 draft
 
 - Added D2R-DESIGN-002 as a DRAFT product and learning design for ENV-owned Theory, ten Experiences, the four-phase Experience model, correct-decision progression, retry feedback, attempt tracking, provisional evaluation outcomes, and completion/mastery separation.

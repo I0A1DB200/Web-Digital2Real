@@ -17,6 +17,7 @@ const immutableCopy = value => {
 };
 
 export function normalizeExperienceDefinition(candidate) {
+  if (candidate?.contract_version === "2.0.0") return normalizeV2(candidate);
   const inputProfile = classifyInput(candidate);
   if (inputProfile !== "authoring_v1") {
     return createResult({
@@ -60,6 +61,30 @@ export function normalizeExperienceDefinition(candidate) {
     value: runtime,
     warnings: outputValidation.warnings
   });
+}
+
+function normalizeV2(authoring) {
+  const validation = validateExperienceDefinition(authoring);
+  if (!validation.compatible) return createResult({ inputProfile: "authoring_v2", errors: validation.errors });
+  const downgraded = structuredClone(authoring);
+  downgraded.contract_version = "1.1.0";
+  downgraded.public.stages.forEach(stage => { delete stage.phase; });
+  downgraded.private.decision_logic.forEach(logic => { delete logic.is_correct; delete logic.retry_feedback; });
+  delete downgraded.private.evaluation_policy;
+  const base = normalizeExperienceDefinition(downgraded);
+  if (!base.ok) return base;
+  const logic = new Map(authoring.private.decision_logic.map(item => [item.decision_id, item]));
+  const runtime = structuredClone(base.value);
+  runtime.runtime_contract_version = "2.0.0";
+  runtime.public.stages.forEach((stage, index) => { stage.phase = authoring.public.stages[index].phase; });
+  runtime.private.relations.forEach(relation => {
+    const source = logic.get(relation.decision_id);
+    relation.is_correct = source.is_correct;
+    if (source.is_correct === false) relation.retry_feedback = source.retry_feedback;
+  });
+  runtime.private.evaluation_policy = structuredClone(authoring.private.evaluation_policy);
+  const output = validateNormalizedExperience(runtime);
+  return createResult({ ok: output.compatible, inputProfile: "authoring_v2", outputProfile: "normalized_runtime_v2", value: runtime, errors: output.errors, warnings: output.warnings });
 }
 
 function transform(authoring) {

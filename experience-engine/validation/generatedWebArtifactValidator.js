@@ -1,4 +1,5 @@
 import { GeneratedWebArtifactV1Schema } from "../schemas/generatedWebArtifactV1Schema.js";
+import { validateWebArtifactV2 } from "./experienceV2ContractValidator.js";
 
 const patterns = Object.freeze(Object.fromEntries(
   Object.entries(GeneratedWebArtifactV1Schema.identifierPatterns)
@@ -21,6 +22,12 @@ const immutableCopy = value => {
 };
 
 export function validateGeneratedWebArtifact(candidate) {
+  if (candidate?.web_artifact_version === "2.0.0") {
+    const base = structuredClone(candidate);
+    base.web_artifact_version = GeneratedWebArtifactV1Schema.contractVersion;
+    base.public?.stages?.forEach(stage => { delete stage.phase; });
+    return validateWebArtifactV2(candidate, validateGeneratedWebArtifact(base).incidents);
+  }
   const incidents = [];
   const add = (severity, code, path, message) => {
     incidents.push({ severity, code, path, message });

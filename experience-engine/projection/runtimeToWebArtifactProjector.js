@@ -56,7 +56,7 @@ export function projectRuntimeToWebArtifact(runtime) {
 
 function project(runtime) {
   return {
-    web_artifact_version: GeneratedWebArtifactV1Schema.contractVersion,
+    web_artifact_version: runtime.runtime_contract_version === "2.0.0" ? "2.0.0" : GeneratedWebArtifactV1Schema.contractVersion,
     identity: {
       id: runtime.identity.id,
       content_version: runtime.identity.content_version,
@@ -79,6 +79,7 @@ function project(runtime) {
         id: stage.id,
         title: stage.title,
         situation: stage.situation,
+        ...(typeof stage.phase === "string" ? { phase: stage.phase } : {}),
         ...(Array.isArray(stage.media_ids) ? { media_ids: [...stage.media_ids] } : {}),
         decisions: stage.decisions.map(decision => ({
           id: decision.id,

@@ -48,7 +48,7 @@ test("rejects a missing independent contract version", async () => {
 
 test("rejects an unsupported contract version", async () => {
   const definition = await readJson(validFixtureUrl);
-  definition.contract_version = "2.0.0";
+  definition.contract_version = "3.0.0";
 
   const result = validateExperienceDefinition(definition);
 

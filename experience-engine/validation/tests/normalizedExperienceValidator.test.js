@@ -30,7 +30,7 @@ test("accepts a valid Normalized Runtime Contract v1", async () => {
 
 test("requires the independent runtime contract version", async () => {
   const runtime = await readJson(validFixtureUrl);
-  runtime.runtime_contract_version = "2.0.0";
+  runtime.runtime_contract_version = "3.0.0";
 
   const result = validateNormalizedExperience(runtime);
 

@@ -3,6 +3,7 @@ import { notebook } from "./generated/notebooks/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
 import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
+import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
@@ -35,6 +36,7 @@ let currentView = null;
 let activeArticleViewer = null;
 let activeExperienceWorkspace = null;
 let activeNavbar = null;
+let activeNotebookMotorHero = null;
 let pendingExperienceId = null;
 let revealObserver = null;
 
@@ -76,6 +78,8 @@ function renderView(view) {
   }
 
   disconnectRevealObserver();
+  activeNotebookMotorHero?.destroy();
+  activeNotebookMotorHero = null;
   closeArticle();
   closeExperienceWorkspace();
 
@@ -95,6 +99,7 @@ function renderView(view) {
   activeNavbar?.destroy?.();
   activeNavbar = createNavbar(site, currentView, navigateTo);
   app.replaceChildren(activeNavbar, main);
+  activeNotebookMotorHero?.initialise(main.querySelector(".notes-section"));
 
   document.title = getDocumentTitle();
   initialiseRevealAnimations();
@@ -131,18 +136,24 @@ function renderEngineeringNotesView() {
           <p>${site.engineeringNotes.introduction}</p>
         </div>
       </header>
-      <div class="notebook-carousel-host"></div>
+      <div class="notebook-notes-composition">
+        <div class="notebook-motor-host"></div>
+        <div class="notebook-carousel-host"></div>
+      </div>
     </section>
 
   `;
 
   const carouselHost = section.querySelector(".notebook-carousel-host");
+  const motorHost = section.querySelector(".notebook-motor-host");
 
-  if (!(carouselHost instanceof HTMLElement)) {
-    throw new Error("Digital2Real could not render the Engineering Notes carousel.");
+  if (!(carouselHost instanceof HTMLElement) || !(motorHost instanceof HTMLElement)) {
+    throw new Error("Digital2Real could not render the Engineering Notes composition.");
   }
 
   carouselHost.appendChild(createNotebookCarousel(notebook, openArticle).element);
+  activeNotebookMotorHero = createNotebookMotorHero();
+  motorHost.appendChild(activeNotebookMotorHero.element);
 
   return section;
 }

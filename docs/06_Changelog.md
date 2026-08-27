@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-27 — Notebook Motor Hero V1
+
+- Added a Notebook-owned motor hero controller with a deterministic, one-run activation timeline.
+- Integrated the existing Engineering Notes carousel as the deployment target without changing its interaction logic or content source.
+- Added responsive and reduced-motion presentation for the decorative motor assembly.
+- Added focused controller tests for asset markup, state timing, reduced motion and lifecycle cleanup.
+- Corrected the feature boundary so the motor mounts and activates only inside Engineering Notes when that section first enters the viewport.
+- Corrected the mechanical motion so only the rotor turns around its vertical axis while the body and stator remain fixed.
+
 ## 2026-08-27 — Experience Player V2
 
 - Added explicit Player dispatch for Web Artifact V1 and V2, with retry-safe attempts, explicit V2 transitions, evidence unlocks, deterministic decision history, restart and completion evaluation through the existing pure evaluator.

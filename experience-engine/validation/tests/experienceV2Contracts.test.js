@@ -162,7 +162,7 @@ test("does not leak private Runtime authority through Web Artifact V2", async ()
   const forbidden = new Set([
     "private", "relations", "decision_logic", "is_correct", "retry_feedback",
     "classification", "rationale", "score_effect", "safety_effect", "scoring",
-    "debrief", "fault_model", "diagnostic_model", "evaluation_policy"
+    "debrief", "fault_model", "diagnostic_model"
   ]);
   const leaked = [];
   const walk = value => {
@@ -174,6 +174,7 @@ test("does not leak private Runtime authority through Web Artifact V2", async ()
 
   assert.deepEqual(leaked, []);
   assert.equal(Object.hasOwn(artifact.public, "interactions"), true);
+  assert.deepEqual(Object.keys(artifact.public.evaluation_policy), ["provisional", "outcomes", "mastery_outcomes", "thresholds"]);
 });
 
 test("rejects malformed projected decision authority", async () => {
@@ -198,6 +199,6 @@ test("rejects malformed projected decision authority", async () => {
   assert.equal(validateGeneratedWebArtifact(visibleLeak).errors.some(item => item.code === "VISIBLE_ANSWER_HINT_FORBIDDEN"), true);
 
   const policyLeak = clone(artifact);
-  policyLeak.public.evaluation_policy = { provisional: true };
-  assert.equal(validateGeneratedWebArtifact(policyLeak).errors.some(item => item.code === "WEB_ARTIFACT_PRIVATE_FIELD_FORBIDDEN"), true);
+  policyLeak.public.evaluation_policy.scoring = { weights: [] };
+  assert.equal(validateGeneratedWebArtifact(policyLeak).errors.some(item => item.code === "PROJECTED_EVALUATION_POLICY_FIELD_FORBIDDEN"), true);
 });

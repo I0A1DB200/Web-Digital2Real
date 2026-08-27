@@ -196,6 +196,8 @@ export function createWorkspaceProjection(state, baseUrl = "") {
       decision => decision.id === state.selectedDecision
     ) ?? null,
     decisionHistory: state.decisionHistory,
+    feedback: state.feedback ?? null,
+    evaluationResult: state.evaluationResult ?? null,
     visual: state.visual,
     media: state.media.map(asset => ({
       ...asset,
@@ -231,7 +233,7 @@ export function ExperienceWorkspace({
       shell.appendChild(MediaPanel({ documentRef, media: projection.media }));
     }
     if (projection.stage.decisions.length) {
-      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, onDecision }));
+      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision }));
     } else {
       shell.appendChild(ContinuePanel({ documentRef, onContinue }));
     }
@@ -273,7 +275,7 @@ export function StagePanel({ documentRef, stage }) {
   return panel;
 }
 
-export function DecisionPanel({ documentRef, decisions, onDecision }) {
+export function DecisionPanel({ documentRef, decisions, feedback, onDecision }) {
   const panel = createElement(documentRef, "section", "experience-panel");
   appendText(documentRef, panel, "span", "experience-panel__label", "Engineering decision");
   appendText(documentRef, panel, "h2", "", "What should be done next?");
@@ -286,6 +288,10 @@ export function DecisionPanel({ documentRef, decisions, onDecision }) {
     list.appendChild(button);
   });
   panel.appendChild(list);
+  if (feedback?.message) {
+    const notice = appendText(documentRef, panel, "p", "experience-stage__objective", feedback.message);
+    notice.setAttribute("role", "status");
+  }
   return panel;
 }
 
@@ -383,12 +389,22 @@ export function CompletionPanel({ documentRef, projection, onRestart }) {
   if (projection.completion?.industrial_value) {
     appendList(documentRef, panel, "Valor industrial", projection.completion.industrial_value);
   }
-  appendList(
-    documentRef,
-    panel,
-    "Decisions taken",
-    projection.decisionHistory.map(record => record.action)
-  );
+  if (projection.evaluationResult) {
+    const result = projection.evaluationResult;
+    const facts = createElement(documentRef, "dl", "experience-facts");
+    appendFact(documentRef, facts, "Decisions", String(result.totalDecisions));
+    appendFact(documentRef, facts, "First-attempt correct", `${result.firstAttemptCorrect} / ${result.totalDecisions}`);
+    appendFact(documentRef, facts, "Additional attempts", String(result.additionalAttempts));
+    appendFact(documentRef, facts, "Result", result.outcome.replaceAll("_", " "));
+    panel.appendChild(facts);
+  } else {
+    appendList(
+      documentRef,
+      panel,
+      "Decisions taken",
+      projection.decisionHistory.map(record => record.action)
+    );
+  }
   if (projection.media.length) {
     panel.appendChild(MediaPanel({ documentRef, media: projection.media }));
   }

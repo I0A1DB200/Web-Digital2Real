@@ -11,8 +11,14 @@ export const ExperienceV2Contracts = freeze({
   phases: ["incident", "investigation", "solution", "debrief"],
   stagePhases: ["incident", "investigation", "solution"],
   outcomes: ["PASS", "PASS_WITH_GUIDANCE", "RETRY_RECOMMENDED"],
+  projectedDecisionOutcomes: ["retry", "advance"],
+  projectedDecisionFields: {
+    retry: ["action_token", "outcome", "message"],
+    advance: ["action_token", "outcome", "next", "unlocks"]
+  },
   provisionalEvaluationPolicy: {
     provisional: true,
+    mastery_outcomes: ["PASS"],
     thresholds: [
       { outcome: "RETRY_RECOMMENDED", minimum: 0, maximum: 49 },
       { outcome: "PASS_WITH_GUIDANCE", minimum: 50, maximum: 79 },
@@ -20,8 +26,10 @@ export const ExperienceV2Contracts = freeze({
     ]
   },
   webArtifactForbidden: [
-    "private", "fault_model", "diagnostic_model", "root_cause", "rationale",
+    "private", "relations", "decision_logic", "diagnosis", "fault_model",
+    "diagnostic_model", "root_cause", "rationale", "consequence",
     "classification", "score_effect", "safety_effect", "scoring", "debrief",
-    "is_correct", "retry_feedback", "correct_answer"
+    "is_correct", "correct", "accepted", "retry_feedback", "correct_answer",
+    "answer", "next_stage", "evidence_revealed", "evaluation_policy"
   ]
 });

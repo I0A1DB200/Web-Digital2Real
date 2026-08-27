@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-08-27 — V2 projection and client-side security boundary
+
+- Added an allowlisted V2 interaction projection that separates visible decisions from retry or advance authority, publishes only learner-safe retry messages and required evidence, and keeps evaluation policy and raw Runtime relations private.
+- This boundary provides casual concealment for a client-side application, not authoritative or cryptographic secrecy; authoritative evaluation remains deferred to a trusted server boundary if one is introduced in the future.
+
+## 2026-08-27 — Runtime V2 normalization and evaluation boundary
+
+- Strengthened Runtime V2 validation for explicit decision authority, retry feedback, transitions, evidence unlocks and non-empty evaluable decision points while keeping correctness private.
+- Added a pure, session-independent evaluator that derives exact first-attempt ratios, additional attempts, provisional outcomes and policy-owned mastery without changing Player or Web Artifact payloads.
+
 ## 2026-08-27 — Versioned Experience V2 contract boundaries
 
 - Added explicit Authoring, Normalized Runtime and Web Artifact V2 contract boundaries with version dispatch while preserving V1 behavior.

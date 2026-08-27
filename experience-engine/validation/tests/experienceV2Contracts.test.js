@@ -36,6 +36,7 @@ async function authoringV2() {
   }
   value.private.evaluation_policy = {
     provisional: true,
+    mastery_outcomes: ["PASS"],
     thresholds: [
       { outcome: "RETRY_RECOMMENDED", minimum: 0, maximum: 49 },
       { outcome: "PASS_WITH_GUIDANCE", minimum: 50, maximum: 79 },
@@ -87,7 +88,25 @@ test("normalizes and validates the private Runtime V2 boundary", async () => {
   assert.equal(normalized.outputProfile, "normalized_runtime_v2");
   assert.equal(validateNormalizedExperience(normalized.value).compatible, true);
   assert.equal(normalized.value.private.relations.some(item => item.is_correct === false && item.retry_feedback), true);
+  assert.equal(normalized.value.private.relations.filter(item => item.is_correct).every(item => !Object.hasOwn(item, "retry_feedback")), true);
   assert.deepEqual(normalized.value.private.evaluation_policy.thresholds.map(item => item.outcome), ["RETRY_RECOMMENDED", "PASS_WITH_GUIDANCE", "PASS"]);
+});
+
+test("rejects invalid Runtime V2 transition, evidence and authority boundaries", async () => {
+  const runtime = normalizeExperienceDefinition(await authoringV2()).value;
+  const transition = clone(runtime); transition.private.relations.find(item => item.is_correct).destination = "STAGE-UNKNOWN";
+  assert.equal(validateNormalizedExperience(transition).errors.some(item => item.code === "TRANSITION_DESTINATION_UNKNOWN"), true);
+  const evidence = clone(runtime); evidence.private.relations.find(item => item.is_correct).evidence_revealed = ["EVID-UNKNOWN"];
+  assert.equal(validateNormalizedExperience(evidence).errors.some(item => item.code === "EVIDENCE_UNLOCK_UNKNOWN"), true);
+  const ambiguous = clone(runtime); const correct = ambiguous.private.relations.filter(item => item.is_correct); correct[1].evidence_revealed = [...correct[0].evidence_revealed];
+  assert.equal(validateNormalizedExperience(ambiguous).errors.some(item => item.code === "EVIDENCE_UNLOCK_AMBIGUOUS"), true);
+  const duplicate = clone(runtime); duplicate.private.relations.find(item => item.is_correct === false).is_correct = true;
+  assert.equal(validateNormalizedExperience(duplicate).errors.some(item => item.code === "RUNTIME_CORRECTNESS_CARDINALITY"), true);
+});
+
+test("rejects an evaluable V2 Experience with zero decision points", async () => {
+  const authoring = await authoringV2(); authoring.public.stages.forEach(stage => { stage.decision_ids = []; });
+  assert.equal(validateExperienceDefinition(authoring).errors.some(item => item.code === "DECISION_POINTS_REQUIRED"), true);
 });
 
 test("projects a V2 public boundary without correctness or private feedback", async () => {
@@ -98,4 +117,87 @@ test("projects a V2 public boundary without correctness or private feedback", as
   assert.deepEqual(artifact.public.stages.map(item => item.phase), ["incident", "investigation", "solution"]);
   assert.doesNotMatch(JSON.stringify(artifact), /is_correct|retry_feedback|rationale|score_effect|private/);
   assert.deepEqual(packageExperience(await authoringV2()), artifact);
+});
+
+test("projects separated deterministic retry and advance interactions", async () => {
+  const runtime = normalizeExperienceDefinition(await authoringV2()).value;
+  const artifact = projectRuntimeToWebArtifact(runtime);
+  const decisions = artifact.public.stages.flatMap(stage => stage.decisions);
+  const select = decisionId => artifact.public.interactions.find(item =>
+    item.action_token === decisions.find(decision => decision.id === decisionId).action_token);
+  const incorrectId = runtime.private.relations.find(item => item.is_correct === false).decision_id;
+  const correct = runtime.private.relations.find(item => item.is_correct === true && item.destination !== "COMPLETE");
+  const terminal = runtime.private.relations.find(item => item.is_correct === true && item.destination === "COMPLETE");
+
+  assert.deepEqual(Object.keys(decisions[0]), ["id", "action", "action_token"]);
+  assert.equal(decisions.every(item => !["is_correct", "correct", "accepted"].some(field => Object.hasOwn(item, field))), true);
+  assert.deepEqual(select(incorrectId), {
+    action_token: decisions.find(item => item.id === incorrectId).action_token,
+    outcome: "retry",
+    message: "Reconsider which conclusion is supported by the available evidence."
+  });
+  assert.deepEqual(select(correct.decision_id), {
+    action_token: decisions.find(item => item.id === correct.decision_id).action_token,
+    outcome: "advance",
+    next: correct.destination,
+    unlocks: correct.evidence_revealed
+  });
+  assert.equal(select(terminal.decision_id).next, "COMPLETE");
+  assert.deepEqual(select(terminal.decision_id).unlocks, []);
+  assert.equal(artifact.public.interactions.every(item => item.outcome !== "retry" || (!Object.hasOwn(item, "next") && !Object.hasOwn(item, "unlocks"))), true);
+});
+
+test("publishes only evidence required by projected advance interactions", async () => {
+  const artifact = projectRuntimeToWebArtifact(normalizeExperienceDefinition(await authoringV2()).value);
+  const unlocked = new Set(artifact.public.interactions.flatMap(item => item.unlocks ?? []));
+  const published = new Set(artifact.public.evidence.map(item => item.id));
+
+  assert.deepEqual(published, unlocked);
+  assert.equal(artifact.public.evidence.every(item => item.visibility === "public"), true);
+});
+
+test("does not leak private Runtime authority through Web Artifact V2", async () => {
+  const runtime = normalizeExperienceDefinition(await authoringV2()).value;
+  const artifact = projectRuntimeToWebArtifact(runtime);
+  const forbidden = new Set([
+    "private", "relations", "decision_logic", "is_correct", "retry_feedback",
+    "classification", "rationale", "score_effect", "safety_effect", "scoring",
+    "debrief", "fault_model", "diagnostic_model", "evaluation_policy"
+  ]);
+  const leaked = [];
+  const walk = value => {
+    if (Array.isArray(value)) return value.forEach(walk);
+    if (!value || typeof value !== "object") return;
+    Object.entries(value).forEach(([key, item]) => { if (forbidden.has(key)) leaked.push(key); walk(item); });
+  };
+  walk(artifact);
+
+  assert.deepEqual(leaked, []);
+  assert.equal(Object.hasOwn(artifact.public, "interactions"), true);
+});
+
+test("rejects malformed projected decision authority", async () => {
+  const artifact = projectRuntimeToWebArtifact(normalizeExperienceDefinition(await authoringV2()).value);
+  const retry = artifact.public.interactions.find(item => item.outcome === "retry");
+  const advance = artifact.public.interactions.find(item => item.outcome === "advance" && item.unlocks.length);
+
+  const retryProgresses = clone(artifact);
+  Object.assign(retryProgresses.public.interactions.find(item => item.action_token === retry.action_token), { next: "COMPLETE" });
+  assert.equal(validateGeneratedWebArtifact(retryProgresses).errors.some(item => item.code === "RETRY_PROGRESSION_FORBIDDEN"), true);
+
+  const missingEvidence = clone(artifact);
+  missingEvidence.public.interactions.find(item => item.action_token === advance.action_token).unlocks = ["EVID-UNKNOWN"];
+  assert.equal(validateGeneratedWebArtifact(missingEvidence).errors.some(item => item.code === "PROJECTED_EVIDENCE_UNKNOWN"), true);
+
+  const unknownDestination = clone(artifact);
+  unknownDestination.public.interactions.find(item => item.outcome === "advance").next = "STAGE-UNKNOWN";
+  assert.equal(validateGeneratedWebArtifact(unknownDestination).errors.some(item => item.code === "PROJECTED_DESTINATION_UNKNOWN"), true);
+
+  const visibleLeak = clone(artifact);
+  visibleLeak.public.stages[0].decisions[0].accepted = true;
+  assert.equal(validateGeneratedWebArtifact(visibleLeak).errors.some(item => item.code === "VISIBLE_ANSWER_HINT_FORBIDDEN"), true);
+
+  const policyLeak = clone(artifact);
+  policyLeak.public.evaluation_policy = { provisional: true };
+  assert.equal(validateGeneratedWebArtifact(policyLeak).errors.some(item => item.code === "WEB_ARTIFACT_PRIVATE_FIELD_FORBIDDEN"), true);
 });

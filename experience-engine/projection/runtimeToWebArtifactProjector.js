@@ -176,7 +176,7 @@ function projectV2(runtime) {
       interactions,
       evaluation_policy: {
         provisional: runtime.private.evaluation_policy.provisional,
-        outcomes: runtime.private.evaluation_policy.thresholds.map(item => item.outcome),
+        outcomes: [...ExperienceV2Contracts.outcomes],
         mastery_outcomes: [...runtime.private.evaluation_policy.mastery_outcomes],
         thresholds: runtime.private.evaluation_policy.thresholds.map(item => ({
           outcome: item.outcome,

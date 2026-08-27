@@ -201,4 +201,8 @@ test("rejects malformed projected decision authority", async () => {
   const policyLeak = clone(artifact);
   policyLeak.public.evaluation_policy.scoring = { weights: [] };
   assert.equal(validateGeneratedWebArtifact(policyLeak).errors.some(item => item.code === "PROJECTED_EVALUATION_POLICY_FIELD_FORBIDDEN"), true);
+
+  const thresholdLeak = clone(artifact);
+  thresholdLeak.public.evaluation_policy.thresholds[0].score = 10;
+  assert.equal(validateGeneratedWebArtifact(thresholdLeak).errors.some(item => item.code === "PROJECTED_EVALUATION_THRESHOLD_FIELD_FORBIDDEN"), true);
 });

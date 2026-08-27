@@ -78,6 +78,10 @@ function validateProjectedPolicy(policy, incidents) {
     || policy.outcomes.some((outcome, index) => outcome !== ExperienceV2Contracts.outcomes[index])) {
     incidents.push(incident("PROJECTED_EVALUATION_OUTCOMES_INVALID", `${path}.outcomes`, "Projected outcomes must match the V2 contract."));
   }
+  if (Array.isArray(policy.thresholds) && policy.thresholds.some(item => !object(item)
+    || Object.keys(item).some(field => !["outcome", "minimum", "maximum"].includes(field)))) {
+    incidents.push(incident("PROJECTED_EVALUATION_THRESHOLD_FIELD_FORBIDDEN", `${path}.thresholds`, "Projected thresholds may contain only outcome, minimum and maximum."));
+  }
   validatePolicy(policy, path, incidents);
 }
 

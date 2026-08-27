@@ -42,7 +42,7 @@ async function v2Artifact(decisionPointCount = 2) {
   ]);
   value.public.evaluation_policy = {
     provisional: true,
-    outcomes: ["RETRY_RECOMMENDED", "PASS_WITH_GUIDANCE", "PASS"],
+    outcomes: ["PASS", "PASS_WITH_GUIDANCE", "RETRY_RECOMMENDED"],
     mastery_outcomes: ["PASS"],
     thresholds: [
       { outcome: "RETRY_RECOMMENDED", minimum: 0, maximum: 49 },

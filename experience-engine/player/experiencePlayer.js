@@ -337,6 +337,7 @@ function validateV2Experience(candidate, stageIds, decisionIds) {
   if (!Array.isArray(interactions)) invalidModel("public.interactions must be an array for Player V2.");
   if (!plainObject(candidate.public.evaluation_policy)) invalidModel("public.evaluation_policy is required for Player V2.");
   const tokens = new Set(candidate.public.stages.flatMap(stage => stage.decisions.map(item => item.action_token)));
+  const evidenceIds = new Set((candidate.public.evidence ?? []).map(item => item.id));
   if (tokens.size !== decisionIds.size) invalidModel("Player V2 action tokens must be unique.");
   const authorities = new Set();
   interactions.forEach((interaction, index) => {
@@ -344,11 +345,15 @@ function validateV2Experience(candidate, stageIds, decisionIds) {
     requireText(interaction.action_token, `public.interactions[${index}].action_token`);
     if (!tokens.has(interaction.action_token) || authorities.has(interaction.action_token)) invalidModel(`Invalid V2 interaction authority ${interaction.action_token}.`);
     authorities.add(interaction.action_token);
-    if (interaction.outcome === "retry") requireText(interaction.message, `public.interactions[${index}].message`);
+    if (interaction.outcome === "retry") {
+      requireText(interaction.message, `public.interactions[${index}].message`);
+      if (Object.hasOwn(interaction, "next") || Object.hasOwn(interaction, "unlocks")) invalidModel("Player V2 retry interactions cannot progress or unlock evidence.");
+    }
     else if (interaction.outcome === "advance") {
       requireText(interaction.next, `public.interactions[${index}].next`);
       if (interaction.next !== "COMPLETE" && !stageIds.has(interaction.next)) invalidModel(`Unknown V2 transition ${interaction.next}.`);
       if (!Array.isArray(interaction.unlocks)) invalidModel(`public.interactions[${index}].unlocks must be an array.`);
+      interaction.unlocks.forEach(id => { if (!evidenceIds.has(id)) invalidModel(`Unknown V2 evidence unlock ${id}.`); });
     } else invalidModel(`Unsupported V2 interaction outcome ${interaction.outcome}.`);
   });
   if (authorities.size !== tokens.size) invalidModel("Every Player V2 action token requires one interaction authority.");

@@ -8,6 +8,13 @@
 - Added focused controller tests for asset markup, state timing, reduced motion and lifecycle cleanup.
 - Corrected the feature boundary so the motor mounts and activates only inside Engineering Notes when that section first enters the viewport.
 - Corrected the mechanical motion so only the rotor turns around its vertical axis while the body and stator remain fixed.
+- Migrated the Notebook motor from the retired multilayer experiment to the canonical static-assembly and rotor assets.
+- Replaced geometric image rotation with a masked metallic sweep, luminance modulation and sub-pixel rotor micro-motion.
+- Extended the one-shot Notes deployment timeline to provide a distinct motor-active phase before the carousel becomes primary.
+- Refined the final Notebook motion pass with a 2.07-second rotor operation window, fully hidden pre-trigger cards and centered ghosted deployment.
+- Removed rotor vibration and added separate specular, shaft-keyway and laminated-core operating cues.
+- Rebuilt the Notebook sequence as an explicit empty, motor-entering, motor-active, cards-assembling and settled progression.
+- Added deterministic center-out card assembly using the carousel's existing visible-card positions without changing carousel logic.
 
 ## 2026-08-27 — Experience Player V2
 

@@ -1,9 +1,9 @@
 const MOTOR_TIMELINE = Object.freeze({
-  desktop: Object.freeze({ activation: 160, deployment: 760, settled: 1680 }),
-  mobile: Object.freeze({ activation: 80, deployment: 360, settled: 980 })
+  desktop: Object.freeze({ motorActive: 600, cardsAssembling: 2500, settled: 3600 }),
+  mobile: Object.freeze({ motorActive: 300, cardsAssembling: 1650, settled: 2400 })
 });
 
-const MOTOR_STATES = new Set(["idle", "activating", "deploying", "settled"]);
+const MOTOR_STATES = new Set(["idle", "motor-entering", "motor-active", "cards-assembling", "settled"]);
 
 export function createNotebookMotorHero({
   documentRef = globalThis.document,
@@ -14,25 +14,29 @@ export function createNotebookMotorHero({
   }
 
   const element = documentRef.createElement("div");
-  element.className = "motor-stage";
+  element.className = "notebook-motor-stage";
   element.setAttribute("aria-hidden", "true");
 
   const assembly = documentRef.createElement("div");
-  assembly.className = "motor-assembly";
+  assembly.className = "notebook-motor";
 
-  const halo = documentRef.createElement("span");
-  halo.className = "motor-assembly__halo";
+  const staticMotor = createLayer(
+    documentRef,
+    "notebook-motor__static",
+    "./assets/images/notebook/motor/motor-static.png"
+  );
+  const rotorActivity = documentRef.createElement("div");
+  rotorActivity.className = "notebook-motor__rotor-activity";
+  const rotor = createLayer(
+    documentRef,
+    "notebook-motor__rotor",
+    "./assets/images/notebook/motor/motor-rotor.png"
+  );
+  const rotorSweep = documentRef.createElement("span");
+  rotorSweep.className = "notebook-motor__rotor-sweep";
 
-  const body = createLayer(documentRef, "body", "./assets/images/notebook/motor/motor-body.png");
-  const coils = createLayer(documentRef, "coils", "./assets/images/notebook/motor/motor-coils.png");
-  const rotor = createLayer(documentRef, "rotor", "./assets/images/notebook/motor/motor-rotor.png");
-  const rotorAxis = documentRef.createElement("div");
-  rotorAxis.className = "motor-rotor-axis";
-  rotorAxis.appendChild(rotor);
-  const activationRing = documentRef.createElement("span");
-  activationRing.className = "motor-assembly__activation-ring";
-
-  assembly.append(halo, body, coils, rotorAxis, activationRing);
+  rotorActivity.append(rotor, rotorSweep);
+  assembly.append(rotorActivity, staticMotor);
   element.appendChild(assembly);
 
   let host = null;
@@ -71,8 +75,9 @@ export function createNotebookMotorHero({
     observer = null;
 
     const timeline = activeTimeline();
-    schedule("activating", timeline.activation);
-    schedule("deploying", timeline.deployment);
+    setState("motor-entering");
+    schedule("motor-active", timeline.motorActive);
+    schedule("cards-assembling", timeline.cardsAssembling);
     schedule("settled", timeline.settled);
   }
 
@@ -125,11 +130,12 @@ export function createNotebookMotorHero({
 
 export { MOTOR_TIMELINE };
 
-function createLayer(documentRef, name, source) {
+function createLayer(documentRef, className, source) {
   const image = documentRef.createElement("img");
-  image.className = `motor-layer motor-layer--${name}`;
+  image.className = className;
   image.src = source;
   image.alt = "";
+  image.setAttribute("aria-hidden", "true");
   image.decoding = "async";
   image.draggable = false;
   return image;

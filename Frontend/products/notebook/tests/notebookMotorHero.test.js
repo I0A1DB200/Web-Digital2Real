@@ -96,17 +96,17 @@ function descendants(root) {
   return root.children.flatMap(child => [child, ...descendants(child)]);
 }
 
-test("renders a decorative three-layer motor with canonical assets", () => {
+test("renders the canonical decorative static assembly and rotor assets", () => {
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef: createWindow() });
   assert.equal(hero.element.getAttribute("aria-hidden"), "true");
   const assembly = hero.element.children[0];
   const images = descendants(assembly).filter(child => child.tagName === "IMG");
   assert.deepEqual(images.map(image => image.src), [
-    "./assets/images/notebook/motor/motor-body.png",
-    "./assets/images/notebook/motor/motor-coils.png",
-    "./assets/images/notebook/motor/motor-rotor.png"
+    "./assets/images/notebook/motor/motor-rotor.png",
+    "./assets/images/notebook/motor/motor-static.png"
   ]);
   assert.ok(images.every(image => image.alt === ""));
+  assert.ok(images.every(image => image.getAttribute("aria-hidden") === "true"));
 });
 
 test("waits for section intersection then advances once through the centralized timeline", () => {
@@ -122,13 +122,14 @@ test("waits for section intersection then advances once through the centralized 
     rootMargin: "0px 0px -12% 0px"
   });
   windowRef.observers[0].enter();
-  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [160, 760, 1680]);
+  assert.equal(hero.getState(), "motor-entering");
+  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [600, 2500, 3600]);
   windowRef.observers[0].enter();
   assert.equal(windowRef.scheduled.size, 3);
-  windowRef.run(MOTOR_TIMELINE.desktop.activation);
-  assert.equal(hero.getState(), "activating");
-  windowRef.run(MOTOR_TIMELINE.desktop.deployment);
-  assert.equal(hero.getState(), "deploying");
+  windowRef.run(MOTOR_TIMELINE.desktop.motorActive);
+  assert.equal(hero.getState(), "motor-active");
+  windowRef.run(MOTOR_TIMELINE.desktop.cardsAssembling);
+  assert.equal(hero.getState(), "cards-assembling");
   windowRef.run(MOTOR_TIMELINE.desktop.settled);
   assert.equal(hero.getState(), "settled");
 });
@@ -140,7 +141,7 @@ test("uses the shorter centralized timeline on mobile", () => {
   windowRef.observers[0].enter();
   assert.deepEqual(
     [...windowRef.scheduled.values()].map(task => task.delay),
-    [80, 360, 980]
+    [300, 1650, 2400]
   );
   windowRef.run(MOTOR_TIMELINE.mobile.settled);
   assert.equal(hero.getState(), "settled");
@@ -163,7 +164,7 @@ test("settles immediately for reduced motion and clears pending work on destroy"
   assert.equal(windowRef.observers[0].disconnected, true);
 });
 
-test("mounts inside Engineering Notes and rotates only the rotor around the vertical axis", async () => {
+test("mounts inside Engineering Notes and uses optical rotor activity without image rotation", async () => {
   const [application, styles] = await Promise.all([
     readFile(new URL("../../../app.js", import.meta.url), "utf8"),
     readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8")
@@ -171,7 +172,13 @@ test("mounts inside Engineering Notes and rotates only the rotor around the vert
 
   assert.match(application, /<section class="notes-section"[\s\S]*notebook-motor-host[\s\S]*notebook-carousel-host/u);
   assert.doesNotMatch(application, /<header class="editorial-hero[^>]*>[\s\S]*notebook-motor-host[\s\S]*<\/header>/u);
-  assert.match(styles, /\.notes-section\[data-motor-state="activating"\] \.motor-rotor-axis/u);
-  assert.match(styles, /@keyframes notebook-motor-rotor\s*\{[\s\S]*rotateY\(360deg\)/u);
-  assert.doesNotMatch(styles, /\.motor-layer--(?:body|coils)\s*\{[^}]*rotate/u);
+  assert.match(styles, /\.notes-section\[data-motor-state="motor-active"\] \.notebook-motor__rotor-sweep/u);
+  assert.match(styles, /@keyframes notebook-motor-specular-sweep/u);
+  assert.match(styles, /@keyframes notebook-motor-keyway-cue/u);
+  assert.match(styles, /@keyframes notebook-motor-core-shimmer/u);
+  assert.match(styles, /data-position="0"\]\s*\{\s*animation-delay:\s*0ms/u);
+  assert.match(styles, /data-position="-1"\]\s*\{\s*animation-delay:\s*110ms/u);
+  assert.match(styles, /data-position="1"\]\s*\{\s*animation-delay:\s*220ms/u);
+  assert.doesNotMatch(styles, /0\.75px/u);
+  assert.doesNotMatch(styles, /@keyframes notebook-motor-rotor/u);
 });

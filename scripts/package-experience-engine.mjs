@@ -35,11 +35,13 @@ export async function packageExperienceEngine({
   const targetRoot = path.join(frontendRoot, "generated", "experience-engine");
   const temporaryRoot = path.join(frontendRoot, "generated", ".experience-engine-build");
   const playerSource = path.join(root, "experience-engine", "player", "experiencePlayer.js");
+  const evaluatorSource = path.join(root, "experience-engine", "evaluation", "experienceEvaluator.js");
   const experienceRoot = path.join(root, "content", "experiences");
   const environmentRoot = path.join(root, "content", "environments");
   assertInside(frontendRoot, targetRoot);
   assertInside(frontendRoot, temporaryRoot);
   await access(playerSource);
+  await access(evaluatorSource);
 
   const experienceFiles = await findExperienceFiles(experienceRoot);
   const candidates = [];
@@ -100,9 +102,11 @@ export async function packageExperienceEngine({
 
   try {
     await mkdir(path.join(temporaryRoot, "player"), { recursive: true });
+    await mkdir(path.join(temporaryRoot, "evaluation"), { recursive: true });
     await mkdir(path.join(temporaryRoot, "experiences"), { recursive: true });
     await mkdir(path.join(temporaryRoot, "environments"), { recursive: true });
     await cp(playerSource, path.join(temporaryRoot, "player", "experiencePlayer.js"));
+    await cp(evaluatorSource, path.join(temporaryRoot, "evaluation", "experienceEvaluator.js"));
 
     const catalog = {
       format: "Digital2Real Generated Web Artifact Catalog",

@@ -7,8 +7,10 @@ import { createEnvironmentNavigator } from "../components/environmentNavigator.j
 import { chooseEnvironmentPopoverPlacement } from "../components/environmentPopoverPosition.js";
 import { createEnvironmentProgressStore } from "../components/environmentProgressStore.js";
 import {
+  CompletionPanel,
   createExperienceWorkspace,
-  createWorkspaceProjection
+  createWorkspaceProjection,
+  DecisionPanel
 } from "../components/experienceWorkspace.js";
 
 const artifactUrl = new URL(
@@ -251,6 +253,32 @@ test("selects the document locale and falls back through generated catalog metad
   await workspace.initialise();
   await workspace.openExperience(artifact.identity.id);
   assert.ok(requests.includes("./generated/experience-engine/experiences/item.en.json"));
+});
+
+test("presents Player V2 feedback and completion evaluation without evaluating or persisting it", async () => {
+  const documentRef = new FakeDocument();
+  const feedback = { decisionId: "DEC-01", message: "Review the evidence and try again.", attemptNumber: 2 };
+  const evaluationResult = {
+    totalDecisions: 5, firstAttemptCorrect: 3, additionalAttempts: 2,
+    firstAttemptSuccessRatio: { numerator: 3, denominator: 5 }, displayPercentage: 60,
+    outcome: "PASS_WITH_GUIDANCE", mastered: false
+  };
+  const projection = createWorkspaceProjection(createState({ feedback, evaluationResult }));
+  const decisions = DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision() {} });
+  const completion = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({ interaction: "completion", currentStage: null, evaluationResult })),
+    onRestart() {}
+  });
+
+  assert.equal(projection.feedback, feedback);
+  assert.equal(projection.evaluationResult, evaluationResult);
+  assert.match(decisions.text, /Review the evidence and try again/);
+  assert.match(completion.text, /First-attempt correct3 \/ 5/);
+  assert.match(completion.text, /Additional attempts2/);
+  assert.match(completion.text, /PASS WITH GUIDANCE/);
+  const source = await readFile(new URL("../components/experienceWorkspace.js", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /evaluateExperience|mastery_outcomes|thresholds/);
 });
 
 test("keeps one accessible anchored popover and closes it through every supported interaction", () => {

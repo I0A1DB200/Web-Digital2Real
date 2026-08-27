@@ -112,6 +112,7 @@ test("preview packages every eligible canonical Experience", async t => {
   await access(path.join(generatedRoot, remaining.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
+  await access(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"));
 });
 
 test("published browser files contain no reserved runtime data or authoring document", async t => {
@@ -125,7 +126,10 @@ test("published browser files contain no reserved runtime data or authoring docu
     "utf8"
   );
   const playerText = await readFile(path.join(generatedRoot, "player", "experiencePlayer.js"), "utf8");
-  const browserPayload = `${artifactText}\n${playerText}`;
+  const evaluatorText = await readFile(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"), "utf8");
+  const browserPayload = `${artifactText}\n${playerText}\n${evaluatorText}`;
+
+  assert.match(playerText, /\.\.\/evaluation\/experienceEvaluator\.js/);
 
   reservedTerms.forEach(term => assert.equal(browserPayload.includes(term), false, term));
   assert.equal(browserPayload.includes("contract_version"), false);

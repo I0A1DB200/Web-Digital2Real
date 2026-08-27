@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-27 — Experience Player V2
+
+- Added explicit Player dispatch for Web Artifact V1 and V2, with retry-safe attempts, explicit V2 transitions, evidence unlocks, deterministic decision history, restart and completion evaluation through the existing pure evaluator.
+- Published only the provisional learner-safe evaluation ranges, outcomes and mastery mapping required by Player V2; Workspace presents transient feedback and results without persisting mastery.
+
 ## 2026-08-27 — V2 projection and client-side security boundary
 
 - Added an allowlisted V2 interaction projection that separates visible decisions from retry or advance authority, publishes only learner-safe retry messages and required evidence, and keeps evaluation policy and raw Runtime relations private.

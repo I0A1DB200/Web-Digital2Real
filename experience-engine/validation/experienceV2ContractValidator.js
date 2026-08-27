@@ -64,7 +64,21 @@ export function validateWebArtifactV2(candidate, baseIncidents = []) {
     validatePhases(stages, incidents);
     validateProjectedDecisions(candidate, stages, incidents);
   }
+  validateProjectedPolicy(candidate.public?.evaluation_policy, incidents);
   return result("Digital2Real Generated Web Artifact V2", "generated_web_artifact_v2", candidate, incidents);
+}
+
+function validateProjectedPolicy(policy, incidents) {
+  const path = "$.public.evaluation_policy";
+  if (!object(policy)) { incidents.push(incident("PROJECTED_EVALUATION_POLICY_REQUIRED", path, "Web Artifact V2 requires a learner-safe evaluation policy.")); return; }
+  const allowed = ["provisional", "outcomes", "mastery_outcomes", "thresholds"];
+  if (Object.keys(policy).some(field => !allowed.includes(field))) incidents.push(incident("PROJECTED_EVALUATION_POLICY_FIELD_FORBIDDEN", path, "Projected evaluation policy contains a non-allowlisted field."));
+  if (policy.provisional !== true) incidents.push(incident("PROJECTED_EVALUATION_POLICY_INVALID", `${path}.provisional`, "Projected V2 evaluation policy must be provisional."));
+  if (!Array.isArray(policy.outcomes) || policy.outcomes.length !== ExperienceV2Contracts.outcomes.length
+    || policy.outcomes.some((outcome, index) => outcome !== ExperienceV2Contracts.outcomes[index])) {
+    incidents.push(incident("PROJECTED_EVALUATION_OUTCOMES_INVALID", `${path}.outcomes`, "Projected outcomes must match the V2 contract."));
+  }
+  validatePolicy(policy, path, incidents);
 }
 
 function validateProjectedDecisions(candidate, stages, incidents) {

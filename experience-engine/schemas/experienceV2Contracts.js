@@ -30,6 +30,6 @@ export const ExperienceV2Contracts = freeze({
     "diagnostic_model", "root_cause", "rationale", "consequence",
     "classification", "score_effect", "safety_effect", "scoring", "debrief",
     "is_correct", "correct", "accepted", "retry_feedback", "correct_answer",
-    "answer", "next_stage", "evidence_revealed", "evaluation_policy"
+    "answer", "next_stage", "evidence_revealed"
   ]
 });

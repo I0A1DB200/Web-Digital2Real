@@ -17,6 +17,42 @@ const fixtureUrl = new URL(
 const readArtifact = async () => JSON.parse(await readFile(fixtureUrl, "utf8"));
 const clone = value => JSON.parse(JSON.stringify(value));
 
+async function v2Artifact(decisionPointCount = 2) {
+  const value = await readArtifact();
+  value.web_artifact_version = "2.0.0";
+  value.public.evidence = Array.from({ length: decisionPointCount }, (_, index) => ({
+    id: `EVID-${index + 1}`, type: "diagnostic", source: "Controlled inspection",
+    content: `Evidence ${index + 1}`, reliability: "confirmed", visibility: "public"
+  }));
+  value.public.stages = Array.from({ length: decisionPointCount }, (_, index) => ({
+    id: `STAGE-${index + 1}`, title: `Stage ${index + 1}`, situation: `Situation ${index + 1}`,
+    phase: index === 0 ? "incident" : index === decisionPointCount - 1 ? "solution" : "investigation",
+    decisions: [
+      { id: `DEC-${index + 1}-ADVANCE`, action: "Apply supported action", action_token: `ACTION-${index + 1}-1` },
+      { id: `DEC-${index + 1}-RETRY`, action: "Review an unsupported action", action_token: `ACTION-${index + 1}-2` }
+    ]
+  }));
+  value.public.interactions = value.public.stages.flatMap((stage, index) => [
+    {
+      action_token: `ACTION-${index + 1}-1`, outcome: "advance",
+      next: index === decisionPointCount - 1 ? "COMPLETE" : `STAGE-${index + 2}`,
+      unlocks: [`EVID-${index + 1}`]
+    },
+    { action_token: `ACTION-${index + 1}-2`, outcome: "retry", message: "Review the available evidence and try again." }
+  ]);
+  value.public.evaluation_policy = {
+    provisional: true,
+    outcomes: ["RETRY_RECOMMENDED", "PASS_WITH_GUIDANCE", "PASS"],
+    mastery_outcomes: ["PASS"],
+    thresholds: [
+      { outcome: "RETRY_RECOMMENDED", minimum: 0, maximum: 49 },
+      { outcome: "PASS_WITH_GUIDANCE", minimum: 50, maximum: 79 },
+      { outcome: "PASS", minimum: 80, maximum: 100 }
+    ]
+  };
+  return value;
+}
+
 test("starts a local session from Generated Web Artifact v1", async () => {
   const artifact = await readArtifact();
   const player = new ExperiencePlayer({ experience: artifact });
@@ -104,7 +140,7 @@ test("rejects unavailable actions and decisions without changing state", async (
 test("rejects unsupported, incorrect and structurally invalid artifacts", async () => {
   const artifact = await readArtifact();
   const unsupported = clone(artifact);
-  unsupported.web_artifact_version = "2.0.0";
+  unsupported.web_artifact_version = "3.0.0";
   const missingStages = clone(artifact);
   missingStages.public.stages = [];
   const duplicateDecision = clone(artifact);
@@ -171,4 +207,84 @@ test("the browser Player source contains no reserved runtime implementation", as
   ];
 
   reserved.forEach(term => assert.equal(source.includes(term), false, term));
+});
+
+test("dispatches Player V2 and retries without progression or evidence", async () => {
+  const player = new ExperiencePlayer({ experience: await v2Artifact() });
+  player.start(); player.continue();
+  const first = player.selectDecision("DEC-1-RETRY");
+  assert.equal(first.currentStage.id, "STAGE-1");
+  assert.equal(first.attemptsByDecision["STAGE-1"], 1);
+  assert.equal(first.feedback.message, "Review the available evidence and try again.");
+  assert.deepEqual(first.unlockedEvidence, []);
+  const second = player.selectDecision("DEC-1-RETRY");
+  assert.equal(second.currentStage.id, "STAGE-1");
+  assert.equal(second.attemptsByDecision["STAGE-1"], 2);
+  assert.equal(second.decisionHistory.length, 2);
+});
+
+test("Player V2 advances only through explicit transition and unlocks declared evidence", async () => {
+  const artifact = await v2Artifact(3);
+  artifact.public.interactions.find(item => item.action_token === "ACTION-1-1").next = "STAGE-3";
+  const player = new ExperiencePlayer({ experience: artifact });
+  player.start(); player.continue();
+  player.selectDecision("DEC-1-RETRY");
+  const advanced = player.selectDecision("DEC-1-ADVANCE");
+  assert.equal(advanced.currentStage.id, "STAGE-3");
+  assert.equal(advanced.attemptsByDecision["STAGE-1"], 2);
+  assert.deepEqual(advanced.resolvedDecisions, ["STAGE-1"]);
+  assert.deepEqual(advanced.unlockedEvidence, ["EVID-1"]);
+  assert.equal(advanced.feedback, null);
+});
+
+test("resolved V2 decision points cannot create additional attempts", async () => {
+  const artifact = await v2Artifact();
+  artifact.public.interactions.find(item => item.action_token === "ACTION-1-1").next = "STAGE-1";
+  const player = new ExperiencePlayer({ experience: artifact });
+  player.start(); player.continue(); player.selectDecision("DEC-1-ADVANCE");
+  assert.throws(() => player.selectDecision("DEC-1-RETRY"), error => error.code === "DECISION_ALREADY_RESOLVED");
+  assert.equal(player.getState().attemptsByDecision["STAGE-1"], 1);
+});
+
+test("Player V2 evaluates PASS, PASS_WITH_GUIDANCE and RETRY_RECOMMENDED at COMPLETE", async () => {
+  const scenarios = [[4, "PASS", true], [3, "PASS_WITH_GUIDANCE", false], [2, "RETRY_RECOMMENDED", false]];
+  for (const [firstAttemptCorrect, outcome, mastered] of scenarios) {
+    const player = new ExperiencePlayer({ experience: await v2Artifact(5) });
+    player.start(); player.continue();
+    for (let index = 0; index < 5; index += 1) {
+      if (index >= firstAttemptCorrect) player.selectDecision(`DEC-${index + 1}-RETRY`);
+      player.selectDecision(`DEC-${index + 1}-ADVANCE`);
+    }
+    const state = player.getState();
+    assert.equal(state.interaction, "completion");
+    assert.equal(state.completionStatus, "completed");
+    assert.deepEqual(state.evaluationResult, {
+      totalDecisions: 5,
+      firstAttemptCorrect,
+      additionalAttempts: 5 - firstAttemptCorrect,
+      firstAttemptSuccessRatio: { numerator: firstAttemptCorrect, denominator: 5 },
+      displayPercentage: firstAttemptCorrect * 20,
+      outcome,
+      mastered
+    });
+  }
+});
+
+test("Player V2 reset clears transient session evaluation state", async () => {
+  const player = new ExperiencePlayer({ experience: await v2Artifact() });
+  player.start(); player.continue(); player.selectDecision("DEC-1-RETRY"); player.selectDecision("DEC-1-ADVANCE");
+  const reset = player.reset();
+  assert.deepEqual(reset.attemptsByDecision, {});
+  assert.deepEqual(reset.resolvedDecisions, []);
+  assert.deepEqual(reset.unlockedEvidence, []);
+  assert.deepEqual(reset.decisionHistory, []);
+  assert.equal(reset.feedback, null);
+  assert.equal(reset.evaluationResult, null);
+});
+
+test("Player V2 imports only the public evaluator boundary and contains no thresholds", async () => {
+  const source = await readFile(new URL("../experiencePlayer.js", import.meta.url), "utf8");
+  assert.match(source, /\.\.\/evaluation\/experienceEvaluator\.js/);
+  assert.doesNotMatch(source, /minimum:\s*(?:50|80)|maximum:\s*(?:49|79)/);
+  assert.doesNotMatch(source, /decision_logic|is_correct|rationale|fault_model|diagnostic_model/);
 });

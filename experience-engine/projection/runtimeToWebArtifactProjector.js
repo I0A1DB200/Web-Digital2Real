@@ -174,6 +174,16 @@ function projectV2(runtime) {
       evidence,
       feedback: [],
       interactions,
+      evaluation_policy: {
+        provisional: runtime.private.evaluation_policy.provisional,
+        outcomes: runtime.private.evaluation_policy.thresholds.map(item => item.outcome),
+        mastery_outcomes: [...runtime.private.evaluation_policy.mastery_outcomes],
+        thresholds: runtime.private.evaluation_policy.thresholds.map(item => ({
+          outcome: item.outcome,
+          minimum: item.minimum,
+          maximum: item.maximum
+        }))
+      },
       visual: {
         educational_purpose: runtime.public.visual.educational_purpose,
         representation: runtime.public.visual.representation,

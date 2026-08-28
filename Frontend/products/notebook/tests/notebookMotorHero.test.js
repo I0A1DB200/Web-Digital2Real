@@ -1,11 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-
-import {
-  createNotebookMotorHero,
-  MOTOR_TIMELINE
-} from "../components/notebookMotorHero.js";
+import { createNotebookMotorHero, MOTOR_TIMELINE } from "../components/notebookMotorHero.js";
 
 class FakeElement {
   constructor(tagName) {
@@ -13,123 +9,86 @@ class FakeElement {
     this.children = [];
     this.attributes = new Map();
     this.className = "";
+    this.style = { values: new Map(), setProperty: (name, value) => this.style.values.set(name, value) };
   }
-
-  append(...children) {
-    children.forEach(child => this.appendChild(child));
-  }
-
-  appendChild(child) {
-    this.children.push(child);
-    return child;
-  }
-
-  setAttribute(name, value) {
-    this.attributes.set(name, String(value));
-  }
-
-  getAttribute(name) {
-    return this.attributes.get(name) ?? null;
-  }
+  append(...children) { children.forEach(child => this.appendChild(child)); }
+  appendChild(child) { this.children.push(child); return child; }
+  setAttribute(name, value) { this.attributes.set(name, String(value)); }
+  getAttribute(name) { return this.attributes.get(name) ?? null; }
+  getBoundingClientRect() { return { top: 0, height: 400 }; }
 }
 
 class FakeDocument {
-  createElement(tagName) {
-    return new FakeElement(tagName);
-  }
+  createElement(tagName) { return new FakeElement(tagName); }
+  createElementNS(_namespace, tagName) { return new FakeElement(tagName); }
 }
 
 function createWindow({ reducedMotion = false, mobile = false } = {}) {
   let identifier = 0;
   const scheduled = new Map();
   const observers = [];
-
+  const listeners = new Map();
   class FakeIntersectionObserver {
-    constructor(callback, options) {
-      this.callback = callback;
-      this.options = options;
-      this.target = null;
-      this.disconnected = false;
-      observers.push(this);
-    }
-
-    observe(target) {
-      this.target = target;
-    }
-
-    disconnect() {
-      this.disconnected = true;
-    }
-
-    enter() {
-      this.callback([{ isIntersecting: true, target: this.target }]);
-    }
+    constructor(callback, options) { this.callback = callback; this.options = options; this.disconnected = false; observers.push(this); }
+    observe(target) { this.target = target; }
+    disconnect() { this.disconnected = true; }
+    enter() { this.callback([{ isIntersecting: true, target: this.target }]); }
   }
-
   return {
     IntersectionObserver: FakeIntersectionObserver,
-    matchMedia: query => ({
-      matches: query.includes("prefers-reduced-motion") ? reducedMotion : mobile
-    }),
-    setTimeout(callback, delay) {
-      identifier += 1;
-      scheduled.set(identifier, { callback, delay });
-      return identifier;
-    },
-    clearTimeout(id) {
-      scheduled.delete(id);
-    },
+    innerHeight: 1000,
+    matchMedia: query => ({ matches: query.includes("prefers-reduced-motion") ? reducedMotion : mobile }),
+    setTimeout(callback, delay) { identifier += 1; scheduled.set(identifier, { callback, delay }); return identifier; },
+    clearTimeout(id) { scheduled.delete(id); },
+    requestAnimationFrame(callback) { callback(); return 1; },
+    cancelAnimationFrame() {},
+    addEventListener(type, callback) { listeners.set(type, callback); },
+    removeEventListener(type) { listeners.delete(type); },
     run(delay) {
-      [...scheduled.entries()]
-        .filter(([, task]) => task.delay === delay)
-        .forEach(([id, task]) => {
-          scheduled.delete(id);
-          task.callback();
-        });
+      [...scheduled.entries()].filter(([, task]) => task.delay === delay)
+        .forEach(([id, task]) => { scheduled.delete(id); task.callback(); });
     },
-    scheduled,
-    observers
+    scheduled, observers, listeners
   };
 }
 
-function descendants(root) {
-  return root.children.flatMap(child => [child, ...descendants(child)]);
-}
+function descendants(root) { return root.children.flatMap(child => [child, ...descendants(child)]); }
 
-test("renders the canonical decorative static assembly and rotor assets", () => {
+test("renders four energy routes, three pulses, and one canonical motor asset", () => {
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef: createWindow() });
+  assert.equal(hero.element.className, "notebook-motor-assembly-scene");
   assert.equal(hero.element.getAttribute("aria-hidden"), "true");
-  const assembly = hero.element.children[0];
-  const images = descendants(assembly).filter(child => child.tagName === "IMG");
+  const paths = descendants(hero.element).filter(child => child.tagName === "PATH");
+  assert.equal(paths.filter(path => path.getAttribute("class").includes("__route ")).length, 4);
+  assert.equal(paths.filter(path => path.getAttribute("class").includes("__pulse ")).length, 3);
+  const images = descendants(hero.element).filter(child => child.tagName === "IMG");
   assert.deepEqual(images.map(image => image.src), [
-    "./assets/images/notebook/motor/motor-rotor.png",
-    "./assets/images/notebook/motor/motor-static.png"
+    "./assets/images/notebook/motor/motor-notes-hero.png"
   ]);
-  assert.ok(images.every(image => image.alt === ""));
-  assert.ok(images.every(image => image.getAttribute("aria-hidden") === "true"));
+  assert.ok(images.every(image => image.alt === "" && image.getAttribute("aria-hidden") === "true"));
 });
 
-test("waits for section intersection then advances once through the centralized timeline", () => {
+test("advances once through the centralized energy and assembly timeline", () => {
   const windowRef = createWindow();
-  const host = new FakeElement("section");
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
-  hero.initialise(host);
-  assert.equal(host.getAttribute("data-motor-state"), "idle");
-  assert.equal(windowRef.scheduled.size, 0);
-  assert.equal(windowRef.observers[0].target, host);
-  assert.deepEqual(windowRef.observers[0].options, {
-    threshold: 0.2,
-    rootMargin: "0px 0px -12% 0px"
-  });
+  hero.initialise(new FakeElement("section"));
+  assert.equal(hero.getState(), "idle");
+  assert.deepEqual(windowRef.observers[0].options, { threshold: 0.2, rootMargin: "0px 0px -12% 0px" });
   windowRef.observers[0].enter();
+  assert.equal(hero.getState(), "infrastructure-reveal");
+  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [50, 700, 2400, 3100, 3400, 3800]);
+  windowRef.observers[0].enter();
+  assert.equal(windowRef.scheduled.size, 6);
+  windowRef.run(MOTOR_TIMELINE.desktop.motorEntering);
   assert.equal(hero.getState(), "motor-entering");
-  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [600, 2500, 3600]);
-  windowRef.observers[0].enter();
-  assert.equal(windowRef.scheduled.size, 3);
   windowRef.run(MOTOR_TIMELINE.desktop.motorActive);
   assert.equal(hero.getState(), "motor-active");
   windowRef.run(MOTOR_TIMELINE.desktop.cardsAssembling);
   assert.equal(hero.getState(), "cards-assembling");
+  windowRef.run(MOTOR_TIMELINE.desktop.motorBackgrounding);
+  assert.equal(hero.getState(), "motor-backgrounding");
+  windowRef.run(MOTOR_TIMELINE.desktop.filtersRevealing);
+  assert.equal(hero.getState(), "filters-revealing");
   windowRef.run(MOTOR_TIMELINE.desktop.settled);
   assert.equal(hero.getState(), "settled");
 });
@@ -139,46 +98,59 @@ test("uses the shorter centralized timeline on mobile", () => {
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
   hero.initialise(new FakeElement("section"));
   windowRef.observers[0].enter();
-  assert.deepEqual(
-    [...windowRef.scheduled.values()].map(task => task.delay),
-    [300, 1650, 2400]
-  );
+  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [40, 500, 1800, 2400, 2600, 3000]);
   windowRef.run(MOTOR_TIMELINE.mobile.settled);
   assert.equal(hero.getState(), "settled");
 });
 
-test("settles immediately for reduced motion and clears pending work on destroy", () => {
-  const reducedWindow = createWindow({ reducedMotion: true });
-  const reducedHero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef: reducedWindow });
-  reducedHero.initialise(new FakeElement("section"));
-  assert.equal(reducedHero.getState(), "settled");
-  assert.equal(reducedWindow.scheduled.size, 0);
-
+test("applies layered parallax and clears listeners and pending work on destroy", () => {
   const windowRef = createWindow();
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
   hero.initialise(new FakeElement("section"));
-  assert.equal(windowRef.scheduled.size, 0);
-  assert.equal(windowRef.observers[0].disconnected, false);
+  windowRef.observers[0].enter();
+  assert.equal(windowRef.listeners.has("scroll"), true);
+  assert.equal(hero.element.style.values.get("--routes-parallax"), "1.26px");
+  assert.equal(hero.element.style.values.get("--energy-parallax"), "2.31px");
+  assert.equal(hero.element.style.values.get("--motor-parallax"), "3.57px");
+  assert.equal(windowRef.scheduled.size, 6);
   hero.destroy();
+  assert.equal(windowRef.listeners.size, 0);
   assert.equal(windowRef.scheduled.size, 0);
-  assert.equal(windowRef.observers[0].disconnected, true);
 });
 
-test("mounts inside Engineering Notes and uses optical rotor activity without image rotation", async () => {
+test("settles immediately without animated work for reduced motion", () => {
+  const windowRef = createWindow({ reducedMotion: true });
+  const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
+  hero.initialise(new FakeElement("section"));
+  assert.equal(hero.getState(), "settled");
+  assert.equal(windowRef.scheduled.size, 0);
+  assert.equal(windowRef.listeners.size, 0);
+});
+
+test("mounts in Engineering Notes and stages one motor image before cards and filters", async () => {
   const [application, styles] = await Promise.all([
     readFile(new URL("../../../app.js", import.meta.url), "utf8"),
     readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8")
   ]);
-
   assert.match(application, /<section class="notes-section"[\s\S]*notebook-motor-host[\s\S]*notebook-carousel-host/u);
   assert.doesNotMatch(application, /<header class="editorial-hero[^>]*>[\s\S]*notebook-motor-host[\s\S]*<\/header>/u);
-  assert.match(styles, /\.notes-section\[data-motor-state="motor-active"\] \.notebook-motor__rotor-sweep/u);
-  assert.match(styles, /@keyframes notebook-motor-specular-sweep/u);
-  assert.match(styles, /@keyframes notebook-motor-keyway-cue/u);
-  assert.match(styles, /@keyframes notebook-motor-core-shimmer/u);
-  assert.match(styles, /data-position="0"\]\s*\{\s*animation-delay:\s*0ms/u);
-  assert.match(styles, /data-position="-1"\]\s*\{\s*animation-delay:\s*110ms/u);
-  assert.match(styles, /data-position="1"\]\s*\{\s*animation-delay:\s*220ms/u);
-  assert.doesNotMatch(styles, /0\.75px/u);
-  assert.doesNotMatch(styles, /@keyframes notebook-motor-rotor/u);
+  assert.match(styles, /data-motor-state="motor-entering"\] \.notebook-motor__image/u);
+  assert.match(styles, /data-motor-state="motor-active"/u);
+  assert.match(styles, /data-motor-state="filters-revealing"/u);
+  assert.match(styles, /\.notebook-energy-field__route/u);
+  assert.match(styles, /\.notebook-energy-field__pulse/u);
+  assert.match(styles, /@keyframes notebook-energy-flow/u);
+  assert.match(styles, /@keyframes notebook-energy-to-notes/u);
+  assert.match(styles, /--motor-image-x:\s*0px/u);
+  assert.match(styles, /min-height:\s*clamp\(380px, 40vw, 500px\)/u);
+  assert.match(styles, /padding-top:\s*clamp\(95px, 13vw, 150px\)/u);
+  assert.doesNotMatch(styles, /@keyframes notebook-motor-operation/u);
+  assert.doesNotMatch(styles, /notebook-motor__rotor/u);
+  assert.doesNotMatch(styles, /notebook-motor-specular-sweep/u);
+  assert.match(styles, /data-motor-state="settled"\] \.notebook-motor-stage\s*\{[\s\S]*?opacity:\s*0\.14;[\s\S]*?filter:\s*blur\(2\.5px\)/u);
+  assert.match(styles, /data-position="0"\][\s\S]*?animation-delay:\s*100ms/u);
+  assert.match(styles, /data-position="-1"\][\s\S]*?animation-delay:\s*210ms/u);
+  assert.match(styles, /data-position="1"\][\s\S]*?animation-delay:\s*320ms/u);
+  assert.match(styles, /\.notebook-carousel__filters\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?translate3d\(0, 12px, 0\)/u);
+  assert.match(styles, /filters-revealing"\] \.notebook-carousel__filters/u);
 });

@@ -327,3 +327,16 @@
 ### Notes
 
 This changelog entry established the official file architecture workflow for Digital2Real V2.
+
+---
+
+## Unreleased — Engineering Notes industrial energy scene
+
+### Changed
+
+- Reframed the existing two-asset Notebook motor presentation as an industrial energy field with four SVG infrastructure routes and three copper energy pulses.
+- Added a six-state, one-shot reveal sequence: infrastructure, energy, motor entrance, card assembly, and settled composition.
+- Added restrained layered scroll parallax for routes, energy, and motor, with a static reduced-motion presentation.
+- Preserved the existing Notebook carousel structure, content, interactions, assets, and Engineering Notes hero.
+
+---

@@ -16,6 +16,39 @@ const ROUTES = Object.freeze([
   "M980 590 H780 L650 460 H480 L310 290 H90"
 ]);
 
+const SIGNAL_ROUTES = Object.freeze([
+  Object.freeze({ id: "north-transfer", depth: "deep", path: "M-40 160 H220 L310 250 H520 L600 330 H1240" }),
+  Object.freeze({ id: "vertical-loop", depth: "deep", path: "M120 900 V680 L230 570 H480 L560 490 H780 L870 400 V80" }),
+  Object.freeze({ id: "central-exchange", depth: "main", path: "M0 390 H180 L260 470 H460 L540 390 H770 L850 310 H1200" }),
+  Object.freeze({ id: "west-spine", depth: "main", path: "M80 70 V250 L170 340 V620 L260 710 H620 L710 800 H1120" }),
+  Object.freeze({ id: "south-return", depth: "main", path: "M1200 610 H1010 L920 520 H690 L610 600 H360 L280 680 H0" }),
+  Object.freeze({ id: "east-spine", depth: "main", path: "M420 0 V150 L510 240 H720 L810 330 V590 L900 680 H1200" })
+]);
+
+const SIGNAL_BACKBONE_ROUTES = Object.freeze([
+  Object.freeze({ id: "backbone-north", depth: "backbone", path: "M-80 90 H260 L430 260 H760 L940 80 H1280" }),
+  Object.freeze({ id: "backbone-west", depth: "backbone", path: "M40 940 V720 L250 510 H520 L700 330 H980 L1240 70" }),
+  Object.freeze({ id: "backbone-south", depth: "backbone", path: "M-60 760 H210 L390 580 H720 L900 760 H1260" }),
+  Object.freeze({ id: "backbone-east", depth: "backbone", path: "M1280 420 H1040 L860 600 V900" })
+]);
+
+const SIGNAL_NODES = Object.freeze([
+  Object.freeze({ x: 220, y: 160, type: "passive" }), Object.freeze({ x: 310, y: 250, type: "active" }),
+  Object.freeze({ x: 600, y: 330, type: "intersection" }), Object.freeze({ x: 120, y: 680, type: "passive" }),
+  Object.freeze({ x: 230, y: 570, type: "passive" }), Object.freeze({ x: 560, y: 490, type: "intersection" }),
+  Object.freeze({ x: 870, y: 400, type: "active" }), Object.freeze({ x: 180, y: 390, type: "passive" }),
+  Object.freeze({ x: 260, y: 470, type: "intersection" }), Object.freeze({ x: 850, y: 310, type: "passive" }),
+  Object.freeze({ x: 170, y: 340, type: "active" }), Object.freeze({ x: 710, y: 800, type: "passive" }),
+  Object.freeze({ x: 1010, y: 610, type: "active" }), Object.freeze({ x: 610, y: 600, type: "intersection" }),
+  Object.freeze({ x: 810, y: 330, type: "intersection" })
+]);
+
+const SIGNAL_DESCENTS = Object.freeze([
+  Object.freeze({ path: "M310 0 V250" }),
+  Object.freeze({ path: "M810 0 V330" }),
+  Object.freeze({ path: "M1010 0 V610" })
+]);
+
 export function createNotebookMotorHero({
   documentRef = globalThis.document,
   windowRef = globalThis.window
@@ -27,6 +60,8 @@ export function createNotebookMotorHero({
   const element = documentRef.createElement("div");
   element.className = "notebook-motor-assembly-scene";
   element.setAttribute("aria-hidden", "true");
+
+  const signalMap = createIndustrialSignalMap(documentRef);
 
   const infrastructure = createInfrastructure(documentRef);
   const motorStage = documentRef.createElement("div");
@@ -95,9 +130,14 @@ export function createNotebookMotorHero({
     const centerOffset = (viewportHeight / 2) - (rect.top + (rect.height / 2));
     const progress = Math.max(-1, Math.min(1, centerOffset / viewportHeight));
     const range = progress * 35;
+    const signalRange = progress * 100;
     element.style?.setProperty?.("--routes-parallax", `${(range * 0.12).toFixed(2)}px`);
     element.style?.setProperty?.("--energy-parallax", `${(range * 0.22).toFixed(2)}px`);
     element.style?.setProperty?.("--motor-parallax", `${(range * 0.34).toFixed(2)}px`);
+    signalMap.style?.setProperty?.("--signal-deep-parallax", `${(signalRange * 0.1).toFixed(2)}px`);
+    signalMap.style?.setProperty?.("--signal-backbone-parallax", `${(signalRange * 0.07).toFixed(2)}px`);
+    signalMap.style?.setProperty?.("--signal-main-parallax", `${(signalRange * 0.16).toFixed(2)}px`);
+    signalMap.style?.setProperty?.("--signal-active-parallax", `${(signalRange * 0.2).toFixed(2)}px`);
   }
 
   function requestParallaxUpdate() {
@@ -136,6 +176,7 @@ export function createNotebookMotorHero({
 
     destroy();
     host = hostElement;
+    host.appendChild(signalMap);
     hasStarted = false;
     setState("idle");
 
@@ -165,6 +206,7 @@ export function createNotebookMotorHero({
     observer?.disconnect();
     observer = null;
     stopParallax();
+    signalMap.remove?.();
     timers = [];
     host = null;
   }
@@ -219,6 +261,68 @@ function createInfrastructure(documentRef) {
   });
   svg.append(routes, energy);
   return svg;
+}
+
+function createIndustrialSignalMap(documentRef) {
+  const svg = createSvgElement(documentRef, "svg");
+  svg.setAttribute("class", "notebook-signal-map");
+  svg.setAttribute("viewBox", "0 0 1200 900");
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.setAttribute("focusable", "false");
+  svg.setAttribute("aria-hidden", "true");
+
+  const backboneRoutes = createSignalGroup(documentRef, "notebook-signal-map__plane notebook-signal-map__plane--backbone");
+  SIGNAL_BACKBONE_ROUTES.forEach(route => backboneRoutes.appendChild(createSignalRoute(documentRef, route)));
+  const deepRoutes = createSignalGroup(documentRef, "notebook-signal-map__plane notebook-signal-map__plane--deep");
+  const mainRoutes = createSignalGroup(documentRef, "notebook-signal-map__plane notebook-signal-map__plane--main");
+  SIGNAL_ROUTES.forEach(route => {
+    const path = createSignalRoute(documentRef, route);
+    (route.depth === "deep" ? deepRoutes : mainRoutes).appendChild(path);
+  });
+
+  const activity = createSignalGroup(documentRef, "notebook-signal-map__plane notebook-signal-map__plane--activity");
+  SIGNAL_DESCENTS.forEach((descent, index) => {
+    const path = createSvgElement(documentRef, "path");
+    path.setAttribute("class", `notebook-signal-map__descent notebook-signal-map__descent--${index + 1}`);
+    path.setAttribute("d", descent.path);
+    activity.appendChild(path);
+  });
+  SIGNAL_NODES.forEach((node, index) => activity.appendChild(createSignalNode(documentRef, node, index)));
+
+  [SIGNAL_ROUTES[2], SIGNAL_ROUTES[4]].forEach((route, index) => {
+    const pulse = createSvgElement(documentRef, "path");
+    pulse.setAttribute("class", `notebook-signal-map__pulse notebook-signal-map__pulse--${index + 1}`);
+    pulse.setAttribute("d", route.path);
+    pulse.setAttribute("pathLength", "1");
+    activity.appendChild(pulse);
+  });
+
+  svg.append(backboneRoutes, deepRoutes, mainRoutes, activity);
+  return svg;
+}
+
+function createSignalGroup(documentRef, className) {
+  const group = createSvgElement(documentRef, "g");
+  group.setAttribute("class", className);
+  return group;
+}
+
+function createSignalRoute(documentRef, route) {
+  const path = createSvgElement(documentRef, "path");
+  path.setAttribute("class", `notebook-signal-map__route notebook-signal-map__route--${route.depth}`);
+  path.setAttribute("data-route", route.id);
+  path.setAttribute("d", route.path);
+  return path;
+}
+
+function createSignalNode(documentRef, node, index) {
+  const circle = createSvgElement(documentRef, "circle");
+  circle.setAttribute("class", `notebook-signal-map__node notebook-signal-map__node--${node.type}`);
+  circle.setAttribute("data-node", String(index + 1));
+  circle.setAttribute("cx", String(node.x));
+  circle.setAttribute("cy", String(node.y));
+  circle.setAttribute("r", node.type === "intersection" ? "3" : "2");
+  return circle;
 }
 
 function createSvgElement(documentRef, tagName) {

@@ -426,3 +426,27 @@ test("contains no autoplay, timer or wheel interception", async () => {
   assert.doesNotMatch(source, /Controls|Networks|Safety/u);
   assert.equal((source.match(/let activeCategory/gu) ?? []).length, 1);
 });
+
+test("uses one reversible image harmonization system for every carousel position", async () => {
+  const styles = await readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8");
+  assert.match(styles, /--note-image-brightness:\s*0\.86/u);
+  assert.match(styles, /--note-image-contrast:\s*1\.1/u);
+  assert.match(styles, /--note-image-saturation:\s*0\.82/u);
+  assert.match(styles, /notebook-card__thumbnail::before[\s\S]*?brand-primary-soft[\s\S]*?soft-light/u);
+  assert.match(styles, /notebook-card__thumbnail::after[\s\S]*?linear-gradient[\s\S]*?radial-gradient/u);
+  assert.match(styles, /brightness\(var\(--note-image-brightness\)\)[\s\S]*?saturate\(var\(--note-image-saturation\)\)/u);
+  assert.match(styles, /data-position="-1"[\s\S]*?--note-image-brightness:\s*0\.81/u);
+  assert.match(styles, /data-position="-2"[\s\S]*?--note-image-brightness:\s*0\.76[\s\S]*?--note-image-softness:\s*0\.25px/u);
+});
+
+test("defines restrained deterministic depth for active, adjacent, and outer cards", async () => {
+  const styles = await readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8");
+  assert.match(styles, /\.notebook-carousel__track\s*\{[\s\S]*?perspective:\s*950px;[\s\S]*?preserve-3d/u);
+  assert.match(styles, /transition:[\s\S]*?transform 520ms cubic-bezier\(0\.22, 1, 0\.36, 1\)/u);
+  assert.match(styles, /data-position="0"[\s\S]*?translateY\(0\)[\s\S]*?translateZ\(0\)[\s\S]*?scale\(1\)/u);
+  assert.match(styles, /data-position="-1"[\s\S]*?translateY\(6px\)[\s\S]*?translateZ\(-80px\)[\s\S]*?rotateY\(8deg\)[\s\S]*?scale\(0\.91\)/u);
+  assert.match(styles, /data-position="1"[\s\S]*?translateY\(6px\)[\s\S]*?translateZ\(-80px\)[\s\S]*?rotateY\(-8deg\)[\s\S]*?scale\(0\.91\)/u);
+  assert.match(styles, /data-position="-2"[\s\S]*?translateY\(14px\)[\s\S]*?translateZ\(-170px\)[\s\S]*?rotateY\(13deg\)[\s\S]*?scale\(0\.82\)/u);
+  assert.match(styles, /data-position="2"[\s\S]*?translateY\(14px\)[\s\S]*?translateZ\(-170px\)[\s\S]*?rotateY\(-13deg\)[\s\S]*?scale\(0\.82\)/u);
+  assert.match(styles, /prefers-reduced-motion:[\s\S]*?\.notebook-carousel \.notebook-card\s*\{[\s\S]*?transition:\s*none/u);
+});

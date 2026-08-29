@@ -68,27 +68,19 @@ test("renders four energy routes, three pulses, and one canonical motor asset", 
   assert.ok(images.every(image => image.alt === "" && image.getAttribute("aria-hidden") === "true"));
 });
 
-test("advances once through the centralized energy and assembly timeline", () => {
+test("advances once through the unified scene timeline", () => {
   const windowRef = createWindow();
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
   hero.initialise(new FakeElement("section"));
   assert.equal(hero.getState(), "idle");
   assert.deepEqual(windowRef.observers[0].options, { threshold: 0.2, rootMargin: "0px 0px -12% 0px" });
   windowRef.observers[0].enter();
-  assert.equal(hero.getState(), "infrastructure-reveal");
-  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [50, 700, 2400, 3100, 3400, 3800]);
+  assert.equal(hero.getState(), "idle");
+  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [1000, 2500]);
+  windowRef.run(MOTOR_TIMELINE.desktop.reveal);
+  assert.equal(hero.getState(), "scene-entering");
   windowRef.observers[0].enter();
-  assert.equal(windowRef.scheduled.size, 6);
-  windowRef.run(MOTOR_TIMELINE.desktop.motorEntering);
-  assert.equal(hero.getState(), "motor-entering");
-  windowRef.run(MOTOR_TIMELINE.desktop.motorActive);
-  assert.equal(hero.getState(), "motor-active");
-  windowRef.run(MOTOR_TIMELINE.desktop.cardsAssembling);
-  assert.equal(hero.getState(), "cards-assembling");
-  windowRef.run(MOTOR_TIMELINE.desktop.motorBackgrounding);
-  assert.equal(hero.getState(), "motor-backgrounding");
-  windowRef.run(MOTOR_TIMELINE.desktop.filtersRevealing);
-  assert.equal(hero.getState(), "filters-revealing");
+  assert.equal(windowRef.scheduled.size, 1);
   windowRef.run(MOTOR_TIMELINE.desktop.settled);
   assert.equal(hero.getState(), "settled");
 });
@@ -98,7 +90,9 @@ test("uses the shorter centralized timeline on mobile", () => {
   const hero = createNotebookMotorHero({ documentRef: new FakeDocument(), windowRef });
   hero.initialise(new FakeElement("section"));
   windowRef.observers[0].enter();
-  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [40, 500, 1800, 2400, 2600, 3000]);
+  assert.deepEqual([...windowRef.scheduled.values()].map(task => task.delay), [1000, 2300]);
+  windowRef.run(MOTOR_TIMELINE.mobile.reveal);
+  assert.equal(hero.getState(), "scene-entering");
   windowRef.run(MOTOR_TIMELINE.mobile.settled);
   assert.equal(hero.getState(), "settled");
 });
@@ -112,7 +106,7 @@ test("applies layered parallax and clears listeners and pending work on destroy"
   assert.equal(hero.element.style.values.get("--routes-parallax"), "1.26px");
   assert.equal(hero.element.style.values.get("--energy-parallax"), "2.31px");
   assert.equal(hero.element.style.values.get("--motor-parallax"), "3.57px");
-  assert.equal(windowRef.scheduled.size, 6);
+  assert.equal(windowRef.scheduled.size, 2);
   hero.destroy();
   assert.equal(windowRef.listeners.size, 0);
   assert.equal(windowRef.scheduled.size, 0);
@@ -127,16 +121,16 @@ test("settles immediately without animated work for reduced motion", () => {
   assert.equal(windowRef.listeners.size, 0);
 });
 
-test("mounts in Engineering Notes and stages one motor image before cards and filters", async () => {
+test("mounts one motor image in a unified scene with staged cards and filters", async () => {
   const [application, styles] = await Promise.all([
     readFile(new URL("../../../app.js", import.meta.url), "utf8"),
     readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8")
   ]);
   assert.match(application, /<section class="notes-section"[\s\S]*notebook-motor-host[\s\S]*notebook-carousel-host/u);
   assert.doesNotMatch(application, /<header class="editorial-hero[^>]*>[\s\S]*notebook-motor-host[\s\S]*<\/header>/u);
-  assert.match(styles, /data-motor-state="motor-entering"\] \.notebook-motor__image/u);
-  assert.match(styles, /data-motor-state="motor-active"/u);
-  assert.match(styles, /data-motor-state="filters-revealing"/u);
+  assert.match(styles, /data-motor-state="scene-entering"\] \.notebook-motor__image/u);
+  assert.match(styles, /@keyframes notebook-motor-unified-entry/u);
+  assert.doesNotMatch(styles, /motor-entering|motor-active|cards-assembling|motor-backgrounding|filters-revealing/u);
   assert.match(styles, /\.notebook-energy-field__route/u);
   assert.match(styles, /\.notebook-energy-field__pulse/u);
   assert.match(styles, /@keyframes notebook-energy-flow/u);
@@ -147,10 +141,11 @@ test("mounts in Engineering Notes and stages one motor image before cards and fi
   assert.doesNotMatch(styles, /@keyframes notebook-motor-operation/u);
   assert.doesNotMatch(styles, /notebook-motor__rotor/u);
   assert.doesNotMatch(styles, /notebook-motor-specular-sweep/u);
-  assert.match(styles, /data-motor-state="settled"\] \.notebook-motor-stage\s*\{[\s\S]*?opacity:\s*0\.14;[\s\S]*?filter:\s*blur\(2\.5px\)/u);
-  assert.match(styles, /data-position="0"\][\s\S]*?animation-delay:\s*100ms/u);
-  assert.match(styles, /data-position="-1"\][\s\S]*?animation-delay:\s*210ms/u);
-  assert.match(styles, /data-position="1"\][\s\S]*?animation-delay:\s*320ms/u);
+  assert.match(styles, /data-motor-state="settled"\] \.notebook-motor-stage\s*\{[\s\S]*?motor-settled-lift[\s\S]*?scale\(0\.99\)/u);
+  assert.match(styles, /data-motor-state="settled"\] \.notebook-motor-stage\s*\{[\s\S]*?opacity:\s*0\.5;[\s\S]*?filter:\s*blur\(2px\)/u);
+  assert.match(styles, /data-position="0"\][\s\S]*?animation-delay:\s*150ms/u);
+  assert.match(styles, /data-position="-1"\][\s\S]*?animation-delay:\s*250ms/u);
+  assert.match(styles, /data-position="1"\][\s\S]*?animation-delay:\s*350ms/u);
   assert.match(styles, /\.notebook-carousel__filters\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?translate3d\(0, 12px, 0\)/u);
-  assert.match(styles, /filters-revealing"\] \.notebook-carousel__filters/u);
+  assert.match(styles, /scene-entering"\] \.notebook-carousel__filters/u);
 });

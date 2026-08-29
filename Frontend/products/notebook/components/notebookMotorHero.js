@@ -1,16 +1,11 @@
 const MOTOR_TIMELINE = Object.freeze({
-  desktop: Object.freeze({ motorEntering: 50, motorActive: 700, cardsAssembling: 2400, motorBackgrounding: 3100, filtersRevealing: 3400, settled: 3800 }),
-  mobile: Object.freeze({ motorEntering: 40, motorActive: 500, cardsAssembling: 1800, motorBackgrounding: 2400, filtersRevealing: 2600, settled: 3000 })
+  desktop: Object.freeze({ reveal: 1000, settled: 2500 }),
+  mobile: Object.freeze({ reveal: 1000, settled: 2300 })
 });
 
 const MOTOR_STATES = new Set([
   "idle",
-  "infrastructure-reveal",
-  "motor-entering",
-  "motor-active",
-  "cards-assembling",
-  "motor-backgrounding",
-  "filters-revealing",
+  "scene-entering",
   "settled"
 ]);
 
@@ -87,13 +82,8 @@ export function createNotebookMotorHero({
     observer = null;
 
     const timeline = activeTimeline();
-    setState("infrastructure-reveal");
     startParallax();
-    schedule("motor-entering", timeline.motorEntering);
-    schedule("motor-active", timeline.motorActive);
-    schedule("cards-assembling", timeline.cardsAssembling);
-    schedule("motor-backgrounding", timeline.motorBackgrounding);
-    schedule("filters-revealing", timeline.filtersRevealing);
+    schedule("scene-entering", timeline.reveal);
     schedule("settled", timeline.settled);
   }
 

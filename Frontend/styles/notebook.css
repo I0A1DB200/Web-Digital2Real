@@ -20,6 +20,7 @@
   --motor-image-y: 0px;
   --motor-image-scale: 1;
   --motor-settled-y: clamp(24px, 4vw, 50px);
+  --motor-settled-lift: clamp(48px, 5vw, 72px);
   position: relative;
   width: 100%;
   height: clamp(280px, 30vw, 380px);
@@ -126,11 +127,7 @@
   pointer-events: none;
 }
 
-.notes-section[data-motor-state="motor-entering"] .notebook-motor__image,
-.notes-section[data-motor-state="motor-active"] .notebook-motor__image,
-.notes-section[data-motor-state="cards-assembling"] .notebook-motor__image,
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-motor__image,
-.notes-section[data-motor-state="filters-revealing"] .notebook-motor__image,
+.notes-section[data-motor-state="scene-entering"] .notebook-motor__image,
 .notes-section[data-motor-state="settled"] .notebook-motor__image {
   opacity: 1;
   transform: translate3d(var(--motor-image-x), var(--motor-image-y), 0) scale(var(--motor-image-scale));
@@ -141,56 +138,64 @@
   opacity: 0.12;
 }
 
-.notes-section[data-motor-state="infrastructure-reveal"] .notebook-energy-field__pulse,
-.notes-section[data-motor-state="motor-entering"] .notebook-energy-field__pulse,
-.notes-section[data-motor-state="motor-active"] .notebook-energy-field__pulse,
-.notes-section[data-motor-state="cards-assembling"] .notebook-energy-field__pulse,
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-energy-field__pulse,
-.notes-section[data-motor-state="filters-revealing"] .notebook-energy-field__pulse {
+.notes-section[data-motor-state="scene-entering"] .notebook-energy-field__pulse {
   opacity: 0.72;
   animation: notebook-energy-flow 1600ms linear infinite;
 }
 
-.notes-section[data-motor-state="motor-active"] .notebook-motor__image {
-  filter: brightness(1.035) contrast(1.01) drop-shadow(0 0 4px var(--accent));
+.notes-section[data-motor-state="scene-entering"] .notebook-motor-stage {
+  animation: notebook-motor-unified-entry 1500ms var(--ease-editorial) both;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-carousel-host,
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-carousel-host,
-.notes-section[data-motor-state="filters-revealing"] .notebook-carousel-host,
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel-host,
 .notes-section[data-motor-state="settled"] .notebook-carousel-host {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   pointer-events: auto;
 }
 
-.notes-section:not([data-motor-state="cards-assembling"]):not([data-motor-state="motor-backgrounding"]):not([data-motor-state="filters-revealing"]):not([data-motor-state="settled"])
+.notes-section:not([data-motor-state="scene-entering"]):not([data-motor-state="settled"])
   .notebook-carousel .notebook-card {
   opacity: 0 !important;
 }
 
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-motor-stage,
-.notes-section[data-motor-state="filters-revealing"] .notebook-motor-stage,
 .notes-section[data-motor-state="settled"] .notebook-motor-stage {
-  transform: translate3d(-50%, calc(var(--motor-settled-y) + var(--motor-parallax)), 0) scale(0.98);
+  transform: translate3d(-50%, calc(var(--motor-settled-y) + var(--motor-parallax) - var(--motor-settled-lift)), 0) scale(0.99);
 }
 
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-motor-stage,
-.notes-section[data-motor-state="filters-revealing"] .notebook-motor-stage {
-  opacity: 0.16;
+.notes-section[data-motor-state="settled"] .notebook-motor-stage {
+  opacity: 0.5;
   filter: blur(2px);
-}
-
-.notes-section[data-motor-state="settled"] .notebook-motor-stage {
-  opacity: 0.14;
-  filter: blur(2.5px);
   will-change: auto;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-energy-field__pulse--3 {
+.notes-section[data-motor-state="scene-entering"] .notebook-energy-field__pulse--3 {
   stroke-width: 3;
   opacity: 1;
   animation: notebook-energy-to-notes 950ms ease-out both;
+}
+
+@keyframes notebook-motor-unified-entry {
+  0%, 13% {
+    opacity: 0;
+    filter: blur(0);
+    transform: translate3d(-50%, calc(var(--motor-parallax) - 35px), 0) scale(0.97);
+  }
+  53% {
+    opacity: 0.56;
+    filter: blur(0);
+    transform: translate3d(-50%, calc(var(--motor-parallax) + 10px), 0) scale(1);
+  }
+  66% {
+    opacity: 0.5;
+    filter: blur(0);
+    transform: translate3d(-50%, var(--motor-parallax), 0) scale(1);
+  }
+  100% {
+    opacity: 0.5;
+    filter: blur(2px);
+    transform: translate3d(-50%, calc(var(--motor-settled-y) + var(--motor-parallax) - var(--motor-settled-lift)), 0) scale(0.99);
+  }
 }
 
 .notes-section[data-motor-state="settled"] .notebook-energy-field__route {
@@ -262,12 +267,22 @@
   transition: opacity 300ms ease, transform 300ms var(--ease-editorial);
 }
 
-.notes-section[data-motor-state="filters-revealing"] .notebook-carousel__filters,
-.notes-section[data-motor-state="filters-revealing"] .notebook-carousel__responsive-filters,
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel__filters,
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel__responsive-filters,
 .notes-section[data-motor-state="settled"] .notebook-carousel__filters,
 .notes-section[data-motor-state="settled"] .notebook-carousel__responsive-filters {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel__filters,
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel__responsive-filters {
+  animation: notebook-filters-enter 350ms var(--ease-editorial) 250ms both;
+}
+
+@keyframes notebook-filters-enter {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 .notebook-carousel__filter-toggle {
@@ -437,34 +452,28 @@
   transform: translateX(94%) rotateY(-3deg) scale(0.78);
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-carousel .notebook-card,
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-carousel .notebook-card {
-  animation: notebook-card-assemble 350ms var(--ease-editorial) both;
+.notes-section[data-motor-state="scene-entering"] .notebook-carousel .notebook-card {
+  animation: notebook-card-assemble 250ms var(--ease-editorial) both;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="0"],
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="0"] {
-  animation-delay: 100ms;
+.notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="0"] {
+  animation-delay: 150ms;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="-1"],
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="-1"] {
-  animation-delay: 210ms;
+.notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="-1"] {
+  animation-delay: 250ms;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="1"],
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="1"] {
-  animation-delay: 320ms;
+.notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="1"] {
+  animation-delay: 350ms;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="-2"],
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="-2"] {
-  animation-delay: 430ms;
+.notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="-2"] {
+  animation-delay: 450ms;
 }
 
-.notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="2"],
-.notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="2"] {
-  animation-delay: 540ms;
+.notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="2"] {
+  animation-delay: 550ms;
 }
 
 @keyframes notebook-card-assemble {
@@ -848,10 +857,8 @@
     width: clamp(280px, 38vw, 400px);
   }
 
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-motor-stage,
-  .notes-section[data-motor-state="filters-revealing"] .notebook-motor-stage,
   .notes-section[data-motor-state="settled"] .notebook-motor-stage {
-    transform: translate3d(-50%, calc(var(--motor-settled-y) + var(--motor-parallax)), 0) scale(0.96);
+    transform: translate3d(-50%, calc(var(--motor-settled-y) + var(--motor-parallax) - var(--motor-settled-lift)), 0) scale(0.99);
   }
 
   .notebook-carousel__filters {
@@ -879,35 +886,26 @@
     transition-duration: 600ms;
   }
 
-  .notes-section[data-motor-state="cards-assembling"] .notebook-carousel .notebook-card,
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-carousel .notebook-card {
-    animation-duration: 320ms;
+  .notes-section[data-motor-state="scene-entering"] .notebook-carousel .notebook-card {
+    animation-duration: 220ms;
   }
 
-  .notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="0"],
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="0"] {
-    animation-delay: 70ms;
+  .notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="0"] {
+    animation-delay: 150ms;
   }
 
-  .notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="-1"],
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="-1"] {
-    animation-delay: 160ms;
-  }
-
-  .notes-section[data-motor-state="cards-assembling"] .notebook-card[data-position="1"],
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-card[data-position="1"] {
+  .notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="-1"] {
     animation-delay: 250ms;
   }
 
-  .notes-section[data-motor-state="motor-backgrounding"] .notebook-motor-stage,
-  .notes-section[data-motor-state="filters-revealing"] .notebook-motor-stage,
-  .notes-section[data-motor-state="settled"] .notebook-motor-stage {
-    transform: translate3d(-50%, calc(32px + var(--motor-parallax)), 0) scale(0.94);
+  .notes-section[data-motor-state="scene-entering"] .notebook-card[data-position="1"] {
+    animation-delay: 350ms;
   }
 
   .notes-section[data-motor-state="settled"] .notebook-motor-stage {
-    opacity: 0.1;
+    opacity: 0.5;
     filter: blur(2px);
+    transform: translate3d(-50%, calc(32px + var(--motor-parallax) - var(--motor-settled-lift)), 0) scale(0.99);
   }
 
   .notebook-carousel__responsive-filters {

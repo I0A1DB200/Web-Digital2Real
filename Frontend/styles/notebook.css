@@ -160,7 +160,7 @@
   height: 100%;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0.72;
+  opacity: 0.78;
   transition: opacity 700ms ease;
 }
 
@@ -171,7 +171,7 @@
 
 .notebook-signal-map__plane--deep {
   transform: translate3d(0, var(--signal-deep-parallax), 0) scale(1.015);
-  filter: blur(0.35px);
+  filter: blur(0.5px);
 }
 
 .notebook-signal-map__plane--backbone {
@@ -203,18 +203,18 @@
 
 .notebook-signal-map__route--deep {
   stroke: var(--color-line-soft);
-  stroke-width: 0.75;
-  opacity: 0.75;
+  stroke-width: 1.1;
+  opacity: 0.62;
 }
 
 .notebook-signal-map__route--backbone {
   stroke: var(--color-muted);
   stroke-width: 3;
-  opacity: 0.08;
+  opacity: 0.09;
 }
 
 .notebook-signal-map__route--main {
-  opacity: 0.58;
+  opacity: 0.64;
 }
 
 .notebook-signal-map__node {
@@ -222,7 +222,7 @@
   vector-effect: non-scaling-stroke;
 }
 
-.notebook-signal-map__node--passive { opacity: 0.62; }
+.notebook-signal-map__node--passive { opacity: 0.68; }
 
 .notebook-signal-map__node--intersection {
   fill: var(--color-bg-soft);
@@ -515,6 +515,7 @@
 }
 
 .notebook-carousel__viewport {
+  --notebook-arrow-y: clamp(174px, 13vw, 194px);
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -529,18 +530,16 @@
 }
 
 .notebook-carousel .notebook-card {
-  --note-image-brightness: 0.86;
-  --note-image-contrast: 1.1;
-  --note-image-saturation: 0.82;
-  --note-image-softness: 0px;
+  --note-image-brightness: 0.65;
+  --note-image-contrast: 1.12;
+  --note-image-saturation: 0.66;
+  --note-image-softness: 0.1px;
   position: absolute;
   top: 0;
   left: 50%;
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 0;
-  width: min(440px, 38vw);
+  display: block;
+  width: min(520px, 44vw);
+  aspect-ratio: 67 / 50;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -559,12 +558,16 @@
 }
 
 .notebook-carousel .notebook-card__thumbnail {
-  position: relative;
+  position: absolute;
+  z-index: 0;
+  inset: 0;
   isolation: isolate;
   width: 100%;
-  aspect-ratio: 3 / 2;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
   border-radius: 0;
   background: var(--color-surface);
 }
@@ -579,22 +582,25 @@
 }
 
 .notebook-carousel .notebook-card__thumbnail::before {
-  background: linear-gradient(155deg, transparent 38%, var(--brand-primary-soft) 100%);
-  opacity: 0.32;
+  background: linear-gradient(145deg, transparent 54%, var(--brand-primary-soft) 100%);
+  opacity: 0.2;
   mix-blend-mode: soft-light;
 }
 
 .notebook-carousel .notebook-card__thumbnail::after {
   z-index: 3;
   background:
-    linear-gradient(180deg, transparent 52%, var(--color-surface) 100%),
-    radial-gradient(ellipse at center, transparent 48%, var(--color-navbar-bg) 125%);
+    linear-gradient(105deg, var(--color-bg) 0%, var(--color-navbar-bg) 28%, transparent 66%),
+    linear-gradient(180deg, transparent 68%, var(--color-navbar-bg) 100%);
+  opacity: 0.52;
 }
 
 .notebook-carousel .notebook-card__thumbnail img {
   position: relative;
   z-index: 1;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background: var(--color-surface);
   filter:
     brightness(var(--note-image-brightness))
@@ -605,31 +611,88 @@
 }
 
 .notebook-carousel .notebook-card__content {
-  padding: clamp(20px, 2.5vw, 30px);
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.5vw, 34px);
+  overflow: hidden;
 }
 
-.notebook-carousel .notebook-card__kicker {
-  display: none;
+.notebook-carousel .notebook-card__branding {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.notebook-carousel .notebook-card__brand {
+  color: var(--ink);
+  font-family: var(--font-brand);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: -0.04em;
+}
+
+.notebook-carousel .notebook-card__identity {
+  color: var(--accent);
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
 }
 
 .notebook-carousel .notebook-card h2 {
-  margin: 11px 0 9px;
-  font-size: clamp(1.55rem, 2.6vw, 2.55rem);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  display: -webkit-box;
+  max-width: 90%;
+  margin: clamp(26px, 3vw, 42px) 0 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 2.65vw, 2.65rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
-.notebook-carousel .notebook-card__excerpt {
-  display: -webkit-box;
+.notebook-carousel .notebook-card__accent {
+  width: 34px;
+  height: 1px;
+  margin-top: 16px;
+  background: var(--accent);
+}
+
+.notebook-carousel .notebook-card__footer {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.notebook-carousel .notebook-card__category {
+  min-width: 0;
   overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  color: var(--accent);
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.11em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.notebook-carousel .notebook-card__open-icon {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
 .notebook-carousel .notebook-card[data-position="0"] {
-  --note-image-brightness: 0.86;
-  --note-image-contrast: 1.1;
-  --note-image-saturation: 0.82;
+  --note-image-brightness: 0.65;
+  --note-image-contrast: 1.12;
+  --note-image-saturation: 0.66;
+  --note-image-softness: 0.1px;
   --notebook-card-assembly-opacity: 1;
   position: relative;
   z-index: 5;
@@ -639,9 +702,10 @@
 }
 
 .notebook-carousel .notebook-card[data-position="-1"] {
-  --note-image-brightness: 0.81;
-  --note-image-contrast: 1.08;
-  --note-image-saturation: 0.76;
+  --note-image-brightness: 0.58;
+  --note-image-contrast: 1.1;
+  --note-image-saturation: 0.6;
+  --note-image-softness: 0.2px;
   --notebook-card-assembly-opacity: 0.94;
   z-index: 4;
   opacity: 0.94;
@@ -650,9 +714,10 @@
 }
 
 .notebook-carousel .notebook-card[data-position="1"] {
-  --note-image-brightness: 0.81;
-  --note-image-contrast: 1.08;
-  --note-image-saturation: 0.76;
+  --note-image-brightness: 0.58;
+  --note-image-contrast: 1.1;
+  --note-image-saturation: 0.6;
+  --note-image-softness: 0.2px;
   --notebook-card-assembly-opacity: 0.94;
   z-index: 4;
   opacity: 0.94;
@@ -661,10 +726,10 @@
 }
 
 .notebook-carousel .notebook-card[data-position="-2"] {
-  --note-image-brightness: 0.76;
-  --note-image-contrast: 1.05;
-  --note-image-saturation: 0.72;
-  --note-image-softness: 0.25px;
+  --note-image-brightness: 0.52;
+  --note-image-contrast: 1.08;
+  --note-image-saturation: 0.54;
+  --note-image-softness: 0.3px;
   --notebook-card-assembly-opacity: 0.86;
   z-index: 3;
   opacity: 0.86;
@@ -673,10 +738,10 @@
 }
 
 .notebook-carousel .notebook-card[data-position="2"] {
-  --note-image-brightness: 0.76;
-  --note-image-contrast: 1.05;
-  --note-image-saturation: 0.72;
-  --note-image-softness: 0.25px;
+  --note-image-brightness: 0.52;
+  --note-image-contrast: 1.08;
+  --note-image-saturation: 0.54;
+  --note-image-softness: 0.3px;
   --notebook-card-assembly-opacity: 0.86;
   z-index: 3;
   opacity: 0.86;
@@ -722,24 +787,58 @@
 }
 
 .notebook-carousel__controls {
-  display: grid;
-  grid-template-columns: 48px minmax(80px, auto) 48px;
-  justify-content: center;
+  display: flex;
+  width: min(880px, 100%);
   align-items: center;
-  gap: 18px;
-  margin-top: 40px;
+  justify-content: center;
+  margin: 32px auto 0;
 }
 
 .notebook-carousel__control {
-  width: 48px;
-  height: 48px;
-  border: 1px solid var(--line);
+  position: absolute;
+  z-index: 8;
+  top: var(--notebook-arrow-y);
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-line-soft);
   border-radius: 50%;
-  background: transparent;
+  background: var(--color-navbar-bg);
   color: var(--ink);
   cursor: pointer;
   font: inherit;
-  font-size: 1.25rem;
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 0.72;
+  transform: translateY(-50%);
+  box-shadow: 0 0 4px var(--brand-primary-soft), 0 0 12px var(--color-page-gradient-glow);
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    opacity 220ms ease,
+    transform 120ms ease,
+    box-shadow 220ms ease;
+}
+
+.notebook-carousel__control--previous { left: 12px; }
+
+.notebook-carousel__control--next { right: 12px; }
+
+.notebook-carousel__control:not(:disabled):active {
+  opacity: 0.82;
+  transform: translateY(-50%) scale(0.98);
+  box-shadow: 0 0 3px var(--brand-primary-soft), 0 0 8px var(--color-page-gradient-glow);
+}
+
+.notebook-carousel__control:not(:disabled):hover {
+  border-color: var(--brand-primary-muted);
+  color: var(--accent);
+  opacity: 0.95;
+  box-shadow: 0 0 6px var(--brand-primary-soft), 0 0 16px var(--color-page-gradient-glow);
+}
+
+.notebook-carousel__control:not(:disabled):hover:active {
+  opacity: 0.82;
+  box-shadow: 0 0 3px var(--brand-primary-soft), 0 0 8px var(--color-page-gradient-glow);
 }
 
 .notebook-carousel__control:disabled {
@@ -756,6 +855,47 @@
   letter-spacing: 0.1em;
   text-align: center;
   text-transform: uppercase;
+}
+
+.notebook-carousel__position {
+  position: relative;
+  min-width: 0;
+}
+
+.notebook-carousel__position-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.notebook-carousel__segments {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.notebook-carousel__segment {
+  width: 34px;
+  height: 2px;
+  background: var(--color-line);
+  opacity: 0.34;
+  transform: scaleX(0.92);
+  transition:
+    background-color 320ms var(--ease-editorial),
+    opacity 320ms var(--ease-editorial),
+    transform 320ms var(--ease-editorial);
+}
+
+.notebook-carousel__segment.is-active {
+  background: var(--accent);
+  opacity: 0.95;
+  transform: scaleX(1);
 }
 
 .notebook-carousel__empty {
@@ -1081,6 +1221,7 @@
 /* Responsive editorial presentation */
 @media (max-width: 1024px) {
   .notebook-signal-map__route[data-route="backbone-east"],
+  .notebook-signal-map__route[data-route="backbone-lower-link"],
   .notebook-signal-map__route[data-route="vertical-loop"],
   .notebook-signal-map__node[data-node="12"],
   .notebook-signal-map__node[data-node="14"] {
@@ -1116,10 +1257,12 @@
 
   .notebook-signal-map__route[data-route="backbone-west"],
   .notebook-signal-map__route[data-route="backbone-east"],
+  .notebook-signal-map__route[data-route="backbone-upper-link"],
+  .notebook-signal-map__route[data-route="backbone-lower-link"],
   .notebook-signal-map__route[data-route="north-transfer"],
   .notebook-signal-map__route[data-route="vertical-loop"],
   .notebook-signal-map__route[data-route="west-spine"],
-  .notebook-signal-map__node:nth-of-type(n + 9),
+  .notebook-signal-map__node:nth-of-type(n + 8),
   .notebook-signal-map__descent--2,
   .notebook-signal-map__descent--3,
   .notebook-signal-map__pulse--2 {
@@ -1127,7 +1270,7 @@
   }
 
   .notebook-signal-map__route--main {
-    opacity: 0.48;
+    opacity: 0.52;
   }
 
   .notebook-signal-map__node--active {
@@ -1177,11 +1320,29 @@
 
   .notebook-carousel .notebook-card {
     width: min(82vw, 390px);
+    aspect-ratio: 51 / 50;
+  }
+
+  .notebook-carousel__viewport {
+    --notebook-arrow-y: min(40vw, 191px);
   }
 
   .notebook-carousel__controls {
     margin-top: 32px;
   }
+
+  .notebook-carousel__control {
+    width: 40px;
+    height: 40px;
+  }
+
+  .notebook-carousel__control--previous { left: 6px; }
+
+  .notebook-carousel__control--next { right: 6px; }
+
+  .notebook-carousel__segments { gap: 8px; }
+
+  .notebook-carousel__segment { width: 22px; }
 
   .notebook-carousel .notebook-card[data-position="-1"] {
     transform: translateX(-136%) translateY(3px) translateZ(-25px) rotateY(3deg) scale(0.94);
@@ -1251,13 +1412,31 @@
 }
 
 @media (min-width: 721px) and (max-width: 1024px) {
+  .notebook-carousel__viewport {
+    --notebook-arrow-y: 220px;
+  }
+
   .notebook-carousel .notebook-card {
     width: min(460px, 52vw);
+    aspect-ratio: 31 / 25;
   }
 
   .notebook-carousel__controls {
     margin-top: 32px;
   }
+
+  .notebook-carousel__control {
+    width: 42px;
+    height: 42px;
+  }
+
+  .notebook-carousel__control--previous { left: 8px; }
+
+  .notebook-carousel__control--next { right: 8px; }
+
+  .notebook-carousel__segment { width: 30px; }
+
+  .notebook-carousel__segments { gap: 10px; }
 
   .notebook-carousel .notebook-card[data-position="-1"] {
     transform: translateX(-118%) translateY(5px) translateZ(-55px) rotateY(6deg) scale(0.92);
@@ -1317,6 +1496,10 @@
   }
 
   .notebook-carousel .notebook-card {
+    transition: none;
+  }
+
+  .notebook-carousel__segment {
     transition: none;
   }
 }

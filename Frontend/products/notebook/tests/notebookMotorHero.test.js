@@ -87,9 +87,9 @@ test("mounts a full-section Industrial Signal Map with configured routes, nodes,
   assert.equal(map.getAttribute("viewBox"), "0 0 1200 900");
   const mapElements = descendants(map);
   const signalRoutes = mapElements.filter(child => child.getAttribute("class")?.includes("notebook-signal-map__route "));
-  assert.equal(signalRoutes.length, 10);
-  assert.equal(signalRoutes.filter(route => route.getAttribute("class").includes("--backbone")).length, 4);
-  assert.equal(mapElements.filter(child => child.getAttribute("class")?.includes("notebook-signal-map__node ")).length, 15);
+  assert.equal(signalRoutes.length, 12);
+  assert.equal(signalRoutes.filter(route => route.getAttribute("class").includes("--backbone")).length, 6);
+  assert.equal(mapElements.filter(child => child.getAttribute("class")?.includes("notebook-signal-map__node ")).length, 18);
   assert.equal(mapElements.filter(child => child.getAttribute("class")?.includes("notebook-signal-map__descent ")).length, 3);
   assert.equal(mapElements.filter(child => child.getAttribute("class")?.includes("notebook-signal-map__pulse ")).length, 2);
   hero.destroy();
@@ -185,9 +185,9 @@ test("mounts one motor image in a unified scene with staged cards and filters", 
   assert.match(styles, /\.notebook-notes-composition\s*\{[\s\S]*?background:\s*transparent/u);
   assert.match(styles, /\.notes-section\s*\{[\s\S]*?radial-gradient[\s\S]*?box-shadow/u);
   assert.match(styles, /\.notebook-signal-map\s*\{[\s\S]*?position:\s*absolute[\s\S]*?inset:\s*0/u);
-  assert.match(styles, /\.notebook-signal-map__route--deep[\s\S]*?stroke-width:\s*0\.75/u);
+  assert.match(styles, /\.notebook-signal-map__route--deep[\s\S]*?stroke-width:\s*1\.1/u);
   assert.match(styles, /\.notebook-signal-map__plane--backbone[\s\S]*?blur\(3px\)/u);
-  assert.match(styles, /\.notebook-signal-map__route--backbone[\s\S]*?stroke-width:\s*3;[\s\S]*?opacity:\s*0\.08/u);
+  assert.match(styles, /\.notebook-signal-map__route--backbone[\s\S]*?stroke-width:\s*3;[\s\S]*?opacity:\s*0\.09/u);
   assert.match(styles, /data-motor-state="settled"\] \.notebook-signal-map__pulse--1[\s\S]*?8200ms/u);
   assert.match(styles, /prefers-reduced-motion:[\s\S]*?\.notebook-signal-map[\s\S]*?--signal-active-parallax:\s*0px/u);
   assert.match(styles, /\.notebook-notes-composition::after[\s\S]*?radial-gradient[\s\S]*?blur\(12px\)/u);

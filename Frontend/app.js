@@ -6,6 +6,7 @@ import { createNotebookCarousel } from "./products/notebook/components/notebookC
 import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
+import { applyCharacterReveal, getCharacterRevealDuration } from "./components/heroTextReveal.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
 
 const app = document.querySelector("#app");
@@ -143,6 +144,23 @@ function renderEngineeringNotesView() {
     </section>
 
   `;
+
+  const heroHeading = section.querySelector(".editorial-hero h1");
+  const heroParagraph = section.querySelector(".editorial-hero__support p");
+  if (heroHeading instanceof HTMLElement && heroParagraph instanceof HTMLElement) {
+    const headingCharacterCount = applyCharacterReveal(heroHeading, {
+      stagger: 32,
+      duration: 480
+    });
+    const paragraphStartDelay = Math.round(
+      getCharacterRevealDuration(headingCharacterCount, 32, 480) * 0.6
+    );
+    applyCharacterReveal(heroParagraph, {
+      stagger: 16,
+      duration: 380,
+      startDelay: paragraphStartDelay
+    });
+  }
 
   const carouselHost = section.querySelector(".notebook-carousel-host");
   const motorHost = section.querySelector(".notebook-motor-host");

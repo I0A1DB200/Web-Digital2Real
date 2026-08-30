@@ -385,7 +385,12 @@ test("exposes accessible carousel, filter, active-card and position semantics", 
   assert.equal(carousel.element.getAttribute("aria-label"), "Engineering Notes carousel");
   assert.equal(activeCard(carousel.element).getAttribute("aria-current"), "true");
   assert.equal(byText(carousel.element, "All").getAttribute("aria-pressed"), "true");
-  assert.equal(byClass(carousel.element, "notebook-carousel__position")[0].textContent, "1 of 7");
+  assert.equal(byClass(carousel.element, "notebook-carousel__position-label")[0].textContent, "1 of 7");
+  assert.equal(byClass(carousel.element, "notebook-carousel__segment").length, 5);
+  assert.equal(byClass(carousel.element, "is-active").length, 1);
+  assert.equal(byClass(carousel.element, "notebook-carousel__segment")[2].classList.contains("is-active"), true);
+  assert.equal(byText(carousel.element, "←").parentNode.className, "notebook-carousel__viewport");
+  assert.equal(byText(carousel.element, "→").parentNode.className, "notebook-carousel__viewport");
   assert.ok(byClass(carousel.element, "notebook-carousel__card").length <= 5);
 });
 
@@ -429,14 +434,27 @@ test("contains no autoplay, timer or wheel interception", async () => {
 
 test("uses one reversible image harmonization system for every carousel position", async () => {
   const styles = await readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8");
-  assert.match(styles, /--note-image-brightness:\s*0\.86/u);
-  assert.match(styles, /--note-image-contrast:\s*1\.1/u);
-  assert.match(styles, /--note-image-saturation:\s*0\.82/u);
+  assert.match(styles, /--note-image-brightness:\s*0\.65/u);
+  assert.match(styles, /--note-image-contrast:\s*1\.12/u);
+  assert.match(styles, /--note-image-saturation:\s*0\.66/u);
   assert.match(styles, /notebook-card__thumbnail::before[\s\S]*?brand-primary-soft[\s\S]*?soft-light/u);
-  assert.match(styles, /notebook-card__thumbnail::after[\s\S]*?linear-gradient[\s\S]*?radial-gradient/u);
-  assert.match(styles, /brightness\(var\(--note-image-brightness\)\)[\s\S]*?saturate\(var\(--note-image-saturation\)\)/u);
-  assert.match(styles, /data-position="-1"[\s\S]*?--note-image-brightness:\s*0\.81/u);
-  assert.match(styles, /data-position="-2"[\s\S]*?--note-image-brightness:\s*0\.76[\s\S]*?--note-image-softness:\s*0\.25px/u);
+  assert.match(styles, /notebook-card__thumbnail::after[\s\S]*?linear-gradient\(105deg[\s\S]*?transparent 66%[\s\S]*?transparent 68%[\s\S]*?opacity:\s*0\.52/u);
+  assert.doesNotMatch(styles, /linear-gradient\(180deg,\s*var\(--color-navbar-bg\),\s*var\(--color-navbar-bg\)\)/u);
+  assert.match(styles, /brightness\(var\(--note-image-brightness\)\)[\s\S]*?saturate\(var\(--note-image-saturation\)\)[\s\S]*?blur\(var\(--note-image-softness\)\)/u);
+  assert.doesNotMatch(styles, /grayscale\(var\(--note-image-grayscale\)\)/u);
+  assert.match(styles, /data-position="-1"[\s\S]*?--note-image-brightness:\s*0\.58[\s\S]*?--note-image-saturation:\s*0\.6/u);
+  assert.match(styles, /data-position="-2"[\s\S]*?--note-image-brightness:\s*0\.52[\s\S]*?--note-image-softness:\s*0\.3px/u);
+});
+
+test("uses one full-image landscape card contract with overlaid typography", async () => {
+  const styles = await readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8");
+  assert.match(styles, /\.notebook-carousel \.notebook-card\s*\{[\s\S]*?display:\s*block[\s\S]*?width:\s*min\(520px, 44vw\)[\s\S]*?aspect-ratio:\s*67 \/ 50/u);
+  assert.match(styles, /\.notebook-carousel \.notebook-card__thumbnail\s*\{[\s\S]*?position:\s*absolute[\s\S]*?inset:\s*0/u);
+  assert.match(styles, /\.notebook-carousel \.notebook-card__content\s*\{[\s\S]*?position:\s*absolute[\s\S]*?z-index:\s*2[\s\S]*?inset:\s*0/u);
+  assert.match(styles, /\.notebook-carousel \.notebook-card__thumbnail img\s*\{[\s\S]*?object-fit:\s*cover/u);
+  assert.match(styles, /\.notebook-carousel \.notebook-card h2\s*\{[\s\S]*?font-size:\s*clamp\(1\.75rem, 2\.65vw, 2\.65rem\)[\s\S]*?-webkit-line-clamp:\s*4/u);
+  assert.match(styles, /@media \(max-width:\s*720px\)[\s\S]*?aspect-ratio:\s*51 \/ 50/u);
+  assert.match(styles, /@media \(min-width:\s*721px\) and \(max-width:\s*1024px\)[\s\S]*?aspect-ratio:\s*31 \/ 25/u);
 });
 
 test("defines restrained deterministic depth for active, adjacent, and outer cards", async () => {
@@ -449,4 +467,22 @@ test("defines restrained deterministic depth for active, adjacent, and outer car
   assert.match(styles, /data-position="-2"[\s\S]*?translateY\(14px\)[\s\S]*?translateZ\(-170px\)[\s\S]*?rotateY\(13deg\)[\s\S]*?scale\(0\.82\)/u);
   assert.match(styles, /data-position="2"[\s\S]*?translateY\(14px\)[\s\S]*?translateZ\(-170px\)[\s\S]*?rotateY\(-13deg\)[\s\S]*?scale\(0\.82\)/u);
   assert.match(styles, /prefers-reduced-motion:[\s\S]*?\.notebook-carousel \.notebook-card\s*\{[\s\S]*?transition:\s*none/u);
+});
+
+test("renders minimal accessible arrows and thin segmented progress", async () => {
+  const [source, styles] = await Promise.all([
+    readFile(new URL("../components/notebookCarousel.js", import.meta.url), "utf8"),
+    readFile(new URL("../../../styles/notebook.css", import.meta.url), "utf8")
+  ]);
+  assert.match(source, /notebook-carousel__position-label/u);
+  assert.match(source, /notebook-carousel__segments/u);
+  assert.match(styles, /\.notebook-carousel__control\s*\{[\s\S]*?position:\s*absolute[\s\S]*?z-index:\s*8[\s\S]*?width:\s*44px;[\s\S]*?opacity:\s*0\.72/u);
+  assert.match(styles, /top:\s*var\(--notebook-arrow-y\)[\s\S]*?translateY\(-50%\)[\s\S]*?0 0 12px var\(--color-page-gradient-glow\)/u);
+  assert.match(styles, /control--previous\s*\{\s*left:\s*12px/u);
+  assert.match(styles, /control--next\s*\{\s*right:\s*12px/u);
+  assert.match(styles, /control:not\(:disabled\):hover[\s\S]*?0 0 16px var\(--color-page-gradient-glow\)/u);
+  assert.match(styles, /\.notebook-carousel__segment\s*\{[\s\S]*?width:\s*34px;[\s\S]*?height:\s*2px;[\s\S]*?opacity:\s*0\.34/u);
+  assert.match(styles, /\.notebook-carousel__segment\.is-active\s*\{[\s\S]*?var\(--accent\)[\s\S]*?opacity:\s*0\.95/u);
+  assert.match(styles, /\.notebook-carousel__position-label\s*\{[\s\S]*?clip:\s*rect\(0 0 0 0\)/u);
+  assert.match(styles, /prefers-reduced-motion:[\s\S]*?\.notebook-carousel__segment\s*\{[\s\S]*?transition:\s*none/u);
 });

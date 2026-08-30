@@ -17,11 +17,11 @@ const ROUTES = Object.freeze([
 ]);
 
 const SIGNAL_ROUTES = Object.freeze([
-  Object.freeze({ id: "north-transfer", depth: "deep", path: "M-40 160 H220 L310 250 H520 L600 330 H1240" }),
-  Object.freeze({ id: "vertical-loop", depth: "deep", path: "M120 900 V680 L230 570 H480 L560 490 H780 L870 400 V80" }),
-  Object.freeze({ id: "central-exchange", depth: "main", path: "M0 390 H180 L260 470 H460 L540 390 H770 L850 310 H1200" }),
-  Object.freeze({ id: "west-spine", depth: "main", path: "M80 70 V250 L170 340 V620 L260 710 H620 L710 800 H1120" }),
-  Object.freeze({ id: "south-return", depth: "main", path: "M1200 610 H1010 L920 520 H690 L610 600 H360 L280 680 H0" }),
+  Object.freeze({ id: "north-transfer", depth: "deep", path: "M-40 150 H210 L300 240 H540 L630 330 H1240" }),
+  Object.freeze({ id: "vertical-loop", depth: "deep", path: "M110 900 V690 L220 580 H470 L560 490 H790 L880 400 V70" }),
+  Object.freeze({ id: "central-exchange", depth: "main", path: "M0 380 H180 L260 460 H470 L550 380 H780 L860 300 H1200" }),
+  Object.freeze({ id: "west-spine", depth: "main", path: "M80 60 V250 L170 340 V620 L260 710 H620 L710 800 H1120" }),
+  Object.freeze({ id: "south-return", depth: "main", path: "M1200 620 H1010 L920 530 H690 L610 610 H360 L280 690 H0" }),
   Object.freeze({ id: "east-spine", depth: "main", path: "M420 0 V150 L510 240 H720 L810 330 V590 L900 680 H1200" })
 ]);
 
@@ -29,7 +29,9 @@ const SIGNAL_BACKBONE_ROUTES = Object.freeze([
   Object.freeze({ id: "backbone-north", depth: "backbone", path: "M-80 90 H260 L430 260 H760 L940 80 H1280" }),
   Object.freeze({ id: "backbone-west", depth: "backbone", path: "M40 940 V720 L250 510 H520 L700 330 H980 L1240 70" }),
   Object.freeze({ id: "backbone-south", depth: "backbone", path: "M-60 760 H210 L390 580 H720 L900 760 H1260" }),
-  Object.freeze({ id: "backbone-east", depth: "backbone", path: "M1280 420 H1040 L860 600 V900" })
+  Object.freeze({ id: "backbone-east", depth: "backbone", path: "M1280 420 H1040 L860 600 V900" }),
+  Object.freeze({ id: "backbone-upper-link", depth: "backbone", path: "M-60 300 H160 L300 440 H680 L820 300 H1260" }),
+  Object.freeze({ id: "backbone-lower-link", depth: "backbone", path: "M180 940 V820 L340 660 H820 L980 820 H1280" })
 ]);
 
 const SIGNAL_NODES = Object.freeze([
@@ -40,7 +42,8 @@ const SIGNAL_NODES = Object.freeze([
   Object.freeze({ x: 260, y: 470, type: "intersection" }), Object.freeze({ x: 850, y: 310, type: "passive" }),
   Object.freeze({ x: 170, y: 340, type: "active" }), Object.freeze({ x: 710, y: 800, type: "passive" }),
   Object.freeze({ x: 1010, y: 610, type: "active" }), Object.freeze({ x: 610, y: 600, type: "intersection" }),
-  Object.freeze({ x: 810, y: 330, type: "intersection" })
+  Object.freeze({ x: 810, y: 330, type: "intersection" }), Object.freeze({ x: 550, y: 380, type: "passive" }),
+  Object.freeze({ x: 920, y: 530, type: "passive" }), Object.freeze({ x: 900, y: 680, type: "passive" })
 ]);
 
 const SIGNAL_DESCENTS = Object.freeze([

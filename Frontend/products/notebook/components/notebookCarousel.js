@@ -70,7 +70,8 @@ export function createNotebookCarousel(articles, onOpen, {
   position.setAttribute("aria-atomic", "true");
   const next = createControl(documentRef, "Next Engineering Note", "→");
   next.classList.add("notebook-carousel__control--next");
-  controls.append(previous, position, next);
+  viewport.append(previous, next);
+  controls.appendChild(position);
   element.append(filters, responsiveFilters, viewport, controls);
 
   function filteredArticles() {
@@ -127,7 +128,7 @@ export function createNotebookCarousel(articles, onOpen, {
       track.appendChild(empty);
       previous.disabled = true;
       next.disabled = true;
-      position.textContent = "0 of 0";
+      renderPosition(0);
       return;
     }
 
@@ -159,7 +160,25 @@ export function createNotebookCarousel(articles, onOpen, {
 
     previous.disabled = collection.length < 2;
     next.disabled = collection.length < 2;
-    position.textContent = `${activeIndex + 1} of ${collection.length}`;
+    renderPosition(collection.length);
+  }
+
+  function renderPosition(collectionLength) {
+    const label = documentRef.createElement("span");
+    label.className = "notebook-carousel__position-label";
+    label.textContent = collectionLength === 0 ? "0 of 0" : `${activeIndex + 1} of ${collectionLength}`;
+
+    const segments = documentRef.createElement("span");
+    segments.className = "notebook-carousel__segments";
+    segments.setAttribute("aria-hidden", "true");
+    const visualSegmentCount = collectionLength === 0 ? 0 : 5;
+    for (let index = 0; index < visualSegmentCount; index += 1) {
+      const segment = documentRef.createElement("span");
+      segment.className = "notebook-carousel__segment";
+      if (index === 2) segment.classList.add("is-active");
+      segments.appendChild(segment);
+    }
+    position.replaceChildren(label, segments);
   }
 
   function render() {

@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-08-30 — Engineering Note image clarity
+
+- Removed the uniform charcoal veil from full-image Engineering Note cards while retaining localized directional shading behind typography and lower metadata.
+- Preserved the existing active, adjacent and outer brightness and saturation hierarchy without changing card layout or carousel geometry.
+
+## 2026-08-29 — Full-image Engineering Note card composition
+
+- Corrected the compact Engineering Note card to use one continuous full-card photograph with layered charcoal treatment and overlaid D2R branding, title, category and open affordance.
+- Removed excerpt and read-time presentation from the carousel card while preserving source data, responsive proportions and carousel geometry.
+
+## 2026-08-29 — Compact Engineering Note cards
+
+- Reframed the canonical Engineering Note card as a compact image-first editorial landscape component with shared metadata and open affordance.
+- Added consistent charcoal image harmonization, controlled title and excerpt density, and responsive desktop, tablet and mobile proportions without changing Note data or carousel behavior.
+
+## 2026-08-29 — Landing hero character reveal
+
+- Added a one-run overlapping character reveal to the existing landing heading and supporting paragraph without changing their copy, typography or layout.
+- Preserved semantic heading and paragraph elements, screen-reader text and an immediate reduced-motion presentation.
+
 ## 2026-08-27 — Notebook Motor Hero V1
 
 - Added a Notebook-owned motor hero controller with a deterministic, one-run activation timeline.

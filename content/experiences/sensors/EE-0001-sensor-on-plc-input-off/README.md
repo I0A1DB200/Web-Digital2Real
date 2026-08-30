@@ -12,9 +12,9 @@
 | Approved source media | [`media/`](media/) |
 | Web derivatives | [`assets/`](assets/) |
 
-EE-0001 teaches the learner to trace `B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1`, localize an open circuit through measurements and continuity testing, and verify recovery without unjustified component replacement or software changes.
+EE-0001 is the first canonical Authoring V2 pilot. It teaches the learner to trace `B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1`, localize an open circuit through measurements and continuity testing, and verify recovery without unjustified component replacement or software changes.
 
-`experience.yaml` is the canonical Authoring Definition v1. The Experience remains in `technical_review`, so generic catalog policy includes it in Preview and excludes it from Production.
+`experience.yaml` is the single canonical Authoring Definition V2 (`2.0.0`). Its seven decision points use explicit transitions, sequential evidence unlocks, learner-safe retries and the shared provisional evaluator. The Experience remains in `technical_review`, so generic catalog policy includes it in Preview and excludes it from Production.
 
 The eight files in `media/` are approved masters. The corresponding files in `assets/` are byte-identical browser derivatives and must be regenerated from the masters rather than edited independently.
 

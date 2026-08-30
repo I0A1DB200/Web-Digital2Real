@@ -20,10 +20,7 @@ translations:
   stages:
     STAGE-01-OBSERVE:
       title: "Observe the incident"
-      situation: "The box is in front of B1 and the sensor indicator is active, but the station continues waiting for presence."
-    STAGE-02-FIELD:
-      title: "Check B1 in the field"
-      situation: "The local indication on B1 confirms that the target is detected. You must decide what this observation actually proves."
+      situation: "The box is in front of B1 and its indicator is active, but I0.3 remains FALSE and the station continues waiting for presence. What would you do next?"
     STAGE-03-ELECTRICAL:
       title: "Identify the electrical path"
       situation: "The schematic shows BN to +24 VDC, BU to 0 VDC and BK from B1 through X1:17 to I0.3."
@@ -69,7 +66,7 @@ translations:
       content: "B1 detects, the signal reaches the PLC, I0.3 and Tag_BoxPresent_B1 are TRUE and the sequence recovers."
   decisions:
     DEC-01-TRACE:
-      action: "Preserve the evidence and trace the signal from B1."
+      action: "Confirm the live discrepancy and follow the documented signal path from B1."
     DEC-01-REPLACE:
       action: "Replace B1 because the sequence does not continue."
     DEC-01-PROGRAM:
@@ -110,6 +107,21 @@ translations:
       action: "Close after observing only I0.3 as TRUE."
     DEC-07-CLOSE:
       action: "Close without repeating the functional machine condition."
+  retry_feedback:
+    DEC-01-REPLACE: "Replacing B1 is not yet justified: its indicator confirms local detection but does not establish what happens to the signal along the route."
+    DEC-01-PROGRAM: "Changing the logic would hide the observed discrepancy before the documented electrical signal path has been checked."
+    DEC-02-GUESS: "A similar input may belong to another device. The investigation needs traceability between B1 and its documented PLC point."
+    DEC-02-BYPASS: "A jumper would simulate a condition and could alter the sequence; it provides no evidence about the actual state of the B1 route."
+    DEC-03-PLC-FAULT: "I0.3 at FALSE confirms the PLC-observed symptom, but by itself it cannot distinguish an upstream signal loss from a defective channel."
+    DEC-03-CHANGE: "Reassigning the tag changes the documented system before the signal loss is located and may introduce a second anomaly."
+    DEC-04-SENSOR: "The measured output at B1 shows that the device generates a signal; replacing it does not explain why that voltage is absent downstream."
+    DEC-04-MODULE: "The difference between the two points directs the investigation to the intermediate path. The module should not be replaced before that section is checked."
+    DEC-05-IGNORE: "Repeating the start does not resolve an OL reading obtained with the circuit isolated; the evidence requires the discontinuity to be physically located."
+    DEC-05-FORCE: "Forcing the tag bypasses the confirmed physical route and does not restore its integrity. The discontinuity must be investigated under safe conditions."
+    DEC-06-REPLACE-SENSOR: "The sensor already delivered the expected voltage and the damage is located outside it; replacement would leave the interruption unchanged."
+    DEC-06-REPLACE-PLC: "The located physical damage explains the missing signal at I0.3. Replacing the PLC would not restore the conductor."
+    DEC-07-INPUT-ONLY: "I0.3 at TRUE is a necessary check, but it does not by itself demonstrate recovery of the tag and machine function."
+    DEC-07-CLOSE: "The integrity of an industrial repair must be confirmed under the original functional condition before the intervention is closed."
   visual:
     educational_purpose: "Present the signal progressively without revealing the damaged conductor before localization."
   assets:

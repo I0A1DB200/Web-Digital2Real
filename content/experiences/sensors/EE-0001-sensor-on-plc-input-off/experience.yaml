@@ -1,4 +1,4 @@
-contract_version: "1.1.0"
+contract_version: "2.0.0"
 
 metadata:
   id: "EXP-SENSOR-SIGNAL-001"
@@ -62,48 +62,49 @@ public:
       competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
   stages:
     - id: "STAGE-01-OBSERVE"
+      phase: "incident"
       title: "Observar el incidente"
-      situation: "La caja está frente a B1 y el indicador del sensor está activo, pero la estación continúa esperando presencia."
-      evidence_ids: ["EVID-01-INCIDENT"]
-      decision_ids: []
-      media_ids: ["ART-001"]
-    - id: "STAGE-02-FIELD"
-      title: "Comprobar B1 en campo"
-      situation: "La indicación local de B1 confirma que el objetivo es detectado. Debes decidir qué demuestra realmente esta observación."
-      evidence_ids: ["EVID-02-SENSOR"]
+      situation: "La caja está frente a B1 y su indicador está activo, pero I0.3 permanece en FALSE y la estación continúa esperando presencia. ¿Qué harías a continuación?"
+      evidence_ids: ["EVID-01-INCIDENT", "EVID-02-SENSOR"]
       decision_ids: ["DEC-01-TRACE", "DEC-01-REPLACE", "DEC-01-PROGRAM"]
-      media_ids: ["ART-002"]
+      media_ids: ["ART-001", "ART-002"]
     - id: "STAGE-03-ELECTRICAL"
+      phase: "investigation"
       title: "Identificar la ruta eléctrica"
       situation: "El esquema muestra BN a +24 VDC, BU a 0 VDC y BK desde B1 por X1:17 hasta I0.3."
       evidence_ids: ["EVID-03-SCHEMATIC"]
       decision_ids: ["DEC-02-MAP", "DEC-02-GUESS", "DEC-02-BYPASS"]
       media_ids: ["ART-003"]
     - id: "STAGE-04-PLC"
+      phase: "investigation"
       title: "Comparar el estado PLC"
       situation: "La Watch Table muestra I0.3 y Tag_BoxPresent_B1 en FALSE mientras B1 continúa detectando."
       evidence_ids: ["EVID-04-PLC"]
       decision_ids: ["DEC-03-COMPARE", "DEC-03-PLC-FAULT", "DEC-03-CHANGE"]
       media_ids: ["ART-004"]
     - id: "STAGE-05-MEASURE"
+      phase: "investigation"
       title: "Medir la señal"
       situation: "La medición muestra aproximadamente 24.1 VDC en la salida BK de B1 y 0.0 VDC en el lado PLC de X1:17."
       evidence_ids: ["EVID-05-VOLTAGE"]
       decision_ids: ["DEC-04-LOCALIZE", "DEC-04-SENSOR", "DEC-04-MODULE"]
       media_ids: ["ART-005"]
     - id: "STAGE-06-CONTINUITY"
+      phase: "investigation"
       title: "Comprobar continuidad"
       situation: "Con el circuito en estado seguro, la prueba entre X1:17 y PLC I0.3 indica OL."
       evidence_ids: ["EVID-06-OPEN"]
       decision_ids: ["DEC-05-OPEN", "DEC-05-IGNORE", "DEC-05-FORCE"]
       media_ids: ["ART-006"]
     - id: "STAGE-07-LOCALIZE"
+      phase: "investigation"
       title: "Localizar la causa raíz"
       situation: "El seguimiento físico del conductor BK revela una sección cortada entre X1:17 y la entrada PLC."
       evidence_ids: ["EVID-07-DAMAGE"]
       decision_ids: ["DEC-06-REPAIR", "DEC-06-REPLACE-SENSOR", "DEC-06-REPLACE-PLC"]
       media_ids: ["ART-007"]
     - id: "STAGE-08-VERIFY"
+      phase: "solution"
       title: "Verificar la recuperación"
       situation: "La sección dañada ha sido reparada conforme a la práctica autorizada. Debes validar toda la ruta antes de cerrar."
       evidence_ids: ["EVID-08-RECOVERY"]
@@ -160,13 +161,13 @@ public:
       revealed_by: ["DEC-06-REPAIR"]
   decisions:
     - id: "DEC-01-TRACE"
-      stage_id: "STAGE-02-FIELD"
-      action: "Conservar la evidencia y seguir la señal desde B1."
+      stage_id: "STAGE-01-OBSERVE"
+      action: "Confirmar la discrepancia en vivo y seguir la ruta documentada de la señal desde B1."
     - id: "DEC-01-REPLACE"
-      stage_id: "STAGE-02-FIELD"
+      stage_id: "STAGE-01-OBSERVE"
       action: "Sustituir B1 porque la secuencia no continúa."
     - id: "DEC-01-PROGRAM"
-      stage_id: "STAGE-02-FIELD"
+      stage_id: "STAGE-01-OBSERVE"
       action: "Modificar la lógica para ignorar Tag_BoxPresent_B1."
     - id: "DEC-02-MAP"
       stage_id: "STAGE-03-ELECTRICAL"
@@ -306,6 +307,7 @@ private:
     critical_path: ["DEC-01-TRACE", "DEC-02-MAP", "DEC-03-COMPARE", "DEC-04-LOCALIZE", "DEC-05-OPEN", "DEC-06-REPAIR", "DEC-07-VERIFY-CHAIN"]
   decision_logic:
     - decision_id: "DEC-01-TRACE"
+      is_correct: true
       rationale: "La indicación local no prueba la ruta completa."
       classification: "strong"
       consequence: "Se identifica la ruta eléctrica."
@@ -314,6 +316,8 @@ private:
       score_effect: 8
       safety_effect: 1
     - decision_id: "DEC-01-REPLACE"
+      is_correct: false
+      retry_feedback: "Sustituir B1 todavía no está justificado: su indicador confirma detección local, pero no establece qué ocurre con la señal a lo largo de la ruta."
       rationale: "No existe evidencia de fallo interno de B1."
       classification: "weak"
       consequence: "La causa seguiría presente."
@@ -322,6 +326,8 @@ private:
       score_effect: -4
       safety_effect: 0
     - decision_id: "DEC-01-PROGRAM"
+      is_correct: false
+      retry_feedback: "Modificar la lógica ocultaría la discrepancia observada sin comprobar primero el recorrido eléctrico documentado de la señal."
       rationale: "Ignorar la señal oculta el fallo."
       classification: "unsafe"
       consequence: "Se introduce riesgo operativo."
@@ -330,6 +336,7 @@ private:
       score_effect: -10
       safety_effect: -10
     - decision_id: "DEC-02-MAP"
+      is_correct: true
       rationale: "La identidad de cada punto queda documentada."
       classification: "strong"
       consequence: "Se observa la entrada correcta."
@@ -338,6 +345,8 @@ private:
       score_effect: 8
       safety_effect: 1
     - decision_id: "DEC-02-GUESS"
+      is_correct: false
+      retry_feedback: "Una entrada parecida puede pertenecer a otro dispositivo. La investigación necesita conservar la trazabilidad entre B1 y su punto PLC documentado."
       rationale: "Una entrada similar no garantiza trazabilidad."
       classification: "weak"
       consequence: "La observación puede ser ajena a B1."
@@ -346,6 +355,8 @@ private:
       score_effect: -4
       safety_effect: 0
     - decision_id: "DEC-02-BYPASS"
+      is_correct: false
+      retry_feedback: "Un puente simularía una condición y podría alterar la secuencia; no aporta evidencia sobre el estado real de la ruta de B1."
       rationale: "El puente simula una condición no verificada."
       classification: "unsafe"
       consequence: "Se oculta el fallo real."
@@ -354,6 +365,7 @@ private:
       score_effect: -10
       safety_effect: -10
     - decision_id: "DEC-03-COMPARE"
+      is_correct: true
       rationale: "La discrepancia delimita la investigación sin culpar al PLC."
       classification: "strong"
       consequence: "Se mide la ruta de señal."
@@ -362,6 +374,8 @@ private:
       score_effect: 8
       safety_effect: 1
     - decision_id: "DEC-03-PLC-FAULT"
+      is_correct: false
+      retry_feedback: "I0.3 en FALSE confirma el síntoma observado por el PLC, pero por sí solo no distingue entre una pérdida aguas arriba y un canal defectuoso."
       rationale: "FALSE solo describe el estado de entrada."
       classification: "weak"
       consequence: "La hipótesis no está demostrada."
@@ -370,6 +384,8 @@ private:
       score_effect: -4
       safety_effect: 0
     - decision_id: "DEC-03-CHANGE"
+      is_correct: false
+      retry_feedback: "Reasignar el tag cambia el sistema documentado antes de localizar la pérdida de señal y puede introducir una segunda anomalía."
       rationale: "Reasignar el tag altera un sistema documentado."
       classification: "unsafe"
       consequence: "Se introduce un fallo adicional."
@@ -378,6 +394,7 @@ private:
       score_effect: -10
       safety_effect: -5
     - decision_id: "DEC-04-LOCALIZE"
+      is_correct: true
       rationale: "Las tensiones sitúan la pérdida entre ambos puntos."
       classification: "strong"
       consequence: "Se prepara una prueba de continuidad segura."
@@ -386,6 +403,8 @@ private:
       score_effect: 10
       safety_effect: 2
     - decision_id: "DEC-04-SENSOR"
+      is_correct: false
+      retry_feedback: "La salida medida en B1 demuestra que el dispositivo genera señal; reemplazarlo no explica por qué esa tensión no aparece aguas abajo."
       rationale: "B1 entrega 24.1 VDC."
       classification: "weak"
       consequence: "La sustitución no repararía la ruta."
@@ -394,6 +413,8 @@ private:
       score_effect: -5
       safety_effect: 0
     - decision_id: "DEC-04-MODULE"
+      is_correct: false
+      retry_feedback: "La diferencia entre los dos puntos sitúa la investigación en la ruta intermedia. El módulo no debe sustituirse sin comprobar primero esa sección."
       rationale: "Aún no se ha probado el conductor."
       classification: "weak"
       consequence: "La sustitución carece de evidencia."
@@ -402,6 +423,7 @@ private:
       score_effect: -5
       safety_effect: 0
     - decision_id: "DEC-05-OPEN"
+      is_correct: true
       rationale: "OL confirma eléctricamente una interrupción."
       classification: "strong"
       consequence: "Se traza el conductor para localizarla."
@@ -410,6 +432,8 @@ private:
       score_effect: 10
       safety_effect: 2
     - decision_id: "DEC-05-IGNORE"
+      is_correct: false
+      retry_feedback: "Repetir el arranque no resuelve una lectura OL obtenida con el circuito aislado; la evidencia requiere localizar físicamente la discontinuidad."
       rationale: "Repetir no elimina un circuito abierto."
       classification: "weak"
       consequence: "La avería permanece."
@@ -418,6 +442,8 @@ private:
       score_effect: -4
       safety_effect: 0
     - decision_id: "DEC-05-FORCE"
+      is_correct: false
+      retry_feedback: "Forzar el tag evita la ruta física confirmada y no restaura su integridad. La discontinuidad debe investigarse bajo condiciones seguras."
       rationale: "El forzado oculta una discontinuidad confirmada."
       classification: "unsafe"
       consequence: "La intervención incumple seguridad."
@@ -426,6 +452,7 @@ private:
       score_effect: -10
       safety_effect: -10
     - decision_id: "DEC-06-REPAIR"
+      is_correct: true
       rationale: "La intervención corrige la causa confirmada."
       classification: "strong"
       consequence: "La continuidad queda restaurada."
@@ -434,6 +461,8 @@ private:
       score_effect: 10
       safety_effect: 2
     - decision_id: "DEC-06-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "El sensor ya entregó la tensión esperada y el daño está localizado fuera de él; su sustitución dejaría intacta la interrupción."
       rationale: "B1 está sano y genera la señal."
       classification: "weak"
       consequence: "El circuito seguiría abierto."
@@ -442,6 +471,8 @@ private:
       score_effect: -5
       safety_effect: 0
     - decision_id: "DEC-06-REPLACE-PLC"
+      is_correct: false
+      retry_feedback: "El daño físico localizado explica la ausencia de señal en I0.3. Sustituir el PLC no restablecería el conductor."
       rationale: "El daño de BK explica la pérdida."
       classification: "weak"
       consequence: "La sustitución no está justificada."
@@ -450,6 +481,7 @@ private:
       score_effect: -5
       safety_effect: 0
     - decision_id: "DEC-07-VERIFY-CHAIN"
+      is_correct: true
       rationale: "Solo la cadena completa demuestra recuperación."
       classification: "strong"
       consequence: "Campo, PLC, tag y secuencia quedan verificados."
@@ -458,6 +490,8 @@ private:
       score_effect: 10
       safety_effect: 1
     - decision_id: "DEC-07-INPUT-ONLY"
+      is_correct: false
+      retry_feedback: "I0.3 en TRUE es una comprobación necesaria, pero no demuestra por sí sola que el tag y la función de máquina se hayan recuperado."
       rationale: "Una entrada TRUE no demuestra recuperación del proceso."
       classification: "acceptable"
       consequence: "La verificación queda incompleta."
@@ -466,6 +500,8 @@ private:
       score_effect: -2
       safety_effect: 0
     - decision_id: "DEC-07-CLOSE"
+      is_correct: false
+      retry_feedback: "La integridad de una reparación industrial debe confirmarse bajo la condición funcional original antes de cerrar la intervención."
       rationale: "Cerrar sin prueba funcional omite el resultado industrial."
       classification: "weak"
       consequence: "La reparación no queda validada."
@@ -479,6 +515,19 @@ private:
     minimum_score: 0
     maximum_score: 100
     safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
   debrief:
     fault_summary: "B1 detectaba y entregaba tensión, pero el conductor BK estaba abierto entre X1:17 e I0.3."
     correct_reasoning: ["Separar síntoma y causa.", "Trazar la señal documentada.", "Comparar estados y medir puntos sucesivos.", "Confirmar continuidad antes de intervenir."]

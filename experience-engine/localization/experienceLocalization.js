@@ -39,6 +39,7 @@ export function resolveExperienceLocalization(authoring, localeDocument) {
   applyById(localized.public.stages, translations.stages, ["title", "situation"]);
   applyById(localized.public.evidence, translations.evidence, ["source", "content"]);
   applyById(localized.public.decisions, translations.decisions, ["action"]);
+  applyRetryFeedback(localized.private?.decision_logic, translations.retry_feedback);
   applyRequired(localized.public.visual, translations.visual, ["educational_purpose"]);
   applyById(localized.public.visual.assets ?? [], translations.assets, ["alt", "caption"]);
   if (plainObject(localized.public.completion)) {
@@ -52,6 +53,20 @@ export function resolveExperienceLocalization(authoring, localeDocument) {
     ]);
   }
   return deepFreeze(localized);
+}
+
+function applyRetryFeedback(decisionLogic, translations) {
+  if (!Array.isArray(decisionLogic)) return;
+  const retryEntries = decisionLogic.filter(item => item?.is_correct === false);
+  if (!retryEntries.length) return;
+  if (!plainObject(translations)) missing("retry_feedback");
+  retryEntries.forEach(item => {
+    const translation = translations[item.decision_id];
+    if (typeof translation !== "string" || !translation.trim()) {
+      missing(`retry_feedback.${item.decision_id}`);
+    }
+    item.retry_feedback = translation;
+  });
 }
 
 export function selectLocaleDocument(locale, documents, defaultLocale) {

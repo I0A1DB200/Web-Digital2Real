@@ -2,7 +2,7 @@
 
 ## Sensor ON, PLC Input OFF
 
-**Blueprint version:** 1.0  
+**Blueprint version:** 2.0  
 **Experience status:** Approved for build validation  
 **Experience class:** Practice  
 **Difficulty:** Foundation  
@@ -51,16 +51,19 @@ The loose-termination variant is excluded. Sensor failure, PLC input failure and
 
 ## Investigation graph
 
-| Stage | Investigation | Evidence | Required conclusion |
+The executable structure is `Incident → Investigation → Solution → Debrief`. Every row below is an explicit decision point; an incorrect option remains in place and unlocks no evidence.
+
+| Phase | Decision point | Available media | Evidence gained after the best action |
 |---|---|---|---|
-| 01 | Observe | `ART-001` | Trace before replacing or modifying. |
-| 02 | Field | `ART-002` | Local indication proves detection, not end-to-end delivery. |
-| 03 | Electrical reference | `ART-003` | Identify `B1 → BK → X1:17 → I0.3`. |
-| 04 | PLC diagnostic | `ART-004` | `I0.3 = FALSE` does not prove PLC failure. |
-| 05 | Voltage measurement | `ART-005` | 24.1 VDC at B1 and 0.0 VDC PLC-side localizes signal loss. |
-| 06 | Continuity test | `ART-006` | `OL` confirms an open circuit. |
-| 07 | Root-cause localization | `ART-007` | Physical damage to BK is confirmed. |
-| 08 | Recovery verification | `ART-008` | Repair is accepted only after field-to-sequence verification. |
+| Incident | Confirm the field/PLC discrepancy and select the documented route | `ART-001`, `ART-002` | Electrical schematic, `ART-003` |
+| Investigation | Identify `B1 → BK → X1:17 → I0.3` | `ART-003` | Live PLC state, `ART-004` |
+| Investigation | Compare the PLC observation with the field state | `ART-004` | 24.1/0.0 VDC comparison, `ART-005` |
+| Investigation | Isolate and test the intervening conductor safely | `ART-005` | Open-circuit result, `ART-006` |
+| Investigation | Interpret OL and trace the cable route | `ART-006` | Physical BK damage, `ART-007` |
+| Investigation | Repair the confirmed damaged conductor | `ART-007` | Recovery evidence, `ART-008` |
+| Solution | Verify the complete field-to-machine chain | `ART-008` | Explicit `COMPLETE` transition |
+
+Debrief remains terminal content rather than an executable stage.
 
 ## Learning method
 

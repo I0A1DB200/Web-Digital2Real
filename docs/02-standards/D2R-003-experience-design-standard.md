@@ -41,6 +41,7 @@ This standard defines the types and design obligations of Experiences. Experienc
 - The debrief MUST explain reasoning and MUST NOT introduce facts absent from the structured model.
 - Technical uncertainty MUST be recorded and MUST NOT be replaced by invented vendor facts.
 - Notebook knowledge MUST be referenced rather than duplicated.
+- ENV contract V2 Theory is a narrowly governed exception: it MUST remain independent from Notebook, MUST NOT import or reference Notebook as its source of truth, and MAY duplicate a concept editorially when the ENV needs its own preparation content.
 
 ## Experience classes
 

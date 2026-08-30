@@ -53,3 +53,9 @@ y: 0–100
 The generated catalog resolves every hotspot through the canonical Experience editorial ID. Environment content never owns Experience titles, summaries, access rules, or technical identifiers.
 
 Capacity describes the intended size of an Environment. Completion is user runtime state and is never authored in this directory or emitted as static catalog metadata.
+
+## Environment contract V2 and Theory
+
+Environment contract `2.0.0` may reference one canonical `theory.yaml` within the same ENV package. Theory owns ordered technical preparation content, ES/EN localization and ENV-local media references. Generated Theory artifacts are disposable delivery output and are loaded on demand.
+
+Notebook remains a separate product and source of truth. ENV Theory neither imports nor references Notebook content; independent editorial duplication is permitted when both products need to explain the same industrial concept.

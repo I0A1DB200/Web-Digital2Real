@@ -74,6 +74,24 @@ test("preview packages every eligible canonical Experience", async t => {
     x: 8.6,
     y: 36.8
   }]);
+  assert.deepEqual(catalog.environments[0].theory, {
+    defaultLocale: "es",
+    sectionIds: ["TH-01-DIGITAL-SIGNAL-PATH", "TH-02-PNP-REFERENCE", "TH-03-OBSERVATION-BOUNDARIES"],
+    locales: {
+      es: "environments/ENV-001/theory.es.json",
+      en: "environments/ENV-001/theory.en.json"
+    }
+  });
+  assert.equal(catalog.environments[0].contractVersion, "2.0.0");
+  assert.equal(catalog.environments[1].contractVersion, "1.0.0");
+  const theoryEs = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.es));
+  const theoryEn = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.en));
+  assert.deepEqual(theoryEs.sections.map(item => item.id), theoryEn.sections.map(item => item.id));
+  assert.match(theoryEs.sections[0].title, /sensor/i);
+  assert.match(theoryEn.sections[0].title, /sensor/i);
+  assert.equal(theoryEs.media.length, 1);
+  await access(path.join(generatedRoot, theoryEs.media[0].src));
+  assert.equal(Object.hasOwn(catalog.environments[1], "theory"), false);
   assert.equal(catalog.environments[1].hotspots.length, 0);
   assert.equal(catalog.environments[2].hotspots.length, 0);
   for (const environment of catalog.environments) {
@@ -160,20 +178,13 @@ test("a validation failure preserves the previous generated package", async t =>
   await mkdir(target, { recursive: true });
   await writeFile(path.join(target, "sentinel.txt"), "preserve", "utf8");
 
-  const source = path.join(
-    root,
-    "content",
-    "experiences",
-    "sensors",
-    "EE-0001-sensor-on-plc-input-off",
-    "experience.yaml"
-  );
+  const source = path.join(root, "content", "environments", "ENV-001-automated-factory", "theory.yaml");
   const original = await readFile(source, "utf8");
   const invalid = original.replace(
-    /contract_version:\s*"[^"]+"/u,
-    'contract_version: "unsupported"'
+    /version:\s*"[^"]+"/u,
+    'version: "unsupported"'
   );
-  assert.notEqual(invalid, original, "The test fixture contract version must be invalidated.");
+  assert.notEqual(invalid, original, "The Theory fixture version must be invalidated.");
   await writeFile(source, invalid, "utf8");
 
   await assert.rejects(
@@ -194,6 +205,19 @@ test("publish excludes technical-review experiences while preview includes them"
   assert.deepEqual(preview.packaged, ["EXP-SENSOR-SIGNAL-001"]);
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.deepEqual(publish.environments, []);
+});
+
+test("Theory packaging copies only media referenced by canonical sections", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const environmentRoot = path.join(root, "content", "environments", "ENV-001-automated-factory");
+  await cp(path.join(environmentRoot, "media", "ENV-001-automated-factory.png"), path.join(environmentRoot, "media", "unused.png"));
+  const theoryFile = path.join(environmentRoot, "theory.yaml");
+  const source = await readFile(theoryFile, "utf8");
+  await writeFile(theoryFile, source.replace("\nsections:", "\n  - id: \"TH-MEDIA-UNUSED\"\n    type: \"image\"\n    src: \"media/unused.png\"\n    alt: \"Unused declared media\"\n\nsections:"), "utf8");
+
+  await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+  await assert.rejects(access(path.join(root, "Frontend", "generated", "experience-engine", "environments", "ENV-001", "media", "unused.png")));
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {

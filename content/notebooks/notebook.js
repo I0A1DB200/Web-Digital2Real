@@ -1020,5 +1020,175 @@ export const notebook = [
           "Use an FC when the responsibility is an operation that does not own FB instance state. Use an FB when the responsibility is reusable behavior that must remember independent state for each instance. This distinction keeps persistence, ownership and reuse explicit as the PLC application grows."
       }
     ]
+  },
+  {
+    id: "article-008",
+    slug: "global-db-vs-instance-db",
+
+    kicker: "PLC SOFTWARE ARCHITECTURE",
+    title: "Global DB vs Instance DB",
+    excerpt:
+      "Choosing data ownership based on responsibility, not convenience.",
+
+    coverImage: "./assets/images/notebook/article-008-global-db-vs-instance-db.png",
+    coverAlt:
+      "Dark industrial engineering workstation showing a Siemens PLC architecture with shared global data and multiple Function Block instances with independent instance data.",
+
+    readingTime: 3,
+
+    categories: ["PLC Software Architecture"],
+
+    sections: [
+      {
+        type: "introduction",
+        content:
+          "In a Siemens PLC project, both Global DBs and Instance DBs store data. But they represent two very different architectural decisions."
+      },
+      {
+        type: "paragraph",
+        content: "The important question is not:"
+      },
+      {
+        type: "paragraph",
+        content: "“Where can I store this variable?”"
+      },
+      {
+        type: "paragraph",
+        content: "It is:"
+      },
+      {
+        type: "paragraph",
+        content: "“Who owns this data?”"
+      },
+      {
+        type: "paragraph",
+        content:
+          "That distinction becomes increasingly important as a PLC project grows."
+      },
+      {
+        type: "heading",
+        title: "Global DB"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A Global Data Block exists independently from a specific Function Block instance. It is appropriate for data that genuinely belongs to a wider system context, such as production information, recipes, line status or system configuration."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "DB_System\n├── Production\n├── Recipe\n├── LineStatus\n└── Configuration"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Multiple parts of the program may legitimately need access to this information. The DB represents shared system data."
+      },
+      {
+        type: "heading",
+        title: "Instance DB"
+      },
+      {
+        type: "paragraph",
+        content:
+          "An Instance DB belongs to a specific FB instance. The same Function Block can therefore be reused for multiple equipment instances while each instance maintains its own state."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "FB_Conveyor\n      │\n      ├── Conveyor_01 → DB_Conveyor_01\n      ├── Conveyor_02 → DB_Conveyor_02\n      └── Conveyor_03 → DB_Conveyor_03"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Each conveyor executes the same behavior, but each instance maintains its own data."
+      },
+      {
+        type: "paragraph",
+        content: "Typical instance data may include:"
+      },
+      {
+        type: "list",
+        items: [
+          "Running",
+          "Fault",
+          "SpeedFeedback",
+          "Timers",
+          "InternalState",
+          "Diagnostics"
+        ]
+      },
+      {
+        type: "paragraph",
+        content:
+          "Those values belong to the conveyor object, not to the entire PLC application."
+      },
+      {
+        type: "heading",
+        title: "The architectural difference"
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "GLOBAL DB\n     │\n     └── Shared system information\n              │\n      ┌───────┼───────┐\n      ▼       ▼       ▼\n     FB_A    FB_B    FB_C\n\n\nINSTANCE DATA\n\n FB_Conveyor\n      │\n ┌────┼────┐\n ▼    ▼    ▼\nC01  C02  C03\n │    │    │\nDB01 DB02 DB03"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A Global DB creates shared ownership. Instance data creates local ownership associated with an FB instance. That distinction affects coupling, reuse, diagnostics and maintainability."
+      },
+      {
+        type: "heading",
+        title: "A common mistake"
+      },
+      {
+        type: "paragraph",
+        content:
+          "A project may initially place equipment state inside large Global DBs because the data is easy to access."
+      },
+      {
+        type: "code",
+        language: "text",
+        content:
+          "DB_Machine.Conveyor01.Running\nDB_Machine.Conveyor01.Fault\nDB_Machine.Conveyor01.Timer"
+      },
+      {
+        type: "paragraph",
+        content: "Technically, this can work."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Architecturally, however, it can expose internal equipment state to the rest of the application and make unrelated logic dependent on implementation details. As the machine grows, those dependencies become harder to understand and modify safely."
+      },
+      {
+        type: "heading",
+        title: "Better decision rule"
+      },
+      {
+        type: "paragraph",
+        content:
+          "Use Instance DB / FB instance data when the information belongs to the internal state or behavior of one equipment instance."
+      },
+      {
+        type: "paragraph",
+        content:
+          "Use a Global DB when the information genuinely belongs to the wider application and needs shared ownership."
+      },
+      {
+        type: "paragraph",
+        content:
+          "The objective is not to eliminate Global DBs. It is to give every piece of data a clear owner."
+      },
+      {
+        type: "engineering-note",
+        title: "Data ownership is part of PLC architecture.",
+        content:
+          "Store data according to the responsibility that owns it—not according to whichever DB is easiest to access."
+      }
+    ]
   }
 ];

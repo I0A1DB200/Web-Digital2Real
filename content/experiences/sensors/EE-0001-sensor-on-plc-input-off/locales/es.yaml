@@ -20,10 +20,7 @@ translations:
   stages:
     STAGE-01-OBSERVE:
       title: "Observar el incidente"
-      situation: "La caja está frente a B1 y el indicador del sensor está activo, pero la estación continúa esperando presencia."
-    STAGE-02-FIELD:
-      title: "Comprobar B1 en campo"
-      situation: "La indicación local de B1 confirma que el objetivo es detectado. Debes decidir qué demuestra realmente esta observación."
+      situation: "La caja está frente a B1 y su indicador está activo, pero I0.3 permanece en FALSE y la estación continúa esperando presencia. ¿Qué harías a continuación?"
     STAGE-03-ELECTRICAL:
       title: "Identificar la ruta eléctrica"
       situation: "El esquema muestra BN a +24 VDC, BU a 0 VDC y BK desde B1 por X1:17 hasta I0.3."
@@ -69,7 +66,7 @@ translations:
       content: "B1 detecta, la señal llega al PLC, I0.3 y Tag_BoxPresent_B1 son TRUE y la secuencia se recupera."
   decisions:
     DEC-01-TRACE:
-      action: "Conservar la evidencia y seguir la señal desde B1."
+      action: "Confirmar la discrepancia en vivo y seguir la ruta documentada de la señal desde B1."
     DEC-01-REPLACE:
       action: "Sustituir B1 porque la secuencia no continúa."
     DEC-01-PROGRAM:
@@ -110,6 +107,21 @@ translations:
       action: "Cerrar al observar únicamente I0.3 en TRUE."
     DEC-07-CLOSE:
       action: "Cerrar sin repetir la condición funcional de la máquina."
+  retry_feedback:
+    DEC-01-REPLACE: "Sustituir B1 todavía no está justificado: su indicador confirma detección local, pero no establece qué ocurre con la señal a lo largo de la ruta."
+    DEC-01-PROGRAM: "Modificar la lógica ocultaría la discrepancia observada sin comprobar primero el recorrido eléctrico documentado de la señal."
+    DEC-02-GUESS: "Una entrada parecida puede pertenecer a otro dispositivo. La investigación necesita conservar la trazabilidad entre B1 y su punto PLC documentado."
+    DEC-02-BYPASS: "Un puente simularía una condición y podría alterar la secuencia; no aporta evidencia sobre el estado real de la ruta de B1."
+    DEC-03-PLC-FAULT: "I0.3 en FALSE confirma el síntoma observado por el PLC, pero por sí solo no distingue entre una pérdida aguas arriba y un canal defectuoso."
+    DEC-03-CHANGE: "Reasignar el tag cambia el sistema documentado antes de localizar la pérdida de señal y puede introducir una segunda anomalía."
+    DEC-04-SENSOR: "La salida medida en B1 demuestra que el dispositivo genera señal; reemplazarlo no explica por qué esa tensión no aparece aguas abajo."
+    DEC-04-MODULE: "La diferencia entre los dos puntos sitúa la investigación en la ruta intermedia. El módulo no debe sustituirse sin comprobar primero esa sección."
+    DEC-05-IGNORE: "Repetir el arranque no resuelve una lectura OL obtenida con el circuito aislado; la evidencia requiere localizar físicamente la discontinuidad."
+    DEC-05-FORCE: "Forzar el tag evita la ruta física confirmada y no restaura su integridad. La discontinuidad debe investigarse bajo condiciones seguras."
+    DEC-06-REPLACE-SENSOR: "El sensor ya entregó la tensión esperada y el daño está localizado fuera de él; su sustitución dejaría intacta la interrupción."
+    DEC-06-REPLACE-PLC: "El daño físico localizado explica la ausencia de señal en I0.3. Sustituir el PLC no restablecería el conductor."
+    DEC-07-INPUT-ONLY: "I0.3 en TRUE es una comprobación necesaria, pero no demuestra por sí sola que el tag y la función de máquina se hayan recuperado."
+    DEC-07-CLOSE: "La integridad de una reparación industrial debe confirmarse bajo la condición funcional original antes de cerrar la intervención."
   visual:
     educational_purpose: "Presentar la señal de forma progresiva sin revelar el conductor dañado antes de su localización."
   assets:

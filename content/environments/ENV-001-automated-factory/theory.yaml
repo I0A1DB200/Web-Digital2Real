@@ -1,0 +1,29 @@
+version: "1.0.0"
+default_locale: "es"
+supported_locales:
+  - "es"
+  - "en"
+
+media:
+  - id: "TH-MEDIA-AUTOMATED-FACTORY"
+    type: "image"
+    src: "media/ENV-001-automated-factory.png"
+    alt: "Vista general de una instalación automatizada para analizar el recorrido de señales"
+
+sections:
+  - id: "TH-01-DIGITAL-SIGNAL-PATH"
+    title: "Del sensor al programa PLC"
+    body: |
+      Una señal digital de 24 VDC recorre una cadena física y lógica: sensor, cableado, borne, canal de entrada, imagen de proceso y programa PLC. Un diagnóstico fiable comprueba cada frontera en orden y distingue el estado eléctrico del valor que utiliza el software.
+    media_ids:
+      - "TH-MEDIA-AUTOMATED-FACTORY"
+  - id: "TH-02-PNP-REFERENCE"
+    title: "Referencia y conmutación PNP"
+    body: |
+      En un circuito PNP, el sensor entrega potencial positivo hacia la entrada cuando detecta. La alimentación, la referencia de 0 V y la continuidad hasta el canal deben verificarse antes de concluir que existe un fallo de programa.
+    media_ids: []
+  - id: "TH-03-OBSERVATION-BOUNDARIES"
+    title: "Separar observación y conclusión"
+    body: |
+      El LED del sensor, el LED del módulo y una variable como I0.3 representan puntos de observación distintos. Compararlos permite localizar en qué tramo deja de propagarse la señal sin sustituir evidencias por suposiciones.
+    media_ids: []

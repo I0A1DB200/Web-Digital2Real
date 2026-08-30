@@ -8,7 +8,7 @@
 | Scope | Environment and Experience learning model V2 |
 | Product area | Experience Lab |
 | Design authority | Digital2Real Product Design |
-| Implementation status | DESIGNED — NOT IMPLEMENTED |
+| Implementation status | PHASE 6 ENV PROGRESS V2 IMPLEMENTED |
 
 ## 1. Purpose and authority
 
@@ -23,6 +23,10 @@ D2R-DESIGN-002 complements those authorities with the proposed V2 learning model
 D2R-003 currently states that Notebook knowledge must be referenced rather than duplicated. V2 proposes a deliberate, narrowly scoped evolution for **ENV Theory**: Notebook remains independent, ENV Theory owns its preparation content, and conceptual duplication is permitted. While this document is DRAFT, D2R-003 remains the active authority. Ratifying V2 will require an explicit update to D2R-003 rather than relying on this document as a parallel or silent exception.
 
 ## 2. Status boundary
+
+Phase 5 implements the versioned ENV V2 Theory contract, localized packaging and read-only Frontend presentation for one ENV-001 pilot. It does not implement Theory progress, combined ENV completion, mastery persistence, best results or Experience migration.
+
+Phase 6 adds versioned local progress for explicit Theory section completion and monotonic Experience completion/mastery. Environment completion requires complete Theory and every current Experience completed; Environment mastery requires complete Theory and every current Experience mastered. The dimensions remain separate and no combined score, run history or analytics is defined.
 
 The model in this document is **DESIGNED** and **NOT IMPLEMENTED**.
 
@@ -258,7 +262,7 @@ This classification reflects the audited implementation and is planning input on
 
 ## 15. Pilot and rollout boundary
 
-**EE-0001 — Sensor ON, PLC Input OFF** is the sole V2 pilot. A later, separately approved implementation will use it to validate:
+**EE-0001 — Sensor ON, PLC Input OFF** is the sole canonical V2 pilot. Its separately approved Phase 7 migration validates:
 
 - plausible decisions and one correct option;
 - blocked progression and unlimited retry;
@@ -267,8 +271,8 @@ This classification reflects the audited implementation and is planning input on
 - final evaluation outcomes;
 - Debrief V2.
 
-This designation does not modify EE-0001 or declare it V2-ready. V2 MUST NOT extend to EE-0002 or later Experiences until the pilot has validated the model and provisional thresholds.
+EE-0001 now has one Authoring V2 source, explicit progression, sequential evidence, all three provisional outcomes and ENV Progress V2 integration. This pilot does not authorize migration of EE-0002 or later Experiences, nor does it promote the provisional thresholds to a final policy.
 
 ## 16. Implementation guardrail
 
-This document authorizes design documentation only. Any implementation requires a separate technical plan, explicit approval, versioned contract decisions, migration analysis, and preservation of the public/private boundary. Current schemas, Runtime, Player, ENV definitions, EE-0001, and EE-0009 remain unchanged.
+Further implementation still requires a separate technical plan and explicit approval. Phase 7 migrated only EE-0001 using the existing schemas, Runtime, Player, evaluator, projection and ENV Progress contracts; EE-0009 remains unchanged as the archived V1 regression.

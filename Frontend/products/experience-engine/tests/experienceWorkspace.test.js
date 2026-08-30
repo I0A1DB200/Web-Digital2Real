@@ -8,6 +8,7 @@ import { chooseEnvironmentPopoverPlacement } from "../components/environmentPopo
 import { createEnvironmentProgressStore } from "../components/environmentProgressStore.js";
 import {
   CompletionPanel,
+  createExperienceProgressResult,
   createExperienceWorkspace,
   createWorkspaceProjection,
   DecisionPanel
@@ -102,6 +103,7 @@ test("a generated artifact opens and completes through Experience Lab without co
     }],
     environments: [{
       id: "ENV-001",
+      contractVersion: "2.0.0",
       slug: "automated-factory",
       title: "Automated Factory",
       lifecycle: "preview",
@@ -109,6 +111,11 @@ test("a generated artifact opens and completes through Experience Lab without co
       background: "environments/ENV-001-automated-factory.png",
       width: 1672,
       height: 941,
+      theory: {
+        defaultLocale: "es",
+        sectionIds: ["TH-01-FIRST", "TH-02-SECOND"],
+        locales: { es: "environments/ENV-001/theory.es.json", en: "environments/ENV-001/theory.en.json" }
+      },
       hotspots: [{ experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 }]
     }, {
       id: "ENV-002", slug: "motion-cell", title: "Motion Cell", lifecycle: "preview", capacity: 10,
@@ -123,6 +130,14 @@ test("a generated artifact opens and completes through Experience Lab without co
   const documentRef = new FakeDocument();
   const responses = new Map([
     ["./generated/experience-engine/catalog.json", catalog],
+    ["./generated/experience-engine/environments/ENV-001/theory.es.json", {
+      theory_artifact_version: "1.0.0", environment_id: "ENV-001", locale: "es",
+      sections: [
+        { id: "TH-01-FIRST", title: "Ruta de señal", body: "Primera sección.", media_ids: ["TH-MEDIA-01"] },
+        { id: "TH-02-SECOND", title: "Referencia PNP", body: "Segunda sección.", media_ids: [] }
+      ],
+      media: [{ id: "TH-MEDIA-01", type: "image", src: "environments/ENV-001/media/theory.png", alt: "Ruta de señal" }]
+    }],
     [`./generated/experience-engine/experiences/${artifact.identity.id}.json`, artifact]
   ]);
   const workspace = createExperienceWorkspace({
@@ -150,6 +165,15 @@ test("a generated artifact opens and completes through Experience Lab without co
   );
   environment.click();
   assert.match(workspace.element.text, /0 \/ 1/);
+  await findButton(workspace.element, "Open Theory").click();
+  assert.match(workspace.element.text, /Ruta de señal/);
+  assert.doesNotMatch(workspace.element.text, /Referencia PNP/);
+  const theoryImage = workspace.element.find(element => element.className === "experience-media__asset");
+  assert.equal(theoryImage.src, "./generated/experience-engine/environments/ENV-001/media/theory.png");
+  findButton(workspace.element, "Continue Theory").click();
+  assert.match(workspace.element.text, /Referencia PNP/);
+  findButton(workspace.element, "Complete Theory").click();
+  assert.match(workspace.element.text, /Theory 2 \/ 2/);
   const hotspot = workspace.element.find(element => element.className === "environment-hotspot");
   assert.equal(hotspot.tagName, "BUTTON");
   assert.equal(hotspot.attributes["aria-label"], "Inspect Sensor ON, PLC Input OFF");
@@ -253,6 +277,15 @@ test("selects the document locale and falls back through generated catalog metad
   await workspace.initialise();
   await workspace.openExperience(artifact.identity.id);
   assert.ok(requests.includes("./generated/experience-engine/experiences/item.en.json"));
+});
+
+test("maps completed Player V2 outcomes to the minimal progress boundary", () => {
+  for (const [outcome, mastered] of [["PASS", true], ["PASS_WITH_GUIDANCE", false], ["RETRY_RECOMMENDED", false]]) {
+    assert.deepEqual(createExperienceProgressResult({
+      interaction: "completion", completionStatus: "completed", evaluationResult: { outcome, mastered }
+    }), { completed: true, mastered });
+  }
+  assert.throws(() => createExperienceProgressResult({ interaction: "stage", completionStatus: "active" }));
 });
 
 test("presents Player V2 feedback and completion evaluation without evaluating or persisting it", async () => {

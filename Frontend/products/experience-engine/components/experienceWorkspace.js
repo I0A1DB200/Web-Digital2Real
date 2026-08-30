@@ -25,6 +25,7 @@ export function createExperienceWorkspace({
   let player = null;
   let navigator = null;
   let activeExperienceId = null;
+  let activeEnvironmentId = null;
   let completionRecorded = false;
   let destroyed = false;
 
@@ -40,7 +41,7 @@ export function createExperienceWorkspace({
     return controller;
   }
 
-  async function openExperience(experienceId) {
+  async function openExperience(experienceId, environmentId = null) {
     if (destroyed) throw new Error("Experience Workspace has been destroyed.");
 
     try {
@@ -65,6 +66,7 @@ export function createExperienceWorkspace({
       }
       player = new playerModule.ExperiencePlayer({ experience: artifact });
       activeExperienceId = item.id;
+      activeEnvironmentId = environmentId;
       completionRecorded = false;
       renderPlayer();
       return player.getState();
@@ -103,6 +105,7 @@ export function createExperienceWorkspace({
     navigator.restore();
     element.replaceChildren(navigator.element);
     activeExperienceId = null;
+    activeEnvironmentId = null;
     completionRecorded = false;
   }
 
@@ -110,8 +113,14 @@ export function createExperienceWorkspace({
     const state = player.getState();
     if (state.interaction === "completion" && state.completionStatus === "completed"
       && activeExperienceId && !completionRecorded) {
-      progressStore.complete(activeExperienceId);
-      navigator?.completeExperience(activeExperienceId);
+      const environment = catalog.environments.find(item => item.id === activeEnvironmentId);
+      if (environment?.contractVersion === "2.0.0") {
+        progressStore.recordExperienceResult(activeEnvironmentId, activeExperienceId, createExperienceProgressResult(state));
+        navigator?.refreshProgress();
+      } else {
+        progressStore.complete(activeExperienceId);
+        navigator?.completeExperience(activeExperienceId);
+      }
       completionRecorded = true;
     }
     element.replaceChildren(ExperienceWorkspace({
@@ -126,6 +135,16 @@ export function createExperienceWorkspace({
   }
 
   function renderCatalog() {
+    catalog.environments.filter(item => item.contractVersion === "2.0.0").forEach(environment => {
+      const experienceIds = environment.hotspots.map(hotspot =>
+        catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
+      progressStore.registerEnvironment({
+        environmentId: environment.id,
+        contractVersion: environment.contractVersion,
+        experienceIds,
+        theorySectionIds: environment.theory?.sectionIds ?? []
+      });
+    });
     navigator = createEnvironmentNavigator({
       documentRef,
       baseUrl,
@@ -134,6 +153,18 @@ export function createExperienceWorkspace({
         localizeCatalogItem(item, documentRef.documentElement?.lang)
       )),
       onOpenExperience: openExperience,
+      onOpenTheory: async environment => {
+        const locale = selectTheoryLocale(environment.theory, documentRef.documentElement?.lang);
+        const theory = await loadJson(`${baseUrl}/${environment.theory.locales[locale]}`, fetchImpl);
+        const experienceIds = environment.hotspots.map(hotspot =>
+          catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
+        progressStore.registerEnvironment({
+          environmentId: environment.id, contractVersion: environment.contractVersion,
+          experienceIds, theorySectionIds: theory.sections.map(section => section.id)
+        });
+        return theory;
+      },
+      onTheorySectionCompleted: (environmentId, sectionId) => progressStore.markTheorySectionCompleted(environmentId, sectionId),
       progressStore
     });
     element.replaceChildren(navigator.element);
@@ -169,6 +200,7 @@ export function createExperienceWorkspace({
     catalog = null;
     navigator = null;
     activeExperienceId = null;
+    activeEnvironmentId = null;
     element.replaceChildren();
   }
 
@@ -180,6 +212,19 @@ export function createExperienceWorkspace({
     destroy
   });
   return controller;
+}
+
+export function createExperienceProgressResult(state) {
+  if (state?.interaction !== "completion" || state.completionStatus !== "completed") {
+    throw new TypeError("Experience progress requires a completed Player state.");
+  }
+  return Object.freeze({ completed: true, mastered: state.evaluationResult?.mastered === true });
+}
+
+function selectTheoryLocale(theory, requested) {
+  if (!theory?.locales) throw new Error("Environment Theory is unavailable.");
+  const normalized = typeof requested === "string" ? requested.toLowerCase().split("-")[0] : "";
+  return Object.hasOwn(theory.locales, normalized) ? normalized : theory.defaultLocale;
 }
 
 export function createWorkspaceProjection(state, baseUrl = "") {

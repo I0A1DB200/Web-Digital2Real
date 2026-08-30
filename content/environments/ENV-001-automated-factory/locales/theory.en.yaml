@@ -1,0 +1,23 @@
+locale: "en"
+
+media:
+  - id: "TH-MEDIA-AUTOMATED-FACTORY"
+    alt: "Overview of an automated installation used to analyse the signal path"
+
+sections:
+  - id: "TH-01-DIGITAL-SIGNAL-PATH"
+    title: "From the sensor to the PLC program"
+    body: |
+      A 24 VDC digital signal travels through a physical and logical chain: sensor, wiring, terminal, input channel, process image and PLC program. Reliable diagnostics check each boundary in order and distinguish the electrical state from the value used by software.
+    media_ids:
+      - "TH-MEDIA-AUTOMATED-FACTORY"
+  - id: "TH-02-PNP-REFERENCE"
+    title: "PNP reference and switching"
+    body: |
+      In a PNP circuit, the sensor supplies positive potential to the input when it detects. The supply, 0 V reference and continuity to the channel must be verified before concluding that the program is faulty.
+    media_ids: []
+  - id: "TH-03-OBSERVATION-BOUNDARIES"
+    title: "Separate observation from conclusion"
+    body: |
+      The sensor LED, module LED and a variable such as I0.3 represent different observation points. Comparing them locates where the signal stops propagating without replacing evidence with assumptions.
+    media_ids: []

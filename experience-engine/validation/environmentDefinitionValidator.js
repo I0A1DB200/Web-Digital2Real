@@ -1,4 +1,5 @@
 import { EnvironmentDefinitionV1Schema } from "../schemas/environmentDefinitionV1Schema.js";
+import { EnvironmentDefinitionV2Schema } from "../schemas/environmentDefinitionV2Schema.js";
 
 const plainObject = value => value !== null
   && typeof value === "object"
@@ -18,9 +19,11 @@ const patterns = Object.freeze(Object.fromEntries(
   Object.entries(EnvironmentDefinitionV1Schema.identifierPatterns)
     .map(([name, pattern]) => [name, new RegExp(pattern, "u")])
 ));
+const v2Patterns = Object.freeze(Object.fromEntries(Object.entries(EnvironmentDefinitionV2Schema.patterns)
+  .map(([name, pattern]) => [name, new RegExp(pattern, "u")])));
 
 export function validateEnvironmentDefinition(candidate, {
-  experienceEditorialIds = []
+  experienceEditorialIds = [], theory = null, theoryLocales = {}
 } = {}) {
   const incidents = [];
   const add = (severity, code, path, message) => {
@@ -32,7 +35,14 @@ export function validateEnvironmentDefinition(candidate, {
     return createResult("invalid", incidents);
   }
 
-  requireFields(candidate, EnvironmentDefinitionV1Schema.required.root, "$", add);
+  const contractVersion = candidate.contract_version ?? EnvironmentDefinitionV1Schema.contractVersion;
+  if (![EnvironmentDefinitionV1Schema.contractVersion, EnvironmentDefinitionV2Schema.contractVersion].includes(contractVersion)) {
+    add("error", "ENVIRONMENT_CONTRACT_VERSION_UNSUPPORTED", "$.contract_version", `Unsupported Environment contract version: ${String(contractVersion)}.`);
+    return createResult("environment_unsupported", incidents);
+  }
+  requireFields(candidate, contractVersion === EnvironmentDefinitionV2Schema.contractVersion
+    ? EnvironmentDefinitionV2Schema.required.environmentRoot
+    : EnvironmentDefinitionV1Schema.required.root, "$", add);
   validateIdentity(candidate.environment, add);
   validateVisual(candidate.visual, add);
   validateHotspots(
@@ -42,8 +52,71 @@ export function validateEnvironmentDefinition(candidate, {
     experienceEditorialIds,
     add
   );
+  if (contractVersion === EnvironmentDefinitionV2Schema.contractVersion) {
+    requirePattern(candidate.theory, v2Patterns.theorySource, "$.theory", "ENVIRONMENT_THEORY_REFERENCE_INVALID", add);
+    validateTheory(theory, theoryLocales, add);
+  }
 
-  return createResult("environment_v1", incidents);
+  return createResult(contractVersion === EnvironmentDefinitionV2Schema.contractVersion ? "environment_v2" : "environment_v1", incidents);
+}
+
+function validateTheory(theory, locales, add) {
+  if (!requireObject(theory, "$.theory_document", add)) return;
+  requireFields(theory, EnvironmentDefinitionV2Schema.required.theory, "$.theory_document", add);
+  if (theory.version !== EnvironmentDefinitionV2Schema.theoryVersion) add("error", "THEORY_VERSION_UNSUPPORTED", "$.theory_document.version", "Unsupported Theory contract version.");
+  if (theory.default_locale !== "es") add("error", "THEORY_DEFAULT_LOCALE_INVALID", "$.theory_document.default_locale", "Pilot Theory default locale must be es.");
+  if (!Array.isArray(theory.supported_locales)
+    || theory.supported_locales.length !== EnvironmentDefinitionV2Schema.supportedLocales.length
+    || theory.supported_locales.some((locale, index) => locale !== EnvironmentDefinitionV2Schema.supportedLocales[index])) {
+    add("error", "THEORY_SUPPORTED_LOCALES_INVALID", "$.theory_document.supported_locales", "Theory must support es and en in canonical order.");
+  }
+  const mediaIds = new Set();
+  if (!Array.isArray(theory.media)) add("error", "THEORY_MEDIA_INVALID", "$.theory_document.media", "Theory media must be an array.");
+  else theory.media.forEach((item, index) => {
+    const path = `$.theory_document.media[${index}]`;
+    if (!requireObject(item, path, add)) return;
+    requireFields(item, EnvironmentDefinitionV2Schema.required.media, path, add);
+    requirePattern(item.id, v2Patterns.mediaId, `${path}.id`, "THEORY_MEDIA_ID_INVALID", add);
+    requireEnum(item.type, EnvironmentDefinitionV2Schema.mediaTypes, `${path}.type`, "THEORY_MEDIA_TYPE_INVALID", add);
+    requirePattern(item.src, v2Patterns.mediaSource, `${path}.src`, "THEORY_MEDIA_SOURCE_INVALID", add);
+    requireText(item.alt, `${path}.alt`, add);
+    if (mediaIds.has(item.id)) add("error", "THEORY_MEDIA_ID_DUPLICATE", `${path}.id`, `Duplicate Theory media ID ${item.id}.`);
+    mediaIds.add(item.id);
+  });
+  const sectionIds = validateSections(theory.sections, mediaIds, "$.theory_document.sections", add);
+  for (const locale of theory.supported_locales ?? []) {
+    if (locale === theory.default_locale) continue;
+    const document = locales[locale];
+    const path = `$.theory_locales.${locale}`;
+    if (!requireObject(document, path, add)) continue;
+    requireFields(document, EnvironmentDefinitionV2Schema.required.locale, path, add);
+    if (document.locale !== locale) add("error", "THEORY_LOCALE_IDENTITY_INVALID", `${path}.locale`, `Theory locale must be ${locale}.`);
+    const localizedIds = validateSections(document.sections, mediaIds, `${path}.sections`, add);
+    if (localizedIds.join("|") !== sectionIds.join("|")) add("error", "THEORY_LOCALE_SECTIONS_MISMATCH", `${path}.sections`, "Localized Theory sections must preserve canonical IDs and order.");
+    if (!Array.isArray(document.media)) add("error", "THEORY_LOCALE_MEDIA_INVALID", `${path}.media`, "Localized Theory media must be an array.");
+    else document.media.forEach((item, index) => {
+      if (!requireObject(item, `${path}.media[${index}]`, add)) return;
+      requireText(item.id, `${path}.media[${index}].id`, add); requireText(item.alt, `${path}.media[${index}].alt`, add);
+      if (!mediaIds.has(item.id)) add("error", "THEORY_LOCALE_MEDIA_UNKNOWN", `${path}.media[${index}].id`, `Unknown localized Theory media ${item.id}.`);
+    });
+  }
+}
+
+function validateSections(sections, mediaIds, path, add) {
+  if (!Array.isArray(sections) || !sections.length) { add("error", "THEORY_SECTIONS_REQUIRED", path, "Theory requires at least one section."); return []; }
+  const ids = new Set();
+  return sections.map((section, index) => {
+    const itemPath = `${path}[${index}]`;
+    if (!requireObject(section, itemPath, add)) return null;
+    requireFields(section, EnvironmentDefinitionV2Schema.required.section, itemPath, add);
+    requirePattern(section.id, v2Patterns.sectionId, `${itemPath}.id`, "THEORY_SECTION_ID_INVALID", add);
+    requireText(section.title, `${itemPath}.title`, add); requireText(section.body, `${itemPath}.body`, add);
+    if (ids.has(section.id)) add("error", "THEORY_SECTION_ID_DUPLICATE", `${itemPath}.id`, `Duplicate Theory section ID ${section.id}.`);
+    ids.add(section.id);
+    if (!Array.isArray(section.media_ids)) add("error", "THEORY_SECTION_MEDIA_INVALID", `${itemPath}.media_ids`, "Section media_ids must be an array.");
+    else section.media_ids.forEach(id => { if (!mediaIds.has(id)) add("error", "THEORY_SECTION_MEDIA_UNKNOWN", `${itemPath}.media_ids`, `Unknown Theory media ${id}.`); });
+    return section.id;
+  }).filter(Boolean);
 }
 
 function validateIdentity(environment, add) {

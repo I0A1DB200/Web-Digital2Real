@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-08-30 — EE-0001 V2 pilot migration
+
+- Migrated the single canonical EE-0001 source from Authoring V1 to V2 with seven explicit industrial diagnostic decision points across Incident, Investigation and Solution, followed by terminal Debrief.
+- Preserved the open/cut BK conductor root cause and all eight approved assets while adding sequential evidence unlocks, learner-safe ES/EN retry feedback and explicit transitions.
+- Validated PASS, PASS_WITH_GUIDANCE and RETRY_RECOMMENDED through the existing evaluator, including ENV Progress V2 completion and monotonic mastery promotion.
+- Added V2 retry-feedback localization without changing V1 localization, Player, evaluator, projection, Theory or progress semantics.
+
+## 2026-08-30 — ENV Progress V2
+
+- Added a versioned local ENV progress payload alongside unchanged V1 storage, persisting only completed Theory section IDs and monotonic Experience completed/mastered flags.
+- Added explicit Theory continuation and separate derived Theory, Experience completion and Experience mastery counters without combined scoring, run history or evaluator duplication.
+
+## 2026-08-30 — ENV V2 Theory
+
+- Added explicit ENV contract V2 with ENV-owned ordered Theory, ES/EN localization and validated local media while preserving ENV V1 lifecycle and ten-Experience publication rules.
+- Extended transactional packaging and Environment navigation with on-demand localized Theory artifacts; Notebook, progress V2, mastery and Experience contracts remain independent and unchanged.
+
 ## 2026-08-30 — Engineering Note image clarity
 
 - Removed the uniform charcoal veil from full-image Engineering Note cards while retaining localized directional shading behind typography and lower metadata.

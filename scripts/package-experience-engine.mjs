@@ -159,8 +159,19 @@ export async function packageExperienceEngine({
     for (const item of environments) {
       const backgroundFile = path.basename(item.definition.visual.background);
       await cp(item.backgroundSource, path.join(temporaryRoot, "environments", backgroundFile));
+      if (item.theory) {
+        const theoryRoot = path.join(temporaryRoot, "environments", item.definition.environment.id);
+        await mkdir(path.join(theoryRoot, "media"), { recursive: true });
+        for (const [locale, artifact] of Object.entries(item.theory.artifacts)) {
+          await writeJson(path.join(theoryRoot, `theory.${locale}.json`), artifact);
+        }
+        for (const media of item.theory.referencedMedia) {
+          await cp(media.source, path.join(theoryRoot, "media", path.basename(media.source)));
+        }
+      }
       catalog.environments.push({
         id: item.definition.environment.id,
+        contractVersion: item.definition.contract_version ?? "1.0.0",
         slug: item.definition.environment.slug,
         title: item.definition.environment.title,
         lifecycle: item.definition.environment.lifecycle,
@@ -168,6 +179,13 @@ export async function packageExperienceEngine({
         background: `environments/${backgroundFile}`,
         width: item.definition.visual.width,
         height: item.definition.visual.height,
+        ...(item.theory ? { theory: {
+          defaultLocale: item.theory.defaultLocale,
+          sectionIds: item.theory.canonical.sections.map(section => section.id),
+          locales: Object.fromEntries(Object.keys(item.theory.artifacts).map(locale => [
+            locale, `environments/${item.definition.environment.id}/theory.${locale}.json`
+          ]))
+        } } : {}),
         hotspots: item.definition.hotspots.map(hotspot => ({
           experienceEditorialId: hotspot.experience_editorial_id,
           x: hotspot.x,
@@ -204,24 +222,86 @@ async function resolveEnvironments({ environmentRoot, experienceEditorialIds, mo
   for (const file of files) {
     const definition = parseExperienceYaml(await readFile(file, "utf8"));
     if (!environmentEligible(definition, mode)) continue;
+    const packageDirectory = path.dirname(file);
+    const theory = definition.contract_version === "2.0.0"
+      ? await resolveTheory(definition, packageDirectory)
+      : null;
     const validation = validateEnvironmentDefinition(definition, {
-      experienceEditorialIds: [...experienceEditorialIds]
+      experienceEditorialIds: [...experienceEditorialIds],
+      theory: theory?.canonical ?? null,
+      theoryLocales: theory?.locales ?? {}
     });
     if (!validation.valid) {
       const details = validation.incidents.map(issue => `${issue.path}: ${issue.message}`).join("; ");
       throw new Error(`Invalid Environment ${relative(root, file)}: ${details}`);
     }
-    const packageDirectory = path.dirname(file);
     const backgroundSource = path.resolve(packageDirectory, definition.visual.background);
     assertInside(packageDirectory, backgroundSource);
     const dimensions = await readPngDimensions(backgroundSource);
     if (dimensions.width !== definition.visual.width || dimensions.height !== definition.visual.height) {
       throw new Error(`Environment image dimensions do not match ${relative(root, file)}.`);
     }
-    environments.push({ definition, backgroundSource });
+    environments.push({ definition, backgroundSource, theory });
   }
   environments.sort((left, right) => left.definition.environment.id.localeCompare(right.definition.environment.id));
   return environments;
+}
+
+async function resolveTheory(definition, packageDirectory) {
+  const source = path.resolve(packageDirectory, definition.theory);
+  assertInside(packageDirectory, source);
+  const canonical = parseExperienceYaml(await readFile(source, "utf8"));
+  const locales = {};
+  for (const locale of canonical.supported_locales ?? []) {
+    if (locale === canonical.default_locale) continue;
+    const localeSource = path.resolve(packageDirectory, "locales", `theory.${locale}.yaml`);
+    assertInside(packageDirectory, localeSource);
+    locales[locale] = parseExperienceYaml(await readFile(localeSource, "utf8"));
+  }
+  const artifacts = { [canonical.default_locale]: createTheoryArtifact(definition, canonical, null, canonical.default_locale) };
+  for (const [locale, localized] of Object.entries(locales)) {
+    artifacts[locale] = createTheoryArtifact(definition, canonical, localized, locale);
+  }
+  const referencedIds = new Set(canonical.sections.flatMap(section => section.media_ids ?? []));
+  for (const item of canonical.media ?? []) {
+    const declaredSource = path.resolve(packageDirectory, item.src);
+    assertInside(packageDirectory, declaredSource);
+    await access(declaredSource);
+  }
+  const referencedMedia = canonical.media.filter(item => referencedIds.has(item.id)).map(item => {
+    const mediaSource = path.resolve(packageDirectory, item.src);
+    assertInside(packageDirectory, mediaSource);
+    return { id: item.id, source: mediaSource };
+  });
+  for (const item of referencedMedia) await access(item.source);
+  return { canonical, locales, artifacts, referencedMedia, defaultLocale: canonical.default_locale };
+}
+
+function createTheoryArtifact(definition, canonical, localized, locale) {
+  const localizedSections = new Map((localized?.sections ?? []).map(item => [item.id, item]));
+  const localizedMedia = new Map((localized?.media ?? []).map(item => [item.id, item]));
+  const referencedIds = new Set(canonical.sections.flatMap(section => section.media_ids ?? []));
+  return {
+    theory_artifact_version: canonical.version,
+    environment_id: definition.environment.id,
+    locale,
+    sections: canonical.sections.map(section => ({
+      id: section.id,
+      title: localizedSections.get(section.id)?.title ?? section.title,
+      body: localizedSections.get(section.id)?.body ?? section.body,
+      media_ids: [...section.media_ids]
+    })),
+    media: canonical.media.filter(item => referencedIds.has(item.id)).map(item => ({
+      id: item.id,
+      type: item.type,
+      src: `environments/${definition.environment.id}/media/${path.basename(item.src)}`,
+      alt: localizedMedia.get(item.id)?.alt ?? item.alt
+    }))
+  };
+}
+
+async function writeJson(location, value) {
+  await writeFile(location, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
 async function readPngDimensions(file) {

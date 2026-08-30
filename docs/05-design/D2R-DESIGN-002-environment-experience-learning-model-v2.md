@@ -3,12 +3,12 @@
 | Field | Value |
 |---|---|
 | Document ID | D2R-DESIGN-002 |
-| Version | 0.1.0 |
-| Status | DRAFT |
+| Version | 1.0.0 |
+| Status | IMPLEMENTED — V2 PILOT VALIDATED |
 | Scope | Environment and Experience learning model V2 |
 | Product area | Experience Lab |
 | Design authority | Digital2Real Product Design |
-| Implementation status | PHASE 6 ENV PROGRESS V2 IMPLEMENTED |
+| Implementation status | PHASE 7 EE-0001 V2 CANONICAL PILOT COMPLETE |
 
 ## 1. Purpose and authority
 
@@ -16,24 +16,21 @@ This document records the approved product and learning design for Environment &
 
 [D2R-003 Experience Design Standard](../02-standards/D2R-003-experience-design-standard.md) remains the general normative authority for Experience design. [EXP-MODEL-001](../03-governance/decisions/EXP-MODEL-001-experience-model-contract-decisions.md) remains authoritative for separation of Authoring, Runtime, public artifacts, Player state, and presentation. [D2R-DESIGN-001](D2R-DESIGN-001-experience-card-specification.md) continues to govern Experience card presentation.
 
-D2R-DESIGN-002 complements those authorities with the proposed V2 learning model. Where V2 requires behavior not supported by current contracts or implementation, this document marks the gap; it does not override the implemented system or declare the gap resolved.
+D2R-DESIGN-002 complements those authorities with the implemented V2 learning model. It does not override the versioned contracts or duplicate their technical authority.
 
-### Proposed relationship change
+### Ratified relationship
 
-D2R-003 currently states that Notebook knowledge must be referenced rather than duplicated. V2 proposes a deliberate, narrowly scoped evolution for **ENV Theory**: Notebook remains independent, ENV Theory owns its preparation content, and conceptual duplication is permitted. While this document is DRAFT, D2R-003 remains the active authority. Ratifying V2 will require an explicit update to D2R-003 rather than relying on this document as a parallel or silent exception.
+D2R-003 contains the explicit, narrowly governed exception for **ENV Theory**: Notebook remains independent, ENV Theory owns its preparation content, and conceptual duplication is permitted when the ENV needs its own preparation content. D2R-003 remains the normative authority; this document records the product model that implements that rule.
 
 ## 2. Status boundary
 
-Phase 5 implements the versioned ENV V2 Theory contract, localized packaging and read-only Frontend presentation for one ENV-001 pilot. It does not implement Theory progress, combined ENV completion, mastery persistence, best results or Experience migration.
+Phase 5 implemented the versioned ENV V2 Theory contract, localized packaging and Frontend presentation for ENV-001.
 
-Phase 6 adds versioned local progress for explicit Theory section completion and monotonic Experience completion/mastery. Environment completion requires complete Theory and every current Experience completed; Environment mastery requires complete Theory and every current Experience mastered. The dimensions remain separate and no combined score, run history or analytics is defined.
+Phase 6 added versioned local progress for explicit Theory section completion and monotonic Experience completion/mastery. Environment completion requires complete Theory and every current Experience completed; Environment mastery requires complete Theory and every current Experience mastered. The dimensions remain separate and no combined score, run history or analytics is defined.
 
-The model in this document is **DESIGNED** and **NOT IMPLEMENTED**.
+Phase 7 validated the complete V2 path with EE-0001 as the single canonical pilot: Authoring, Runtime, projection, Player, evaluator, localized learner feedback, ENV Progress and deterministic packaging.
 
-- **DESIGNED** means the product and learning rules are approved for technical planning and pilot validation.
-- **IMPLEMENTED** would require separately approved, versioned changes to the relevant contracts and systems.
-
-No current Experience, Environment, schema, Runtime, generated artifact, Player, or progress record may be treated as V2 merely because it resembles part of this design.
+V2 identity remains explicit at every contract boundary. No Experience, Environment, Runtime, artifact or progress record may be treated as V2 merely because its shape resembles V2.
 
 ## 3. Product model
 
@@ -276,3 +273,9 @@ EE-0001 now has one Authoring V2 source, explicit progression, sequential eviden
 ## 16. Implementation guardrail
 
 Further implementation still requires a separate technical plan and explicit approval. Phase 7 migrated only EE-0001 using the existing schemas, Runtime, Player, evaluator, projection and ENV Progress contracts; EE-0009 remains unchanged as the archived V1 regression.
+
+## 17. Engine freeze after pilot
+
+New Experiences MUST adapt to the ratified contracts and MUST NOT introduce Experience-specific Engine behavior for editorial convenience. An Engine change requires a repeatable limitation affecting multiple Experiences, production evidence, explicit architecture review and a system-wide benefit.
+
+The pilot validates readiness to author EE-0002 through EE-0010 within the current model; it does not create or migrate those Experiences. Evaluation thresholds remain provisional, and backend-authoritative evaluation, cross-tab progress synchronization, analytics, run history, prerequisites and adaptive learning remain deferred.

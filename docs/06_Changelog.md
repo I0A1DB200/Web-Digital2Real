@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-30 — Experience Engine V2 final regression
+
+- Audited explicit V1/V2 contracts, Runtime boundaries, Player, evaluator, projection security, ENV Theory, ENV Progress, EE-0001, EE-0009 and deterministic packaging before production freeze.
+- Removed known ES/EN learner-facing UI mixtures by localizing existing Workspace, Theory, progress, action and Debrief copy without introducing a new localization layer.
+- Made the approved Theory content/action separation structural with a local 32px flex gap and regression coverage for the rendered wrapper.
+- Updated D2R-DESIGN-002 from draft planning language to the implemented, validated V2 pilot state while preserving D2R-003 and EXP-MODEL-001 authority.
+
 ## 2026-08-30 — EE-0001 V2 pilot migration
 
 - Migrated the single canonical EE-0001 source from Authoring V1 to V2 with seven explicit industrial diagnostic decision points across Incident, Investigation and Solution, followed by terminal Debrief.

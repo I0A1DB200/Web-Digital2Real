@@ -16,6 +16,7 @@ export function createExperienceWorkspace({
   if (typeof fetchImpl !== "function" || typeof importPlayer !== "function") {
     throw new Error("Experience Workspace requires fetch and module import boundaries.");
   }
+  const workspaceUi = experienceUiCopy(documentRef.documentElement?.lang);
 
   const element = documentRef.createElement("section");
   element.className = "experience-workspace";
@@ -30,7 +31,7 @@ export function createExperienceWorkspace({
   let destroyed = false;
 
   async function initialise() {
-    renderStatus("Loading Experience Lab…");
+    renderStatus(workspaceUi.loadingLab);
     try {
       catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
       assertCatalog(catalog);
@@ -54,7 +55,7 @@ export function createExperienceWorkspace({
         documentRef.documentElement?.lang
       );
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
-      renderStatus(`Loading ${item.title}…`);
+      renderStatus(workspaceUi.loading(item.title));
 
       const artifactPath = selectArtifactPath(item, documentRef.documentElement?.lang);
       const [artifact, playerModule] = await Promise.all([
@@ -180,10 +181,10 @@ export function createExperienceWorkspace({
   function renderError(error) {
     const panel = createElement(documentRef, "div", "experience-workspace__status experience-workspace__status--error");
     panel.setAttribute("role", "alert");
-    appendText(documentRef, panel, "span", "experience-workspace__eyebrow", "Experience unavailable");
-    appendText(documentRef, panel, "h2", "", "The Experience Lab could not be loaded.");
-    appendText(documentRef, panel, "p", "", safeErrorMessage(error));
-    const back = createButton(documentRef, "Back to Experience Lab", "experience-action");
+    appendText(documentRef, panel, "span", "experience-workspace__eyebrow", workspaceUi.experienceUnavailable);
+    appendText(documentRef, panel, "h2", "", workspaceUi.labUnavailable);
+    appendText(documentRef, panel, "p", "", safeErrorMessage(error, workspaceUi));
+    const back = createButton(documentRef, workspaceUi.backToLab, "experience-action");
     back.addEventListener("click", renderCatalog);
     panel.appendChild(back);
     element.replaceChildren(panel);
@@ -289,8 +290,8 @@ export function ExperienceWorkspace({
       documentRef,
       decision: projection.selectedDecision,
       onContinue,
-      finalStage: projection.progress.currentStage === projection.progress.totalStages
-      , ui
+      finalStage: projection.progress.currentStage === projection.progress.totalStages,
+      ui
     }));
   } else if (projection.phase === "completion") {
     shell.appendChild(CompletionPanel({ documentRef, projection, onRestart, ui }));
@@ -492,6 +493,87 @@ function createIntroduction(documentRef, projection, action, isStart, ui) {
   return panel;
 }
 
+function experienceUiCopy(locale = "en") {
+  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
+  return language === "es" ? {
+    language: "es",
+    loadingLab: "Cargando el Laboratorio de Experiences…",
+    loading: title => `Cargando ${title}…`,
+    experienceUnavailable: "Experience no disponible",
+    labUnavailable: "No se pudo cargar el Laboratorio de Experiences.",
+    unavailable: "La Experience solicitada no está disponible.",
+    backToLab: "Volver al Laboratorio de Experiences",
+    engine: "Experience Engine",
+    allExperiences: "Todas las Experiences",
+    currentSituation: "Situación actual",
+    engineeringDecision: "Decisión técnica",
+    whatNext: "¿Qué debería hacerse a continuación?",
+    incidentObserved: "Incidente observado",
+    continue: "Continuar",
+    stageMedia: "Contenido multimedia de la etapa",
+    decisionRecorded: "Decisión registrada",
+    selectionRecorded: "Tu selección se ha registrado para esta sesión local.",
+    completeExperience: "Completar Experience",
+    stage: "Etapa",
+    experienceComplete: "Experience completada",
+    sessionCompleted: "Sesión de diagnóstico completada",
+    completedStages: count => `Has completado ${count} etapas.`,
+    correctProcess: "Proceso correcto",
+    avoidedErrors: "Errores evitados",
+    industrialValue: "Valor industrial",
+    decisions: "Decisiones",
+    firstAttemptCorrect: "Correctas al primer intento",
+    additionalAttempts: "Intentos adicionales",
+    result: "Resultado",
+    decisionsTaken: "Decisiones tomadas",
+    restartExperience: "Reiniciar Experience",
+    readyToBegin: "Listo para comenzar",
+    incidentBrief: "Resumen del incidente",
+    operationalState: "Estado operativo",
+    initiatingEvent: "Evento inicial",
+    startExperience: "Iniciar Experience",
+    beginDiagnosis: "Iniciar diagnóstico"
+  } : {
+    language: "en",
+    loadingLab: "Loading Experience Lab…",
+    loading: title => `Loading ${title}…`,
+    experienceUnavailable: "Experience unavailable",
+    labUnavailable: "The Experience Lab could not be loaded.",
+    unavailable: "The requested experience is unavailable.",
+    backToLab: "Back to Experience Lab",
+    engine: "Experience Engine",
+    allExperiences: "All experiences",
+    currentSituation: "Current situation",
+    engineeringDecision: "Engineering decision",
+    whatNext: "What should be done next?",
+    incidentObserved: "Incident observed",
+    continue: "Continue",
+    stageMedia: "Stage media",
+    decisionRecorded: "Decision recorded",
+    selectionRecorded: "Your selection has been recorded for this local session.",
+    completeExperience: "Complete experience",
+    stage: "Stage",
+    experienceComplete: "Experience complete",
+    sessionCompleted: "Diagnostic session completed",
+    completedStages: count => `You completed ${count} stages.`,
+    correctProcess: "Correct process",
+    avoidedErrors: "Avoided errors",
+    industrialValue: "Industrial value",
+    decisions: "Decisions",
+    firstAttemptCorrect: "First-attempt correct",
+    additionalAttempts: "Additional attempts",
+    result: "Result",
+    decisionsTaken: "Decisions taken",
+    restartExperience: "Restart experience",
+    readyToBegin: "Ready to begin",
+    incidentBrief: "Incident brief",
+    operationalState: "Operational state",
+    initiatingEvent: "Initiating event",
+    startExperience: "Start experience",
+    beginDiagnosis: "Begin diagnosis"
+  };
+}
+
 async function loadJson(location, fetchImpl) {
   const response = await fetchImpl(location, { headers: { Accept: "application/json" } });
   if (!response.ok) throw new Error(`Could not load the requested experience (${response.status}).`);
@@ -525,8 +607,8 @@ function localizeCatalogItem(item, requestedLocale) {
   return copy ? { ...item, ...copy } : item;
 }
 
-function safeErrorMessage(error) {
-  if (!error || typeof error.message !== "string") return "The requested experience is unavailable.";
+function safeErrorMessage(error, ui = experienceUiCopy()) {
+  if (ui.language === "es" || !error || typeof error.message !== "string") return ui.unavailable;
   return error.message;
 }
 

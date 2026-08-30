@@ -11,7 +11,8 @@ import {
   createExperienceProgressResult,
   createExperienceWorkspace,
   createWorkspaceProjection,
-  DecisionPanel
+  DecisionPanel,
+  ExperienceWorkspace
 } from "../components/experienceWorkspace.js";
 
 const artifactUrl = new URL(
@@ -312,6 +313,127 @@ test("presents Player V2 feedback and completion evaluation without evaluating o
   assert.match(completion.text, /PASS WITH GUIDANCE/);
   const source = await readFile(new URL("../components/experienceWorkspace.js", import.meta.url), "utf8");
   assert.doesNotMatch(source, /evaluateExperience|mastery_outcomes|thresholds/);
+});
+
+test("renders complete English and Spanish learner-facing debrief copy without hybrid headings", () => {
+  const documentRef = new FakeDocument();
+  const evaluationResult = {
+    totalDecisions: 5, firstAttemptCorrect: 5, additionalAttempts: 0,
+    outcome: "PASS", mastered: true
+  };
+  const completion = {
+    title: "Technical debrief",
+    summary: "The signal path was restored.",
+    process: ["Trace the signal path."],
+    lesson: "Verify the complete chain.",
+    avoided_errors: ["Replacing B1 without evidence."],
+    industrial_value: ["Traceable diagnosis."]
+  };
+  const english = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({
+      interaction: "completion", completionStatus: "completed", currentStage: null,
+      experience: { title: "English", summary: "Summary", language: "en" },
+      completion, evaluationResult
+    })),
+    onRestart() {}
+  });
+  assert.match(english.text, /Correct process/);
+  assert.match(english.text, /Avoided errors/);
+  assert.match(english.text, /Industrial value/);
+  assert.doesNotMatch(english.text, /Proceso correcto|Errores evitados|Valor industrial/);
+
+  const spanish = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({
+      interaction: "completion", completionStatus: "completed", currentStage: null,
+      experience: { title: "Español", summary: "Resumen", language: "es" },
+      completion: {
+        title: "Debrief técnico", summary: "Se restauró la ruta de señal.",
+        process: ["Seguir la ruta de la señal."], lesson: "Verificar la cadena completa.",
+        avoided_errors: ["Sustituir B1 sin evidencias."], industrial_value: ["Diagnóstico trazable."]
+      },
+      evaluationResult
+    })),
+    onRestart() {}
+  });
+  assert.match(spanish.text, /Proceso correcto/);
+  assert.match(spanish.text, /Errores evitados/);
+  assert.match(spanish.text, /Valor industrial/);
+  assert.doesNotMatch(spanish.text, /Correct process|Avoided errors|Industrial value/);
+});
+
+test("localizes the active Experience decision UI from the artifact language", () => {
+  const documentRef = new FakeDocument();
+  const spanish = ExperienceWorkspace({
+    documentRef,
+    projection: {
+      ...createWorkspaceProjection(createState({
+        experience: { title: "Diagnóstico", summary: "Resumen", language: "es" }
+      })),
+      phase: "stage"
+    },
+    onStart() {}, onContinue() {}, onDecision() {}, onRestart() {}, onClose() {}
+  });
+  assert.match(spanish.text, /Situación actual/);
+  assert.match(spanish.text, /Decisión técnica/);
+  assert.match(spanish.text, /¿Qué debería hacerse a continuación\?/);
+  assert.doesNotMatch(spanish.text, /Current situation|Engineering decision|What should be done next/);
+
+  const english = ExperienceWorkspace({
+    documentRef,
+    projection: {
+      ...createWorkspaceProjection(createState({
+        experience: { title: "Diagnosis", summary: "Summary", language: "en" }
+      })),
+      phase: "stage"
+    },
+    onStart() {}, onContinue() {}, onDecision() {}, onRestart() {}, onClose() {}
+  });
+  assert.match(english.text, /Current situation/);
+  assert.match(english.text, /Engineering decision/);
+  assert.doesNotMatch(english.text, /Situación actual|Decisión técnica/);
+});
+
+test("localizes Theory actions and keeps content and actions as 32px-gap siblings", async () => {
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "es" };
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  progressStore.registerEnvironment({
+    environmentId: "ENV-TEST", contractVersion: "2.0.0",
+    experienceIds: [], theorySectionIds: ["TH-01", "TH-02"]
+  });
+  const navigator = createEnvironmentNavigator({
+    documentRef,
+    baseUrl: ".",
+    environments: [{
+      id: "ENV-TEST", contractVersion: "2.0.0", title: "Fábrica", background: "factory.png",
+      width: 16, height: 9, hotspots: [], theory: { locales: { es: "theory.es.json" } }
+    }],
+    experiences: [],
+    onOpenExperience() {},
+    progressStore,
+    onOpenTheory: async () => ({
+      locale: "es",
+      media: [{ id: "MEDIA", type: "image", src: "media.png", alt: "Ruta" }],
+      sections: [
+        { id: "TH-01", title: "Ruta", body: "Contenido.", media_ids: ["MEDIA"] },
+        { id: "TH-02", title: "Medición", body: "Contenido.", media_ids: [] }
+      ]
+    }),
+    onTheorySectionCompleted() {}
+  });
+  navigator.renderEnvironment("ENV-TEST");
+  await findButton(navigator.element, "Abrir teoría").click();
+  const section = navigator.element.find(item => item.className === "experience-panel environment-theory__section");
+  assert.equal(section.children[0].className, "environment-theory__content");
+  assert.equal(section.children[1].className, "environment-theory__actions");
+  assert.equal(section.children[1].children[0].textContent, "Continuar teoría");
+  findButton(navigator.element, "Continuar teoría").click();
+  assert.ok(findButton(navigator.element, "Completar teoría"));
+
+  const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
+  assert.match(styles, /\.environment-theory__section\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*gap:\s*32px;/s);
 });
 
 test("keeps one accessible anchored popover and closes it through every supported interaction", () => {

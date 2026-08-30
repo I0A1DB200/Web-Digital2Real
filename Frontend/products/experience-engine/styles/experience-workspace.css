@@ -503,6 +503,12 @@
   flex: 0 0 auto;
 }
 
+.environment-theory__section {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .experience-progress {
   display: grid;
   grid-template-columns: auto minmax(8rem, 1fr);

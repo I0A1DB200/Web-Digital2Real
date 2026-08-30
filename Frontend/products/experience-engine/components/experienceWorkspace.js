@@ -233,6 +233,7 @@ export function createWorkspaceProjection(state, baseUrl = "") {
     phase: state.interaction,
     title: state.experience.title,
     summary: state.experience.summary,
+    language: state.experience.language,
     status: state.completionStatus,
     progress: state.progress,
     context: state.context,
@@ -261,26 +262,27 @@ export function ExperienceWorkspace({
   onRestart,
   onClose
 }) {
+  const ui = experienceUiCopy(projection.language);
   const shell = createElement(documentRef, "div", "experience-workspace__shell");
-  shell.appendChild(ExperienceHeader({ documentRef, projection, onClose }));
+  shell.appendChild(ExperienceHeader({ documentRef, projection, onClose, ui }));
 
   if (!["start", "completion"].includes(projection.phase)) {
-    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress }));
+    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress, ui }));
   }
 
   if (projection.phase === "start") {
-    shell.appendChild(createIntroduction(documentRef, projection, onStart, true));
+    shell.appendChild(createIntroduction(documentRef, projection, onStart, true, ui));
   } else if (projection.phase === "introduction") {
-    shell.appendChild(createIntroduction(documentRef, projection, onContinue, false));
+    shell.appendChild(createIntroduction(documentRef, projection, onContinue, false, ui));
   } else if (projection.phase === "stage") {
-    shell.appendChild(StagePanel({ documentRef, stage: projection.stage }));
+    shell.appendChild(StagePanel({ documentRef, stage: projection.stage, ui }));
     if (projection.media.length) {
-      shell.appendChild(MediaPanel({ documentRef, media: projection.media }));
+      shell.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
     }
     if (projection.stage.decisions.length) {
-      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision }));
+      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision, ui }));
     } else {
-      shell.appendChild(ContinuePanel({ documentRef, onContinue }));
+      shell.appendChild(ContinuePanel({ documentRef, onContinue, ui }));
     }
   } else if (projection.phase === "selection") {
     shell.appendChild(SelectionPanel({
@@ -288,31 +290,32 @@ export function ExperienceWorkspace({
       decision: projection.selectedDecision,
       onContinue,
       finalStage: projection.progress.currentStage === projection.progress.totalStages
+      , ui
     }));
   } else if (projection.phase === "completion") {
-    shell.appendChild(CompletionPanel({ documentRef, projection, onRestart }));
+    shell.appendChild(CompletionPanel({ documentRef, projection, onRestart, ui }));
   }
 
   return shell;
 }
 
-export function ExperienceHeader({ documentRef, projection, onClose }) {
+export function ExperienceHeader({ documentRef, projection, onClose, ui = experienceUiCopy(projection.language) }) {
   const header = createElement(documentRef, "header", "experience-header");
   const copy = createElement(documentRef, "div", "");
-  appendText(documentRef, copy, "span", "experience-workspace__eyebrow", "Experience Engine");
+  appendText(documentRef, copy, "span", "experience-workspace__eyebrow", ui.engine);
   appendText(documentRef, copy, "h1", "", projection.title);
   appendText(documentRef, copy, "p", "experience-workspace__lede", projection.summary);
   header.appendChild(copy);
-  const close = createButton(documentRef, "All experiences", "experience-action experience-action--quiet");
+  const close = createButton(documentRef, ui.allExperiences, "experience-action experience-action--quiet");
   close.addEventListener("click", onClose);
   header.appendChild(close);
   return header;
 }
 
-export function StagePanel({ documentRef, stage }) {
+export function StagePanel({ documentRef, stage, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel experience-stage");
   panel.setAttribute("aria-labelledby", "experience-stage-title");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Current situation");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.currentSituation);
   const title = appendText(documentRef, panel, "h2", "", stage.title);
   title.id = "experience-stage-title";
   appendText(documentRef, panel, "p", "experience-stage__situation", stage.situation);
@@ -320,10 +323,10 @@ export function StagePanel({ documentRef, stage }) {
   return panel;
 }
 
-export function DecisionPanel({ documentRef, decisions, feedback, onDecision }) {
+export function DecisionPanel({ documentRef, decisions, feedback, onDecision, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Engineering decision");
-  appendText(documentRef, panel, "h2", "", "What should be done next?");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.engineeringDecision);
+  appendText(documentRef, panel, "h2", "", ui.whatNext);
   const list = createElement(documentRef, "div", "experience-decisions");
   decisions.forEach((decision, index) => {
     const button = createButton(documentRef, "", "experience-decision");
@@ -340,12 +343,12 @@ export function DecisionPanel({ documentRef, decisions, feedback, onDecision }) 
   return panel;
 }
 
-export function ContinuePanel({ documentRef, onContinue }) {
+export function ContinuePanel({ documentRef, onContinue, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Incident observed");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.incidentObserved);
   const button = createButton(
     documentRef,
-    "Continue",
+    ui.continue,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", onContinue);
@@ -353,9 +356,9 @@ export function ContinuePanel({ documentRef, onContinue }) {
   return panel;
 }
 
-export function MediaPanel({ documentRef, media }) {
+export function MediaPanel({ documentRef, media, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel experience-media");
-  panel.setAttribute("aria-label", "Multimedia de la etapa");
+  panel.setAttribute("aria-label", ui.stageMedia);
   media.forEach(asset => {
     const figure = createElement(documentRef, "figure", "experience-media__item");
     let element;
@@ -379,20 +382,20 @@ export function MediaPanel({ documentRef, media }) {
   return panel;
 }
 
-export function SelectionPanel({ documentRef, decision, onContinue, finalStage }) {
+export function SelectionPanel({ documentRef, decision, onContinue, finalStage, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Decision recorded");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.decisionRecorded);
   appendText(documentRef, panel, "h2", "", decision.action);
   appendText(
     documentRef,
     panel,
     "p",
     "experience-stage__situation",
-    "Your selection has been recorded for this local session."
+    ui.selectionRecorded
   );
   const button = createButton(
     documentRef,
-    finalStage ? "Complete experience" : "Continue",
+    finalStage ? ui.completeExperience : ui.continue,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", onContinue);
@@ -400,9 +403,9 @@ export function SelectionPanel({ documentRef, decision, onContinue, finalStage }
   return panel;
 }
 
-export function ProgressIndicator({ documentRef, progress }) {
+export function ProgressIndicator({ documentRef, progress, ui = experienceUiCopy() }) {
   const wrapper = createElement(documentRef, "div", "experience-progress");
-  appendText(documentRef, wrapper, "span", "", `Stage ${progress.currentStage} / ${progress.totalStages}`);
+  appendText(documentRef, wrapper, "span", "", `${ui.stage} ${progress.currentStage} / ${progress.totalStages}`);
   const track = createElement(documentRef, "div", "experience-progress__track");
   const fill = createElement(documentRef, "span", "experience-progress__fill");
   fill.style.setProperty("--experience-progress", `${(progress.currentStage / progress.totalStages) * 100}%`);
@@ -411,63 +414,63 @@ export function ProgressIndicator({ documentRef, progress }) {
   return wrapper;
 }
 
-export function CompletionPanel({ documentRef, projection, onRestart }) {
+export function CompletionPanel({ documentRef, projection, onRestart, ui = experienceUiCopy(projection.language) }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Experience complete");
-  appendText(documentRef, panel, "h2", "", projection.completion?.title ?? "Diagnostic session completed");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.experienceComplete);
+  appendText(documentRef, panel, "h2", "", projection.completion?.title ?? ui.sessionCompleted);
   appendText(
     documentRef,
     panel,
     "p",
     "experience-stage__situation",
-    projection.completion?.summary ?? `You completed ${projection.progress.totalStages} stages.`
+    projection.completion?.summary ?? ui.completedStages(projection.progress.totalStages)
   );
   if (projection.completion?.process) {
-    appendList(documentRef, panel, "Proceso correcto", projection.completion.process);
+    appendList(documentRef, panel, ui.correctProcess, projection.completion.process);
   }
   if (projection.completion?.lesson) {
     appendText(documentRef, panel, "p", "experience-stage__objective", projection.completion.lesson);
   }
   if (projection.completion?.avoided_errors) {
-    appendList(documentRef, panel, "Errores evitados", projection.completion.avoided_errors);
+    appendList(documentRef, panel, ui.avoidedErrors, projection.completion.avoided_errors);
   }
   if (projection.completion?.industrial_value) {
-    appendList(documentRef, panel, "Valor industrial", projection.completion.industrial_value);
+    appendList(documentRef, panel, ui.industrialValue, projection.completion.industrial_value);
   }
   if (projection.evaluationResult) {
     const result = projection.evaluationResult;
     const facts = createElement(documentRef, "dl", "experience-facts");
-    appendFact(documentRef, facts, "Decisions", String(result.totalDecisions));
-    appendFact(documentRef, facts, "First-attempt correct", `${result.firstAttemptCorrect} / ${result.totalDecisions}`);
-    appendFact(documentRef, facts, "Additional attempts", String(result.additionalAttempts));
-    appendFact(documentRef, facts, "Result", result.outcome.replaceAll("_", " "));
+    appendFact(documentRef, facts, ui.decisions, String(result.totalDecisions));
+    appendFact(documentRef, facts, ui.firstAttemptCorrect, `${result.firstAttemptCorrect} / ${result.totalDecisions}`);
+    appendFact(documentRef, facts, ui.additionalAttempts, String(result.additionalAttempts));
+    appendFact(documentRef, facts, ui.result, result.outcome.replaceAll("_", " "));
     panel.appendChild(facts);
   } else {
     appendList(
       documentRef,
       panel,
-      "Decisions taken",
+      ui.decisionsTaken,
       projection.decisionHistory.map(record => record.action)
     );
   }
   if (projection.media.length) {
-    panel.appendChild(MediaPanel({ documentRef, media: projection.media }));
+    panel.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
   }
-  const restart = createButton(documentRef, "Restart experience", "experience-action experience-action--primary");
+  const restart = createButton(documentRef, ui.restartExperience, "experience-action experience-action--primary");
   restart.addEventListener("click", onRestart);
   panel.appendChild(restart);
   return panel;
 }
 
-function createIntroduction(documentRef, projection, action, isStart) {
+function createIntroduction(documentRef, projection, action, isStart, ui) {
   const panel = createElement(documentRef, "section", "experience-panel experience-introduction");
-  appendText(documentRef, panel, "span", "experience-panel__label", isStart ? "Ready to begin" : "Incident brief");
+  appendText(documentRef, panel, "span", "experience-panel__label", isStart ? ui.readyToBegin : ui.incidentBrief);
   appendText(documentRef, panel, "h2", "", projection.context.learner_role);
   appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initial_context);
 
   const facts = createElement(documentRef, "dl", "experience-facts");
-  appendFact(documentRef, facts, "Operational state", projection.context.operational_state);
-  appendFact(documentRef, facts, "Initiating event", projection.context.initiating_event);
+  appendFact(documentRef, facts, ui.operationalState, projection.context.operational_state);
+  appendFact(documentRef, facts, ui.initiatingEvent, projection.context.initiating_event);
   panel.appendChild(facts);
   if (projection.visual?.educational_purpose) {
     appendText(
@@ -481,7 +484,7 @@ function createIntroduction(documentRef, projection, action, isStart) {
 
   const button = createButton(
     documentRef,
-    isStart ? "Start experience" : "Begin diagnosis",
+    isStart ? ui.startExperience : ui.beginDiagnosis,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", action);

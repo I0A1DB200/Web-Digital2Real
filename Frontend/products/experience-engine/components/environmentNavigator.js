@@ -15,6 +15,7 @@ export function createEnvironmentNavigator({
 }) {
   const element = documentRef.createElement("div");
   element.className = "environment-navigator";
+  const ui = environmentUiCopy(documentRef.documentElement?.lang);
   const experienceByEditorialId = new Map(
     experiences.filter(experience => experience.enabled !== false
       && !["archived", "disabled"].includes(experience.status))
@@ -38,7 +39,7 @@ export function createEnvironmentNavigator({
     environments.forEach(environment => {
       const card = createElement(documentRef, "button", "environment-card");
       card.type = "button";
-      card.setAttribute("aria-label", `Open environment: ${environment.title}`);
+      card.setAttribute("aria-label", `${ui.openEnvironment}: ${environment.title}`);
       const image = createElement(documentRef, "img", "environment-card__image");
       image.src = `${baseUrl}/${environment.background}`;
       image.alt = "";
@@ -49,7 +50,7 @@ export function createEnvironmentNavigator({
       list.appendChild(card);
     });
     if (!environments.length) {
-      appendText(documentRef, list, "p", "experience-workspace__empty", "No environments are available.");
+      appendText(documentRef, list, "p", "experience-workspace__empty", ui.noEnvironments);
     }
     fragment.appendChild(list);
     element.replaceChildren(fragment);
@@ -63,7 +64,7 @@ export function createEnvironmentNavigator({
     const shell = createElement(documentRef, "div", "experience-workspace__shell");
     const back = createElement(documentRef, "button", "experience-action experience-action--quiet");
     back.type = "button";
-    back.textContent = "Back to environments";
+    back.textContent = ui.backToEnvironments;
     back.addEventListener("click", renderCatalog);
     shell.appendChild(back);
     const heading = createElement(documentRef, "header", "environment-view__header");
@@ -72,7 +73,7 @@ export function createEnvironmentNavigator({
     appendText(documentRef, title, "h1", "", environment.title);
     heading.appendChild(title);
     if (environment.theory && typeof onOpenTheory === "function") {
-      const theory = createButton(documentRef, "Open Theory", "experience-action experience-action--primary");
+      const theory = createButton(documentRef, ui.openTheory, "experience-action experience-action--primary");
       theory.addEventListener("click", async () => renderTheory(environment, await onOpenTheory(environment)));
       heading.appendChild(theory);
     }
@@ -95,7 +96,7 @@ export function createEnvironmentNavigator({
       marker.type = "button";
       marker.style.setProperty("--hotspot-x", `${hotspot.x}%`);
       marker.style.setProperty("--hotspot-y", `${hotspot.y}%`);
-      marker.setAttribute("aria-label", `Inspect ${experience.title}`);
+      marker.setAttribute("aria-label", `${ui.inspect} ${experience.title}`);
       marker.setAttribute("aria-expanded", "false");
       const record = { hotspot, experience, marker };
       marker.addEventListener("click", event => {
@@ -113,7 +114,7 @@ export function createEnvironmentNavigator({
         shell,
         "p",
         "environment-view__pending",
-        "This environment is being prepared. Experiences will become available here as they complete review."
+        ui.environmentPending
       );
     }
     element.replaceChildren(shell);
@@ -125,13 +126,13 @@ export function createEnvironmentNavigator({
   function renderTheory(environment, theory) {
     leaveEnvironment();
     const shell = createElement(documentRef, "div", "experience-workspace__shell");
-    const back = createButton(documentRef, "Back to environment", "experience-action experience-action--quiet");
+    const back = createButton(documentRef, ui.backToEnvironment, "experience-action experience-action--quiet");
     back.addEventListener("click", () => renderEnvironment(environment.id));
     shell.appendChild(back);
     const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
-    appendText(documentRef, header, "span", "experience-workspace__eyebrow", `${environment.id} · Theory`);
+    appendText(documentRef, header, "span", "experience-workspace__eyebrow", `${environment.id} · ${ui.theory}`);
     appendText(documentRef, header, "h1", "", environment.title);
-    appendText(documentRef, header, "p", "experience-workspace__lede", "Technical foundations for the diagnostic Experiences in this environment.");
+    appendText(documentRef, header, "p", "experience-workspace__lede", ui.theoryLede);
     shell.appendChild(header);
     const mediaById = new Map(theory.media.map(item => [item.id, item]));
     let sectionIndex = 0;
@@ -139,25 +140,29 @@ export function createEnvironmentNavigator({
     shell.appendChild(content);
     const renderSection = () => {
       const section = theory.sections[sectionIndex];
-      const panel = createElement(documentRef, "section", "experience-panel");
-      appendText(documentRef, panel, "span", "experience-panel__label", `Theory ${sectionIndex + 1} / ${theory.sections.length}`);
-      appendText(documentRef, panel, "h2", "", section.title);
-      appendText(documentRef, panel, "p", "experience-stage__situation", section.body);
+      const panel = createElement(documentRef, "section", "experience-panel environment-theory__section");
+      const sectionContent = createElement(documentRef, "div", "environment-theory__content");
+      appendText(documentRef, sectionContent, "span", "experience-panel__label", `${ui.theory} ${sectionIndex + 1} / ${theory.sections.length}`);
+      appendText(documentRef, sectionContent, "h2", "", section.title);
+      appendText(documentRef, sectionContent, "p", "experience-stage__situation", section.body);
       section.media_ids.forEach(id => {
         const media = mediaById.get(id);
         if (!media) return;
         const image = createElement(documentRef, "img", "experience-media__asset");
         image.src = `${baseUrl}/${media.src}`;
         image.alt = media.alt;
-        panel.appendChild(image);
+        sectionContent.appendChild(image);
       });
-      const next = createButton(documentRef, sectionIndex === theory.sections.length - 1 ? "Complete Theory" : "Continue Theory", "experience-action experience-action--primary");
+      panel.appendChild(sectionContent);
+      const actions = createElement(documentRef, "div", "environment-theory__actions");
+      const next = createButton(documentRef, sectionIndex === theory.sections.length - 1 ? ui.completeTheory : ui.continueTheory, "experience-action experience-action--primary");
       next.addEventListener("click", () => {
         onTheorySectionCompleted?.(environment.id, section.id);
         if (sectionIndex === theory.sections.length - 1) renderEnvironment(environment.id);
         else { sectionIndex += 1; renderSection(); }
       });
-      panel.appendChild(next);
+      actions.appendChild(next);
+      panel.appendChild(actions);
       content.replaceChildren(panel);
     };
     renderSection();
@@ -189,14 +194,14 @@ export function createEnvironmentNavigator({
     title.id = titleId;
     appendText(documentRef, activePopover, "p", "", record.experience.summary);
     const controls = createElement(documentRef, "div", "environment-popover__actions");
-    const start = createButton(documentRef, "Begin investigation", "experience-action experience-action--primary");
+    const start = createButton(documentRef, ui.beginInvestigation, "experience-action experience-action--primary");
     start.addEventListener("click", event => {
       event?.stopPropagation?.();
       closePopover({ restoreFocus: false });
       return onOpenExperience(record.experience.id, selectedEnvironment.id);
     });
-    const close = createButton(documentRef, "Close", "experience-action experience-action--quiet");
-    close.setAttribute("aria-label", `Close ${record.experience.title}`);
+    const close = createButton(documentRef, ui.close, "experience-action experience-action--quiet");
+    close.setAttribute("aria-label", `${ui.close} ${record.experience.title}`);
     close.addEventListener("click", event => {
       event?.stopPropagation?.();
       closePopover({ restoreFocus: true });
@@ -279,9 +284,9 @@ export function createEnvironmentNavigator({
     if (selectedEnvironment.contractVersion === "2.0.0") {
       const progress = progressStore.getEnvironmentProgress(selectedEnvironment.id);
       const heading = createElement(documentRef, "div", "environment-progress__heading");
-      appendText(documentRef, heading, "span", "", "Environment progress");
+      appendText(documentRef, heading, "span", "", ui.environmentProgress);
       const summary = createElement(documentRef, "p", "environment-progress__summary");
-      summary.textContent = `Theory ${progress.theory.completedSections} / ${progress.theory.totalSections} · Experiences completed ${progress.experiences.completed} / ${progress.experiences.total} · Experiences mastered ${progress.experiences.mastered} / ${progress.experiences.total}`;
+      summary.textContent = `${ui.theory} ${progress.theory.completedSections} / ${progress.theory.totalSections} · ${ui.experiencesCompleted} ${progress.experiences.completed} / ${progress.experiences.total} · ${ui.experiencesMastered} ${progress.experiences.mastered} / ${progress.experiences.total}`;
       progressElement.replaceChildren(heading, summary);
       return;
     }
@@ -289,21 +294,21 @@ export function createEnvironmentNavigator({
     const total = available.length;
     const percentage = total ? Math.min(100, Math.max(0, completed / total * 100)) : 0;
     const heading = createElement(documentRef, "div", "environment-progress__heading");
-    appendText(documentRef, heading, "span", "", "Environment progress");
+    appendText(documentRef, heading, "span", "", ui.environmentProgress);
     appendText(documentRef, heading, "strong", "", `${completed} / ${total}`);
     const track = createElement(documentRef, "div", "environment-progress__track");
     track.setAttribute("role", "progressbar");
     track.setAttribute("aria-valuemin", "0");
     track.setAttribute("aria-valuemax", String(total));
     track.setAttribute("aria-valuenow", String(completed));
-    track.setAttribute("aria-label", `${selectedEnvironment.id} ${selectedEnvironment.title}: Environment progress`);
-    track.setAttribute("aria-valuetext", `${completed} of ${total} Experiences completed`);
+    track.setAttribute("aria-label", `${selectedEnvironment.id} ${selectedEnvironment.title}: ${ui.environmentProgress}`);
+    track.setAttribute("aria-valuetext", ui.completedValue(completed, total));
     const fill = createElement(documentRef, "span", "environment-progress__fill");
     fill.style.setProperty("--environment-progress", `${percentage}%`);
     fill.dataset.empty = String(percentage === 0);
     track.appendChild(fill);
     const summary = createElement(documentRef, "p", "environment-progress__summary");
-    summary.textContent = `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`;
+    summary.textContent = ui.completedSummary(completed);
     progressElement.replaceChildren(heading, track, summary);
   }
 
@@ -349,19 +354,69 @@ export function createEnvironmentNavigator({
 }
 
 function createShell(documentRef) {
+  const ui = environmentUiCopy(documentRef.documentElement?.lang);
   const shell = createElement(documentRef, "div", "experience-workspace__shell");
   const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
-  appendText(documentRef, header, "span", "experience-workspace__eyebrow", "Experience Lab");
-  appendText(documentRef, header, "h1", "", "Industrial environments. Real diagnostic decisions.");
+  appendText(documentRef, header, "span", "experience-workspace__eyebrow", ui.experienceLab);
+  appendText(documentRef, header, "h1", "", ui.catalogTitle);
   appendText(
     documentRef,
     header,
     "p",
     "experience-workspace__lede",
-    "Select an environment, inspect the machine and begin an available investigation."
+    ui.catalogLede
   );
   shell.appendChild(header);
   return shell;
+}
+
+function environmentUiCopy(locale) {
+  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
+  return language === "es" ? {
+    experienceLab: "Laboratorio de Experiences",
+    catalogTitle: "Entornos industriales. Decisiones de diagnóstico reales.",
+    catalogLede: "Selecciona un entorno, inspecciona la máquina e inicia una investigación disponible.",
+    openEnvironment: "Abrir entorno",
+    noEnvironments: "No hay entornos disponibles.",
+    backToEnvironments: "Volver a entornos",
+    backToEnvironment: "Volver al entorno",
+    openTheory: "Abrir teoría",
+    theory: "Teoría",
+    theoryLede: "Fundamentos técnicos para las Experiences de diagnóstico de este entorno.",
+    continueTheory: "Continuar teoría",
+    completeTheory: "Completar teoría",
+    inspect: "Inspeccionar",
+    environmentPending: "Este entorno se está preparando. Las Experiences estarán disponibles cuando completen su revisión.",
+    beginInvestigation: "Iniciar investigación",
+    close: "Cerrar",
+    environmentProgress: "Progreso del entorno",
+    experiencesCompleted: "Experiences completadas",
+    experiencesMastered: "Experiences dominadas",
+    completedValue: (completed, total) => `${completed} de ${total} Experiences completadas`,
+    completedSummary: completed => `${completed} ${completed === 1 ? "Experience completada" : "Experiences completadas"}`
+  } : {
+    experienceLab: "Experience Lab",
+    catalogTitle: "Industrial environments. Real diagnostic decisions.",
+    catalogLede: "Select an environment, inspect the machine and begin an available investigation.",
+    openEnvironment: "Open environment",
+    noEnvironments: "No environments are available.",
+    backToEnvironments: "Back to environments",
+    backToEnvironment: "Back to environment",
+    openTheory: "Open Theory",
+    theory: "Theory",
+    theoryLede: "Technical foundations for the diagnostic Experiences in this environment.",
+    continueTheory: "Continue Theory",
+    completeTheory: "Complete Theory",
+    inspect: "Inspect",
+    environmentPending: "This environment is being prepared. Experiences will become available here as they complete review.",
+    beginInvestigation: "Begin investigation",
+    close: "Close",
+    environmentProgress: "Environment progress",
+    experiencesCompleted: "Experiences completed",
+    experiencesMastered: "Experiences mastered",
+    completedValue: (completed, total) => `${completed} of ${total} Experiences completed`,
+    completedSummary: completed => `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`
+  };
 }
 
 function defaultResizeObserverFactory(callback) {

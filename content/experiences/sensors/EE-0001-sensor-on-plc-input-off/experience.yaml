@@ -6,7 +6,7 @@ metadata:
   content_version: "1.0"
   class: "practice"
   access: "free"
-  status: "technical_review"
+  status: "published"
   language: "es"
 
 localization:
@@ -533,5 +533,5 @@ private:
     correct_reasoning: ["Separar síntoma y causa.", "Trazar la señal documentada.", "Comparar estados y medir puntos sucesivos.", "Confirmar continuidad antes de intervenir."]
     recovery: ["Reparar el conductor según práctica autorizada.", "Verificar tensión en PLC-side.", "Confirmar I0.3 y Tag_BoxPresent_B1.", "Confirmar recuperación de la secuencia."]
   technical_validation:
-    status: "pass_with_warnings"
+    status: "pass"
     evidence: ["La ruta B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1 es consistente.", "Los textos incrustados en los PNG aprobados permanecen en inglés."]

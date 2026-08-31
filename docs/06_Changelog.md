@@ -2,6 +2,7 @@
 
 ## 2026-08-30 — Experience Engine V2 final regression
 
+- Promoted EE-0001 from technical review to the first published canonical Experience V2 after final validation; Experience Engine V2 is production ready and its architecture is frozen.
 - Audited explicit V1/V2 contracts, Runtime boundaries, Player, evaluator, projection security, ENV Theory, ENV Progress, EE-0001, EE-0009 and deterministic packaging before production freeze.
 - Removed known ES/EN learner-facing UI mixtures by localizing existing Workspace, Theory, progress, action and Debrief copy without introducing a new localization layer.
 - Made the approved Theory content/action separation structural with a local 32px flex gap and regression coverage for the rendered wrapper.

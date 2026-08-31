@@ -196,6 +196,18 @@ test("a validation failure preserves the previous generated package", async t =>
 test("publish excludes technical-review experiences while preview includes them", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
+  const source = path.join(
+    root,
+    "content",
+    "experiences",
+    "sensors",
+    "EE-0001-sensor-on-plc-input-off",
+    "experience.yaml"
+  );
+  const authoring = (await readFile(source, "utf8"))
+    .replace('  status: "published"', '  status: "technical_review"')
+    .replace('    status: "pass"', '    status: "pass_with_warnings"');
+  await writeFile(source, authoring, "utf8");
 
   const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
   const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
@@ -240,8 +252,8 @@ test("catalog modes enforce the complete approved publication-state boundary", a
       "experience.yaml"
     );
     const authoring = (await readFile(source, "utf8"))
-      .replace('  status: "technical_review"', `  status: "${scenario.status}"`)
-      .replace('    status: "pass_with_warnings"', `    status: "${scenario.validation}"`);
+      .replace('  status: "published"', `  status: "${scenario.status}"`)
+      .replace('    status: "pass"', `    status: "${scenario.validation}"`);
     await writeFile(source, authoring, "utf8");
 
     const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });

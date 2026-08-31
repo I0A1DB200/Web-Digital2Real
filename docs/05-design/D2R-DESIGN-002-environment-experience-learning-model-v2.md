@@ -8,7 +8,7 @@
 | Scope | Environment and Experience learning model V2 |
 | Product area | Experience Lab |
 | Design authority | Digital2Real Product Design |
-| Implementation status | PHASE 7 EE-0001 V2 CANONICAL PILOT COMPLETE |
+| Implementation status | PHASE 8 COMPLETE — EXPERIENCE ENGINE V2 PRODUCTION READY / ARCHITECTURE FROZEN |
 
 ## 1. Purpose and authority
 
@@ -29,6 +29,8 @@ Phase 5 implemented the versioned ENV V2 Theory contract, localized packaging an
 Phase 6 added versioned local progress for explicit Theory section completion and monotonic Experience completion/mastery. Environment completion requires complete Theory and every current Experience completed; Environment mastery requires complete Theory and every current Experience mastered. The dimensions remain separate and no combined score, run history or analytics is defined.
 
 Phase 7 validated the complete V2 path with EE-0001 as the single canonical pilot: Authoring, Runtime, projection, Player, evaluator, localized learner feedback, ENV Progress and deterministic packaging.
+
+Phase 8 completed final regression, security, localization, media, Preview and Publish validation. EE-0001 is the first published canonical Experience V2. Experience Engine V2 is production ready and its architecture is frozen under the guardrails in section 17.
 
 V2 identity remains explicit at every contract boundary. No Experience, Environment, Runtime, artifact or progress record may be treated as V2 merely because its shape resembles V2.
 
@@ -259,7 +261,7 @@ This classification reflects the audited implementation and is planning input on
 
 ## 15. Pilot and rollout boundary
 
-**EE-0001 — Sensor ON, PLC Input OFF** is the sole canonical V2 pilot. Its separately approved Phase 7 migration validates:
+**EE-0001 — Sensor ON, PLC Input OFF** is the first published canonical Experience V2. Its separately approved Phase 7 migration and Phase 8 publication validate:
 
 - plausible decisions and one correct option;
 - blocked progression and unlimited retry;

@@ -65,7 +65,7 @@ test("EE-0001 is the single canonical Authoring V2 pilot with explicit decision 
   assert.equal(result.profile, "authoring_v2");
   assert.equal(authoring.contract_version, "2.0.0");
   assert.equal(authoring.metadata.id, "EXP-SENSOR-SIGNAL-001");
-  assert.equal(authoring.metadata.status, "technical_review");
+  assert.equal(authoring.metadata.status, "published");
   assert.deepEqual(authoring.public.stages.map(item => item.phase), [
     "incident", "investigation", "investigation", "investigation",
     "investigation", "investigation", "solution"

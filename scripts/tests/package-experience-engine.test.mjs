@@ -58,25 +58,32 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-SENSOR-SIGNAL-001"]);
+  assert.deepEqual(result.packaged, ["EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001"]);
   assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.equal(result.skipped.length, 2);
-  assert.equal(catalog.experiences.length, 1);
-  const remaining = catalog.experiences[0];
+  assert.equal(catalog.experiences.length, 2);
+  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-SIGNAL-001");
+  const intermittent = catalog.experiences.find(item => item.id === "EXP-SENSOR-INTERMITTENT-002");
   assert.equal(remaining.id, "EXP-SENSOR-SIGNAL-001");
   assert.equal(remaining.editorialId, "EE-0001");
   assert.equal(remaining.access, "free");
   assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-SIGNAL-001.es.json");
   assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-SIGNAL-001.en.json");
+  assert.equal(intermittent.editorialId, "EE-0002");
+  assert.equal(intermittent.locales.es, "experiences/EXP-SENSOR-INTERMITTENT-002.es.json");
+  assert.equal(intermittent.locales.en, "experiences/EXP-SENSOR-INTERMITTENT-002.en.json");
   assert.equal(catalog.environments.length, 3);
-  assert.deepEqual(catalog.environments[0].hotspots, [{
-    experienceEditorialId: "EE-0001",
-    x: 8.6,
-    y: 36.8
-  }]);
+  assert.deepEqual(catalog.environments[0].hotspots, [
+    { experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 },
+    { experienceEditorialId: "EE-0002", x: 24, y: 45.5 }
+  ]);
   assert.deepEqual(catalog.environments[0].theory, {
     defaultLocale: "es",
-    sectionIds: ["TH-01-DIGITAL-SIGNAL-PATH", "TH-02-PNP-REFERENCE", "TH-03-OBSERVATION-BOUNDARIES"],
+    sectionIds: [
+      "TH-01-DIGITAL-SIGNAL-PATH", "TH-02-PNP-REFERENCE", "TH-03-OBSERVATION-BOUNDARIES",
+      "TH-04-INTERMITTENT-FAULTS", "TH-05-CORRELATION", "TH-06-INTERMITTENT-BOUNDARY",
+      "TH-07-REPEATED-VERIFICATION"
+    ],
     locales: {
       es: "environments/ENV-001/theory.es.json",
       en: "environments/ENV-001/theory.en.json"
@@ -128,6 +135,8 @@ test("preview packages every eligible canonical Experience", async t => {
   )));
   await access(path.join(generatedRoot, remaining.locales.es));
   await access(path.join(generatedRoot, remaining.locales.en));
+  await access(path.join(generatedRoot, intermittent.locales.es));
+  await access(path.join(generatedRoot, intermittent.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
   await access(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"));
@@ -212,9 +221,9 @@ test("publish excludes technical-review experiences while preview includes them"
   const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
   const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
 
-  assert.deepEqual(publish.packaged, []);
-  assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, ["EXP-SENSOR-SIGNAL-001"]);
+  assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
+  assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
+  assert.deepEqual(preview.packaged, ["EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001"]);
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.deepEqual(publish.environments, []);
 });

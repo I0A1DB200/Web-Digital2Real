@@ -1,0 +1,537 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-SENSOR-INTERMITTENT-002"
+  editorial_id: "EE-0002"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "published"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Industrial I/O"
+  domain: "Intermittent photoelectric detection"
+  industry: "Packaging"
+  machine_type: "Conveyor detection station"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids:
+      - "COMP-IIO-SIGNAL-TRACEABILITY"
+      - "COMP-IIO-STATE-INTERPRETATION"
+      - "COMP-IIO-CONTROLLED-RECOVERY"
+
+public:
+  slug: "intermittent-photoelectric-sensor-detection"
+  title: "Detección fotoeléctrica intermitente"
+  summary: "Compara ciclos correctos y fallidos, localiza por qué algunas cajas no originan señal y valida una corrección sin sustituir componentes sin evidencia."
+  estimated_duration: 14
+  scenario:
+    initial_context: "Un transportador detecta correctamente la mayoría de las cajas, pero ocasionalmente una atraviesa el punto fotoeléctrico sin quedar registrada."
+    operational_state: "La máquina funciona normalmente, no presenta alarma permanente y el fallo no aparece en todos los ciclos."
+    initiating_event: "Producción informa de detecciones omitidas esporádicas durante el funcionamiento normal."
+    learner_role: "Técnico de automatización responsable de reproducir y correlacionar el fallo antes de intervenir."
+    safety_context:
+      safe_state: "Observar ciclos desde una posición segura y aplicar el procedimiento autorizado de parada y aislamiento antes de ajustar o asegurar mecánicamente el sensor."
+      intervention_constraints:
+        - "No sustituir el sensor ni el módulo de entradas sin evidencia."
+        - "No modificar la lógica PLC ni el mapeo de E/S."
+        - "No aumentar sensibilidad sin relacionar el ajuste con la condición de fallo."
+        - "Validar la reparación bajo las condiciones que producían la omisión."
+  learning_objectives:
+    - id: "OBJ-INTERMITTENT-CHARACTERIZATION"
+      description: "Reproducir y caracterizar un fallo intermitente mediante varios ciclos."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-CYCLE-CORRELATION"
+      description: "Comparar ciclos correctos y fallidos para establecer una frontera diagnóstica."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-VALIDATED-RECOVERY"
+      description: "Corregir la condición confirmada y verificarla con ciclos repetidos."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-CHARACTERIZE"
+      phase: "incident"
+      title: "Caracterizar la intermitencia"
+      situation: "La mayoría de las cajas se registra y algunas se omiten sin alarma permanente. ¿Cuál es el siguiente paso diagnóstico?"
+      evidence_ids: ["EVID-01-REPORT"]
+      decision_ids: ["DEC-01-OBSERVE-CYCLES", "DEC-01-REPLACE-SENSOR", "DEC-01-CHANGE-LOGIC"]
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-COMPARE"
+      phase: "investigation"
+      title: "Comparar ciclos"
+      situation: "La observación repetida confirma ciclos correctos y fallidos bajo producción normal. Debes comparar qué cambia entre ambos."
+      evidence_ids: ["EVID-02-CYCLE-SAMPLE"]
+      decision_ids: ["DEC-02-COMPARE-STATES", "DEC-02-INCREASE-SENSITIVITY", "DEC-02-REPLACE-INPUT"]
+      media_ids: []
+    - id: "STAGE-03-BOUNDARY"
+      phase: "investigation"
+      title: "Establecer la frontera diagnóstica"
+      situation: "En ciclos correctos la salida del sensor y la entrada PLC están ON. En ciclos fallidos ambas permanecen OFF."
+      evidence_ids: ["EVID-03-SUCCESS", "EVID-04-FAILURE"]
+      decision_ids: ["DEC-03-MOVE-UPSTREAM", "DEC-03-BLAME-PLC", "DEC-03-REMAP-INPUT"]
+      media_ids: ["ART-002", "ART-003"]
+    - id: "STAGE-04-CORRELATE"
+      phase: "investigation"
+      title: "Correlacionar la condición de fallo"
+      situation: "La señal no se origina en el sensor durante la omisión. Debes observar qué condición física coincide con esos ciclos."
+      evidence_ids: ["EVID-05-UPSTREAM-BOUNDARY"]
+      decision_ids: ["DEC-04-CORRELATE-POSITION", "DEC-04-REPLACE-SENSOR", "DEC-04-CHANGE-PROGRAM"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-05-INSPECT"
+      phase: "investigation"
+      title: "Inspeccionar la geometría de detección"
+      situation: "Las omisiones coinciden con pequeñas variaciones normales de la posición lateral de las cajas."
+      evidence_ids: ["EVID-06-POSITION-CORRELATION"]
+      decision_ids: ["DEC-05-INSPECT-ALIGNMENT", "DEC-05-ADJUST-BLINDLY", "DEC-05-REPLACE-HARDWARE"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-06-CORRECT"
+      phase: "investigation"
+      title: "Corregir la causa confirmada"
+      situation: "La inspección muestra que el eje de detección está cerca del borde de la trayectoria real del producto."
+      evidence_ids: ["EVID-07-MARGINAL-ALIGNMENT"]
+      decision_ids: ["DEC-06-REALIGN-SECURE", "DEC-06-SENSOR-ONLY", "DEC-06-SOFTWARE-WINDOW"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-07-VERIFY"
+      phase: "solution"
+      title: "Validar con ciclos repetidos"
+      situation: "El sensor ha sido realineado y asegurado mecánicamente. La intervención aún requiere una prueba bajo las condiciones anteriores."
+      evidence_ids: ["EVID-08-REPAIR"]
+      decision_ids: ["DEC-07-VALIDATE-SAMPLE", "DEC-07-ONE-CYCLE", "DEC-07-CLOSE-NOW"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-REPORT"
+      type: "operator_report"
+      source: "Producción"
+      content: "Algunas cajas no quedan registradas, aunque la instalación funciona correctamente la mayor parte del tiempo y no existe una alarma permanente."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-CYCLE-SAMPLE"
+      type: "initial_observation"
+      source: "Observación de producción"
+      content: "Una muestra repetida contiene ciclos correctos y ciclos con detección omitida; el síntoma es reproducible pero no permanente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-OBSERVE-CYCLES"]
+    - id: "EVID-03-SUCCESS"
+      type: "diagnostic"
+      source: "Ciclo correcto"
+      content: "La caja cruza el punto, la salida del sensor pasa a ON, la entrada PLC pasa a ON y el registro se incrementa."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-COMPARE-STATES"]
+    - id: "EVID-04-FAILURE"
+      type: "diagnostic"
+      source: "Ciclo fallido"
+      content: "La caja cruza el punto, la salida del sensor permanece OFF, la entrada PLC permanece OFF y no se genera registro."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-COMPARE-STATES"]
+    - id: "EVID-05-UPSTREAM-BOUNDARY"
+      type: "diagnostic"
+      source: "Comparación sensor/PLC"
+      content: "Durante la omisión no existe señal en la salida física del sensor; la entrada PLC refleja correctamente ese estado OFF."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-MOVE-UPSTREAM"]
+    - id: "EVID-06-POSITION-CORRELATION"
+      type: "inspection"
+      source: "Trayectoria de producto"
+      content: "Las omisiones coinciden con cajas que pasan dentro de la variación normal, pero más próximas a un borde de la trayectoria."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-CORRELATE-POSITION"]
+    - id: "EVID-07-MARGINAL-ALIGNMENT"
+      type: "inspection"
+      source: "Montaje del sensor"
+      content: "El sensor está funcional, limpio y correctamente configurado, pero su eje de detección queda próximo al borde de la trayectoria real de las cajas."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-INSPECT-ALIGNMENT"]
+    - id: "EVID-08-REPAIR"
+      type: "inspection"
+      source: "Intervención mecánica"
+      content: "El sensor se ha realineado hacia la trayectoria efectiva y su soporte ha quedado asegurado mecánicamente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-REALIGN-SECURE"]
+    - id: "EVID-09-VALIDATION"
+      type: "functional_test"
+      source: "Muestra de validación posterior"
+      content: "Todos los ciclos ejecutados en la muestra de validación fueron detectados y registrados correctamente, incluidas las posiciones que antes coincidían con la omisión."
+      reliability: "confirmed"
+      revealed_by: ["DEC-07-VALIDATE-SAMPLE"]
+  decisions:
+    - id: "DEC-01-OBSERVE-CYCLES"
+      stage_id: "STAGE-01-CHARACTERIZE"
+      action: "Observar varios ciclos y conservar ejemplos correctos y fallidos antes de intervenir."
+    - id: "DEC-01-REPLACE-SENSOR"
+      stage_id: "STAGE-01-CHARACTERIZE"
+      action: "Sustituir inmediatamente el sensor porque alguna caja no se detecta."
+    - id: "DEC-01-CHANGE-LOGIC"
+      stage_id: "STAGE-01-CHARACTERIZE"
+      action: "Modificar la lógica para aceptar una caja aunque no llegue la señal."
+    - id: "DEC-02-COMPARE-STATES"
+      stage_id: "STAGE-02-COMPARE"
+      action: "Comparar salida física del sensor, entrada PLC y registro en ciclos correctos y fallidos."
+    - id: "DEC-02-INCREASE-SENSITIVITY"
+      stage_id: "STAGE-02-COMPARE"
+      action: "Aumentar sensibilidad sin relacionar el ajuste con el fallo."
+    - id: "DEC-02-REPLACE-INPUT"
+      stage_id: "STAGE-02-COMPARE"
+      action: "Sustituir el módulo de entradas antes de observar el estado del sensor."
+    - id: "DEC-03-MOVE-UPSTREAM"
+      stage_id: "STAGE-03-BOUNDARY"
+      action: "Concluir que la señal no se origina durante el fallo y mover la investigación aguas arriba del PLC."
+    - id: "DEC-03-BLAME-PLC"
+      stage_id: "STAGE-03-BOUNDARY"
+      action: "Atribuir la omisión al programa PLC porque la entrada permanece OFF."
+    - id: "DEC-03-REMAP-INPUT"
+      stage_id: "STAGE-03-BOUNDARY"
+      action: "Cambiar el mapeo de E/S para probar otro canal."
+    - id: "DEC-04-CORRELATE-POSITION"
+      stage_id: "STAGE-04-CORRELATE"
+      action: "Comparar posición y trayectoria de las cajas entre detecciones correctas y omitidas."
+    - id: "DEC-04-REPLACE-SENSOR"
+      stage_id: "STAGE-04-CORRELATE"
+      action: "Sustituir el sensor sin observar las condiciones físicas del fallo."
+    - id: "DEC-04-CHANGE-PROGRAM"
+      stage_id: "STAGE-04-CORRELATE"
+      action: "Ampliar una ventana de software para compensar la señal ausente."
+    - id: "DEC-05-INSPECT-ALIGNMENT"
+      stage_id: "STAGE-05-INSPECT"
+      action: "Inspeccionar la alineación del eje de detección respecto a toda la trayectoria real del producto."
+    - id: "DEC-05-ADJUST-BLINDLY"
+      stage_id: "STAGE-05-INSPECT"
+      action: "Girar el sensor sin registrar su geometría ni confirmar la correlación."
+    - id: "DEC-05-REPLACE-HARDWARE"
+      stage_id: "STAGE-05-INSPECT"
+      action: "Sustituir sensor y módulo PLC para eliminar posibilidades."
+    - id: "DEC-06-REALIGN-SECURE"
+      stage_id: "STAGE-06-CORRECT"
+      action: "Realinear el sensor sobre la trayectoria efectiva y asegurar mecánicamente el soporte."
+    - id: "DEC-06-SENSOR-ONLY"
+      stage_id: "STAGE-06-CORRECT"
+      action: "Instalar otro sensor en la misma alineación marginal."
+    - id: "DEC-06-SOFTWARE-WINDOW"
+      stage_id: "STAGE-06-CORRECT"
+      action: "Modificar tiempos PLC para compensar la ausencia de señal física."
+    - id: "DEC-07-VALIDATE-SAMPLE"
+      stage_id: "STAGE-07-VERIFY"
+      action: "Ejecutar una muestra repetida que incluya las posiciones antes asociadas al fallo y comprobar sensor, PLC y registro."
+    - id: "DEC-07-ONE-CYCLE"
+      stage_id: "STAGE-07-VERIFY"
+      action: "Aceptar un único ciclo correcto como validación suficiente."
+    - id: "DEC-07-CLOSE-NOW"
+      stage_id: "STAGE-07-VERIFY"
+      action: "Cerrar la intervención inmediatamente después del ajuste."
+  visual:
+    educational_purpose: "Mostrar progresivamente la diferencia entre ciclos y la correlación física sin revelar la alineación marginal antes de su inspección."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/01-cycle-observation.png"
+        alt: "Vista del punto de detección B1 durante la observación de varios ciclos."
+        caption: "Síntoma intermitente pendiente de caracterización."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/02-successful-cycle.png"
+        alt: "Ciclo correcto con salida B1 ON, entrada I0.3 ON y caja registrada."
+        caption: "Ciclo correcto usado como referencia."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/03-failed-cycle.png"
+        alt: "Ciclo fallido con salida B1 OFF, entrada I0.3 OFF y caja no registrada."
+        caption: "La señal no se origina en B1 durante la omisión."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/04-position-correlation.png"
+        alt: "Comparación de ciclos que correlaciona las omisiones con la posición lateral de la caja."
+        caption: "El fallo depende de la posición del producto."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/05-marginal-alignment.png"
+        alt: "Inspección que muestra el eje de B1 próximo al borde de la trayectoria real."
+        caption: "Alineación fotoeléctrica marginal confirmada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/06-realignment-secured.png"
+        alt: "B1 realineado para cubrir la trayectoria y soporte asegurado mecánicamente."
+        caption: "Geometría corregida y montaje asegurado."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-SENSOR-INTERMITTENT-002/07-validation-cycles.png"
+        alt: "Muestra de diez ciclos posteriores con detección correcta en las posiciones ensayadas."
+        caption: "Diez de diez ciclos detectados en la muestra de validación ejecutada."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "La salida del sensor permanecía OFF durante las omisiones; la comparación de ciclos condujo a una alineación marginal respecto a la trayectoria real."
+    process: ["Reproducir antes de intervenir.", "Comparar ciclos correctos y fallidos.", "Establecer la frontera con sensor y PLC.", "Correlacionar la omisión con la posición.", "Realinear, asegurar y validar repetidamente."]
+    lesson: "En un fallo intermitente, la correlación entre estado eléctrico y condición física evita sustituciones sin evidencia."
+    avoided_errors: ["Sustituir el sensor prematuramente.", "Modificar lógica o mapeo de E/S.", "Ajustar sensibilidad sin evidencia.", "Cerrar tras un solo ciclo correcto."]
+    industrial_value: ["Menos sustituciones injustificadas.", "Diagnóstico reproducible.", "Verificación vinculada a la condición de fallo."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Alineación marginal del sensor fotoeléctrico: el eje de detección queda próximo al borde de la trayectoria real y las variaciones normales de posición ocasionan omisiones."
+    recovery_conditions: ["Sensor realineado sobre la trayectoria efectiva.", "Soporte asegurado mecánicamente.", "Salida del sensor y entrada PLC activas en cada ciclo de validación.", "Todos los ciclos de la muestra de validación quedan registrados."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-SENSOR-INTERNAL"
+        statement: "El sensor presenta un fallo interno intermitente."
+        initial_status: "possible"
+      - id: "HYP-WIRING"
+        statement: "La alimentación o el cableado interrumpen ocasionalmente la señal."
+        initial_status: "possible"
+      - id: "HYP-PLC"
+        statement: "La entrada o el programa PLC pierden detecciones válidas."
+        initial_status: "possible"
+      - id: "HYP-ALIGNMENT"
+        statement: "La geometría de detección es marginal respecto a la trayectoria del producto."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-ALIGNMENT"
+    critical_path: ["DEC-01-OBSERVE-CYCLES", "DEC-02-COMPARE-STATES", "DEC-03-MOVE-UPSTREAM", "DEC-04-CORRELATE-POSITION", "DEC-05-INSPECT-ALIGNMENT", "DEC-06-REALIGN-SECURE", "DEC-07-VALIDATE-SAMPLE"]
+  decision_logic:
+    - decision_id: "DEC-01-OBSERVE-CYCLES"
+      is_correct: true
+      rationale: "La intermitencia debe reproducirse y caracterizarse antes de intervenir."
+      classification: "strong"
+      consequence: "Se obtiene una muestra comparable."
+      evidence_revealed: ["EVID-02-CYCLE-SAMPLE"]
+      next_stage: "STAGE-02-COMPARE"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "La omisión ocasional no demuestra un fallo interno. Primero conserva ciclos correctos y fallidos para identificar qué estado cambia."
+      rationale: "No existe evidencia suficiente para sustituir el sensor."
+      classification: "weak"
+      consequence: "La causa podría permanecer."
+      evidence_revealed: []
+      next_stage: "STAGE-02-COMPARE"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-CHANGE-LOGIC"
+      is_correct: false
+      retry_feedback: "Aceptar una caja sin señal ocultaría el síntoma y alteraría el comportamiento documentado antes de localizar la causa."
+      rationale: "El software no debe compensar una condición aún no diagnosticada."
+      classification: "unsafe"
+      consequence: "Se introduce una detección no verificada."
+      evidence_revealed: []
+      next_stage: "STAGE-02-COMPARE"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-02-COMPARE-STATES"
+      is_correct: true
+      rationale: "Comparar los mismos puntos durante éxito y fallo establece la discrepancia relevante."
+      classification: "strong"
+      consequence: "Se observa dónde nace o desaparece la señal."
+      evidence_revealed: ["EVID-03-SUCCESS", "EVID-04-FAILURE"]
+      next_stage: "STAGE-03-BOUNDARY"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-INCREASE-SENSITIVITY"
+      is_correct: false
+      retry_feedback: "Cambiar sensibilidad antes de comparar estados elimina la condición original sin demostrar qué frontera falla."
+      rationale: "El ajuste no está vinculado todavía a evidencia."
+      classification: "weak"
+      consequence: "La causa queda sin caracterizar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-BOUNDARY"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-02-REPLACE-INPUT"
+      is_correct: false
+      retry_feedback: "La entrada PLC no puede evaluarse sin observar simultáneamente si el sensor genera señal durante el ciclo omitido."
+      rationale: "Falta establecer la relación entre campo y PLC."
+      classification: "weak"
+      consequence: "La sustitución carece de frontera diagnóstica."
+      evidence_revealed: []
+      next_stage: "STAGE-03-BOUNDARY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-MOVE-UPSTREAM"
+      is_correct: true
+      rationale: "Sensor OFF y PLC OFF indican que la señal no se originó; el PLC representa correctamente el estado recibido."
+      classification: "strong"
+      consequence: "La investigación se dirige a las condiciones físicas de detección."
+      evidence_revealed: ["EVID-05-UPSTREAM-BOUNDARY"]
+      next_stage: "STAGE-04-CORRELATE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-03-BLAME-PLC"
+      is_correct: false
+      retry_feedback: "La entrada PLC permanece OFF porque la salida física del sensor también está OFF. No hay una señal ON perdida dentro del PLC."
+      rationale: "El PLC refleja la ausencia de señal de campo."
+      classification: "weak"
+      consequence: "La investigación se desplaza a una frontera incorrecta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CORRELATE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-REMAP-INPUT"
+      is_correct: false
+      retry_feedback: "Remapear la entrada no puede crear una señal que permanece OFF en la salida del sensor y altera una configuración válida."
+      rationale: "La señal ausente está aguas arriba."
+      classification: "unsafe"
+      consequence: "Se modifica E/S sin evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CORRELATE"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-04-CORRELATE-POSITION"
+      is_correct: true
+      rationale: "La posición es una variable observable que puede explicar por qué la señal no se origina."
+      classification: "strong"
+      consequence: "Se identifica una condición física asociada a la omisión."
+      evidence_revealed: ["EVID-06-POSITION-CORRELATION"]
+      next_stage: "STAGE-05-INSPECT"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-04-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "Antes de sustituir un sensor funcional, compara qué condición física distingue los ciclos en que no llega a activarse."
+      rationale: "La comparación de condiciones aún no está completa."
+      classification: "weak"
+      consequence: "La misma geometría podría reproducir el fallo."
+      evidence_revealed: []
+      next_stage: "STAGE-05-INSPECT"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-04-CHANGE-PROGRAM"
+      is_correct: false
+      retry_feedback: "Una ventana de software no corrige que el sensor nunca genere la señal durante el ciclo omitido."
+      rationale: "El programa no puede procesar una transición inexistente."
+      classification: "weak"
+      consequence: "La causa física permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-05-INSPECT"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-INSPECT-ALIGNMENT"
+      is_correct: true
+      rationale: "La correlación con posición exige comprobar la cobertura geométrica de toda la trayectoria."
+      classification: "strong"
+      consequence: "Se confirma una alineación marginal."
+      evidence_revealed: ["EVID-07-MARGINAL-ALIGNMENT"]
+      next_stage: "STAGE-06-CORRECT"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-05-ADJUST-BLINDLY"
+      is_correct: false
+      retry_feedback: "Mover el sensor sin registrar su alineación impide demostrar que la corrección responde a la condición correlacionada."
+      rationale: "Un ajuste no documentado destruye evidencia."
+      classification: "weak"
+      consequence: "La intervención no sería trazable."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECT"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-05-REPLACE-HARDWARE"
+      is_correct: false
+      retry_feedback: "Sustituir varios componentes sin aislar la causa no comprueba la geometría que coincide con las omisiones."
+      rationale: "La sustitución múltiple elimina trazabilidad."
+      classification: "weak"
+      consequence: "Se incurre en coste sin diagnóstico confirmado."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECT"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-06-REALIGN-SECURE"
+      is_correct: true
+      rationale: "La intervención corrige la geometría confirmada y evita que el soporte vuelva a desplazarse."
+      classification: "strong"
+      consequence: "La cobertura se centra sobre la trayectoria efectiva."
+      evidence_revealed: ["EVID-08-REPAIR"]
+      next_stage: "STAGE-07-VERIFY"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-SENSOR-ONLY"
+      is_correct: false
+      retry_feedback: "Un sensor nuevo colocado sobre el mismo eje marginal conserva la condición que produjo las omisiones."
+      rationale: "El dispositivo es funcional; la causa es geométrica."
+      classification: "weak"
+      consequence: "El fallo puede repetirse."
+      evidence_revealed: []
+      next_stage: "STAGE-07-VERIFY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-SOFTWARE-WINDOW"
+      is_correct: false
+      retry_feedback: "Cambiar tiempos no restaura una salida física que permanece OFF cuando la caja queda fuera del eje efectivo."
+      rationale: "La lógica no corrige la cobertura óptica."
+      classification: "weak"
+      consequence: "La detección continúa siendo marginal."
+      evidence_revealed: []
+      next_stage: "STAGE-07-VERIFY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-07-VALIDATE-SAMPLE"
+      is_correct: true
+      rationale: "La reparación debe probarse repetidamente bajo las posiciones que antes coincidían con el fallo."
+      classification: "strong"
+      consequence: "La muestra ejecutada confirma detección consistente."
+      evidence_revealed: ["EVID-09-VALIDATION"]
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-07-ONE-CYCLE"
+      is_correct: false
+      retry_feedback: "Un único ciclo correcto no valida un fallo intermitente; la prueba debe incluir repetición y las posiciones antes problemáticas."
+      rationale: "Una muestra de uno no reproduce la condición intermitente."
+      classification: "acceptable"
+      consequence: "La corrección queda insuficientemente verificada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -2
+      safety_effect: 0
+    - decision_id: "DEC-07-CLOSE-NOW"
+      is_correct: false
+      retry_feedback: "El ajuste mecánico no demuestra recuperación hasta ejecutar de nuevo las condiciones que producían la omisión."
+      rationale: "La intervención carece de prueba funcional."
+      classification: "weak"
+      consequence: "El fallo intermitente podría reaparecer."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La salida del sensor permanecía OFF durante las omisiones porque una alineación marginal dejaba parte de la trayectoria normal fuera del eje efectivo."
+    correct_reasoning: ["Reproducir el síntoma.", "Comparar salida de sensor y entrada PLC entre ciclos.", "Mover la frontera aguas arriba cuando ambas permanecen OFF.", "Correlacionar la omisión con la posición.", "Confirmar la geometría antes de corregir."]
+    recovery: ["Realinear el sensor sobre la trayectoria efectiva.", "Asegurar mecánicamente el soporte.", "Repetir ciclos en las posiciones previamente problemáticas.", "Confirmar salida, entrada y registro en toda la muestra ejecutada."]
+  technical_validation:
+    status: "pass"
+    evidence: ["El escenario y la progresión diagnóstica están representados por contratos V2 existentes.", "Los siete assets diagnósticos fueron revisados visualmente y respetan la revelación progresiva, la causa raíz canónica y el alcance de la muestra de validación ejecutada."]

@@ -27,3 +27,23 @@ sections:
     body: |
       El LED del sensor, el LED del módulo y una variable como I0.3 representan puntos de observación distintos. Compararlos permite localizar en qué tramo deja de propagarse la señal sin sustituir evidencias por suposiciones.
     media_ids: []
+  - id: "TH-04-INTERMITTENT-FAULTS"
+    title: "Fallos intermitentes"
+    body: |
+      Un fallo permanente ofrece una discrepancia estable. Un fallo intermitente exige reproducir el síntoma, conservar ciclos correctos y fallidos y observarlos bajo condiciones comparables antes de intervenir.
+    media_ids: []
+  - id: "TH-05-CORRELATION"
+    title: "Correlacionar antes de sustituir"
+    body: |
+      Compara qué cambia entre éxito y fallo: posición, velocidad, vibración, producto, carga, temperatura y timing. Una correlación repetida orienta la inspección; una coincidencia aislada no confirma una causa.
+    media_ids: []
+  - id: "TH-06-INTERMITTENT-BOUNDARY"
+    title: "Frontera sensor y PLC"
+    body: |
+      Si durante una omisión la salida del sensor está OFF y la entrada PLC también está OFF, no existe evidencia para empezar modificando la lógica. Si la salida está ON y la entrada está OFF, la frontera se desplaza hacia cableado, transmisión de señal o canal de entrada.
+    media_ids: []
+  - id: "TH-07-REPEATED-VERIFICATION"
+    title: "Verificar bajo la condición de fallo"
+    body: |
+      Una reparación intermitente no queda validada porque el síntoma desaparezca una vez. Repite la prueba bajo las posiciones y condiciones que producían el fallo y limita la conclusión a la muestra realmente ejecutada.
+    media_ids: []

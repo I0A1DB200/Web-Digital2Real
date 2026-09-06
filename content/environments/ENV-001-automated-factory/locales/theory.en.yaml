@@ -21,3 +21,23 @@ sections:
     body: |
       The sensor LED, module LED and a variable such as I0.3 represent different observation points. Comparing them locates where the signal stops propagating without replacing evidence with assumptions.
     media_ids: []
+  - id: "TH-04-INTERMITTENT-FAULTS"
+    title: "Intermittent faults"
+    body: |
+      A permanent fault provides a stable discrepancy. An intermittent fault requires reproducing the symptom, preserving successful and failed cycles and observing them under comparable conditions before intervention.
+    media_ids: []
+  - id: "TH-05-CORRELATION"
+    title: "Correlate before replacing"
+    body: |
+      Compare what changes between success and failure: position, speed, vibration, product, load, temperature and timing. A repeated correlation guides inspection; one coincidence does not confirm a cause.
+    media_ids: []
+  - id: "TH-06-INTERMITTENT-BOUNDARY"
+    title: "Sensor and PLC boundary"
+    body: |
+      If the sensor output is OFF and the PLC input is also OFF during a miss, there is no evidence to begin by changing PLC logic. If the output is ON and the input is OFF, the boundary moves toward wiring, signal transmission or the input channel.
+    media_ids: []
+  - id: "TH-07-REPEATED-VERIFICATION"
+    title: "Verify under the fault condition"
+    body: |
+      An intermittent repair is not validated because the symptom disappears once. Repeat the test under the positions and conditions that produced the fault and limit the conclusion to the sample actually executed.
+    media_ids: []

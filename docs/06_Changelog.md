@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-31 — EE-0002 intermittent detection Preview
+
+- Added EE-0002 as a canonical Authoring V2 practice Experience for evidence-led diagnosis of intermittent photoelectric detection.
+- Integrated EE-0002 generically into the existing ENV-001 Preview hotspot list without changing Experience Lab discovery or the Environment publication contract.
+- Extended ENV-001 Theory in ES/EN with intermittent-fault characterization, correlation, sensor/PLC diagnostic boundaries and repeated verification.
+- Integrated and visually reviewed seven canonical diagnostic assets with progressive disclosure, including a bounded ten-cycle validation result.
+- Promoted EE-0002 to published after Authoring, Runtime, Player, evaluator, localization, packaging and security validation; ENV-001 remains Preview and continues to govern discovery through its canonical hotspot list.
+
 ## 2026-08-30 — Experience Engine V2 final regression
 
 - Promoted EE-0001 from technical review to the first published canonical Experience V2 after final validation; Experience Engine V2 is production ready and its architecture is frozen.

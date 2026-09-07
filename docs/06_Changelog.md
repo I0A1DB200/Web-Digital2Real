@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-07 — EE-0003 motor/VFD command-authority Preview
+
+- Added EE-0003 as an Authoring V2 practice Experience for diagnosis of the S7-1500 → PROFINET → SINAMICS G120 command chain.
+- Modelled a HAND/BOP versus AUTO/PLC-PROFINET authority mismatch through six explicit diagnostic decisions and seven progressively disclosed evidence assets.
+- Added complete Spanish and English learner content and extended ENV-001 Theory with reusable motor/VFD, READY/RUNNING/FAULT, command/feedback and command-authority concepts.
+- Kept EE-0003 in technical review for explicit editorial publication authorization; ENV-001 remains Preview.
+
 ## 2026-08-31 — EE-0002 intermittent detection Preview
 
 - Added EE-0002 as a canonical Authoring V2 practice Experience for evidence-led diagnosis of intermittent photoelectric detection.

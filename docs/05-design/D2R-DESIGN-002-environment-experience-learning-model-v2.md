@@ -281,3 +281,5 @@ Further implementation still requires a separate technical plan and explicit app
 New Experiences MUST adapt to the ratified contracts and MUST NOT introduce Experience-specific Engine behavior for editorial convenience. An Engine change requires a repeatable limitation affecting multiple Experiences, production evidence, explicit architecture review and a system-wide benefit.
 
 The pilot validates readiness to author EE-0002 through EE-0010 within the current model; it does not create or migrate those Experiences. Evaluation thresholds remain provisional, and backend-authoritative evaluation, cross-tab progress synchronization, analytics, run history, prerequisites and adaptive learning remain deferred.
+
+EE-0002 and EE-0003 subsequently reuse this frozen architecture without extension. EE-0003 models the S7-1500 → PROFINET → SINAMICS G120 command chain and a HAND/BOP versus AUTO/PLC authority mismatch through the existing Authoring, Runtime, projection, Player, evaluator and ENV Progress contracts. It remains in technical review within ENV-001 Preview pending explicit publication authorization.

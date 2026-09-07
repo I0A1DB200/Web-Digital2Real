@@ -1,0 +1,477 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-VFD-AUTHORITY-003"
+  editorial_id: "EE-0003"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Motor control"
+  domain: "VFD command authority"
+  industry: "Packaging"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "vfd-command-authority-mismatch"
+  title: "El variador recibe orden, pero el transportador no arranca"
+  summary: "Traza la cadena de mando desde la petición del operador hasta el SINAMICS G120 y corrige una autoridad HAND/AUTO incompatible con la operación automática."
+  estimated_duration: 15
+  scenario:
+    initial_context: "El transportador automático está detenido. El operador solicita marcha desde la interfaz normal, pero la máquina no se mueve."
+    operational_state: "La petición de marcha está activa y no aparece una alarma relevante; todavía no se conoce dónde deja de cumplirse la cadena de mando."
+    initiating_event: "Producción informa de que una solicitud automática válida no produce movimiento del motor ni del transportador."
+    learner_role: "Técnico de automatización responsable de localizar la frontera entre petición, mando, ejecución y feedback."
+    safety_context:
+      safe_state: "Realizar observaciones online desde una posición segura y aplicar el procedimiento autorizado antes de cualquier intervención sobre el variador o el motor."
+      intervention_constraints:
+        - "No forzar salidas ni puentear permisivos o protecciones."
+        - "No sustituir motor o variador sin evidencia."
+        - "No modificar lógica PLC ni parámetros antes de establecer la arquitectura prevista."
+        - "Restaurar la autoridad de mando solo mediante el procedimiento aprobado de la máquina."
+  learning_objectives:
+    - id: "OBJ-COMMAND-CHAIN"
+      description: "Trazar petición, condiciones PLC, RunCmd, autoridad del variador y feedback."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-DRIVE-STATE"
+      description: "Distinguir READY, RUNNING y FAULT sin atribuir causalidad prematura."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-RECOVERY"
+      description: "Restaurar la autoridad automática prevista y verificar toda la cadena."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-DRIVE-STATE"
+      phase: "incident"
+      title: "Separar síntoma y causa"
+      situation: "RUN está solicitado, el transportador permanece detenido y no hay alarma relevante. ¿Cuál es el mejor siguiente paso?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-INSPECT-DRIVE", "DEC-01-REPLACE-MOTOR", "DEC-01-FORCE-OUTPUT"]
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-TRACE-PLC"
+      phase: "investigation"
+      title: "Interpretar el estado del variador"
+      situation: "El SINAMICS G120 está READY, no está RUNNING y no presenta un fallo activo. READY no demuestra ejecución."
+      evidence_ids: ["EVID-02-DRIVE-STATE"]
+      decision_ids: ["DEC-02-TRACE-PLC", "DEC-02-RESET-REPEATEDLY", "DEC-02-REPLACE-VFD"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-03-CHECK-AUTHORITY"
+      phase: "investigation"
+      title: "Seguir la petición en el control"
+      situation: "La CPU S7-1500 está en RUN. Debes verificar si la aplicación solicita marcha y después seguir la aceptación del mando."
+      evidence_ids: ["EVID-03-PLC-AVAILABLE"]
+      decision_ids: ["DEC-03-CHECK-AUTHORITY", "DEC-03-CHANGE-LOGIC", "DEC-03-BYPASS-PERMISSIVES"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      phase: "investigation"
+      title: "Identificar quién tiene autoridad"
+      situation: "La inspección del variador muestra autoridad local HAND/BOP. Aún debes confirmar qué arquitectura requiere la producción automática."
+      evidence_ids: ["EVID-04-HAND-AUTHORITY"]
+      decision_ids: ["DEC-04-VERIFY-ARCHITECTURE", "DEC-04-ASSUME-HAND-FAULT", "DEC-04-CHANGE-PARAMETERS"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-VERIFY-PLC-COMMAND"
+      phase: "investigation"
+      title: "Comparar estado real y arquitectura prevista"
+      situation: "La máquina está diseñada para S7-1500 → PROFINET → SINAMICS G120 en AUTO. El estado HAND/BOP no coincide con esa operación."
+      evidence_ids: ["EVID-05-EXPECTED-ARCHITECTURE"]
+      decision_ids: ["DEC-05-VERIFY-ONLINE", "DEC-05-REPROGRAM", "DEC-05-REPLACE-DRIVE"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-RESTORE-VERIFY"
+      phase: "solution"
+      title: "Restaurar y verificar la cadena completa"
+      situation: "FB_CONVEYOR confirma Start, AutoMode, SafetyOK, Permit y RunCmd en TRUE, mientras Running permanece FALSE. La lógica produce el mando esperado."
+      evidence_ids: ["EVID-06-PLC-RUNCMD"]
+      decision_ids: ["DEC-06-RESTORE-VERIFY", "DEC-06-CLOSE-ON-MODE", "DEC-06-FORCE-RUNNING"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "HMI de operación"
+      content: "Existe petición RUN, el transportador no se mueve y no se muestra una alarma activa relevante."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-DRIVE-STATE"
+      type: "diagnostic"
+      source: "SINAMICS G120"
+      content: "El variador indica READY, RUNNING OFF, FAULT NONE y 0.0 Hz."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-INSPECT-DRIVE"]
+    - id: "EVID-03-PLC-AVAILABLE"
+      type: "diagnostic"
+      source: "S7-1500"
+      content: "La CPU está en RUN; no existe evidencia de un fallo general del controlador."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-TRACE-PLC"]
+    - id: "EVID-04-HAND-AUTHORITY"
+      type: "diagnostic"
+      source: "BOP del variador"
+      content: "El variador presenta autoridad de mando HAND/BOP en lugar de ejecutar el control automático esperado."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-CHECK-AUTHORITY"]
+    - id: "EVID-05-EXPECTED-ARCHITECTURE"
+      type: "documentation"
+      source: "Arquitectura aprobada"
+      content: "La operación automática prevista utiliza S7-1500, PROFINET y SINAMICS G120 con autoridad AUTO/PLC-fieldbus."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-VERIFY-ARCHITECTURE"]
+    - id: "EVID-06-PLC-RUNCMD"
+      type: "diagnostic"
+      source: "FB_CONVEYOR online"
+      content: "Start, AutoMode, SafetyOK, Permit y RunCmd están TRUE; Running y AtSpeed permanecen FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-VERIFY-ONLINE"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Verificación posterior"
+      content: "Con AUTO/PLC-PROFINET restaurado, RunCmd, Running, AtSpeed y Ready son coherentes, Fault permanece FALSE y el transportador se mueve."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-RESTORE-VERIFY"]
+  decisions:
+    - id: "DEC-01-INSPECT-DRIVE"
+      stage_id: "STAGE-01-DRIVE-STATE"
+      action: "Inspeccionar estado READY, RUNNING y FAULT del variador antes de intervenir."
+    - id: "DEC-01-REPLACE-MOTOR"
+      stage_id: "STAGE-01-DRIVE-STATE"
+      action: "Sustituir el motor inmediatamente porque el eje no gira."
+    - id: "DEC-01-FORCE-OUTPUT"
+      stage_id: "STAGE-01-DRIVE-STATE"
+      action: "Forzar la salida de marcha para comprobar si aparece movimiento."
+    - id: "DEC-02-TRACE-PLC"
+      stage_id: "STAGE-02-TRACE-PLC"
+      action: "Trazar la petición hacia el PLC y comprobar el estado del controlador y de la cadena de mando."
+    - id: "DEC-02-RESET-REPEATEDLY"
+      stage_id: "STAGE-02-TRACE-PLC"
+      action: "Resetear repetidamente el variador aunque no presenta fallo."
+    - id: "DEC-02-REPLACE-VFD"
+      stage_id: "STAGE-02-TRACE-PLC"
+      action: "Sustituir el variador porque READY no produce movimiento."
+    - id: "DEC-03-CHECK-AUTHORITY"
+      stage_id: "STAGE-03-CHECK-AUTHORITY"
+      action: "Comprobar qué fuente tiene actualmente autoridad para aceptar el mando del variador."
+    - id: "DEC-03-CHANGE-LOGIC"
+      stage_id: "STAGE-03-CHECK-AUTHORITY"
+      action: "Modificar el programa porque el transportador no responde."
+    - id: "DEC-03-BYPASS-PERMISSIVES"
+      stage_id: "STAGE-03-CHECK-AUTHORITY"
+      action: "Puentear permisivos para descartar rápidamente la lógica."
+    - id: "DEC-04-VERIFY-ARCHITECTURE"
+      stage_id: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      action: "Consultar la arquitectura aprobada y comparar la autoridad actual con la requerida en producción."
+    - id: "DEC-04-ASSUME-HAND-FAULT"
+      stage_id: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      action: "Declarar que HAND siempre es un fallo y cambiarlo sin verificar el diseño."
+    - id: "DEC-04-CHANGE-PARAMETERS"
+      stage_id: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      action: "Cambiar parámetros de fuente de mando sin establecer primero la configuración prevista."
+    - id: "DEC-05-VERIFY-ONLINE"
+      stage_id: "STAGE-05-VERIFY-PLC-COMMAND"
+      action: "Verificar online permisivos, RunCmd y feedback en FB_CONVEYOR antes de corregir la autoridad."
+    - id: "DEC-05-REPROGRAM"
+      stage_id: "STAGE-05-VERIFY-PLC-COMMAND"
+      action: "Reprogramar FB_CONVEYOR para compensar el estado local del variador."
+    - id: "DEC-05-REPLACE-DRIVE"
+      stage_id: "STAGE-05-VERIFY-PLC-COMMAND"
+      action: "Sustituir el variador sin comprobar si la lógica genera RunCmd."
+    - id: "DEC-06-RESTORE-VERIFY"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Restaurar AUTO/PLC-PROFINET mediante el procedimiento aprobado y verificar mando, estado, velocidad y movimiento."
+    - id: "DEC-06-CLOSE-ON-MODE"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Cerrar la intervención en cuanto la pantalla muestre AUTO."
+    - id: "DEC-06-FORCE-RUNNING"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Forzar el feedback Running para que coincida con RunCmd."
+  visual:
+    educational_purpose: "Mostrar progresivamente dónde se interrumpe la cadena de mando sin revelar la autoridad HAND antes de inspeccionarla."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/01-incident-run-request.png"
+        alt: "Transportador detenido con petición RUN y sin alarma activa."
+        caption: "Petición presente; causa todavía desconocida."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/02-vfd-ready-not-running.png"
+        alt: "SINAMICS G120 indicando READY, RUNNING OFF y sin fallo."
+        caption: "READY no equivale a RUNNING."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/03-plc-inspection.png"
+        alt: "CPU S7-1500 en RUN durante la inspección del control."
+        caption: "La investigación continúa por la cadena de mando."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/04-hand-command-authority.png"
+        alt: "Panel del variador mostrando autoridad HAND y fuente BOP."
+        caption: "La autoridad actual es local HAND/BOP."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/05-plc-profinet-architecture.png"
+        alt: "Arquitectura S7-1500 a SINAMICS G120 mediante PROFINET y control AUTO."
+        caption: "Arquitectura automática prevista."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/06-fb-conveyor-online.png"
+        alt: "FB_CONVEYOR online con RunCmd TRUE y Running FALSE."
+        caption: "El PLC genera el mando, pero el drive aún no lo ejecuta."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-VFD-AUTHORITY-003/07-recovery-verification.png"
+        alt: "Verificación final con AUTO, PROFINET y feedback de marcha coherente."
+        caption: "Cadena automática restaurada y verificada."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "El PLC producía RunCmd, pero el variador estaba bajo autoridad HAND/BOP y no ejecutaba el mando automático esperado."
+    process: ["Observar sin asumir.", "Distinguir READY, RUNNING y FAULT.", "Trazar petición y condiciones PLC.", "Identificar la autoridad activa.", "Compararla con la arquitectura prevista.", "Restaurar AUTO/PLC-PROFINET y verificar toda la cadena."]
+    lesson: "RunCmd TRUE demuestra una petición PLC, no que el variador la haya aceptado o ejecutado; READY tampoco significa RUNNING."
+    avoided_errors: ["Sustituir motor o variador sin evidencia.", "Modificar lógica válida.", "Forzar salidas o feedback.", "Puentear interlocks.", "Resetear o parametrizar sin diagnóstico."]
+    industrial_value: ["Diagnóstico trazable.", "Menos sustituciones y cambios de software injustificados.", "Recuperación segura y verificable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "El SINAMICS G120 está bajo autoridad HAND/BOP cuando la producción automática requiere AUTO con mando PLC a través de PROFINET."
+    recovery_conditions: ["Autoridad AUTO/PLC-PROFINET restaurada mediante procedimiento aprobado.", "RunCmd aceptado y Running coherente.", "AtSpeed y movimiento verificados.", "Sin fallo activo relevante."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-DRIVE-FAULT"
+        statement: "El variador presenta un fallo activo."
+        initial_status: "possible"
+      - id: "HYP-MOTOR"
+        statement: "El motor o la carga impiden el movimiento."
+        initial_status: "possible"
+      - id: "HYP-PERMISSIVE"
+        statement: "Una condición PLC bloquea RunCmd."
+        initial_status: "possible"
+      - id: "HYP-AUTHORITY"
+        statement: "La autoridad de mando no coincide con la arquitectura automática prevista."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-AUTHORITY"
+    critical_path: ["DEC-01-INSPECT-DRIVE", "DEC-02-TRACE-PLC", "DEC-03-CHECK-AUTHORITY", "DEC-04-VERIFY-ARCHITECTURE", "DEC-05-VERIFY-ONLINE", "DEC-06-RESTORE-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-INSPECT-DRIVE"
+      is_correct: true
+      rationale: "El estado del drive separa disponibilidad, ejecución y fallo."
+      classification: "strong"
+      consequence: "Se establece el estado real del variador."
+      evidence_revealed: ["EVID-02-DRIVE-STATE"]
+      next_stage: "STAGE-02-TRACE-PLC"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE-MOTOR"
+      is_correct: false
+      retry_feedback: "La ausencia de movimiento no demuestra un fallo del motor. Comprueba primero si el variador está disponible, ejecutando o en fallo."
+      rationale: "No hay evidencia contra el motor."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-02-TRACE-PLC"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-FORCE-OUTPUT"
+      is_correct: false
+      retry_feedback: "Forzar una salida elude la cadena autorizada y no identifica qué equipo acepta el mando. Inspecciona primero el estado del variador."
+      rationale: "El forzado no es un diagnóstico seguro."
+      classification: "unsafe"
+      consequence: "Movimiento no controlado posible."
+      evidence_revealed: []
+      next_stage: "STAGE-02-TRACE-PLC"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-02-TRACE-PLC"
+      is_correct: true
+      rationale: "READY sin RUNNING exige seguir petición y mando aguas arriba."
+      classification: "strong"
+      consequence: "Se verifica la disponibilidad del PLC."
+      evidence_revealed: ["EVID-03-PLC-AVAILABLE"]
+      next_stage: "STAGE-03-CHECK-AUTHORITY"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-RESET-REPEATEDLY"
+      is_correct: false
+      retry_feedback: "El variador no muestra un fallo activo. Repetir reset no explica por qué READY no pasa a RUNNING."
+      rationale: "No existe fallo que justifique reset."
+      classification: "weak"
+      consequence: "La frontera sigue desconocida."
+      evidence_revealed: []
+      next_stage: "STAGE-03-CHECK-AUTHORITY"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-02-REPLACE-VFD"
+      is_correct: false
+      retry_feedback: "READY y ausencia de fallo no justifican sustituir el drive. Traza primero si recibe y acepta la orden prevista."
+      rationale: "No hay evidencia de avería interna."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-CHECK-AUTHORITY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-CHECK-AUTHORITY"
+      is_correct: true
+      rationale: "Una cadena de mando requiere saber quién puede ordenar actualmente al drive."
+      classification: "strong"
+      consequence: "Se descubre la autoridad HAND/BOP."
+      evidence_revealed: ["EVID-04-HAND-AUTHORITY"]
+      next_stage: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-03-CHANGE-LOGIC"
+      is_correct: false
+      retry_feedback: "La CPU en RUN no demuestra un defecto de programa. Antes de editar lógica, identifica quién tiene autoridad sobre el variador."
+      rationale: "La lógica aún no ha sido aislada como causa."
+      classification: "weak"
+      consequence: "Se altera software sin evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-BYPASS-PERMISSIVES"
+      is_correct: false
+      retry_feedback: "Puentear protecciones no es una prueba diagnóstica aceptable. Traza el mando y su autoridad sin degradar salvaguardas."
+      rationale: "Intervención insegura."
+      classification: "unsafe"
+      consequence: "Se eliminan condiciones protectoras."
+      evidence_revealed: []
+      next_stage: "STAGE-04-ESTABLISH-ARCHITECTURE"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-04-VERIFY-ARCHITECTURE"
+      is_correct: true
+      rationale: "HAND solo es anómalo respecto a una arquitectura que requiere AUTO."
+      classification: "strong"
+      consequence: "Se confirma la discrepancia de autoridad."
+      evidence_revealed: ["EVID-05-EXPECTED-ARCHITECTURE"]
+      next_stage: "STAGE-05-VERIFY-PLC-COMMAND"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-04-ASSUME-HAND-FAULT"
+      is_correct: false
+      retry_feedback: "HAND puede ser válido en mantenimiento o commissioning. Compáralo con la arquitectura requerida para esta operación automática."
+      rationale: "El modo no es universalmente incorrecto."
+      classification: "weak"
+      consequence: "Conclusión sin referencia de diseño."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-PLC-COMMAND"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-04-CHANGE-PARAMETERS"
+      is_correct: false
+      retry_feedback: "No cambies fuentes de mando sin confirmar antes el diseño aprobado y el estado que exige producción."
+      rationale: "Parametrización prematura."
+      classification: "weak"
+      consequence: "Se puede desviar la configuración aprobada."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-PLC-COMMAND"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-VERIFY-ONLINE"
+      is_correct: true
+      rationale: "La comprobación online demuestra si el PLC produce realmente RunCmd con sus condiciones válidas."
+      classification: "strong"
+      consequence: "Se descarta modificar lógica válida."
+      evidence_revealed: ["EVID-06-PLC-RUNCMD"]
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-05-REPROGRAM"
+      is_correct: false
+      retry_feedback: "La discrepancia de autoridad ya está establecida. Verifica primero RunCmd y feedback antes de alterar FB_CONVEYOR."
+      rationale: "Software no confirmado como causa."
+      classification: "weak"
+      consequence: "Cambio injustificado."
+      evidence_revealed: []
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-REPLACE-DRIVE"
+      is_correct: false
+      retry_feedback: "El drive está READY y sin fallo. Confirma la orden PLC antes de atribuir una avería al equipo."
+      rationale: "No existe evidencia de fallo del variador."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-RESTORE-VERIFY"
+      is_correct: true
+      rationale: "La corrección debe restaurar la autoridad prevista y demostrar ejecución y feedback."
+      classification: "strong"
+      consequence: "La cadena automática queda recuperada."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-06-CLOSE-ON-MODE"
+      is_correct: false
+      retry_feedback: "Ver AUTO no demuestra que el mando sea aceptado ni que motor y transportador funcionen. Verifica toda la cadena y sus feedbacks."
+      rationale: "Falta prueba funcional."
+      classification: "weak"
+      consequence: "Recuperación no demostrada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-06-FORCE-RUNNING"
+      is_correct: false
+      retry_feedback: "Running es feedback de ejecución, no una orden que deba forzarse. Restaura la autoridad y observa el estado real."
+      rationale: "Se falsearía la evidencia."
+      classification: "unsafe"
+      consequence: "Feedback incoherente."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -5
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "El variador estaba bajo autoridad HAND/BOP cuando la operación automática requería AUTO con mando PLC-PROFINET."
+    correct_reasoning: ["Comprobar estado del drive.", "Trazar petición y PLC.", "Identificar autoridad activa.", "Comparar con la arquitectura prevista.", "Verificar RunCmd y feedback."]
+    recovery: ["Restaurar AUTO/PLC-PROFINET según procedimiento aprobado.", "Solicitar marcha.", "Confirmar Ready, Running, AtSpeed y movimiento.", "Confirmar ausencia de fallo relevante."]
+  technical_validation:
+    status: "pending"
+    evidence: ["La definición utiliza exclusivamente contratos V2 existentes.", "Los siete assets requieren validación completa mediante packaging y regresión antes de promoción editorial."]

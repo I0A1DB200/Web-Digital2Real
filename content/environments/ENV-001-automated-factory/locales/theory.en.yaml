@@ -41,3 +41,28 @@ sections:
     body: |
       An intermittent repair is not validated because the symptom disappears once. Repeat the test under the positions and conditions that produced the fault and limit the conclusion to the sample actually executed.
     media_ids: []
+  - id: "TH-08-MOTOR-CONTROL-CHAIN"
+    title: "Motor and drive functional chain"
+    body: |
+      Movement depends on a complete chain: PLC, communication or control command, drive, motor and mechanical load. Each layer can be available while another prevents operation. Diagnostics therefore do not jump directly to the motor: follow the request to execution and return through feedback.
+    media_ids: []
+  - id: "TH-09-DRIVE-STATES"
+    title: "READY, RUNNING and FAULT"
+    body: |
+      A drive controls the motor, receives commands and setpoints and reports state. READY means available under configured conditions; RUNNING means operation is being executed; FAULT reports a fault condition. These states are not interchangeable: READY does not mean RUNNING.
+    media_ids: []
+  - id: "TH-10-COMMAND-FEEDBACK"
+    title: "Command and feedback"
+    body: |
+      A command expresses what is requested and feedback describes observed state. RunCmd = TRUE with Running = FALSE is a diagnostic discrepancy: it proves a PLC request exists, but not that the drive accepted or executed it.
+    media_ids: []
+  - id: "TH-11-COMMAND-AUTHORITY"
+    title: "Command authority and HAND/AUTO"
+    body: |
+      Depending on design, a drive may receive authority from a local panel, terminals or PLC/fieldbus. The right question is who has authority now and who should have it for this operation. HAND can be valid during maintenance or commissioning; AUTO corresponds to configured automatic control. The problem occurs when actual state does not match the required architecture.
+    media_ids: []
+  - id: "TH-12-PROFINET-DIAGNOSIS"
+    title: "Trace PLC–PROFINET–VFD control"
+    body: |
+      In an S7-1500 → PROFINET → SINAMICS G120 architecture, check operator request, PLC conditions and permissives, RunCmd, communication and authority, drive state, motor, load and feedback in order. This sequence prevents unsupported replacement, forcing and program changes.
+    media_ids: []

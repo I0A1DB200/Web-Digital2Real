@@ -1,0 +1,141 @@
+locale: "en"
+translations:
+  title: "Drive Command Present, Conveyor Does Not Start"
+  summary: "Trace the command chain from the operator request to the SINAMICS G120 and correct a HAND/AUTO authority mismatch with automatic operation."
+  scenario:
+    initial_context: "The automated conveyor is stopped. The operator requests run from the normal interface, but the machine does not move."
+    operational_state: "The run request is active and no relevant alarm is displayed; where the command chain stops behaving as intended is not yet known."
+    initiating_event: "Production reports that a valid automatic request produces no motor or conveyor movement."
+    learner_role: "Automation technician responsible for locating the boundary between request, command, execution and feedback."
+    safety_context:
+      safe_state: "Perform online observations from a safe position and apply the authorized procedure before any intervention on the drive or motor."
+      intervention_constraints: ["Do not force outputs or bypass permissives or safeguards.", "Do not replace the motor or drive without evidence.", "Do not change PLC logic or parameters before establishing the intended architecture.", "Restore command authority only through the machine's approved procedure."]
+  learning_objectives:
+    OBJ-COMMAND-CHAIN:
+      description: "Trace the request, PLC conditions, RunCmd, drive authority and feedback."
+    OBJ-DRIVE-STATE:
+      description: "Distinguish READY, RUNNING and FAULT without premature attribution."
+    OBJ-RECOVERY:
+      description: "Restore the intended automatic authority and verify the complete chain."
+  stages:
+    STAGE-01-DRIVE-STATE:
+      title: "Separate symptom from cause"
+      situation: "RUN is requested, the conveyor remains stopped and there is no relevant alarm. What is the best next step?"
+    STAGE-02-TRACE-PLC:
+      title: "Interpret drive state"
+      situation: "The SINAMICS G120 is READY, not RUNNING and has no active fault. READY does not prove execution."
+    STAGE-03-CHECK-AUTHORITY:
+      title: "Follow the request through control"
+      situation: "The S7-1500 CPU is in RUN. You must verify whether the application requests operation and then trace command acceptance."
+    STAGE-04-ESTABLISH-ARCHITECTURE:
+      title: "Identify who has authority"
+      situation: "Drive inspection shows local HAND/BOP authority. You still need to confirm the architecture required for automatic production."
+    STAGE-05-VERIFY-PLC-COMMAND:
+      title: "Compare actual and intended architecture"
+      situation: "The machine is designed for S7-1500 → PROFINET → SINAMICS G120 in AUTO. HAND/BOP does not match that operation."
+    STAGE-06-RESTORE-VERIFY:
+      title: "Restore and verify the complete chain"
+      situation: "FB_CONVEYOR confirms Start, AutoMode, SafetyOK, Permit and RunCmd TRUE while Running remains FALSE. The logic produces the intended command."
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Operator HMI"
+      content: "A RUN request is present, the conveyor does not move and no relevant active alarm is displayed."
+    EVID-02-DRIVE-STATE:
+      source: "SINAMICS G120"
+      content: "The drive indicates READY, RUNNING OFF, FAULT NONE and 0.0 Hz."
+    EVID-03-PLC-AVAILABLE:
+      source: "S7-1500"
+      content: "The CPU is in RUN; there is no evidence of a general controller fault."
+    EVID-04-HAND-AUTHORITY:
+      source: "Drive BOP"
+      content: "The drive presents HAND/BOP command authority instead of executing the expected automatic control."
+    EVID-05-EXPECTED-ARCHITECTURE:
+      source: "Approved architecture"
+      content: "Intended automatic operation uses S7-1500, PROFINET and SINAMICS G120 with AUTO/PLC-fieldbus authority."
+    EVID-06-PLC-RUNCMD:
+      source: "Online FB_CONVEYOR"
+      content: "Start, AutoMode, SafetyOK, Permit and RunCmd are TRUE; Running and AtSpeed remain FALSE."
+    EVID-07-RECOVERY:
+      source: "Post-correction verification"
+      content: "With AUTO/PLC-PROFINET restored, RunCmd, Running, AtSpeed and Ready are coherent, Fault remains FALSE and the conveyor moves."
+  decisions:
+    DEC-01-INSPECT-DRIVE:
+      action: "Inspect drive READY, RUNNING and FAULT state before intervening."
+    DEC-01-REPLACE-MOTOR:
+      action: "Replace the motor immediately because its shaft does not rotate."
+    DEC-01-FORCE-OUTPUT:
+      action: "Force the run output to see whether movement appears."
+    DEC-02-TRACE-PLC:
+      action: "Trace the request toward the PLC and check controller and command-chain state."
+    DEC-02-RESET-REPEATEDLY:
+      action: "Reset the drive repeatedly even though no fault is present."
+    DEC-02-REPLACE-VFD:
+      action: "Replace the drive because READY does not produce movement."
+    DEC-03-CHECK-AUTHORITY:
+      action: "Check which source currently has authority to command the drive."
+    DEC-03-CHANGE-LOGIC:
+      action: "Change the program because the conveyor does not respond."
+    DEC-03-BYPASS-PERMISSIVES:
+      action: "Bypass permissives to eliminate the logic quickly."
+    DEC-04-VERIFY-ARCHITECTURE:
+      action: "Consult the approved architecture and compare current authority with that required for production."
+    DEC-04-ASSUME-HAND-FAULT:
+      action: "Declare that HAND is always a fault and change it without checking the design."
+    DEC-04-CHANGE-PARAMETERS:
+      action: "Change command-source parameters before establishing the intended configuration."
+    DEC-05-VERIFY-ONLINE:
+      action: "Verify permissives, RunCmd and feedback online in FB_CONVEYOR before correcting authority."
+    DEC-05-REPROGRAM:
+      action: "Reprogram FB_CONVEYOR to compensate for the drive's local state."
+    DEC-05-REPLACE-DRIVE:
+      action: "Replace the drive without checking whether the logic produces RunCmd."
+    DEC-06-RESTORE-VERIFY:
+      action: "Restore AUTO/PLC-PROFINET through the approved procedure and verify command, state, speed and movement."
+    DEC-06-CLOSE-ON-MODE:
+      action: "Close the intervention as soon as the display shows AUTO."
+    DEC-06-FORCE-RUNNING:
+      action: "Force Running feedback to make it match RunCmd."
+  retry_feedback:
+    DEC-01-REPLACE-MOTOR: "No movement does not prove a motor fault. First determine whether the drive is available, executing or faulted."
+    DEC-01-FORCE-OUTPUT: "Forcing an output bypasses the authorized chain and does not identify which device accepts the command. Inspect drive state first."
+    DEC-02-RESET-REPEATEDLY: "The drive shows no active fault. Repeated resets do not explain why READY does not become RUNNING."
+    DEC-02-REPLACE-VFD: "READY with no fault does not justify drive replacement. First trace whether it receives and accepts the intended command."
+    DEC-03-CHANGE-LOGIC: "A CPU in RUN does not prove a program defect. Identify who has authority over the drive before editing logic."
+    DEC-03-BYPASS-PERMISSIVES: "Bypassing safeguards is not an acceptable diagnostic test. Trace command and authority without degrading protection."
+    DEC-04-ASSUME-HAND-FAULT: "HAND can be valid during maintenance or commissioning. Compare it with the architecture required for this automatic operation."
+    DEC-04-CHANGE-PARAMETERS: "Do not change command sources before confirming the approved design and the state required by production."
+    DEC-05-REPROGRAM: "The authority discrepancy is established. Verify RunCmd and feedback before changing FB_CONVEYOR."
+    DEC-05-REPLACE-DRIVE: "The drive is READY and not faulted. Confirm the PLC command before attributing a drive failure."
+    DEC-06-CLOSE-ON-MODE: "AUTO alone does not prove command acceptance or motor operation. Verify the complete chain and its feedback."
+    DEC-06-FORCE-RUNNING: "Running is execution feedback, not a command to force. Restore authority and observe the actual state."
+  visual:
+    educational_purpose: "Progressively show where the command chain stops without revealing HAND authority before inspection."
+  assets:
+    ART-001:
+      alt: "Stopped conveyor with a RUN request and no active alarm."
+      caption: "Request present; cause still unknown."
+    ART-002:
+      alt: "SINAMICS G120 showing READY, RUNNING OFF and no fault."
+      caption: "READY is not RUNNING."
+    ART-003:
+      alt: "S7-1500 CPU in RUN during control inspection."
+      caption: "Investigation continues through the command chain."
+    ART-004:
+      alt: "Drive panel showing HAND authority and BOP source."
+      caption: "Current authority is local HAND/BOP."
+    ART-005:
+      alt: "S7-1500 to SINAMICS G120 architecture over PROFINET with AUTO control."
+      caption: "Intended automatic architecture."
+    ART-006:
+      alt: "Online FB_CONVEYOR with RunCmd TRUE and Running FALSE."
+      caption: "The PLC produces the command, but the drive has not executed it."
+    ART-007:
+      alt: "Final verification with AUTO, PROFINET and coherent running feedback."
+      caption: "Automatic command chain restored and verified."
+  completion:
+    title: "Technical debrief"
+    summary: "The PLC produced RunCmd, but the drive was under HAND/BOP authority and did not execute the intended automatic command."
+    process: ["Observe without assuming.", "Distinguish READY, RUNNING and FAULT.", "Trace request and PLC conditions.", "Identify active authority.", "Compare it with the intended architecture.", "Restore AUTO/PLC-PROFINET and verify the complete chain."]
+    lesson: "RunCmd TRUE proves a PLC request, not that the drive accepted or executed it; READY does not mean RUNNING either."
+    avoided_errors: ["Replacing motor or drive without evidence.", "Changing valid logic.", "Forcing outputs or feedback.", "Bypassing interlocks.", "Resetting or parameterizing without diagnosis."]
+    industrial_value: ["Traceable diagnosis.", "Fewer unjustified replacements and software changes.", "Safe, verifiable recovery."]

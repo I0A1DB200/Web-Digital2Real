@@ -47,3 +47,28 @@ sections:
     body: |
       Una reparación intermitente no queda validada porque el síntoma desaparezca una vez. Repite la prueba bajo las posiciones y condiciones que producían el fallo y limita la conclusión a la muestra realmente ejecutada.
     media_ids: []
+  - id: "TH-08-MOTOR-CONTROL-CHAIN"
+    title: "Cadena funcional de motor y variador"
+    body: |
+      El movimiento depende de una cadena completa: PLC, comunicación o mando, variador, motor y carga mecánica. Cada capa puede estar disponible mientras otra impide la operación. Por eso un diagnóstico no salta directamente al motor: sigue la petición hasta la ejecución y vuelve por el feedback.
+    media_ids: []
+  - id: "TH-09-DRIVE-STATES"
+    title: "READY, RUNNING y FAULT"
+    body: |
+      Un variador controla el motor, recibe mandos y consignas y comunica estados. READY indica disponibilidad bajo las condiciones configuradas; RUNNING indica que ejecuta la operación; FAULT comunica una condición de fallo. Estos estados no son intercambiables: READY no significa RUNNING.
+    media_ids: []
+  - id: "TH-10-COMMAND-FEEDBACK"
+    title: "Mando y feedback"
+    body: |
+      Un mando expresa lo solicitado y un feedback describe el estado observado. RunCmd = TRUE con Running = FALSE es una discrepancia diagnóstica: demuestra que existe petición PLC, pero no que el variador la haya aceptado ni ejecutado.
+    media_ids: []
+  - id: "TH-11-COMMAND-AUTHORITY"
+    title: "Autoridad de mando y HAND/AUTO"
+    body: |
+      Según el diseño, un variador puede recibir autoridad desde un panel local, terminales o PLC/fieldbus. La pregunta correcta es quién tiene autoridad ahora y quién debe tenerla para esta operación. HAND puede ser válido en mantenimiento o commissioning; AUTO corresponde al control automático configurado. El problema aparece cuando el estado real no coincide con la arquitectura requerida.
+    media_ids: []
+  - id: "TH-12-PROFINET-DIAGNOSIS"
+    title: "Trazar el control PLC–PROFINET–VFD"
+    body: |
+      En una arquitectura S7-1500 → PROFINET → SINAMICS G120, comprueba en orden la petición del operador, condiciones y permisivos PLC, RunCmd, comunicación y autoridad, estado del variador, motor, carga y feedback. Esta secuencia evita sustituciones, forzados y cambios de programa sin evidencia.
+    media_ids: []

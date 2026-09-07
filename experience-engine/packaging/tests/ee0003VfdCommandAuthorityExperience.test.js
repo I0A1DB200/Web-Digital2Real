@@ -50,7 +50,7 @@ function memoryStorage() {
   return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
 }
 
-test("EE-0003 is a technical-review Authoring V2 Experience with one authority per stage", async () => {
+test("EE-0003 is a technically validated technical-review Authoring V2 Experience with one authority per stage", async () => {
   const authoring = await readYaml("experience.yaml");
   const validation = validateExperienceDefinition(authoring);
   assert.equal(validation.valid, true);
@@ -58,7 +58,7 @@ test("EE-0003 is a technical-review Authoring V2 Experience with one authority p
   assert.equal(authoring.metadata.id, "EXP-VFD-AUTHORITY-003");
   assert.equal(authoring.metadata.editorial_id, "EE-0003");
   assert.equal(authoring.metadata.status, "technical_review");
-  assert.equal(authoring.private.technical_validation.status, "pending");
+  assert.equal(authoring.private.technical_validation.status, "pass");
   assert.equal(authoring.public.stages.length, 6);
   assert.equal(authoring.public.stages.every(stage => stage.decision_ids.length === 3), true);
   assert.equal(authoring.private.decision_logic.filter(item => item.is_correct).length, 6);

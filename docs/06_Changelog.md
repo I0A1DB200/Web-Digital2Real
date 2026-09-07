@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-07 — EE-0003 ENV-001 hotspot correction
+
+- Moved only the EE-0003 ENV-001 hotspot from the conveyor product box to the visible VFD inside the right-hand electrical cabinet.
+- Preserved the existing percentage-based responsive positioning and all EE-0001/EE-0002 coordinates and interactions.
+
+## 2026-09-07 — EE-0003 final technical validation
+
+- Corrected ART-006 to preserve the pre-recovery HAND/BOP authority state while the PLC produces `RunCmd` and execution feedback remains false.
+- Corrected ART-007 to show the recovered AUTO/PLC-PROFINET state with coherent running and at-speed feedback.
+- Standardized both assets on the same symbolic `FB_CONVEYOR` interface without invented absolute addresses or PLC-output representation of drive feedback.
+- Promoted EE-0003 technical validation to pass after full V2, localization, security, Player, evaluator, ENV, packaging and project regression; its editorial status remains technical review.
+
 ## 2026-09-07 — EE-0003 motor/VFD command-authority Preview
 
 - Added EE-0003 as an Authoring V2 practice Experience for diagnosis of the S7-1500 → PROFINET → SINAMICS G120 command chain.

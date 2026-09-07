@@ -473,5 +473,5 @@ private:
     correct_reasoning: ["Comprobar estado del drive.", "Trazar petición y PLC.", "Identificar autoridad activa.", "Comparar con la arquitectura prevista.", "Verificar RunCmd y feedback."]
     recovery: ["Restaurar AUTO/PLC-PROFINET según procedimiento aprobado.", "Solicitar marcha.", "Confirmar Ready, Running, AtSpeed y movimiento.", "Confirmar ausencia de fallo relevante."]
   technical_validation:
-    status: "pending"
-    evidence: ["La definición utiliza exclusivamente contratos V2 existentes.", "Los siete assets requieren validación completa mediante packaging y regresión antes de promoción editorial."]
+    status: "pass"
+    evidence: ["La definición utiliza exclusivamente contratos V2 existentes.", "ART-006 conserva autoridad HAND/BOP con RunCmd TRUE y feedback de ejecución FALSE; ART-007 restaura AUTO/PLC-PROFINET con mando y feedback coherentes.", "Los siete assets, localizaciones, contratos V2, seguridad de proyección, Player, evaluator, ENV Theory, ENV Progress y packaging superan la regresión completa."]

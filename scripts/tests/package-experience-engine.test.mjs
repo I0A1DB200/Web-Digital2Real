@@ -80,7 +80,7 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.deepEqual(catalog.environments[0].hotspots, [
     { experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 },
     { experienceEditorialId: "EE-0002", x: 24, y: 45.5 },
-    { experienceEditorialId: "EE-0003", x: 40, y: 53 }
+    { experienceEditorialId: "EE-0003", x: 88.5, y: 56.5 }
   ]);
   assert.deepEqual(catalog.environments[0].theory, {
     defaultLocale: "es",

@@ -1,74 +1,165 @@
 version: "1.0.0"
-default_locale: "es"
+default_locale: es
 supported_locales:
-  - "es"
-  - "en"
+  - es
+  - en
 
 media:
-  - id: "TH-MEDIA-AUTOMATED-FACTORY"
-    type: "image"
-    src: "media/ENV-001-automated-factory.png"
-    alt: "Vista general de una instalación automatizada para analizar el recorrido de señales"
+  - id: TH-MEDIA-AUTOMATED-FACTORY
+    type: image
+    src: media/ENV-001-automated-factory.png
+    alt: Vista general de una instalación automatizada para situar sensores, control y accionamientos dentro de una misma máquina
+  - id: TH-MEDIA-DIGITAL-SIGNAL-PATH
+    type: image
+    src: media/theory-01-digital-signal-path.png
+    alt: Recorrido de una señal digital desde el evento físico y el sensor de tres hilos hasta la entrada, la imagen de proceso y el programa PLC
+  - id: TH-MEDIA-PNP-NPN
+    type: image
+    src: media/theory-02-pnp-vs-npn.png
+    alt: Comparación conceptual entre una salida PNP que suministra corriente y una salida NPN que conduce corriente hacia 0 V
+  - id: TH-MEDIA-ELECTRICAL-DIAGNOSTICS
+    type: image
+    src: media/theory-03-electrical-diagnostics.png
+    alt: Puntos de medida que localizan una interrupción mediante tensión en circuito energizado y continuidad con el conductor aislado
+  - id: TH-MEDIA-PHOTOELECTRIC-PRINCIPLES
+    type: image
+    src: media/theory-04-photoelectric-principles.png
+    alt: Comparación del funcionamiento de sensores fotoeléctricos de barrera, réflex, reflexión directa y supresión de fondo
+  - id: TH-MEDIA-PHOTOELECTRIC-MARGIN
+    type: image
+    src: media/theory-05-photoelectric-operating-margin.png
+    alt: Comparación entre detección fotoeléctrica robusta y detección marginal ante desplazamiento, vibración, contaminación y variación del objeto
+  - id: TH-MEDIA-CONTROL-FEEDBACK-CHAIN
+    type: image
+    src: media/theory-06-control-feedback-chain.png
+    alt: Cadena de mando desde operador y PLC hasta variador, motor y carga, con retorno separado de estado y feedback hacia PLC y HMI
 
 sections:
-  - id: "TH-01-DIGITAL-SIGNAL-PATH"
-    title: "Del sensor al programa PLC"
-    body: |
-      Una señal digital de 24 VDC recorre una cadena física y lógica: sensor, cableado, borne, canal de entrada, imagen de proceso y programa PLC. Un diagnóstico fiable comprueba cada frontera en orden y distingue el estado eléctrico del valor que utiliza el software.
+  - id: TH-01-ELECTRICAL-FOUNDATIONS
+    title: Fundamentos eléctricos para automatización
+    body: |-
+      La tensión es la diferencia de potencial entre dos puntos; por eso toda lectura necesita una referencia definida. La corriente es el flujo de carga que circula por un camino cerrado y la resistencia se opone a ese flujo. Tener potencial disponible no demuestra por sí solo que circule corriente. En automatización, la alimentación de control suele ser 24 VDC con una referencia de 0 V, mientras que motores y otras cargas pueden utilizar AC. DC mantiene polaridad; AC cambia periódicamente de polaridad.
+
+      Una señal digital representa estados discretos, por ejemplo HIGH/LOW u ON/OFF. Puede mantenerse, aparecer como un pulso o cambiar mediante un flanco ascendente o descendente. La duración y la frecuencia importan: un pulso más corto que la respuesta del sensor, del módulo de entrada o del ciclo de observación puede no registrarse. Una señal analógica representa un valor continuo; 0–10 V y 4–20 mA son interfaces habituales, pero requieren un tratamiento distinto al de una entrada digital.
     media_ids:
-      - "TH-MEDIA-AUTOMATED-FACTORY"
-  - id: "TH-02-PNP-REFERENCE"
-    title: "Referencia y conmutación PNP"
-    body: |
-      En un circuito PNP, el sensor entrega potencial positivo hacia la entrada cuando detecta. La alimentación, la referencia de 0 V y la continuidad hasta el canal deben verificarse antes de concluir que existe un fallo de programa.
+      - TH-MEDIA-AUTOMATED-FACTORY
+
+  - id: TH-02-PLC-INPUTS-OUTPUTS
+    title: Entradas y salidas de PLC
+    body: |-
+      Una entrada digital (DI) convierte una señal eléctrica de campo en un estado que el PLC puede procesar. Una salida digital (DO) convierte una orden lógica en una conmutación eléctrica para el campo. En la cadena de entrada, un evento físico actúa sobre el sensor; su salida atraviesa cable, borne y canal de entrada, se incorpora a la imagen de proceso y llega al programa PLC. En la cadena de salida, la lógica genera una orden, el canal de salida conmuta, el cableado alimenta o gobierna el actuador y aparece una acción física.
+
+      El LED del sensor, el LED del módulo y la variable observada en software son fronteras diferentes. El primero informa sobre la evaluación local del sensor, el segundo sobre el estado reconocido por el canal y la variable sobre el dato utilizado por el programa. Compararlos en orden permite encontrar dónde dejan de coincidir el evento, la señal eléctrica y el estado lógico.
+    media_ids:
+      - TH-MEDIA-DIGITAL-SIGNAL-PATH
+
+  - id: TH-03-INDUSTRIAL-SENSOR-WIRING
+    title: Cableado de sensores industriales
+    body: |-
+      Los sensores de dos hilos comparten alimentación y señal en el mismo par; los de tres hilos separan alimentación positiva, referencia y salida; los de cuatro hilos suelen añadir una segunda salida o función. En una convención frecuente para sensores DC, BN (marrón) corresponde a +24 VDC, BU (azul) a 0 V, BK (negro) a una salida de conmutación y WH (blanco) a una salida o función adicional. Esta convención no es universal: verifica siempre la función de cada conductor en la ficha técnica o el esquema del dispositivo real.
+
+      Una salida PNP suministra corriente desde el potencial positivo hacia un circuito de entrada compatible; una salida NPN conduce corriente desde la entrada hacia 0 V. También se describen como sourcing y sinking. Sensor y entrada deben ser eléctricamente compatibles. NO y NC indican el comportamiento de conmutación en la condición definida por el fabricante, no el tipo PNP o NPN. El LED de estado ayuda a observar la conmutación, pero no confirma por sí solo que la señal llegue al PLC. PNP es frecuente en automatización industrial europea, sin ser una solución universal.
+    media_ids:
+      - TH-MEDIA-PNP-NPN
+
+  - id: TH-04-ELECTRICAL-MEASUREMENT
+    title: Medición eléctrica y localización de averías
+    body: |-
+      Medir tensión en VDC responde qué potencial existe en un punto respecto a la referencia seleccionada. Medir continuidad responde si existe un camino conductor, y medir resistencia cuantifica su oposición bajo condiciones adecuadas. La corriente confirma si realmente circula flujo por el circuito. Continuidad y resistencia se comprueban únicamente con el circuito aislado y desenergizado; no responden a la misma pregunta que una medida de tensión.
+
+      Compara puntos aguas arriba y aguas abajo para localizar la primera frontera que cambia. Un circuito abierto interrumpe el camino; un cortocircuito crea un camino no previsto, incluido un corto a +24 V o a 0 V. Una conexión floja puede variar con movimiento o vibración. Una caída de tensión bajo carga puede revelar resistencia no deseada aunque exista continuidad sin carga. Tras reparar, verifica polaridad, tensión, continuidad cuando proceda, estado de entrada y funcionamiento real bajo las condiciones originales.
+    media_ids:
+      - TH-MEDIA-ELECTRICAL-DIAGNOSTICS
+
+  - id: TH-05-SENSOR-LANDSCAPE
+    title: Panorama de sensores industriales
+    body: |-
+      Para presencia o proximidad son habituales los sensores inductivos, capacitivos, fotoeléctricos y ultrasónicos. Para posición o movimiento se emplean finales de carrera, encoders y sensores de distancia. Presión, temperatura, nivel y caudal describen variables de proceso. Cada familia convierte una interacción física diferente en información utilizable por el control.
+
+      La selección empieza por el objeto y el fenómeno que se desea detectar: material, distancia, precisión, velocidad de respuesta, entorno y montaje mecánico. Un sensor adecuado en catálogo puede ser inestable si el objeto, la tolerancia de posición, la contaminación, la temperatura o la instalación quedan fuera de su aplicación real.
     media_ids: []
-  - id: "TH-03-OBSERVATION-BOUNDARIES"
-    title: "Separar observación y conclusión"
-    body: |
-      El LED del sensor, el LED del módulo y una variable como I0.3 representan puntos de observación distintos. Compararlos permite localizar en qué tramo deja de propagarse la señal sin sustituir evidencias por suposiciones.
+
+  - id: TH-06-PHOTOELECTRIC-SENSORS
+    title: Sensores fotoeléctricos
+    body: |-
+      Un sensor fotoeléctrico emite luz, establece un recorrido óptico y evalúa la luz recibida para conmutar una salida. En barrera, emisor y receptor están separados y el objeto interrumpe el haz. En réflex, emisor y receptor comparten carcasa y un reflector devuelve la luz. En reflexión directa, el propio objeto devuelve luz al sensor. La supresión de fondo permite favorecer un objeto dentro del rango previsto y reducir la influencia de un fondo más lejano.
+
+      La detección depende de distancia, tamaño y posición del objeto, diámetro del haz o spot, superficie, color, reflectividad, transparencia, fondo, luz ambiente, contaminación, vibración y tolerancia mecánica. La zona de detección y el umbral de conmutación no son una línea ideal. Una detección estable conserva margen operativo ante variaciones; una detección marginal puede funcionar en posición nominal y fallar con un pequeño cambio.
+
+      Alinear significa situar el recorrido óptico y el objeto con reserva suficiente, no únicamente conseguir que el LED se encienda. Algunos sensores ofrecen indicación de calidad, reserva operativa, teach-in, diagnóstico por software o IO-Link; no todos incorporan estas funciones. Light-ON y Dark-ON definen si la salida conmuta al recibir luz o al quedar el haz oscurecido, según el principio y la configuración del equipo.
+    media_ids:
+      - TH-MEDIA-PHOTOELECTRIC-PRINCIPLES
+      - TH-MEDIA-PHOTOELECTRIC-MARGIN
+
+  - id: TH-07-SENSOR-ECOSYSTEM
+    title: Ecosistema de sensórica industrial
+    body: |-
+      Fabricantes como SICK, KEYENCE, ifm, Pepperl+Fuchs, Balluff u Omron pueden utilizar nombres, interfaces y herramientas diferentes. Los principios eléctricos, ópticos y diagnósticos siguen siendo transferibles. La marca no sustituye la comprobación de compatibilidad ni convierte una función opcional en universal.
+
+      En una ficha técnica identifica el principio de detección, tensión de alimentación, comportamiento de conmutación, tipo de salida, rango, tiempo de respuesta, conexión, diagnóstico, comunicaciones y grado de protección ambiental o IP. Contrasta esos datos con el objeto, el ritmo de máquina, el cableado, el entorno y el montaje reales.
     media_ids: []
-  - id: "TH-04-INTERMITTENT-FAULTS"
-    title: "Fallos intermitentes"
-    body: |
-      Un fallo permanente ofrece una discrepancia estable. Un fallo intermitente exige reproducir el síntoma, conservar ciclos correctos y fallidos y observarlos bajo condiciones comparables antes de intervenir.
+
+  - id: TH-08-INTERMITTENT-FAULTS
+    title: Fallos intermitentes
+    body: |-
+      Un fallo permanente mantiene una discrepancia; uno intermitente obliga a reproducirla y comparar ciclos correctos y fallidos bajo condiciones equivalentes. Registra posición, velocidad, vibración, variación del producto, temperatura, timing, contaminación, movimiento del cable y tolerancia mecánica. La correlación repetida reduce el dominio de búsqueda, pero no demuestra por sí sola causalidad.
+
+      Distingue una pérdida en el camino eléctrico de una detección óptica o mecánica marginal. Si la salida del sensor conmuta pero la entrada PLC no lo hace, investiga transmisión, conexiones y canal. Si la salida del sensor ya es inestable, investiga principio de detección, alineación, margen y condiciones físicas. La reparación se valida recreando la condición original del fallo y repitiendo una muestra suficiente de ciclos.
     media_ids: []
-  - id: "TH-05-CORRELATION"
-    title: "Correlacionar antes de sustituir"
-    body: |
-      Compara qué cambia entre éxito y fallo: posición, velocidad, vibración, producto, carga, temperatura y timing. Una correlación repetida orienta la inspección; una coincidencia aislada no confirma una causa.
+
+  - id: TH-09-MOTORS
+    title: Motores en maquinaria automatizada
+    body: |-
+      El motor es un actuador que convierte energía eléctrica en movimiento mecánico. Velocidad, par y sentido determinan cómo entrega movimiento a la carga; aceleración y transmisión condicionan la respuesta del conjunto. Un motorreductor adapta velocidad y par, y en un transportador debe vencer la carga, las pérdidas y las resistencias mecánicas de la transmisión.
+
+      Que el motor no se mueva no demuestra que esté averiado. Puede faltar una petición, un permisivo, comunicación, autoridad de mando, alimentación, habilitación del variador o libertad mecánica. El diagnóstico debe recorrer toda la cadena antes de atribuir el síntoma al motor.
     media_ids: []
-  - id: "TH-06-INTERMITTENT-BOUNDARY"
-    title: "Frontera sensor y PLC"
-    body: |
-      Si durante una omisión la salida del sensor está OFF y la entrada PLC también está OFF, no existe evidencia para empezar modificando la lógica. Si la salida está ON y la entrada está OFF, la frontera se desplaza hacia cableado, transmisión de señal o canal de entrada.
+
+  - id: TH-10-VARIABLE-FREQUENCY-DRIVES
+    title: Variadores de frecuencia
+    body: |-
+      Un variador de frecuencia gobierna el motor mediante órdenes de marcha y paro, sentido, consigna de frecuencia o velocidad y rampas de aceleración y deceleración. También expone variables como corriente, avisos y fallos. READY suele expresar disponibilidad, RUNNING ejecución de marcha y AtSpeed alcance de una referencia dentro de criterios configurados. Los nombres y condiciones exactos dependen del fabricante y de la parametrización.
+
+      La fuente de mando y la fuente de consigna pueden proceder del panel del operador, de terminales o de un PLC por fieldbus. HAND introduce control manual o local y AUTO control automático según el diseño. HAND no es intrínsecamente un fallo: debe compararse el modo real con el requerido para la operación prevista.
     media_ids: []
-  - id: "TH-07-REPEATED-VERIFICATION"
-    title: "Verificar bajo la condición de fallo"
-    body: |
-      Una reparación intermitente no queda validada porque el síntoma desaparezca una vez. Repite la prueba bajo las posiciones y condiciones que producían el fallo y limita la conclusión a la muestra realmente ejecutada.
+
+  - id: TH-11-INDUSTRIAL-COMMUNICATIONS
+    title: Comunicaciones industriales
+    body: |-
+      Las redes industriales reducen cableado punto a punto y permiten intercambiar órdenes, estados, valores de proceso y diagnósticos entre PLC, E/S remotas, variadores, HMI e instrumentación. La selección depende de la arquitectura, tiempo de respuesta, determinismo requerido, entorno, interoperabilidad y soporte del equipo.
+
+      PROFIBUS DP, Modbus RTU y CANopen representan soluciones clásicas de bus de campo o comunicación serie con modelos diferentes. PROFINET, EtherNet/IP, EtherCAT y Modbus TCP utilizan tecnologías Ethernet industrial, también con modelos y capacidades distintas. Compartir medio Ethernet no los hace intercambiables ni convierte uno en universalmente mejor.
     media_ids: []
-  - id: "TH-08-MOTOR-CONTROL-CHAIN"
-    title: "Cadena funcional de motor y variador"
-    body: |
-      El movimiento depende de una cadena completa: PLC, comunicación o mando, variador, motor y carga mecánica. Cada capa puede estar disponible mientras otra impide la operación. Por eso un diagnóstico no salta directamente al motor: sigue la petición hasta la ejecución y vuelve por el feedback.
+
+  - id: TH-12-PROFINET-FUNDAMENTALS
+    title: Fundamentos de PROFINET
+    body: |-
+      En ENV-001, un Siemens S7-1500 actúa como controlador y un SINAMICS G120 como dispositivo dentro de la comunicación PROFINET. El controlador intercambia datos cíclicos de entrada y salida con el dispositivo: órdenes y consignas viajan hacia el accionamiento; estados, valores y diagnósticos regresan al control.
+
+      La identidad o nombre del dispositivo permite asociarlo con la configuración esperada, mientras que la dirección IP soporta la comunicación de red. Son conceptos relacionados, pero una IP por sí sola no define toda la relación PROFINET. Una pérdida de comunicación o un dispositivo no disponible rompe el intercambio. Comunicación establecida únicamente confirma el canal de datos; no demuestra que la lógica, la autoridad, el accionamiento o la máquina funcionen correctamente.
+    media_ids:
+      - TH-MEDIA-CONTROL-FEEDBACK-CHAIN
+
+  - id: TH-13-COMMAND-STATE-FEEDBACK
+    title: Mando, estado y feedback
+    body: |-
+      El mando expresa lo solicitado. El estado describe lo que un controlador o dispositivo declara internamente. El feedback aporta evidencia de lo que realmente ocurrió en el equipo o proceso. Estas capas pueden coincidir o divergir y deben observarse por separado.
+
+      RunCmd = TRUE con Running = FALSE demuestra que existe una petición, pero no explica por qué no se ejecuta. Todavía deben comprobarse permisivos, comunicación, autoridad, disponibilidad del dispositivo, actuador y proceso mecánico. El mismo razonamiento sirve para válvulas, cilindros, contactores y otros actuadores.
     media_ids: []
-  - id: "TH-09-DRIVE-STATES"
-    title: "READY, RUNNING y FAULT"
-    body: |
-      Un variador controla el motor, recibe mandos y consignas y comunica estados. READY indica disponibilidad bajo las condiciones configuradas; RUNNING indica que ejecuta la operación; FAULT comunica una condición de fallo. Estos estados no son intercambiables: READY no significa RUNNING.
+
+  - id: TH-14-CONTROL-AUTHORITY
+    title: Autoridad de mando y modos de operación
+    body: |-
+      Local y remoto describen desde dónde se gobierna; manual y automático describen cómo se generan las órdenes dentro de la arquitectura. HAND, AUTO, mantenimiento y commissioning son contextos operativos cuya implementación exacta depende del equipo y del diseño. Ningún modo es incorrecto de forma aislada.
+
+      Formula dos preguntas: ¿quién posee ahora la autoridad de mando? ¿Quién debería poseerla bajo la condición operativa prevista? Una discrepancia entre autoridad real y requerida puede bloquear el control automático aunque PLC, red, variador y motor estén disponibles.
     media_ids: []
-  - id: "TH-10-COMMAND-FEEDBACK"
-    title: "Mando y feedback"
-    body: |
-      Un mando expresa lo solicitado y un feedback describe el estado observado. RunCmd = TRUE con Running = FALSE es una discrepancia diagnóstica: demuestra que existe petición PLC, pero no que el variador la haya aceptado ni ejecutado.
-    media_ids: []
-  - id: "TH-11-COMMAND-AUTHORITY"
-    title: "Autoridad de mando y HAND/AUTO"
-    body: |
-      Según el diseño, un variador puede recibir autoridad desde un panel local, terminales o PLC/fieldbus. La pregunta correcta es quién tiene autoridad ahora y quién debe tenerla para esta operación. HAND puede ser válido en mantenimiento o commissioning; AUTO corresponde al control automático configurado. El problema aparece cuando el estado real no coincide con la arquitectura requerida.
-    media_ids: []
-  - id: "TH-12-PROFINET-DIAGNOSIS"
-    title: "Trazar el control PLC–PROFINET–VFD"
-    body: |
-      En una arquitectura S7-1500 → PROFINET → SINAMICS G120, comprueba en orden la petición del operador, condiciones y permisivos PLC, RunCmd, comunicación y autoridad, estado del variador, motor, carga y feedback. Esta secuencia evita sustituciones, forzados y cambios de programa sin evidencia.
+
+  - id: TH-15-SYSTEMATIC-TROUBLESHOOTING
+    title: Diagnóstico sistemático industrial
+    body: |-
+      Parte del síntoma, define el comportamiento esperado, registra el observado y busca la primera frontera donde divergen. Separa observación de conclusión, reúne evidencia, reduce el dominio de fallo, confirma la causa, interviene y verifica. Es un modelo mental adaptable, no una lista rígida.
+
+      En una máquina, sigue la petición del operador hacia lógica PLC, permisivos e interlocks, mando, comunicación, autoridad, dispositivo, actuador y proceso mecánico; después recorre sensor o feedback, PLC y HMI. La primera discrepancia verificable concentra el diagnóstico y evita sustituciones, forzados o cambios de programa sin evidencia.
     media_ids: []

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-08 — ENV-001 Theory v0.3
+
+- Expanded the cumulative ENV-001 engineering Theory after EE-0001, EE-0002 and EE-0003 into 15 aligned Spanish and English sections.
+- Added six reusable technical diagrams covering digital signal flow, PNP/NPN interfaces, electrical diagnostics, photoelectric principles, operating margin, and the automation control/feedback chain.
+- Preserved ENV ownership and the existing non-interactive Theory contract; ENV-001 Theory remains incremental through EE-0004–EE-0010.
+
+## 2026-09-08 — ENV-001 Theory v0.3
+
+- Expanded the cumulative ENV-001 engineering Theory after EE-0001, EE-0002 and EE-0003 into 15 aligned Spanish and English sections.
+- Added six reusable technical diagrams covering digital signal flow, PNP/NPN interfaces, electrical diagnostics, photoelectric principles, operating margin, and the automation control/feedback chain.
+- Preserved ENV ownership and the existing non-interactive Theory contract; ENV-001 Theory remains incremental through EE-0004–EE-0010.
+
 ## 2026-09-07 — EE-0003 ENV-001 hotspot correction
 
 - Moved only the EE-0003 ENV-001 hotspot from the conveyor product box to the visible VFD inside the right-hand electrical cabinet.

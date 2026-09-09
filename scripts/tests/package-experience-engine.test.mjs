@@ -85,10 +85,11 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.deepEqual(catalog.environments[0].theory, {
     defaultLocale: "es",
     sectionIds: [
-      "TH-01-DIGITAL-SIGNAL-PATH", "TH-02-PNP-REFERENCE", "TH-03-OBSERVATION-BOUNDARIES",
-      "TH-04-INTERMITTENT-FAULTS", "TH-05-CORRELATION", "TH-06-INTERMITTENT-BOUNDARY",
-      "TH-07-REPEATED-VERIFICATION", "TH-08-MOTOR-CONTROL-CHAIN", "TH-09-DRIVE-STATES",
-      "TH-10-COMMAND-FEEDBACK", "TH-11-COMMAND-AUTHORITY", "TH-12-PROFINET-DIAGNOSIS"
+      "TH-01-ELECTRICAL-FOUNDATIONS", "TH-02-PLC-INPUTS-OUTPUTS", "TH-03-INDUSTRIAL-SENSOR-WIRING",
+      "TH-04-ELECTRICAL-MEASUREMENT", "TH-05-SENSOR-LANDSCAPE", "TH-06-PHOTOELECTRIC-SENSORS",
+      "TH-07-SENSOR-ECOSYSTEM", "TH-08-INTERMITTENT-FAULTS", "TH-09-MOTORS",
+      "TH-10-VARIABLE-FREQUENCY-DRIVES", "TH-11-INDUSTRIAL-COMMUNICATIONS", "TH-12-PROFINET-FUNDAMENTALS",
+      "TH-13-COMMAND-STATE-FEEDBACK", "TH-14-CONTROL-AUTHORITY", "TH-15-SYSTEMATIC-TROUBLESHOOTING"
     ],
     locales: {
       es: "environments/ENV-001/theory.es.json",
@@ -100,10 +101,10 @@ test("preview packages every eligible canonical Experience", async t => {
   const theoryEs = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.es));
   const theoryEn = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.en));
   assert.deepEqual(theoryEs.sections.map(item => item.id), theoryEn.sections.map(item => item.id));
-  assert.match(theoryEs.sections[0].title, /sensor/i);
-  assert.match(theoryEn.sections[0].title, /sensor/i);
-  assert.equal(theoryEs.media.length, 1);
-  await access(path.join(generatedRoot, theoryEs.media[0].src));
+  assert.match(theoryEs.sections[0].title, /eléctricos/i);
+  assert.match(theoryEn.sections[0].title, /electrical/i);
+  assert.equal(theoryEs.media.length, 7);
+  await Promise.all(theoryEs.media.map(item => access(path.join(generatedRoot, item.src))));
   assert.equal(Object.hasOwn(catalog.environments[1], "theory"), false);
   assert.equal(catalog.environments[1].hotspots.length, 0);
   assert.equal(catalog.environments[2].hotspots.length, 0);

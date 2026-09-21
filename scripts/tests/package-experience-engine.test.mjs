@@ -58,13 +58,16 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(result.packaged, ["EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.equal(result.skipped.length, 2);
-  assert.equal(catalog.experiences.length, 3);
+  assert.equal(catalog.experiences.length, 6);
   const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-SIGNAL-001");
   const intermittent = catalog.experiences.find(item => item.id === "EXP-SENSOR-INTERMITTENT-002");
   const drive = catalog.experiences.find(item => item.id === "EXP-VFD-AUTHORITY-003");
+  const pneumatic = catalog.experiences.find(item => item.id === "EXP-PNEUMATIC-CYLINDER-004");
+  const safetyGate = catalog.experiences.find(item => item.id === "EXP-SAFETY-GATE-005");
+  const profinetLink = catalog.experiences.find(item => item.id === "EXP-PROFINET-LINK-006");
   assert.equal(remaining.id, "EXP-SENSOR-SIGNAL-001");
   assert.equal(remaining.editorialId, "EE-0001");
   assert.equal(remaining.access, "free");
@@ -76,11 +79,23 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.equal(drive.editorialId, "EE-0003");
   assert.equal(drive.locales.es, "experiences/EXP-VFD-AUTHORITY-003.es.json");
   assert.equal(drive.locales.en, "experiences/EXP-VFD-AUTHORITY-003.en.json");
+  assert.equal(pneumatic.editorialId, "EE-0004");
+  assert.equal(pneumatic.locales.es, "experiences/EXP-PNEUMATIC-CYLINDER-004.es.json");
+  assert.equal(pneumatic.locales.en, "experiences/EXP-PNEUMATIC-CYLINDER-004.en.json");
+  assert.equal(safetyGate.editorialId, "EE-0005");
+  assert.equal(safetyGate.locales.es, "experiences/EXP-SAFETY-GATE-005.es.json");
+  assert.equal(safetyGate.locales.en, "experiences/EXP-SAFETY-GATE-005.en.json");
+  assert.equal(profinetLink.editorialId, "EE-0006");
+  assert.equal(profinetLink.locales.es, "experiences/EXP-PROFINET-LINK-006.es.json");
+  assert.equal(profinetLink.locales.en, "experiences/EXP-PROFINET-LINK-006.en.json");
   assert.equal(catalog.environments.length, 3);
   assert.deepEqual(catalog.environments[0].hotspots, [
     { experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 },
     { experienceEditorialId: "EE-0002", x: 24, y: 45.5 },
-    { experienceEditorialId: "EE-0003", x: 88.5, y: 56.5 }
+    { experienceEditorialId: "EE-0003", x: 88.5, y: 56.5 },
+    { experienceEditorialId: "EE-0004", x: 44, y: 42 },
+    { experienceEditorialId: "EE-0005", x: 52, y: 68 },
+    { experienceEditorialId: "EE-0006", x: 61, y: 50 }
   ]);
   assert.deepEqual(catalog.environments[0].theory, {
     defaultLocale: "es",
@@ -89,7 +104,11 @@ test("preview packages every eligible canonical Experience", async t => {
       "TH-04-ELECTRICAL-MEASUREMENT", "TH-05-SENSOR-LANDSCAPE", "TH-06-PHOTOELECTRIC-SENSORS",
       "TH-07-SENSOR-ECOSYSTEM", "TH-08-INTERMITTENT-FAULTS", "TH-09-MOTORS",
       "TH-10-VARIABLE-FREQUENCY-DRIVES", "TH-11-INDUSTRIAL-COMMUNICATIONS", "TH-12-PROFINET-FUNDAMENTALS",
-      "TH-13-COMMAND-STATE-FEEDBACK", "TH-14-CONTROL-AUTHORITY", "TH-15-SYSTEMATIC-TROUBLESHOOTING"
+      "TH-13-COMMAND-STATE-FEEDBACK", "TH-14-CONTROL-AUTHORITY", "TH-15-SYSTEMATIC-TROUBLESHOOTING",
+      "TH-16-PNEUMATIC-ENERGY", "TH-17-VALVES-ACTUATORS", "TH-18-PNEUMATIC-FLOW-CONTROL",
+      "TH-19-ELECTRO-PNEUMATIC-DIAGNOSIS", "TH-20-MACHINE-SAFETY-FUNDAMENTALS",
+      "TH-21-SAFETY-DEVICES-DUAL-CHANNELS", "TH-22-SAFETY-PLC-SAFE-FUNCTIONS",
+      "TH-23-SAFETY-DIAGNOSIS-RESET", "TH-24-NETWORK-FAULT-BOUNDARY"
     ],
     locales: {
       es: "environments/ENV-001/theory.es.json",
@@ -232,7 +251,7 @@ test("publish excludes technical-review experiences while preview includes them"
 
   assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
   assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
-  assert.deepEqual(preview.packaged, ["EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(preview.packaged, ["EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.deepEqual(publish.environments, []);
 });

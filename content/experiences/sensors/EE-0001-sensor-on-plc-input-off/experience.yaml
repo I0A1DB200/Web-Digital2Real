@@ -66,14 +66,14 @@ public:
       title: "Observar el incidente"
       situation: "La caja está frente a B1 y su indicador está activo, pero I0.3 permanece en FALSE y la estación continúa esperando presencia. ¿Qué harías a continuación?"
       evidence_ids: ["EVID-01-INCIDENT", "EVID-02-SENSOR"]
-      decision_ids: ["DEC-01-TRACE", "DEC-01-REPLACE", "DEC-01-PROGRAM"]
+      decision_ids: ["DEC-01-REPLACE", "DEC-01-TRACE", "DEC-01-PROGRAM"]
       media_ids: ["ART-001", "ART-002"]
     - id: "STAGE-03-ELECTRICAL"
       phase: "investigation"
       title: "Identificar la ruta eléctrica"
       situation: "El esquema muestra BN a +24 VDC, BU a 0 VDC y BK desde B1 por X1:17 hasta I0.3."
       evidence_ids: ["EVID-03-SCHEMATIC"]
-      decision_ids: ["DEC-02-MAP", "DEC-02-GUESS", "DEC-02-BYPASS"]
+      decision_ids: ["DEC-02-GUESS", "DEC-02-BYPASS", "DEC-02-MAP"]
       media_ids: ["ART-003"]
     - id: "STAGE-04-PLC"
       phase: "investigation"
@@ -87,14 +87,14 @@ public:
       title: "Medir la señal"
       situation: "La medición muestra aproximadamente 24.1 VDC en la salida BK de B1 y 0.0 VDC en el lado PLC de X1:17."
       evidence_ids: ["EVID-05-VOLTAGE"]
-      decision_ids: ["DEC-04-LOCALIZE", "DEC-04-SENSOR", "DEC-04-MODULE"]
+      decision_ids: ["DEC-04-SENSOR", "DEC-04-MODULE", "DEC-04-LOCALIZE"]
       media_ids: ["ART-005"]
     - id: "STAGE-06-CONTINUITY"
       phase: "investigation"
       title: "Comprobar continuidad"
       situation: "Con el circuito en estado seguro, la prueba entre X1:17 y PLC I0.3 indica OL."
       evidence_ids: ["EVID-06-OPEN"]
-      decision_ids: ["DEC-05-OPEN", "DEC-05-IGNORE", "DEC-05-FORCE"]
+      decision_ids: ["DEC-05-IGNORE", "DEC-05-OPEN", "DEC-05-FORCE"]
       media_ids: ["ART-006"]
     - id: "STAGE-07-LOCALIZE"
       phase: "investigation"
@@ -108,7 +108,7 @@ public:
       title: "Verificar la recuperación"
       situation: "La sección dañada ha sido reparada conforme a la práctica autorizada. Debes validar toda la ruta antes de cerrar."
       evidence_ids: ["EVID-08-RECOVERY"]
-      decision_ids: ["DEC-07-VERIFY-CHAIN", "DEC-07-INPUT-ONLY", "DEC-07-CLOSE"]
+      decision_ids: ["DEC-07-INPUT-ONLY", "DEC-07-CLOSE", "DEC-07-VERIFY-CHAIN"]
       media_ids: ["ART-008"]
   evidence:
     - id: "EVID-01-INCIDENT"

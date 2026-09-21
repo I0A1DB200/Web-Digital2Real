@@ -1,0 +1,150 @@
+locale: "en"
+translations:
+  title: "Safety Gate Channel Discrepancy"
+  summary: "Distinguish Safety inhibition from standard control, interpret a dual-channel discrepancy, and confirm its physical cause before intervention."
+  scenario:
+    initial_context: "After an intervention, the safety gate appears closed, but the automated cell does not permit production restart."
+    operational_state: "SafetyReady remains FALSE and STO stays active after the normal reset sequence is attempted; the inhibiting function has not yet been identified."
+    initiating_event: "Production reports that the machine cannot restart after the guard is closed."
+    learner_role: "Automation technician responsible for locating the first disagreement among physical condition, safe inputs, Safety evaluation and safe stop function."
+    safety_context:
+      safe_state: "Diagnose from a safe condition and apply the authorized isolation and maintenance procedure before physically intervening on the gate, actuator or interlock."
+      intervention_constraints: ["Do not bridge, force or defeat Safety channels or functions.", "Do not change safety logic or timing to accept an invalid condition.", "Do not confuse Safety reset with a Start command.", "Verify the protective function and absence of unexpected restart after intervention."]
+  learning_objectives:
+    OBJ-SAFETY-CHAIN:
+      description: "Trace gate, dual-channel interlock, F-DI, S7-1500F, safety logic, F-DO and STO."
+    OBJ-CHANNEL-DISCREPANCY:
+      description: "Interpret CH1 TRUE and CH2 FALSE as discrepancy evidence without automatically assigning an F-DI failure."
+    OBJ-SAFETY-VERIFICATION:
+      description: "Separate physical restoration, Safety reset, Start and functional verification."
+  stages:
+    STAGE-01-INTERPRET-INHIBITION:
+      title: "Interpret restart inhibition"
+      situation: "The gate appears closed, SafetyReady is FALSE and STO remains active. What is the best next step?"
+    STAGE-02-GUARD-FUNCTION:
+      title: "Identify the active Safety function"
+      situation: "General diagnostics indicate that the guard protective function prevents SafetyReady. How should the investigation continue?"
+    STAGE-03-FDI-DIAGNOSTIC:
+      title: "Interpret the F-DI indication"
+      situation: "The F-DI associated with the gate shows a diagnostic indication. Which action provides conclusive evidence?"
+    STAGE-04-CHANNEL-DISCREPANCY:
+      title: "Evaluate channel discrepancy"
+      situation: "Online diagnostics show CH1 TRUE, CH2 FALSE, Gate_Safe FALSE and SafetyReady FALSE. What should be investigated next?"
+    STAGE-05-PHYSICAL-CAUSE:
+      title: "Correct the physical condition"
+      situation: "Safe inspection confirms mechanical misalignment between the gate actuator and interlock. What is the correct intervention?"
+    STAGE-06-VERIFY-SAFETY:
+      title: "Reset and verify the function"
+      situation: "After alignment is restored, CH1 and CH2 are TRUE. The intended reset sequence allows SafetyReady TRUE and releases STO according to design. How should the intervention be closed?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Automated cell"
+      content: "The guard appears physically closed, but the machine does not permit restart."
+    EVID-02-SAFETY-STATE:
+      source: "Machine status"
+      content: "SafetyReady remains FALSE and STO stays active after the normal reset attempt."
+    EVID-03-GUARD-FUNCTION:
+      source: "Safety diagnostics"
+      content: "The protective function associated with the gate is the condition preventing SafetyReady."
+    EVID-04-FDI:
+      source: "F-DI"
+      content: "The safe input channel associated with the gate has a diagnostic indication that requires online detail."
+    EVID-05-CHANNELS:
+      source: "TIA Portal / S7-1500F"
+      content: "SafetyGate_Closed TRUE, CH1 TRUE, CH2 FALSE, Gate_Safe FALSE and SafetyReady FALSE."
+    EVID-06-MISALIGNMENT:
+      source: "Safety gate and interlock"
+      content: "Inspection under the safe procedure confirms mechanical misalignment between the gate actuator and interlock."
+    EVID-07-RECOVERY:
+      source: "Post-intervention verification"
+      content: "With alignment restored, CH1 and CH2 are TRUE; after the intended reset, SafetyReady becomes TRUE and STO releases according to design without automatic restart."
+  decisions:
+    DEC-01-IDENTIFY-SAFETY-FUNCTION:
+      action: "Determine which Safety function prevents the machine from becoming ready."
+    DEC-01-REPLACE-DRIVE:
+      action: "Replace the drive because STO remains active."
+    DEC-01-REPEAT-RESET:
+      action: "Repeat the reset until SafetyReady changes."
+    DEC-01-CHANGE-STANDARD-LOGIC:
+      action: "Change standard Start logic to ignore the inhibition."
+    DEC-02-INSPECT-GUARD-FINPUTS:
+      action: "Investigate guard evaluation and the associated safe inputs."
+    DEC-02-REPLACE-FPLC:
+      action: "Replace the S7-1500F without reviewing its inputs."
+    DEC-02-BLAME-START:
+      action: "Attribute the inhibition to the Start pushbutton."
+    DEC-03-OPEN-ONLINE-DIAGNOSTICS:
+      action: "Consult detailed online diagnostics for the function and its channels."
+    DEC-03-REPLACE-FDI:
+      action: "Replace the F-DI because it shows a diagnostic indication."
+    DEC-03-RESET-INDEFINITELY:
+      action: "Continue resetting without consulting diagnostic detail."
+    DEC-03-BYPASS-INPUT:
+      action: "Defeat the safe input to recover production."
+    DEC-04-INSPECT-PHYSICAL-RELATION:
+      action: "Under safe conditions, inspect the physical relationship among gate, actuator and interlock."
+    DEC-04-REPLACE-CH2-WIRING:
+      action: "Immediately replace CH2 wiring."
+    DEC-04-REPLACE-INTERLOCK:
+      action: "Replace the interlock based only on the discrepancy."
+    DEC-05-RESTORE-ALIGNMENT:
+      action: "Restore intended alignment and mounting through the authorized safe procedure."
+    DEC-05-INCREASE-DISCREPANCY-TIME:
+      action: "Increase discrepancy time to accept the condition."
+    DEC-05-DEFEAT-CHANNEL:
+      action: "Defeat one channel to allow reset."
+    DEC-05-REPLACE-FDI:
+      action: "Replace the F-DI although the mechanical cause is confirmed."
+    DEC-06-FUNCTIONAL-TEST:
+      action: "Perform the intended safe functional test, check representative inhibition and recovery, and confirm there is no automatic restart."
+    DEC-06-CLOSE-ONCE:
+      action: "Close the intervention because the machine starts once."
+    DEC-06-AUTO-RESTART:
+      action: "Configure automatic restart when the gate closes."
+  retry_feedback:
+    DEC-01-REPLACE-DRIVE: "Active STO describes safe torque inhibition; it does not prove the drive has failed. Identify the active Safety function first."
+    DEC-01-REPEAT-RESET: "Repeated reset does not correct an invalid Safety condition. Determine which function prevents SafetyReady."
+    DEC-01-CHANGE-STANDARD-LOGIC: "Standard logic must not be used to evade a Safety condition. Investigate the protective function maintaining inhibition."
+    DEC-02-REPLACE-FPLC: "The identified function does not prove an F-PLC failure. Follow the chain from the gate and its safe inputs."
+    DEC-02-BLAME-START: "Start cannot enable the machine while SafetyReady is FALSE. Investigate the gate function first."
+    DEC-03-REPLACE-FDI: "A diagnostic indication reports an evaluated condition; it does not prove module failure. Consult online detail."
+    DEC-03-RESET-INDEFINITELY: "Repeated reset provides no evidence about channel condition. Consult detailed diagnostics."
+    DEC-03-BYPASS-INPUT: "Defeating a safe input invalidates the protective function and is not acceptable diagnosis. Keep protection effective and use authorized evidence."
+    DEC-04-REPLACE-CH2-WIRING: "CH2 FALSE alone does not identify an open conductor. Inspect the physical relationship and chain before replacement."
+    DEC-04-REPLACE-INTERLOCK: "The discrepancy does not prove the interlock is broken. Check its mechanical relationship with the actuator first."
+    DEC-05-INCREASE-DISCREPANCY-TIME: "Changing timing to accept a defective mechanical condition does not restore protection. Correct alignment through the authorized procedure."
+    DEC-05-DEFEAT-CHANNEL: "Defeating a channel defeats the protective function. Preserve the Safety architecture and restore the intended mechanical condition."
+    DEC-05-REPLACE-FDI: "Misalignment is confirmed and explains the discrepancy. Replacing the F-DI does not correct the physical condition."
+    DEC-06-CLOSE-ONCE: "One successful start does not validate the Safety function. Check protective response, intended recovery and absence of unexpected restart."
+    DEC-06-AUTO-RESTART: "Closing a guard must not be presented as an automatic Start command. Keep restoration, Safety reset and Start separate."
+  visual:
+    educational_purpose: "Progressively reveal the active Safety function, channel disagreement, mechanical cause and functional verification."
+  assets:
+    ART-001:
+      alt: "Automated cell protected by a safety gate with restart inhibited."
+      caption: "The cell does not permit restart; the cause is not yet known."
+    ART-002:
+      alt: "Overview of the gate, interlock and Safety control system."
+      caption: "The inhibition comes from the Safety layer."
+    ART-003:
+      alt: "F-DI module with a diagnostic indication on the gate input path."
+      caption: "The indication directs investigation; it does not prove module failure."
+    ART-004:
+      alt: "Online Safety diagnostics with CH1 TRUE, CH2 FALSE, Gate_Safe FALSE and SafetyReady FALSE."
+      caption: "The channels disagree; the physical cause still needs confirmation."
+    ART-005:
+      alt: "Inspection showing misalignment between the gate actuator and interlock."
+      caption: "Mechanical misalignment explains the invalid dual-channel condition."
+    ART-006:
+      alt: "Actuator and interlock correctly aligned after safe intervention."
+      caption: "The intended physical condition has been restored."
+    ART-007:
+      alt: "Recovered automated cell during safety functional verification."
+      caption: "Production recovery is confirmed together with the protective function."
+  completion:
+    title: "Technical debrief"
+    summary: "Mechanical misalignment between the gate actuator and interlock produced CH1 TRUE and CH2 FALSE, held SafetyReady FALSE and kept STO active."
+    process: ["Distinguish Safety inhibition from standard control.", "Identify the gate function.", "Consult F-DI and online diagnostics.", "Interpret channel discrepancy.", "Confirm and correct misalignment.", "Reset and verify the function without unexpected restart."]
+    lesson: "A physically closed guard is not equivalent to a valid Safety condition, and production recovery is not equivalent to repair validation."
+    avoided_errors: ["Replacing F-DI, F-PLC, drive or interlock without evidence.", "Repeating reset without diagnosis.", "Changing timing or logic to accept an invalid channel.", "Defeating a protective function."]
+    industrial_value: ["Safe boundary-based diagnosis.", "Separation of physical state and Safety evaluation.", "Production recovery with functional verification."]

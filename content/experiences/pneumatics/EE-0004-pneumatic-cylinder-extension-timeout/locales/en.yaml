@@ -1,0 +1,147 @@
+locale: "en"
+translations:
+  title: "Pneumatic Cylinder Extension Timeout"
+  summary: "Trace the extension command from PLC to movement and feedback, distinguish pressure from flow, and correct excessive exhaust restriction."
+  scenario:
+    initial_context: "The automated line cannot complete the pneumatic station sequence because the diverter cylinder does not reach its extended position within the expected time."
+    operational_state: "ExtendCmd is active and ExtendedLS remains FALSE when timeout occurs; the boundary where the chain fails is not yet known."
+    initiating_event: "Production reports an extension timeout that prevents the line cycle from continuing."
+    learner_role: "Automation technician responsible for locating the first disagreement among PLC command, electrical actuation, pneumatic energy, movement and feedback."
+    safety_context:
+      safe_state: "Observe from a safe position and apply the authorized energy-isolation and motion-control procedure before intervening on the valve, flow controls or cylinder."
+      intervention_constraints: ["Do not force outputs or ExtendedLS.", "Do not increase timeout to hide a physical anomaly.", "Do not replace components without evidence.", "Restore pneumatic settings only to the intended machine condition and verify with controlled movement."]
+  learning_objectives:
+    OBJ-ACTUATION-CHAIN:
+      description: "Trace ExtendCmd, PLC output, Y1, 5/2 valve, pressure and flow, cylinder and ExtendedLS."
+    OBJ-PRESSURE-FLOW:
+      description: "Distinguish available pressure from sufficient flow and interpret partial movement."
+    OBJ-PNEUMATIC-RECOVERY:
+      description: "Restore expected regulation and verify stroke, timing, feedback and repeatability."
+  stages:
+    STAGE-01-INTERPRET-TIMEOUT:
+      title: "Interpret the timeout"
+      situation: "ExtendCmd is TRUE, ExtendedLS remains FALSE and extension time has expired. What is the best next step?"
+    STAGE-02-Y1-ACTUATION:
+      title: "Check electrical actuation"
+      situation: "Y1 is commanded and its indicator is on; electrical actuation reaches the solenoid. How should diagnosis continue?"
+    STAGE-03-PNEUMATIC-SUPPLY:
+      title: "Interpret available pressure"
+      situation: "The regulator shows approximately 6 bar, with no plant-air alarm or evidence of a major leak. What does this observation support?"
+    STAGE-04-CYLINDER-BEHAVIOR:
+      title: "Observe cylinder dynamics"
+      situation: "The cylinder begins extending, but moves abnormally slowly and does not complete its stroke before timeout. Which boundary should be investigated?"
+    STAGE-05-FLOW-CONTROL:
+      title: "Confirm the flow restriction"
+      situation: "Safe inspection shows excessive restriction at the one-way control for exhaust during extension, consistent with the slow movement."
+    STAGE-06-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "After restoring the intended setting, the cylinder reaches full extension at normal speed, ExtendedLS becomes TRUE and no timeout occurs."
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Pneumatic station"
+      content: "The diverter does not reach its extended position before timeout and the sequence stops."
+    EVID-02-PLC:
+      source: "TIA Portal / S7-1500"
+      content: "ExtendCmd, SafetyOK, AutoMode and PneumaticPermit are TRUE; ExtendedLS remains FALSE when time expires."
+    EVID-03-Y1:
+      source: "Y1 solenoid and directional valve"
+      content: "Y1 is commanded, its indicator is ON and electrical actuation reaches the solenoid; this does not confirm correct cylinder movement."
+    EVID-04-SUPPLY:
+      source: "Air preparation and regulator"
+      content: "Regulated supply is approximately 6 bar, with no general air alarm or evidence of a major leak."
+    EVID-05-PARTIAL-EXTENSION:
+      source: "Double-acting cylinder"
+      content: "The cylinder begins extending, but movement is too slow and the stroke does not finish within the expected window."
+    EVID-06-FLOW-CONTROL:
+      source: "One-way flow control"
+      content: "The control associated with exhaust during extension is excessively restricted; the opposite chamber cannot exhaust air quickly enough."
+    EVID-07-RECOVERY:
+      source: "Post-intervention verification"
+      content: "With expected regulation restored, full extension speed and stroke return, ExtendedLS becomes TRUE and no timeout occurs."
+  decisions:
+    DEC-01-TRACE-ACTUATION:
+      action: "Verify whether the electrical request actually reaches the pneumatic actuation chain."
+    DEC-01-REPLACE-CYLINDER:
+      action: "Replace the cylinder immediately because ExtendedLS does not arrive."
+    DEC-01-INCREASE-TIMEOUT:
+      action: "Increase timeout so the sequence can continue."
+    DEC-01-FORCE-FEEDBACK:
+      action: "Force ExtendedLS to confirm the rest of the sequence."
+    DEC-02-CONTINUE-DOWNSTREAM:
+      action: "Continue downstream and check pneumatic condition, valve response and movement."
+    DEC-02-REPLACE-PLC:
+      action: "Replace the PLC output even though Y1 receives actuation."
+    DEC-02-ASSUME-MOVEMENT:
+      action: "Conclude that the cylinder moves correctly because the Y1 indicator is ON."
+    DEC-03-INVESTIGATE-LOCAL-FLOW:
+      action: "Treat general pressure as available and continue through local flow, valve and movement."
+    DEC-03-INCREASE-PRESSURE:
+      action: "Immediately increase regulator pressure."
+    DEC-03-BLAME-COMPRESSOR:
+      action: "Attribute the timeout to the plant compressor."
+    DEC-04-INSPECT-FLOW-LOAD:
+      action: "Investigate local flow restriction, exhaust control and mechanical load before replacing equipment."
+    DEC-04-REPLACE-LS:
+      action: "Replace ExtendedLS because it remains FALSE."
+    DEC-04-REPLACE-VALVE:
+      action: "Replace the 5/2 valve without inspecting flow control."
+    DEC-05-RESTORE-SETTING:
+      action: "Restore the intended flow setting using the authorized safe procedure."
+    DEC-05-REMOVE-CONTROL:
+      action: "Remove the controller to eliminate any restriction."
+    DEC-05-INCREASE-PRESSURE:
+      action: "Compensate for the restriction by increasing supply pressure."
+    DEC-05-OPEN-FULLY:
+      action: "Open the controller fully without reference to the intended condition."
+    DEC-06-REPEAT-CYCLES:
+      action: "Run repeated representative cycles and verify movement, timing, full stroke, feedback and absence of recurrence."
+    DEC-06-CLOSE-ONCE:
+      action: "Close the intervention after one successful extension."
+    DEC-06-KEEP-LONG-TIMEOUT:
+      action: "Keep an artificially increased timeout as a preventive measure."
+  retry_feedback:
+    DEC-01-REPLACE-CYLINDER: "A timeout does not identify the failed component. First confirm how far the command travels."
+    DEC-01-INCREASE-TIMEOUT: "Increasing timeout can hide physical degradation; it does not explain missing feedback under the intended condition."
+    DEC-01-FORCE-FEEDBACK: "Forcing ExtendedLS removes sequence protection and does not prove that the actuator reached position."
+    DEC-02-REPLACE-PLC: "Y1 receives actuation consistent with ExtendCmd; replacing the PLC output contradicts current evidence."
+    DEC-02-ASSUME-MOVEMENT: "The Y1 indicator confirms a local electrical command, not cylinder stroke, speed or physical position."
+    DEC-03-INCREASE-PRESSURE: "This machine's nominal reading is already available. Increasing it without locating local behaviour neither proves nor corrects the cause."
+    DEC-03-BLAME-COMPRESSOR: "There is no general alarm or observed pressure loss. Continue from air preparation toward the actuator."
+    DEC-04-REPLACE-LS: "ExtendedLS remains FALSE because the physical stroke does not finish. Feedback can be a consequence rather than the cause."
+    DEC-04-REPLACE-VALVE: "Actuation and initial movement are confirmed. Inspect local regulation and load before replacing the valve."
+    DEC-05-REMOVE-CONTROL: "Removing regulation changes designed behaviour and may cause uncontrolled movement. Restore the intended setting."
+    DEC-05-INCREASE-PRESSURE: "More pressure does not remove a confirmed exhaust restriction and changes another system variable."
+    DEC-05-OPEN-FULLY: "Fully open is not the same as the correct setting. Return speed to the intended machine condition."
+    DEC-06-CLOSE-ONCE: "One correct stroke does not prove repeatability. Verify several representative cycles."
+    DEC-06-KEEP-LONG-TIMEOUT: "An increased timeout can hide degradation and is not part of the confirmed physical recovery."
+  visual:
+    educational_purpose: "Progressively reveal the boundary among command, electrical actuation, pressure, cylinder dynamics and local exhaust control."
+  assets:
+    ART-001:
+      alt: "Pneumatic station stopped because the cylinder does not reach expected extension."
+      caption: "Extension timeout; cause not yet known."
+    ART-002:
+      alt: "PLC monitoring with ExtendCmd and permissive conditions active while ExtendedLS remains FALSE."
+      caption: "A request exists, but expected feedback is missing."
+    ART-003:
+      alt: "Y1 solenoid and directional valve with electrical actuation indicated."
+      caption: "The command reaches the solenoid boundary."
+    ART-004:
+      alt: "Air preparation unit and regulator showing approximately 6 bar."
+      caption: "General pressure is available; local flow still needs checking."
+    ART-005:
+      alt: "Partially extended cylinder not reaching end position within the expected time."
+      caption: "Movement exists, but its dynamics are abnormal."
+    ART-006:
+      alt: "Inspection of the one-way controller governing exhaust during extension."
+      caption: "Excessive exhaust restriction limits speed."
+    ART-007:
+      alt: "Cylinder at full extension with ExtendedLS feedback confirmed."
+      caption: "Stroke, feedback and cycle timing recovered."
+  completion:
+    title: "Technical debrief"
+    summary: "General pressure was available, but excessive exhaust restriction limited flow and slowed extension until timeout."
+    process: ["Interpret command and feedback.", "Confirm electrical actuation at Y1.", "Check general pressure.", "Observe partial movement.", "Locate exhaust restriction.", "Restore intended regulation and verify repeated cycles."]
+    lesson: "Command present does not prove correct movement, and available pressure does not prove sufficient flow."
+    avoided_errors: ["Replacing PLC, valve, cylinder or sensor without evidence.", "Forcing ExtendedLS.", "Hiding the anomaly by increasing timeout.", "Fully opening or removing regulation."]
+    industrial_value: ["Boundary-based diagnosis.", "Fewer unjustified replacements.", "Controlled pneumatic movement and verifiable recovery."]

@@ -66,21 +66,21 @@ public:
       title: "Caracterizar la intermitencia"
       situation: "La mayoría de las cajas se registra y algunas se omiten sin alarma permanente. ¿Cuál es el siguiente paso diagnóstico?"
       evidence_ids: ["EVID-01-REPORT"]
-      decision_ids: ["DEC-01-OBSERVE-CYCLES", "DEC-01-REPLACE-SENSOR", "DEC-01-CHANGE-LOGIC"]
+      decision_ids: ["DEC-01-REPLACE-SENSOR", "DEC-01-CHANGE-LOGIC", "DEC-01-OBSERVE-CYCLES"]
       media_ids: ["ART-001"]
     - id: "STAGE-02-COMPARE"
       phase: "investigation"
       title: "Comparar ciclos"
       situation: "La observación repetida confirma ciclos correctos y fallidos bajo producción normal. Debes comparar qué cambia entre ambos."
       evidence_ids: ["EVID-02-CYCLE-SAMPLE"]
-      decision_ids: ["DEC-02-COMPARE-STATES", "DEC-02-INCREASE-SENSITIVITY", "DEC-02-REPLACE-INPUT"]
+      decision_ids: ["DEC-02-INCREASE-SENSITIVITY", "DEC-02-COMPARE-STATES", "DEC-02-REPLACE-INPUT"]
       media_ids: []
     - id: "STAGE-03-BOUNDARY"
       phase: "investigation"
       title: "Establecer la frontera diagnóstica"
       situation: "En ciclos correctos la salida del sensor y la entrada PLC están ON. En ciclos fallidos ambas permanecen OFF."
       evidence_ids: ["EVID-03-SUCCESS", "EVID-04-FAILURE"]
-      decision_ids: ["DEC-03-MOVE-UPSTREAM", "DEC-03-BLAME-PLC", "DEC-03-REMAP-INPUT"]
+      decision_ids: ["DEC-03-BLAME-PLC", "DEC-03-REMAP-INPUT", "DEC-03-MOVE-UPSTREAM"]
       media_ids: ["ART-002", "ART-003"]
     - id: "STAGE-04-CORRELATE"
       phase: "investigation"
@@ -94,14 +94,14 @@ public:
       title: "Inspeccionar la geometría de detección"
       situation: "Las omisiones coinciden con pequeñas variaciones normales de la posición lateral de las cajas."
       evidence_ids: ["EVID-06-POSITION-CORRELATION"]
-      decision_ids: ["DEC-05-INSPECT-ALIGNMENT", "DEC-05-ADJUST-BLINDLY", "DEC-05-REPLACE-HARDWARE"]
+      decision_ids: ["DEC-05-ADJUST-BLINDLY", "DEC-05-INSPECT-ALIGNMENT", "DEC-05-REPLACE-HARDWARE"]
       media_ids: ["ART-004"]
     - id: "STAGE-06-CORRECT"
       phase: "investigation"
       title: "Corregir la causa confirmada"
       situation: "La inspección muestra que el eje de detección está cerca del borde de la trayectoria real del producto."
       evidence_ids: ["EVID-07-MARGINAL-ALIGNMENT"]
-      decision_ids: ["DEC-06-REALIGN-SECURE", "DEC-06-SENSOR-ONLY", "DEC-06-SOFTWARE-WINDOW"]
+      decision_ids: ["DEC-06-SENSOR-ONLY", "DEC-06-SOFTWARE-WINDOW", "DEC-06-REALIGN-SECURE"]
       media_ids: ["ART-005"]
     - id: "STAGE-07-VERIFY"
       phase: "solution"

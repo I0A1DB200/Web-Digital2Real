@@ -1,0 +1,150 @@
+locale: "en"
+translations:
+  title: "PROFINET Line Topology / Link Failure"
+  summary: "Interpret downstream unavailability in a line topology and locate the physical segment between the last reachable node and the first unavailable node."
+  scenario:
+    initial_context: "A production area loses several functions associated with distributed I/O while the PLC and another PROFINET branch remain operational."
+    operational_state: "The S7-1500 remains operational; A1 and A2 on String A are available, A3 and A4 are not, and every node on String B remains available."
+    initiating_event: "Production reports several unavailable field stations in one part of the conveyor."
+    learner_role: "Automation technician responsible for narrowing the machine symptom to a physical network segment and verifying complete recovery."
+    safety_context:
+      safe_state: "Perform observations and diagnostics from a safe condition and apply the authorized maintenance procedure before physically intervening on machine cabling or connectors."
+      intervention_constraints: ["Do not replace multiple devices based only on unavailable status.", "Do not change IP addresses, PROFINET names or the project without evidence.", "Do not improvise industrial-cable repairs.", "Verify communications, process I/O and machine function after repair."]
+  learning_objectives:
+    OBJ-TOPOLOGY-SCOPE:
+      description: "Relate the scope of multiple unavailable nodes to the physical topology of their branches."
+    OBJ-NETWORK-BOUNDARY:
+      description: "Locate the segment between the last reachable node and the first unavailable node."
+    OBJ-COMMUNICATION-RECOVERY:
+      description: "Verify link, reachability, cyclic communication, I/O and functional recovery."
+  stages:
+    STAGE-01-DETERMINE-SCOPE:
+      title: "Determine the scope"
+      situation: "The PLC is operational, String B remains available, and only A3 and A4 on String A are unavailable. What is the best first step?"
+    STAGE-02-CONTROLLER-DIAGNOSTICS:
+      title: "Use controller diagnostics"
+      situation: "Comparison confirms that the problem is limited to the downstream part of String A. Which evidence should be consulted next?"
+    STAGE-03-INTERPRET-TOPOLOGY:
+      title: "Interpret the node pattern"
+      situation: "TIA Portal shows A1 and A2 available, A3 and A4 unavailable, and String B available. Which reasoning best narrows the fault domain?"
+    STAGE-04-INSPECT-LINK-STATE:
+      title: "Inspect the physical boundary"
+      situation: "A2 Turck is the last reachable node and A3 Murr is the first unavailable node. A3 remains powered but has no communication. How should diagnosis continue?"
+    STAGE-05-CONFIRM-SEGMENT:
+      title: "Confirm the physical cause"
+      situation: "PRONETA topology confirms the chain and inspection reveals physical damage in the PROFINET cable between A2 Turck and A3 Murr. Which correction is justified?"
+    STAGE-06-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "The segment has been restored: A3 and A4 are available again and PROFINET exchange has recovered. Which verification correctly closes the intervention?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Production area"
+      content: "Several functions associated with distributed I/O in one conveyor area are unavailable."
+    EVID-02-SCOPE:
+      source: "General status"
+      content: "S7-1500 operational; A1/A2 available; A3/A4 unavailable; String B fully available."
+    EVID-03-INSTALLATION:
+      source: "Network installation"
+      content: "The network feeds two field-device branches from industrial infrastructure; downstream nodes form line segments through their ports."
+    EVID-04-TIA-STATUS:
+      source: "TIA Portal"
+      content: "From the controller project, A1/A2 and String B are available while A3/A4 are unavailable. The physical switch is not presented as a configured IO Device."
+    EVID-05-PHYSICAL-BOUNDARY:
+      source: "A2 Turck and A3 Murr"
+      content: "A2 is reachable; A3 remains powered, but network link toward the node is absent."
+    EVID-06-TOPOLOGY:
+      source: "PRONETA Graphical View"
+      content: "The physical topology shows the PLC with String A: A1–A2–A3–A4 and String B: B1–B2–B3–B4."
+    EVID-07-DAMAGED-SEGMENT:
+      source: "A2–A3 segment"
+      content: "Authorized inspection confirms physical damage in the PROFINET cable between A2 Turck and A3 Murr."
+    EVID-08-RECOVERY:
+      source: "Post-intervention verification"
+      content: "After restoring the segment, A3/A4 are reachable, cyclic exchange and process I/O are valid, and the affected function operates again."
+  decisions:
+    DEC-01-RESTART-PLC:
+      action: "Restart the PLC immediately."
+    DEC-01-REPLACE-A3-A4:
+      action: "Replace A3 and A4 because both appear unavailable."
+    DEC-01-COMPARE-NETWORK-AREAS:
+      action: "Compare affected and unaffected network areas to delimit the communication scope."
+    DEC-01-INVESTIGATE-STRING-B:
+      action: "Begin troubleshooting String B although it operates normally."
+    DEC-02-DOWNLOAD-PROJECT:
+      action: "Download the PLC project again."
+    DEC-02-USE-TIA-DIAGNOSTICS:
+      action: "Use TIA Portal online diagnostics to compare availability of configured devices."
+    DEC-02-CHANGE-IP:
+      action: "Change IP addresses on the unavailable nodes."
+    DEC-03-REPLACE-A3:
+      action: "Replace A3 because it is the first unavailable device."
+    DEC-03-ASSUME-IO-LINK:
+      action: "Treat the incident as an IO-Link sensor fault."
+    DEC-03-REPLACE-SWITCH:
+      action: "Replace the industrial switch because several nodes are unavailable."
+    DEC-03-FIND-GOOD-BAD-BOUNDARY:
+      action: "Locate the last reachable node, the first unavailable node and the segment between them."
+    DEC-04-ASSUME-POWER-FAULT:
+      action: "Conclude that A3 lost 24 V although it remains powered."
+    DEC-04-INSPECT-A2-A3-LINK:
+      action: "Inspect the physical A2 Turck–A3 Murr link using the authorized procedure."
+    DEC-04-REPLACE-A3:
+      action: "Replace A3 without checking its connecting segment."
+    DEC-05-RESTORE-SEGMENT:
+      action: "Restore or replace the defective industrial segment according to the applicable maintenance procedure."
+    DEC-05-RENAME-DEVICES:
+      action: "Assign new PROFINET names to A3 and A4."
+    DEC-05-REPAIR-IMPROVISED:
+      action: "Make an improvised cable repair to recover production."
+    DEC-06-CLOSE-ON-GREEN:
+      action: "Close the intervention when one diagnostic icon turns green."
+    DEC-06-CHECK-A3-ONLY:
+      action: "Check only that A3 becomes available again."
+    DEC-06-VERIFY-FULL-CHAIN:
+      action: "Verify link, A3/A4, cyclic communication, process I/O and machine function under representative conditions."
+  retry_feedback:
+    DEC-01-RESTART-PLC: "The PLC and String B remain operational. Restarting removes context without explaining the selective scope. Compare network areas first."
+    DEC-01-REPLACE-A3-A4: "Two consecutive unavailable nodes may share one topological cause. Delimit the scope before replacing equipment."
+    DEC-01-INVESTIGATE-STRING-B: "String B provides an operational reference but is not affected. Use it for comparison and focus on the fault boundary."
+    DEC-02-DOWNLOAD-PROJECT: "There is no evidence that configuration was lost. Consult online diagnostics before overwriting system state."
+    DEC-02-CHANGE-IP: "Changing addresses without evidence can create new conflicts and does not explain two downstream unavailable nodes. Preserve configuration and observe."
+    DEC-03-REPLACE-A3: "Being the first unavailable node does not prove internal failure. Examine the segment joining the last reachable node to A3."
+    DEC-03-ASSUME-IO-LINK: "The equipment may provide IO-Link, but the observed pattern concerns its PROFINET/Ethernet connection. Follow the network topology."
+    DEC-03-REPLACE-SWITCH: "The PLC, A1/A2 and String B retain communication. That scope does not support replacing shared infrastructure."
+    DEC-04-ASSUME-POWER-FAULT: "A3 remains powered. Power present is not Ethernet link present; inspect the delimited network segment."
+    DEC-04-REPLACE-A3: "A powered A3 without link may be isolated by the preceding segment. Check A2–A3 before replacing the module."
+    DEC-05-RENAME-DEVICES: "The confirmed cause is physical link damage. Changing names does not restore the cable and may introduce a configuration fault."
+    DEC-05-REPAIR-IMPROVISED: "An improvised repair does not assure industrial-link integrity. Use the applicable maintenance procedure and components."
+    DEC-06-CLOSE-ON-GREEN: "A green indicator is partial evidence. Also verify downstream nodes, process data and machine function."
+    DEC-06-CHECK-A3-ONLY: "A4 and process functions were also affected. Check the complete chain and representative operation."
+  visual:
+    educational_purpose: "Progressively reveal scope, controller diagnostics, topology boundary, physical link, cause and functional recovery."
+  assets:
+    ART-001:
+      alt: "EE-0006 cover showing an automated line with several unavailable field devices."
+      caption: "Several field functions are unavailable; the scope still needs determination."
+    ART-002:
+      alt: "Physical industrial network installation and distributed I/O devices on the conveyor."
+      caption: "The installation combines network infrastructure and line segments in the field."
+    ART-003:
+      alt: "TIA Portal diagnostics with A1 and A2 available, A3 and A4 unavailable, and String B available."
+      caption: "The availability pattern delimits part of String A."
+    ART-004:
+      alt: "Physical boundary between reachable A2 Turck and powered A3 Murr without link."
+      caption: "Power at A3 does not prove Ethernet link."
+    ART-005:
+      alt: "PRONETA graphical view with A1–A4 and B1–B4 chains and network ports."
+      caption: "Topology explains why one segment can affect several downstream nodes."
+    ART-006:
+      alt: "Physical damage in the green PROFINET cable between A2 Turck and A3 Murr."
+      caption: "The A2–A3 segment is the confirmed physical cause."
+    ART-007:
+      alt: "Restored network with field devices and conveyor process operating again."
+      caption: "Communications, I/O and production function recovered and verified."
+  completion:
+    title: "Technical debrief"
+    summary: "Physical damage in the PROFINET link between A2 Turck and A3 Murr made A3 and A4 unavailable through line-topology propagation."
+    process: ["Delimit the scope.", "Use controller diagnostics.", "Interpret the topology.", "Locate the A2–A3 boundary.", "Confirm and restore the segment.", "Verify communications, I/O and function."]
+    lesson: "Several unavailable devices may result from one link failure; the highest-value boundary lies between the last reachable node and the first unavailable node."
+    avoided_errors: ["Restarting or downloading the PLC without evidence.", "Replacing A3/A4 or the switch because of the alarm pattern.", "Confusing power, link, reachability and IO-Link.", "Closing after one green indicator."]
+    industrial_value: ["Topology-led diagnosis.", "Fewer unjustified replacements.", "Verifiable communication and process recovery."]

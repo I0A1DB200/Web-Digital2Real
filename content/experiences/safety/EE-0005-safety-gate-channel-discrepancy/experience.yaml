@@ -1,0 +1,513 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-SAFETY-GATE-005"
+  editorial_id: "EE-0005"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Machine safety"
+  domain: "Functional safety diagnostics"
+  industry: "Manufacturing"
+  machine_type: "Automated guarded cell"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "safety-gate-channel-discrepancy"
+  title: "Discrepancia de canales en puerta de seguridad"
+  summary: "Distingue la inhibición Safety del control estándar, interpreta una discrepancia de doble canal y confirma su causa física antes de intervenir."
+  estimated_duration: 15
+  scenario:
+    initial_context: "Tras una intervención, la puerta de seguridad parece cerrada, pero la célula automatizada no permite reiniciar la producción."
+    operational_state: "SafetyReady permanece en FALSE y STO sigue activo después de intentar la secuencia normal de rearme; la función que mantiene la inhibición todavía no se ha identificado."
+    initiating_event: "Producción informa de que la máquina no puede volver a arrancar después de cerrar la protección."
+    learner_role: "Técnico de automatización responsable de localizar la primera discrepancia entre condición física, entradas seguras, evaluación Safety y función de parada segura."
+    safety_context:
+      safe_state: "Realizar el diagnóstico desde una condición segura y aplicar el procedimiento autorizado de aislamiento y mantenimiento antes de intervenir físicamente en puerta, actuador o enclavamiento."
+      intervention_constraints:
+        - "No puentear, forzar ni anular canales o funciones Safety."
+        - "No modificar la lógica de seguridad ni los tiempos para aceptar una condición inválida."
+        - "No confundir rearme Safety con orden de Start."
+        - "Verificar la función protectora y la ausencia de rearranque inesperado tras la intervención."
+  learning_objectives:
+    - id: "OBJ-SAFETY-CHAIN"
+      description: "Trazar puerta, enclavamiento de doble canal, F-DI, S7-1500F, lógica segura, F-DO y STO."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-CHANNEL-DISCREPANCY"
+      description: "Interpretar CH1 TRUE y CH2 FALSE como evidencia de discrepancia sin atribuir automáticamente un fallo al F-DI."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-SAFETY-VERIFICATION"
+      description: "Separar restauración física, rearme Safety, Start y verificación funcional."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INTERPRET-INHIBITION"
+      phase: "incident"
+      title: "Interpretar la inhibición de rearranque"
+      situation: "La puerta parece cerrada, SafetyReady está en FALSE y STO sigue activo. ¿Cuál es el mejor siguiente paso?"
+      evidence_ids: ["EVID-01-INCIDENT", "EVID-02-SAFETY-STATE"]
+      decision_ids: ["DEC-01-REPLACE-DRIVE", "DEC-01-REPEAT-RESET", "DEC-01-CHANGE-STANDARD-LOGIC", "DEC-01-IDENTIFY-SAFETY-FUNCTION"]
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-GUARD-FUNCTION"
+      phase: "investigation"
+      title: "Identificar la función Safety activa"
+      situation: "El diagnóstico general señala que la función de protección asociada a la puerta impide SafetyReady. ¿Cómo debe continuar la investigación?"
+      evidence_ids: ["EVID-03-GUARD-FUNCTION"]
+      decision_ids: ["DEC-02-REPLACE-FPLC", "DEC-02-BLAME-START", "DEC-02-INSPECT-GUARD-FINPUTS"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-03-FDI-DIAGNOSTIC"
+      phase: "investigation"
+      title: "Interpretar la indicación del F-DI"
+      situation: "El F-DI correspondiente a la puerta presenta una indicación diagnóstica. ¿Qué acción aporta evidencia concluyente?"
+      evidence_ids: ["EVID-04-FDI"]
+      decision_ids: ["DEC-03-REPLACE-FDI", "DEC-03-OPEN-ONLINE-DIAGNOSTICS", "DEC-03-RESET-INDEFINITELY", "DEC-03-BYPASS-INPUT"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-04-CHANNEL-DISCREPANCY"
+      phase: "investigation"
+      title: "Evaluar la discrepancia de canales"
+      situation: "El diagnóstico online muestra CH1 TRUE, CH2 FALSE, Gate_Safe FALSE y SafetyReady FALSE. ¿Qué debe investigarse ahora?"
+      evidence_ids: ["EVID-05-CHANNELS"]
+      decision_ids: ["DEC-04-REPLACE-CH2-WIRING", "DEC-04-REPLACE-INTERLOCK", "DEC-04-INSPECT-PHYSICAL-RELATION"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-PHYSICAL-CAUSE"
+      phase: "investigation"
+      title: "Corregir la condición física"
+      situation: "La inspección segura confirma una desalineación mecánica entre el actuador de la puerta y el enclavamiento. ¿Cuál es la intervención correcta?"
+      evidence_ids: ["EVID-06-MISALIGNMENT"]
+      decision_ids: ["DEC-05-RESTORE-ALIGNMENT", "DEC-05-INCREASE-DISCREPANCY-TIME", "DEC-05-DEFEAT-CHANNEL", "DEC-05-REPLACE-FDI"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-VERIFY-SAFETY"
+      phase: "solution"
+      title: "Rearmar y verificar la función"
+      situation: "Tras restaurar la alineación, CH1 y CH2 están TRUE. La secuencia prevista de rearme permite SafetyReady TRUE y libera STO según el diseño. ¿Cómo se cierra la intervención?"
+      evidence_ids: ["EVID-07-RECOVERY"]
+      decision_ids: ["DEC-06-CLOSE-ONCE", "DEC-06-FUNCTIONAL-TEST", "DEC-06-AUTO-RESTART"]
+      media_ids: ["ART-006", "ART-007"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Célula automatizada"
+      content: "La protección parece físicamente cerrada, pero la máquina no permite el rearranque."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-SAFETY-STATE"
+      type: "diagnostic"
+      source: "Estado de máquina"
+      content: "SafetyReady permanece FALSE y STO continúa activo después del intento normal de rearme."
+      reliability: "confirmed"
+      revealed_by: []
+    - id: "EVID-03-GUARD-FUNCTION"
+      type: "diagnostic"
+      source: "Diagnóstico Safety"
+      content: "La función de protección asociada a la puerta es la condición que impide el estado SafetyReady."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-IDENTIFY-SAFETY-FUNCTION"]
+    - id: "EVID-04-FDI"
+      type: "inspection"
+      source: "F-DI"
+      content: "El canal de entrada segura asociado a la puerta presenta una indicación diagnóstica que requiere consultar el detalle online."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-INSPECT-GUARD-FINPUTS"]
+    - id: "EVID-05-CHANNELS"
+      type: "diagnostic"
+      source: "TIA Portal / S7-1500F"
+      content: "SafetyGate_Closed TRUE, CH1 TRUE, CH2 FALSE, Gate_Safe FALSE y SafetyReady FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-OPEN-ONLINE-DIAGNOSTICS"]
+    - id: "EVID-06-MISALIGNMENT"
+      type: "inspection"
+      source: "Puerta y enclavamiento de seguridad"
+      content: "La inspección bajo el procedimiento seguro confirma desalineación mecánica entre el actuador de la puerta y el enclavamiento."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-PHYSICAL-RELATION"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Verificación posterior"
+      content: "Con la alineación restaurada, CH1 y CH2 están TRUE; tras el rearme previsto, SafetyReady pasa a TRUE y STO se libera según el diseño sin rearranque automático."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RESTORE-ALIGNMENT"]
+  decisions:
+    - id: "DEC-01-IDENTIFY-SAFETY-FUNCTION"
+      stage_id: "STAGE-01-INTERPRET-INHIBITION"
+      action: "Determinar qué función Safety impide que la máquina alcance el estado preparado."
+    - id: "DEC-01-REPLACE-DRIVE"
+      stage_id: "STAGE-01-INTERPRET-INHIBITION"
+      action: "Sustituir el variador porque STO permanece activo."
+    - id: "DEC-01-REPEAT-RESET"
+      stage_id: "STAGE-01-INTERPRET-INHIBITION"
+      action: "Repetir el rearme hasta que SafetyReady cambie."
+    - id: "DEC-01-CHANGE-STANDARD-LOGIC"
+      stage_id: "STAGE-01-INTERPRET-INHIBITION"
+      action: "Modificar la lógica estándar de Start para ignorar la inhibición."
+    - id: "DEC-02-INSPECT-GUARD-FINPUTS"
+      stage_id: "STAGE-02-GUARD-FUNCTION"
+      action: "Investigar la evaluación de la puerta y las entradas seguras asociadas."
+    - id: "DEC-02-REPLACE-FPLC"
+      stage_id: "STAGE-02-GUARD-FUNCTION"
+      action: "Sustituir el S7-1500F sin revisar las entradas."
+    - id: "DEC-02-BLAME-START"
+      stage_id: "STAGE-02-GUARD-FUNCTION"
+      action: "Atribuir la inhibición al pulsador Start."
+    - id: "DEC-03-OPEN-ONLINE-DIAGNOSTICS"
+      stage_id: "STAGE-03-FDI-DIAGNOSTIC"
+      action: "Consultar el diagnóstico online detallado de la función y sus canales."
+    - id: "DEC-03-REPLACE-FDI"
+      stage_id: "STAGE-03-FDI-DIAGNOSTIC"
+      action: "Sustituir el F-DI porque muestra una indicación diagnóstica."
+    - id: "DEC-03-RESET-INDEFINITELY"
+      stage_id: "STAGE-03-FDI-DIAGNOSTIC"
+      action: "Continuar rearmando sin consultar el detalle."
+    - id: "DEC-03-BYPASS-INPUT"
+      stage_id: "STAGE-03-FDI-DIAGNOSTIC"
+      action: "Anular la entrada segura para recuperar producción."
+    - id: "DEC-04-INSPECT-PHYSICAL-RELATION"
+      stage_id: "STAGE-04-CHANNEL-DISCREPANCY"
+      action: "Inspeccionar bajo condición segura la relación física entre puerta, actuador y enclavamiento."
+    - id: "DEC-04-REPLACE-CH2-WIRING"
+      stage_id: "STAGE-04-CHANNEL-DISCREPANCY"
+      action: "Sustituir directamente el cableado CH2."
+    - id: "DEC-04-REPLACE-INTERLOCK"
+      stage_id: "STAGE-04-CHANNEL-DISCREPANCY"
+      action: "Sustituir el enclavamiento basándose solo en la discrepancia."
+    - id: "DEC-05-RESTORE-ALIGNMENT"
+      stage_id: "STAGE-05-PHYSICAL-CAUSE"
+      action: "Restaurar la alineación y el montaje previstos mediante el procedimiento seguro autorizado."
+    - id: "DEC-05-INCREASE-DISCREPANCY-TIME"
+      stage_id: "STAGE-05-PHYSICAL-CAUSE"
+      action: "Aumentar el tiempo de discrepancia para aceptar la condición."
+    - id: "DEC-05-DEFEAT-CHANNEL"
+      stage_id: "STAGE-05-PHYSICAL-CAUSE"
+      action: "Anular uno de los canales para permitir el rearme."
+    - id: "DEC-05-REPLACE-FDI"
+      stage_id: "STAGE-05-PHYSICAL-CAUSE"
+      action: "Sustituir el F-DI aunque la causa mecánica está confirmada."
+    - id: "DEC-06-FUNCTIONAL-TEST"
+      stage_id: "STAGE-06-VERIFY-SAFETY"
+      action: "Ejecutar la prueba funcional segura prevista, comprobar inhibición y recuperación representativas y confirmar que no existe rearranque automático."
+    - id: "DEC-06-CLOSE-ONCE"
+      stage_id: "STAGE-06-VERIFY-SAFETY"
+      action: "Cerrar la intervención porque la máquina arranca una vez."
+    - id: "DEC-06-AUTO-RESTART"
+      stage_id: "STAGE-06-VERIFY-SAFETY"
+      action: "Configurar el rearranque automático al cerrar la puerta."
+  visual:
+    educational_purpose: "Revelar progresivamente la función Safety activa, el desacuerdo de canales, la causa mecánica y la verificación funcional."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/01.png"
+        alt: "Célula automatizada protegida por una puerta de seguridad con el rearranque inhibido."
+        caption: "La célula no permite rearrancar; la causa todavía es desconocida."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/02.png"
+        alt: "Vista general del sistema de puerta, enclavamiento y control Safety."
+        caption: "La inhibición procede de la capa Safety."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/03.png"
+        alt: "Módulo F-DI con indicación diagnóstica en la ruta de entrada de la puerta."
+        caption: "La indicación dirige la investigación; no demuestra un fallo del módulo."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/04.png"
+        alt: "Diagnóstico online Safety con CH1 TRUE, CH2 FALSE, Gate_Safe FALSE y SafetyReady FALSE."
+        caption: "Los canales discrepan; la causa física aún debe confirmarse."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/05.png"
+        alt: "Inspección de una desalineación entre el actuador de la puerta y el enclavamiento."
+        caption: "La desalineación mecánica explica la condición de doble canal inválida."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/06.png"
+        alt: "Actuador y enclavamiento correctamente alineados tras la intervención segura."
+        caption: "La condición física prevista ha sido restaurada."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-SAFETY-GATE-005/07.png"
+        alt: "Célula automatizada recuperada durante la verificación funcional de seguridad."
+        caption: "La recuperación productiva se confirma junto con la función protectora."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "Una desalineación mecánica entre el actuador de la puerta y el enclavamiento produjo CH1 TRUE y CH2 FALSE, mantuvo SafetyReady en FALSE y conservó STO activo."
+    process: ["Distinguir inhibición Safety de control estándar.", "Identificar la función de puerta.", "Consultar el F-DI y el diagnóstico online.", "Interpretar la discrepancia de canales.", "Confirmar y corregir la desalineación.", "Rearmar y verificar la función sin rearranque inesperado."]
+    lesson: "Una protección físicamente cerrada no equivale a una condición Safety válida, y recuperar producción no equivale a validar la reparación."
+    avoided_errors: ["Sustituir F-DI, F-PLC, drive o enclavamiento sin evidencia.", "Repetir el rearme sin diagnóstico.", "Modificar tiempos o lógica para aceptar un canal inválido.", "Anular una función protectora."]
+    industrial_value: ["Diagnóstico seguro por fronteras.", "Separación entre estado físico y evaluación Safety.", "Recuperación productiva con verificación funcional."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Desalineación mecánica entre el actuador de la puerta de seguridad y el enclavamiento, que produce CH1 TRUE y CH2 FALSE."
+    recovery_conditions: ["Alineación y montaje previstos restaurados bajo procedimiento seguro.", "CH1 TRUE y CH2 TRUE.", "Rearme Safety previsto completado y SafetyReady TRUE.", "Función protectora y ausencia de rearranque inesperado verificadas."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-FDI-HARDWARE"
+        statement: "El módulo F-DI presenta un fallo de hardware."
+        initial_status: "possible"
+      - id: "HYP-CH2-CONDUCTOR"
+        statement: "El conductor de CH2 está abierto."
+        initial_status: "possible"
+      - id: "HYP-GUARD-MISALIGNMENT"
+        statement: "El actuador y el enclavamiento están mecánicamente desalineados."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-GUARD-MISALIGNMENT"
+    critical_path: ["DEC-01-IDENTIFY-SAFETY-FUNCTION", "DEC-02-INSPECT-GUARD-FINPUTS", "DEC-03-OPEN-ONLINE-DIAGNOSTICS", "DEC-04-INSPECT-PHYSICAL-RELATION", "DEC-05-RESTORE-ALIGNMENT", "DEC-06-FUNCTIONAL-TEST"]
+  decision_logic:
+    - decision_id: "DEC-01-IDENTIFY-SAFETY-FUNCTION"
+      is_correct: true
+      rationale: "SafetyReady FALSE y STO activo sitúan la primera investigación en la capa Safety."
+      classification: "strong"
+      consequence: "Se identifica la función protectora activa."
+      evidence_revealed: ["EVID-03-GUARD-FUNCTION"]
+      next_stage: "STAGE-02-GUARD-FUNCTION"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-01-REPLACE-DRIVE"
+      is_correct: false
+      retry_feedback: "STO activo describe una inhibición segura del par; no demuestra que el variador esté averiado. Identifica primero la función Safety activa."
+      rationale: "La inhibición es una consecuencia."
+      classification: "weak"
+      consequence: "Sustitución sin evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-02-GUARD-FUNCTION"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-01-REPEAT-RESET"
+      is_correct: false
+      retry_feedback: "Repetir el rearme no corrige una condición Safety inválida. Determina qué función impide SafetyReady."
+      rationale: "El rearme no sustituye el diagnóstico."
+      classification: "weak"
+      consequence: "La inhibición permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-02-GUARD-FUNCTION"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-CHANGE-STANDARD-LOGIC"
+      is_correct: false
+      retry_feedback: "La lógica estándar no debe utilizarse para eludir una condición Safety. Investiga la función protectora que mantiene la inhibición."
+      rationale: "Control estándar y Safety son capas distintas."
+      classification: "unsafe"
+      consequence: "Se intenta ignorar una protección activa."
+      evidence_revealed: []
+      next_stage: "STAGE-02-GUARD-FUNCTION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-02-INSPECT-GUARD-FINPUTS"
+      is_correct: true
+      rationale: "La función de puerta dirige el diagnóstico hacia el dispositivo y sus F-inputs."
+      classification: "strong"
+      consequence: "Se observa la indicación del F-DI."
+      evidence_revealed: ["EVID-04-FDI"]
+      next_stage: "STAGE-03-FDI-DIAGNOSTIC"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-02-REPLACE-FPLC"
+      is_correct: false
+      retry_feedback: "La función identificada no demuestra un fallo del F-PLC. Sigue la cadena desde la puerta y sus entradas seguras."
+      rationale: "No existe evidencia de fallo del controlador."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-FDI-DIAGNOSTIC"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-02-BLAME-START"
+      is_correct: false
+      retry_feedback: "Start no puede habilitar una máquina mientras SafetyReady es FALSE. Investiga primero la función de puerta."
+      rationale: "Start es posterior a la condición Safety válida."
+      classification: "weak"
+      consequence: "Se investiga fuera de la primera discrepancia."
+      evidence_revealed: []
+      next_stage: "STAGE-03-FDI-DIAGNOSTIC"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-OPEN-ONLINE-DIAGNOSTICS"
+      is_correct: true
+      rationale: "La indicación del módulo orienta hacia el detalle de evaluación sin diagnosticar por sí sola el hardware."
+      classification: "strong"
+      consequence: "Se comparan los dos canales y el resultado Safety."
+      evidence_revealed: ["EVID-05-CHANNELS"]
+      next_stage: "STAGE-04-CHANNEL-DISCREPANCY"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-03-REPLACE-FDI"
+      is_correct: false
+      retry_feedback: "Una indicación diagnóstica señala una condición evaluada; no prueba que el módulo haya fallado. Consulta el detalle online."
+      rationale: "Diagnóstico no equivale a fallo de hardware."
+      classification: "weak"
+      consequence: "El síntoma persiste."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CHANNEL-DISCREPANCY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-RESET-INDEFINITELY"
+      is_correct: false
+      retry_feedback: "El rearme repetido no aporta evidencia sobre la condición de los canales. Consulta el diagnóstico detallado."
+      rationale: "La condición inválida no cambia."
+      classification: "weak"
+      consequence: "No se reduce el dominio de fallo."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CHANNEL-DISCREPANCY"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-BYPASS-INPUT"
+      is_correct: false
+      retry_feedback: "Anular una entrada de seguridad invalida la función protectora y no es una acción diagnóstica aceptable. Mantén la protección y usa evidencia autorizada."
+      rationale: "La alternativa derrota una salvaguarda."
+      classification: "unsafe"
+      consequence: "Se compromete la protección."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CHANNEL-DISCREPANCY"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-04-INSPECT-PHYSICAL-RELATION"
+      is_correct: true
+      rationale: "La discrepancia estrecha el dominio, pero requiere comprobar dispositivo, montaje y condición física."
+      classification: "strong"
+      consequence: "Se confirma la desalineación mecánica."
+      evidence_revealed: ["EVID-06-MISALIGNMENT"]
+      next_stage: "STAGE-05-PHYSICAL-CAUSE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-04-REPLACE-CH2-WIRING"
+      is_correct: false
+      retry_feedback: "CH2 FALSE no identifica por sí solo un conductor abierto. Inspecciona la relación física y la cadena antes de sustituir."
+      rationale: "La discrepancia admite varias causas."
+      classification: "weak"
+      consequence: "Intervención prematura."
+      evidence_revealed: []
+      next_stage: "STAGE-05-PHYSICAL-CAUSE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-REPLACE-INTERLOCK"
+      is_correct: false
+      retry_feedback: "La discrepancia no demuestra que el enclavamiento esté roto. Comprueba primero su relación mecánica con el actuador."
+      rationale: "No se ha confirmado un fallo interno."
+      classification: "weak"
+      consequence: "Sustitución sin causa confirmada."
+      evidence_revealed: []
+      next_stage: "STAGE-05-PHYSICAL-CAUSE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-RESTORE-ALIGNMENT"
+      is_correct: true
+      rationale: "La intervención restaura la condición física prevista sin alterar la función Safety."
+      classification: "strong"
+      consequence: "Ambos canales recuperan la condición válida."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "STAGE-06-VERIFY-SAFETY"
+      score_effect: 10
+      safety_effect: 3
+    - decision_id: "DEC-05-INCREASE-DISCREPANCY-TIME"
+      is_correct: false
+      retry_feedback: "Cambiar el tiempo para aceptar una condición mecánica defectuosa no restaura la protección. Corrige la alineación mediante el procedimiento autorizado."
+      rationale: "Se enmascara la causa confirmada."
+      classification: "unsafe"
+      consequence: "La condición física sigue degradada."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-SAFETY"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-05-DEFEAT-CHANNEL"
+      is_correct: false
+      retry_feedback: "Anular un canal derrota la función protectora. Mantén la arquitectura Safety y restaura la condición mecánica prevista."
+      rationale: "La alternativa elimina protección."
+      classification: "unsafe"
+      consequence: "La seguridad queda comprometida."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-SAFETY"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-05-REPLACE-FDI"
+      is_correct: false
+      retry_feedback: "La desalineación ya está confirmada y explica la discrepancia. Sustituir el F-DI no corrige la condición física."
+      rationale: "El módulo no es la causa canónica."
+      classification: "weak"
+      consequence: "La desalineación permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-SAFETY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-FUNCTIONAL-TEST"
+      is_correct: true
+      rationale: "La recuperación requiere validar la función protectora además de la producción."
+      classification: "strong"
+      consequence: "La reparación queda funcionalmente verificada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 3
+    - decision_id: "DEC-06-CLOSE-ONCE"
+      is_correct: false
+      retry_feedback: "Un arranque correcto no valida la función Safety. Comprueba la respuesta protectora, la recuperación prevista y la ausencia de rearranque inesperado."
+      rationale: "La recuperación productiva no es validación."
+      classification: "weak"
+      consequence: "La función queda sin verificar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: -2
+    - decision_id: "DEC-06-AUTO-RESTART"
+      is_correct: false
+      retry_feedback: "Cerrar una protección no debe presentarse como orden automática de arranque. Mantén separados restauración, rearme Safety y Start."
+      rationale: "La alternativa implica rearranque inesperado."
+      classification: "unsafe"
+      consequence: "Se introduce una condición peligrosa."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La puerta parecía cerrada, pero la desalineación del actuador respecto al enclavamiento produjo CH1 TRUE y CH2 FALSE, manteniendo SafetyReady FALSE y STO activo."
+    correct_reasoning: ["Separar control estándar e inhibición Safety.", "Identificar la función de puerta.", "Tratar la indicación F-DI como pista.", "Interpretar la discrepancia sin asignar una causa prematura.", "Confirmar la relación física bajo condición segura."]
+    recovery: ["Restaurar la alineación prevista.", "Confirmar CH1 TRUE y CH2 TRUE.", "Completar el rearme Safety previsto.", "Verificar protección, recuperación y ausencia de rearranque inesperado."]
+  technical_validation:
+    status: "pass"
+    evidence: ["La causa raíz canónica es exclusivamente la desalineación mecánica.", "El F-DI solo aporta indicación diagnóstica y no se presenta como hardware averiado.", "Los assets de discrepancia, causa, corrección y recuperación respetan sus fronteras de desbloqueo."]

@@ -1,0 +1,506 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-PROFINET-LINK-006"
+  editorial_id: "EE-0006"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Industrial communications"
+  domain: "PROFINET topology diagnostics"
+  industry: "Manufacturing"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "profinet-line-topology-link-failure"
+  title: "Fallo de enlace en topología lineal PROFINET"
+  summary: "Interpreta la propagación de dispositivos no disponibles en una topología lineal y localiza el segmento físico entre el último nodo alcanzable y el primero no disponible."
+  estimated_duration: 15
+  scenario:
+    initial_context: "Una zona de producción pierde varias funciones asociadas a I/O distribuida, mientras el PLC y otra rama PROFINET continúan operativos."
+    operational_state: "El S7-1500 permanece operativo; A1 y A2 de String A están disponibles, A3 y A4 no lo están, y todos los nodos de String B siguen disponibles."
+    initiating_event: "Producción informa de varias estaciones de campo no disponibles en una parte del transportador."
+    learner_role: "Técnico de automatización responsable de reducir el fallo desde el síntoma de máquina hasta el segmento físico de red y verificar la recuperación completa."
+    safety_context:
+      safe_state: "Realizar observaciones y diagnósticos desde una condición segura y aplicar el procedimiento de mantenimiento autorizado antes de intervenir físicamente en cableado o conectores de la máquina."
+      intervention_constraints:
+        - "No sustituir varios dispositivos basándose solo en su estado no disponible."
+        - "No cambiar direcciones IP, nombres PROFINET ni proyecto sin evidencia."
+        - "No improvisar reparaciones del cable industrial."
+        - "Verificar comunicación, I/O de proceso y función de máquina después de la reparación."
+  learning_objectives:
+    - id: "OBJ-TOPOLOGY-SCOPE"
+      description: "Relacionar el alcance de varios nodos no disponibles con la topología física de sus ramas."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-NETWORK-BOUNDARY"
+      description: "Localizar el segmento entre el último nodo alcanzable y el primero no disponible."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-COMMUNICATION-RECOVERY"
+      description: "Verificar enlace, alcance, comunicación cíclica, I/O y recuperación funcional."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-DETERMINE-SCOPE"
+      phase: "incident"
+      title: "Determinar el alcance"
+      situation: "El PLC funciona, String B permanece disponible y en String A solo A3 y A4 están no disponibles. ¿Cuál es el mejor primer paso?"
+      evidence_ids: ["EVID-01-INCIDENT", "EVID-02-SCOPE"]
+      decision_ids: ["DEC-01-RESTART-PLC", "DEC-01-REPLACE-A3-A4", "DEC-01-COMPARE-NETWORK-AREAS", "DEC-01-INVESTIGATE-STRING-B"]
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      phase: "investigation"
+      title: "Consultar el diagnóstico del controlador"
+      situation: "La comparación confirma que el problema se limita a la parte descendente de String A. ¿Qué evidencia debe consultarse ahora?"
+      evidence_ids: ["EVID-03-INSTALLATION"]
+      decision_ids: ["DEC-02-DOWNLOAD-PROJECT", "DEC-02-USE-TIA-DIAGNOSTICS", "DEC-02-CHANGE-IP"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-03-INTERPRET-TOPOLOGY"
+      phase: "investigation"
+      title: "Interpretar el patrón de nodos"
+      situation: "TIA Portal muestra A1 y A2 disponibles, A3 y A4 no disponibles, y String B disponible. ¿Qué razonamiento reduce mejor el dominio del fallo?"
+      evidence_ids: ["EVID-04-TIA-STATUS"]
+      decision_ids: ["DEC-03-REPLACE-A3", "DEC-03-ASSUME-IO-LINK", "DEC-03-REPLACE-SWITCH", "DEC-03-FIND-GOOD-BAD-BOUNDARY"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-04-INSPECT-LINK-STATE"
+      phase: "investigation"
+      title: "Inspeccionar la frontera física"
+      situation: "A2 Turck es el último nodo alcanzable y A3 Murr es el primero no disponible. A3 conserva alimentación, pero no comunicación. ¿Cómo debe continuar el diagnóstico?"
+      evidence_ids: ["EVID-05-PHYSICAL-BOUNDARY"]
+      decision_ids: ["DEC-04-ASSUME-POWER-FAULT", "DEC-04-INSPECT-A2-A3-LINK", "DEC-04-REPLACE-A3"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-CONFIRM-SEGMENT"
+      phase: "investigation"
+      title: "Confirmar la causa física"
+      situation: "La topología PRONETA confirma la cadena y la inspección revela daño físico en el cable PROFINET entre A2 Turck y A3 Murr. ¿Cuál es la corrección justificada?"
+      evidence_ids: ["EVID-06-TOPOLOGY", "EVID-07-DAMAGED-SEGMENT"]
+      decision_ids: ["DEC-05-RESTORE-SEGMENT", "DEC-05-RENAME-DEVICES", "DEC-05-REPAIR-IMPROVISED"]
+      media_ids: ["ART-005", "ART-006"]
+    - id: "STAGE-06-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "El segmento ha sido restaurado: A3 y A4 vuelven a estar disponibles y el intercambio PROFINET se recupera. ¿Qué verificación cierra correctamente la intervención?"
+      evidence_ids: ["EVID-08-RECOVERY"]
+      decision_ids: ["DEC-06-CLOSE-ON-GREEN", "DEC-06-CHECK-A3-ONLY", "DEC-06-VERIFY-FULL-CHAIN"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Área de producción"
+      content: "Varias funciones asociadas a I/O distribuida de una zona del transportador están no disponibles."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-SCOPE"
+      type: "diagnostic"
+      source: "Estado general"
+      content: "S7-1500 operativo; A1/A2 disponibles; A3/A4 no disponibles; String B completamente disponible."
+      reliability: "confirmed"
+      revealed_by: []
+    - id: "EVID-03-INSTALLATION"
+      type: "inspection"
+      source: "Instalación de red"
+      content: "La red alimenta dos ramas de dispositivos de campo desde infraestructura industrial; los nodos descendentes forman segmentos lineales mediante sus puertos."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-COMPARE-NETWORK-AREAS"]
+    - id: "EVID-04-TIA-STATUS"
+      type: "diagnostic"
+      source: "TIA Portal"
+      content: "Desde el proyecto del controlador, A1/A2 y String B están disponibles; A3/A4 están no disponibles. El switch físico no se presenta como IO Device configurado."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-USE-TIA-DIAGNOSTICS"]
+    - id: "EVID-05-PHYSICAL-BOUNDARY"
+      type: "inspection"
+      source: "A2 Turck y A3 Murr"
+      content: "A2 es alcanzable; A3 mantiene alimentación, pero el enlace de red hacia el nodo no está presente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-FIND-GOOD-BAD-BOUNDARY"]
+    - id: "EVID-06-TOPOLOGY"
+      type: "diagnostic"
+      source: "PRONETA Graphical View"
+      content: "La topología física muestra PLC con String A: A1–A2–A3–A4 y String B: B1–B2–B3–B4."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-A2-A3-LINK"]
+    - id: "EVID-07-DAMAGED-SEGMENT"
+      type: "inspection"
+      source: "Segmento A2–A3"
+      content: "La inspección autorizada confirma daño físico en el cable PROFINET entre A2 Turck y A3 Murr."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-A2-A3-LINK"]
+    - id: "EVID-08-RECOVERY"
+      type: "functional_test"
+      source: "Verificación posterior"
+      content: "Tras restaurar el segmento, A3/A4 son alcanzables, el intercambio cíclico y la I/O de proceso son válidos y la función afectada vuelve a operar."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RESTORE-SEGMENT"]
+  decisions:
+    - id: "DEC-01-RESTART-PLC"
+      stage_id: "STAGE-01-DETERMINE-SCOPE"
+      action: "Reiniciar inmediatamente el PLC."
+    - id: "DEC-01-REPLACE-A3-A4"
+      stage_id: "STAGE-01-DETERMINE-SCOPE"
+      action: "Sustituir A3 y A4 porque ambos aparecen no disponibles."
+    - id: "DEC-01-COMPARE-NETWORK-AREAS"
+      stage_id: "STAGE-01-DETERMINE-SCOPE"
+      action: "Comparar el estado de las áreas afectada y no afectada para delimitar el alcance de comunicación."
+    - id: "DEC-01-INVESTIGATE-STRING-B"
+      stage_id: "STAGE-01-DETERMINE-SCOPE"
+      action: "Comenzar por diagnosticar String B aunque funciona normalmente."
+    - id: "DEC-02-DOWNLOAD-PROJECT"
+      stage_id: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      action: "Descargar de nuevo el proyecto PLC."
+    - id: "DEC-02-USE-TIA-DIAGNOSTICS"
+      stage_id: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      action: "Consultar TIA Portal online para comparar la disponibilidad de los dispositivos configurados."
+    - id: "DEC-02-CHANGE-IP"
+      stage_id: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      action: "Cambiar las direcciones IP de los nodos no disponibles."
+    - id: "DEC-03-REPLACE-A3"
+      stage_id: "STAGE-03-INTERPRET-TOPOLOGY"
+      action: "Sustituir A3 porque es el primer dispositivo no disponible."
+    - id: "DEC-03-ASSUME-IO-LINK"
+      stage_id: "STAGE-03-INTERPRET-TOPOLOGY"
+      action: "Tratar el incidente como un fallo de sensor IO-Link."
+    - id: "DEC-03-REPLACE-SWITCH"
+      stage_id: "STAGE-03-INTERPRET-TOPOLOGY"
+      action: "Sustituir el switch industrial porque varios nodos están no disponibles."
+    - id: "DEC-03-FIND-GOOD-BAD-BOUNDARY"
+      stage_id: "STAGE-03-INTERPRET-TOPOLOGY"
+      action: "Localizar el último nodo alcanzable, el primero no disponible y el segmento situado entre ambos."
+    - id: "DEC-04-ASSUME-POWER-FAULT"
+      stage_id: "STAGE-04-INSPECT-LINK-STATE"
+      action: "Concluir que A3 ha perdido 24 V aunque permanece alimentado."
+    - id: "DEC-04-INSPECT-A2-A3-LINK"
+      stage_id: "STAGE-04-INSPECT-LINK-STATE"
+      action: "Inspeccionar el estado físico del enlace A2 Turck–A3 Murr mediante el procedimiento autorizado."
+    - id: "DEC-04-REPLACE-A3"
+      stage_id: "STAGE-04-INSPECT-LINK-STATE"
+      action: "Sustituir A3 sin comprobar el segmento que lo conecta."
+    - id: "DEC-05-RESTORE-SEGMENT"
+      stage_id: "STAGE-05-CONFIRM-SEGMENT"
+      action: "Restaurar o sustituir el segmento industrial defectuoso conforme al procedimiento de mantenimiento aplicable."
+    - id: "DEC-05-RENAME-DEVICES"
+      stage_id: "STAGE-05-CONFIRM-SEGMENT"
+      action: "Asignar nuevos nombres PROFINET a A3 y A4."
+    - id: "DEC-05-REPAIR-IMPROVISED"
+      stage_id: "STAGE-05-CONFIRM-SEGMENT"
+      action: "Realizar una reparación improvisada del cable para recuperar producción."
+    - id: "DEC-06-CLOSE-ON-GREEN"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Cerrar la intervención cuando un icono de diagnóstico aparezca en verde."
+    - id: "DEC-06-CHECK-A3-ONLY"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Comprobar únicamente que A3 vuelve a estar disponible."
+    - id: "DEC-06-VERIFY-FULL-CHAIN"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Verificar enlace, A3/A4, comunicación cíclica, I/O de proceso y función de máquina en condiciones representativas."
+  visual:
+    educational_purpose: "Revelar progresivamente alcance, diagnóstico del controlador, frontera de topología, enlace físico, causa y recuperación funcional."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/01.png"
+        alt: "Portada de EE-0006 en una línea automatizada con varios dispositivos de campo no disponibles."
+        caption: "Varias funciones de campo están no disponibles; el alcance aún debe determinarse."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/02.png"
+        alt: "Instalación física de red industrial y dispositivos de I/O distribuida sobre el transportador."
+        caption: "La instalación combina infraestructura de red y segmentos lineales de campo."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/03.png"
+        alt: "Diagnóstico TIA Portal con A1 y A2 disponibles, A3 y A4 no disponibles y String B disponible."
+        caption: "El patrón de disponibilidad delimita una parte de String A."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/04.png"
+        alt: "Frontera física entre A2 Turck alcanzable y A3 Murr alimentado pero sin enlace."
+        caption: "La alimentación de A3 no demuestra que exista enlace Ethernet."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/05.png"
+        alt: "Vista gráfica PRONETA con las cadenas A1–A4 y B1–B4 y sus puertos de red."
+        caption: "La topología explica por qué un segmento puede afectar varios nodos aguas abajo."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/06.png"
+        alt: "Daño físico en el cable PROFINET verde situado entre A2 Turck y A3 Murr."
+        caption: "El segmento A2–A3 es la causa física confirmada."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-PROFINET-LINK-006/07.png"
+        alt: "Red restaurada con dispositivos de campo y proceso del transportador nuevamente operativos."
+        caption: "Comunicación, I/O y función productiva recuperadas y verificadas."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "Un daño físico en el enlace PROFINET entre A2 Turck y A3 Murr hizo que A3 y A4 quedaran no disponibles por propagación en la topología lineal."
+    process: ["Delimitar el alcance.", "Consultar el diagnóstico del controlador.", "Interpretar la topología.", "Localizar la frontera A2–A3.", "Confirmar y restaurar el segmento.", "Verificar comunicación, I/O y función."]
+    lesson: "Varios dispositivos no disponibles pueden ser consecuencia de un único fallo de enlace; el punto de mayor valor está entre el último nodo alcanzable y el primero no disponible."
+    avoided_errors: ["Reiniciar o descargar el PLC sin evidencia.", "Sustituir A3/A4 o el switch por el patrón de alarmas.", "Confundir alimentación, enlace, alcance e IO-Link.", "Cerrar al observar un único indicador verde."]
+    industrial_value: ["Diagnóstico guiado por topología.", "Menos sustituciones injustificadas.", "Recuperación de comunicación y proceso verificable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Daño físico en el cable/enlace PROFINET entre A2 Turck y A3 Murr, con pérdida del enlace Ethernet y propagación hacia A3 y A4."
+    recovery_conditions: ["Segmento industrial A2–A3 restaurado mediante mantenimiento autorizado.", "A3 y A4 alcanzables.", "Intercambio cíclico e I/O de proceso válidos.", "Función afectada verificada en condiciones representativas."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-MULTIPLE-DEVICE-FAILURES"
+        statement: "A3 y A4 han fallado de forma independiente."
+        initial_status: "possible"
+      - id: "HYP-SWITCH"
+        statement: "El switch industrial ha fallado."
+        initial_status: "possible"
+      - id: "HYP-A2-A3-LINK"
+        statement: "El enlace físico A2–A3 está interrumpido."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-A2-A3-LINK"
+    critical_path: ["DEC-01-COMPARE-NETWORK-AREAS", "DEC-02-USE-TIA-DIAGNOSTICS", "DEC-03-FIND-GOOD-BAD-BOUNDARY", "DEC-04-INSPECT-A2-A3-LINK", "DEC-05-RESTORE-SEGMENT", "DEC-06-VERIFY-FULL-CHAIN"]
+  decision_logic:
+    - decision_id: "DEC-01-COMPARE-NETWORK-AREAS"
+      is_correct: true
+      rationale: "Comparar áreas operativas y no operativas delimita el alcance sin alterar el sistema."
+      classification: "strong"
+      consequence: "El fallo queda acotado a String A aguas abajo."
+      evidence_revealed: ["EVID-03-INSTALLATION"]
+      next_stage: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-01-RESTART-PLC"
+      is_correct: false
+      retry_feedback: "El PLC y String B siguen operativos. Reiniciar elimina contexto sin explicar el alcance selectivo. Compara primero las áreas de red."
+      rationale: "No existe evidencia de fallo global del controlador."
+      classification: "weak"
+      consequence: "Se pierde evidencia temporal."
+      evidence_revealed: []
+      next_stage: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE-A3-A4"
+      is_correct: false
+      retry_feedback: "Dos nodos consecutivos no disponibles pueden compartir una única causa topológica. Delimita el alcance antes de sustituir equipos."
+      rationale: "La topología aún no ha sido interpretada."
+      classification: "weak"
+      consequence: "Sustituciones prematuras."
+      evidence_revealed: []
+      next_stage: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-01-INVESTIGATE-STRING-B"
+      is_correct: false
+      retry_feedback: "String B aporta una referencia operativa, pero no es el área afectada. Utilízala para comparar y concentra la investigación en el límite del fallo."
+      rationale: "La rama está disponible."
+      classification: "weak"
+      consequence: "La búsqueda se aleja del dominio afectado."
+      evidence_revealed: []
+      next_stage: "STAGE-02-CONTROLLER-DIAGNOSTICS"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-02-USE-TIA-DIAGNOSTICS"
+      is_correct: true
+      rationale: "El proyecto online permite comparar disponibilidad desde la perspectiva del controlador."
+      classification: "strong"
+      consequence: "Se confirma el patrón A1/A2 disponible y A3/A4 no disponible."
+      evidence_revealed: ["EVID-04-TIA-STATUS"]
+      next_stage: "STAGE-03-INTERPRET-TOPOLOGY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-02-DOWNLOAD-PROJECT"
+      is_correct: false
+      retry_feedback: "No hay evidencia de que la configuración se haya perdido. Consulta primero el diagnóstico online sin sobrescribir el estado."
+      rationale: "La descarga no explica el patrón físico."
+      classification: "weak"
+      consequence: "Se altera el sistema sin diagnóstico."
+      evidence_revealed: []
+      next_stage: "STAGE-03-INTERPRET-TOPOLOGY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-02-CHANGE-IP"
+      is_correct: false
+      retry_feedback: "Cambiar direcciones sin evidencia puede crear nuevos conflictos y no explica dos nodos descendentes no disponibles. Conserva la configuración y observa."
+      rationale: "No existe evidencia de direccionamiento incorrecto."
+      classification: "weak"
+      consequence: "Se introduce una variable nueva."
+      evidence_revealed: []
+      next_stage: "STAGE-03-INTERPRET-TOPOLOGY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-03-FIND-GOOD-BAD-BOUNDARY"
+      is_correct: true
+      rationale: "En una línea, el límite entre alcanzable y no disponible concentra la investigación física."
+      classification: "strong"
+      consequence: "La frontera queda localizada entre A2 y A3."
+      evidence_revealed: ["EVID-05-PHYSICAL-BOUNDARY"]
+      next_stage: "STAGE-04-INSPECT-LINK-STATE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-03-REPLACE-A3"
+      is_correct: false
+      retry_feedback: "Ser el primer nodo no disponible no demuestra un fallo interno. Examina primero el segmento que une el último nodo alcanzable con A3."
+      rationale: "A3 puede ser víctima de un enlace anterior."
+      classification: "weak"
+      consequence: "La causa compartida permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INSPECT-LINK-STATE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-ASSUME-IO-LINK"
+      is_correct: false
+      retry_feedback: "Los equipos pueden ofrecer IO-Link, pero el patrón observado pertenece a su conexión PROFINET/Ethernet. Sigue la topología de red."
+      rationale: "IO-Link no es el mecanismo del fallo."
+      classification: "weak"
+      consequence: "Se investiga una capa distinta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INSPECT-LINK-STATE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-REPLACE-SWITCH"
+      is_correct: false
+      retry_feedback: "El PLC, A1/A2 y String B mantienen comunicación. Ese alcance no respalda sustituir la infraestructura común."
+      rationale: "La infraestructura común conserva servicio."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INSPECT-LINK-STATE"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-INSPECT-A2-A3-LINK"
+      is_correct: true
+      rationale: "Alimentación y enlace son estados distintos; la frontera A2–A3 debe comprobarse físicamente."
+      classification: "strong"
+      consequence: "La topología y el segmento físico quedan confirmados."
+      evidence_revealed: ["EVID-06-TOPOLOGY", "EVID-07-DAMAGED-SEGMENT"]
+      next_stage: "STAGE-05-CONFIRM-SEGMENT"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-04-ASSUME-POWER-FAULT"
+      is_correct: false
+      retry_feedback: "A3 conserva alimentación. Potencia presente no equivale a enlace Ethernet; inspecciona el segmento de red delimitado."
+      rationale: "La evidencia contradice una pérdida de 24 V."
+      classification: "weak"
+      consequence: "Se confunden capas diagnósticas."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CONFIRM-SEGMENT"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-04-REPLACE-A3"
+      is_correct: false
+      retry_feedback: "A3 alimentado pero sin enlace puede estar aislado por el segmento anterior. Comprueba A2–A3 antes de sustituir el módulo."
+      rationale: "El dispositivo no está confirmado como causa."
+      classification: "weak"
+      consequence: "La interrupción permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CONFIRM-SEGMENT"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-RESTORE-SEGMENT"
+      is_correct: true
+      rationale: "El daño físico está confirmado en el segmento y debe corregirse mediante mantenimiento apropiado."
+      classification: "strong"
+      consequence: "Se restablece la continuidad del enlace industrial."
+      evidence_revealed: ["EVID-08-RECOVERY"]
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-05-RENAME-DEVICES"
+      is_correct: false
+      retry_feedback: "La causa confirmada es daño físico del enlace. Cambiar nombres no restaura el cable y puede introducir otro fallo de configuración."
+      rationale: "La identidad PROFINET no es la causa."
+      classification: "weak"
+      consequence: "El enlace continúa interrumpido."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-REPAIR-IMPROVISED"
+      is_correct: false
+      retry_feedback: "Una reparación improvisada no asegura la integridad del enlace industrial. Utiliza el procedimiento y los componentes de mantenimiento aplicables."
+      rationale: "La reparación debe ser controlada y verificable."
+      classification: "unsafe"
+      consequence: "La fiabilidad del segmento queda comprometida."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: -10
+      safety_effect: -5
+    - decision_id: "DEC-06-VERIFY-FULL-CHAIN"
+      is_correct: true
+      rationale: "Enlace online no demuestra por sí solo intercambio cíclico, I/O válida ni función recuperada."
+      classification: "strong"
+      consequence: "La reparación y la recuperación productiva quedan verificadas."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-CLOSE-ON-GREEN"
+      is_correct: false
+      retry_feedback: "Un indicador verde es una evidencia parcial. Verifica también nodos descendentes, datos de proceso y función de máquina."
+      rationale: "Una capa no representa la recuperación completa."
+      classification: "weak"
+      consequence: "La recuperación queda incompleta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-06-CHECK-A3-ONLY"
+      is_correct: false
+      retry_feedback: "A4 y las funciones de proceso también estaban afectadas. Comprueba toda la cadena y una operación representativa."
+      rationale: "La propagación exige verificación aguas abajo."
+      classification: "weak"
+      consequence: "No se confirma la recuperación completa."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "El daño del enlace A2–A3 aisló A3 y A4 aunque ambos módulos no estaban averiados."
+    correct_reasoning: ["Delimitar la rama afectada.", "Comparar estados en TIA Portal.", "Usar la topología para localizar la frontera.", "Separar alimentación de enlace.", "Confirmar físicamente el segmento."]
+    recovery: ["Restaurar el enlace industrial.", "Confirmar A3/A4 alcanzables.", "Confirmar comunicación cíclica e I/O.", "Verificar la función de máquina."]
+  technical_validation:
+    status: "pass"
+    evidence: ["A2 se mantiene como Turck y A3 como Murr.", "String B permanece operativo y el switch físico no se modela obligatoriamente como IO Device.", "La causa solo se revela tras delimitar alcance, estado del controlador y frontera física."]

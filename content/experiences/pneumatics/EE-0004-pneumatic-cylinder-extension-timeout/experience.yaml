@@ -1,0 +1,503 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-PNEUMATIC-CYLINDER-004"
+  editorial_id: "EE-0004"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Electro-pneumatic actuation"
+  domain: "Pneumatic cylinder diagnostics"
+  industry: "Packaging"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "pneumatic-cylinder-extension-timeout"
+  title: "Timeout de extensión del cilindro neumático"
+  summary: "Traza el mando de extensión desde el PLC hasta el movimiento y el feedback, diferencia presión de caudal y corrige una restricción excesiva del escape."
+  estimated_duration: 15
+  scenario:
+    initial_context: "La línea automatizada no completa la secuencia de una estación neumática porque el cilindro del desviador no alcanza la posición extendida dentro del tiempo previsto."
+    operational_state: "ExtendCmd está activo y ExtendedLS permanece en FALSE cuando se activa el timeout; todavía no se conoce en qué frontera deja de cumplirse la cadena."
+    initiating_event: "Producción informa de un timeout de extensión que impide continuar el ciclo de la línea."
+    learner_role: "Técnico de automatización responsable de localizar la primera discrepancia entre mando PLC, actuación eléctrica, energía neumática, movimiento y feedback."
+    safety_context:
+      safe_state: "Observar desde una posición segura y aplicar el procedimiento autorizado de aislamiento de energías y control de movimiento antes de intervenir en válvula, reguladores de caudal o cilindro."
+      intervention_constraints:
+        - "No forzar salidas ni ExtendedLS."
+        - "No aumentar el timeout para ocultar una anomalía física."
+        - "No sustituir componentes sin evidencia."
+        - "Restaurar ajustes neumáticos solo conforme a la condición prevista de la máquina y verificar con movimiento controlado."
+  learning_objectives:
+    - id: "OBJ-ACTUATION-CHAIN"
+      description: "Trazar ExtendCmd, salida PLC, Y1, válvula 5/2, presión y caudal, cilindro y ExtendedLS."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-PRESSURE-FLOW"
+      description: "Distinguir presión disponible de caudal suficiente e interpretar el movimiento parcial."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-PNEUMATIC-RECOVERY"
+      description: "Restaurar la regulación esperada y verificar carrera, tiempo, feedback y repetibilidad."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INTERPRET-TIMEOUT"
+      phase: "incident"
+      title: "Interpretar el timeout"
+      situation: "ExtendCmd está en TRUE, ExtendedLS sigue en FALSE y el tiempo de extensión ha vencido. ¿Cuál es el mejor siguiente paso?"
+      evidence_ids: ["EVID-01-INCIDENT", "EVID-02-PLC"]
+      decision_ids: ["DEC-01-REPLACE-CYLINDER", "DEC-01-INCREASE-TIMEOUT", "DEC-01-FORCE-FEEDBACK", "DEC-01-TRACE-ACTUATION"]
+      media_ids: ["ART-001", "ART-002"]
+    - id: "STAGE-02-Y1-ACTUATION"
+      phase: "investigation"
+      title: "Comprobar la actuación eléctrica"
+      situation: "Y1 está comandada y su indicador está encendido; la actuación eléctrica alcanza el solenoide. ¿Cómo debe continuar el diagnóstico?"
+      evidence_ids: ["EVID-03-Y1"]
+      decision_ids: ["DEC-02-REPLACE-PLC", "DEC-02-CONTINUE-DOWNSTREAM", "DEC-02-ASSUME-MOVEMENT"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-PNEUMATIC-SUPPLY"
+      phase: "investigation"
+      title: "Interpretar la presión disponible"
+      situation: "El regulador indica aproximadamente 6 bar, no hay alarma de aire de planta ni evidencia de una fuga importante. ¿Qué conclusión permite esta observación?"
+      evidence_ids: ["EVID-04-SUPPLY"]
+      decision_ids: ["DEC-03-INCREASE-PRESSURE", "DEC-03-BLAME-COMPRESSOR", "DEC-03-INVESTIGATE-LOCAL-FLOW"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-CYLINDER-BEHAVIOR"
+      phase: "investigation"
+      title: "Observar la dinámica del cilindro"
+      situation: "El cilindro empieza a extenderse, pero avanza anormalmente despacio y no completa la carrera antes del timeout. ¿Qué frontera debes investigar?"
+      evidence_ids: ["EVID-05-PARTIAL-EXTENSION"]
+      decision_ids: ["DEC-04-INSPECT-FLOW-LOAD", "DEC-04-REPLACE-LS", "DEC-04-REPLACE-VALVE"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-FLOW-CONTROL"
+      phase: "investigation"
+      title: "Confirmar la restricción de caudal"
+      situation: "La inspección segura muestra que el regulador unidireccional del escape durante la extensión está excesivamente restringido y concuerda con el movimiento lento."
+      evidence_ids: ["EVID-06-FLOW-CONTROL"]
+      decision_ids: ["DEC-05-REMOVE-CONTROL", "DEC-05-INCREASE-PRESSURE", "DEC-05-OPEN-FULLY", "DEC-05-RESTORE-SETTING"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-06-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "Restaurado el ajuste previsto, el cilindro alcanza la extensión completa a velocidad normal, ExtendedLS pasa a TRUE y el timeout no aparece."
+      evidence_ids: ["EVID-07-RECOVERY"]
+      decision_ids: ["DEC-06-CLOSE-ONCE", "DEC-06-KEEP-LONG-TIMEOUT", "DEC-06-REPEAT-CYCLES"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Estación neumática"
+      content: "El desviador no alcanza la posición extendida antes del timeout y la secuencia queda detenida."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-PLC"
+      type: "diagnostic"
+      source: "TIA Portal / S7-1500"
+      content: "ExtendCmd, SafetyOK, AutoMode y PneumaticPermit están TRUE; ExtendedLS permanece FALSE al vencer el tiempo."
+      reliability: "confirmed"
+      revealed_by: []
+    - id: "EVID-03-Y1"
+      type: "inspection"
+      source: "Solenoide Y1 y válvula direccional"
+      content: "Y1 está comandada, el indicador está ON y la actuación eléctrica llega al solenoide; esto no confirma el movimiento correcto del cilindro."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-TRACE-ACTUATION"]
+    - id: "EVID-04-SUPPLY"
+      type: "measurement"
+      source: "Preparación de aire y regulador"
+      content: "La alimentación regulada es aproximadamente 6 bar, sin alarma general de aire ni evidencia de fuga importante."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-CONTINUE-DOWNSTREAM"]
+    - id: "EVID-05-PARTIAL-EXTENSION"
+      type: "inspection"
+      source: "Cilindro de doble efecto"
+      content: "El cilindro comienza a extenderse, pero el movimiento es demasiado lento y la carrera no termina dentro de la ventana esperada."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-INVESTIGATE-LOCAL-FLOW"]
+    - id: "EVID-06-FLOW-CONTROL"
+      type: "inspection"
+      source: "Regulador unidireccional de caudal"
+      content: "El control asociado al escape durante la extensión está excesivamente restringido; la cámara opuesta no evacua aire con suficiente rapidez."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-FLOW-LOAD"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Verificación posterior"
+      content: "Con la regulación esperada restaurada, la extensión recupera velocidad y carrera completas, ExtendedLS pasa a TRUE y no aparece timeout."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RESTORE-SETTING"]
+  decisions:
+    - id: "DEC-01-TRACE-ACTUATION"
+      stage_id: "STAGE-01-INTERPRET-TIMEOUT"
+      action: "Verificar si la petición eléctrica llega realmente a la cadena de actuación neumática."
+    - id: "DEC-01-REPLACE-CYLINDER"
+      stage_id: "STAGE-01-INTERPRET-TIMEOUT"
+      action: "Sustituir inmediatamente el cilindro porque ExtendedLS no llega."
+    - id: "DEC-01-INCREASE-TIMEOUT"
+      stage_id: "STAGE-01-INTERPRET-TIMEOUT"
+      action: "Aumentar el timeout para que la secuencia pueda continuar."
+    - id: "DEC-01-FORCE-FEEDBACK"
+      stage_id: "STAGE-01-INTERPRET-TIMEOUT"
+      action: "Forzar ExtendedLS para confirmar el resto de la secuencia."
+    - id: "DEC-02-CONTINUE-DOWNSTREAM"
+      stage_id: "STAGE-02-Y1-ACTUATION"
+      action: "Continuar aguas abajo y comprobar condición neumática, respuesta de válvula y movimiento."
+    - id: "DEC-02-REPLACE-PLC"
+      stage_id: "STAGE-02-Y1-ACTUATION"
+      action: "Sustituir la salida PLC aunque Y1 recibe la actuación."
+    - id: "DEC-02-ASSUME-MOVEMENT"
+      stage_id: "STAGE-02-Y1-ACTUATION"
+      action: "Concluir que el cilindro se mueve correctamente porque el indicador Y1 está ON."
+    - id: "DEC-03-INVESTIGATE-LOCAL-FLOW"
+      stage_id: "STAGE-03-PNEUMATIC-SUPPLY"
+      action: "Considerar disponible la presión general y seguir el caudal local, la válvula y el movimiento."
+    - id: "DEC-03-INCREASE-PRESSURE"
+      stage_id: "STAGE-03-PNEUMATIC-SUPPLY"
+      action: "Aumentar inmediatamente la presión del regulador."
+    - id: "DEC-03-BLAME-COMPRESSOR"
+      stage_id: "STAGE-03-PNEUMATIC-SUPPLY"
+      action: "Atribuir el timeout al compresor de planta."
+    - id: "DEC-04-INSPECT-FLOW-LOAD"
+      stage_id: "STAGE-04-CYLINDER-BEHAVIOR"
+      action: "Investigar restricción local de caudal, control de escape y carga mecánica antes de sustituir equipos."
+    - id: "DEC-04-REPLACE-LS"
+      stage_id: "STAGE-04-CYLINDER-BEHAVIOR"
+      action: "Sustituir ExtendedLS porque permanece en FALSE."
+    - id: "DEC-04-REPLACE-VALVE"
+      stage_id: "STAGE-04-CYLINDER-BEHAVIOR"
+      action: "Sustituir la válvula 5/2 sin inspeccionar el control de caudal."
+    - id: "DEC-05-RESTORE-SETTING"
+      stage_id: "STAGE-05-FLOW-CONTROL"
+      action: "Restaurar el ajuste de caudal previsto mediante el procedimiento seguro autorizado."
+    - id: "DEC-05-REMOVE-CONTROL"
+      stage_id: "STAGE-05-FLOW-CONTROL"
+      action: "Eliminar el regulador para evitar cualquier restricción."
+    - id: "DEC-05-INCREASE-PRESSURE"
+      stage_id: "STAGE-05-FLOW-CONTROL"
+      action: "Compensar la restricción aumentando la presión de alimentación."
+    - id: "DEC-05-OPEN-FULLY"
+      stage_id: "STAGE-05-FLOW-CONTROL"
+      action: "Abrir completamente el regulador sin consultar la condición prevista."
+    - id: "DEC-06-REPEAT-CYCLES"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Ejecutar ciclos representativos repetidos y verificar movimiento, tiempo, carrera completa, feedback y ausencia de recurrencia."
+    - id: "DEC-06-CLOSE-ONCE"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Cerrar la intervención después de una única extensión correcta."
+    - id: "DEC-06-KEEP-LONG-TIMEOUT"
+      stage_id: "STAGE-06-VERIFY-RECOVERY"
+      action: "Mantener un timeout artificialmente aumentado como medida preventiva."
+  visual:
+    educational_purpose: "Revelar progresivamente la frontera entre mando, actuación eléctrica, presión, dinámica del cilindro y control local de escape."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/01.png"
+        alt: "Estación neumática detenida porque el cilindro no alcanza la extensión esperada."
+        caption: "Timeout de extensión; causa todavía desconocida."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/02.png"
+        alt: "Monitorización PLC con ExtendCmd y condiciones de permiso activas mientras ExtendedLS permanece FALSE."
+        caption: "Existe petición, pero falta el feedback esperado."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/03.png"
+        alt: "Solenoide Y1 y válvula direccional con indicación de actuación eléctrica."
+        caption: "El mando alcanza la frontera del solenoide."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/04.png"
+        alt: "Unidad de preparación de aire y regulador indicando aproximadamente 6 bar."
+        caption: "La presión general está disponible; el caudal local aún debe comprobarse."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/05.png"
+        alt: "Cilindro parcialmente extendido sin alcanzar la posición final dentro del tiempo esperado."
+        caption: "El movimiento existe, pero su dinámica es anormal."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/06.png"
+        alt: "Inspección del regulador unidireccional que controla el escape durante la extensión."
+        caption: "La restricción excesiva del escape limita la velocidad."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-004/07.png"
+        alt: "Cilindro en extensión completa con feedback ExtendedLS confirmado."
+        caption: "Carrera, feedback y tiempo de ciclo recuperados."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "La presión general estaba disponible, pero una restricción excesiva del escape limitaba el caudal y ralentizaba la extensión hasta provocar el timeout."
+    process: ["Interpretar mando y feedback.", "Confirmar actuación eléctrica en Y1.", "Comprobar presión general.", "Observar movimiento parcial.", "Localizar la restricción de escape.", "Restaurar la regulación prevista y verificar ciclos repetidos."]
+    lesson: "Mando presente no demuestra movimiento correcto y presión disponible no demuestra caudal suficiente."
+    avoided_errors: ["Sustituir PLC, válvula, cilindro o sensor sin evidencia.", "Forzar ExtendedLS.", "Ocultar la anomalía aumentando el timeout.", "Abrir totalmente o eliminar la regulación."]
+    industrial_value: ["Diagnóstico por fronteras.", "Menos sustituciones injustificadas.", "Movimiento neumático controlado y recuperación verificable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Restricción excesiva del escape durante la extensión en el regulador unidireccional de caudal del cilindro."
+    recovery_conditions: ["Ajuste previsto del regulador restaurado mediante práctica segura.", "Velocidad y carrera completas recuperadas.", "ExtendedLS TRUE dentro de la ventana esperada.", "Ciclos representativos repetidos sin timeout."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-CONTROL"
+        statement: "La petición o salida PLC no alcanza Y1."
+        initial_status: "possible"
+      - id: "HYP-SUPPLY"
+        statement: "No existe presión neumática general suficiente."
+        initial_status: "possible"
+      - id: "HYP-SENSOR"
+        statement: "ExtendedLS no detecta una extensión físicamente completada."
+        initial_status: "possible"
+      - id: "HYP-EXHAUST-RESTRICTION"
+        statement: "El escape durante la extensión está excesivamente restringido."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-EXHAUST-RESTRICTION"
+    critical_path: ["DEC-01-TRACE-ACTUATION", "DEC-02-CONTINUE-DOWNSTREAM", "DEC-03-INVESTIGATE-LOCAL-FLOW", "DEC-04-INSPECT-FLOW-LOAD", "DEC-05-RESTORE-SETTING", "DEC-06-REPEAT-CYCLES"]
+  decision_logic:
+    - decision_id: "DEC-01-TRACE-ACTUATION"
+      is_correct: true
+      rationale: "El timeout solo establece una discrepancia temporal."
+      classification: "strong"
+      consequence: "Se comprueba la frontera eléctrica."
+      evidence_revealed: ["EVID-03-Y1"]
+      next_stage: "STAGE-02-Y1-ACTUATION"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE-CYLINDER"
+      is_correct: false
+      retry_feedback: "El timeout no identifica el componente averiado. Primero confirma hasta dónde llega el mando."
+      rationale: "No hay evidencia de fallo del cilindro."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-02-Y1-ACTUATION"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-INCREASE-TIMEOUT"
+      is_correct: false
+      retry_feedback: "Aumentar el timeout puede ocultar una degradación física; no explica la ausencia de feedback dentro de la condición prevista."
+      rationale: "El tiempo no corrige la causa física."
+      classification: "weak"
+      consequence: "La anomalía permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-02-Y1-ACTUATION"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-01-FORCE-FEEDBACK"
+      is_correct: false
+      retry_feedback: "Forzar ExtendedLS elimina una salvaguarda de secuencia y no demuestra que el actuador haya alcanzado la posición."
+      rationale: "El feedback forzado no es evidencia física."
+      classification: "unsafe"
+      consequence: "Se falsea la posición."
+      evidence_revealed: []
+      next_stage: "STAGE-02-Y1-ACTUATION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-02-CONTINUE-DOWNSTREAM"
+      is_correct: true
+      rationale: "La actuación alcanza Y1 y desplaza la investigación aguas abajo."
+      classification: "strong"
+      consequence: "Se comprueba la energía neumática."
+      evidence_revealed: ["EVID-04-SUPPLY"]
+      next_stage: "STAGE-03-PNEUMATIC-SUPPLY"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-REPLACE-PLC"
+      is_correct: false
+      retry_feedback: "Y1 recibe la actuación coherente con ExtendCmd; sustituir la salida PLC contradice la evidencia disponible."
+      rationale: "La frontera PLC-solenoide funciona."
+      classification: "weak"
+      consequence: "La causa continúa."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PNEUMATIC-SUPPLY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-02-ASSUME-MOVEMENT"
+      is_correct: false
+      retry_feedback: "El indicador de Y1 confirma una orden eléctrica local, no carrera, velocidad ni posición física del cilindro."
+      rationale: "Energizado no equivale a movimiento correcto."
+      classification: "weak"
+      consequence: "Se omite la cadena neumática."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PNEUMATIC-SUPPLY"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-INVESTIGATE-LOCAL-FLOW"
+      is_correct: true
+      rationale: "La presión general no demuestra caudal local suficiente."
+      classification: "strong"
+      consequence: "Se observa la dinámica del cilindro."
+      evidence_revealed: ["EVID-05-PARTIAL-EXTENSION"]
+      next_stage: "STAGE-04-CYLINDER-BEHAVIOR"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-03-INCREASE-PRESSURE"
+      is_correct: false
+      retry_feedback: "La lectura nominal de esta máquina ya está disponible. Aumentarla sin localizar el comportamiento local no prueba ni corrige la causa."
+      rationale: "Presión y caudal son magnitudes distintas."
+      classification: "unsafe"
+      consequence: "Se altera una condición sin diagnóstico."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CYLINDER-BEHAVIOR"
+      score_effect: -8
+      safety_effect: -5
+    - decision_id: "DEC-03-BLAME-COMPRESSOR"
+      is_correct: false
+      retry_feedback: "No hay alarma general ni pérdida de presión observada. Continúa desde la preparación de aire hacia el actuador."
+      rationale: "La hipótesis general no concuerda con la evidencia."
+      classification: "weak"
+      consequence: "Se investiga fuera del dominio probable."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CYLINDER-BEHAVIOR"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-04-INSPECT-FLOW-LOAD"
+      is_correct: true
+      rationale: "El movimiento parcial desplaza la frontera hacia dinámica local y carga."
+      classification: "strong"
+      consequence: "Se inspecciona el control de escape."
+      evidence_revealed: ["EVID-06-FLOW-CONTROL"]
+      next_stage: "STAGE-05-FLOW-CONTROL"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-04-REPLACE-LS"
+      is_correct: false
+      retry_feedback: "ExtendedLS permanece FALSE porque la carrera física no termina. El feedback puede ser una consecuencia, no la causa."
+      rationale: "No se ha alcanzado la posición de detección."
+      classification: "weak"
+      consequence: "El movimiento lento permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-05-FLOW-CONTROL"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-REPLACE-VALVE"
+      is_correct: false
+      retry_feedback: "La actuación y el inicio de movimiento están confirmados. Inspecciona primero la regulación local y la carga antes de sustituir la válvula."
+      rationale: "La válvula no está confirmada como causa."
+      classification: "weak"
+      consequence: "Sustitución prematura."
+      evidence_revealed: []
+      next_stage: "STAGE-05-FLOW-CONTROL"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-RESTORE-SETTING"
+      is_correct: true
+      rationale: "Restaura la condición regulada prevista sin eliminar control."
+      classification: "strong"
+      consequence: "Se recupera el caudal de escape esperado."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-05-REMOVE-CONTROL"
+      is_correct: false
+      retry_feedback: "Eliminar la regulación cambia el comportamiento diseñado y puede producir movimiento no controlado. Restaura el ajuste previsto."
+      rationale: "La regulación cumple una función dinámica."
+      classification: "unsafe"
+      consequence: "Se pierde control de velocidad."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-05-INCREASE-PRESSURE"
+      is_correct: false
+      retry_feedback: "Más presión no elimina una restricción de escape confirmada y altera otra variable del sistema."
+      rationale: "La causa es restricción de caudal."
+      classification: "unsafe"
+      consequence: "La restricción continúa."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: -8
+      safety_effect: -5
+    - decision_id: "DEC-05-OPEN-FULLY"
+      is_correct: false
+      retry_feedback: "Abrir totalmente no equivale a restaurar el ajuste correcto. La velocidad debe volver a la condición prevista de la máquina."
+      rationale: "La reparación requiere regulación controlada."
+      classification: "unsafe"
+      consequence: "Movimiento potencialmente excesivo."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-RECOVERY"
+      score_effect: -8
+      safety_effect: -5
+    - decision_id: "DEC-06-REPEAT-CYCLES"
+      is_correct: true
+      rationale: "La repetición representativa confirma la recuperación."
+      classification: "strong"
+      consequence: "La reparación queda verificada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-06-CLOSE-ONCE"
+      is_correct: false
+      retry_feedback: "Una carrera correcta no demuestra repetibilidad. Verifica varios ciclos bajo condiciones representativas."
+      rationale: "La muestra es insuficiente."
+      classification: "acceptable"
+      consequence: "La recurrencia no queda descartada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -2
+      safety_effect: 0
+    - decision_id: "DEC-06-KEEP-LONG-TIMEOUT"
+      is_correct: false
+      retry_feedback: "Un timeout aumentado puede ocultar degradación y no forma parte de la recuperación física confirmada."
+      rationale: "El ajuste temporal no sustituye la verificación."
+      classification: "weak"
+      consequence: "Se conserva una compensación injustificada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "El cilindro recibía mando y comenzaba a moverse, pero una restricción excesiva del escape reducía el caudal y evitaba completar la extensión a tiempo."
+    correct_reasoning: ["Separar timeout y causa.", "Seguir mando y actuación Y1.", "Distinguir presión de caudal.", "Interpretar el movimiento parcial.", "Confirmar la restricción local antes de ajustar."]
+    recovery: ["Restaurar el ajuste previsto con práctica segura.", "Confirmar velocidad y carrera completas.", "Confirmar ExtendedLS dentro de la ventana.", "Repetir ciclos representativos sin timeout."]
+  technical_validation:
+    status: "pass"
+    evidence: ["La historia mantiene actuación Y1, presión general y movimiento parcial como condiciones confirmadas.", "La causa raíz es únicamente la restricción excesiva del escape durante la extensión.", "Los assets 06 y 07 solo se revelan tras sus decisiones precedentes."]

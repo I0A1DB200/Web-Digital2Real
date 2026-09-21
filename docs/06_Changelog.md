@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-09-11 — EE-0006 PROFINET line-topology link failure
+
+- Added EE-0006 as a six-decision Experience Engine V2 scenario for topology-led diagnosis of a damaged A2–A3 PROFINET segment.
+- Integrated seven approved frozen assets, registered the sixth ENV-001 hotspot and extended cumulative Theory with reusable network-topology and fault-boundary concepts.
+- Extended the option-position regression without prescribing a fixed sequence or percentage.
+
+## 2026-09-10 — EE-0001–EE-0005 option-position audit
+
+- Reordered learner-facing alternatives so presentation position no longer encodes the correct engineering action.
+- Preserved action identities, private correctness, diagnostic paths, evidence unlocks, localization and runtime behavior.
+- Added a transversal regression for correct-action identity, ES/EN ordering, retry/advance behavior and projection security.
+
+## 2026-09-10 — EE-0005 safety gate channel discrepancy
+
+- Added EE-0005 as an Experience Engine V2 technical-review scenario with six evidence-led Safety decisions and seven approved frozen assets.
+- Registered EE-0005 as the fifth ENV-001 Preview Experience and extended cumulative Theory with machine-Safety, dual-channel, F-I/O, STO, reset and functional-verification concepts.
+- Preserved the existing Engine, Player, evaluator, projection, progress and Notebook architecture.
+
+## 2026-09-09 — EE-0004 pneumatic cylinder extension timeout
+
+- Added EE-0004 as an Experience Engine V2 technical-review scenario with six evidence-led decisions.
+- Integrated seven approved pneumatic evidence assets without image modification.
+- Registered EE-0004 in ENV-001 and extended cumulative Theory with pneumatic energy, valves, actuators, flow control and diagnostic-chain concepts.
+- Preserved the existing Engine, Player, evaluator, projection and progress architecture.
+
 ## 2026-09-08 — ENV-001 Theory v0.3
 
 - Expanded the cumulative ENV-001 engineering Theory after EE-0001, EE-0002 and EE-0003 into 15 aligned Spanish and English sections.

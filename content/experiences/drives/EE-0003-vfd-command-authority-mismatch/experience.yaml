@@ -63,14 +63,14 @@ public:
       title: "Separar síntoma y causa"
       situation: "RUN está solicitado, el transportador permanece detenido y no hay alarma relevante. ¿Cuál es el mejor siguiente paso?"
       evidence_ids: ["EVID-01-INCIDENT"]
-      decision_ids: ["DEC-01-INSPECT-DRIVE", "DEC-01-REPLACE-MOTOR", "DEC-01-FORCE-OUTPUT"]
+      decision_ids: ["DEC-01-REPLACE-MOTOR", "DEC-01-INSPECT-DRIVE", "DEC-01-FORCE-OUTPUT"]
       media_ids: ["ART-001"]
     - id: "STAGE-02-TRACE-PLC"
       phase: "investigation"
       title: "Interpretar el estado del variador"
       situation: "El SINAMICS G120 está READY, no está RUNNING y no presenta un fallo activo. READY no demuestra ejecución."
       evidence_ids: ["EVID-02-DRIVE-STATE"]
-      decision_ids: ["DEC-02-TRACE-PLC", "DEC-02-RESET-REPEATEDLY", "DEC-02-REPLACE-VFD"]
+      decision_ids: ["DEC-02-RESET-REPEATEDLY", "DEC-02-REPLACE-VFD", "DEC-02-TRACE-PLC"]
       media_ids: ["ART-002"]
     - id: "STAGE-03-CHECK-AUTHORITY"
       phase: "investigation"
@@ -84,21 +84,21 @@ public:
       title: "Identificar quién tiene autoridad"
       situation: "La inspección del variador muestra autoridad local HAND/BOP. Aún debes confirmar qué arquitectura requiere la producción automática."
       evidence_ids: ["EVID-04-HAND-AUTHORITY"]
-      decision_ids: ["DEC-04-VERIFY-ARCHITECTURE", "DEC-04-ASSUME-HAND-FAULT", "DEC-04-CHANGE-PARAMETERS"]
+      decision_ids: ["DEC-04-ASSUME-HAND-FAULT", "DEC-04-VERIFY-ARCHITECTURE", "DEC-04-CHANGE-PARAMETERS"]
       media_ids: ["ART-004"]
     - id: "STAGE-05-VERIFY-PLC-COMMAND"
       phase: "investigation"
       title: "Comparar estado real y arquitectura prevista"
       situation: "La máquina está diseñada para S7-1500 → PROFINET → SINAMICS G120 en AUTO. El estado HAND/BOP no coincide con esa operación."
       evidence_ids: ["EVID-05-EXPECTED-ARCHITECTURE"]
-      decision_ids: ["DEC-05-VERIFY-ONLINE", "DEC-05-REPROGRAM", "DEC-05-REPLACE-DRIVE"]
+      decision_ids: ["DEC-05-REPROGRAM", "DEC-05-REPLACE-DRIVE", "DEC-05-VERIFY-ONLINE"]
       media_ids: ["ART-005"]
     - id: "STAGE-06-RESTORE-VERIFY"
       phase: "solution"
       title: "Restaurar y verificar la cadena completa"
       situation: "FB_CONVEYOR confirma Start, AutoMode, SafetyOK, Permit y RunCmd en TRUE, mientras Running permanece FALSE. La lógica produce el mando esperado."
       evidence_ids: ["EVID-06-PLC-RUNCMD"]
-      decision_ids: ["DEC-06-RESTORE-VERIFY", "DEC-06-CLOSE-ON-MODE", "DEC-06-FORCE-RUNNING"]
+      decision_ids: ["DEC-06-CLOSE-ON-MODE", "DEC-06-RESTORE-VERIFY", "DEC-06-FORCE-RUNNING"]
       media_ids: ["ART-006"]
   evidence:
     - id: "EVID-01-INCIDENT"

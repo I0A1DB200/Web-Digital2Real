@@ -129,6 +129,8 @@ sections:
       Las redes industriales reducen cableado punto a punto y permiten intercambiar órdenes, estados, valores de proceso y diagnósticos entre PLC, E/S remotas, variadores, HMI e instrumentación. La selección depende de la arquitectura, tiempo de respuesta, determinismo requerido, entorno, interoperabilidad y soporte del equipo.
 
       PROFIBUS DP, Modbus RTU y CANopen representan soluciones clásicas de bus de campo o comunicación serie con modelos diferentes. PROFINET, EtherNet/IP, EtherCAT y Modbus TCP utilizan tecnologías Ethernet industrial, también con modelos y capacidades distintas. Compartir medio Ethernet no los hace intercambiables ni convierte uno en universalmente mejor.
+
+      La topología física puede ser lineal, en estrella o mixta. Un switch industrial puede distribuir ramas, mientras dispositivos de campo con dos puertos integrados pueden encadenar segmentos cerca de sensores y actuadores. La infraestructura física no coincide necesariamente con la representación lógica del proyecto: un switch solo aparece como dispositivo de ingeniería cuando el equipo y la configuración reales lo establecen.
     media_ids: []
 
   - id: TH-12-PROFINET-FUNDAMENTALS
@@ -137,6 +139,8 @@ sections:
       En ENV-001, un Siemens S7-1500 actúa como controlador y un SINAMICS G120 como dispositivo dentro de la comunicación PROFINET. El controlador intercambia datos cíclicos de entrada y salida con el dispositivo: órdenes y consignas viajan hacia el accionamiento; estados, valores y diagnósticos regresan al control.
 
       La identidad o nombre del dispositivo permite asociarlo con la configuración esperada, mientras que la dirección IP soporta la comunicación de red. Son conceptos relacionados, pero una IP por sí sola no define toda la relación PROFINET. Una pérdida de comunicación o un dispositivo no disponible rompe el intercambio. Comunicación establecida únicamente confirma el canal de datos; no demuestra que la lógica, la autoridad, el accionamiento o la máquina funcionen correctamente.
+
+      TIA Portal aporta el contexto del controlador, el sistema configurado y los diagnósticos online. PRONETA puede complementar ese contexto mediante descubrimiento y análisis de topología, pero no es obligatorio para cada avería ni demuestra por sí solo el punto exacto de daño. Los maestros IO-Link o módulos de I/O distribuida pueden conectarse por PROFINET y acercar señales al proceso; IO-Link y el enlace Ethernet/PROFINET siguen siendo capas distintas.
     media_ids:
       - TH-MEDIA-CONTROL-FEEDBACK-CHAIN
 
@@ -162,4 +166,76 @@ sections:
       Parte del síntoma, define el comportamiento esperado, registra el observado y busca la primera frontera donde divergen. Separa observación de conclusión, reúne evidencia, reduce el dominio de fallo, confirma la causa, interviene y verifica. Es un modelo mental adaptable, no una lista rígida.
 
       En una máquina, sigue la petición del operador hacia lógica PLC, permisivos e interlocks, mando, comunicación, autoridad, dispositivo, actuador y proceso mecánico; después recorre sensor o feedback, PLC y HMI. La primera discrepancia verificable concentra el diagnóstico y evita sustituciones, forzados o cambios de programa sin evidencia.
+    media_ids: []
+
+  - id: TH-16-PNEUMATIC-ENERGY
+    title: Energía neumática y preparación de aire
+    body: |-
+      El aire comprimido transporta energía hacia actuadores neumáticos. La presión expresa potencial para producir fuerza, mientras que el caudal describe cuánto aire atraviesa el circuito por unidad de tiempo y condiciona la velocidad. Presión disponible no equivale a caudal suficiente: una lectura estática correcta no demuestra que válvulas, tubos, racores y escapes permitan el flujo dinámico requerido.
+
+      La preparación de aire establece una condición utilizable mediante aislamiento, filtrado y regulación. Un conjunto FRL puede integrar filtro, regulador y lubricación cuando la aplicación lo requiera, pero su composición depende del diseño. La inspección distingue disponibilidad general de restricciones locales y toda intervención debe seguir el aislamiento de energías autorizado.
+    media_ids: []
+
+  - id: TH-17-VALVES-ACTUATORS
+    title: Válvulas direccionales y actuadores neumáticos
+    body: |-
+      Una válvula direccional conecta alimentación, vías de trabajo y escapes. Una 3/2 dispone conceptualmente de tres vías y dos posiciones y es común con actuadores de simple efecto. Una 5/2 dispone de cinco vías y dos posiciones y alterna alimentación y escape entre las cámaras de un cilindro de doble efecto. Una 5/3 añade una posición central cuyo comportamiento depende de la configuración. Los nombres y números de puertos deben verificarse en el esquema real.
+
+      Un cilindro de simple efecto utiliza aire en un sentido y otro medio, como un muelle, para retornar. Uno de doble efecto utiliza presión alternativamente en ambas cámaras. Carrera, carga, transmisión y rozamiento determinan el movimiento. Mando de electroválvula, desplazamiento de válvula, movimiento del cilindro y detección final son fronteras distintas.
+    media_ids: []
+
+  - id: TH-18-PNEUMATIC-FLOW-CONTROL
+    title: Regulación de caudal y velocidad
+    body: |-
+      Un regulador unidireccional combina paso libre en un sentido y restricción ajustable en el otro. Meter-in regula el caudal de entrada; meter-out regula el escape de la cámara opuesta. El control de escape suele aportar movimiento estable, pero ninguna disposición es universal: orientación, carga y diseño determinan la solución adecuada.
+
+      Una restricción excesiva puede permitir presión e inicio de movimiento, pero impedir la evacuación necesaria para alcanzar velocidad y carrera a tiempo. La corrección consiste en restaurar la condición regulada prevista, no abrir totalmente, eliminar el control ni compensar sin evidencia mediante más presión o tiempo.
+    media_ids: []
+
+  - id: TH-19-ELECTRO-PNEUMATIC-DIAGNOSIS
+    title: Diagnóstico de la cadena electroneumática
+    body: |-
+      Traza petición PLC, salida digital, solenoide, válvula, presión y caudal, actuador, movimiento, sensor de posición y feedback PLC. Mando, actuación eléctrica, desplazamiento de válvula, movimiento físico y feedback no son equivalentes. Un fin de carrera FALSE puede ser consecuencia de una carrera incompleta.
+
+      Localiza la primera frontera donde esperado y observado divergen. Si el solenoide actúa, la presión general está disponible y el cilindro empieza a moverse, el dominio se desplaza hacia caudal local, escape, carga y dinámica. Confirma antes de intervenir y verifica carrera, tiempo, feedback y repetibilidad.
+    media_ids: []
+
+  - id: TH-20-MACHINE-SAFETY-FUNDAMENTALS
+    title: Fundamentos prácticos de seguridad de máquinas
+    body: |-
+      El control estándar gobierna la producción; una función Safety reduce el riesgo llevando o manteniendo la máquina en una condición segura cuando se cumplen sus condiciones de actuación. Una orden productiva válida no puede sustituir la evaluación de la función protectora. Del mismo modo, una máquina detenida no revela por sí sola si la causa pertenece al control estándar, a una inhibición Safety o al proceso físico.
+
+      Estado físico y estado Safety evaluado son evidencias diferentes. Una puerta que parece cerrada puede no producir la condición válida esperada en el sistema de seguridad. Diagnosticar exige comparar condición física, señales de campo, evaluación segura y función aplicada al movimiento peligroso, sin anular ninguna protección.
+    media_ids: []
+
+  - id: TH-21-SAFETY-DEVICES-DUAL-CHANNELS
+    title: Dispositivos Safety y señales de doble canal
+    body: |-
+      Paradas de emergencia, enclavamientos de resguardos y cortinas fotoeléctricas son ejemplos de dispositivos asociados a funciones protectoras, pero no comparten necesariamente la misma arquitectura eléctrica ni el mismo comportamiento. Deben interpretarse según el diseño, la documentación y la evaluación prevista de la máquina real.
+
+      Una arquitectura de doble canal observa dos caminos para favorecer redundancia y diagnóstico. El desacuerdo entre canales es evidencia de discrepancia, no una identificación automática de su causa: puede proceder del dispositivo, cableado, montaje, temporización o condición mecánica. Dos canales por sí solos tampoco demuestran que una función sea adecuada o esté validada.
+    media_ids: []
+
+  - id: TH-22-SAFETY-PLC-SAFE-FUNCTIONS
+    title: PLC de seguridad, F-I/O y funciones seguras
+    body: |-
+      Una cadena conceptual puede recorrer dispositivo Safety, entradas F-DI, PLC de seguridad como un S7-1500F, lógica segura, salidas F-DO y una función segura aplicada al actuador o drive. Cada frontera aporta evidencia distinta: la indicación de un F-DI informa de una condición diagnóstica, pero no demuestra por sí sola que el módulo esté averiado.
+
+      STO es una función segura de drive destinada a impedir la generación de par conforme al diseño aplicable. No debe describirse como desconexión universal de toda energía eléctrica. Que STO esté activo puede ser la consecuencia correcta de una condición Safety no satisfecha, por lo que el diagnóstico debe remontarse hasta la función y la primera discrepancia.
+    media_ids: []
+
+  - id: TH-23-SAFETY-DIAGNOSIS-RESET
+    title: Diagnóstico Safety, rearme y verificación
+    body: |-
+      Parte del síntoma de máquina, separa control estándar e inhibición Safety e identifica la función protectora activa. Después recorre dispositivo, canales de entrada, evaluación segura, salida o función aplicada y condición física. Una discrepancia estrecha el dominio, pero la causa solo se confirma mediante evidencia coherente y una inspección autorizada en condición segura.
+
+      Restaurar la condición física, reconocer o rearmar la función Safety y ordenar Start son pasos diferentes. Cerrar una protección no debe implicar rearranque inesperado. Tras intervenir, la recuperación productiva no basta: verifica la actuación de la función protectora, la secuencia de recuperación prevista, las señales asociadas y la ausencia de rearranque automático.
+    media_ids: []
+
+  - id: TH-24-NETWORK-FAULT-BOUNDARY
+    title: Propagación y frontera de fallos de red
+    body: |-
+      En una topología lineal, un único segmento interrumpido puede hacer que varios dispositivos aguas abajo queden no disponibles. Esto no demuestra fallos independientes en cada dispositivo. La topología determina cómo se propaga el síntoma, por lo que el patrón de nodos disponibles y no disponibles es evidencia diagnóstica.
+
+      Localiza el último nodo alcanzable, el primer nodo no disponible y el segmento situado entre ambos. Después distingue alimentación, enlace físico, alcance de red, relación controlador-dispositivo PROFINET, intercambio cíclico de I/O y función de máquina. Restaurar una capa no valida automáticamente las siguientes: la reparación termina al verificar comunicación, datos de proceso y operación representativa.
     media_ids: []

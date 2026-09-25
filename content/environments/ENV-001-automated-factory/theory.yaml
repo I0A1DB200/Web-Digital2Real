@@ -271,3 +271,13 @@ sections:
 
       Ante una discrepancia, verifica primero proceso y PLC, después disponibilidad de comunicación y finalmente el origen del tag usado por el objeto afectado. Corrige la asociación confirmada en la capa de visualización y comprueba que pantalla, variable PLC y proceso concuerdan en condiciones representativas. No fuerces valores ni modifiques lógica de control para compensar un error de representación.
     media_ids: []
+
+  - id: TH-28-SYSTEM-LEVEL-CAUSAL-TROUBLESHOOTING
+    title: Diagnóstico causal a nivel de sistema
+    body: |-
+      Una máquina puede presentar varios síntomas simultáneos sin tener varios fallos independientes. Un actuador parado, otro retraído y una secuencia esperando pueden ser consecuencias coherentes de una sola condición anterior. El diagnóstico debe separar causa primaria y efectos secundarios, y no atribuir automáticamente el síntoma más visible al dispositivo que lo muestra.
+
+      Una cadena reutilizable recorre síntoma, estado del dispositivo, comando, estado de secuencia, transición o condición, señal PLC, señal de campo y proceso físico. Avanza aguas arriba comparando esperado y observado hasta encontrar la primera condición anormal. Un subsistema que no recibe comando puede estar respondiendo correctamente; una señal TRUE puede representar una detección física válida y no un sensor defectuoso.
+
+      Variables coincidentes en una tabla de observación establecen correlación temporal, pero la causalidad se demuestra siguiendo la lógica que calcula la condición. La corrección debe actuar sobre la causa confirmada, evitar sustituciones, resets, ajustes o forcing innecesarios y terminar verificando señales, condiciones, transiciones, comandos, movimiento y varios ciclos representativos extremo a extremo.
+    media_ids: []

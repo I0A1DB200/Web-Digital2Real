@@ -253,3 +253,13 @@ sections:
 
       When indications disagree, verify process and PLC first, then communication availability, and finally the source of the tag used by the affected object. Correct the confirmed association in the visualization layer and check that screen, PLC variable and process agree under representative conditions. Do not force values or change control logic to compensate for a representation error.
     media_ids: []
+
+  - id: TH-28-SYSTEM-LEVEL-CAUSAL-TROUBLESHOOTING
+    title: System-level causal troubleshooting
+    body: |-
+      A machine can present several simultaneous symptoms without having several independent faults. One actuator stopped, another retracted, and a sequence waiting may all be coherent consequences of one earlier condition. Diagnosis should separate primary cause from secondary effects and should not automatically assign the loudest symptom to the device displaying it.
+
+      A reusable chain follows symptom, device state, command, sequence state, transition or condition, PLC signal, field signal, and physical process. Move upstream while comparing expected and observed until the first abnormal condition is found. A subsystem receiving no command may be responding correctly; a TRUE signal may represent valid physical detection rather than a defective sensor.
+
+      Variables appearing together in a watch table establish temporal correlation, but causality is demonstrated by tracing the logic that calculates the condition. Correction should address the confirmed cause, avoid unnecessary replacement, reset, adjustment, or forcing, and finish by verifying signals, conditions, transitions, commands, movement, and several representative end-to-end cycles.
+    media_ids: []

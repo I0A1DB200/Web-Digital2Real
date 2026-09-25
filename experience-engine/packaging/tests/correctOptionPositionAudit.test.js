@@ -53,6 +53,11 @@ const experiences = [
     id: "EE-0009",
     path: "../../../content/experiences/hmi/EE-0009-hmi-incorrect-machine-state/",
     correctIds: ["DEC-01-VERIFY-BOX-SENSOR", "DEC-02-MONITOR-PLC", "DEC-03-CHECK-HMI-CONNECTION", "DEC-04-INSPECT-TAG", "DEC-05-COMPARE-PLC-HMI", "DEC-06-MAP-AND-VERIFY"]
+  },
+  {
+    id: "EE-0010",
+    path: "../../../content/experiences/troubleshooting/EE-0010-production-line-stops-after-product-jam/",
+    correctIds: ["DEC-01-VERIFY-INFRASTRUCTURE", "DEC-02-COMPARE-RUN-READY-FAULT", "DEC-03-CHECK-PUSHER-COMMAND", "DEC-04-INSPECT-SEQUENCE", "DEC-05-MONITOR-CONDITION-TERMS", "DEC-06-TRACE-LAD-LOGIC", "DEC-07-SAFE-REMOVE-VERIFY"]
   }
 ];
 

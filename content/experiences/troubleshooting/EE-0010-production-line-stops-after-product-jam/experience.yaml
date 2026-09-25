@@ -1,0 +1,521 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-MULTISYSTEM-JAM-010"
+  editorial_id: "EE-0010"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Siemens S7-1500 / SIMATIC GRAPH / SINAMICS / pneumatic transfer"
+  domain: "System-level causal troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+public:
+  slug: "production-line-stops-after-product-jam"
+  title: "La línea de producción se detiene tras un atasco de producto"
+  summary: "Distingue síntomas secundarios de una causa física común trazando estados, comandos, secuencia, lógica PLC y proceso."
+  estimated_duration: 20
+  scenario:
+    initial_context: "La zona de transferencia se ha detenido: el transportador está parado, el empujador permanece retraído, la HMI indica producto detectado y la secuencia sigue esperando."
+    operational_state: "El PLC está en RUN, SafetyReady es TRUE, PROFINET y la E/S distribuida están saludables, el drive está preparado sin fallo y hay presión neumática disponible."
+    initiating_event: "Tras una acumulación de producto, varios subsistemas parecen inactivos simultáneamente."
+    learner_role: "Técnico de automatización responsable de identificar la primera condición anormal sin intervenir sobre subsistemas que responden correctamente."
+    safety_context:
+      safe_state: "Toda inspección física y retirada de material se realiza conforme al procedimiento de intervención segura, con movimientos peligrosos controlados."
+      intervention_constraints: ["No forzar B3_TransferSensor ni TransferClear.", "No forzar T40, RunCmd ni PusherExtendCmd.", "No puentear interlocks ni funciones de seguridad.", "No sustituir o reajustar equipos sin evidencia causal."]
+  learning_objectives:
+    - id: "OBJ-CAUSE-CHAIN"
+      description: "Distinguir una causa primaria de múltiples síntomas secundarios recorriendo la cadena causal del sistema."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-PROVE-LOGIC"
+      description: "Probar la relación entre condición física, señal, lógica PLC, transición y comandos."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-SAFE-RECOVERY"
+      description: "Corregir la condición física y verificar recuperación extremo a extremo sin bypass."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-CLASSIFY-SCOPE"
+      phase: "incident"
+      title: "Clasificar el alcance"
+      situation: "Varios síntomas aparecen a la vez. ¿Cuál es la mejor primera comprobación?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-RESET-DRIVE", "DEC-01-VERIFY-INFRASTRUCTURE", "DEC-01-REPLACE-B3"]
+      media_ids: ["ART-001", "ART-002"]
+    - id: "STAGE-02-CONVEYOR-COMMAND"
+      phase: "investigation"
+      title: "Seguir el comando del transportador"
+      situation: "La infraestructura común está saludable. ¿Qué evidencia distingue falta de comando de fallo del drive?"
+      evidence_ids: ["EVID-02-INFRASTRUCTURE"]
+      decision_ids: ["DEC-02-PARAMETERIZE-DRIVE", "DEC-02-REPLACE-DRIVE", "DEC-02-COMPARE-RUN-READY-FAULT"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-PUSHER-COMMAND"
+      phase: "investigation"
+      title: "Seguir el comando del empujador"
+      situation: "RunCmd es FALSE mientras el drive está preparado. El empujador sigue retraído. ¿Qué se comprueba ahora?"
+      evidence_ids: ["EVID-03-CONVEYOR-COMMAND"]
+      decision_ids: ["DEC-03-CHECK-PUSHER-COMMAND", "DEC-03-ADJUST-PRESSURE", "DEC-03-REPLACE-VALVE"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-COMMON-CONTROL"
+      phase: "investigation"
+      title: "Encontrar el punto de control común"
+      situation: "RunCmd y PusherExtendCmd son FALSE. ¿Qué nivel común debe inspeccionarse?"
+      evidence_ids: ["EVID-04-PUSHER-COMMAND"]
+      decision_ids: ["DEC-04-RESET-PNEUMATICS", "DEC-04-FORCE-COMMANDS", "DEC-04-INSPECT-SEQUENCE"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-BLOCKING-CONDITION"
+      phase: "investigation"
+      title: "Identificar la condición bloqueante"
+      situation: "S40 Wait_TransferClear está activo y T40 depende de TransferClear. ¿Qué valores deben compararse?"
+      evidence_ids: ["EVID-05-SEQUENCE"]
+      decision_ids: ["DEC-05-REPLACE-SENSOR", "DEC-05-MONITOR-CONDITION-TERMS", "DEC-05-FORCE-T40"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-06-PROVE-CAUSALITY"
+      phase: "investigation"
+      title: "Probar la causalidad en PLC"
+      situation: "B3_TransferSensor es TRUE, DownstreamFree es TRUE y TransferClear es FALSE. ¿Cómo se demuestra la relación causal?"
+      evidence_ids: ["EVID-06-BLOCKING-VALUES"]
+      decision_ids: ["DEC-06-TRACE-LAD-LOGIC", "DEC-06-ASSUME-WATCH-CAUSALITY", "DEC-06-EDIT-GRAPH"]
+      media_ids: ["ART-007"]
+    - id: "STAGE-07-PHYSICAL-RECOVERY"
+      phase: "solution"
+      title: "Verificar físicamente y recuperar"
+      situation: "La lógica demuestra que la detección activa de B3 impide TransferClear. ¿Qué intervención completa el diagnóstico?"
+      evidence_ids: ["EVID-07-LOGIC-PROVEN"]
+      decision_ids: ["DEC-07-SAFE-REMOVE-VERIFY", "DEC-07-BYPASS-B3", "DEC-07-FORCE-TRANSFER-CLEAR"]
+      media_ids: ["ART-008", "ART-009"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Máquina / HMI"
+      content: "Línea y transportador parados, empujador retraído, producto detectado en transferencia y secuencia esperando."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-INFRASTRUCTURE"
+      type: "diagnostic"
+      source: "TIA Portal / sistema"
+      content: "PLC RUN, SafetyReady TRUE, PROFINET saludable y ET200SP comunicando."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-VERIFY-INFRASTRUCTURE"]
+    - id: "EVID-03-CONVEYOR-COMMAND"
+      type: "measurement"
+      source: "PLC / drive"
+      content: "RunCmd FALSE, DriveReady TRUE y DriveFault FALSE: el drive no está rechazando un comando de marcha válido."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-COMPARE-RUN-READY-FAULT"]
+    - id: "EVID-04-PUSHER-COMMAND"
+      type: "measurement"
+      source: "PLC / neumática"
+      content: "PusherExtendCmd FALSE y disponibilidad neumática normal: no existe orden de extensión que el actuador esté incumpliendo."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-CHECK-PUSHER-COMMAND"]
+    - id: "EVID-05-SEQUENCE"
+      type: "diagnostic"
+      source: "SIMATIC GRAPH"
+      content: "S40 Wait_TransferClear permanece activo; T40 requiere TransferClear."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-SEQUENCE"]
+    - id: "EVID-06-BLOCKING-VALUES"
+      type: "measurement"
+      source: "Tabla de observación PLC"
+      content: "TransferClear FALSE, B3_TransferSensor TRUE y DownstreamFree TRUE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-MONITOR-CONDITION-TERMS"]
+    - id: "EVID-07-LOGIC-PROVEN"
+      type: "diagnostic"
+      source: "LAD online"
+      content: "TransferClear := NOT B3_TransferSensor AND DownstreamFree; la condición negada de B3 interrumpe la continuidad lógica."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-TRACE-LAD-LOGIC"]
+  decisions:
+    - id: "DEC-01-RESET-DRIVE"
+      stage_id: "STAGE-01-CLASSIFY-SCOPE"
+      action: "Resetear el drive porque el transportador está parado."
+    - id: "DEC-01-VERIFY-INFRASTRUCTURE"
+      stage_id: "STAGE-01-CLASSIFY-SCOPE"
+      action: "Verificar primero PLC, Safety, PROFINET y E/S distribuida como infraestructura común."
+    - id: "DEC-01-REPLACE-B3"
+      stage_id: "STAGE-01-CLASSIFY-SCOPE"
+      action: "Sustituir B3 porque la HMI muestra producto detectado."
+    - id: "DEC-02-PARAMETERIZE-DRIVE"
+      stage_id: "STAGE-02-CONVEYOR-COMMAND"
+      action: "Cambiar parámetros del drive para recuperar la marcha."
+    - id: "DEC-02-REPLACE-DRIVE"
+      stage_id: "STAGE-02-CONVEYOR-COMMAND"
+      action: "Sustituir el drive porque el motor no gira."
+    - id: "DEC-02-COMPARE-RUN-READY-FAULT"
+      stage_id: "STAGE-02-CONVEYOR-COMMAND"
+      action: "Comparar RunCmd, DriveReady y DriveFault antes de intervenir en el drive."
+    - id: "DEC-03-CHECK-PUSHER-COMMAND"
+      stage_id: "STAGE-03-PUSHER-COMMAND"
+      action: "Comprobar PusherExtendCmd y la disponibilidad neumática."
+    - id: "DEC-03-ADJUST-PRESSURE"
+      stage_id: "STAGE-03-PUSHER-COMMAND"
+      action: "Aumentar la presión porque el cilindro no avanza."
+    - id: "DEC-03-REPLACE-VALVE"
+      stage_id: "STAGE-03-PUSHER-COMMAND"
+      action: "Sustituir la válvula antes de comprobar la orden."
+    - id: "DEC-04-RESET-PNEUMATICS"
+      stage_id: "STAGE-04-COMMON-CONTROL"
+      action: "Rearmar el sistema neumático aunque no recibe orden de extensión."
+    - id: "DEC-04-FORCE-COMMANDS"
+      stage_id: "STAGE-04-COMMON-CONTROL"
+      action: "Forzar RunCmd y PusherExtendCmd para observar movimiento."
+    - id: "DEC-04-INSPECT-SEQUENCE"
+      stage_id: "STAGE-04-COMMON-CONTROL"
+      action: "Inspeccionar el paso activo y la transición pendiente de la secuencia."
+    - id: "DEC-05-REPLACE-SENSOR"
+      stage_id: "STAGE-05-BLOCKING-CONDITION"
+      action: "Concluir que B3 está averiado porque permanece TRUE."
+    - id: "DEC-05-MONITOR-CONDITION-TERMS"
+      stage_id: "STAGE-05-BLOCKING-CONDITION"
+      action: "Monitorizar TransferClear, B3_TransferSensor y DownstreamFree sin forzarlos."
+    - id: "DEC-05-FORCE-T40"
+      stage_id: "STAGE-05-BLOCKING-CONDITION"
+      action: "Forzar T40 para que GRAPH avance."
+    - id: "DEC-06-TRACE-LAD-LOGIC"
+      stage_id: "STAGE-06-PROVE-CAUSALITY"
+      action: "Abrir la lógica online y trazar cómo B3_TransferSensor y DownstreamFree generan TransferClear."
+    - id: "DEC-06-ASSUME-WATCH-CAUSALITY"
+      stage_id: "STAGE-06-PROVE-CAUSALITY"
+      action: "Asumir causalidad porque las tres variables aparecen juntas en la tabla."
+    - id: "DEC-06-EDIT-GRAPH"
+      stage_id: "STAGE-06-PROVE-CAUSALITY"
+      action: "Eliminar TransferClear de T40 para evitar la espera."
+    - id: "DEC-07-SAFE-REMOVE-VERIFY"
+      stage_id: "STAGE-07-PHYSICAL-RECOVERY"
+      action: "Inspeccionar B3 de forma segura, retirar el residuo y verificar B3, TransferClear, T40, S41 y ciclos normales."
+    - id: "DEC-07-BYPASS-B3"
+      stage_id: "STAGE-07-PHYSICAL-RECOVERY"
+      action: "Puentear B3 para impedir nuevas detenciones."
+    - id: "DEC-07-FORCE-TRANSFER-CLEAR"
+      stage_id: "STAGE-07-PHYSICAL-RECOVERY"
+      action: "Forzar TransferClear a TRUE y dejar el residuo en la zona."
+  visual:
+    educational_purpose: "Recorrer síntomas de actuadores y HMI hacia la primera condición física anormal demostrando la causalidad en PLC."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/01.png"
+        alt: "Portada editorial EE-0010 en la línea automatizada."
+        caption: "Diagnóstico causal de una parada multisistema."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/02.png"
+        alt: "Incidente con transportador parado, empujador retraído y producto detectado."
+        caption: "Varios síntomas aparecen simultáneamente."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/03.png"
+        alt: "Diagnóstico TIA Portal con PLC, PROFINET y ET200SP saludables."
+        caption: "La infraestructura común permanece operativa."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/04.png"
+        alt: "Tabla de estados y comandos de transportador y empujador."
+        caption: "Los actuadores no reciben orden de movimiento."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/05.png"
+        alt: "GRAPH online con S40 Wait_TransferClear activo."
+        caption: "La secuencia espera intencionadamente a T40."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/06.png"
+        alt: "Valores online B3_TransferSensor TRUE, DownstreamFree TRUE y TransferClear FALSE."
+        caption: "La condición bloqueante queda localizada."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/07.png"
+        alt: "LAD online de NOT B3_TransferSensor AND DownstreamFree hacia TransferClear."
+        caption: "La lógica demuestra la relación causal."
+        purpose: "evidence"
+      - id: "ART-008"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/08.png"
+        alt: "Residuo físico dentro de la zona de detección de B3."
+        caption: "B3 detecta correctamente un objeto real."
+        purpose: "evidence"
+      - id: "ART-009"
+        type: "image"
+        src: "assets/EXP-MULTISYSTEM-JAM-010/09.png"
+        alt: "GRAPH online después de la recuperación con S41 Transfer_Release activo."
+        caption: "T40 se satisface y la secuencia avanza a S41."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "Un residuo físico mantenía B3_TransferSensor TRUE; la lógica anulaba TransferClear, T40 permanecía falsa y la secuencia retenía correctamente los comandos del transportador y el empujador."
+    process: ["Descartar un fallo común de infraestructura.", "Distinguir ausencia de comando de fallo de actuador.", "Localizar S40 y T40.", "Identificar la condición bloqueante.", "Probar la causalidad en LAD.", "Inspeccionar y corregir el proceso físico.", "Verificar S41 y ciclos normales."]
+    lesson: "Un subsistema puede parecer inactivo porque el control retiene correctamente su comando; la primera condición anormal es más útil que el síntoma más visible."
+    avoided_errors: ["Resetear o sustituir el drive.", "Ajustar neumática sin comando.", "Modificar GRAPH.", "Sustituir B3 cuando detecta un objeto real.", "Forzar señales o transiciones."]
+    industrial_value: ["Diagnóstico causal extremo a extremo.", "Menos intervenciones injustificadas.", "Verificación repetible de la recuperación."]
+    media_ids: ["ART-009"]
+private:
+  fault_model:
+    root_cause: "Un pequeño residuo físico permanece en la zona de B3_TransferSensor; B3 funciona correctamente y mantiene TRUE, haciendo TransferClear FALSE y bloqueando T40 en S40."
+    recovery_conditions: ["Retirada segura del residuo.", "B3_TransferSensor FALSE.", "DownstreamFree TRUE.", "TransferClear TRUE.", "T40 satisfecha y S41 activa.", "Comandos y operación normales verificados en ciclos repetidos."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-COMMON-INFRASTRUCTURE"
+        statement: "Existe un fallo común de PLC, Safety, red o E/S."
+        initial_status: "possible"
+      - id: "HYP-ACTUATORS"
+        statement: "Drive y neumática fallan de forma independiente."
+        initial_status: "possible"
+      - id: "HYP-PROCESS-CONDITION"
+        statement: "Una condición física válida bloquea la secuencia y sus comandos."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-PROCESS-CONDITION"
+    critical_path: ["DEC-01-VERIFY-INFRASTRUCTURE", "DEC-02-COMPARE-RUN-READY-FAULT", "DEC-03-CHECK-PUSHER-COMMAND", "DEC-04-INSPECT-SEQUENCE", "DEC-05-MONITOR-CONDITION-TERMS", "DEC-06-TRACE-LAD-LOGIC", "DEC-07-SAFE-REMOVE-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-VERIFY-INFRASTRUCTURE"
+      is_correct: true
+      rationale: "Establece si los síntomas comparten una infraestructura fallida."
+      classification: "strong"
+      consequence: "La infraestructura común queda descartada."
+      evidence_revealed: ["EVID-02-INFRASTRUCTURE"]
+      next_stage: "STAGE-02-CONVEYOR-COMMAND"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-RESET-DRIVE"
+      is_correct: false
+      retry_feedback: "El transportador parado es un síntoma. Verifica primero la infraestructura común."
+      rationale: "Interviene antes de clasificar el alcance."
+      classification: "weak"
+      consequence: "No se establece la frontera."
+      evidence_revealed: []
+      next_stage: "STAGE-02-CONVEYOR-COMMAND"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE-B3"
+      is_correct: false
+      retry_feedback: "Una indicación TRUE no demuestra sensor defectuoso. Establece primero el estado común del sistema."
+      rationale: "Sustitución sin evidencia."
+      classification: "weak"
+      consequence: "Puede sustituirse un sensor sano."
+      evidence_revealed: []
+      next_stage: "STAGE-02-CONVEYOR-COMMAND"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-02-COMPARE-RUN-READY-FAULT"
+      is_correct: true
+      rationale: "Separa ausencia de orden de rechazo o fallo del drive."
+      classification: "strong"
+      consequence: "Se confirma que RunCmd es FALSE con drive preparado."
+      evidence_revealed: ["EVID-03-CONVEYOR-COMMAND"]
+      next_stage: "STAGE-03-PUSHER-COMMAND"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-02-PARAMETERIZE-DRIVE"
+      is_correct: false
+      retry_feedback: "No cambies parámetros sin comparar comando, disponibilidad y fallo."
+      rationale: "No existe evidencia de parametrización incorrecta."
+      classification: "weak"
+      consequence: "Se altera un equipo saludable."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PUSHER-COMMAND"
+      score_effect: -6
+      safety_effect: -1
+    - decision_id: "DEC-02-REPLACE-DRIVE"
+      is_correct: false
+      retry_feedback: "Motor parado no equivale a drive averiado. Comprueba si recibe RunCmd."
+      rationale: "Confunde síntoma con causa."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PUSHER-COMMAND"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-03-CHECK-PUSHER-COMMAND"
+      is_correct: true
+      rationale: "Distingue un actuador incapaz de ejecutar de una orden ausente."
+      classification: "strong"
+      consequence: "Se confirma PusherExtendCmd FALSE."
+      evidence_revealed: ["EVID-04-PUSHER-COMMAND"]
+      next_stage: "STAGE-04-COMMON-CONTROL"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-03-ADJUST-PRESSURE"
+      is_correct: false
+      retry_feedback: "La presión no explica un comando FALSE. Comprueba primero PusherExtendCmd."
+      rationale: "Interviene en energía sin orden."
+      classification: "weak"
+      consequence: "Ajuste innecesario."
+      evidence_revealed: []
+      next_stage: "STAGE-04-COMMON-CONTROL"
+      score_effect: -5
+      safety_effect: -1
+    - decision_id: "DEC-03-REPLACE-VALVE"
+      is_correct: false
+      retry_feedback: "Una válvula no puede ejecutar una orden que no se genera. Verifica el comando."
+      rationale: "Sustitución sin evidencia."
+      classification: "weak"
+      consequence: "Se cambia hardware sano."
+      evidence_revealed: []
+      next_stage: "STAGE-04-COMMON-CONTROL"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-04-INSPECT-SEQUENCE"
+      is_correct: true
+      rationale: "Dos comandos ausentes conducen al estado de control común que los habilita."
+      classification: "strong"
+      consequence: "S40 y T40 quedan identificados."
+      evidence_revealed: ["EVID-05-SEQUENCE"]
+      next_stage: "STAGE-05-BLOCKING-CONDITION"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-04-RESET-PNEUMATICS"
+      is_correct: false
+      retry_feedback: "La neumática está disponible y no recibe orden. Inspecciona la secuencia común."
+      rationale: "No explica ambos comandos FALSE."
+      classification: "weak"
+      consequence: "Se actúa en una capa sana."
+      evidence_revealed: []
+      next_stage: "STAGE-05-BLOCKING-CONDITION"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-FORCE-COMMANDS"
+      is_correct: false
+      retry_feedback: "Forzar comandos elude la lógica y puede producir movimiento no justificado. Observa la secuencia."
+      rationale: "Bypass peligroso."
+      classification: "unsafe"
+      consequence: "Se oculta el bloqueo real."
+      evidence_revealed: []
+      next_stage: "STAGE-05-BLOCKING-CONDITION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-05-MONITOR-CONDITION-TERMS"
+      is_correct: true
+      rationale: "Identifica qué término mantiene TransferClear FALSE sin asumir fallo de sensor."
+      classification: "strong"
+      consequence: "B3 TRUE queda localizado como término bloqueante."
+      evidence_revealed: ["EVID-06-BLOCKING-VALUES"]
+      next_stage: "STAGE-06-PROVE-CAUSALITY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-05-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "B3 TRUE puede representar una detección real. Compara todos los términos de TransferClear."
+      rationale: "TRUE no prueba defecto."
+      classification: "weak"
+      consequence: "Se atribuye prematuramente la causa."
+      evidence_revealed: []
+      next_stage: "STAGE-06-PROVE-CAUSALITY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-FORCE-T40"
+      is_correct: false
+      retry_feedback: "Forzar T40 evita demostrar por qué TransferClear es FALSE y elude el interlock."
+      rationale: "Bypass de secuencia."
+      classification: "unsafe"
+      consequence: "GRAPH avanza sin condición válida."
+      evidence_revealed: []
+      next_stage: "STAGE-06-PROVE-CAUSALITY"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-06-TRACE-LAD-LOGIC"
+      is_correct: true
+      rationale: "La lógica online prueba la dirección causal entre entradas y TransferClear."
+      classification: "strong"
+      consequence: "Se demuestra que NOT B3 es la condición abierta."
+      evidence_revealed: ["EVID-07-LOGIC-PROVEN"]
+      next_stage: "STAGE-07-PHYSICAL-RECOVERY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-06-ASSUME-WATCH-CAUSALITY"
+      is_correct: false
+      retry_feedback: "Coincidencia en una tabla no demuestra cómo se calcula TransferClear. Traza la lógica PLC."
+      rationale: "Confunde correlación con causalidad."
+      classification: "weak"
+      consequence: "La relación permanece supuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-07-PHYSICAL-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-EDIT-GRAPH"
+      is_correct: false
+      retry_feedback: "T40 espera la condición diseñada. Demuestra la lógica antes de modificar GRAPH."
+      rationale: "Cambia el control correcto."
+      classification: "unsafe"
+      consequence: "Se elimina una condición de proceso."
+      evidence_revealed: []
+      next_stage: "STAGE-07-PHYSICAL-RECOVERY"
+      score_effect: -10
+      safety_effect: -8
+    - decision_id: "DEC-07-SAFE-REMOVE-VERIFY"
+      is_correct: true
+      rationale: "Corrige la primera condición física anormal y verifica toda la cadena."
+      classification: "strong"
+      consequence: "B3 libera, T40 se satisface y S41 queda activa."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-07-BYPASS-B3"
+      is_correct: false
+      retry_feedback: "B3 detecta un objeto real. Retira el residuo de forma segura; no anules la detección."
+      rationale: "Elude una condición válida."
+      classification: "unsafe"
+      consequence: "La secuencia pierde información del proceso."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-07-FORCE-TRANSFER-CLEAR"
+      is_correct: false
+      retry_feedback: "Forzar TransferClear deja la causa física presente y falsea la condición de T40."
+      rationale: "Simula recuperación."
+      classification: "unsafe"
+      consequence: "La secuencia avanza con zona ocupada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "Un residuo mantenía B3_TransferSensor TRUE; TransferClear permanecía FALSE, T40 no se satisfacía y S40 retenía correctamente RunCmd y PusherExtendCmd."
+    correct_reasoning: ["Clasificar alcance.", "Separar comando de estado del dispositivo.", "Seguir S40 y T40.", "Monitorizar términos.", "Probar la lógica.", "Inspeccionar el proceso físico."]
+    recovery: ["Retirar el residuo de forma segura.", "Confirmar B3 FALSE y TransferClear TRUE.", "Verificar T40, S41, comandos y ciclos repetidos."]
+  technical_validation:
+    status: "pass"
+    evidence: ["La cadena causal conserva los tags canónicos.", "B3 funciona correctamente ante un objeto real.", "No se inventan direcciones ni comportamiento interno de GRAPH."]

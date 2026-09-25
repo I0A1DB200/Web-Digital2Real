@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-25 — EE-0010 system-level causal diagnosis
+
+- Added EE-0010 as the tenth and final planned ENV-001 Experience, with seven decisions tracing multiple machine symptoms to one physical process condition through commands, sequence state and PLC logic.
+- Integrated nine approved evidence assets, registered the tenth ENV-001 hotspot and extended cumulative ES/EN Theory with reusable system-level causal troubleshooting concepts.
+- Preserved the generic Experience Engine, Player, evaluator, projection, progress and navigation architecture; ENV-001 remains in Preview.
+
 ## 2026-09-23 — Experience Lab ENV card visual refinement
 
 - Refined the existing Environment Selector cards into a compact, balanced composition with landscape 16:9 previews, overlaid ENV identity and menu controls, and restrained editorial depth.

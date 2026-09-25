@@ -1,0 +1,52 @@
+locale: en
+media: []
+sections:
+  - id: TH-01-FIELD-INSTRUMENTATION-CHAIN
+    media_ids: []
+    title: Field instrumentation chain
+    body: |-
+      Field instrumentation converts a physical variable into a signal that the control system can use. Temperature, pressure, level, flow, position and vibration can feed sensors, transmitters and conditioners that turn the phenomenon into a measurable value. The measurement does not end at the sensor; it must follow the chain to the PLC input, the HMI display and the decision logic.
+
+      The same process can be observed at several boundaries: the physical phenomenon, the sensor output, the process signal and the logic variable the controller uses. These layers may align or diverge. Correct diagnosis compares the evidence at each step instead of assuming the value seen in software automatically reflects the real process condition.
+
+  - id: TH-02-ANALOG-SIGNAL-LOOPS
+    media_ids: []
+    title: Analog signal loops and 4–20 mA
+    body: |-
+      Analog signals represent a continuous value within a defined range. In field instrumentation, a 4–20 mA loop is a common interface because it has good noise immunity, supports long cable runs and provides useful diagnostic information through its trend and operating margin.
+
+      In a 4–20 mA loop, 4 mA usually represents the minimum measured value or zero-scale; 20 mA represents the maximum. If the signal sits outside this range, or if it collapses to 0 mA or a saturated value, that can indicate power failure, an open circuit, a defective sensor or a process condition outside the expected range.
+
+      The diagnosis of an analog signal must be separated from the diagnosis of the sensor itself. A transmitter may be correct while the signal is still degraded by wiring, grounding, the input module, scale configuration or the reference value used by the system.
+
+  - id: TH-03-SENSOR-OUTPUT-TYPES
+    media_ids: []
+    title: Output types and electrical compatibility
+    body: |-
+      Sensors, transmitters and signal conditioners can provide analog, digital, discrete or communication outputs. Analog outputs are often 0–10 V, 1–5 V or 4–20 mA; digital signals may operate as a dry contact, discrete state or serialized message.
+
+      Electrical compatibility requires checking the supply voltage, output type, polarity, reference, isolation and channel consumption. A sensor that looks healthy by its LED can still produce a signal incompatible with the PLC module or with the configured engineering scale. Compatibility is not proven by the manufacturer name or the cable label alone.
+
+  - id: TH-04-TRANSMITTERS-AND-SETPOINTS
+    media_ids: []
+    title: Transmitters, conditioners and setpoints
+    body: |-
+      A transmitter converts the physical variable into a standardized value for control and recording. A conditioner may prepare the signal for distance transmission, isolation or scale conversion. The measurement point, calibration reference and engineering scale must be interpreted alongside the process definition and the system setpoint.
+
+      A setpoint is not just a numeric value; it is the reference that tells the control system when it should act. If the sensor signal is within range, but the logic compares it to the wrong value or wrong scale, system behavior can still be wrong without the physical process actually exceeding its limits.
+
+  - id: TH-05-ANALOG-FAULTS
+    media_ids: []
+    title: Common analog-loop faults
+    body: |-
+      Analog faults may come from the power source, wiring, connector, ground reference, module, calibration or sensor sensitivity. A signal stuck at 0 mA may indicate no power, an open circuit or a missing supply. A value fixed at one end of the range can suggest a blocked output, saturation condition or incorrect scale configuration.
+
+      Noise, thermal drift, vibration and process contamination also degrade the signal. Before replacing equipment, compare the transmitter value with the reference instrument and the actual physical condition. The first verified discrepancy usually points to the break in the chain.
+
+  - id: TH-06-COMMISSIONING-AND-VALIDATION
+    media_ids: []
+    title: Commissioning and measurement validation
+    body: |-
+      Commissioning of instrumentation requires validating the scale, polarity, reference, operating range and loop behavior under real conditions. It is not enough to confirm that the transmitter powers on; the signal arriving at the PLC must match the actual process and the control logic.
+
+      A robust diagnosis follows the physical variable from the sensor through the transmitter, wiring, PLC input, process variable and final control logic. Final validation must recreate the real operating condition and confirm that the system response matches the expected value. That sequence reduces replacement errors and preserves confidence in the measurement.

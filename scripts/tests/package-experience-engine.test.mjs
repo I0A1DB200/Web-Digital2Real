@@ -50,6 +50,18 @@ async function sha256(location) {
   return createHash("sha256").update(await readFile(location)).digest("hex");
 }
 
+test("ENV-002 is authored as a V2 field instrumentation environment", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+
+  const source = path.join(root, "content", "environments", "ENV-002-field-instrumentation", "environment.yaml");
+  const definition = await readFile(source, "utf8");
+
+  assert.match(definition, /contract_version:\s*"2\.0\.0"/u, "ENV-002 must declare the V2 environment contract.");
+  assert.match(definition, /title:\s*"Field Instrumentation"/u, "ENV-002 title must reflect field instrumentation.");
+  assert.match(definition, /theory:\s*"theory\.yaml"/u, "ENV-002 must declare the theory source.");
+});
+
 test("preview packages every eligible canonical Experience", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));

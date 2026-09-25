@@ -35,6 +35,10 @@ export function createEnvironmentNavigator({
   let activeCatalogSurface = null;
   const unsubscribeProgress = progressStore.subscribe?.(renderProgress);
 
+  function environmentTitle(environment) {
+    return localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang).title;
+  }
+
   function renderCatalog() {
     leaveEnvironment();
     leaveCatalog();
@@ -45,8 +49,8 @@ export function createEnvironmentNavigator({
       const card = createElement(documentRef, "article", "environment-card");
       const top = createElement(documentRef, "div", "environment-card__topbar");
       appendText(documentRef, top, "span", "environment-card__id", environment.id);
-      const menuButton = createButton(documentRef, ui.environmentMenu(environment.title), "environment-card__menu-button");
-      menuButton.setAttribute("aria-label", ui.environmentMenu(environment.title));
+      const menuButton = createButton(documentRef, ui.environmentMenu(environmentTitle(environment)), "environment-card__menu-button");
+      menuButton.setAttribute("aria-label", ui.environmentMenu(environmentTitle(environment)));
       menuButton.setAttribute("aria-haspopup", "menu");
       menuButton.setAttribute("aria-expanded", "false");
       menuButton.textContent = "•••";
@@ -58,17 +62,17 @@ export function createEnvironmentNavigator({
       card.appendChild(top);
       const main = createElement(documentRef, "button", "environment-card__main");
       main.type = "button";
-      main.setAttribute("aria-label", `${ui.openEnvironment}: ${environment.title}`);
+      main.setAttribute("aria-label", `${ui.openEnvironment}: ${environmentTitle(environment)}`);
       const media = createElement(documentRef, "span", "environment-card__media");
       const image = createElement(documentRef, "img", "environment-card__image");
       image.src = `${baseUrl}/${environment.background}`;
-      image.alt = ui.environmentImage(environment.title);
+      image.alt = ui.environmentImage(environmentTitle(environment));
       image.width = environment.width;
       image.height = environment.height;
       media.appendChild(image);
       main.appendChild(media);
       const content = createElement(documentRef, "span", "environment-card__content");
-      appendText(documentRef, content, "span", "environment-card__title", environment.title);
+      appendText(documentRef, content, "span", "environment-card__title", environmentTitle(environment));
       appendText(documentRef, content, "span", "environment-card__description", localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang).description);
       appendText(documentRef, content, "span", "environment-card__count", ui.experienceCount(environment.capacity));
       main.appendChild(content);
@@ -104,7 +108,7 @@ export function createEnvironmentNavigator({
     const heading = createElement(documentRef, "header", "environment-view__header");
     const title = createElement(documentRef, "div", "environment-view__title");
     appendText(documentRef, title, "span", "experience-workspace__eyebrow", environment.id);
-    appendText(documentRef, title, "h1", "", environment.title);
+    appendText(documentRef, title, "h1", "", environmentTitle(environment));
     heading.appendChild(title);
     if (environment.theory && typeof onOpenTheory === "function") {
       const theory = createButton(documentRef, ui.openTheory, "experience-action experience-action--primary");
@@ -120,7 +124,7 @@ export function createEnvironmentNavigator({
     stage.style.setProperty("--environment-ratio", `${environment.width} / ${environment.height}`);
     const image = createElement(documentRef, "img", "environment-stage__image");
     image.src = `${baseUrl}/${environment.background}`;
-    image.alt = environment.title;
+    image.alt = environmentTitle(environment);
     image.addEventListener("load", positionActivePopover);
     stage.appendChild(image);
     hotspotRecords = environment.hotspots.flatMap(hotspot => {
@@ -165,7 +169,7 @@ export function createEnvironmentNavigator({
     shell.appendChild(back);
     const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
     appendText(documentRef, header, "span", "experience-workspace__eyebrow", `${environment.id} · ${ui.theory}`);
-    appendText(documentRef, header, "h1", "", environment.title);
+    appendText(documentRef, header, "h1", "", environmentTitle(environment));
     appendText(documentRef, header, "p", "experience-workspace__lede", ui.theoryLede);
     shell.appendChild(header);
     const mediaById = new Map(theory.media.map(item => [item.id, item]));
@@ -336,7 +340,7 @@ export function createEnvironmentNavigator({
     track.setAttribute("aria-valuemin", "0");
     track.setAttribute("aria-valuemax", String(total));
     track.setAttribute("aria-valuenow", String(completed));
-    track.setAttribute("aria-label", `${selectedEnvironment.id} ${selectedEnvironment.title}: ${ui.environmentProgress}`);
+    track.setAttribute("aria-label", `${selectedEnvironment.id} ${environmentTitle(selectedEnvironment)}: ${ui.environmentProgress}`);
     track.setAttribute("aria-valuetext", ui.completedValue(completed, total));
     const fill = createElement(documentRef, "span", "environment-progress__fill");
     fill.style.setProperty("--environment-progress", `${percentage}%`);
@@ -440,7 +444,7 @@ export function createEnvironmentNavigator({
     } else {
       const progress = getCardProgress(environment);
       appendText(documentRef, panel, "p", "environment-achievement__brand", "Digital2Real");
-      appendText(documentRef, panel, "h3", "", environment.title);
+      appendText(documentRef, panel, "h3", "", environmentTitle(environment));
       appendText(documentRef, panel, "p", "environment-achievement__score", `${progress.completed} / ${environment.capacity}`);
       appendText(documentRef, panel, "p", "", ui.engineeringExperiencesCompleted);
       appendText(documentRef, panel, "p", "environment-achievement__label", progress.completed === environment.capacity ? ui.achievementEarned : ui.achievementPreviewNotice);
@@ -531,6 +535,10 @@ function localizeEnvironmentPresentation(environment, locale) {
   const presentation = environment.presentation ?? {};
   const selected = language === "es" ? "es" : "en";
   return {
+    title: presentation.title?.[selected]
+      ?? presentation.title?.en
+      ?? presentation.title?.es
+      ?? environment.title,
     description: presentation.description?.[selected]
       ?? presentation.description?.en
       ?? presentation.description?.es

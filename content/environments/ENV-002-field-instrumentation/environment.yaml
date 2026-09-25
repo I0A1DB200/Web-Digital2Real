@@ -1,0 +1,28 @@
+contract_version: "2.0.0"
+
+environment:
+  id: "ENV-002"
+  slug: "field-instrumentation"
+  title: "Field Instrumentation"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+  presentation:
+    title:
+      es: "Instrumentación de Campo"
+      en: "Field Instrumentation"
+    description:
+      es: "Diagnóstico de sensores e instrumentación industrial a partir de señales reales de campo, estados de proceso y comunicación con el sistema de control."
+      en: "Diagnosis of industrial sensors and instrumentation using real field signals, process states and communication with the control system."
+    skills:
+      es: ["Proceso físico", "Sensor / instrumento", "Señal", "E/S / comunicación", "PLC", "Lógica de control", "Localización de fallos a lo largo de la cadena de señal"]
+      en: ["Physical process", "Sensor / instrument", "Signal", "I/O / communication", "PLC", "Control logic", "Fault localization along the signal chain"]
+
+visual:
+  background: "media/ENV-002-field-instrumentation.png"
+  width: 1672
+  height: 941
+
+theory: "theory.yaml"
+
+hotspots: []

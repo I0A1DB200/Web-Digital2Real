@@ -1,0 +1,58 @@
+version: "1.0.0"
+default_locale: es
+supported_locales:
+  - es
+  - en
+
+media: []
+
+sections:
+  - id: TH-01-FIELD-INSTRUMENTATION-CHAIN
+    title: Cadena de instrumentación de campo
+    body: |-
+      La instrumentación de campo convierte una variable física en una señal útil para el control. Temperatura, presión, nivel, caudal, posición y vibración pueden alimentar sensores, transmisores y acondicionadores que convierten el fenómeno en un valor medible. La medición no termina en el sensor; debe seguir la cadena hasta la entrada del PLC, la visualización del HMI y el criterio de decisión del sistema.
+
+      Un mismo proceso puede observarse desde varias fronteras: el fenómeno físico, la salida del sensor, la señal de proceso y la variable lógica que toma el control. Cada una de estas capas puede coincidir o divergir. El diagnóstico correcto compara la evidencia de cada etapa sin asumir que el valor observado en software refleja automáticamente la condición real del proceso.
+    media_ids: []
+
+  - id: TH-02-ANALOG-SIGNAL-LOOPS
+    title: Bucles analógicos y 4–20 mA
+    body: |-
+      Las señales analógicas representan un valor continuo dentro de un rango definido. En instrumentación de campo, un lazo 4–20 mA es una interfaz muy habitual porque ofrece buena inmunidad al ruido, aceptación de longitudes de cable grandes y un nivel de diagnóstico útil mediante su tendencia y su margen de operación.
+
+      En un lazo 4–20 mA, el valor 4 mA suele representar el mínimo medido o el cero de escala, mientras que 20 mA representa el máximo. Si la señal se encuentra fuera de este rango, o si se queda en 0 mA o en un valor de saturación, puede indicar un fallo de alimentación, un circuito abierto, un sensor defectuoso o una condición de proceso fuera del rango esperado.
+
+      El diagnóstico de una señal analógica debe separarse del diagnóstico del sensor. Un transductor puede ser correcto y aún así la señal puede llegar alterada por cableado, tierra, módulo de entrada, configuración del rango o valor de referencia del sistema.
+    media_ids: []
+
+  - id: TH-03-SENSOR-OUTPUT-TYPES
+    title: Tipos de salida y compatibilidad eléctrica
+    body: |-
+      Los sensores, transmisores y acondicionadores pueden entregar señales analógicas, digitales, discretas o de comunicación. Las salidas analógicas suelen ser 0–10 V, 1–5 V o 4–20 mA; las señales digitales pueden comportarse como un contacto seco, un estado discreto o un mensaje digital serializado.
+
+      La compatibilidad eléctrica exige verificar tensión de alimentación, tipo de salida, polaridad, referencia, aislamiento y consumo del canal de entrada. Un sensor que se ve correcto por su LED puede aún producir un valor incompatible con el módulo del PLC o con la configuración de escala del sistema. La compatibilidad no se demuestra solo con el nombre del fabricante ni con la etiqueta del cable.
+    media_ids: []
+
+  - id: TH-04-TRANSMITTERS-AND-SETPOINTS
+    title: Transmisores, acondicionadores y consignas
+    body: |-
+      Un transmisor convierte la variable física en un valor normalizado para control y registro. Un acondicionador puede preparar la señal para distancia, aislamiento o conversión de escala. El punto de medida, la referencia de calibración y la escala de ingeniería deben interpretarse junto con la definición del proceso y la consigna del sistema.
+
+      La consigna o setpoint no es solo un valor numérico; es la referencia que decide cuándo el control debe actuar. Si la señal del sensor está dentro del rango, pero la lógica de control compara con un valor incorrecto o una escala equivocada, el comportamiento del sistema puede seguir siendo erróneo sin que el proceso físico esté fuera de límites.
+    media_ids: []
+
+  - id: TH-05-ANALOG-FAULTS
+    title: Fallos frecuentes en lazo analógico
+    body: |-
+      Un fallo analógico puede ser de fuente de alimentación, cableado, conexión, tierra, módulo, referencia, calibración o sensibilidad del sensor. Una señal anclada a 0 mA puede indicar corte de corriente, circuito abierto o ausencia de energía. Un valor fijo en un extremo del rango puede sugerir una salida bloqueada, una condición de saturación o una configuración incorrecta de escala.
+
+      El ruido, la deriva térmica, la vibración y la evaporación o contaminación del proceso también degradan la señal. Antes de reemplazar equipos, conviene comparar el valor del transmisor con la lectura del instrumento de referencia y con la condición física observada. La primera discrepancia verificable suele señalar el punto de ruptura.
+    media_ids: []
+
+  - id: TH-06-COMMISSIONING-AND-VALIDATION
+    title: Puesta en marcha y validación de la medición
+    body: |-
+      La puesta en marcha de instrumentación exige validar la escala, la polaridad, la referencia, el rango de trabajo y el comportamiento del lazo en condiciones reales. No basta con confirmar que el transmisor enciende; debe verificarse que la señal que llega al PLC corresponde con el proceso real y con la lógica del control.
+
+      Un diagnostico robusto sigue flujo de la variable física hacia el sensor, el transmisor, el cableado, la entrada del PLC, la variable de proceso y la lógica de control. La validación final debe recrear la condición del proceso real y confirmar que la actuación del sistema sigue el valor esperado. Esa secuencia reduce errores de sustitución y mantiene la confianza en la medición.
+    media_ids: []

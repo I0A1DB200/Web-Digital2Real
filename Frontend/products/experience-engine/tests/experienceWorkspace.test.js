@@ -119,8 +119,8 @@ test("a generated artifact opens and completes through Experience Lab without co
       },
       hotspots: [{ experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 }]
     }, {
-      id: "ENV-002", slug: "motion-cell", title: "Motion Cell", lifecycle: "preview", capacity: 10,
-      background: "environments/ENV-002-motion-pneumatics-profinet-cell.png",
+      id: "ENV-002", slug: "field-instrumentation", title: "Field Instrumentation", lifecycle: "preview", capacity: 10,
+      background: "environments/ENV-002-field-instrumentation.png",
       width: 1672, height: 941, hotspots: []
     }, {
       id: "ENV-003", slug: "diagnostic-cell", title: "Diagnostic Cell", lifecycle: "preview", capacity: 10,
@@ -153,7 +153,7 @@ test("a generated artifact opens and completes through Experience Lab without co
 
   await workspace.initialise();
   assert.equal(workspace.element.findAll(element => element.className === "environment-card").length, 3);
-  workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Motion Cell").click();
+  workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Field Instrumentation").click();
   assert.match(workspace.element.text, /being prepared/);
   assert.match(workspace.element.text, /0 \/ 0/);
   findButton(workspace.element, "All environments").click();
@@ -665,6 +665,46 @@ test("Environment Selector cards navigate, expose accessible metadata and derive
   assert.ok(navigator.element.find(item => item.className === "environment-stage"));
   findButton(navigator.element, "All environments").click();
   assert.ok(navigator.element.find(item => item.className === "environment-catalog"));
+});
+
+test("ENV-002 localizes catalog, accessible labels, environment and Theory titles without changing canonical data", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
+  const environment = catalog.environments.find(item => item.id === "ENV-002");
+  const original = JSON.stringify(environment);
+  const descriptions = {
+    es: "Diagnóstico de sensores e instrumentación industrial a partir de señales reales de campo, estados de proceso y comunicación con el sistema de control.",
+    en: "Diagnosis of industrial sensors and instrumentation using real field signals, process states and communication with the control system."
+  };
+  for (const [locale, expectedTitle] of [["es-ES", "Instrumentación de Campo"], ["en", "Field Instrumentation"], ["fr", "Field Instrumentation"]]) {
+    const documentRef = new FakeDocument();
+    documentRef.documentElement = { lang: locale };
+    const language = locale.startsWith("es") ? "es" : "en";
+    const theory = JSON.parse(await readFile(new URL(`../../../generated/experience-engine/${environment.theory.locales[language]}`, import.meta.url), "utf8"));
+    const progressStore = createEnvironmentProgressStore({ storage: null });
+    progressStore.registerEnvironment({
+      environmentId: environment.id, contractVersion: environment.contractVersion,
+      experienceIds: [], theorySectionIds: theory.sections.map(section => section.id)
+    });
+    const navigator = createEnvironmentNavigator({
+      documentRef, baseUrl: "./generated/experience-engine", environments: [environment], experiences: [],
+      onOpenExperience() {}, onOpenTheory: async () => theory,
+      progressStore, windowRef: new FakeEventTarget()
+    });
+    assert.equal(navigator.element.find(item => item.className === "environment-card__title").text, expectedTitle);
+    assert.equal(navigator.element.find(item => item.className === "environment-card__description").text, descriptions[language]);
+    const image = navigator.element.find(item => item.className === "environment-card__image");
+    assert.ok(image.alt.includes(expectedTitle));
+    assert.equal(image.src, "./generated/experience-engine/environments/ENV-002-field-instrumentation.png");
+    const main = navigator.element.find(item => item.className === "environment-card__main");
+    assert.ok(main.attributes["aria-label"].endsWith(expectedTitle));
+    main.click();
+    assert.ok(navigator.element.find(item => item.text === expectedTitle));
+    assert.equal(navigator.element.find(item => item.className === "environment-stage__image").alt, expectedTitle);
+    await findButton(navigator.element, language === "es" ? "Abrir teoría" : "Open Theory").click();
+    assert.ok(navigator.element.find(item => item.text === expectedTitle));
+    navigator.destroy();
+  }
+  assert.equal(JSON.stringify(environment), original);
 });
 
 test("Environment Selector CSS provides three, two and one-column layouts without intrinsic overflow", async () => {

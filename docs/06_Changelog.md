@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-25 — ENV-002 Field Instrumentation
+
+- Prepared ENV-002 with ES/EN titles and descriptions and a diagnostic scope spanning physical process, instrument, signal, I/O, PLC and control logic. Optional localized titles reuse environment presentation metadata and fall back to the canonical title for existing environments.
+- Preserved the integrated cover and six existing Theory sections by approval; future Theory additions must derive from validated Experiences, without an advance curriculum or Experience-specific articles. No Experience was created.
+- Aligned the ENV-002 authoring directory, cover filename and test references with Field Instrumentation, preserving its stable identifier and existing content.
+- Regenerated the preview catalog from the canonical environment definition so the selector displays the updated title and description.
+
 ## 2026-09-25 — EE-0010 system-level causal diagnosis
 
 - Added EE-0010 as the tenth and final planned ENV-001 Experience, with seven decisions tracing multiple machine symptoms to one physical process condition through commands, sequence state and PLC logic.

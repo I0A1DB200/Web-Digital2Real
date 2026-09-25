@@ -156,11 +156,11 @@ test("a generated artifact opens and completes through Experience Lab without co
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Motion Cell").click();
   assert.match(workspace.element.text, /being prepared/);
   assert.match(workspace.element.text, /0 \/ 0/);
-  findButton(workspace.element, "Back to environments").click();
+  findButton(workspace.element, "All environments").click();
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Diagnostic Cell").click();
   assert.match(workspace.element.text, /being prepared/);
   assert.match(workspace.element.text, /0 \/ 0/);
-  findButton(workspace.element, "Back to environments").click();
+  findButton(workspace.element, "All environments").click();
   const environment = workspace.element.find(
     element => element.attributes["aria-label"] === "Open environment: Automated Factory"
   );
@@ -544,7 +544,7 @@ test("environment progress counts unique active assignments and updates without 
     id: `EXP-TEST-${index}`, editorialId: `EE-TEST-${index}`, title: `Test ${index}`
   }));
   const excluded = [
-    { id: "archived", editorialId: "EE-0009", status: "archived" },
+    { id: "archived", editorialId: "EE-0909", status: "archived" },
     { id: "disabled", editorialId: "EE-DISABLED", status: "disabled" },
     { id: "off", editorialId: "EE-OFF", enabled: false }
   ];
@@ -600,10 +600,96 @@ test("progress subscriptions notify once and can unsubscribe", () => {
   assert.equal(calls, 1);
 });
 
-test("the canonical archived EE-0009 stays outside the generated catalog", async () => {
+test("Environment Selector cards navigate, expose accessible metadata and derive ten-segment progress", () => {
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "en" };
+  const experienceIds = Array.from({ length: 10 }, (_, index) => `EXP-CARD-${index + 1}`);
+  const experiences = experienceIds.map((id, index) => ({
+    id, editorialId: `EE-${String(index + 1).padStart(4, "0")}`, title: `Experience ${index + 1}`, summary: "Summary"
+  }));
+  const environment = {
+    id: "ENV-001", contractVersion: "2.0.0", title: "Automated Factory", capacity: 10,
+    background: "factory.png", width: 1672, height: 941,
+    presentation: {
+      description: { es: "DescripciÃ³n", en: "Technical description" },
+      skills: { es: ["Sensores"], en: ["Sensors", "PLC-HMI integration"] }
+    },
+    hotspots: experiences.map((experience, index) => ({
+      experienceEditorialId: experience.editorialId, x: index * 5, y: index * 5
+    }))
+  };
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  progressStore.registerEnvironment({
+    environmentId: environment.id, contractVersion: "2.0.0", experienceIds, theorySectionIds: []
+  });
+  const navigator = createEnvironmentNavigator({
+    documentRef, baseUrl: ".", environments: [environment], experiences,
+    progressStore, onOpenExperience() {}, windowRef: new FakeEventTarget()
+  });
+
+  assert.match(navigator.element.text, /Technical description/);
+  assert.match(navigator.element.text, /10 Engineering Experiences/);
+  assert.match(navigator.element.text, /0 \/ 10/);
+  const media = navigator.element.find(item => item.className === "environment-card__media");
+  const image = navigator.element.find(item => item.className === "environment-card__image");
+  assert.ok(media);
+  assert.equal(image.parent, media);
+  const segments = navigator.element.findAll(item => item.className === "environment-card__segment");
+  assert.equal(segments.length, 10);
+  assert.equal(segments.every(item => item.dataset.complete === "false"), true);
+
+  const menuButton = navigator.element.find(item => item.attributes["aria-haspopup"] === "menu");
+  menuButton.click();
+  assert.equal(menuButton.attributes["aria-expanded"], "true");
+  assert.equal(navigator.element.find(item => item.className === "environment-stage"), null);
+  documentRef.dispatch("click", { target: new FakeElement("div", documentRef) });
+  assert.equal(menuButton.attributes["aria-expanded"], "false");
+  menuButton.click();
+  findButton(navigator.element, "Knowledge & Skills").click();
+  assert.match(navigator.element.text, /PLC-HMI integration/);
+  assert.equal(navigator.element.find(item => item.attributes.role === "dialog").attributes["aria-modal"], "true");
+  documentRef.dispatch("keydown", { key: "Escape", preventDefault() {} });
+  assert.equal(navigator.element.find(item => item.attributes.role === "dialog"), null);
+
+  menuButton.click();
+  findButton(navigator.element, "Certificate Preview").click();
+  assert.match(navigator.element.text, /Preview · available when the environment is complete/);
+  findButton(navigator.element, "Close").click();
+
+  experienceIds.forEach(id => progressStore.recordExperienceResult(environment.id, id, { completed: true, mastered: false }));
+  assert.match(navigator.element.text, /10 \/ 10/);
+  assert.match(navigator.element.text, /Completed/);
+  assert.equal(navigator.element.findAll(item => item.className === "environment-card__segment").every(item => item.dataset.complete === "true"), true);
+
+  navigator.element.find(item => item.attributes["aria-label"] === "Open environment: Automated Factory").click();
+  assert.ok(navigator.element.find(item => item.className === "environment-stage"));
+  findButton(navigator.element, "All environments").click();
+  assert.ok(navigator.element.find(item => item.className === "environment-catalog"));
+});
+
+test("Environment Selector CSS provides three, two and one-column layouts without intrinsic overflow", async () => {
+  const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
+  const brand = await readFile(new URL("../../../styles/brand.css", import.meta.url), "utf8");
+  assert.match(styles, /\.environment-catalog\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(styles, /\.experience-workspace__shell:has\(>\s*\.environment-catalog\)\s*\{[^}]*width:\s*100%[^}]*max-width:\s*1240px/s);
+  assert.match(styles, /\.environment-catalog\s*\{[^}]*align-items:\s*start/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*grid-template-rows:\s*auto\s+auto/s);
+  assert.match(styles, /@media \(max-width:\s*1100px\)[\s\S]*?\.environment-catalog\s*\{[^}]*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.environment-catalog\s*\{[^}]*grid-template-columns:\s*1fr/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*min-width:\s*0/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*box-shadow:\s*var\(--shadow-card\)/s);
+  assert.match(styles, /\.environment-card__media\s*\{[^}]*position:\s*relative[^}]*width:\s*100%[^}]*aspect-ratio:\s*16\s*\/\s*9[^}]*overflow:\s*hidden/s);
+  assert.match(styles, /\.environment-card__image\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*cover/s);
+  assert.doesNotMatch(styles, /\.environment-card__description\s*\{[^}]*min-height/s);
+  assert.match(styles, /\.environment-card__progress\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto/s);
+  assert.match(styles, /\.environment-card__segments\s*\{[^}]*grid-column:\s*1[^}]*grid-row:\s*1/s);
+  assert.match(brand, /--shadow-card:\s*0\s+18px\s+42px\s+rgba\(0,\s*0,\s*0,\s*0\.28\)/);
+});
+
+test("the canonical archived EE-0909 stays outside the generated catalog", async () => {
   const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
-  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0009"), false);
-  assert.equal(catalog.environments.some(item => item.hotspots.some(hotspot => hotspot.experienceEditorialId === "EE-0009")), false);
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0909"), false);
+  assert.equal(catalog.environments.some(item => item.hotspots.some(hotspot => hotspot.experienceEditorialId === "EE-0909")), false);
   const source = await readFile(new URL("../../../../content/experiences/sensors/EE-0009-photoelectric-sensor-misalignment/experience.yaml", import.meta.url), "utf8");
   assert.match(source, /status: "archived"/);
 });

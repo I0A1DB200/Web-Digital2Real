@@ -1,0 +1,465 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-HMI-STATE-009"
+  editorial_id: "EE-0009"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Siemens S7-1500 / SIMATIC HMI TP700 Comfort / WinCC Comfort"
+  domain: "PLC-HMI information mapping"
+  industry: "Manufacturing"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+public:
+  slug: "hmi-incorrect-machine-state"
+  title: "Estado de máquina incorrecto en HMI"
+  summary: "Traza el estado de una caja desde el proceso hasta la pantalla y detecta un tag HMI asociado a la variable PLC equivocada."
+  estimated_duration: 16
+  scenario:
+    initial_context: "Una caja está en la posición de parada del transportador, pero la TP700 Comfort muestra Box at Stop: NOT DETECTED."
+    operational_state: "El sensor detecta la caja, el S7-1500 representa el estado correcto y otros valores HMI siguen actualizándose."
+    initiating_event: "El operador comunica que la indicación HMI contradice el proceso visible."
+    learner_role: "Técnico de automatización que debe localizar dónde divergen estado real y representación HMI."
+    safety_context:
+      safe_state: "Observar y verificar el proceso con los movimientos controlados conforme al procedimiento autorizado."
+      intervention_constraints: ["No forzar variables PLC.", "No fijar la indicación HMI en TRUE.", "No modificar lógica PLC ni sustituir hardware sin evidencia."]
+  learning_objectives:
+    - id: "OBJ-TRACE-STATE"
+      description: "Comparar condición física, sensor y variable PLC con el estado mostrado."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-HMI-BOUNDARY"
+      description: "Distinguir comunicación PLC-HMI saludable de una asociación de tag HMI incorrecta."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-MAPPING"
+      description: "Corregir el origen del tag HMI y verificar la representación completa sin bypass."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-VERIFY-PROCESS"
+      phase: "incident"
+      title: "Verificar el proceso real"
+      situation: "La caja está visible y la HMI dice NOT DETECTED. ¿Qué evidencia debe establecerse primero?"
+      evidence_ids: ["EVID-01-CONTRADICTION"]
+      decision_ids: ["DEC-01-RESTART-HMI", "DEC-01-VERIFY-BOX-SENSOR", "DEC-01-REPLACE-SENSOR"]
+      media_ids: ["ART-001", "ART-002"]
+    - id: "STAGE-02-VERIFY-PLC"
+      phase: "investigation"
+      title: "Verificar el estado PLC"
+      situation: "La caja está presente y el sensor detecta. ¿Dónde debe comprobarse la siguiente representación?"
+      evidence_ids: ["EVID-02-PHYSICAL"]
+      decision_ids: ["DEC-02-EDIT-PLC", "DEC-02-FORCE-INPUT", "DEC-02-MONITOR-PLC"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-CHECK-CONNECTION"
+      phase: "investigation"
+      title: "Evaluar la comunicación HMI"
+      situation: "DB_HMI.BoxAtStop está TRUE, pero la HMI sigue indicando NOT DETECTED. ¿Qué frontera se comprueba ahora?"
+      evidence_ids: ["EVID-03-PLC-TRUE"]
+      decision_ids: ["DEC-03-CHECK-HMI-CONNECTION", "DEC-03-REPLACE-PLC", "DEC-03-CHANGE-LOGIC"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-INSPECT-HMI-TAG"
+      phase: "investigation"
+      title: "Inspeccionar el tag HMI"
+      situation: "La conexión PLC-HMI funciona y otros valores se actualizan. ¿Qué configuración del objeto afectado debe seguirse?"
+      evidence_ids: ["EVID-04-CONNECTION-HEALTHY"]
+      decision_ids: ["DEC-04-RESET-NETWORK", "DEC-04-REPLACE-HMI", "DEC-04-FORCE-TRUE", "DEC-04-INSPECT-TAG"]
+      media_ids: []
+    - id: "STAGE-05-COMPARE-SOURCES"
+      phase: "investigation"
+      title: "Comparar orígenes de información"
+      situation: "BoxAtStop_HMI lee DB_HMI.BoxAtStop_2 en %DB10.DBX1.1. ¿Qué comparación identifica la discrepancia?"
+      evidence_ids: ["EVID-05-WRONG-MAPPING"]
+      decision_ids: ["DEC-05-EDIT-SENSOR", "DEC-05-COMPARE-PLC-HMI", "DEC-05-RESTART-PANEL"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-CORRECT-VERIFY"
+      phase: "solution"
+      title: "Corregir y verificar"
+      situation: "La variable correcta es DB_HMI.BoxAtStop en %DB10.DBX0.0. ¿Qué cambio resuelve el incidente?"
+      evidence_ids: ["EVID-06-ROOT-CAUSE"]
+      decision_ids: ["DEC-06-MAP-AND-VERIFY", "DEC-06-HARDCODE-TRUE", "DEC-06-MODIFY-PLC"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-CONTRADICTION"
+      type: "initial_observation"
+      source: "Proceso / TP700 Comfort"
+      content: "La caja está en parada; la HMI muestra Box at Stop: NOT DETECTED."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-PHYSICAL"
+      type: "inspection"
+      source: "Transportador"
+      content: "La caja está físicamente presente y el sensor fotoeléctrico la detecta."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-VERIFY-BOX-SENSOR"]
+    - id: "EVID-03-PLC-TRUE"
+      type: "measurement"
+      source: "S7-1500 / TIA Portal"
+      content: "La señal llega al PLC y DB_HMI.BoxAtStop en %DB10.DBX0.0 está TRUE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-MONITOR-PLC"]
+    - id: "EVID-04-CONNECTION-HEALTHY"
+      type: "diagnostic"
+      source: "PLC-HMI / PROFINET"
+      content: "La TP700 Comfort comunica con el PLC y otros valores HMI se actualizan normalmente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-CHECK-HMI-CONNECTION"]
+    - id: "EVID-05-WRONG-MAPPING"
+      type: "diagnostic"
+      source: "WinCC Comfort / TIA Portal"
+      content: "El objeto usa BoxAtStop_HMI, asociado a DB_HMI.BoxAtStop_2 en %DB10.DBX1.1."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-TAG"]
+    - id: "EVID-06-ROOT-CAUSE"
+      type: "diagnostic"
+      source: "Comparación PLC-HMI"
+      content: "El PLC verifica DB_HMI.BoxAtStop en %DB10.DBX0.0; el tag HMI lee otra variable. La divergencia está en el mapeo HMI."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-COMPARE-PLC-HMI"]
+  decisions:
+    - id: "DEC-01-RESTART-HMI"
+      stage_id: "STAGE-01-VERIFY-PROCESS"
+      action: "Reiniciar el panel antes de confirmar el estado de campo."
+    - id: "DEC-01-VERIFY-BOX-SENSOR"
+      stage_id: "STAGE-01-VERIFY-PROCESS"
+      action: "Confirmar la posición real de la caja y la detección local del sensor."
+    - id: "DEC-01-REPLACE-SENSOR"
+      stage_id: "STAGE-01-VERIFY-PROCESS"
+      action: "Sustituir el sensor porque la HMI dice NOT DETECTED."
+    - id: "DEC-02-EDIT-PLC"
+      stage_id: "STAGE-02-VERIFY-PLC"
+      action: "Modificar la lógica PLC para que la HMI cambie de estado."
+    - id: "DEC-02-FORCE-INPUT"
+      stage_id: "STAGE-02-VERIFY-PLC"
+      action: "Forzar la señal PLC mientras se inspecciona la HMI."
+    - id: "DEC-02-MONITOR-PLC"
+      stage_id: "STAGE-02-VERIFY-PLC"
+      action: "Monitorizar la señal y DB_HMI.BoxAtStop en TIA Portal."
+    - id: "DEC-03-CHECK-HMI-CONNECTION"
+      stage_id: "STAGE-03-CHECK-CONNECTION"
+      action: "Comprobar la conexión PLC-HMI y si otros valores se actualizan."
+    - id: "DEC-03-REPLACE-PLC"
+      stage_id: "STAGE-03-CHECK-CONNECTION"
+      action: "Sustituir el PLC aunque su variable de proceso es correcta."
+    - id: "DEC-03-CHANGE-LOGIC"
+      stage_id: "STAGE-03-CHECK-CONNECTION"
+      action: "Cambiar la variable PLC sin conocer aún el origen de la HMI."
+    - id: "DEC-04-RESET-NETWORK"
+      stage_id: "STAGE-04-INSPECT-HMI-TAG"
+      action: "Reiniciar la red PROFINET pese a la actualización de otros valores."
+    - id: "DEC-04-REPLACE-HMI"
+      stage_id: "STAGE-04-INSPECT-HMI-TAG"
+      action: "Sustituir la TP700 Comfort sin revisar el objeto."
+    - id: "DEC-04-INSPECT-TAG"
+      stage_id: "STAGE-04-INSPECT-HMI-TAG"
+      action: "Inspeccionar el tag BoxAtStop_HMI utilizado por el objeto de pantalla."
+    - id: "DEC-04-FORCE-TRUE"
+      stage_id: "STAGE-04-INSPECT-HMI-TAG"
+      action: "Fijar la indicación de pantalla en TRUE."
+    - id: "DEC-05-COMPARE-PLC-HMI"
+      stage_id: "STAGE-05-COMPARE-SOURCES"
+      action: "Comparar el origen de BoxAtStop_HMI con DB_HMI.BoxAtStop verificada en el PLC."
+    - id: "DEC-05-EDIT-SENSOR"
+      stage_id: "STAGE-05-COMPARE-SOURCES"
+      action: "Realinear el sensor aunque el PLC registra correctamente la caja."
+    - id: "DEC-05-RESTART-PANEL"
+      stage_id: "STAGE-05-COMPARE-SOURCES"
+      action: "Reiniciar el panel para conservar la asociación actual."
+    - id: "DEC-06-HARDCODE-TRUE"
+      stage_id: "STAGE-06-CORRECT-VERIFY"
+      action: "Fijar el objeto HMI en DETECTED permanentemente."
+    - id: "DEC-06-MODIFY-PLC"
+      stage_id: "STAGE-06-CORRECT-VERIFY"
+      action: "Cambiar lógica PLC para hacer TRUE la variable equivocada."
+    - id: "DEC-06-MAP-AND-VERIFY"
+      stage_id: "STAGE-06-CORRECT-VERIFY"
+      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop y verificar DETECTED frente al proceso real."
+  visual:
+    educational_purpose: "Comparar proceso, PLC, comunicación y origen del objeto HMI antes de corregir la representación."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/01.png"
+        alt: "Portada del entorno transportador con PLC y HMI."
+        caption: "La pantalla contradice el proceso."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/02.png"
+        alt: "Caja presente mientras la HMI muestra NOT DETECTED."
+        caption: "Observación inicial, sin causa confirmada."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/03.png"
+        alt: "Estado de sensor y variable PLC correctos."
+        caption: "La condición física llega al S7-1500."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/04.png"
+        alt: "Comunicación entre PLC y TP700 Comfort operativa."
+        caption: "Conexión disponible no equivale a tag correctamente asociado."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/05.png"
+        alt: "BoxAtStop_HMI asociado a DB_HMI.BoxAtStop_2."
+        caption: "La configuración HMI apunta a la variable equivocada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-HMI-STATE-009/06.png"
+        alt: "BoxAtStop_HMI corregido a DB_HMI.BoxAtStop y pantalla DETECTED."
+        caption: "Proceso, PLC y HMI vuelven a concordar."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "Proceso, sensor, PLC y comunicación estaban correctos; BoxAtStop_HMI leía DB_HMI.BoxAtStop_2 en lugar de DB_HMI.BoxAtStop."
+    process: ["Confirmar caja y sensor.", "Verificar DB_HMI.BoxAtStop TRUE.", "Confirmar comunicación PLC-HMI.", "Seguir el tag del objeto.", "Comparar orígenes.", "Corregir y verificar DETECTED."]
+    lesson: "Una conexión HMI saludable no garantiza que cada tag lea la variable PLC prevista."
+    avoided_errors: ["Sustituir el sensor.", "Alterar lógica PLC.", "Forzar variables o fijar TRUE.", "Reiniciar sin diagnóstico."]
+    industrial_value: ["Trazabilidad de información extremo a extremo.", "Corrección localizada en visualización.", "Verificación de proceso y pantalla."]
+    media_ids: ["ART-006"]
+private:
+  fault_model:
+    root_cause: "El tag HMI BoxAtStop_HMI referencia DB_HMI.BoxAtStop_2 en %DB10.DBX1.1 en vez de la variable correcta DB_HMI.BoxAtStop en %DB10.DBX0.0, aunque el proceso, PLC y comunicación PLC-HMI son correctos."
+    recovery_conditions: ["BoxAtStop_HMI referencia DB_HMI.BoxAtStop en %DB10.DBX0.0.", "La caja y el sensor están activos.", "La comunicación PLC-HMI sigue operativa.", "La HMI muestra DETECTED y concuerda con el proceso."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-FIELD"
+        statement: "La condición física o el sensor son incorrectos."
+        initial_status: "possible"
+      - id: "HYP-COMMUNICATION"
+        statement: "La conexión PLC-HMI está perdida."
+        initial_status: "possible"
+      - id: "HYP-HMI-MAPPING"
+        statement: "El objeto HMI lee una variable PLC equivocada."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-HMI-MAPPING"
+    critical_path: ["DEC-01-VERIFY-BOX-SENSOR", "DEC-02-MONITOR-PLC", "DEC-03-CHECK-HMI-CONNECTION", "DEC-04-INSPECT-TAG", "DEC-05-COMPARE-PLC-HMI", "DEC-06-MAP-AND-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-VERIFY-BOX-SENSOR"
+      is_correct: true
+      rationale: "La observación física precede a atribuir el fallo a una capa informativa."
+      classification: "strong"
+      consequence: "Se confirma caja y sensor."
+      evidence_revealed: ["EVID-02-PHYSICAL"]
+      next_stage: "STAGE-02-VERIFY-PLC"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-RESTART-HMI"
+      is_correct: false
+      retry_feedback: "Reiniciar puede borrar contexto; verifica primero caja y sensor."
+      rationale: "No define el estado real."
+      classification: "weak"
+      consequence: "No se localiza el fallo."
+      evidence_revealed: []
+      next_stage: "STAGE-02-VERIFY-PLC"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "La HMI no demuestra un fallo del sensor; comprueba la detección local."
+      rationale: "Es una sustitución sin evidencia."
+      classification: "weak"
+      consequence: "Puede cambiarse hardware sano."
+      evidence_revealed: []
+      next_stage: "STAGE-02-VERIFY-PLC"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-02-MONITOR-PLC"
+      is_correct: true
+      rationale: "El estado PLC determina si la divergencia aparece antes o después del control."
+      classification: "strong"
+      consequence: "DB_HMI.BoxAtStop queda confirmada TRUE."
+      evidence_revealed: ["EVID-03-PLC-TRUE"]
+      next_stage: "STAGE-03-CHECK-CONNECTION"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-02-EDIT-PLC"
+      is_correct: false
+      retry_feedback: "El estado PLC no se ha medido; monitorízalo antes de editar lógica."
+      rationale: "Cambiar lógica sin evidencia introduce riesgo."
+      classification: "weak"
+      consequence: "Se altera la capa incorrecta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-CHECK-CONNECTION"
+      score_effect: -6
+      safety_effect: -1
+    - decision_id: "DEC-02-FORCE-INPUT"
+      is_correct: false
+      retry_feedback: "Forzar la entrada falsea la evidencia. Monitoriza su valor real."
+      rationale: "El forcing oculta el proceso."
+      classification: "unsafe"
+      consequence: "El valor deja de representar la caja."
+      evidence_revealed: []
+      next_stage: "STAGE-03-CHECK-CONNECTION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-03-CHECK-HMI-CONNECTION"
+      is_correct: true
+      rationale: "La disponibilidad del enlace se separa del mapeo de variables."
+      classification: "strong"
+      consequence: "Se descarta una caída general PLC-HMI."
+      evidence_revealed: ["EVID-04-CONNECTION-HEALTHY"]
+      next_stage: "STAGE-04-INSPECT-HMI-TAG"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-03-REPLACE-PLC"
+      is_correct: false
+      retry_feedback: "El PLC contiene el estado correcto. Comprueba ahora el enlace con la HMI."
+      rationale: "Contradice la variable verificada."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INSPECT-HMI-TAG"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-03-CHANGE-LOGIC"
+      is_correct: false
+      retry_feedback: "La variable PLC ya refleja la caja. Evalúa la comunicación con el panel."
+      rationale: "Compensaría un síntoma HMI con lógica PLC."
+      classification: "weak"
+      consequence: "Cambio innecesario."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INSPECT-HMI-TAG"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-04-INSPECT-TAG"
+      is_correct: true
+      rationale: "Con la conexión sana, el origen del objeto HMI es la siguiente frontera."
+      classification: "strong"
+      consequence: "Se revela la asociación actual de BoxAtStop_HMI."
+      evidence_revealed: ["EVID-05-WRONG-MAPPING"]
+      next_stage: "STAGE-05-COMPARE-SOURCES"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-04-RESET-NETWORK"
+      is_correct: false
+      retry_feedback: "Otros valores se actualizan; inspecciona el origen del objeto afectado."
+      rationale: "No hay caída general de red."
+      classification: "weak"
+      consequence: "Se actúa sobre una capa sana."
+      evidence_revealed: []
+      next_stage: "STAGE-05-COMPARE-SOURCES"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-REPLACE-HMI"
+      is_correct: false
+      retry_feedback: "El panel comunica. Revisa el tag del objeto antes de sustituirlo."
+      rationale: "La comunicación no demuestra defecto hardware."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-05-COMPARE-SOURCES"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-04-FORCE-TRUE"
+      is_correct: false
+      retry_feedback: "Fijar TRUE ocultaría el mapeo incorrecto y dejaría de mostrar el estado real."
+      rationale: "Es un bypass informativo."
+      classification: "unsafe"
+      consequence: "La pantalla deja de reflejar el proceso."
+      evidence_revealed: []
+      next_stage: "STAGE-05-COMPARE-SOURCES"
+      score_effect: -10
+      safety_effect: -8
+    - decision_id: "DEC-05-COMPARE-PLC-HMI"
+      is_correct: true
+      rationale: "La comparación sitúa la primera discrepancia en el origen configurado para la HMI."
+      classification: "strong"
+      consequence: "Se confirma que HMI y PLC usan variables distintas."
+      evidence_revealed: ["EVID-06-ROOT-CAUSE"]
+      next_stage: "STAGE-06-CORRECT-VERIFY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-05-EDIT-SENSOR"
+      is_correct: false
+      retry_feedback: "El PLC ya representa correctamente la caja. Compara el origen HMI con esa variable."
+      rationale: "La causa no está en detección."
+      classification: "weak"
+      consequence: "Se altera una capa sana."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECT-VERIFY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-RESTART-PANEL"
+      is_correct: false
+      retry_feedback: "Reiniciar no cambia la asociación del tag. Compara la fuente configurada."
+      rationale: "El mapeo persiste."
+      classification: "weak"
+      consequence: "El síntoma reaparece."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECT-VERIFY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-06-MAP-AND-VERIFY"
+      is_correct: true
+      rationale: "La reparación pertenece al mapeo HMI y debe verificarse contra el proceso real."
+      classification: "strong"
+      consequence: "BoxAtStop_HMI lee la variable correcta y muestra DETECTED."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-HARDCODE-TRUE"
+      is_correct: false
+      retry_feedback: "TRUE permanente oculta el proceso real. Corrige la asociación del tag."
+      rationale: "No restablece trazabilidad."
+      classification: "unsafe"
+      consequence: "Representación falsa."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-06-MODIFY-PLC"
+      is_correct: false
+      retry_feedback: "La variable PLC ya es correcta. Corrige el mapeo HMI y verifica el resultado."
+      rationale: "Compensa el error en la capa incorrecta."
+      classification: "weak"
+      consequence: "Lógica innecesariamente alterada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -7
+      safety_effect: -2
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "El proceso y PLC estaban correctos, pero BoxAtStop_HMI leía DB_HMI.BoxAtStop_2."
+    correct_reasoning: ["Verificar proceso.", "Confirmar PLC TRUE.", "Confirmar comunicación.", "Seguir origen HMI.", "Comparar variables."]
+    recovery: ["Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop.", "Verificar DETECTED y estado físico coincidente."]
+  technical_validation:
+    status: "pass"
+    evidence: ["Estado físico y PLC verificados.", "Comunicación PLC-HMI operativa.", "Error limitado al mapeo del tag HMI."]

@@ -29,24 +29,55 @@ export function createEnvironmentNavigator({
   let activePopover = null;
   let activeConnector = null;
   let resizeObserver = null;
+  let catalogProgressRecords = [];
+  let activeMenu = null;
+  let activeMenuButton = null;
+  let activeCatalogSurface = null;
   const unsubscribeProgress = progressStore.subscribe?.(renderProgress);
 
   function renderCatalog() {
     leaveEnvironment();
+    leaveCatalog();
     selectedEnvironment = null;
     const fragment = createShell(documentRef);
     const list = createElement(documentRef, "div", "environment-catalog");
     environments.forEach(environment => {
-      const card = createElement(documentRef, "button", "environment-card");
-      card.type = "button";
-      card.setAttribute("aria-label", `${ui.openEnvironment}: ${environment.title}`);
+      const card = createElement(documentRef, "article", "environment-card");
+      const top = createElement(documentRef, "div", "environment-card__topbar");
+      appendText(documentRef, top, "span", "environment-card__id", environment.id);
+      const menuButton = createButton(documentRef, ui.environmentMenu(environment.title), "environment-card__menu-button");
+      menuButton.setAttribute("aria-label", ui.environmentMenu(environment.title));
+      menuButton.setAttribute("aria-haspopup", "menu");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.textContent = "•••";
+      menuButton.addEventListener("click", event => {
+        event?.stopPropagation?.();
+        toggleEnvironmentMenu(environment, card, menuButton);
+      });
+      top.appendChild(menuButton);
+      card.appendChild(top);
+      const main = createElement(documentRef, "button", "environment-card__main");
+      main.type = "button";
+      main.setAttribute("aria-label", `${ui.openEnvironment}: ${environment.title}`);
+      const media = createElement(documentRef, "span", "environment-card__media");
       const image = createElement(documentRef, "img", "environment-card__image");
       image.src = `${baseUrl}/${environment.background}`;
-      image.alt = "";
-      card.appendChild(image);
-      appendText(documentRef, card, "span", "environment-card__id", environment.id);
-      appendText(documentRef, card, "h2", "", environment.title);
-      card.addEventListener("click", () => renderEnvironment(environment.id));
+      image.alt = ui.environmentImage(environment.title);
+      image.width = environment.width;
+      image.height = environment.height;
+      media.appendChild(image);
+      main.appendChild(media);
+      const content = createElement(documentRef, "span", "environment-card__content");
+      appendText(documentRef, content, "span", "environment-card__title", environment.title);
+      appendText(documentRef, content, "span", "environment-card__description", localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang).description);
+      appendText(documentRef, content, "span", "environment-card__count", ui.experienceCount(environment.capacity));
+      main.appendChild(content);
+      main.addEventListener("click", () => renderEnvironment(environment.id));
+      card.appendChild(main);
+      const progress = createElement(documentRef, "div", "environment-card__progress");
+      card.appendChild(progress);
+      catalogProgressRecords.push({ environment, progress });
+      renderCardProgress(environment, progress);
       list.appendChild(card);
     });
     if (!environments.length) {
@@ -54,10 +85,13 @@ export function createEnvironmentNavigator({
     }
     fragment.appendChild(list);
     element.replaceChildren(fragment);
+    documentRef.addEventListener?.("click", handleCatalogOutsideClick);
+    documentRef.addEventListener?.("keydown", handleCatalogKeydown);
   }
 
   function renderEnvironment(environmentId) {
     leaveEnvironment();
+    leaveCatalog();
     const environment = environments.find(item => item.id === environmentId);
     if (!environment) throw new Error(`Environment ${environmentId} is not available.`);
     selectedEnvironment = environment;
@@ -277,6 +311,7 @@ export function createEnvironmentNavigator({
   }
 
   function renderProgress() {
+    catalogProgressRecords.forEach(record => renderCardProgress(record.environment, record.progress));
     if (!selectedEnvironment || !progressElement) return;
     const available = [...new Set(selectedEnvironment.hotspots
       .map(item => experienceByEditorialId.get(item.experienceEditorialId))
@@ -329,6 +364,126 @@ export function createEnvironmentNavigator({
     hotspotRecords = [];
   }
 
+  function renderCardProgress(environment, target) {
+    const capacity = environment.capacity;
+    const available = [...new Set(environment.hotspots
+      .map(item => experienceByEditorialId.get(item.experienceEditorialId))
+      .filter(Boolean))];
+    const completed = environment.contractVersion === "2.0.0"
+      ? progressStore.getEnvironmentProgress(environment.id).experiences.completed
+      : available.filter(item => progressStore.isCompleted(item.id)).length;
+    const bounded = Math.min(capacity, completed);
+    const heading = createElement(documentRef, "div", "environment-card__progress-heading");
+    appendText(documentRef, heading, "span", "", bounded === capacity ? ui.completed : ui.progress);
+    appendText(documentRef, heading, "strong", "", `${bounded} / ${capacity}`);
+    const segments = createElement(documentRef, "span", "environment-card__segments");
+    segments.setAttribute("role", "progressbar");
+    segments.setAttribute("aria-valuemin", "0");
+    segments.setAttribute("aria-valuemax", String(capacity));
+    segments.setAttribute("aria-valuenow", String(bounded));
+    segments.setAttribute("aria-valuetext", ui.completedValue(bounded, capacity));
+    for (let index = 0; index < capacity; index += 1) {
+      const segment = createElement(documentRef, "span", "environment-card__segment");
+      segment.dataset.complete = String(index < bounded);
+      segment.setAttribute("aria-hidden", "true");
+      segments.appendChild(segment);
+    }
+    target.replaceChildren(heading, segments);
+    target.dataset.complete = String(bounded === capacity);
+  }
+
+  function toggleEnvironmentMenu(environment, card, button) {
+    if (activeMenuButton === button) { closeEnvironmentMenu({ restoreFocus: true }); return; }
+    closeEnvironmentMenu({ restoreFocus: false });
+    const menu = createElement(documentRef, "div", "environment-card__menu");
+    menu.setAttribute("role", "menu");
+    const menuId = `environment-menu-${environment.id}`;
+    menu.id = menuId;
+    button.setAttribute("aria-controls", menuId);
+    button.setAttribute("aria-expanded", "true");
+    const skills = createButton(documentRef, ui.knowledgeSkills, "environment-card__menu-item");
+    skills.setAttribute("role", "menuitem");
+    skills.addEventListener("click", event => { event?.stopPropagation?.(); closeEnvironmentMenu({ restoreFocus: false }); openCatalogSurface(environment, "skills", button); });
+    const certificate = createButton(documentRef, ui.certificatePreview, "environment-card__menu-item");
+    certificate.setAttribute("role", "menuitem");
+    certificate.addEventListener("click", event => { event?.stopPropagation?.(); closeEnvironmentMenu({ restoreFocus: false }); openCatalogSurface(environment, "certificate", button); });
+    menu.appendChild(skills); menu.appendChild(certificate); card.appendChild(menu);
+    activeMenu = menu; activeMenuButton = button; skills.focus?.();
+  }
+
+  function closeEnvironmentMenu({ restoreFocus }) {
+    if (!activeMenuButton) return;
+    const button = activeMenuButton;
+    activeMenu?.remove?.();
+    button.setAttribute("aria-expanded", "false");
+    button.removeAttribute?.("aria-controls");
+    activeMenu = null; activeMenuButton = null;
+    if (restoreFocus) button.focus?.();
+  }
+
+  function openCatalogSurface(environment, kind, returnFocus) {
+    closeCatalogSurface({ restoreFocus: false });
+    const presentation = localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang);
+    const backdrop = createElement(documentRef, "div", "environment-catalog-surface");
+    const panel = createElement(documentRef, "section", "environment-catalog-surface__panel");
+    panel.setAttribute("role", "dialog"); panel.setAttribute("aria-modal", "true");
+    const titleId = `environment-${kind}-${environment.id}`;
+    panel.setAttribute("aria-labelledby", titleId);
+    appendText(documentRef, panel, "span", "experience-workspace__eyebrow", environment.id);
+    const title = appendText(documentRef, panel, "h2", "", kind === "skills" ? ui.knowledgeSkills : ui.certificatePreview);
+    title.id = titleId;
+    if (kind === "skills") {
+      appendText(documentRef, panel, "p", "environment-catalog-surface__lede", presentation.description);
+      const list = createElement(documentRef, "ul", "environment-skills");
+      presentation.skills.forEach(skill => appendText(documentRef, list, "li", "", skill));
+      panel.appendChild(list);
+    } else {
+      const progress = getCardProgress(environment);
+      appendText(documentRef, panel, "p", "environment-achievement__brand", "Digital2Real");
+      appendText(documentRef, panel, "h3", "", environment.title);
+      appendText(documentRef, panel, "p", "environment-achievement__score", `${progress.completed} / ${environment.capacity}`);
+      appendText(documentRef, panel, "p", "", ui.engineeringExperiencesCompleted);
+      appendText(documentRef, panel, "p", "environment-achievement__label", progress.completed === environment.capacity ? ui.achievementEarned : ui.achievementPreviewNotice);
+    }
+    const close = createButton(documentRef, ui.close, "experience-action experience-action--quiet");
+    close.addEventListener("click", event => { event?.stopPropagation?.(); closeCatalogSurface({ restoreFocus: true }); });
+    panel.appendChild(close); panel.addEventListener("click", event => event?.stopPropagation?.());
+    backdrop.appendChild(panel); backdrop.addEventListener("click", () => closeCatalogSurface({ restoreFocus: true }));
+    element.appendChild(backdrop); activeCatalogSurface = { backdrop, returnFocus }; close.focus?.();
+  }
+
+  function getCardProgress(environment) {
+    const available = [...new Set(environment.hotspots.map(item => experienceByEditorialId.get(item.experienceEditorialId)).filter(Boolean))];
+    const completed = environment.contractVersion === "2.0.0"
+      ? progressStore.getEnvironmentProgress(environment.id).experiences.completed
+      : available.filter(item => progressStore.isCompleted(item.id)).length;
+    return { completed: Math.min(environment.capacity, completed) };
+  }
+
+  function closeCatalogSurface({ restoreFocus }) {
+    if (!activeCatalogSurface) return;
+    const { backdrop, returnFocus } = activeCatalogSurface;
+    backdrop.remove?.(); activeCatalogSurface = null;
+    if (restoreFocus) returnFocus?.focus?.();
+  }
+
+  function handleCatalogOutsideClick(event) {
+    if (activeMenu && !activeMenu.contains?.(event?.target) && !activeMenuButton?.contains?.(event?.target)) closeEnvironmentMenu({ restoreFocus: true });
+  }
+
+  function handleCatalogKeydown(event) {
+    if (event?.key !== "Escape") return;
+    if (activeCatalogSurface) { event.preventDefault?.(); closeCatalogSurface({ restoreFocus: true }); }
+    else if (activeMenu) { event.preventDefault?.(); closeEnvironmentMenu({ restoreFocus: true }); }
+  }
+
+  function leaveCatalog() {
+    closeEnvironmentMenu({ restoreFocus: false }); closeCatalogSurface({ restoreFocus: false });
+    documentRef.removeEventListener?.("click", handleCatalogOutsideClick);
+    documentRef.removeEventListener?.("keydown", handleCatalogKeydown);
+    catalogProgressRecords = [];
+  }
+
   function restore() {
     if (selectedEnvironment) renderEnvironment(selectedEnvironment.id);
     else renderCatalog();
@@ -337,6 +492,7 @@ export function createEnvironmentNavigator({
   function destroy() {
     unsubscribeProgress?.();
     leaveEnvironment();
+    leaveCatalog();
     selectedEnvironment = null;
     element.replaceChildren();
   }
@@ -370,6 +526,22 @@ function createShell(documentRef) {
   return shell;
 }
 
+function localizeEnvironmentPresentation(environment, locale) {
+  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
+  const presentation = environment.presentation ?? {};
+  const selected = language === "es" ? "es" : "en";
+  return {
+    description: presentation.description?.[selected]
+      ?? presentation.description?.en
+      ?? presentation.description?.es
+      ?? environment.title,
+    skills: presentation.skills?.[selected]
+      ?? presentation.skills?.en
+      ?? presentation.skills?.es
+      ?? []
+  };
+}
+
 function environmentUiCopy(locale) {
   const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
   return language === "es" ? {
@@ -378,7 +550,7 @@ function environmentUiCopy(locale) {
     catalogLede: "Selecciona un entorno, inspecciona la máquina e inicia una investigación disponible.",
     openEnvironment: "Abrir entorno",
     noEnvironments: "No hay entornos disponibles.",
-    backToEnvironments: "Volver a entornos",
+    backToEnvironments: "← Todos los entornos",
     backToEnvironment: "Volver al entorno",
     openTheory: "Abrir teoría",
     theory: "Teoría",
@@ -390,6 +562,16 @@ function environmentUiCopy(locale) {
     beginInvestigation: "Iniciar investigación",
     close: "Cerrar",
     environmentProgress: "Progreso del entorno",
+    progress: "Progreso",
+    completed: "Completado",
+    environmentImage: title => `Vista previa de ${title}`,
+    environmentMenu: title => `Más opciones para ${title}`,
+    experienceCount: capacity => `${capacity} Engineering Experiences`,
+    knowledgeSkills: "Conocimientos y habilidades",
+    certificatePreview: "Vista previa del reconocimiento",
+    engineeringExperiencesCompleted: "Engineering Experiences completadas",
+    achievementEarned: "Reconocimiento de diagnóstico industrial completado",
+    achievementPreviewNotice: "Vista previa · disponible al completar el entorno",
     experiencesCompleted: "Experiences completadas",
     experiencesMastered: "Experiences dominadas",
     completedValue: (completed, total) => `${completed} de ${total} Experiences completadas`,
@@ -400,7 +582,7 @@ function environmentUiCopy(locale) {
     catalogLede: "Select an environment, inspect the machine and begin an available investigation.",
     openEnvironment: "Open environment",
     noEnvironments: "No environments are available.",
-    backToEnvironments: "Back to environments",
+    backToEnvironments: "← All environments",
     backToEnvironment: "Back to environment",
     openTheory: "Open Theory",
     theory: "Theory",
@@ -412,6 +594,16 @@ function environmentUiCopy(locale) {
     beginInvestigation: "Begin investigation",
     close: "Close",
     environmentProgress: "Environment progress",
+    progress: "Progress",
+    completed: "Completed",
+    environmentImage: title => `${title} environment preview`,
+    environmentMenu: title => `More options for ${title}`,
+    experienceCount: capacity => `${capacity} Engineering Experiences`,
+    knowledgeSkills: "Knowledge & Skills",
+    certificatePreview: "Certificate Preview",
+    engineeringExperiencesCompleted: "Engineering Experiences Completed",
+    achievementEarned: "Industrial Troubleshooting Achievement completed",
+    achievementPreviewNotice: "Preview · available when the environment is complete",
     experiencesCompleted: "Experiences completed",
     experiencesMastered: "Experiences mastered",
     completedValue: (completed, total) => `${completed} of ${total} Experiences completed`,

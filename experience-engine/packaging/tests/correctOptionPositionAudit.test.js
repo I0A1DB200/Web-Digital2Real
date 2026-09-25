@@ -38,6 +38,21 @@ const experiences = [
     id: "EE-0006",
     path: "../../../content/experiences/communications/EE-0006-profinet-line-topology-link-failure/",
     correctIds: ["DEC-01-COMPARE-NETWORK-AREAS", "DEC-02-USE-TIA-DIAGNOSTICS", "DEC-03-FIND-GOOD-BAD-BOUNDARY", "DEC-04-INSPECT-A2-A3-LINK", "DEC-05-RESTORE-SEGMENT", "DEC-06-VERIFY-FULL-CHAIN"]
+  },
+  {
+    id: "EE-0007",
+    path: "../../../content/experiences/siemens/EE-0007-sequence-stuck-waiting-for-condition/",
+    correctIds: ["DEC-01-INSPECT-ACTIVE-STEP", "DEC-02-INSPECT-T40-CONDITION", "DEC-03-VERIFY-BOX-SENSOR", "DEC-04-MONITOR-I05-TAG", "DEC-05-COMPARE-T40-REFERENCE", "DEC-06-WRONG-VARIABLE-REFERENCE", "DEC-07-CORRECT-T40-VERIFY"]
+  },
+  {
+    id: "EE-0008",
+    path: "../../../content/experiences/communications/EE-0008-io-link-device-offline/",
+    correctIds: ["DEC-01-ESTABLISH-SCOPE", "DEC-02-VERIFY-PLC-PN-MASTER", "DEC-03-COMPARE-PORTS", "DEC-04-DOWNSTREAM-C3", "DEC-05-INSPECT-M12", "DEC-06-RESTORE-COMPLETE-CHAIN"]
+  },
+  {
+    id: "EE-0009",
+    path: "../../../content/experiences/hmi/EE-0009-hmi-incorrect-machine-state/",
+    correctIds: ["DEC-01-VERIFY-BOX-SENSOR", "DEC-02-MONITOR-PLC", "DEC-03-CHECK-HMI-CONNECTION", "DEC-04-INSPECT-TAG", "DEC-05-COMPARE-PLC-HMI", "DEC-06-MAP-AND-VERIFY"]
   }
 ];
 

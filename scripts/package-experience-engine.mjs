@@ -174,6 +174,7 @@ export async function packageExperienceEngine({
         contractVersion: item.definition.contract_version ?? "1.0.0",
         slug: item.definition.environment.slug,
         title: item.definition.environment.title,
+        presentation: item.definition.environment.presentation,
         lifecycle: item.definition.environment.lifecycle,
         capacity: item.definition.environment.capacity,
         background: `environments/${backgroundFile}`,

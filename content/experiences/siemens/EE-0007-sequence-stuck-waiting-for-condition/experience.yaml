@@ -1,0 +1,541 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-GRAPH-SEQUENCE-007"
+  editorial_id: "EE-0007"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Siemens S7-1500 / GRAPH"
+  domain: "PLC sequence diagnostics"
+  industry: "Manufacturing"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "sequence-stuck-waiting-for-condition"
+  title: "Secuencia bloqueada esperando una condición"
+  summary: "Traza una condición desde el proceso físico hasta la transición GRAPH y detecta una referencia lógica incorrecta aunque la entrada PLC sea válida."
+  estimated_duration: 17
+  scenario:
+    initial_context: "Una caja alcanza correctamente la posición de parada del transportador, pero la secuencia Siemens GRAPH permanece esperando."
+    operational_state: "El paso S40 está activo y la transición T40 no se satisface, aunque el sensor y la entrada física parecen indicar presencia."
+    initiating_event: "Producción informa de que el transportador queda detenido con la caja en la posición esperada."
+    learner_role: "Técnico de automatización responsable de comparar proceso físico, señal PLC y condición lógica realmente evaluada por la secuencia."
+    safety_context:
+      safe_state: "Observar y monitorizar según el procedimiento autorizado, manteniendo controlados los movimientos del transportador antes de inspeccionar el proceso o modificar lógica."
+      intervention_constraints: ["No forzar T40 ni pasos GRAPH.", "No sustituir sensores o módulos sin evidencia.", "No escribir constantes TRUE ni manipular PartAtStop_2 para eludir la condición.", "Verificar la modificación en ciclos representativos antes de cerrar."]
+  learning_objectives:
+    - id: "OBJ-SEQUENCE-STATE"
+      description: "Identificar el paso activo y la transición que bloquea una secuencia GRAPH."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-LOGICAL-SIGNAL-TRACE"
+      description: "Trazar condición física, sensor, %I0.5, PartAtStop_Sensor, variable lógica y T40."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-SEQUENCE-RECOVERY"
+      description: "Corregir la referencia de T40 y verificar S40, T40, S41 y ciclos repetidos sin forcing."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-LOCATE-BLOCK"
+      phase: "incident"
+      title: "Localizar el bloqueo"
+      situation: "La caja está en posición, pero la secuencia no continúa. ¿Cuál es el mejor primer paso?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-SENSOR", "DEC-01-RESTART-PLC", "DEC-01-INSPECT-ACTIVE-STEP"]
+      media_ids: ["ART-001", "ART-002"]
+    - id: "STAGE-02-IDENTIFY-TRANSITION"
+      phase: "investigation"
+      title: "Identificar la transición pendiente"
+      situation: "La monitorización muestra S40 activo y T40 no satisfecha. ¿Qué debe inspeccionarse ahora?"
+      evidence_ids: ["EVID-02-GRAPH-BLOCK"]
+      decision_ids: ["DEC-02-FORCE-T40", "DEC-02-EDIT-S40", "DEC-02-RESET-SEQUENCE", "DEC-02-INSPECT-T40-CONDITION"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-VERIFY-PHYSICAL"
+      phase: "investigation"
+      title: "Verificar la condición física"
+      situation: "T40 evalúa PartAtStop_2, que está FALSE. Antes de concluir que la lógica es incorrecta, ¿qué evidencia debe comprobarse?"
+      evidence_ids: ["EVID-03-T40-CONDITION"]
+      decision_ids: ["DEC-03-REPLACE-INPUT", "DEC-03-VERIFY-BOX-SENSOR", "DEC-03-SET-PARTATSTOP2"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-VERIFY-PLC-SIGNAL"
+      phase: "investigation"
+      title: "Verificar la representación PLC"
+      situation: "La caja está presente y el sensor detecta. ¿Cuál es el siguiente límite diagnóstico?"
+      evidence_ids: ["EVID-04-PHYSICAL-STATE"]
+      decision_ids: ["DEC-04-MONITOR-I05-TAG", "DEC-04-REALIGN-SENSOR", "DEC-04-CHANGE-INPUT"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-COMPARE-CONDITIONS"
+      phase: "investigation"
+      title: "Comparar señal y transición"
+      situation: "%I0.5 y PartAtStop_Sensor están TRUE, mientras PartAtStop_2 está FALSE. ¿Qué comparación identifica la primera discrepancia lógica?"
+      evidence_ids: ["EVID-05-PLC-SIGNALS"]
+      decision_ids: ["DEC-05-REPLACE-SENSOR", "DEC-05-FORCE-PARTATSTOP2", "DEC-05-COMPARE-T40-REFERENCE"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      phase: "investigation"
+      title: "Diagnosticar la causa"
+      situation: "La señal de campo correcta llega al PLC, pero T40 evalúa PartAtStop_2. ¿Cuál es el diagnóstico?"
+      evidence_ids: ["EVID-06-MISMATCH"]
+      decision_ids: ["DEC-06-SEQUENCE-ENGINE-FAULT", "DEC-06-WRONG-VARIABLE-REFERENCE", "DEC-06-PROFINET-FAULT"]
+      media_ids: []
+    - id: "STAGE-07-CORRECT-VERIFY"
+      phase: "solution"
+      title: "Corregir y verificar"
+      situation: "La referencia lógica incorrecta está confirmada. ¿Qué intervención y verificación resuelven técnicamente el incidente?"
+      evidence_ids: ["EVID-07-VERIFICATION"]
+      decision_ids: ["DEC-07-FORCE-TRANSITION", "DEC-07-SET-TRUE-CONSTANT", "DEC-07-CHANGE-PARTATSTOP2", "DEC-07-CORRECT-T40-VERIFY"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Transportador"
+      content: "La caja permanece en la posición de parada y la secuencia no avanza."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-GRAPH-BLOCK"
+      type: "diagnostic"
+      source: "Siemens GRAPH"
+      content: "S40 está activo y T40 permanece no satisfecha."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-INSPECT-ACTIVE-STEP"]
+    - id: "EVID-03-T40-CONDITION"
+      type: "diagnostic"
+      source: "TIA Portal / GRAPH"
+      content: "T40 referencia PartAtStop_2 y la variable monitorizada está FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-INSPECT-T40-CONDITION"]
+    - id: "EVID-04-PHYSICAL-STATE"
+      type: "inspection"
+      source: "Posición de parada"
+      content: "La caja está físicamente colocada y el sensor fotoeléctrico la detecta."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-VERIFY-BOX-SENSOR"]
+    - id: "EVID-05-PLC-SIGNALS"
+      type: "measurement"
+      source: "Monitorización PLC"
+      content: "%I0.5 está TRUE y PartAtStop_Sensor está TRUE; PartAtStop_2 permanece FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-MONITOR-I05-TAG"]
+    - id: "EVID-06-MISMATCH"
+      type: "diagnostic"
+      source: "Comparación PLC / GRAPH"
+      content: "La condición verificada es PartAtStop_Sensor TRUE, pero T40 evalúa PartAtStop_2 FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-COMPARE-T40-REFERENCE"]
+    - id: "EVID-07-VERIFICATION"
+      type: "functional_test"
+      source: "Verificación posterior"
+      content: "T40 referencia PartAtStop_Sensor; con la caja presente, T40 se satisface, S40 finaliza, S41 se activa y la secuencia repite correctamente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-WRONG-VARIABLE-REFERENCE"]
+  decisions:
+    - id: "DEC-01-REPLACE-SENSOR"
+      stage_id: "STAGE-01-LOCATE-BLOCK"
+      action: "Sustituir el sensor porque la secuencia está esperando."
+    - id: "DEC-01-RESTART-PLC"
+      stage_id: "STAGE-01-LOCATE-BLOCK"
+      action: "Reiniciar el PLC para reinicializar la secuencia."
+    - id: "DEC-01-INSPECT-ACTIVE-STEP"
+      stage_id: "STAGE-01-LOCATE-BLOCK"
+      action: "Monitorizar GRAPH e identificar el paso activo y la transición pendiente."
+    - id: "DEC-02-FORCE-T40"
+      stage_id: "STAGE-02-IDENTIFY-TRANSITION"
+      action: "Forzar T40 para comprobar si la secuencia continúa."
+    - id: "DEC-02-EDIT-S40"
+      stage_id: "STAGE-02-IDENTIFY-TRANSITION"
+      action: "Modificar las acciones de S40 antes de conocer la condición pendiente."
+    - id: "DEC-02-RESET-SEQUENCE"
+      stage_id: "STAGE-02-IDENTIFY-TRANSITION"
+      action: "Rearmar repetidamente la secuencia."
+    - id: "DEC-02-INSPECT-T40-CONDITION"
+      stage_id: "STAGE-02-IDENTIFY-TRANSITION"
+      action: "Inspeccionar la condición lógica que T40 evalúa y su estado online."
+    - id: "DEC-03-REPLACE-INPUT"
+      stage_id: "STAGE-03-VERIFY-PHYSICAL"
+      action: "Sustituir el módulo de entrada porque PartAtStop_2 está FALSE."
+    - id: "DEC-03-VERIFY-BOX-SENSOR"
+      stage_id: "STAGE-03-VERIFY-PHYSICAL"
+      action: "Comprobar la posición real de la caja y la detección local del sensor."
+    - id: "DEC-03-SET-PARTATSTOP2"
+      stage_id: "STAGE-03-VERIFY-PHYSICAL"
+      action: "Escribir TRUE en PartAtStop_2 para liberar la transición."
+    - id: "DEC-04-MONITOR-I05-TAG"
+      stage_id: "STAGE-04-VERIFY-PLC-SIGNAL"
+      action: "Monitorizar %I0.5 y PartAtStop_Sensor y comparar ambos con el estado físico."
+    - id: "DEC-04-REALIGN-SENSOR"
+      stage_id: "STAGE-04-VERIFY-PLC-SIGNAL"
+      action: "Realinear el sensor aunque la detección local está confirmada."
+    - id: "DEC-04-CHANGE-INPUT"
+      stage_id: "STAGE-04-VERIFY-PLC-SIGNAL"
+      action: "Cambiar PartAtStop_Sensor a otra dirección de entrada."
+    - id: "DEC-05-REPLACE-SENSOR"
+      stage_id: "STAGE-05-COMPARE-CONDITIONS"
+      action: "Sustituir el sensor aunque %I0.5 está TRUE."
+    - id: "DEC-05-FORCE-PARTATSTOP2"
+      stage_id: "STAGE-05-COMPARE-CONDITIONS"
+      action: "Forzar PartAtStop_2 para que T40 sea TRUE."
+    - id: "DEC-05-COMPARE-T40-REFERENCE"
+      stage_id: "STAGE-05-COMPARE-CONDITIONS"
+      action: "Comparar la variable usada por T40 con el tag que representa la entrada física verificada."
+    - id: "DEC-06-SEQUENCE-ENGINE-FAULT"
+      stage_id: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      action: "Concluir que el motor de ejecución GRAPH ha fallado."
+    - id: "DEC-06-WRONG-VARIABLE-REFERENCE"
+      stage_id: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      action: "Diagnosticar que T40 referencia la variable lógica equivocada."
+    - id: "DEC-06-PROFINET-FAULT"
+      stage_id: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      action: "Atribuir el bloqueo a una pérdida PROFINET."
+    - id: "DEC-07-FORCE-TRANSITION"
+      stage_id: "STAGE-07-CORRECT-VERIFY"
+      action: "Forzar T40 durante producción para evitar el bloqueo."
+    - id: "DEC-07-SET-TRUE-CONSTANT"
+      stage_id: "STAGE-07-CORRECT-VERIFY"
+      action: "Sustituir la condición por una constante TRUE."
+    - id: "DEC-07-CHANGE-PARTATSTOP2"
+      stage_id: "STAGE-07-CORRECT-VERIFY"
+      action: "Manipular PartAtStop_2 para conservar la referencia existente."
+    - id: "DEC-07-CORRECT-T40-VERIFY"
+      stage_id: "STAGE-07-CORRECT-VERIFY"
+      action: "Cambiar T40 a PartAtStop_Sensor y verificar T40, S40, S41 y ciclos repetidos."
+  visual:
+    educational_purpose: "Comparar evidencia física, señal PLC y condición lógica hasta localizar la referencia incorrecta de T40."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/01.png"
+        alt: "Portada EE-0007 en la línea automatizada ENV-001."
+        caption: "Secuencia bloqueada; la causa todavía es desconocida."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/02.png"
+        alt: "Caja detenida en el transportador mientras la secuencia espera."
+        caption: "La caja parece estar en la posición prevista."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/03.png"
+        alt: "Siemens GRAPH con S40 activo y T40 bloqueada evaluando PartAtStop_2 FALSE."
+        caption: "S40 espera una condición lógica que permanece falsa."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/04.png"
+        alt: "Caja presente en la parada y sensor fotoeléctrico detectando."
+        caption: "La condición física y la detección local son correctas."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/05.png"
+        alt: "Monitorización PLC con PartAtStop_Sensor y %I0.5 TRUE frente a PartAtStop_2 FALSE."
+        caption: "La entrada física llega correctamente al PLC."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/06.png"
+        alt: "Comparación entre PartAtStop_Sensor verificada y PartAtStop_2 usada por T40."
+        caption: "La transición referencia una variable diferente del tag físico verificado."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-GRAPH-SEQUENCE-007/07.png"
+        alt: "T40 corregida con PartAtStop_Sensor y secuencia avanzada a S41."
+        caption: "La transición y la progresión de la secuencia quedan verificadas."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "El proceso, el sensor y %I0.5 eran correctos, pero T40 evaluaba PartAtStop_2 en lugar de PartAtStop_Sensor."
+    process: ["Localizar S40 y T40.", "Inspeccionar la condición de T40.", "Verificar caja y sensor.", "Confirmar %I0.5 y PartAtStop_Sensor.", "Comparar la referencia lógica.", "Corregir T40.", "Verificar S41 y ciclos repetidos."]
+    lesson: "Una señal física TRUE no implica una transición TRUE: la secuencia evalúa únicamente la variable configurada."
+    avoided_errors: ["Sustituir hardware sin evidencia.", "Forzar T40 o PartAtStop_2.", "Usar una constante TRUE.", "Confundir señal física con condición lógica."]
+    industrial_value: ["Diagnóstico completo de señal y lógica.", "Menos forcing y sustituciones injustificadas.", "Cambios de programa verificables."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "La transición GRAPH T40 referencia PartAtStop_2 en lugar del tag físico correcto PartAtStop_Sensor asociado a %I0.5."
+    recovery_conditions: ["T40 referencia PartAtStop_Sensor.", "PartAtStop_Sensor TRUE satisface T40 con la caja presente.", "S40 finaliza y S41 se activa.", "Ciclos representativos completados sin forcing."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-FIELD-SIGNAL"
+        statement: "La caja, el sensor o la entrada física no representan la condición."
+        initial_status: "possible"
+      - id: "HYP-GRAPH-REFERENCE"
+        statement: "T40 referencia una variable diferente del tag físico verificado."
+        initial_status: "likely"
+      - id: "HYP-SEQUENCE-ENGINE"
+        statement: "GRAPH no ejecuta correctamente la transición."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-GRAPH-REFERENCE"
+    critical_path: ["DEC-01-INSPECT-ACTIVE-STEP", "DEC-02-INSPECT-T40-CONDITION", "DEC-03-VERIFY-BOX-SENSOR", "DEC-04-MONITOR-I05-TAG", "DEC-05-COMPARE-T40-REFERENCE", "DEC-06-WRONG-VARIABLE-REFERENCE", "DEC-07-CORRECT-T40-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-INSPECT-ACTIVE-STEP"
+      is_correct: true
+      rationale: "El estado activo localiza dónde deja de avanzar la secuencia."
+      classification: "strong"
+      consequence: "Se identifica S40 y T40."
+      evidence_revealed: ["EVID-02-GRAPH-BLOCK"]
+      next_stage: "STAGE-02-IDENTIFY-TRANSITION"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "El síntoma no identifica el sensor como causa. Localiza primero el paso y la transición que mantienen la secuencia esperando."
+      rationale: "No existe evidencia de fallo del sensor."
+      classification: "weak"
+      consequence: "Sustitución prematura."
+      evidence_revealed: []
+      next_stage: "STAGE-02-IDENTIFY-TRANSITION"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-RESTART-PLC"
+      is_correct: false
+      retry_feedback: "Reiniciar puede borrar contexto y no explica qué condición bloquea la secuencia. Observa primero el estado GRAPH."
+      rationale: "El estado online aporta evidencia."
+      classification: "weak"
+      consequence: "Se pierde el estado diagnóstico."
+      evidence_revealed: []
+      next_stage: "STAGE-02-IDENTIFY-TRANSITION"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-02-INSPECT-T40-CONDITION"
+      is_correct: true
+      rationale: "La transición pendiente posee la condición que determina el avance."
+      classification: "strong"
+      consequence: "Se identifica PartAtStop_2 FALSE."
+      evidence_revealed: ["EVID-03-T40-CONDITION"]
+      next_stage: "STAGE-03-VERIFY-PHYSICAL"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-FORCE-T40"
+      is_correct: false
+      retry_feedback: "Forzar la transición oculta por qué su condición es falsa y puede provocar una progresión no justificada. Inspecciona la condición configurada."
+      rationale: "El forcing evita el diagnóstico."
+      classification: "unsafe"
+      consequence: "La secuencia avanza sin causa confirmada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-VERIFY-PHYSICAL"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-02-EDIT-S40"
+      is_correct: false
+      retry_feedback: "S40 está activo; la evidencia señala que T40 no se satisface. Examina la transición antes de modificar acciones del paso."
+      rationale: "La frontera está en la transición."
+      classification: "weak"
+      consequence: "Se modifica el elemento equivocado."
+      evidence_revealed: []
+      next_stage: "STAGE-03-VERIFY-PHYSICAL"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-02-RESET-SEQUENCE"
+      is_correct: false
+      retry_feedback: "Rearmar no cambia la condición evaluada por T40. Consulta la variable y su estado online."
+      rationale: "La condición lógica permanece."
+      classification: "weak"
+      consequence: "El bloqueo reaparece."
+      evidence_revealed: []
+      next_stage: "STAGE-03-VERIFY-PHYSICAL"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-VERIFY-BOX-SENSOR"
+      is_correct: true
+      rationale: "Antes de atribuir el desacuerdo al programa debe confirmarse la condición real."
+      classification: "strong"
+      consequence: "Caja y detección local quedan confirmadas."
+      evidence_revealed: ["EVID-04-PHYSICAL-STATE"]
+      next_stage: "STAGE-04-VERIFY-PLC-SIGNAL"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-03-REPLACE-INPUT"
+      is_correct: false
+      retry_feedback: "PartAtStop_2 es una variable lógica, no prueba de fallo del módulo de entrada. Verifica primero caja y sensor."
+      rationale: "Se confunden capas de señal."
+      classification: "weak"
+      consequence: "Sustitución sin evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-VERIFY-PLC-SIGNAL"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-SET-PARTATSTOP2"
+      is_correct: false
+      retry_feedback: "Manipular PartAtStop_2 haría avanzar la secuencia sin confirmar la relación con el proceso. Conserva el estado y verifica el campo."
+      rationale: "Se falsea una condición lógica."
+      classification: "unsafe"
+      consequence: "La causa queda oculta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-VERIFY-PLC-SIGNAL"
+      score_effect: -10
+      safety_effect: -8
+    - decision_id: "DEC-04-MONITOR-I05-TAG"
+      is_correct: true
+      rationale: "Comparar dirección y tag demuestra si el estado físico llega correctamente al PLC."
+      classification: "strong"
+      consequence: "%I0.5 y PartAtStop_Sensor quedan confirmados TRUE."
+      evidence_revealed: ["EVID-05-PLC-SIGNALS"]
+      next_stage: "STAGE-05-COMPARE-CONDITIONS"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-04-REALIGN-SENSOR"
+      is_correct: false
+      retry_feedback: "La detección local ya está confirmada. Comprueba ahora que %I0.5 y el tag asociado representan ese estado."
+      rationale: "No existe evidencia de desalineación."
+      classification: "weak"
+      consequence: "Se altera una condición correcta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-COMPARE-CONDITIONS"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-CHANGE-INPUT"
+      is_correct: false
+      retry_feedback: "Cambiar la dirección antes de monitorizar la existente introduce una nueva variable. Confirma primero %I0.5 y PartAtStop_Sensor."
+      rationale: "La asignación actual aún no se ha comprobado."
+      classification: "weak"
+      consequence: "Se modifica sin evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-05-COMPARE-CONDITIONS"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-COMPARE-T40-REFERENCE"
+      is_correct: true
+      rationale: "La comparación distingue el tag físico correcto de la variable realmente evaluada."
+      classification: "strong"
+      consequence: "Se expone el desacuerdo PartAtStop_Sensor/PartAtStop_2."
+      evidence_revealed: ["EVID-06-MISMATCH"]
+      next_stage: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-05-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "%I0.5 y PartAtStop_Sensor están TRUE. Sustituir el sensor contradice la señal ya verificada; compara qué variable usa T40."
+      rationale: "La cadena física funciona."
+      classification: "weak"
+      consequence: "La referencia incorrecta permanece."
+      evidence_revealed: []
+      next_stage: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-FORCE-PARTATSTOP2"
+      is_correct: false
+      retry_feedback: "Forzar PartAtStop_2 no explica por qué T40 ignora el tag físico correcto. Compara ambas referencias sin manipularlas."
+      rationale: "El forcing oculta el mapeo incorrecto."
+      classification: "unsafe"
+      consequence: "La transición se falsea."
+      evidence_revealed: []
+      next_stage: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
+      score_effect: -10
+      safety_effect: -8
+    - decision_id: "DEC-06-WRONG-VARIABLE-REFERENCE"
+      is_correct: true
+      rationale: "Toda la cadena física es válida y la primera divergencia está en la variable usada por T40."
+      classification: "strong"
+      consequence: "Se confirma la referencia lógica equivocada."
+      evidence_revealed: ["EVID-07-VERIFICATION"]
+      next_stage: "STAGE-07-CORRECT-VERIFY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-06-SEQUENCE-ENGINE-FAULT"
+      is_correct: false
+      retry_feedback: "GRAPH evalúa correctamente PartAtStop_2 como FALSE. El problema es qué variable se configuró, no el motor de ejecución."
+      rationale: "La evaluación es coherente con su referencia."
+      classification: "weak"
+      consequence: "Se atribuye incorrectamente un fallo del sistema."
+      evidence_revealed: []
+      next_stage: "STAGE-07-CORRECT-VERIFY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-06-PROFINET-FAULT"
+      is_correct: false
+      retry_feedback: "%I0.5 y PartAtStop_Sensor están monitorizados TRUE. La evidencia no respalda una pérdida de comunicación; revisa la referencia de T40."
+      rationale: "La señal llega al PLC."
+      classification: "weak"
+      consequence: "Se investiga fuera del dominio confirmado."
+      evidence_revealed: []
+      next_stage: "STAGE-07-CORRECT-VERIFY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-07-CORRECT-T40-VERIFY"
+      is_correct: true
+      rationale: "La corrección conecta T40 con la señal física prevista y exige verificar la progresión completa."
+      classification: "strong"
+      consequence: "T40 se satisface, S41 se activa y los ciclos quedan verificados."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-07-FORCE-TRANSITION"
+      is_correct: false
+      retry_feedback: "Forzar T40 no corrige la referencia y permite avanzar sin una condición válida. Corrige el vínculo lógico y prueba la secuencia."
+      rationale: "No es una reparación."
+      classification: "unsafe"
+      consequence: "Se evita la protección lógica."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-07-SET-TRUE-CONSTANT"
+      is_correct: false
+      retry_feedback: "Una constante TRUE elimina la dependencia del proceso. T40 debe evaluar PartAtStop_Sensor, no una condición permanente."
+      rationale: "La secuencia pierde su condición de proceso."
+      classification: "unsafe"
+      consequence: "La transición deja de representar el proceso."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-07-CHANGE-PARTATSTOP2"
+      is_correct: false
+      retry_feedback: "Manipular otra variable conserva el error de referencia. Cambia T40 al tag canónico PartAtStop_Sensor y verifica el ciclo."
+      rationale: "La corrección pertenece a T40."
+      classification: "weak"
+      consequence: "Se crea una compensación innecesaria."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -7
+      safety_effect: -2
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La señal física era correcta, pero T40 evaluaba PartAtStop_2 FALSE en lugar de PartAtStop_Sensor TRUE."
+    correct_reasoning: ["Localizar S40/T40.", "Identificar la variable evaluada.", "Confirmar caja y sensor.", "Confirmar %I0.5 y PartAtStop_Sensor.", "Comparar tag físico y referencia lógica."]
+    recovery: ["Cambiar T40 a PartAtStop_Sensor.", "Confirmar T40 satisfecha.", "Confirmar S40 a S41.", "Repetir ciclos sin forcing."]
+  technical_validation:
+    status: "pass"
+    evidence: ["PartAtStop_Sensor conserva únicamente %I0.5.", "S40, T40 y S41 mantienen sus roles GRAPH.", "La causa queda después de una cadena física y PLC confirmada."]

@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-09-23 — Experience Lab ENV card visual refinement
+
+- Refined the existing Environment Selector cards into a compact, balanced composition with landscape 16:9 previews, overlaid ENV identity and menu controls, and restrained editorial depth.
+- Widened only the selector catalog to 1240px and removed grid stretching and flexible-row height absorption so three desktop cards retain their natural, near-square proportions.
+- Consolidated the ten progress segments and numeric result into one row while preserving canonical progress, accessibility, navigation, responsive three/two/one-column behavior and all existing ENV interactions.
+
+## 2026-09-22 — Experience Lab Environment Selector
+
+- Expanded the canonical Experience Lab entry selector with reusable ENV cards, representative imagery, localized technical descriptions, Knowledge & Skills, and an achievement preview.
+- Added ten-segment progress derived from existing Experience completion state, explicit card-to-map and map-to-selector navigation, accessible overflow behavior, and a responsive three/two/one-column layout while preserving the existing ENV map, hotspots and Experience interactions.
+
+## 2026-09-22 — EE-0009 HMI incorrect machine state
+
+- Added a six-decision Contract 2.0.0 HMI Experience, six frozen assets, the ninth ENV-001 preview hotspot, and reusable PLC-HMI information architecture Theory.
+- Reassigned the existing archived photoelectric regression Experience's editorial identity from `EE-0009` to `EE-0909` to reserve `EE-0009` for the new HMI Experience; its technical ID, content, assets and archived publication state remain unchanged.
+
+## 2026-09-21 — EE-0008 IO-Link device offline
+
+- Added EE-0008 as a six-decision Experience Engine V2 scenario distinguishing PLC, PROFINET, IO-Link master, individual port/device communication, process data and machine function.
+- Integrated six approved frozen assets, registered the eighth ENV-001 hotspot and added reusable IO-Link master/port/device and physical-connection Theory without duplicating the EE-0006 PROFINET fault boundary.
+
+## 2026-09-21 — EE-0007 sequence stuck waiting for condition
+
+- Added EE-0007 as a seven-decision Experience Engine V2 scenario for tracing a blocked Siemens GRAPH transition from the physical process through `%I0.5` and `PartAtStop_Sensor` to T40.
+- Integrated seven approved frozen assets, registered the seventh ENV-001 hotspot and extended cumulative Theory with reusable step, transition, logical-reference and non-forcing diagnostic concepts.
+
 ## 2026-09-11 — EE-0006 PROFINET line-topology link failure
 
 - Added EE-0006 as a six-decision Experience Engine V2 scenario for topology-led diagnosis of a damaged A2–A3 PROFINET segment.

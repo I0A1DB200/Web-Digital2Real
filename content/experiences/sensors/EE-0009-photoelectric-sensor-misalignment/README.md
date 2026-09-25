@@ -1,8 +1,8 @@
-# EE-0009 — Photoelectric Sensor Misalignment
+# EE-0909 — Photoelectric Sensor Misalignment (archived)
 
 | Field | Value |
 |---|---|
-| Editorial ID | `EE-0009` |
+| Editorial ID | `EE-0909` (formerly `EE-0009`; reassigned to avoid the HMI Experience identity collision) |
 | Technical ID | `EXP-SENSOR-PHOTOELECTRIC-009` |
 | Domain | Industrial I/O — photoelectric sensing |
 | Preliminary objective | Develop evidence-led reasoning about photoelectric sensor alignment |

@@ -1,0 +1,484 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-IOLINK-DEVICE-008"
+  editorial_id: "EE-0008"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Siemens S7-1500 / Turck TBEN-L5-8IOL"
+  domain: "Industrial communications / IO-Link diagnostics"
+  industry: "Manufacturing"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "io-link-device-offline"
+  title: "Dispositivo IO-Link fuera de línea"
+  summary: "Localiza un dispositivo IO-Link no disponible distinguiendo PLC, PROFINET, master, puerto, datos de proceso y conexión física."
+  estimated_duration: 16
+  scenario:
+    initial_context: "El dispositivo Turck BI6U-M12-IOL6X2-H1141 conectado al puerto C3 deja de proporcionar la información esperada."
+    operational_state: "El S7-1500 está operativo, el master TBEN-L5-8IOL permanece accesible por PROFINET y los puertos vecinos funcionan."
+    initiating_event: "La máquina comunica una condición de diagnóstico asociada al dispositivo de campo de C3."
+    learner_role: "Técnico de automatización responsable de localizar la primera capa anormal sin convertir un fallo local en una avería general de red."
+    safety_context:
+      safe_state: "Inspeccionar la conexión física únicamente conforme al procedimiento seguro de mantenimiento y con el movimiento peligroso controlado."
+      intervention_constraints: ["No forzar valores PLC ni datos de proceso.", "No suprimir diagnósticos.", "No modificar puertos vecinos o configuración PROFINET.", "No sustituir equipos sin evidencia."]
+  learning_objectives:
+    - id: "OBJ-LAYERED-COMMUNICATION"
+      description: "Distinguir estado PLC, PROFINET, master IO-Link, puerto, dispositivo, datos de proceso y función de máquina."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-PORT-FAULT-BOUNDARY"
+      description: "Localizar la primera condición anormal comparando C3 con puertos vecinos saludables."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-CONNECTION-RECOVERY"
+      description: "Restaurar la conexión M12 y verificar comunicación, datos y función sin bypass."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-ESTABLISH-SCOPE"
+      phase: "incident"
+      title: "Establecer el alcance"
+      situation: "Un dispositivo de campo aparece fuera de línea. ¿Cuál es el mejor primer paso?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-DEVICE", "DEC-01-RESTART-LINE", "DEC-01-CHANGE-IP", "DEC-01-ESTABLISH-SCOPE"]
+      media_ids: ["ART-001", "ART-002"]
+    - id: "STAGE-02-VERIFY-UPSTREAM"
+      phase: "investigation"
+      title: "Verificar las capas superiores"
+      situation: "El incidente puede pertenecer al PLC, a PROFINET, al master o a un dispositivo descendente. ¿Qué evidencia debe verificarse?"
+      evidence_ids: ["EVID-02-SCOPE"]
+      decision_ids: ["DEC-02-REPLACE-MASTER", "DEC-02-VERIFY-PLC-PN-MASTER", "DEC-02-FORCE-DATA"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-LOCALIZE-PORT"
+      phase: "investigation"
+      title: "Localizar el puerto afectado"
+      situation: "PLC, PROFINET y master están disponibles. ¿Cómo debe estrecharse el dominio de fallo?"
+      evidence_ids: ["EVID-03-UPSTREAM-HEALTHY"]
+      decision_ids: ["DEC-03-RESET-PLC", "DEC-03-RECONFIGURE-PN", "DEC-03-COMPARE-PORTS"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-INTERPRET-BOUNDARY"
+      phase: "investigation"
+      title: "Interpretar la frontera de comunicación"
+      situation: "C0–C2 y C4–C7 están saludables; solo C3 no comunica con su dispositivo. ¿Qué conclusión guía el siguiente paso?"
+      evidence_ids: ["EVID-04-C3-ABNORMAL"]
+      decision_ids: ["DEC-04-DOWNSTREAM-C3", "DEC-04-GENERAL-PROFINET", "DEC-04-MASTER-TOTAL-FAILURE"]
+      media_ids: []
+    - id: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      phase: "investigation"
+      title: "Inspeccionar la ruta física de C3"
+      situation: "La primera capa anormal está entre el puerto C3 y su dispositivo. ¿Qué inspección aporta la evidencia causal?"
+      evidence_ids: ["EVID-05-BOUNDARY"]
+      decision_ids: ["DEC-05-REPLACE-SENSOR", "DEC-05-CHANGE-PORT", "DEC-05-SUPPRESS-DIAGNOSTIC", "DEC-05-INSPECT-M12"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-RESTORE-VERIFY"
+      phase: "solution"
+      title: "Restaurar y verificar"
+      situation: "La conexión M12 de la ruta C3 está parcialmente floja. ¿Qué intervención cierra correctamente el diagnóstico?"
+      evidence_ids: ["EVID-06-M12-LOOSE"]
+      decision_ids: ["DEC-06-FORCE-PROCESS-DATA", "DEC-06-RESTORE-COMPLETE-CHAIN", "DEC-06-IGNORE-REPEATABILITY"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Máquina"
+      content: "El BI6U-M12-IOL6X2-H1141 conectado a C3 no aporta la información esperada."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-SCOPE"
+      type: "diagnostic"
+      source: "Diagnóstico jerárquico"
+      content: "El alcance debe separarse entre PLC, PROFINET, master IO-Link y dispositivo descendente."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-ESTABLISH-SCOPE"]
+    - id: "EVID-03-UPSTREAM-HEALTHY"
+      type: "diagnostic"
+      source: "Estado de sistema"
+      content: "El S7-1500 está operativo, PROFINET está saludable y el TBEN-L5-8IOL permanece accesible."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-VERIFY-PLC-PN-MASTER"]
+    - id: "EVID-04-C3-ABNORMAL"
+      type: "diagnostic"
+      source: "Comparación de puertos"
+      content: "C0, C1, C2 y C4–C7 están saludables; la comunicación del dispositivo C3 es anormal."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-COMPARE-PORTS"]
+    - id: "EVID-05-BOUNDARY"
+      type: "diagnostic"
+      source: "Master / dispositivo"
+      content: "PROFINET llega al master, pero el dispositivo de C3 no entrega comunicación IO-Link ni los datos de proceso esperados."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-DOWNSTREAM-C3"]
+    - id: "EVID-06-M12-LOOSE"
+      type: "inspection"
+      source: "Ruta física C3"
+      content: "El conector M12 asociado al dispositivo de C3 está parcialmente flojo y no correctamente asentado."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-INSPECT-M12"]
+  decisions:
+    - id: "DEC-01-REPLACE-DEVICE"
+      stage_id: "STAGE-01-ESTABLISH-SCOPE"
+      action: "Sustituir inmediatamente el dispositivo de campo."
+    - id: "DEC-01-RESTART-LINE"
+      stage_id: "STAGE-01-ESTABLISH-SCOPE"
+      action: "Reiniciar toda la línea para intentar recuperar la información."
+    - id: "DEC-01-CHANGE-IP"
+      stage_id: "STAGE-01-ESTABLISH-SCOPE"
+      action: "Cambiar la configuración IP del PLC y del master."
+    - id: "DEC-01-ESTABLISH-SCOPE"
+      stage_id: "STAGE-01-ESTABLISH-SCOPE"
+      action: "Establecer si la primera anomalía pertenece al PLC, PROFINET, master o dispositivo descendente."
+    - id: "DEC-02-REPLACE-MASTER"
+      stage_id: "STAGE-02-VERIFY-UPSTREAM"
+      action: "Sustituir el master IO-Link antes de comprobar su disponibilidad."
+    - id: "DEC-02-VERIFY-PLC-PN-MASTER"
+      stage_id: "STAGE-02-VERIFY-UPSTREAM"
+      action: "Verificar estado del PLC, comunicación PROFINET y disponibilidad del master."
+    - id: "DEC-02-FORCE-DATA"
+      stage_id: "STAGE-02-VERIFY-UPSTREAM"
+      action: "Forzar los datos de proceso esperados en el PLC."
+    - id: "DEC-03-RESET-PLC"
+      stage_id: "STAGE-03-LOCALIZE-PORT"
+      action: "Reiniciar el PLC aunque permanece operativo."
+    - id: "DEC-03-RECONFIGURE-PN"
+      stage_id: "STAGE-03-LOCALIZE-PORT"
+      action: "Reconfigurar PROFINET aunque el master está accesible."
+    - id: "DEC-03-COMPARE-PORTS"
+      stage_id: "STAGE-03-LOCALIZE-PORT"
+      action: "Comparar C3 con los demás puertos para localizar si el fallo es común o individual."
+    - id: "DEC-04-DOWNSTREAM-C3"
+      stage_id: "STAGE-04-INTERPRET-BOUNDARY"
+      action: "Localizar el fallo aguas abajo del master en la ruta individual de C3."
+    - id: "DEC-04-GENERAL-PROFINET"
+      stage_id: "STAGE-04-INTERPRET-BOUNDARY"
+      action: "Diagnosticar una caída general de PROFINET."
+    - id: "DEC-04-MASTER-TOTAL-FAILURE"
+      stage_id: "STAGE-04-INTERPRET-BOUNDARY"
+      action: "Concluir que el master completo ha fallado."
+    - id: "DEC-05-REPLACE-SENSOR"
+      stage_id: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      action: "Sustituir el dispositivo sin inspeccionar su conexión."
+    - id: "DEC-05-CHANGE-PORT"
+      stage_id: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      action: "Mover el dispositivo a un puerto vecino saludable."
+    - id: "DEC-05-SUPPRESS-DIAGNOSTIC"
+      stage_id: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      action: "Suprimir el diagnóstico para recuperar la producción."
+    - id: "DEC-05-INSPECT-M12"
+      stage_id: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      action: "Inspeccionar el puerto C3, el cable y el asiento del conector M12 del dispositivo."
+    - id: "DEC-06-FORCE-PROCESS-DATA"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Forzar datos de proceso válidos y mantener la conexión sin cambios."
+    - id: "DEC-06-RESTORE-COMPLETE-CHAIN"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Asentar correctamente el M12 y verificar C3, dispositivo, datos, PROFINET y función en ciclos repetidos."
+    - id: "DEC-06-IGNORE-REPEATABILITY"
+      stage_id: "STAGE-06-RESTORE-VERIFY"
+      action: "Asentar el conector y cerrar cuando aparezca un único dato válido."
+  visual:
+    educational_purpose: "Distinguir la capa PROFINET saludable de una pérdida local de comunicación IO-Link en la ruta física de C3."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/01.png"
+        alt: "Portada EE-0008 en el contexto industrial de IO-Link."
+        caption: "Un dispositivo de campo ha dejado de aportar información."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/02.png"
+        alt: "Contexto físico del dispositivo IO-Link afectado."
+        caption: "El incidente se presenta en el dispositivo asociado a C3."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/03.png"
+        alt: "Ruta S7-1500, PROFINET y master IO-Link operativa."
+        caption: "PLC, PROFINET y master permanecen disponibles."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/04.png"
+        alt: "Diagnóstico localizado en el dispositivo conectado al puerto C3."
+        caption: "Los puertos vecinos están saludables; C3 presenta la primera anomalía."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/05.png"
+        alt: "Conector M12 de la ruta C3 parcialmente flojo."
+        caption: "La inspección física identifica una conexión M12 incorrectamente asentada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-IOLINK-DEVICE-008/06.png"
+        alt: "Conexión restaurada y comunicación del dispositivo C3 recuperada."
+        caption: "C3, los datos de proceso y la función asociada quedan verificados."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "El PLC, PROFINET y el master estaban operativos; la primera anomalía aparecía en la ruta C3 por un conector M12 parcialmente flojo."
+    process: ["Establecer el alcance.", "Verificar PLC, PROFINET y master.", "Comparar puertos.", "Localizar C3.", "Inspeccionar la ruta M12.", "Restaurar y verificar la cadena completa."]
+    lesson: "Dispositivo fuera de línea no demuestra una avería general de red ni un dispositivo defectuoso: hay que localizar la primera capa anormal."
+    avoided_errors: ["Sustituir el dispositivo sin evidencia.", "Reconfigurar PROFINET.", "Forzar datos de proceso.", "Suprimir el diagnóstico."]
+    industrial_value: ["Localización jerárquica del fallo.", "Menos sustituciones injustificadas.", "Recuperación física verificable."]
+    media_ids: ["ART-006"]
+
+private:
+  fault_model:
+    root_cause: "El conector M12 asociado al dispositivo IO-Link del puerto C3 está parcialmente flojo y no correctamente asentado, interrumpiendo la comunicación local entre el master TBEN-L5-8IOL y el BI6U-M12-IOL6X2-H1141 mientras PROFINET permanece saludable."
+    recovery_conditions: ["Conector M12 de C3 correctamente asentado.", "Comunicación del dispositivo C3 restaurada.", "Datos de proceso esperados disponibles.", "PROFINET y puertos vecinos permanecen saludables.", "Función de máquina estable en operación repetida."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-UPSTREAM-NETWORK"
+        statement: "El PLC, PROFINET o el master han perdido disponibilidad."
+        initial_status: "possible"
+      - id: "HYP-C3-PHYSICAL-PATH"
+        statement: "La ruta física local entre C3 y el dispositivo está interrumpida."
+        initial_status: "likely"
+      - id: "HYP-DEVICE-FAILURE"
+        statement: "El dispositivo debe sustituirse."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-C3-PHYSICAL-PATH"
+    critical_path: ["DEC-01-ESTABLISH-SCOPE", "DEC-02-VERIFY-PLC-PN-MASTER", "DEC-03-COMPARE-PORTS", "DEC-04-DOWNSTREAM-C3", "DEC-05-INSPECT-M12", "DEC-06-RESTORE-COMPLETE-CHAIN"]
+  decision_logic:
+    - decision_id: "DEC-01-ESTABLISH-SCOPE"
+      is_correct: true
+      rationale: "Definir la primera capa anormal evita sustituir componentes por el síntoma final."
+      classification: "strong"
+      consequence: "Se separan PLC, red, master y dispositivo."
+      evidence_revealed: ["EVID-02-SCOPE"]
+      next_stage: "STAGE-02-VERIFY-UPSTREAM"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-REPLACE-DEVICE"
+      is_correct: false
+      retry_feedback: "Fuera de línea no demuestra que el dispositivo esté averiado. Establece primero la capa donde comienza la anomalía."
+      rationale: "La causa aún no está localizada."
+      classification: "weak"
+      consequence: "Sustitución prematura."
+      evidence_revealed: []
+      next_stage: "STAGE-02-VERIFY-UPSTREAM"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-01-RESTART-LINE"
+      is_correct: false
+      retry_feedback: "Reiniciar puede perder evidencia y no establece si el fallo pertenece a PLC, red, master o dispositivo."
+      rationale: "No localiza la frontera."
+      classification: "weak"
+      consequence: "El diagnóstico queda sin resolver."
+      evidence_revealed: []
+      next_stage: "STAGE-02-VERIFY-UPSTREAM"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-01-CHANGE-IP"
+      is_correct: false
+      retry_feedback: "No existe evidencia que justifique cambiar la configuración de red. Determina primero el alcance real."
+      rationale: "Introduce un cambio no sustentado."
+      classification: "weak"
+      consequence: "Puede crear una segunda avería."
+      evidence_revealed: []
+      next_stage: "STAGE-02-VERIFY-UPSTREAM"
+      score_effect: -6
+      safety_effect: -1
+    - decision_id: "DEC-02-VERIFY-PLC-PN-MASTER"
+      is_correct: true
+      rationale: "Estas comprobaciones confirman si la ruta superior llega hasta el master."
+      classification: "strong"
+      consequence: "PLC, PROFINET y master quedan confirmados saludables."
+      evidence_revealed: ["EVID-03-UPSTREAM-HEALTHY"]
+      next_stage: "STAGE-03-LOCALIZE-PORT"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-02-REPLACE-MASTER"
+      is_correct: false
+      retry_feedback: "La disponibilidad del master todavía debe comprobarse. Sustituirlo no es una prueba de alcance."
+      rationale: "No hay evidencia de fallo total."
+      classification: "weak"
+      consequence: "Sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-LOCALIZE-PORT"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-02-FORCE-DATA"
+      is_correct: false
+      retry_feedback: "Forzar datos oculta el estado real y no recupera la comunicación del dispositivo. Verifica las capas superiores."
+      rationale: "El forcing falsea evidencia."
+      classification: "unsafe"
+      consequence: "La máquina recibe datos no confirmados."
+      evidence_revealed: []
+      next_stage: "STAGE-03-LOCALIZE-PORT"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-03-COMPARE-PORTS"
+      is_correct: true
+      rationale: "Los puertos vecinos ofrecen referencias bajo el mismo master y conexión PROFINET."
+      classification: "strong"
+      consequence: "La anomalía se localiza en C3."
+      evidence_revealed: ["EVID-04-C3-ABNORMAL"]
+      next_stage: "STAGE-04-INTERPRET-BOUNDARY"
+      score_effect: 9
+      safety_effect: 1
+    - decision_id: "DEC-03-RESET-PLC"
+      is_correct: false
+      retry_feedback: "El PLC está operativo. Compara el estado de los puertos para localizar la rama afectada."
+      rationale: "La capa PLC ya es saludable."
+      classification: "weak"
+      consequence: "Se altera una capa correcta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INTERPRET-BOUNDARY"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-03-RECONFIGURE-PN"
+      is_correct: false
+      retry_feedback: "PROFINET y el master están disponibles. Reconfigurar la red no identifica el puerto afectado."
+      rationale: "La capa PROFINET ya es saludable."
+      classification: "weak"
+      consequence: "Cambio de red injustificado."
+      evidence_revealed: []
+      next_stage: "STAGE-04-INTERPRET-BOUNDARY"
+      score_effect: -6
+      safety_effect: -1
+    - decision_id: "DEC-04-DOWNSTREAM-C3"
+      is_correct: true
+      rationale: "Un master accesible con puertos vecinos saludables sitúa la primera divergencia en la ruta individual de C3."
+      classification: "strong"
+      consequence: "El diagnóstico avanza al enlace local puerto-dispositivo."
+      evidence_revealed: ["EVID-05-BOUNDARY"]
+      next_stage: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-04-GENERAL-PROFINET"
+      is_correct: false
+      retry_feedback: "El master sigue accesible por PROFINET y los demás puertos funcionan. La primera anomalía está aguas abajo."
+      rationale: "Contradice la evidencia superior."
+      classification: "weak"
+      consequence: "Se investiga una red saludable."
+      evidence_revealed: []
+      next_stage: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-04-MASTER-TOTAL-FAILURE"
+      is_correct: false
+      retry_feedback: "Un fallo total del master no es coherente con su disponibilidad y con los puertos vecinos saludables."
+      rationale: "El patrón es local, no total."
+      classification: "weak"
+      consequence: "Se atribuye mal el alcance."
+      evidence_revealed: []
+      next_stage: "STAGE-05-INSPECT-PHYSICAL-PATH"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-INSPECT-M12"
+      is_correct: true
+      rationale: "La inspección física comprueba el último tramo entre C3 y el dispositivo."
+      classification: "strong"
+      consequence: "Se identifica el conector M12 parcialmente flojo."
+      evidence_revealed: ["EVID-06-M12-LOOSE"]
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: "DEC-05-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "La pérdida de comunicación no demuestra daño interno. Inspecciona primero cable y conexión M12."
+      rationale: "La ruta física aún no se ha verificado."
+      classification: "weak"
+      consequence: "Sustitución sin causa confirmada."
+      evidence_revealed: []
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: -6
+      safety_effect: 0
+    - decision_id: "DEC-05-CHANGE-PORT"
+      is_correct: false
+      retry_feedback: "Mover el dispositivo altera la arquitectura y evita inspeccionar la ruta C3 original."
+      rationale: "No confirma la causa en la instalación."
+      classification: "weak"
+      consequence: "Se desplaza el síntoma."
+      evidence_revealed: []
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: -6
+      safety_effect: -1
+    - decision_id: "DEC-05-SUPPRESS-DIAGNOSTIC"
+      is_correct: false
+      retry_feedback: "Suprimir el aviso no restaura comunicación ni datos. Inspecciona la conexión física de C3."
+      rationale: "Oculta el síntoma."
+      classification: "unsafe"
+      consequence: "El fallo permanece sin visibilidad."
+      evidence_revealed: []
+      next_stage: "STAGE-06-RESTORE-VERIFY"
+      score_effect: -10
+      safety_effect: -8
+    - decision_id: "DEC-06-RESTORE-COMPLETE-CHAIN"
+      is_correct: true
+      rationale: "La reparación restaura la causa física y verifica todas las capas afectadas y preservadas."
+      classification: "strong"
+      consequence: "Comunicación, datos y función quedan estables."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-FORCE-PROCESS-DATA"
+      is_correct: false
+      retry_feedback: "Forzar datos no repara el M12 y puede presentar al control un estado falso. Restaura la conexión física."
+      rationale: "Es un bypass."
+      classification: "unsafe"
+      consequence: "La comunicación real permanece perdida."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-06-IGNORE-REPEATABILITY"
+      is_correct: false
+      retry_feedback: "Una muestra válida no confirma estabilidad. Verifica comunicación, datos, función y repetibilidad."
+      rationale: "La verificación es incompleta."
+      classification: "weak"
+      consequence: "Puede cerrarse una reparación intermitente."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "PLC, PROFINET y master estaban saludables; la ruta C3 perdió comunicación por una conexión M12 parcialmente floja."
+    correct_reasoning: ["Separar capas.", "Confirmar PLC, PROFINET y master.", "Comparar puertos.", "Localizar C3.", "Inspeccionar el M12."]
+    recovery: ["Asentar correctamente el M12.", "Confirmar el dispositivo C3.", "Verificar datos, PROFINET, función y repetibilidad."]
+  technical_validation:
+    status: "pass"
+    evidence: ["La arquitectura conserva S7-1500, PROFINET y TBEN-L5-8IOL.", "C3 es la única ruta anormal.", "No se inventan códigos ni semánticas LED del fabricante."]

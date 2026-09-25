@@ -7,6 +7,13 @@ environment:
   lifecycle: "preview"
   version: "1.0"
   capacity: 10
+  presentation:
+    description:
+      es: "Transporte industrial, sensores, accionamientos y control secuencial en una línea automatizada."
+      en: "Industrial transport, sensors, drives and sequence control in an automated line."
+    skills:
+      es: ["Sensores industriales", "Diagnóstico eléctrico", "Variadores y motores", "Neumática", "Seguridad de máquinas", "PROFINET e IO-Link", "Control secuencial", "Integración PLC-HMI"]
+      en: ["Industrial sensors", "Electrical diagnostics", "Drives and motors", "Pneumatics", "Machine safety", "PROFINET and IO-Link", "Sequence control", "PLC-HMI integration"]
 
 visual:
   background: "media/ENV-001-automated-factory.png"
@@ -34,3 +41,12 @@ hotspots:
   - experience_editorial_id: "EE-0006"
     x: 61.0
     y: 50.0
+  - experience_editorial_id: "EE-0007"
+    x: 82.0
+    y: 38.0
+  - experience_editorial_id: "EE-0008"
+    x: 68.0
+    y: 40.0
+  - experience_editorial_id: "EE-0009"
+    x: 81.0
+    y: 44.0

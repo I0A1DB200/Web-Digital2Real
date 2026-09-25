@@ -132,6 +132,8 @@ sections:
       The command expresses what is requested. State describes what a controller or device reports internally. Feedback provides evidence of what actually occurred in the equipment or process. These layers can agree or diverge and must be observed separately.
 
       RunCmd = TRUE with Running = FALSE proves that a request exists, but does not explain why it was not executed. Permissives, communication, authority, device availability, actuator and mechanical process still need to be checked. The same reasoning applies to valves, cylinders, contactors and other actuators.
+
+      In a sequence, the physical condition, PLC input address, tag that represents it, derived logical variable and condition written in a transition are different boundaries. A TRUE sensor, %I0.5 and PartAtStop_Sensor do not satisfy a transition that evaluates another variable. Diagnostics must explicitly compare the configured reference with the verified signal.
     media_ids: []
 
   - id: TH-14-CONTROL-AUTHORITY
@@ -220,4 +222,34 @@ sections:
       In a line topology, one interrupted segment can make several downstream devices unavailable. This does not prove independent failures in every device. Topology determines how the symptom propagates, so the pattern of available and unavailable nodes is diagnostic evidence.
 
       Locate the last reachable node, the first unavailable node and the segment between them. Then distinguish power, physical link, network reachability, the PROFINET controller-device relationship, cyclic I/O exchange and machine function. Restoring one layer does not automatically validate the next: repair ends after communications, process data and representative operation are verified.
+    media_ids: []
+
+  - id: TH-25-SEQUENCE-STATE-CONTROL
+    title: Step-and-transition sequence control
+    body: |-
+      A sequence organizes behavior through steps, actions and transitions. An active step executes or enables the actions defined for that state; the sequence advances only when the following transition evaluates its condition as true. A step that remains active does not by itself prove a sequence-engine fault: the pending transition and the exact expression it evaluates must be identified.
+
+      To diagnose a blockage, observe online state without altering it, identify the last active step and first unsatisfied transition, and trace every term in its condition to the logical variable, PLC tag and corresponding physical process. Compare expected and observed at every boundary. This traceability distinguishes an absent physical condition from a valid signal that the logic does not reference correctly.
+
+      Recovery must correct the confirmed cause and then verify the transition, exit from the previous step, activation of the next step and several representative cycles. Forcing steps or transitions, writing variables to bypass conditions, or replacing them with TRUE constants hides the defect and may cause unjustified progression; it is not a repair.
+    media_ids: []
+
+  - id: TH-26-IO-LINK-DEVICE-ARCHITECTURE
+    title: IO-Link device architecture and diagnosis
+    body: |-
+      IO-Link is a point-to-point communication technology between a master port and a compatible field device. The master presents those devices to the control system through a higher-level network such as PROFINET, but the two communications are different layers. An operational PLC, PROFINET access to the master, or master availability does not prove that every port and device is communicating.
+
+      Diagnosis should follow the PLC, higher-level network, IO-Link master, individual port, device, process data, and machine function. The first abnormal layer defines the useful boundary. Comparing an affected port with healthy neighboring ports under the same master distinguishes a common master or network problem from a loss localized in the port-to-device path.
+
+      The physical connection remains part of communication. Cabling, M12 connectors, and mechanical seating should be inspected under the safe procedure when evidence localizes the fault to an individual path. After restoring the cause, verify device availability, expected data, preservation of higher-level communication, machine function, and stability; do not force data or suppress diagnostics to simulate recovery.
+    media_ids: []
+
+  - id: TH-27-HMI-INFORMATION-ARCHITECTURE
+    title: PLC-HMI information architecture
+    body: |-
+      An HMI represents machine information and permits interaction as designed, but a displayed indication is not itself a direct measurement of the process. The information chain runs from physical condition, sensor, PLC input and variable, through PLC-HMI communication, HMI tag and screen object to the visible indication. Each boundary may agree with or diverge from the previous one.
+
+      An available PLC-HMI connection and other updating values demonstrate general communication, not that every HMI tag reads the intended variable. A screen object depends on the configured association between its tag and PLC source; an incorrect association can display a wrong state even when the process and PLC are correct.
+
+      When indications disagree, verify process and PLC first, then communication availability, and finally the source of the tag used by the affected object. Correct the confirmed association in the visualization layer and check that screen, PLC variable and process agree under representative conditions. Do not force values or change control logic to compensate for a representation error.
     media_ids: []

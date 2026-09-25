@@ -5,6 +5,13 @@ environment:
   lifecycle: "preview"
   version: "1.0"
   capacity: 10
+  presentation:
+    description:
+      es: "Movimiento coordinado, neumática y comunicaciones industriales en una célula de producción."
+      en: "Coordinated motion, pneumatics and industrial communications in a production cell."
+    skills:
+      es: ["Control de movimiento", "Diagnóstico neumático", "PROFINET", "Puesta en marcha"]
+      en: ["Motion control", "Pneumatic diagnostics", "PROFINET", "Commissioning"]
 
 visual:
   background: "media/ENV-002-motion-pneumatics-profinet-cell.png"

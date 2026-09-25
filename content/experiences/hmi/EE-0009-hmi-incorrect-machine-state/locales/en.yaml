@@ -1,0 +1,138 @@
+locale: "en"
+translations:
+  title: "HMI Incorrect Machine State"
+  summary: "Trace a box state from the process to the screen and identify an HMI tag associated with the wrong PLC variable."
+  scenario:
+    initial_context: "A box is at the conveyor stop position, but the TP700 Comfort shows Box at Stop: NOT DETECTED."
+    operational_state: "The sensor detects the box, the S7-1500 represents the correct state, and other HMI values keep updating."
+    initiating_event: "The operator reports that the HMI indication contradicts the visible process."
+    learner_role: "Automation technician locating where the real state and HMI representation diverge."
+    safety_context:
+      safe_state: "Observe and verify the process with movement controlled under the authorized procedure."
+      intervention_constraints: ["Do not force PLC variables.", "Do not fix the HMI indication at TRUE.", "Do not change PLC logic or replace hardware without evidence."]
+  learning_objectives:
+    OBJ-TRACE-STATE:
+      description: "Compare physical condition, sensor, and PLC variable with the displayed state."
+    OBJ-HMI-BOUNDARY:
+      description: "Distinguish healthy PLC-HMI communication from an incorrect HMI tag association."
+    OBJ-VERIFY-MAPPING:
+      description: "Correct the HMI tag source and verify the complete representation without bypassing."
+  stages:
+    STAGE-01-VERIFY-PROCESS:
+      title: "Verify the real process"
+      situation: "The box is visible and the HMI says NOT DETECTED. Which evidence should be established first?"
+    STAGE-02-VERIFY-PLC:
+      title: "Verify the PLC state"
+      situation: "The box is present and the sensor detects it. Where should the next representation be checked?"
+    STAGE-03-CHECK-CONNECTION:
+      title: "Evaluate HMI communication"
+      situation: "DB_HMI.BoxAtStop is TRUE, but the HMI still says NOT DETECTED. Which boundary should be checked now?"
+    STAGE-04-INSPECT-HMI-TAG:
+      title: "Inspect the HMI tag"
+      situation: "The PLC-HMI connection works and other values update. Which configuration of the affected object should be traced?"
+    STAGE-05-COMPARE-SOURCES:
+      title: "Compare information sources"
+      situation: "BoxAtStop_HMI reads DB_HMI.BoxAtStop_2 at %DB10.DBX1.1. Which comparison identifies the mismatch?"
+    STAGE-06-CORRECT-VERIFY:
+      title: "Correct and verify"
+      situation: "The correct variable is DB_HMI.BoxAtStop at %DB10.DBX0.0. Which change resolves the incident?"
+  evidence:
+    EVID-01-CONTRADICTION:
+      source: "Process / TP700 Comfort"
+      content: "The box is at the stop; the HMI shows Box at Stop: NOT DETECTED."
+    EVID-02-PHYSICAL:
+      source: "Conveyor"
+      content: "The box is physically present and the photoelectric sensor detects it."
+    EVID-03-PLC-TRUE:
+      source: "S7-1500 / TIA Portal"
+      content: "The signal reaches the PLC and DB_HMI.BoxAtStop at %DB10.DBX0.0 is TRUE."
+    EVID-04-CONNECTION-HEALTHY:
+      source: "PLC-HMI / PROFINET"
+      content: "The TP700 Comfort communicates with the PLC and other HMI values update normally."
+    EVID-05-WRONG-MAPPING:
+      source: "WinCC Comfort / TIA Portal"
+      content: "The object uses BoxAtStop_HMI, associated with DB_HMI.BoxAtStop_2 at %DB10.DBX1.1."
+    EVID-06-ROOT-CAUSE:
+      source: "PLC-HMI comparison"
+      content: "The PLC verifies DB_HMI.BoxAtStop at %DB10.DBX0.0; the HMI tag reads another variable. The mismatch is in HMI mapping."
+  decisions:
+    DEC-01-RESTART-HMI:
+      action: "Restart the panel before confirming the field state."
+    DEC-01-VERIFY-BOX-SENSOR:
+      action: "Confirm the actual box position and local sensor detection."
+    DEC-01-REPLACE-SENSOR:
+      action: "Replace the sensor because the HMI says NOT DETECTED."
+    DEC-02-EDIT-PLC:
+      action: "Change PLC logic so the HMI changes state."
+    DEC-02-FORCE-INPUT:
+      action: "Force the PLC signal while inspecting the HMI."
+    DEC-02-MONITOR-PLC:
+      action: "Monitor the signal and DB_HMI.BoxAtStop in TIA Portal."
+    DEC-03-CHECK-HMI-CONNECTION:
+      action: "Check the PLC-HMI connection and whether other values update."
+    DEC-03-REPLACE-PLC:
+      action: "Replace the PLC although its process variable is correct."
+    DEC-03-CHANGE-LOGIC:
+      action: "Change the PLC variable without knowing the HMI source."
+    DEC-04-RESET-NETWORK:
+      action: "Restart PROFINET despite other values updating."
+    DEC-04-REPLACE-HMI:
+      action: "Replace the TP700 Comfort without inspecting its object."
+    DEC-04-INSPECT-TAG:
+      action: "Inspect the BoxAtStop_HMI tag used by the screen object."
+    DEC-04-FORCE-TRUE:
+      action: "Fix the screen indication at TRUE."
+    DEC-05-COMPARE-PLC-HMI:
+      action: "Compare the BoxAtStop_HMI source with DB_HMI.BoxAtStop verified in the PLC."
+    DEC-05-EDIT-SENSOR:
+      action: "Realign the sensor although the PLC correctly records the box."
+    DEC-05-RESTART-PANEL:
+      action: "Restart the panel while keeping the current association."
+    DEC-06-HARDCODE-TRUE:
+      action: "Set the HMI object permanently to DETECTED."
+    DEC-06-MODIFY-PLC:
+      action: "Change PLC logic to make the wrong variable TRUE."
+    DEC-06-MAP-AND-VERIFY:
+      action: "Associate BoxAtStop_HMI with DB_HMI.BoxAtStop and verify DETECTED against the real process."
+  retry_feedback:
+    DEC-01-RESTART-HMI: "Restarting may erase context; first verify box and sensor."
+    DEC-01-REPLACE-SENSOR: "The HMI does not prove sensor failure; check local detection."
+    DEC-02-EDIT-PLC: "Monitor PLC state before editing logic."
+    DEC-02-FORCE-INPUT: "Forcing the input falsifies evidence."
+    DEC-03-REPLACE-PLC: "The PLC holds the correct state; check the HMI connection."
+    DEC-03-CHANGE-LOGIC: "The PLC variable already reflects the box. Evaluate HMI communication."
+    DEC-04-RESET-NETWORK: "Other values update; inspect the affected object's source."
+    DEC-04-REPLACE-HMI: "The panel communicates; inspect its tag before replacement."
+    DEC-04-FORCE-TRUE: "Fixing TRUE would hide the source of the problem."
+    DEC-05-EDIT-SENSOR: "The PLC already represents the box; compare data sources."
+    DEC-05-RESTART-PANEL: "Restarting does not change tag association."
+    DEC-06-HARDCODE-TRUE: "Permanent TRUE does not reflect the real process."
+    DEC-06-MODIFY-PLC: "The PLC variable is already correct. Fix the HMI mapping."
+  visual:
+    educational_purpose: "Compare process, PLC, communication, and HMI object source before correcting the representation."
+  assets:
+    ART-001:
+      alt: "Conveyor environment cover with PLC and HMI."
+      caption: "The screen contradicts the process."
+    ART-002:
+      alt: "Box present while the HMI shows NOT DETECTED."
+      caption: "Initial observation without a confirmed cause."
+    ART-003:
+      alt: "Correct sensor and PLC variable state."
+      caption: "The physical condition reaches the S7-1500."
+    ART-004:
+      alt: "Operational communication between PLC and TP700 Comfort."
+      caption: "An available connection does not prove correct tag association."
+    ART-005:
+      alt: "BoxAtStop_HMI associated with DB_HMI.BoxAtStop_2."
+      caption: "The HMI configuration points to the wrong variable."
+    ART-006:
+      alt: "BoxAtStop_HMI corrected to DB_HMI.BoxAtStop with DETECTED on screen."
+      caption: "Process, PLC, and HMI agree again."
+  completion:
+    title: "Technical debrief"
+    summary: "Process, sensor, PLC, and communication were correct; BoxAtStop_HMI read DB_HMI.BoxAtStop_2 instead of DB_HMI.BoxAtStop."
+    process: ["Confirm box and sensor.", "Verify DB_HMI.BoxAtStop TRUE.", "Confirm PLC-HMI communication.", "Trace the object's tag.", "Compare sources.", "Correct and verify DETECTED."]
+    lesson: "A healthy HMI connection does not ensure every tag reads the intended PLC variable."
+    avoided_errors: ["Replacing the sensor.", "Changing PLC logic.", "Forcing variables or fixing TRUE.", "Restarting without diagnosis."]
+    industrial_value: ["End-to-end information traceability.", "Correction localized to visualization.", "Process and screen verification."]

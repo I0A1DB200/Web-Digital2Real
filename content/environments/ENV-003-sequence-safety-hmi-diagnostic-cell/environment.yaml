@@ -5,6 +5,13 @@ environment:
   lifecycle: "preview"
   version: "1.0"
   capacity: 10
+  presentation:
+    description:
+      es: "Secuencias, seguridad funcional y visualización HMI dentro de una célula diagnóstica."
+      en: "Sequences, functional safety and HMI visualization in a diagnostic cell."
+    skills:
+      es: ["Control secuencial", "Seguridad industrial", "Diagnóstico HMI", "Trazabilidad de estados"]
+      en: ["Sequence control", "Industrial safety", "HMI diagnostics", "State traceability"]
 
 visual:
   background: "media/ENV-003-sequence-safety-hmi-diagnostic-cell.png"

@@ -128,6 +128,20 @@ function validateIdentity(environment, add) {
   requireEnum(environment.lifecycle, EnvironmentDefinitionV1Schema.enums.lifecycle, "$.environment.lifecycle", "ENVIRONMENT_LIFECYCLE_INVALID", add);
   requireText(environment.version, "$.environment.version", add);
   requirePositiveInteger(environment.capacity, "$.environment.capacity", "ENVIRONMENT_CAPACITY_INVALID", add);
+  if (Object.hasOwn(environment, "presentation")) validatePresentation(environment.presentation, add);
+}
+
+function validatePresentation(presentation, add) {
+  if (!requireObject(presentation, "$.environment.presentation", add)) return;
+  if (!requireObject(presentation.description, "$.environment.presentation.description", add)) return;
+  if (!requireObject(presentation.skills, "$.environment.presentation.skills", add)) return;
+  for (const locale of ["es", "en"]) {
+    requireText(presentation.description[locale], `$.environment.presentation.description.${locale}`, add);
+    const skills = presentation.skills[locale];
+    if (!Array.isArray(skills) || !skills.length || skills.some(skill => typeof skill !== "string" || !skill.trim())) {
+      add("error", "ENVIRONMENT_SKILLS_INVALID", `$.environment.presentation.skills.${locale}`, `Environment ${locale} skills must be a non-empty text array.`);
+    }
+  }
 }
 
 function validateVisual(visual, add) {

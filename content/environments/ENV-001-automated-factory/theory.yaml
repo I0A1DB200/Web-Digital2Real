@@ -150,6 +150,8 @@ sections:
       El mando expresa lo solicitado. El estado describe lo que un controlador o dispositivo declara internamente. El feedback aporta evidencia de lo que realmente ocurrió en el equipo o proceso. Estas capas pueden coincidir o divergir y deben observarse por separado.
 
       RunCmd = TRUE con Running = FALSE demuestra que existe una petición, pero no explica por qué no se ejecuta. Todavía deben comprobarse permisivos, comunicación, autoridad, disponibilidad del dispositivo, actuador y proceso mecánico. El mismo razonamiento sirve para válvulas, cilindros, contactores y otros actuadores.
+
+      En una secuencia, la condición física, la dirección de entrada PLC, el tag que la representa, una variable lógica derivada y la condición escrita en una transición son fronteras diferentes. Que el sensor, %I0.5 y PartAtStop_Sensor estén TRUE no satisface una transición que evalúa otra variable. El diagnóstico debe comparar explícitamente la referencia configurada con la señal verificada.
     media_ids: []
 
   - id: TH-14-CONTROL-AUTHORITY
@@ -238,4 +240,34 @@ sections:
       En una topología lineal, un único segmento interrumpido puede hacer que varios dispositivos aguas abajo queden no disponibles. Esto no demuestra fallos independientes en cada dispositivo. La topología determina cómo se propaga el síntoma, por lo que el patrón de nodos disponibles y no disponibles es evidencia diagnóstica.
 
       Localiza el último nodo alcanzable, el primer nodo no disponible y el segmento situado entre ambos. Después distingue alimentación, enlace físico, alcance de red, relación controlador-dispositivo PROFINET, intercambio cíclico de I/O y función de máquina. Restaurar una capa no valida automáticamente las siguientes: la reparación termina al verificar comunicación, datos de proceso y operación representativa.
+    media_ids: []
+
+  - id: TH-25-SEQUENCE-STATE-CONTROL
+    title: Control de secuencias por pasos y transiciones
+    body: |-
+      Una secuencia organiza el comportamiento mediante pasos, acciones y transiciones. Un paso activo ejecuta o habilita las acciones definidas para ese estado; la secuencia solo avanza cuando la transición siguiente evalúa su condición como verdadera. Un paso que permanece activo no demuestra por sí mismo un fallo del motor de secuencia: indica que debe identificarse la transición pendiente y la expresión exacta que está evaluando.
+
+      Para diagnosticar un bloqueo, observa el estado online sin alterarlo, identifica el último paso activo y la primera transición no satisfecha, y traza cada término de su condición hacia la variable lógica, el tag PLC y el proceso físico correspondiente. Compara esperado y observado en cada frontera. Esta trazabilidad distingue una condición física ausente de una señal válida que la lógica no referencia correctamente.
+
+      La recuperación debe corregir la causa confirmada y después verificar la transición, el abandono del paso anterior, la activación del paso siguiente y varios ciclos representativos. Forzar pasos o transiciones, escribir variables para eludir condiciones o sustituirlas por constantes TRUE oculta el defecto y puede provocar una progresión no justificada; no constituye una reparación.
+    media_ids: []
+
+  - id: TH-26-IO-LINK-DEVICE-ARCHITECTURE
+    title: Arquitectura y diagnóstico de dispositivos IO-Link
+    body: |-
+      IO-Link es una tecnología de comunicación punto a punto entre un puerto master y un dispositivo de campo compatible. El master presenta esos dispositivos al sistema de control mediante una red superior, como PROFINET, pero ambas comunicaciones constituyen capas diferentes. Que el PLC esté operativo, que PROFINET alcance al master o que el master esté disponible no demuestra que todos sus puertos y dispositivos estén comunicando.
+
+      El diagnóstico debe recorrer PLC, red superior, master IO-Link, puerto individual, dispositivo, datos de proceso y función de máquina. La primera capa anormal define la frontera útil. Comparar un puerto afectado con puertos vecinos saludables bajo el mismo master permite distinguir un problema común del master o la red de una pérdida localizada en el camino puerto-dispositivo.
+
+      La conexión física sigue formando parte de la comunicación. Cableado, conectores M12 y asiento mecánico deben inspeccionarse conforme al procedimiento seguro cuando la evidencia localiza el fallo en un camino individual. Tras restaurar la causa, verifica disponibilidad del dispositivo, datos esperados, conservación de la comunicación superior, función de máquina y estabilidad; no fuerces datos ni suprimas diagnósticos para simular recuperación.
+    media_ids: []
+
+  - id: TH-27-HMI-INFORMATION-ARCHITECTURE
+    title: Arquitectura de información PLC-HMI
+    body: |-
+      Una HMI representa información de una máquina y permite interacción según el diseño, pero la indicación mostrada no es por sí misma una medición directa del proceso. La cadena informativa recorre condición física, sensor, entrada y variable PLC, comunicación PLC-HMI, tag HMI, objeto de pantalla e indicación visible. Cada frontera puede ser correcta o divergir de la anterior.
+
+      Una conexión PLC-HMI disponible y otros valores que se actualizan demuestran comunicación general, no que cada tag HMI lea la variable prevista. El objeto de pantalla depende de la asociación configurada entre su tag y la fuente PLC; una asociación equivocada puede mostrar un estado incorrecto aunque el proceso y el PLC sean correctos.
+
+      Ante una discrepancia, verifica primero proceso y PLC, después disponibilidad de comunicación y finalmente el origen del tag usado por el objeto afectado. Corrige la asociación confirmada en la capa de visualización y comprueba que pantalla, variable PLC y proceso concuerdan en condiciones representativas. No fuerces valores ni modifiques lógica de control para compensar un error de representación.
     media_ids: []

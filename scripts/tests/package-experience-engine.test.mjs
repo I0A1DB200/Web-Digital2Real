@@ -58,16 +58,19 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(result.packaged, ["EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IOLINK-DEVICE-008", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.equal(result.skipped.length, 2);
-  assert.equal(catalog.experiences.length, 6);
+  assert.equal(catalog.experiences.length, 9);
   const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-SIGNAL-001");
   const intermittent = catalog.experiences.find(item => item.id === "EXP-SENSOR-INTERMITTENT-002");
   const drive = catalog.experiences.find(item => item.id === "EXP-VFD-AUTHORITY-003");
   const pneumatic = catalog.experiences.find(item => item.id === "EXP-PNEUMATIC-CYLINDER-004");
   const safetyGate = catalog.experiences.find(item => item.id === "EXP-SAFETY-GATE-005");
   const profinetLink = catalog.experiences.find(item => item.id === "EXP-PROFINET-LINK-006");
+  const graphSequence = catalog.experiences.find(item => item.id === "EXP-GRAPH-SEQUENCE-007");
+  const ioLinkDevice = catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008");
+  const hmiState = catalog.experiences.find(item => item.id === "EXP-HMI-STATE-009");
   assert.equal(remaining.id, "EXP-SENSOR-SIGNAL-001");
   assert.equal(remaining.editorialId, "EE-0001");
   assert.equal(remaining.access, "free");
@@ -88,6 +91,15 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.equal(profinetLink.editorialId, "EE-0006");
   assert.equal(profinetLink.locales.es, "experiences/EXP-PROFINET-LINK-006.es.json");
   assert.equal(profinetLink.locales.en, "experiences/EXP-PROFINET-LINK-006.en.json");
+  assert.equal(graphSequence.editorialId, "EE-0007");
+  assert.equal(graphSequence.locales.es, "experiences/EXP-GRAPH-SEQUENCE-007.es.json");
+  assert.equal(graphSequence.locales.en, "experiences/EXP-GRAPH-SEQUENCE-007.en.json");
+  assert.equal(ioLinkDevice.editorialId, "EE-0008");
+  assert.equal(ioLinkDevice.locales.es, "experiences/EXP-IOLINK-DEVICE-008.es.json");
+  assert.equal(ioLinkDevice.locales.en, "experiences/EXP-IOLINK-DEVICE-008.en.json");
+  assert.equal(hmiState.editorialId, "EE-0009");
+  assert.equal(hmiState.locales.es, "experiences/EXP-HMI-STATE-009.es.json");
+  assert.equal(hmiState.locales.en, "experiences/EXP-HMI-STATE-009.en.json");
   assert.equal(catalog.environments.length, 3);
   assert.deepEqual(catalog.environments[0].hotspots, [
     { experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 },
@@ -95,7 +107,10 @@ test("preview packages every eligible canonical Experience", async t => {
     { experienceEditorialId: "EE-0003", x: 88.5, y: 56.5 },
     { experienceEditorialId: "EE-0004", x: 44, y: 42 },
     { experienceEditorialId: "EE-0005", x: 52, y: 68 },
-    { experienceEditorialId: "EE-0006", x: 61, y: 50 }
+    { experienceEditorialId: "EE-0006", x: 61, y: 50 },
+    { experienceEditorialId: "EE-0007", x: 82, y: 38 },
+    { experienceEditorialId: "EE-0008", x: 68, y: 40 },
+    { experienceEditorialId: "EE-0009", x: 81, y: 44 }
   ]);
   assert.deepEqual(catalog.environments[0].theory, {
     defaultLocale: "es",
@@ -108,7 +123,8 @@ test("preview packages every eligible canonical Experience", async t => {
       "TH-16-PNEUMATIC-ENERGY", "TH-17-VALVES-ACTUATORS", "TH-18-PNEUMATIC-FLOW-CONTROL",
       "TH-19-ELECTRO-PNEUMATIC-DIAGNOSIS", "TH-20-MACHINE-SAFETY-FUNDAMENTALS",
       "TH-21-SAFETY-DEVICES-DUAL-CHANNELS", "TH-22-SAFETY-PLC-SAFE-FUNCTIONS",
-      "TH-23-SAFETY-DIAGNOSIS-RESET", "TH-24-NETWORK-FAULT-BOUNDARY"
+      "TH-23-SAFETY-DIAGNOSIS-RESET", "TH-24-NETWORK-FAULT-BOUNDARY", "TH-25-SEQUENCE-STATE-CONTROL",
+      "TH-26-IO-LINK-DEVICE-ARCHITECTURE", "TH-27-HMI-INFORMATION-ARCHITECTURE"
     ],
     locales: {
       es: "environments/ENV-001/theory.es.json",
@@ -116,6 +132,10 @@ test("preview packages every eligible canonical Experience", async t => {
     }
   });
   assert.equal(catalog.environments[0].contractVersion, "2.0.0");
+  assert.match(catalog.environments[0].presentation.description.es, /Transporte industrial/);
+  assert.match(catalog.environments[0].presentation.description.en, /Industrial transport/);
+  assert.equal(catalog.environments[0].presentation.skills.es.length, 8);
+  assert.equal(catalog.environments[0].presentation.skills.en.length, 8);
   assert.equal(catalog.environments[1].contractVersion, "1.0.0");
   const theoryEs = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.es));
   const theoryEn = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.en));
@@ -145,7 +165,7 @@ test("preview packages every eligible canonical Experience", async t => {
     );
     assert.equal(await sha256(generatedImage), await sha256(sourceImage));
   }
-  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0009"), false);
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0909"), false);
   await access(path.join(
     root,
     "content",
@@ -165,6 +185,12 @@ test("preview packages every eligible canonical Experience", async t => {
   await access(path.join(generatedRoot, intermittent.locales.en));
   await access(path.join(generatedRoot, drive.locales.es));
   await access(path.join(generatedRoot, drive.locales.en));
+  await access(path.join(generatedRoot, graphSequence.locales.es));
+  await access(path.join(generatedRoot, graphSequence.locales.en));
+  await access(path.join(generatedRoot, ioLinkDevice.locales.es));
+  await access(path.join(generatedRoot, ioLinkDevice.locales.en));
+  await access(path.join(generatedRoot, hmiState.locales.es));
+  await access(path.join(generatedRoot, hmiState.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
   await access(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"));
@@ -251,7 +277,7 @@ test("publish excludes technical-review experiences while preview includes them"
 
   assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
   assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
-  assert.deepEqual(preview.packaged, ["EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(preview.packaged, ["EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IOLINK-DEVICE-008", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.deepEqual(publish.environments, []);
 });

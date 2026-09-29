@@ -17,6 +17,42 @@ const fixtureUrl = new URL(
 const readArtifact = async () => JSON.parse(await readFile(fixtureUrl, "utf8"));
 const clone = value => JSON.parse(JSON.stringify(value));
 
+test("semantic completion media preserves requested order without changing diagnostic results", async () => {
+  const baseline = await v2Artifact();
+  const artifact = clone(baseline);
+  artifact.public.visual.assets = [
+    { id: "LAST", type: "image", src: "last.png", alt: "Stage", purpose: "evidence" },
+    { id: "END-A", type: "image", src: "a.png", alt: "Result A", purpose: "completion" },
+    { id: "END-B", type: "image", src: "b.png", alt: "Result B", purpose: "completion" }
+  ];
+  artifact.public.stages.forEach(stage => { stage.media_ids = ["END-B", "LAST"]; });
+  for (const ids of [["END-B", "missing", "END-A"], [], undefined, ["missing"]]) {
+    artifact.public.completion = { title: "Debrief", ...(ids ? { media_ids: ids } : {}) };
+    const player = new ExperiencePlayer({ experience: artifact });
+    const control = new ExperiencePlayer({ experience: baseline });
+    for (const current of [player, control]) {
+      current.start();
+      current.continue();
+      current.selectDecision("DEC-1-RETRY");
+    }
+    assert.deepEqual(player.getState().media.map(asset => asset.id), ["END-B", "LAST"]);
+    assert.deepEqual(player.getState().unlockedEvidence, []);
+    for (const current of [player, control]) {
+      current.selectDecision("DEC-1-ADVANCE");
+      current.selectDecision("DEC-2-ADVANCE");
+    }
+    const result = player.getState();
+    assert.equal(result.interaction, "completion");
+    assert.deepEqual(result.media.map(asset => asset.id), ids?.includes("END-A") ? ["END-B", "END-A"] : []);
+    for (const key of ["progress", "decisionHistory", "attemptsByDecision", "unlockedEvidence", "resolvedDecisions", "evaluationResult", "completionStatus"]) {
+      assert.deepEqual(result[key], control.getState()[key], key);
+    }
+    player.reset();
+    assert.equal(player.getState().interaction, "start");
+    assert.deepEqual(player.getState().unlockedEvidence, []);
+  }
+});
+
 async function v2Artifact(decisionPointCount = 2) {
   const value = await readArtifact();
   value.web_artifact_version = "2.0.0";

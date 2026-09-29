@@ -10,6 +10,11 @@ import { packageExperience } from "../experiencePackagingPipeline.js";
 
 const experiences = [
   {
+    id: "EE-0011",
+    path: "../../../content/experiences/sensors/EE-0011-inductive-sensor-not-detecting/",
+    correctIds: ["DEC-01-CHECK-HEALTH", "DEC-02-INSPECT-SENSOR", "DEC-03-MEASURE-GEOMETRY", "DEC-04-COMPARE-SECURED", "DEC-05-CORRELATE-STATE", "DEC-06-INSTALLATION-DISTANCE", "DEC-07-CORRECT-GEOMETRY", "DEC-08-VERIFY-FULL-CHAIN"]
+  },
+  {
     id: "EE-0001",
     path: "../../../content/experiences/sensors/EE-0001-sensor-on-plc-input-off/",
     correctIds: ["DEC-01-TRACE", "DEC-02-MAP", "DEC-03-COMPARE", "DEC-04-LOCALIZE", "DEC-05-OPEN", "DEC-06-REPAIR", "DEC-07-VERIFY-CHAIN"]

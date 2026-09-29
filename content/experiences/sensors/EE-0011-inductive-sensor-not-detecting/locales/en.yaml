@@ -1,0 +1,166 @@
+locale: "en"
+translations:
+  title: "Inductive Sensor Not Detecting"
+  summary: "Investigate a present workpiece without position confirmation by tracing physical process, sensor, IO-Link, PLC and HMI."
+  scenario:
+    initial_context: "A metallic workpiece appears present at Station 1, but the HMI reports PartInPosition = 0."
+    operational_state: "Sensor power is available. The cause of the discrepancy has not yet been identified."
+    initiating_event: "The station does not confirm the position of an apparently present workpiece."
+    learner_role: "Automation technician locating the discrepancy between physical process, sensor, IO-Link, PLC and HMI."
+    safety_context:
+      safe_state: "Inspect and adjust only under the installation's safe intervention procedure, with hazardous movement controlled."
+      intervention_constraints: ["Do not force signals or bypass safeguards.","Do not replace or reconfigure the sensor without checking the physical application.","Do not alter PLC, HMI or communication to hide the symptom."]
+  learning_objectives:
+    OBJ-TRACE-SIGNAL:
+      description: "Distinguish power, switching, communication and PLC/HMI representation."
+    OBJ-SENSING-CONDITIONS:
+      description: "Compare the physical application with Sn and secured operating distance without assuming an exact threshold."
+    OBJ-VERIFY-RECOVERY:
+      description: "Safely correct geometry and verify the full chain without unjustified replacement or reconfiguration."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Station 1 incident"
+      situation: "The workpiece appears present, but PartInPosition = 0. Which check first establishes the scope?"
+    STAGE-02-SYSTEM-HEALTH:
+      title: "System health"
+      situation: "PLC, network and IO-Link are operational. Where should you now look for the first discrepancy?"
+    STAGE-03-PHYSICAL-INSPECTION:
+      title: "Physical inspection"
+      situation: "The target is present and the sensor powered, but it is not switching. What should you investigate before intervening?"
+    STAGE-04-MEASUREMENT:
+      title: "Measurement and reference"
+      situation: "The measured gap is 7.8 mm. Which conclusion does the documentation support before comparing the state through IO-Link?"
+    STAGE-05-IO-LINK-EVIDENCE:
+      title: "IO-Link evidence"
+      situation: "With healthy communication, Active switchpoint = 0. How do you interpret this value?"
+    STAGE-06-DIAGNOSIS:
+      title: "Diagnosis before correction"
+      situation: "Combine the physical and digital evidence. Which diagnosis is best supported?"
+    STAGE-07-SAFE-CORRECTION:
+      title: "Safe physical correction"
+      situation: "The diagnosis locates the problem in the installation. Which intervention removes the cause and allows verification?"
+    STAGE-08-VERIFY-CHAIN:
+      title: "End-to-end verification"
+      situation: "After correcting geometry, review the complete propagation. What permits closing the intervention?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Observation / HMI"
+      content: "Metallic workpiece visually present at Station 1; HMI PartInPosition = 0. Sensor power is available. The cause is not yet known."
+    EVID-02-SYSTEM-HEALTH:
+      source: "System diagnostics"
+      content: "PLC operational, network operational and IO-Link communication operational. Communication health does not prove target detection."
+    EVID-03-PHYSICAL-INSPECTION:
+      source: "Physical inspection"
+      content: "Target present; green Power LED = ON; yellow Switching/Output LED = OFF. Visual presence does not guarantee that sensing conditions are met."
+    EVID-04-MEASUREMENT:
+      source: "Measurement / Turck documentation"
+      content: "Turck BI6U-MT12-IOL6X2-H1141: measured gap 7.8 mm; Sn = 6 mm; secured operating distance ≤ 4.86 mm (0.81 × Sn). Sn is a rated distance, not an exact digital threshold."
+    EVID-05-IO-LINK-EVIDENCE:
+      source: "IO-Link process data"
+      content: "Active switchpoint = 0 means target not detected. IO-Link communicates the current sensor state; no communication fault has been identified."
+    EVID-06-DIAGNOSIS:
+      source: "Diagnostic synthesis"
+      content: "Communication works; the sensor is powered but does not switch; the gap is 7.8 mm versus ≤ 4.86 mm secured operation; Active switchpoint = 0 and PartInPosition = 0."
+    EVID-07-SAFE-CORRECTION:
+      source: "Intervention plan"
+      content: "Confirmed diagnosis: sensor-target geometry is outside the secured condition. Correction has not yet been performed or verified."
+    EVID-08-VERIFY-CHAIN:
+      source: "Signal-chain verification"
+      content: "After correction: green Power LED = ON, yellow Switching/Output LED = ON, Active switchpoint = 1 and PartInPosition = 1. Verify target → sensor → IO-Link data → PLC → HMI. The asset label ≤ 6 mm does not by itself establish ≤ 4.86 mm; installation acceptance requires checking the documented secured condition, not assuming an exact threshold at Sn."
+  decisions:
+    DEC-01-REPLACE-SENSOR:
+      action: "Replace the sensor because the workpiece is present."
+    DEC-01-CHECK-HEALTH:
+      action: "Check PLC, network and IO-Link communication health."
+    DEC-01-EDIT-HMI:
+      action: "Change the HMI representation of PartInPosition."
+    DEC-02-RESTART-NETWORK:
+      action: "Restart the network to restore PartInPosition."
+    DEC-02-REMAP-PLC:
+      action: "Remap the signal in the PLC."
+    DEC-02-INSPECT-SENSOR:
+      action: "Safely inspect the target, sensor power and switching LED."
+    DEC-03-MEASURE-GEOMETRY:
+      action: "Measure the sensor-target gap and compare it with the device documentation."
+    DEC-03-REPLACE-POWERED:
+      action: "Replace the sensor because it is powered but does not switch."
+    DEC-03-CHANGE-PARAMETERS:
+      action: "Change IO-Link parameters to activate the output."
+    DEC-04-EXACT-THRESHOLD:
+      action: "Treat 6 mm as the exact switching point under every condition."
+    DEC-04-COMPARE-SECURED:
+      action: "Identify an installation outside the secured condition and compare the detection state through IO-Link."
+    DEC-04-TUNE-RANGE:
+      action: "Increase a range parameter to compensate for the gap."
+    DEC-05-CORRELATE-STATE:
+      action: "Correlate zero with the unlit switching LED and measured gap to formulate the diagnosis."
+    DEC-05-BLAME-IO-LINK:
+      action: "Diagnose an IO-Link fault because the value is zero."
+    DEC-05-BLAME-HMI:
+      action: "Attribute the missing detection to the HMI."
+    DEC-06-DEFECTIVE-SENSOR:
+      action: "Defective sensor: power should guarantee detection."
+    DEC-06-PLC-FAILURE:
+      action: "PLC failure interpreting a sensor that is detecting."
+    DEC-06-INSTALLATION-DISTANCE:
+      action: "Incorrect sensor-target installation distance; a physical application problem, without evidence of a defective sensor."
+    DEC-07-FORCE-INPUT:
+      action: "Force PartInPosition to release the station."
+    DEC-07-CHANGE-LOGIC:
+      action: "Modify PLC or HMI to accept the current state."
+    DEC-07-CORRECT-GEOMETRY:
+      action: "Control hazardous movement, correct and secure geometry within the documented condition, and verify the complete chain."
+    DEC-08-POWER-ONLY:
+      action: "Close after checking only the green LED."
+    DEC-08-VERIFY-FULL-CHAIN:
+      action: "Confirm secured mounting, both LEDs on and propagation of Active switchpoint = 1 through to PartInPosition = 1, without forcing."
+    DEC-08-HMI-ONLY:
+      action: "Close on PartInPosition = 1 without comparing the sensor and IO-Link."
+  retry_feedback:
+    DEC-01-REPLACE-SENSOR: "The discrepancy does not yet locate the fault. Check system health before replacing equipment."
+    DEC-01-EDIT-HMI: "A zero indication may faithfully represent the signal. Establish system health first."
+    DEC-02-RESTART-NETWORK: "Communication is operational. Inspect local detection before restarting a healthy network."
+    DEC-02-REMAP-PLC: "The signal has not yet been compared with the sensor state. Do not change mapping without that evidence."
+    DEC-03-REPLACE-POWERED: "Power does not prove that the application permits detection. Check physical conditions before declaring a defect."
+    DEC-03-CHANGE-PARAMETERS: "There is no evidence of incorrect configuration. Investigate physical geometry first."
+    DEC-04-EXACT-THRESHOLD: "Sn does not define an exact threshold. Compare the installation with the documented secured operating condition."
+    DEC-04-TUNE-RANGE: "A parameter change has not been shown to be appropriate. Assess the installation against the documented condition."
+    DEC-05-BLAME-IO-LINK: "The data value and link health are different. A healthy link can communicate no detection."
+    DEC-05-BLAME-HMI: "The sensor already reports no detection. The HMI does not explain why the local switching LED is off."
+    DEC-06-DEFECTIVE-SENSOR: "Power and detection are distinct functions. Evidence shows a physical condition outside the secured specification."
+    DEC-06-PLC-FAILURE: "The LED and Active switchpoint do not show detection. There is no evidence of a one lost in the PLC."
+    DEC-07-FORCE-INPUT: "Forcing a signal hides the physical condition. Correct the installation under the safe procedure."
+    DEC-07-CHANGE-LOGIC: "The control receives no detection. Changing it does not restore physical detection."
+    DEC-08-POWER-ONLY: "The green LED only confirms power. Check switching and propagation through PLC and HMI."
+    DEC-08-HMI-ONLY: "The final indication alone does not prove the whole chain. Compare physical and digital states before closing."
+  visual:
+    educational_purpose: "Distinguish communication health and power from physical detection; verify complete recovery."
+  assets:
+    ART-001:
+      alt: "EE-0011 editorial cover featuring a Turck inductive sensor."
+      caption: "Illustrative cover; the initial state is documented in the incident evidence."
+    ART-002:
+      alt: "Target present and HMI PartInPosition = 0, without measurement annotations."
+      caption: "Incident: position is not confirmed."
+    ART-003:
+      alt: "PLC, network and IO-Link communication operational."
+      caption: "Infrastructure communicates; this does not prove detection."
+    ART-004:
+      alt: "Target present, green Power ON and yellow Switching/Output OFF."
+      caption: "Power and switching are distinct states."
+    ART-005:
+      alt: "Gap of 7.8 mm; Sn = 6 mm; secured distance ≤ 4.86 mm."
+      caption: "Compare installation with the documented secured condition."
+    ART-006:
+      alt: "IO-Link data showing Active switchpoint = 0."
+      caption: "Healthy communication of a target not detected."
+    ART-007:
+      alt: "Verification with both LEDs ON, Active switchpoint = 1 and PartInPosition = 1."
+      caption: "Unmodified original asset: the ≤ 6 mm label does not replace checking the secured condition ≤ 4.86 mm."
+  completion:
+    title: "Technical debrief"
+    summary: "The 7.8 mm gap was outside the secured condition ≤ 4.86 mm (0.81 × Sn) for the Turck BI6U-MT12-IOL6X2-H1141, with Sn = 6 mm. The sensor was not shown to be defective: IO-Link correctly communicated no detection."
+    process: ["Establish PLC, network and IO-Link health.","Distinguish Power ON from Switching/Output OFF.","Measure the gap and consult the secured condition.","Correlate Active switchpoint = 0 with no switching.","Diagnose installation before intervening.","Correct geometry safely.","Verify detection, Active switchpoint = 1 and PartInPosition = 1 through the PLC."]
+    lesson: "Physical presence does not equal detection. Sn is not an exact threshold; healthy communication can faithfully transmit no detection."
+    avoided_errors: ["Replacing a sensor without checking the application.","Changing parameters, communication, PLC or HMI without evidence.","Forcing PartInPosition.","Closing on one LED or the HMI alone."]
+    industrial_value: ["Locating the first discrepancy.","Fewer unnecessary replacements.","Verified end-to-end recovery."]

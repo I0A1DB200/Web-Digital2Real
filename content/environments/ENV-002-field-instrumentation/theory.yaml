@@ -56,3 +56,16 @@ sections:
 
       Un diagnostico robusto sigue flujo de la variable física hacia el sensor, el transmisor, el cableado, la entrada del PLC, la variable de proceso y la lógica de control. La validación final debe recrear la condición del proceso real y confirmar que la actuación del sistema sigue el valor esperado. Esa secuencia reduce errores de sustitución y mantiene la confianza en la medición.
     media_ids: []
+
+  - id: "TH-07-INDUCTIVE-SENSING-CONDITIONS"
+    title: "Detección inductiva y condiciones físicas"
+    body: "Un sensor de proximidad inductivo detecta un objetivo metálico sin contacto. La presencia visible de una pieza no demuestra que la cara activa, la separación, la geometría del objetivo y las condiciones de montaje permitan detectarla. La investigación debe comparar la aplicación con la documentación del dispositivo antes de sustituirlo o modificar parámetros. Un sensor alimentado puede funcionar correctamente sin conmutar si el objetivo queda fuera de sus condiciones de detección."
+    media_ids: []
+  - id: "TH-08-RATED-AND-SECURED-DISTANCE"
+    title: "Distancia nominal y distancia asegurada"
+    body: "Sn es la distancia nominal de conmutación, no un umbral digital exacto aplicable a cualquier montaje. La distancia de funcionamiento asegurada define la condición documentada que debe comprobarse para la instalación. En el Turck BI6U-MT12-IOL6X2-H1141, Sn = 6 mm y la referencia asegurada es ≤ 4.86 mm (0.81 × Sn). No generalices ese factor a otros dispositivos sin consultar su documentación. Una conmutación observada no demuestra por sí sola margen de funcionamiento asegurado. La aceptación exige comprobar geometría, montaje y condición documentada, además del resultado funcional."
+    media_ids: []
+  - id: "TH-09-POWER-SWITCHING-AND-PROCESS-DATA"
+    title: "Alimentación, conmutación y datos de proceso"
+    body: "Alimentación, conmutación y salud de comunicación son comprobaciones distintas. El LED Power indica alimentación, mientras que el LED Switching/Output representa el estado de conmutación según el dispositivo. Un enlace IO-Link operativo puede transmitir correctamente un estado de no detección. Interpreta los datos de proceso con la documentación: en la representación Active switchpoint utilizada, 0 significa objetivo no detectado y 1 objetivo detectado. Contrasta el estado físico con el sensor, el dato comunicado, el PLC y la HMI. Localiza la primera discrepancia y verifica de nuevo toda la cadena después de corregirla, sin forzar señales."
+    media_ids: []

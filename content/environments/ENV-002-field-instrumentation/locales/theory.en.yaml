@@ -50,3 +50,16 @@ sections:
       Commissioning of instrumentation requires validating the scale, polarity, reference, operating range and loop behavior under real conditions. It is not enough to confirm that the transmitter powers on; the signal arriving at the PLC must match the actual process and the control logic.
 
       A robust diagnosis follows the physical variable from the sensor through the transmitter, wiring, PLC input, process variable and final control logic. Final validation must recreate the real operating condition and confirm that the system response matches the expected value. That sequence reduces replacement errors and preserves confidence in the measurement.
+
+  - id: "TH-07-INDUCTIVE-SENSING-CONDITIONS"
+    title: "Inductive sensing and physical conditions"
+    body: "An inductive proximity sensor detects a metallic target without contact. A visibly present workpiece does not establish that the active face, gap, target geometry and mounting conditions permit detection. Compare the application with the device documentation before replacing equipment or changing parameters. A powered sensor may operate correctly without switching when the target lies outside its sensing conditions."
+    media_ids: []
+  - id: "TH-08-RATED-AND-SECURED-DISTANCE"
+    title: "Rated and secured operating distance"
+    body: "Sn is the rated switching distance, not an exact digital threshold for every installation. The secured operating distance defines the documented condition to check for the application. For the Turck BI6U-MT12-IOL6X2-H1141, Sn = 6 mm and the secured reference is ≤ 4.86 mm (0.81 × Sn). Do not generalize that factor to other devices without consulting their documentation. Observed switching alone does not establish secured operating margin. Acceptance requires checking geometry, mounting and the documented condition as well as functional behavior."
+    media_ids: []
+  - id: "TH-09-POWER-SWITCHING-AND-PROCESS-DATA"
+    title: "Power, switching and process data"
+    body: "Power, switching and communication health are separate checks. The Power LED indicates power, while the Switching/Output LED represents the device switching state. An operational IO-Link connection can correctly transmit no detection. Interpret process data using the documentation: in the Active switchpoint representation used here, 0 means target not detected and 1 means target detected. Compare the physical state with the sensor, transmitted data, PLC and HMI. Locate the first discrepancy and verify the complete chain again after correction, without forcing signals."
+    media_ids: []

@@ -158,7 +158,9 @@ export class ExperiencePlayer {
       selectedDecision: this.#state.selectedDecision,
       decisionHistory: clone(this.#state.decisionHistory),
       visual: clone(this.#model.public.visual),
-      media: clone(resolveMedia(this.#model, stage?.media_ids ?? [])),
+      media: clone(resolveMedia(this.#model, this.#state.interaction === "completion"
+        ? this.#model.public.completion?.media_ids ?? []
+        : stage?.media_ids ?? [])),
       ...(this.#version === WEB_ARTIFACT_V2 ? {
         attemptsByDecision: clone(this.#state.attemptsByDecision),
         resolvedDecisions: [...this.#state.resolvedDecisions],
@@ -360,8 +362,8 @@ function validateV2Experience(candidate, stageIds, decisionIds) {
 }
 
 function resolveMedia(model, identifiers) {
-  const requested = new Set(identifiers);
-  return (model.public.visual.assets ?? []).filter(asset => requested.has(asset.id));
+  const assets = new Map((model.public.visual.assets ?? []).map(asset => [asset.id, asset]));
+  return identifiers.map(id => assets.get(id)).filter(Boolean);
 }
 
 function plainObject(value) {

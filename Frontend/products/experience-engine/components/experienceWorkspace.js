@@ -230,6 +230,11 @@ function selectTheoryLocale(theory, requested) {
 
 export function createWorkspaceProjection(state, baseUrl = "") {
   if (!state) return Object.freeze({ phase: "catalog" });
+  const projectAsset = asset => ({
+    ...asset,
+    src: baseUrl ? `${baseUrl}/${asset.src}` : asset.src
+  });
+  const cover = state.visual?.assets?.find(asset => asset.id === state.visual.cover_asset_id);
   return Object.freeze({
     phase: state.interaction,
     title: state.experience.title,
@@ -246,10 +251,8 @@ export function createWorkspaceProjection(state, baseUrl = "") {
     feedback: state.feedback ?? null,
     evaluationResult: state.evaluationResult ?? null,
     visual: state.visual,
-    media: state.media.map(asset => ({
-      ...asset,
-      src: baseUrl ? `${baseUrl}/${asset.src}` : asset.src
-    })),
+    cover: cover ? projectAsset(cover) : null,
+    media: state.media.map(projectAsset),
     completion: state.completion
   });
 }
@@ -466,6 +469,9 @@ export function CompletionPanel({ documentRef, projection, onRestart, ui = exper
 function createIntroduction(documentRef, projection, action, isStart, ui) {
   const panel = createElement(documentRef, "section", "experience-panel experience-introduction");
   appendText(documentRef, panel, "span", "experience-panel__label", isStart ? ui.readyToBegin : ui.incidentBrief);
+  if (!isStart && projection.cover) {
+    panel.appendChild(MediaPanel({ documentRef, media: [projection.cover], ui }));
+  }
   appendText(documentRef, panel, "h2", "", projection.context.learner_role);
   appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initial_context);
 

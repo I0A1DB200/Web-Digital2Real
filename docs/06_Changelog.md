@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-28 — Experience Engine semantic media contract, Phase 1
+
+- Render the semantic `public.visual.cover_asset_id` inside the existing Incident Brief using the same asset URL projection and media component as stage media. Missing optional references leave the introduction usable; no new Player state or diagnostic side effects.
+- Resolve Debrief media exclusively from `completion.media_ids`, independently of the last stage. The shared resolver now follows requested ID order and skips unresolved references, including empty completion media.
+- Preserve authored stage media, including expected ENV-001 cover reuse. No Experience definitions, schemas, scoring, evidence, Retry or progress persistence rules changed.
+
+## 2026-09-25 — EE-0011 inductive sensor not detecting
+
+- Added EE-0011 to ENV-002 in technical review with six diagnostic decisions followed by safe physical correction and full-chain verification; ES/EN content preserves the distinction between Sn and secured operating distance.
+- Integrated seven byte-identical frozen assets from `EE-0011_validated_assets.zip`. Cover 01 remains editorial only because it depicts switching ON; incident evidence starts at 02. Verification asset 07 retains its original ≤ 6 mm label, with localized text explaining that this alone does not establish the ≤ 4.86 mm secured condition.
+- Reused ENV-002 Theory sections TH-01 and TH-06 and added reusable sections TH-07 through TH-09 for inductive sensing conditions, rated versus secured distance, and power/switching/process-data diagnosis. No Experience-specific Theory or Engine changes.
+- Retained the existing V2 evaluation policy and private correctness authority; no XP, lives or score penalties. Manufacturer reference: https://www.turck.us/en/product/1644874 ; secured-distance reference supplied in validated asset 05.
+
 ## 2026-09-25 — ENV-002 Field Instrumentation
 
 - Prepared ENV-002 with ES/EN titles and descriptions and a diagnostic scope spanning physical process, instrument, signal, I/O, PLC and control logic. Optional localized titles reuse environment presentation metadata and fall back to the canonical title for existing environments.

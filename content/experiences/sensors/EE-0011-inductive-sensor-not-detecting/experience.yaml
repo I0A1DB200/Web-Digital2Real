@@ -1,0 +1,560 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-INDUCTIVE-GAP-011"
+  editorial_id: "EE-0011"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales: ["es","en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Turck BI6U-MT12-IOL6X2-H1141 / IO-Link"
+  domain: "Inductive proximity sensing"
+  industry: "Manufacturing"
+  machine_type: "Workpiece positioning station"
+  difficulty: "foundation"
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY","COMP-IIO-STATE-INTERPRETATION","COMP-IIO-CONTROLLED-RECOVERY"]
+public:
+  slug: "inductive-sensor-not-detecting"
+  title: "Sensor inductivo sin detección"
+  summary: "Investiga una pieza presente sin confirmación de posición siguiendo proceso físico, sensor, IO-Link, PLC y HMI."
+  estimated_duration: 18
+  scenario:
+    initial_context: "Una pieza metálica parece presente en Station 1, pero la HMI indica PartInPosition = 0."
+    operational_state: "El sensor dispone de alimentación. La causa de la discrepancia todavía no está identificada."
+    initiating_event: "La estación no confirma la posición de una pieza aparentemente presente."
+    learner_role: "Técnico de automatización que debe localizar la discrepancia entre proceso físico, sensor, IO-Link, PLC y HMI."
+    safety_context:
+      safe_state: "Inspecciona y ajusta únicamente conforme al procedimiento seguro de la instalación, con movimientos peligrosos controlados."
+      intervention_constraints: ["No forzar señales ni puentear protecciones.","No sustituir ni reconfigurar el sensor sin verificar la aplicación física.","No alterar PLC, HMI ni comunicación para ocultar el síntoma."]
+  learning_objectives:
+    - id: "OBJ-TRACE-SIGNAL"
+      description: "Distinguir alimentación, conmutación, comunicación y representación PLC/HMI."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-SENSING-CONDITIONS"
+      description: "Comparar la aplicación física con Sn y la distancia de funcionamiento asegurada sin asumir un umbral exacto."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-RECOVERY"
+      description: "Corregir de forma segura la geometría y verificar la cadena completa sin sustituir ni reconfigurar injustificadamente."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      phase: "incident"
+      title: "Incidente en Station 1"
+      situation: "La pieza parece presente, pero PartInPosition = 0. ¿Qué comprobación delimita primero el problema?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-SENSOR","DEC-01-CHECK-HEALTH","DEC-01-EDIT-HMI"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-02-SYSTEM-HEALTH"
+      phase: "investigation"
+      title: "Salud del sistema"
+      situation: "PLC, red e IO-Link están operativos. ¿Dónde buscar ahora la primera discrepancia?"
+      evidence_ids: ["EVID-02-SYSTEM-HEALTH"]
+      decision_ids: ["DEC-02-RESTART-NETWORK","DEC-02-REMAP-PLC","DEC-02-INSPECT-SENSOR"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-PHYSICAL-INSPECTION"
+      phase: "investigation"
+      title: "Inspección física"
+      situation: "El objetivo está presente y el sensor alimentado, pero no conmuta. ¿Qué investigas antes de intervenir?"
+      evidence_ids: ["EVID-03-PHYSICAL-INSPECTION"]
+      decision_ids: ["DEC-03-MEASURE-GEOMETRY","DEC-03-REPLACE-POWERED","DEC-03-CHANGE-PARAMETERS"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-MEASUREMENT"
+      phase: "investigation"
+      title: "Medición y referencia"
+      situation: "La separación medida es 7.8 mm. ¿Qué conclusión permite la documentación antes de contrastar el estado por IO-Link?"
+      evidence_ids: ["EVID-04-MEASUREMENT"]
+      decision_ids: ["DEC-04-EXACT-THRESHOLD","DEC-04-COMPARE-SECURED","DEC-04-TUNE-RANGE"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-IO-LINK-EVIDENCE"
+      phase: "investigation"
+      title: "Evidencia IO-Link"
+      situation: "Con comunicación saludable, Active switchpoint = 0. ¿Cómo interpretas este dato?"
+      evidence_ids: ["EVID-05-IO-LINK-EVIDENCE"]
+      decision_ids: ["DEC-05-CORRELATE-STATE","DEC-05-BLAME-IO-LINK","DEC-05-BLAME-HMI"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-06-DIAGNOSIS"
+      phase: "investigation"
+      title: "Diagnóstico antes de corregir"
+      situation: "Reúne la evidencia física y digital. ¿Cuál es el diagnóstico mejor sustentado?"
+      evidence_ids: ["EVID-06-DIAGNOSIS"]
+      decision_ids: ["DEC-06-DEFECTIVE-SENSOR","DEC-06-PLC-FAILURE","DEC-06-INSTALLATION-DISTANCE"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-07-SAFE-CORRECTION"
+      phase: "solution"
+      title: "Corrección física segura"
+      situation: "El diagnóstico localiza la instalación. ¿Qué intervención elimina la causa y permite verificarla?"
+      evidence_ids: ["EVID-07-SAFE-CORRECTION"]
+      decision_ids: ["DEC-07-FORCE-INPUT","DEC-07-CHANGE-LOGIC","DEC-07-CORRECT-GEOMETRY"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-08-VERIFY-CHAIN"
+      phase: "solution"
+      title: "Verificación extremo a extremo"
+      situation: "Tras corregir la geometría, revisa la propagación completa. ¿Qué permite cerrar la intervención?"
+      evidence_ids: ["EVID-08-VERIFY-CHAIN"]
+      decision_ids: ["DEC-08-POWER-ONLY","DEC-08-VERIFY-FULL-CHAIN","DEC-08-HMI-ONLY"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Observación / HMI"
+      content: "Pieza metálica presente visualmente en Station 1; HMI PartInPosition = 0. Hay alimentación disponible en el sensor. No se conoce todavía la causa."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-SYSTEM-HEALTH"
+      type: "diagnostic"
+      source: "Diagnóstico del sistema"
+      content: "PLC operativo, red operativa y comunicación IO-Link operativa. La salud de comunicación no demuestra detección del objetivo."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-CHECK-HEALTH"]
+    - id: "EVID-03-PHYSICAL-INSPECTION"
+      type: "diagnostic"
+      source: "Inspección física"
+      content: "Objetivo presente; LED verde Power = ON; LED amarillo Switching/Output = OFF. La presencia visual no garantiza que se cumplan las condiciones de detección."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-INSPECT-SENSOR"]
+    - id: "EVID-04-MEASUREMENT"
+      type: "measurement"
+      source: "Medición / documentación Turck"
+      content: "Turck BI6U-MT12-IOL6X2-H1141: separación medida 7.8 mm; Sn = 6 mm; distancia de funcionamiento asegurada ≤ 4.86 mm (0.81 × Sn). Sn es una distancia nominal, no un umbral digital exacto."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-MEASURE-GEOMETRY"]
+    - id: "EVID-05-IO-LINK-EVIDENCE"
+      type: "diagnostic"
+      source: "Datos de proceso IO-Link"
+      content: "Active switchpoint = 0 significa objetivo no detectado. IO-Link comunica el estado actual del sensor; no se ha identificado un fallo de comunicación."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-COMPARE-SECURED"]
+    - id: "EVID-06-DIAGNOSIS"
+      type: "diagnostic"
+      source: "Síntesis diagnóstica"
+      content: "La comunicación funciona; el sensor está alimentado pero no conmuta; la separación es 7.8 mm frente a ≤ 4.86 mm de funcionamiento asegurado; Active switchpoint = 0 y PartInPosition = 0."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-CORRELATE-STATE"]
+    - id: "EVID-07-SAFE-CORRECTION"
+      type: "diagnostic"
+      source: "Plan de intervención"
+      content: "Diagnóstico confirmado: la geometría sensor-objetivo está fuera de la condición asegurada. Todavía no se ha realizado ni verificado la corrección."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-INSTALLATION-DISTANCE"]
+    - id: "EVID-08-VERIFY-CHAIN"
+      type: "functional_test"
+      source: "Verificación de la cadena"
+      content: "Tras la corrección: LED verde Power = ON, LED amarillo Switching/Output = ON, Active switchpoint = 1 y PartInPosition = 1. Verifica objetivo → sensor → datos IO-Link → PLC → HMI. El rótulo ≤ 6 mm del asset no acredita por sí solo ≤ 4.86 mm; la aceptación de instalación requiere comprobar la condición asegurada documentada, no asumir un umbral exacto en Sn."
+      reliability: "confirmed"
+      revealed_by: ["DEC-07-CORRECT-GEOMETRY"]
+  decisions:
+    - id: "DEC-01-REPLACE-SENSOR"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Sustituir el sensor porque la pieza está presente."
+    - id: "DEC-01-CHECK-HEALTH"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Comprobar el estado del PLC, la red y la comunicación IO-Link."
+    - id: "DEC-01-EDIT-HMI"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Cambiar la representación HMI de PartInPosition."
+    - id: "DEC-02-RESTART-NETWORK"
+      stage_id: "STAGE-02-SYSTEM-HEALTH"
+      action: "Reiniciar la red para recuperar PartInPosition."
+    - id: "DEC-02-REMAP-PLC"
+      stage_id: "STAGE-02-SYSTEM-HEALTH"
+      action: "Reasignar la señal en el PLC."
+    - id: "DEC-02-INSPECT-SENSOR"
+      stage_id: "STAGE-02-SYSTEM-HEALTH"
+      action: "Inspeccionar de forma segura objetivo, alimentación y LED de conmutación del sensor."
+    - id: "DEC-03-MEASURE-GEOMETRY"
+      stage_id: "STAGE-03-PHYSICAL-INSPECTION"
+      action: "Medir la separación sensor-objetivo y compararla con la documentación del dispositivo."
+    - id: "DEC-03-REPLACE-POWERED"
+      stage_id: "STAGE-03-PHYSICAL-INSPECTION"
+      action: "Sustituir el sensor porque tiene alimentación pero no conmuta."
+    - id: "DEC-03-CHANGE-PARAMETERS"
+      stage_id: "STAGE-03-PHYSICAL-INSPECTION"
+      action: "Cambiar los parámetros IO-Link para activar la salida."
+    - id: "DEC-04-EXACT-THRESHOLD"
+      stage_id: "STAGE-04-MEASUREMENT"
+      action: "Considerar 6 mm el punto exacto de conmutación para cualquier condición."
+    - id: "DEC-04-COMPARE-SECURED"
+      stage_id: "STAGE-04-MEASUREMENT"
+      action: "Identificar una instalación fuera de la condición asegurada y contrastar el estado de detección por IO-Link."
+    - id: "DEC-04-TUNE-RANGE"
+      stage_id: "STAGE-04-MEASUREMENT"
+      action: "Aumentar un parámetro de alcance para compensar la separación."
+    - id: "DEC-05-CORRELATE-STATE"
+      stage_id: "STAGE-05-IO-LINK-EVIDENCE"
+      action: "Correlacionar el cero con el LED apagado y la separación medida para formular el diagnóstico."
+    - id: "DEC-05-BLAME-IO-LINK"
+      stage_id: "STAGE-05-IO-LINK-EVIDENCE"
+      action: "Diagnosticar fallo IO-Link porque el dato vale cero."
+    - id: "DEC-05-BLAME-HMI"
+      stage_id: "STAGE-05-IO-LINK-EVIDENCE"
+      action: "Atribuir la ausencia de detección a la HMI."
+    - id: "DEC-06-DEFECTIVE-SENSOR"
+      stage_id: "STAGE-06-DIAGNOSIS"
+      action: "Sensor averiado: la alimentación debería garantizar la detección."
+    - id: "DEC-06-PLC-FAILURE"
+      stage_id: "STAGE-06-DIAGNOSIS"
+      action: "Fallo del PLC al interpretar un sensor que sí detecta."
+    - id: "DEC-06-INSTALLATION-DISTANCE"
+      stage_id: "STAGE-06-DIAGNOSIS"
+      action: "Distancia de instalación sensor-objetivo incorrecta; problema de aplicación física, sin evidencia de sensor defectuoso."
+    - id: "DEC-07-FORCE-INPUT"
+      stage_id: "STAGE-07-SAFE-CORRECTION"
+      action: "Forzar PartInPosition para liberar la estación."
+    - id: "DEC-07-CHANGE-LOGIC"
+      stage_id: "STAGE-07-SAFE-CORRECTION"
+      action: "Modificar PLC o HMI para aceptar el estado actual."
+    - id: "DEC-07-CORRECT-GEOMETRY"
+      stage_id: "STAGE-07-SAFE-CORRECTION"
+      action: "Controlar los movimientos peligrosos, corregir y asegurar la geometría dentro de la condición documentada y verificar la cadena completa."
+    - id: "DEC-08-POWER-ONLY"
+      stage_id: "STAGE-08-VERIFY-CHAIN"
+      action: "Cerrar al comprobar únicamente el LED verde."
+    - id: "DEC-08-VERIFY-FULL-CHAIN"
+      stage_id: "STAGE-08-VERIFY-CHAIN"
+      action: "Confirmar montaje asegurado, ambos LED encendidos y propagación de Active switchpoint = 1 hasta PartInPosition = 1, sin forzados."
+    - id: "DEC-08-HMI-ONLY"
+      stage_id: "STAGE-08-VERIFY-CHAIN"
+      action: "Cerrar por PartInPosition = 1 sin contrastar sensor e IO-Link."
+  visual:
+    educational_purpose: "Distinguir salud de comunicación y alimentación de detección física; verificar la recuperación completa."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/01.png"
+        alt: "Portada editorial de EE-0011 con sensor inductivo Turck."
+        caption: "Portada ilustrativa; el estado inicial se documenta en la evidencia de incidente."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/02.png"
+        alt: "Objetivo presente y HMI PartInPosition = 0, sin cotas de medición."
+        caption: "Incidente: la posición no está confirmada."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/03.png"
+        alt: "PLC, red y comunicación IO-Link operativos."
+        caption: "La infraestructura comunica; esto no demuestra detección."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/04.png"
+        alt: "Objetivo presente, Power verde ON y Switching/Output amarillo OFF."
+        caption: "Alimentación y conmutación son estados distintos."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/05.png"
+        alt: "Separación de 7.8 mm; Sn = 6 mm; distancia asegurada ≤ 4.86 mm."
+        caption: "Compara la instalación con la condición asegurada documentada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/06.png"
+        alt: "Datos IO-Link con Active switchpoint = 0."
+        caption: "Comunicación saludable de un objetivo no detectado."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-INDUCTIVE-GAP-011/07.png"
+        alt: "Verificación con ambos LED ON, Active switchpoint = 1 y PartInPosition = 1."
+        caption: "Asset original sin modificar: el rótulo ≤ 6 mm no sustituye la comprobación de la condición asegurada ≤ 4.86 mm."
+        purpose: "evidence"
+  completion:
+    title: "Debrief técnico"
+    summary: "La separación de 7.8 mm estaba fuera de la condición asegurada ≤ 4.86 mm (0.81 × Sn) del Turck BI6U-MT12-IOL6X2-H1141, con Sn = 6 mm. El sensor no estaba demostrado como defectuoso: IO-Link comunicaba correctamente ausencia de detección."
+    process: ["Establecer salud de PLC, red e IO-Link.","Distinguir Power ON de Switching/Output OFF.","Medir la separación y consultar la condición asegurada.","Correlacionar Active switchpoint = 0 con la ausencia de conmutación.","Diagnosticar la instalación antes de intervenir.","Corregir la geometría con seguridad.","Verificar detección, Active switchpoint = 1 y PartInPosition = 1 a través del PLC."]
+    lesson: "La presencia física no equivale a detección. Sn no es un umbral exacto; una comunicación saludable puede transmitir fielmente una no detección."
+    avoided_errors: ["Sustituir un sensor sin verificar la aplicación.","Cambiar parámetros, comunicación, PLC o HMI sin evidencia.","Forzar PartInPosition.","Cerrar por un único LED o por la HMI."]
+    industrial_value: ["Localización del primer punto de discrepancia.","Menos sustituciones innecesarias.","Recuperación comprobada de extremo a extremo."]
+    media_ids: ["ART-007"]
+private:
+  fault_model:
+    root_cause: "Separación sensor-objetivo de 7.8 mm fuera de la condición asegurada ≤ 4.86 mm (0.81 × Sn), con Sn = 6 mm. Problema de instalación física, no sensor demostrado defectuoso."
+    recovery_conditions: ["Geometría corregida y asegurada conforme a la documentación.","Power ON y Switching/Output ON.","Active switchpoint = 1 propagado a PLC y HMI PartInPosition = 1.","Sin forzados ni cambios arbitrarios."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-COMMUNICATION"
+        statement: "Fallo de comunicación impide confirmar posición."
+        initial_status: "possible"
+      - id: "HYP-SENSOR-DEFECT"
+        statement: "El sensor está averiado."
+        initial_status: "possible"
+      - id: "HYP-INSTALLATION"
+        statement: "La aplicación física no cumple las condiciones de detección asegurada."
+        initial_status: "likely"
+    confirmed_root_cause: "HYP-INSTALLATION"
+    critical_path: ["DEC-01-CHECK-HEALTH","DEC-02-INSPECT-SENSOR","DEC-03-MEASURE-GEOMETRY","DEC-04-COMPARE-SECURED","DEC-05-CORRELATE-STATE","DEC-06-INSTALLATION-DISTANCE","DEC-07-CORRECT-GEOMETRY","DEC-08-VERIFY-FULL-CHAIN"]
+  decision_logic:
+    - decision_id: "DEC-01-REPLACE-SENSOR"
+      is_correct: false
+      retry_feedback: "La discrepancia aún no localiza el fallo. Comprueba la salud del sistema antes de sustituir equipos."
+      rationale: "La discrepancia aún no localiza el fallo. Comprueba la salud del sistema antes de sustituir equipos."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-02-SYSTEM-HEALTH"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-CHECK-HEALTH"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-02-SYSTEM-HEALTH"]
+      next_stage: "STAGE-02-SYSTEM-HEALTH"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-EDIT-HMI"
+      is_correct: false
+      retry_feedback: "Una indicación a cero puede representar fielmente la señal. Primero establece el estado del sistema."
+      rationale: "Una indicación a cero puede representar fielmente la señal. Primero establece el estado del sistema."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-02-SYSTEM-HEALTH"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-RESTART-NETWORK"
+      is_correct: false
+      retry_feedback: "La comunicación está operativa. Inspecciona la detección local antes de reiniciar una red saludable."
+      rationale: "La comunicación está operativa. Inspecciona la detección local antes de reiniciar una red saludable."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PHYSICAL-INSPECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-REMAP-PLC"
+      is_correct: false
+      retry_feedback: "Todavía no se ha comparado la señal con el estado del sensor. No cambies el mapeo sin esa evidencia."
+      rationale: "Todavía no se ha comparado la señal con el estado del sensor. No cambies el mapeo sin esa evidencia."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PHYSICAL-INSPECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-INSPECT-SENSOR"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-03-PHYSICAL-INSPECTION"]
+      next_stage: "STAGE-03-PHYSICAL-INSPECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-MEASURE-GEOMETRY"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-04-MEASUREMENT"]
+      next_stage: "STAGE-04-MEASUREMENT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-REPLACE-POWERED"
+      is_correct: false
+      retry_feedback: "La alimentación no demuestra que la aplicación permita detectar. Comprueba las condiciones físicas antes de declarar una avería."
+      rationale: "La alimentación no demuestra que la aplicación permita detectar. Comprueba las condiciones físicas antes de declarar una avería."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-MEASUREMENT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-CHANGE-PARAMETERS"
+      is_correct: false
+      retry_feedback: "No hay evidencia de configuración incorrecta. Investiga primero la geometría física."
+      rationale: "No hay evidencia de configuración incorrecta. Investiga primero la geometría física."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-MEASUREMENT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-EXACT-THRESHOLD"
+      is_correct: false
+      retry_feedback: "Sn no define un umbral exacto. Compara la instalación con la condición de funcionamiento asegurada documentada."
+      rationale: "Sn no define un umbral exacto. Compara la instalación con la condición de funcionamiento asegurada documentada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-05-IO-LINK-EVIDENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-COMPARE-SECURED"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-05-IO-LINK-EVIDENCE"]
+      next_stage: "STAGE-05-IO-LINK-EVIDENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-TUNE-RANGE"
+      is_correct: false
+      retry_feedback: "No se ha demostrado que cambiar parámetros sea apropiado. Evalúa la instalación frente a la condición documentada."
+      rationale: "No se ha demostrado que cambiar parámetros sea apropiado. Evalúa la instalación frente a la condición documentada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-05-IO-LINK-EVIDENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-CORRELATE-STATE"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-06-DIAGNOSIS"]
+      next_stage: "STAGE-06-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-BLAME-IO-LINK"
+      is_correct: false
+      retry_feedback: "El valor del dato y la salud del enlace son distintos. Un enlace saludable puede comunicar ausencia de detección."
+      rationale: "El valor del dato y la salud del enlace son distintos. Un enlace saludable puede comunicar ausencia de detección."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-06-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-BLAME-HMI"
+      is_correct: false
+      retry_feedback: "El sensor ya informa que no detecta. La HMI no explica por qué el LED local está apagado."
+      rationale: "El sensor ya informa que no detecta. La HMI no explica por qué el LED local está apagado."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-06-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-DEFECTIVE-SENSOR"
+      is_correct: false
+      retry_feedback: "Alimentación y detección son funciones distintas. La evidencia muestra una condición física fuera de la especificación asegurada."
+      rationale: "Alimentación y detección son funciones distintas. La evidencia muestra una condición física fuera de la especificación asegurada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-07-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-PLC-FAILURE"
+      is_correct: false
+      retry_feedback: "El LED y Active switchpoint no muestran detección. No hay evidencia de un uno perdido en el PLC."
+      rationale: "El LED y Active switchpoint no muestran detección. No hay evidencia de un uno perdido en el PLC."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-07-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-INSTALLATION-DISTANCE"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-07-SAFE-CORRECTION"]
+      next_stage: "STAGE-07-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-07-FORCE-INPUT"
+      is_correct: false
+      retry_feedback: "Forzar una señal oculta la condición física. Corrige la instalación con el procedimiento seguro."
+      rationale: "Forzar una señal oculta la condición física. Corrige la instalación con el procedimiento seguro."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-08-VERIFY-CHAIN"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-07-CHANGE-LOGIC"
+      is_correct: false
+      retry_feedback: "El control recibe ausencia de detección. Cambiarlo no restaura la detección física."
+      rationale: "El control recibe ausencia de detección. Cambiarlo no restaura la detección física."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-08-VERIFY-CHAIN"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-07-CORRECT-GEOMETRY"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: ["EVID-08-VERIFY-CHAIN"]
+      next_stage: "STAGE-08-VERIFY-CHAIN"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-08-POWER-ONLY"
+      is_correct: false
+      retry_feedback: "El LED verde solo confirma alimentación. Comprueba conmutación y propagación hasta PLC y HMI."
+      rationale: "El LED verde solo confirma alimentación. Comprueba conmutación y propagación hasta PLC y HMI."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-08-VERIFY-FULL-CHAIN"
+      is_correct: true
+      rationale: "La acción sigue la evidencia disponible y verifica la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza a la siguiente evidencia validada."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-08-HMI-ONLY"
+      is_correct: false
+      retry_feedback: "La indicación final sola no demuestra toda la cadena. Contrasta los estados físicos y digitales antes de cerrar."
+      rationale: "La indicación final sola no demuestra toda la cadena. Contrasta los estados físicos y digitales antes de cerrar."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La separación de 7.8 mm estaba fuera de la condición asegurada ≤ 4.86 mm (0.81 × Sn) del Turck BI6U-MT12-IOL6X2-H1141, con Sn = 6 mm. El sensor no estaba demostrado como defectuoso: IO-Link comunicaba correctamente ausencia de detección."
+    correct_reasoning: ["Establecer salud de PLC, red e IO-Link.","Distinguir Power ON de Switching/Output OFF.","Medir la separación y consultar la condición asegurada.","Correlacionar Active switchpoint = 0 con la ausencia de conmutación.","Diagnosticar la instalación antes de intervenir.","Corregir la geometría con seguridad.","Verificar detección, Active switchpoint = 1 y PartInPosition = 1 a través del PLC."]
+    recovery: ["Corregir la geometría con seguridad.","Verificar la condición asegurada y toda la cadena."]
+  technical_validation:
+    status: "pass"
+    evidence: ["Especificación y siete assets congelados aportados por el usuario.","Sn no se utiliza como umbral digital exacto.","Asset 07 conserva su rótulo original; no acredita por sí solo la condición asegurada.","Referencia del fabricante: https://www.turck.us/en/product/1644874"]

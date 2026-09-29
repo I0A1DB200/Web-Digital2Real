@@ -98,7 +98,7 @@ test("EE-0005 retry and evidence boundaries follow explicit relations", async ()
   assert.equal(pass.progression.slice(0, 4).flatMap(item => item.media).includes("ART-005"), false);
   assert.equal(pass.progression.slice(0, 5).flatMap(item => item.media).includes("ART-006"), false);
   assert.equal(pass.progression.slice(0, 5).flatMap(item => item.media).includes("ART-007"), false);
-  assert.deepEqual(pass.state.media.map(item => item.id), ["ART-006", "ART-007"]);
+  assert.deepEqual(pass.state.media.map(item => item.id), ["ART-007"]);
   assert.equal(pass.state.evaluationResult.outcome, "PASS");
   assert.equal(guided.evaluationResult.outcome, "PASS_WITH_GUIDANCE");
   assert.equal(retry.evaluationResult.outcome, "RETRY_RECOMMENDED");

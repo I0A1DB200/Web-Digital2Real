@@ -21,6 +21,53 @@ const artifactUrl = new URL(
 );
 const readArtifact = async () => JSON.parse(await readFile(artifactUrl, "utf8"));
 
+test("Incident Brief resolves a semantic cover without changing Player state or stage media", async () => {
+  const artifact = await readArtifact();
+  artifact.public.visual.cover_asset_id = "EDITORIAL";
+  artifact.public.visual.assets = [
+    { id: "ART-001", type: "image", src: "01.png", alt: "Stage", purpose: "evidence" },
+    { id: "EDITORIAL", type: "image", src: "presentation.png", alt: "Semantic cover", purpose: "catalog_cover" }
+  ];
+  artifact.public.stages[0].media_ids = ["ART-001"];
+  const player = new ExperiencePlayer({ experience: artifact });
+  const render = () => ExperienceWorkspace({
+    documentRef: new FakeDocument(),
+    projection: createWorkspaceProjection(player.getState(), "/generated"),
+    onStart: () => player.start(),
+    onContinue: () => player.continue()
+  });
+  const start = render();
+  assert.equal(start.findAll(element => element.tagName === "IMG").length, 0);
+  findButton(start, "Start experience").click();
+  const before = player.getState();
+  const incident = render();
+  assert.deepEqual(player.getState(), before);
+  assert.equal(incident.find(element => element.tagName === "IMG").src, "/generated/presentation.png");
+  for (const text of [before.context.initial_context, before.context.operational_state, before.context.initiating_event]) {
+    assert.ok(incident.text.includes(text));
+  }
+  findButton(incident, "Begin diagnosis").click();
+  assert.equal(player.getState().interaction, "stage");
+  assert.deepEqual(player.getState().progress, before.progress);
+  assert.equal(render().find(element => element.tagName === "IMG").src, "/generated/01.png");
+});
+
+test("optional cover presentation leaves Begin Diagnosis usable and preserves all diagnostic fields", () => {
+  for (const coverId of [undefined, "unknown", "other"]) {
+    const state = createState({ interaction: "introduction", visual: {
+      cover_asset_id: coverId, assets: [{ id: "other", src: "01.png", type: "image" }]
+    }, unlockedEvidence: [], attemptsByDecision: {}, resolvedDecisions: [], evaluationResult: null });
+    const before = structuredClone(state);
+    let continued = false;
+    const shell = ExperienceWorkspace({ documentRef: new FakeDocument(),
+      projection: createWorkspaceProjection(state), onContinue: () => { continued = true; } });
+    assert.equal(shell.findAll(element => element.tagName === "IMG").length, coverId === "other" ? 1 : 0);
+    findButton(shell, "Begin diagnosis").click();
+    assert.equal(continued, true);
+    assert.deepEqual(state, before);
+  }
+});
+
 function createState(overrides = {}) {
   return {
     interaction: "stage",

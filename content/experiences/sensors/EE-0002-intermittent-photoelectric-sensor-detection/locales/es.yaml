@@ -1,7 +1,7 @@
 locale: "es"
 translations:
   title: "Detección fotoeléctrica intermitente"
-  summary: "Compara ciclos correctos y fallidos, localiza por qué algunas cajas no originan señal y valida una corrección sin sustituir componentes sin evidencia."
+  summary: "Investiga las omisiones ocasionales de registro en un transportador que normalmente detecta las cajas, sin alarma permanente. Compara ciclos antes de intervenir y verifica la corrección."
   scenario:
     initial_context: "Un transportador detecta correctamente la mayoría de las cajas, pero ocasionalmente una atraviesa el punto fotoeléctrico sin quedar registrada."
     operational_state: "La máquina funciona normalmente, no presenta alarma permanente y el fallo no aparece en todos los ciclos."
@@ -60,7 +60,7 @@ translations:
       content: "Las omisiones coinciden con cajas que pasan dentro de la variación normal, pero más próximas a un borde de la trayectoria."
     EVID-07-MARGINAL-ALIGNMENT:
       source: "Montaje del sensor"
-      content: "El sensor está funcional, limpio y correctamente configurado, pero su eje de detección queda próximo al borde de la trayectoria real de las cajas."
+      content: "La inspección geométrica muestra que el eje de detección queda próximo al borde de la trayectoria real de las cajas."
     EVID-08-REPAIR:
       source: "Intervención mecánica"
       content: "El sensor se ha realineado hacia la trayectoria efectiva y su soporte ha quedado asegurado mecánicamente."
@@ -69,13 +69,13 @@ translations:
       content: "Todos los ciclos ejecutados en la muestra de validación fueron detectados y registrados correctamente, incluidas las posiciones que antes coincidían con la omisión."
   decisions:
     DEC-01-OBSERVE-CYCLES:
-      action: "Observar varios ciclos y conservar ejemplos correctos y fallidos antes de intervenir."
+      action: "Observar varios ciclos desde una posición segura y conservar ejemplos correctos y fallidos antes de intervenir."
     DEC-01-REPLACE-SENSOR:
       action: "Sustituir inmediatamente el sensor porque alguna caja no se detecta."
     DEC-01-CHANGE-LOGIC:
       action: "Modificar la lógica para aceptar una caja aunque no llegue la señal."
     DEC-02-COMPARE-STATES:
-      action: "Comparar salida física del sensor, entrada PLC y registro en ciclos correctos y fallidos."
+      action: "Observar la salida física del sensor, monitorizar la entrada PLC y comprobar el registro de producción en los ejemplos conservados; comparar sus estados entre ciclos correctos y fallidos."
     DEC-02-INCREASE-SENSITIVITY:
       action: "Aumentar sensibilidad sin relacionar el ajuste con el fallo."
     DEC-02-REPLACE-INPUT:
@@ -99,13 +99,13 @@ translations:
     DEC-05-REPLACE-HARDWARE:
       action: "Sustituir sensor y módulo PLC para eliminar posibilidades."
     DEC-06-REALIGN-SECURE:
-      action: "Realinear el sensor sobre la trayectoria efectiva y asegurar mecánicamente el soporte."
+      action: "Aplicar el procedimiento autorizado de parada y aislamiento antes de realinear el sensor sobre la trayectoria efectiva y asegurar mecánicamente el soporte."
     DEC-06-SENSOR-ONLY:
       action: "Instalar otro sensor en la misma alineación marginal."
     DEC-06-SOFTWARE-WINDOW:
       action: "Modificar tiempos PLC para compensar la ausencia de señal física."
     DEC-07-VALIDATE-SAMPLE:
-      action: "Ejecutar una muestra repetida que incluya las posiciones antes asociadas al fallo y comprobar sensor, PLC y registro."
+      action: "Tras la intervención, ejecutar una muestra repetida que incluya las posiciones antes asociadas al fallo y comprobar la salida del sensor, la entrada PLC y el registro de producción."
     DEC-07-ONE-CYCLE:
       action: "Aceptar un único ciclo correcto como validación suficiente."
     DEC-07-CLOSE-NOW:
@@ -117,7 +117,7 @@ translations:
     DEC-02-REPLACE-INPUT: "La entrada PLC no puede evaluarse sin observar simultáneamente si el sensor genera señal durante el ciclo omitido."
     DEC-03-BLAME-PLC: "La entrada PLC permanece OFF porque la salida física del sensor también está OFF. No hay una señal ON perdida dentro del PLC."
     DEC-03-REMAP-INPUT: "Remapear la entrada no puede crear una señal que permanece OFF en la salida del sensor y altera una configuración válida."
-    DEC-04-REPLACE-SENSOR: "Antes de sustituir un sensor funcional, compara qué condición física distingue los ciclos en que no llega a activarse."
+    DEC-04-REPLACE-SENSOR: "La comparación muestra salida y entrada PLC OFF durante la omisión; antes de sustituir el sensor, compara qué condición física distingue esos ciclos."
     DEC-04-CHANGE-PROGRAM: "Una ventana de software no corrige que el sensor nunca genere la señal durante el ciclo omitido."
     DEC-05-ADJUST-BLINDLY: "Mover el sensor sin registrar su alineación impide demostrar que la corrección responde a la condición correlacionada."
     DEC-05-REPLACE-HARDWARE: "Sustituir varios componentes sin aislar la causa no comprueba la geometría que coincide con las omisiones."
@@ -126,29 +126,29 @@ translations:
     DEC-07-ONE-CYCLE: "Un único ciclo correcto no valida un fallo intermitente; la prueba debe incluir repetición y las posiciones antes problemáticas."
     DEC-07-CLOSE-NOW: "El ajuste mecánico no demuestra recuperación hasta ejecutar de nuevo las condiciones que producían la omisión."
   visual:
-    educational_purpose: "Mostrar progresivamente la diferencia entre ciclos y la correlación física sin revelar la alineación marginal antes de su inspección."
+    educational_purpose: "Relacionar las observaciones de ciclos con los estados del sensor, la entrada PLC y el registro de producción antes de decidir una intervención."
   assets:
     ART-001:
-      alt: "Vista del punto de detección B1 durante la observación de varios ciclos."
+      alt: "Presentación de EE-0002 con transportador, caja, B1 y armario PLC."
       caption: "Síntoma intermitente pendiente de caracterización."
     ART-002:
-      alt: "Ciclo correcto con salida B1 ON, entrada I0.3 ON y caja registrada."
-      caption: "Ciclo correcto usado como referencia."
+      alt: "Ilustración de una caja frente a B1 y del indicador I0.3 activo."
+      caption: "Estado detectado de referencia; el registro de producción se describe en la evidencia textual."
     ART-003:
-      alt: "Ciclo fallido con salida B1 OFF, entrada I0.3 OFF y caja no registrada."
-      caption: "La señal no se origina en B1 durante la omisión."
+      alt: "Imagen con I0.3 activo y lectura de 24.1 VDC, sin puntos de medida identificados."
+      caption: "Asset no presentado: el estado activo contradice su denominación de ciclo fallido."
     ART-004:
-      alt: "Comparación de ciclos que correlaciona las omisiones con la posición lateral de la caja."
-      caption: "El fallo depende de la posición del producto."
+      alt: "Imagen con I0.3 inactivo y lectura de 0.0 VDC, sin puntos de medida identificados."
+      caption: "Asset no presentado: no demuestra correlación de posiciones ni documenta la adquisición de la medida."
     ART-005:
-      alt: "Inspección que muestra el eje de B1 próximo al borde de la trayectoria real."
-      caption: "Alineación fotoeléctrica marginal confirmada."
+      alt: "Ilustración de la geometría de B1 con el eje próximo al borde de la trayectoria."
+      caption: "Ilustración de la geometría marginal identificada durante la inspección."
     ART-006:
-      alt: "B1 realineado para cubrir la trayectoria y soporte asegurado mecánicamente."
-      caption: "Geometría corregida y montaje asegurado."
+      alt: "Imagen de ajuste del soporte con pantalla SOPAS que muestra valores diagnósticos y salida Q1 ON."
+      caption: "Asset no presentado: valores sin adquisición documentada; no demuestra validación multiciclo."
     ART-007:
-      alt: "Muestra de diez ciclos posteriores con detección correcta en las posiciones ensayadas."
-      caption: "Diez de diez ciclos detectados en la muestra de validación ejecutada."
+      alt: "Ilustración de B1 frente a una caja y de I0.3 activo en una pantalla online."
+      caption: "Estado posterior a la intervención ilustrado; el resultado de la muestra se describe en la evidencia textual."
   completion:
     title: "Debrief técnico"
     summary: "La salida del sensor permanecía OFF durante las omisiones; la comparación de ciclos condujo a una alineación marginal respecto a la trayectoria real."

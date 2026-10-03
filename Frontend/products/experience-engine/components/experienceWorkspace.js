@@ -85,8 +85,9 @@ export function createExperienceWorkspace({
 
   function continueExperience() {
     requirePlayer();
+    const leavingResult = player.getState().interaction === "result";
     player.continue();
-    renderPlayer();
+    renderPlayer(leavingResult);
   }
 
   function selectDecision(decisionId) {
@@ -98,6 +99,7 @@ export function createExperienceWorkspace({
   function restartExperience() {
     requirePlayer();
     player.reset();
+    completionRecorded = false;
     renderPlayer();
   }
 
@@ -110,9 +112,9 @@ export function createExperienceWorkspace({
     completionRecorded = false;
   }
 
-  function renderPlayer() {
+  function renderPlayer(focusContent = false) {
     const state = player.getState();
-    if (state.interaction === "completion" && state.completionStatus === "completed"
+    if (state.completionStatus === "completed"
       && activeExperienceId && !completionRecorded) {
       const environment = catalog.environments.find(item => item.id === activeEnvironmentId);
       if (environment?.contractVersion === "2.0.0") {
@@ -133,6 +135,11 @@ export function createExperienceWorkspace({
       onRestart: restartExperience,
       onClose: closeExperience
     }));
+    if (state.interaction === "result" || focusContent) {
+      const heading = element.querySelector?.("h2");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus();
+    }
   }
 
   function renderCatalog() {
@@ -216,7 +223,7 @@ export function createExperienceWorkspace({
 }
 
 export function createExperienceProgressResult(state) {
-  if (state?.interaction !== "completion" || state.completionStatus !== "completed") {
+  if (state?.completionStatus !== "completed") {
     throw new TypeError("Experience progress requires a completed Player state.");
   }
   return Object.freeze({ completed: true, mastered: state.evaluationResult?.mastered === true });
@@ -253,6 +260,12 @@ export function createWorkspaceProjection(state, baseUrl = "") {
     visual: state.visual,
     cover: cover ? projectAsset(cover) : null,
     media: state.media.map(projectAsset),
+    result: state.result ? {
+      evidence: state.result.evidence.map(evidence => ({
+        ...evidence,
+        media: evidence.media.map(projectAsset)
+      }))
+    } : null,
     completion: state.completion
   });
 }
@@ -288,6 +301,8 @@ export function ExperienceWorkspace({
     } else {
       shell.appendChild(ContinuePanel({ documentRef, onContinue, ui }));
     }
+  } else if (projection.phase === "result") {
+    shell.appendChild(ResultPanel({ documentRef, result: projection.result, onContinue, ui }));
   } else if (projection.phase === "selection") {
     shell.appendChild(SelectionPanel({
       documentRef,
@@ -360,9 +375,29 @@ export function ContinuePanel({ documentRef, onContinue, ui = experienceUiCopy()
   return panel;
 }
 
-export function MediaPanel({ documentRef, media, ui = experienceUiCopy() }) {
+export function ResultPanel({ documentRef, result, onContinue, ui = experienceUiCopy() }) {
+  const panel = createElement(documentRef, "section", "experience-panel experience-result");
+  panel.setAttribute("aria-labelledby", "experience-result-title");
+  const title = appendText(documentRef, panel, "h2", "", ui.result);
+  title.id = "experience-result-title";
+  result.evidence.forEach(evidence => {
+    const group = createElement(documentRef, "section", "experience-result__evidence");
+    appendText(documentRef, group, "h3", "", evidence.source);
+    appendText(documentRef, group, "p", "experience-stage__situation", evidence.content);
+    if (evidence.media.length) group.appendChild(MediaPanel({
+      documentRef, media: evidence.media, ui, label: ui.evidenceMedia, showLoadErrors: true
+    }));
+    panel.appendChild(group);
+  });
+  const button = createButton(documentRef, ui.continue, "experience-action experience-action--primary");
+  button.addEventListener("click", onContinue);
+  panel.appendChild(button);
+  return panel;
+}
+
+export function MediaPanel({ documentRef, media, ui = experienceUiCopy(), label = ui.stageMedia, showLoadErrors = false }) {
   const panel = createElement(documentRef, "section", "experience-panel experience-media");
-  panel.setAttribute("aria-label", ui.stageMedia);
+  panel.setAttribute("aria-label", label);
   media.forEach(asset => {
     const figure = createElement(documentRef, "figure", "experience-media__item");
     let element;
@@ -377,6 +412,16 @@ export function MediaPanel({ documentRef, media, ui = experienceUiCopy() }) {
     } else {
       element = createElement(documentRef, "img", "experience-media__asset");
       element.alt = asset.alt;
+    }
+    if (showLoadErrors) {
+      let failed = false;
+      element.addEventListener("error", () => {
+        if (failed) return;
+        failed = true;
+        element.remove();
+        const notice = appendText(documentRef, figure, "p", "experience-stage__objective", ui.mediaUnavailable(asset.alt));
+        notice.setAttribute("role", "status");
+      });
     }
     element.src = asset.src;
     figure.appendChild(element);
@@ -517,6 +562,8 @@ function experienceUiCopy(locale = "en") {
     incidentObserved: "Incidente observado",
     continue: "Continuar",
     stageMedia: "Contenido multimedia de la etapa",
+    evidenceMedia: "Contenido multimedia de la evidencia",
+    mediaUnavailable: description => `No se pudo cargar el contenido multimedia: ${description}`,
     decisionRecorded: "Decisión registrada",
     selectionRecorded: "Tu selección se ha registrado para esta sesión local.",
     completeExperience: "Completar Experience",
@@ -555,6 +602,8 @@ function experienceUiCopy(locale = "en") {
     incidentObserved: "Incident observed",
     continue: "Continue",
     stageMedia: "Stage media",
+    evidenceMedia: "Evidence media",
+    mediaUnavailable: description => `Could not load media: ${description}`,
     decisionRecorded: "Decision recorded",
     selectionRecorded: "Your selection has been recorded for this local session.",
     completeExperience: "Complete experience",

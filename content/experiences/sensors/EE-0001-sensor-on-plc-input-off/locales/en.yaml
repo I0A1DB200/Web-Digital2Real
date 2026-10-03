@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "Sensor ON, PLC Input OFF"
-  summary: "Trace a digital signal from B1 to I0.3, locate an open conductor and verify complete recovery before closing the intervention."
+  summary: "Investigate why the station waits for presence although B1 detects the box: trace the signal to I0.3 and Tag_BoxPresent_B1, both FALSE, and verify recovery before closing."
   scenario:
     initial_context: "A packaging station remains waiting for box presence although B1 detects the target and its local indicator is active."
     operational_state: "The machine waits for Tag_BoxPresent_B1; B1 indicates detection, but I0.3 and Tag_BoxPresent_B1 remain FALSE."
@@ -16,29 +16,29 @@ translations:
     OBJ-STATE-INTERPRETATION:
       description: "Differentiate local detection, signal voltage, physical input and processed tag."
     OBJ-CONTROLLED-RECOVERY:
-      description: "Repair the damaged section and verify the complete chain through to the sequence."
+      description: "Determine the intervention from evidence and verify the complete chain through to the sequence."
   stages:
     STAGE-01-OBSERVE:
       title: "Observe the incident"
       situation: "The box is in front of B1 and its indicator is active, but I0.3 remains FALSE and the station continues waiting for presence. What would you do next?"
     STAGE-03-ELECTRICAL:
-      title: "Identify the electrical path"
+      title: "Correlate the path and observe the PLC"
       situation: "The schematic shows BN to +24 VDC, BU to 0 VDC and BK from B1 through X1:17 to I0.3."
     STAGE-04-PLC:
-      title: "Compare the PLC state"
+      title: "Compare field and PLC states and measure the signal"
       situation: "The Watch Table shows I0.3 and Tag_BoxPresent_B1 as FALSE while B1 continues detecting."
     STAGE-05-MEASURE:
-      title: "Measure the signal"
+      title: "Test continuity in a safe state"
       situation: "Measurement shows approximately 24.1 VDC at B1 BK output and 0.0 VDC at the PLC side of X1:17."
     STAGE-06-CONTINUITY:
-      title: "Test continuity"
+      title: "Interpret OL and physically locate the fault"
       situation: "With the circuit in a safe state, the test between X1:17 and PLC I0.3 reads OL."
     STAGE-07-LOCALIZE:
-      title: "Locate the root cause"
+      title: "Repair the located section"
       situation: "Physical tracing of the BK conductor reveals a cut section between X1:17 and the PLC input."
     STAGE-08-VERIFY:
       title: "Verify recovery"
-      situation: "The damaged section has been repaired according to authorized practice. You must validate the complete path before closing."
+      situation: "The damaged section has been repaired according to authorized practice. Functional recovery is still unverified; you must validate the complete path before closing."
   evidence:
     EVID-01-INCIDENT:
       source: "Packaging station"
@@ -72,7 +72,7 @@ translations:
     DEC-01-PROGRAM:
       action: "Modify the logic to ignore Tag_BoxPresent_B1."
     DEC-02-MAP:
-      action: "Confirm B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1."
+      action: "Correlate B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1 with the schematic and observe the identified input and tag online."
     DEC-02-GUESS:
       action: "Search for a similar input without using the schematic."
     DEC-02-BYPASS:
@@ -84,7 +84,7 @@ translations:
     DEC-03-CHANGE:
       action: "Reassign Tag_BoxPresent_B1 to another input."
     DEC-04-LOCALIZE:
-      action: "Localize the loss between B1 and the PLC side using a safe continuity test."
+      action: "Apply the authorized isolation and absence-of-voltage procedure; then test continuity between X1:17 and PLC I0.3."
     DEC-04-SENSOR:
       action: "Replace B1 although it delivers 24.1 VDC."
     DEC-04-MODULE:
@@ -104,7 +104,7 @@ translations:
     DEC-07-VERIFY-CHAIN:
       action: "Verify B1, PLC-side voltage, I0.3, Tag_BoxPresent_B1 and the sequence."
     DEC-07-INPUT-ONLY:
-      action: "Close after observing only I0.3 as TRUE."
+      action: "Check only I0.3 and use that check as the closing criterion."
     DEC-07-CLOSE:
       action: "Close without repeating the functional machine condition."
   retry_feedback:
@@ -123,7 +123,7 @@ translations:
     DEC-07-INPUT-ONLY: "I0.3 at TRUE is a necessary check, but it does not by itself demonstrate recovery of the tag and machine function."
     DEC-07-CLOSE: "The integrity of an industrial repair must be confirmed under the original functional condition before the intervention is closed."
   visual:
-    educational_purpose: "Present the signal progressively without revealing the damaged conductor before localization."
+    educational_purpose: "Relate the local B1 indication to the electrical signal, PLC input, tag and sequence through evidence obtained by each action."
   assets:
     ART-001:
       alt: "Overview of the EE-0001 station with B1 and the PLC cabinet."

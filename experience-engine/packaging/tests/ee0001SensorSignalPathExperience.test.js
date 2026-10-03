@@ -29,28 +29,68 @@ async function artifact(locale = "es") {
   return packageExperience(resolveExperienceLocalization(authoring, await readYaml(`locales/${locale}.yaml`)));
 }
 
-function runExperience(webArtifact, retryStageIds = []) {
+function diagnosticState(state) {
+  return Object.fromEntries([
+    "state", "completionStatus", "progress", "decisionHistory", "attemptsByDecision",
+    "resolvedDecisions", "unlockedEvidence", "evaluationResult"
+  ].map(key => [key, state[key]]));
+}
+
+function runExperience(webArtifact, retryStageIds = [], retryAllOptions = false) {
   const player = new ExperiencePlayer({ experience: webArtifact });
   const retryStages = new Set(retryStageIds);
   const authorities = new Map(webArtifact.public.interactions.map(item => [item.action_token, item]));
   player.start(); player.continue();
   const progression = [];
+  const results = [];
   while (player.getState().interaction !== "completion") {
     const before = player.getState();
     const correct = before.currentStage.decisions.find(item => authorities.get(item.action_token).outcome === "advance");
-    const incorrect = before.currentStage.decisions.find(item => authorities.get(item.action_token).outcome === "retry");
+    const incorrect = before.currentStage.decisions.filter(item => authorities.get(item.action_token).outcome === "retry");
     progression.push({ stage: before.currentStage.id, media: before.media.map(item => item.id) });
-    if (retryStages.has(before.currentStage.id)) {
-      const retried = player.selectDecision(incorrect.id);
+    const retries = retryAllOptions ? incorrect : retryStages.has(before.currentStage.id) ? incorrect.slice(0, 1) : [];
+    for (const [index, option] of retries.entries()) {
+      const retried = player.selectDecision(option.id);
       assert.equal(retried.currentStage.id, before.currentStage.id);
-      assert.equal(retried.attemptsByDecision[before.currentStage.id], 1);
+      assert.equal(retried.attemptsByDecision[before.currentStage.id], index + 1);
       assert.deepEqual(retried.unlockedEvidence, before.unlockedEvidence);
+      assert.deepEqual(retried.resolvedDecisions, before.resolvedDecisions);
+      assert.deepEqual(retried.progress, before.progress);
+      assert.deepEqual(retried.media, before.media);
+      assert.equal(retried.result, null);
       assert.match(retried.feedback.message, /\S/);
     }
     const advanced = player.selectDecision(correct.id);
-    assert.equal(advanced.attemptsByDecision[before.currentStage.id], retryStages.has(before.currentStage.id) ? 2 : 1);
+    assert.equal(advanced.attemptsByDecision[before.currentStage.id], retries.length + 1);
+    assert.equal(advanced.resolvedDecisions.length, progression.length);
+    if (correct.id === "DEC-06-REPAIR") {
+      assert.equal(advanced.interaction, "stage");
+      assert.equal(advanced.currentStage.id, "STAGE-08-VERIFY");
+      assert.equal(advanced.result, null);
+      assert.deepEqual(advanced.media, []);
+      assert.deepEqual(advanced.unlockedEvidence, before.unlockedEvidence);
+      assert.equal(advanced.unlockedEvidence.includes("EVID-08-RECOVERY"), false);
+      assert.notEqual(advanced.completionStatus, "completed");
+    } else {
+      assert.equal(advanced.interaction, "result");
+      assert.equal(advanced.currentStage, null);
+      assert.deepEqual(advanced.media, []);
+      results.push(advanced.result.evidence.map(item => ({ id: item.id, media: item.media.map(media => media.id) })));
+      assert.deepEqual(advanced.unlockedEvidence, results.flat().map(item => item.id));
+      if (correct.id === "DEC-07-VERIFY-CHAIN") {
+        assert.equal(advanced.completionStatus, "completed");
+        assert.equal(advanced.completion, null);
+        assert.equal(advanced.evaluationResult.totalDecisions, 7);
+      } else {
+        assert.notEqual(advanced.completionStatus, "completed");
+        assert.equal(advanced.unlockedEvidence.includes("EVID-08-RECOVERY"), false);
+      }
+      const continued = player.continue();
+      assert.deepEqual(diagnosticState(continued), diagnosticState(advanced), "Continue only changes presentation");
+    }
   }
-  return { state: player.getState(), progression };
+  assert.deepEqual(player.getState().media.map(item => item.id), ["ART-008"]);
+  return { state: player.getState(), progression, results };
 }
 
 function memoryStorage() {
@@ -123,14 +163,22 @@ test("EE-0001 validates through Authoring, Runtime, projection and public securi
 });
 
 test("EE-0001 happy path unlocks evidence sequentially and completes with PASS mastery", async () => {
-  const { state, progression } = runExperience(await artifact());
+  const { state, progression, results } = runExperience(await artifact());
   assert.deepEqual(progression.map(item => item.stage), [
     "STAGE-01-OBSERVE", "STAGE-03-ELECTRICAL", "STAGE-04-PLC",
     "STAGE-05-MEASURE", "STAGE-06-CONTINUITY", "STAGE-07-LOCALIZE", "STAGE-08-VERIFY"
   ]);
   assert.deepEqual(progression.map(item => item.media), [
-    ["ART-001", "ART-002"], ["ART-003"], ["ART-004"], ["ART-005"],
-    ["ART-006"], ["ART-007"], ["ART-008"]
+    ["ART-002"], ["ART-003"], ["ART-004"], ["ART-005"],
+    ["ART-006"], ["ART-007"], []
+  ]);
+  assert.deepEqual(results, [
+    [{ id: "EVID-03-SCHEMATIC", media: ["ART-003"] }],
+    [{ id: "EVID-04-PLC", media: ["ART-004"] }],
+    [{ id: "EVID-05-VOLTAGE", media: ["ART-005"] }],
+    [{ id: "EVID-06-OPEN", media: ["ART-006"] }],
+    [{ id: "EVID-07-DAMAGE", media: ["ART-007"] }],
+    [{ id: "EVID-08-RECOVERY", media: ["ART-008"] }]
   ]);
   assert.equal(state.completionStatus, "completed");
   assert.equal(state.decisionHistory.length, 7);
@@ -139,6 +187,45 @@ test("EE-0001 happy path unlocks evidence sequentially and completes with PASS m
     firstAttemptSuccessRatio: { numerator: 7, denominator: 7 },
     displayPercentage: 100, outcome: "PASS", mastered: true
   });
+});
+
+test("EE-0001 media roles and recovery authority remain explicit in authoring and both locales", async () => {
+  const authoring = await readYaml("experience.yaml");
+  assert.equal(authoring.public.visual.cover_asset_id, "ART-001");
+  assert.deepEqual(authoring.public.stages[0].media_ids, ["ART-002"]);
+  assert.deepEqual(authoring.public.stages.at(-1).media_ids, []);
+  assert.deepEqual(authoring.public.stages.at(-1).evidence_ids, []);
+  assert.deepEqual(authoring.public.completion.media_ids, ["ART-008"]);
+  assert.deepEqual(authoring.public.evidence.slice(0, 2).map(item => item.media_ids ?? []), [[], []]);
+  assert.deepEqual(authoring.public.evidence.slice(2).map(item => item.media_ids), [
+    ["ART-003"], ["ART-004"], ["ART-005"], ["ART-006"], ["ART-007"], ["ART-008"]
+  ]);
+  assert.deepEqual(authoring.public.evidence.at(-1).revealed_by, ["DEC-07-VERIFY-CHAIN"]);
+  const repair = authoring.private.decision_logic.find(item => item.decision_id === "DEC-06-REPAIR");
+  assert.deepEqual(repair.evidence_revealed, []);
+  assert.match(repair.consequence, /pendiente de verificación/);
+  assert.deepEqual(authoring.private.decision_logic.find(item => item.decision_id === "DEC-07-VERIFY-CHAIN").evidence_revealed, ["EVID-08-RECOVERY"]);
+  for (const locale of ["es", "en"]) {
+    const localized = resolveExperienceLocalization(authoring, await readYaml(`locales/${locale}.yaml`));
+    const intro = [localized.public.summary, localized.public.visual.educational_purpose,
+      localized.public.learning_objectives.find(item => item.id === "OBJ-CONTROLLED-RECOVERY").description].join(" ");
+    assert.doesNotMatch(intro, /dañad|cortad|interrupción|circuito abierto|damaged|cut conductor|open conductor|open circuit/i);
+    for (const identifier of ["B1", "I0.3", "Tag_BoxPresent_B1", "FALSE"])
+      assert.ok(localized.public.summary.includes(identifier));
+    const action = id => localized.public.decisions.find(item => item.id === id).action;
+    assert.match(action("DEC-02-MAP"), /online/);
+    assert.match(action("DEC-04-LOCALIZE"), locale === "es" ? /aislamiento y ausencia de tensión.*después.*continuidad/ : /isolation and absence-of-voltage.*then.*continuity/);
+    assert.doesNotMatch(action("DEC-07-INPUT-ONLY"), /TRUE/);
+    assert.match(localized.public.stages.at(-1).situation, locale === "es" ? /aún no está verificada/ : /still unverified/);
+    const web = packageExperience(localized);
+    assert.equal(validateGeneratedWebArtifact(web).valid, true);
+    const { state, results } = runExperience(web, [], true);
+    assert.equal(results.length, 6);
+    assert.equal(state.evaluationResult.totalDecisions, 7);
+    assert.equal(state.evaluationResult.additionalAttempts, 14);
+    assert.equal(state.decisionHistory.length, 21);
+    assert.equal(state.completionStatus, "completed");
+  }
 });
 
 test("EE-0001 retries stay in stage, increment once and drive guided/retry outcomes", async () => {

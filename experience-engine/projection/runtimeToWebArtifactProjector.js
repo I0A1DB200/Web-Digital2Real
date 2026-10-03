@@ -147,7 +147,8 @@ function projectV2(runtime) {
       source: item.source,
       content: item.content,
       reliability: item.reliability,
-      visibility: "public"
+      visibility: "public",
+      ...(Array.isArray(item.media_ids) ? { media_ids: [...item.media_ids] } : {})
     }));
 
   return {

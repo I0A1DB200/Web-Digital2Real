@@ -50,6 +50,42 @@ async function sha256(location) {
   return createHash("sha256").update(await readFile(location)).digest("hex");
 }
 
+test("evidence-only media packages in both locales and missing physical files fail without replacing the package", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  // Only the isolated temporary copy is adapted; production YAML is untouched.
+  const experienceRoot = path.join(root, "content", "experiences", "sensors", "EE-0001-sensor-on-plc-input-off");
+  const sourcePath = path.join(experienceRoot, "experience.yaml");
+  const source = await readFile(sourcePath, "utf8");
+  const adapted = source
+    .replace('    - id: "EVID-08-RECOVERY"', '    - id: "EVID-08-RECOVERY"\n      media_ids: ["RESULT-ONLY"]')
+    .replace("  completion:", '      - id: "RESULT-ONLY"\n        type: "image"\n        src: "assets/EXP-SENSOR-SIGNAL-001/result-only.svg"\n        alt: "Result fixture"\n        purpose: "evidence"\n  completion:');
+  assert.notEqual(adapted, source);
+  await writeFile(sourcePath, adapted, "utf8");
+  for (const language of ["es", "en"]) {
+    const localePath = path.join(experienceRoot, "locales", `${language}.yaml`);
+    const locale = await readFile(localePath, "utf8");
+    await writeFile(localePath, locale.replace("  assets:", '  assets:\n    RESULT-ONLY:\n      alt: "Result fixture"\n      caption: "Result fixture caption"'), "utf8");
+  }
+  const physicalAsset = path.join(experienceRoot, "assets", "result-only.svg");
+  await writeFile(physicalAsset, '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"><rect width="16" height="9"/></svg>');
+  await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+  const output = path.join(root, "Frontend", "generated", "experience-engine");
+  for (const language of ["es", "en"]) {
+    const artifact = await readJson(path.join(output, "experiences", `EXP-SENSOR-SIGNAL-001.${language}.json`));
+    assert.deepEqual(artifact.public.evidence.find(item => item.id === "EVID-08-RECOVERY").media_ids, ["RESULT-ONLY"]);
+    assert.equal(artifact.public.stages.some(stage => stage.media_ids?.includes("RESULT-ONLY")), false);
+    assert.equal(artifact.public.completion.media_ids.includes("RESULT-ONLY"), false);
+  }
+  const packagedAsset = path.join(output, "assets", "EXP-SENSOR-SIGNAL-001", "result-only.svg");
+  assert.equal(await sha256(packagedAsset), await sha256(physicalAsset));
+  const originalCatalog = await sha256(path.join(output, "catalog.json"));
+  await rm(physicalAsset);
+  await assert.rejects(packageExperienceEngine({ repositoryRoot: root, mode: "preview" }), /result-only\.svg/);
+  assert.equal(await sha256(path.join(output, "catalog.json")), originalCatalog);
+  await access(packagedAsset);
+});
+
 test("ENV-002 is authored as a V2 field instrumentation environment", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));

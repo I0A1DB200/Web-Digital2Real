@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { evidenceMediaArtifact } from "./fixtures/evidenceMediaArtifact.js";
 
 import {
   ExperienceCompletionStatus,
@@ -16,6 +17,111 @@ const fixtureUrl = new URL(
 
 const readArtifact = async () => JSON.parse(await readFile(fixtureUrl, "utf8"));
 const clone = value => JSON.parse(JSON.stringify(value));
+
+const diagnosticState = state => Object.fromEntries([
+  "state", "completionStatus", "progress", "decisionHistory", "attemptsByDecision",
+  "resolvedDecisions", "unlockedEvidence", "evaluationResult"
+].map(key => [key, state[key]]));
+
+test("Retry preserves knowledge; one ordered result pauses presentation without adding progress or attempts", () => {
+  const artifact = evidenceMediaArtifact();
+  const before = clone(artifact);
+  const player = new ExperiencePlayer({ experience: artifact });
+  player.start(); player.continue();
+  const initial = player.getState();
+  const retry = player.selectDecision("DEC-1-NO");
+  assert.equal(retry.interaction, "stage");
+  assert.equal(retry.result, null);
+  assert.deepEqual(retry.media, initial.media);
+  assert.deepEqual(retry.progress, initial.progress);
+  assert.deepEqual(retry.unlockedEvidence, []);
+  const result = player.selectDecision("DEC-1-YES");
+  assert.equal(result.interaction, "result");
+  assert.equal(result.currentStage, null);
+  assert.deepEqual(result.media, []);
+  assert.equal(result.completion, null);
+  assert.deepEqual(result.progress, { currentStage: 2, totalStages: 3 });
+  assert.deepEqual(result.result.evidence.map(item => item.id), ["EVID-CONNECTOR", "EVID-NOTE"]);
+  assert.deepEqual(result.result.evidence.map(item => item.media.map(asset => asset.id)), [["DETAIL", "CONNECTOR"], []]);
+  assert.equal(result.attemptsByDecision["STAGE-1"], 2);
+  assert.equal(result.decisionHistory.length, 2);
+  assert.throws(() => player.selectDecision("DEC-2-YES"), { code: "INVALID_PLAYER_STATE" });
+  assert.throws(() => result.result.evidence[0].media.push({}));
+  const next = player.continue();
+  assert.deepEqual(diagnosticState(next), diagnosticState(result));
+  assert.equal(next.interaction, "stage");
+  assert.equal(next.currentStage.id, "STAGE-2");
+  assert.deepEqual(next.media.map(asset => asset.id), ["NEXT"]);
+  assert.equal(next.result, null);
+  assert.throws(() => player.continue(), { code: "V2_SELECTION_REQUIRED" });
+  assert.deepEqual(artifact, before);
+});
+
+test("final result earns completion and evaluation before Continue, with baseline-equivalent diagnostic outcome", () => {
+  const withMedia = evidenceMediaArtifact();
+  const withoutMedia = clone(withMedia);
+  withoutMedia.public.evidence.forEach(item => { delete item.media_ids; });
+  const players = [withMedia, withoutMedia].map(experience => new ExperiencePlayer({ experience }));
+  for (const player of players) {
+    player.start(); player.continue(); player.selectDecision("DEC-1-NO");
+    player.selectDecision("DEC-1-YES");
+    if (player.getState().interaction === "result") player.continue();
+    assert.equal(player.selectDecision("DEC-2-YES").interaction, "stage");
+    player.selectDecision("DEC-3-YES");
+  }
+  const result = players[0].getState();
+  assert.equal(result.state, "Completed");
+  assert.equal(result.completionStatus, "completed");
+  assert.equal(result.interaction, "result");
+  assert.deepEqual(result.result.evidence.map(item => item.id), ["EVID-RECOVERY"]);
+  assert.deepEqual(diagnosticState(result), diagnosticState(players[1].getState()));
+  assert.equal(players[1].getState().interaction, "completion");
+  const debrief = players[0].continue();
+  assert.equal(debrief.interaction, "completion");
+  assert.deepEqual(debrief.media.map(asset => asset.id), ["RECOVERY"]);
+  assert.deepEqual(diagnosticState(debrief), diagnosticState(result));
+  assert.throws(() => players[0].continue(), { code: "INVALID_PLAYER_STATE" });
+});
+
+test("result ordering supports shared assets and excludes previously unlocked evidence", () => {
+  const artifact = evidenceMediaArtifact();
+  artifact.public.evidence[1].media_ids = ["CONNECTOR"];
+  artifact.public.interactions.find(item => item.action_token === "YES-3").unlocks = ["EVID-NOTE", "EVID-RECOVERY", "EVID-CONNECTOR"];
+  const player = new ExperiencePlayer({ experience: artifact });
+  player.start(); player.continue();
+  const result = player.selectDecision("DEC-1-YES");
+  assert.deepEqual(result.result.evidence.map(item => item.media.map(asset => asset.id)), [["DETAIL", "CONNECTOR"], ["CONNECTOR"]]);
+  player.continue(); player.selectDecision("DEC-2-YES");
+  assert.deepEqual(player.selectDecision("DEC-3-YES").result.evidence.map(item => item.id), ["EVID-RECOVERY"]);
+});
+
+test("previous evidence alone never retriggers a result and empty media retains direct flow", () => {
+  const artifact = evidenceMediaArtifact();
+  artifact.public.interactions.find(item => item.action_token === "YES-2").unlocks = ["EVID-CONNECTOR"];
+  artifact.public.evidence[2].media_ids = [];
+  const player = new ExperiencePlayer({ experience: artifact });
+  player.start(); player.continue(); player.selectDecision("DEC-1-YES"); player.continue();
+  assert.equal(player.selectDecision("DEC-2-YES").interaction, "stage");
+  assert.equal(player.selectDecision("DEC-3-YES").interaction, "completion");
+});
+
+test("reset during intermediate or final result removes all transient diagnostic state", () => {
+  for (const final of [false, true]) {
+    const player = new ExperiencePlayer({ experience: evidenceMediaArtifact() });
+    const initial = player.getState();
+    player.start(); player.continue(); player.selectDecision("DEC-1-YES");
+    if (final) { player.continue(); player.selectDecision("DEC-2-YES"); player.selectDecision("DEC-3-YES"); }
+    assert.equal(player.getState().interaction, "result");
+    assert.deepEqual(player.reset(), initial);
+  }
+});
+
+for (const media of [null, "CONNECTOR", [false], [""], [" "], ["CONNECTOR", "CONNECTOR"], ["missing"]]) {
+  test(`Player rejects invalid evidence media ${JSON.stringify(media)}`, () => {
+    const artifact = evidenceMediaArtifact(); artifact.public.evidence[0].media_ids = media;
+    assert.throws(() => new ExperiencePlayer({ experience: artifact }), { code: "INVALID_EXPERIENCE_MODEL" });
+  });
+}
 
 test("semantic completion media preserves requested order without changing diagnostic results", async () => {
   const baseline = await v2Artifact();

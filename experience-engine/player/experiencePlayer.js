@@ -53,7 +53,15 @@ export class ExperiencePlayer {
   }
 
   continue() {
-    this.#assertInteraction("continue", ["introduction", "stage", "selection"]);
+    this.#assertInteraction("continue", ["introduction", "stage", "selection", "result"]);
+
+    if (this.#state.interaction === "result") {
+      this.#state = {
+        ...this.#state,
+        interaction: this.#state.state === ExperiencePlayerState.Completed ? "completion" : "stage"
+      };
+      return this.getState();
+    }
 
     if (this.#state.interaction === "introduction") {
       this.#state = { ...this.#state, interaction: "stage" };
@@ -135,6 +143,7 @@ export class ExperiencePlayer {
 
   getSnapshot() {
     const stage = this.#model.public.stages[this.#state.stageIndex];
+    const presentingResult = this.#state.interaction === "result";
     return deepFreeze({
       experience: {
         id: this.#model.identity.id,
@@ -154,17 +163,23 @@ export class ExperiencePlayer {
         currentStage: this.#state.stageIndex + 1,
         totalStages: this.#model.public.stages.length
       },
-      currentStage: this.#state.interaction === "completion" ? null : clone(stage),
+      currentStage: presentingResult || this.#state.interaction === "completion" ? null : clone(stage),
       selectedDecision: this.#state.selectedDecision,
       decisionHistory: clone(this.#state.decisionHistory),
       visual: clone(this.#model.public.visual),
-      media: clone(resolveMedia(this.#model, this.#state.interaction === "completion"
+      media: presentingResult ? [] : clone(resolveMedia(this.#model, this.#state.interaction === "completion"
         ? this.#model.public.completion?.media_ids ?? []
         : stage?.media_ids ?? [])),
       ...(this.#version === WEB_ARTIFACT_V2 ? {
         attemptsByDecision: clone(this.#state.attemptsByDecision),
         resolvedDecisions: [...this.#state.resolvedDecisions],
         unlockedEvidence: [...this.#state.unlockedEvidence],
+        result: presentingResult ? {
+          evidence: newlyUnlockedEvidence(this.#model, this.#state.decisionHistory).map(evidence => ({
+            ...clone(evidence),
+            media: clone(resolveMedia(this.#model, evidence.media_ids ?? []))
+          }))
+        } : null,
         feedback: clone(this.#state.feedback),
         evaluationResult: clone(this.#state.evaluationResult)
       } : {}),
@@ -231,6 +246,8 @@ export class ExperiencePlayer {
       unlockedEvidence,
       feedback: null
     };
+    const hasResult = newlyUnlockedEvidence(this.#model, decisionHistory)
+      .some(evidence => evidence.media_ids?.length);
     if (interaction.next === "COMPLETE") {
       const decisionPoints = this.#model.public.stages.filter(item => item.decisions.length).map(item => item.id);
       let evaluationResult;
@@ -247,14 +264,14 @@ export class ExperiencePlayer {
         ...shared,
         state: ExperiencePlayerState.Completed,
         completionStatus: ExperienceCompletionStatus.Completed,
-        interaction: "completion",
+        interaction: hasResult ? "result" : "completion",
         evaluationResult
       };
       return this.getState();
     }
     const stageIndex = this.#model.public.stages.findIndex(item => item.id === interaction.next);
     if (stageIndex < 0) throw new ExperiencePlayerError("INVALID_V2_TRANSITION", `Transition destination ${interaction.next} is unavailable.`, { destination: interaction.next });
-    this.#state = { ...shared, interaction: "stage", stageIndex, selectedDecision: null };
+    this.#state = { ...shared, interaction: hasResult ? "result" : "stage", stageIndex, selectedDecision: null };
     return this.getState();
   }
 
@@ -332,6 +349,19 @@ function validateExperience(candidate) {
       if (!assetIds.has(id)) invalidModel(`Stage ${stage.id} references unknown media ${id}.`);
     });
   });
+  if (candidate.web_artifact_version === WEB_ARTIFACT_V2) {
+    (candidate.public.evidence ?? []).forEach(evidence => {
+      if (!Object.hasOwn(evidence, "media_ids")) return;
+      if (!Array.isArray(evidence.media_ids)) invalidModel(`Evidence ${evidence.id} media_ids must be an array.`);
+      const seen = new Set();
+      evidence.media_ids.forEach(id => {
+        requireText(id, `Evidence ${evidence.id} media ID`);
+        if (seen.has(id)) invalidModel(`Evidence ${evidence.id} repeats media ${id}.`);
+        seen.add(id);
+        if (!assetIds.has(id)) invalidModel(`Evidence ${evidence.id} references unknown media ${id}.`);
+      });
+    });
+  }
 }
 
 function validateV2Experience(candidate, stageIds, decisionIds) {
@@ -359,6 +389,19 @@ function validateV2Experience(candidate, stageIds, decisionIds) {
     } else invalidModel(`Unsupported V2 interaction outcome ${interaction.outcome}.`);
   });
   if (authorities.size !== tokens.size) invalidModel("Every Player V2 action token requires one interaction authority.");
+}
+
+// Derive the current action's delta from existing history; never store a second
+// unlock list, destination or acknowledgement alongside diagnostic state.
+function newlyUnlockedEvidence(model, history) {
+  const latest = history.at(-1);
+  if (!latest || latest.outcome !== "advance") return [];
+  const decisions = new Map(model.public.stages.flatMap(stage => stage.decisions.map(decision => [decision.id, decision])));
+  const interactions = new Map(model.public.interactions.map(item => [item.action_token, item]));
+  const unlocksFor = record => interactions.get(decisions.get(record.selectedDecisionId)?.action_token)?.unlocks ?? [];
+  const previous = new Set(history.slice(0, -1).filter(record => record.outcome === "advance").flatMap(unlocksFor));
+  const evidence = new Map((model.public.evidence ?? []).map(item => [item.id, item]));
+  return [...new Set(unlocksFor(latest))].filter(id => !previous.has(id)).map(id => evidence.get(id));
 }
 
 function resolveMedia(model, identifiers) {

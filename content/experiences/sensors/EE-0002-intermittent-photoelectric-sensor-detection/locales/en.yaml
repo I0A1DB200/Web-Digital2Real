@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "Intermittent Photoelectric Sensor Detection"
-  summary: "Compare successful and failed cycles, locate why some boxes do not originate a signal and validate a correction without unsupported component replacement."
+  summary: "Investigate occasional missing registrations on a conveyor that normally detects boxes, without a permanent alarm. Compare cycles before intervening and verify the correction."
   scenario:
     initial_context: "A conveyor detects most boxes correctly, but occasionally one passes through the photoelectric point without being registered."
     operational_state: "The machine normally operates correctly, has no permanent alarm and the fault does not occur on every cycle."
@@ -60,7 +60,7 @@ translations:
       content: "The misses coincide with boxes that pass within normal variation but closer to one edge of the path."
     EVID-07-MARGINAL-ALIGNMENT:
       source: "Sensor mounting"
-      content: "The sensor is functional, clean and correctly configured, but its detection axis is close to the edge of the actual box path."
+      content: "Geometry inspection shows that the detection axis is close to the edge of the actual box path."
     EVID-08-REPAIR:
       source: "Mechanical intervention"
       content: "The sensor has been realigned toward the effective path and its bracket has been mechanically secured."
@@ -69,13 +69,13 @@ translations:
       content: "Every cycle executed in the validation sample was detected and registered correctly, including positions previously associated with the miss."
   decisions:
     DEC-01-OBSERVE-CYCLES:
-      action: "Observe several cycles and preserve successful and failed examples before intervening."
+      action: "Observe several cycles from a safe position and preserve successful and failed examples before intervening."
     DEC-01-REPLACE-SENSOR:
       action: "Replace the sensor immediately because some boxes are not detected."
     DEC-01-CHANGE-LOGIC:
       action: "Change the logic to accept a box even when no signal arrives."
     DEC-02-COMPARE-STATES:
-      action: "Compare physical sensor output, PLC input and registration on successful and failed cycles."
+      action: "Observe the physical sensor output, monitor the PLC input and check the production record in the retained examples; compare their states across successful and failed cycles."
     DEC-02-INCREASE-SENSITIVITY:
       action: "Increase sensitivity without relating the adjustment to the fault."
     DEC-02-REPLACE-INPUT:
@@ -99,13 +99,13 @@ translations:
     DEC-05-REPLACE-HARDWARE:
       action: "Replace the sensor and PLC module to eliminate possibilities."
     DEC-06-REALIGN-SECURE:
-      action: "Realign the sensor over the effective path and mechanically secure the bracket."
+      action: "Apply the authorized stop and isolation procedure before realigning the sensor over the effective path and mechanically securing the bracket."
     DEC-06-SENSOR-ONLY:
       action: "Install another sensor with the same marginal alignment."
     DEC-06-SOFTWARE-WINDOW:
       action: "Change PLC timing to compensate for the absent physical signal."
     DEC-07-VALIDATE-SAMPLE:
-      action: "Run a repeated sample including positions previously associated with the fault and check sensor, PLC and registration."
+      action: "After intervention, run a repeated sample including positions previously associated with the fault and check the sensor output, PLC input and production record."
     DEC-07-ONE-CYCLE:
       action: "Accept one successful cycle as sufficient validation."
     DEC-07-CLOSE-NOW:
@@ -117,7 +117,7 @@ translations:
     DEC-02-REPLACE-INPUT: "The PLC input cannot be assessed without simultaneously observing whether the sensor produces a signal during the missed cycle."
     DEC-03-BLAME-PLC: "The PLC input remains OFF because the physical sensor output is also OFF. There is no ON signal being lost inside the PLC."
     DEC-03-REMAP-INPUT: "Remapping the input cannot create a signal that remains OFF at the sensor output and would alter a valid configuration."
-    DEC-04-REPLACE-SENSOR: "Before replacing a functional sensor, compare which physical condition distinguishes cycles where it does not activate."
+    DEC-04-REPLACE-SENSOR: "The comparison shows sensor output and PLC input OFF during the miss; before replacing the sensor, compare which physical condition distinguishes those cycles."
     DEC-04-CHANGE-PROGRAM: "A software window does not correct the sensor failing to originate a signal during the missed cycle."
     DEC-05-ADJUST-BLINDLY: "Moving the sensor without recording its alignment prevents proving that the correction addresses the correlated condition."
     DEC-05-REPLACE-HARDWARE: "Replacing multiple components without isolating the cause does not test the geometry that coincides with the misses."
@@ -126,29 +126,29 @@ translations:
     DEC-07-ONE-CYCLE: "One successful cycle does not validate an intermittent fault; the test must include repetition and the previously problematic positions."
     DEC-07-CLOSE-NOW: "The mechanical adjustment does not demonstrate recovery until the conditions that produced the miss are run again."
   visual:
-    educational_purpose: "Progressively show the difference between cycles and the physical correlation without revealing marginal alignment before inspection."
+    educational_purpose: "Relate cycle observations to sensor states, the PLC input and the production record before deciding on an intervention."
   assets:
     ART-001:
-      alt: "B1 detection point while multiple cycles are observed."
+      alt: "EE-0002 presentation showing the conveyor, a box, B1 and the PLC cabinet."
       caption: "Intermittent symptom awaiting characterization."
     ART-002:
-      alt: "Successful cycle with B1 output ON, I0.3 input ON and box registered."
-      caption: "Successful cycle used as the reference."
+      alt: "Illustration of a box in front of B1 and the active I0.3 indicator."
+      caption: "Reference detected state; the production record is described in the textual evidence."
     ART-003:
-      alt: "Failed cycle with B1 output OFF, I0.3 input OFF and box not registered."
-      caption: "The signal does not originate at B1 during the miss."
+      alt: "Image showing active I0.3 and a 24.1 VDC reading without identified measurement points."
+      caption: "Asset not presented: the active state contradicts its failed-cycle filename."
     ART-004:
-      alt: "Cycle comparison correlating missed detections with lateral box position."
-      caption: "The failure depends on product position."
+      alt: "Image showing inactive I0.3 and a 0.0 VDC reading without identified measurement points."
+      caption: "Asset not presented: it does not demonstrate position correlation or document measurement acquisition."
     ART-005:
-      alt: "Inspection showing the B1 axis close to the edge of the actual product path."
-      caption: "Marginal photoelectric alignment confirmed."
+      alt: "Illustration of B1 geometry with the axis near the edge of the product path."
+      caption: "Illustration of the marginal geometry identified during inspection."
     ART-006:
-      alt: "B1 realigned to cover the path with its mounting mechanically secured."
-      caption: "Detection geometry corrected and mounting secured."
+      alt: "Image of bracket adjustment with a SOPAS screen showing diagnostic values and Q1 output ON."
+      caption: "Asset not presented: values lack documented acquisition and do not demonstrate multicycle validation."
     ART-007:
-      alt: "Ten post-repair cycles detected correctly at the positions tested."
-      caption: "Ten of ten cycles detected in the executed validation sample."
+      alt: "Illustration of B1 in front of a box and active I0.3 on an online screen."
+      caption: "Illustrated post-intervention state; the sample result is described in the textual evidence."
   completion:
     title: "Technical debrief"
     summary: "The sensor output remained OFF during missed detections; cycle comparison led to marginal alignment against the actual product path."

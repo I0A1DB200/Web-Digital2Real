@@ -8,6 +8,7 @@ export const ExperienceV2Contracts = freeze({
   authoringVersion: "2.0.0",
   runtimeVersion: "2.0.0",
   webArtifactVersion: "2.0.0",
+  evidenceOptionalFields: ["media_ids"],
   phases: ["incident", "investigation", "solution", "debrief"],
   stagePhases: ["incident", "investigation", "solution"],
   outcomes: ["PASS", "PASS_WITH_GUIDANCE", "RETRY_RECOMMENDED"],

@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-09-29 — EE-0002 content and learning-moment remap
+
+- Preserve seven decisions, twenty-one options and nine evidence items; present Results only after D2, D5 and D7. D2 combines EVID-03/ART-002 with textual EVID-04. D5 uses ART-005 and D7 uses ART-007, intentionally reused in Debrief.
+- Keep EVID-08-REPAIR under D6 and EVID-09-VALIDATION under D7. Remove recovery media from the pre-verification stage; final Continue changes presentation only.
+- Neutralize ES/EN introduction spoilers, make observation and authorized stop/isolation explicit, limit geometry conclusions and remove unsupported ten-cycle visual claims.
+- Retain all seven image binaries and registrations. Withhold ART-003/004/006 from learner presentation and document unresolved semantics, acquisition and visual limitations. Engine and other Experience sources are unchanged; browser QA remains pending.
+
+## 2026-09-29 — EE-0001 learning-moment and media remap pilot
+
+- Use the existing Phase 2 evidence media contract for six action-earned Results, preserving seven diagnostic decisions and the acquired media as context for the next task.
+- Keep ART-001 as Incident Brief cover and ART-002 as first-stage media. Repair unlocks no recovery evidence; final chain verification alone unlocks EVID-08/ART-008 before Continue to Debrief, which intentionally reuses ART-008.
+- Align ES/EN summaries, objectives, instructional purpose and stage titles with available knowledge. Make online PLC observation and authorized isolation/absence of voltage explicit; retain voltage, continuity and physical localization as separate diagnostic steps.
+- Strengthen EE-0001 traversal, Retry, final recovery timing and Continue invariants; adapt the correct-option audit to Result presentations. No Engine or other Experience changes, generated artifacts or image-binary synchronization; the existing assets/media equality debt remains separate.
+
+## 2026-09-29 — Experience Engine evidence result presentation, Phase 2
+
+- Add optional ordered `public.evidence[].media_ids` to V2, with authoring/runtime/web and defensive Player validation. Preserve references through normalization and projection; `visual.assets` remains the only media registry.
+- Present newly unlocked evidence and its media in `interaction: "result"`, followed by explicit Continue. Derive the presentation from decision history and unlock authority; no extra stage, attempt, progress unit, evaluation or persisted session state.
+- Register diagnostic completion before the final result's Continue, once per run. Preserve earned completion when closing before Debrief; Continue does not register it again.
+- Reuse existing ES/EN evidence and asset text, workspace components and styling. Provide keyboard focus on result/next content and visible localized media-load failures without blocking Continue.
+- Preserve V1, V2 without evidence media, Phase 1 cover/completion semantics and the current reload policy. Production EE-0001–EE-0011 mappings and the EE-0001 assets/media discrepancy remain untouched.
+- Cover the capability using synthetic fixtures and temporary packaging copies; no production content migration or new asset-copy mechanism.
+
 ## 2026-09-28 — Experience Engine semantic media contract, Phase 1
 
 - Render the semantic `public.visual.cover_asset_id` inside the existing Incident Brief using the same asset URL projection and media component as stage media. Missing optional references leave the introduction usable; no new Player state or diagnostic side effects.

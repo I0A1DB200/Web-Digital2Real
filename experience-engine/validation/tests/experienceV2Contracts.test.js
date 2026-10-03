@@ -13,6 +13,43 @@ const sourceUrl = new URL("../fixtures/experience-definition-v1-valid.json", imp
 const source = async () => JSON.parse(await readFile(sourceUrl, "utf8"));
 const clone = value => structuredClone(value);
 
+test("evidence media survives normalization and projection in declared order without mutation or private leakage", async () => {
+  const source = await authoringV2();
+  source.public.visual.assets = ["A", "B"].map(id => ({ id, type: "image", src: `${id}.png`, alt: id, purpose: "evidence" }));
+  const evidenceId = source.private.decision_logic.find(item => item.evidence_revealed.length).evidence_revealed[0];
+  source.public.evidence.find(item => item.id === evidenceId).media_ids = ["B", "A"];
+  const before = clone(source);
+  const runtime = normalizeExperienceDefinition(source);
+  assert.equal(runtime.ok, true, JSON.stringify(runtime.errors));
+  const artifact = projectRuntimeToWebArtifact(runtime.value);
+  assert.deepEqual(runtime.value.public.evidence.find(item => item.id === evidenceId).media_ids, ["B", "A"]);
+  assert.deepEqual(artifact.public.evidence.find(item => item.id === evidenceId).media_ids, ["B", "A"]);
+  assert.deepEqual(source, before);
+  assert.equal(validateGeneratedWebArtifact(artifact).compatible, true);
+  assert.doesNotMatch(JSON.stringify(artifact), /private|is_correct|rationale|evidence_revealed|score_effect/);
+});
+
+for (const [label, media, error] of [
+  ["absent", undefined, null], ["empty", [], null], ["single", ["A"], null], ["ordered", ["B", "A"], null],
+  ["non-array", "A", "EVIDENCE_MEDIA_ARRAY_REQUIRED"], ["null", null, "EVIDENCE_MEDIA_ARRAY_REQUIRED"],
+  ["invalid item", [42], "EVIDENCE_MEDIA_ID_INVALID"], ["empty ID", ["  "], "EVIDENCE_MEDIA_ID_INVALID"],
+  ["duplicate", ["A", "A"], "EVIDENCE_MEDIA_DUPLICATE"], ["unknown", ["missing"], "EVIDENCE_MEDIA_UNKNOWN"]
+]) {
+  test(`evidence media contract across authoring/runtime/web: ${label}`, async () => {
+    const authoring = await authoringV2();
+    authoring.public.visual.assets = ["A", "B"].map(id => ({ id, type: "image", src: `${id}.png`, alt: id, purpose: "evidence" }));
+    const runtime = normalizeExperienceDefinition(authoring).value;
+    const artifact = projectRuntimeToWebArtifact(runtime);
+    for (const [original, validate] of [[authoring, validateExperienceDefinition], [runtime, validateNormalizedExperience], [artifact, validateGeneratedWebArtifact]]) {
+      const model = clone(original);
+      if (media !== undefined) model.public.evidence[0].media_ids = clone(media);
+      const report = validate(model);
+      if (error) assert.ok(report.errors.some(item => item.code === error), JSON.stringify(report.errors));
+      else assert.equal(report.compatible, true, JSON.stringify(report.errors));
+    }
+  });
+}
+
 async function authoringV2() {
   const value = await source();
   value.contract_version = "2.0.0";

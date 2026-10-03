@@ -129,7 +129,15 @@ test("projected advance and retry behavior follows identity while correctness st
       const retry = before.currentStage.decisions.find(item => authority.get(item.action_token).outcome === "retry");
       assert.equal(authority.get(correct.action_token).outcome, "advance", `${entry.id} ${expectedId}`);
       assert.equal(player.selectDecision(retry.id).currentStage.id, before.currentStage.id, `${entry.id} retry`);
-      player.selectDecision(correct.id);
+      const advanced = player.selectDecision(correct.id);
+      if (advanced.interaction === "result") {
+        assert.equal(advanced.currentStage, null);
+        assert.deepEqual(advanced.media, []);
+        assert.ok(advanced.result.evidence.length > 0);
+        const continued = player.continue();
+        for (const key of ["state", "completionStatus", "progress", "decisionHistory", "attemptsByDecision", "resolvedDecisions", "unlockedEvidence", "evaluationResult"])
+          assert.deepEqual(continued[key], advanced[key], `${entry.id} Continue preserves ${key}`);
+      }
       stageNumber += 1;
     }
     assert.equal(stageNumber, entry.correctIds.length, entry.id);

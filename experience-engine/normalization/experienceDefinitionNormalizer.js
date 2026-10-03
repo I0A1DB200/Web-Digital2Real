@@ -77,6 +77,10 @@ function normalizeV2(authoring) {
   const runtime = structuredClone(base.value);
   runtime.runtime_contract_version = "2.0.0";
   runtime.public.stages.forEach((stage, index) => { stage.phase = authoring.public.stages[index].phase; });
+  runtime.public.evidence.forEach((evidence, index) => {
+    const mediaIds = authoring.public.evidence[index].media_ids;
+    if (Array.isArray(mediaIds)) evidence.media_ids = [...mediaIds];
+  });
   runtime.private.relations.forEach(relation => {
     const source = logic.get(relation.decision_id);
     relation.is_correct = source.is_correct;

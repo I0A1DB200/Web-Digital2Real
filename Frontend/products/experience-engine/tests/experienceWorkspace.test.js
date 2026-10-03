@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { ExperiencePlayer } from "../../../../experience-engine/player/experiencePlayer.js";
+import { evidenceMediaArtifact } from "../../../../experience-engine/player/tests/fixtures/evidenceMediaArtifact.js";
 import { createEnvironmentNavigator } from "../components/environmentNavigator.js";
 import { chooseEnvironmentPopoverPlacement } from "../components/environmentPopoverPosition.js";
 import { createEnvironmentProgressStore } from "../components/environmentProgressStore.js";
@@ -20,6 +21,131 @@ const artifactUrl = new URL(
   import.meta.url
 );
 const readArtifact = async () => JSON.parse(await readFile(artifactUrl, "utf8"));
+
+async function resultWorkspace(language = "en", storage = null) {
+  const artifact = evidenceMediaArtifact(language);
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: language };
+  const store = createEnvironmentProgressStore({ storage });
+  let registrations = 0;
+  const progressStore = { ...store, recordExperienceResult(...args) { registrations++; return store.recordExperienceResult(...args); } };
+  const catalog = { version: 1, experiences: [{
+    id: artifact.identity.id, editorialId: "EE-TEST", title: artifact.metadata.title,
+    summary: artifact.metadata.summary, path: "fixture.json", class: "learning"
+  }], environments: [{
+    id: "ENV-TEST", contractVersion: "2.0.0", title: "Fixture", background: "fixture.svg", width: 16, height: 9,
+    hotspots: [{ experienceEditorialId: "EE-TEST", x: 50, y: 50 }]
+  }] };
+  const workspace = createExperienceWorkspace({ documentRef, progressStore,
+    fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : artifact) }),
+    importPlayer: async () => ({ ExperiencePlayer })
+  });
+  await workspace.initialise(); await workspace.openExperience(artifact.identity.id, "ENV-TEST");
+  const click = text => findButton(workspace.element, text).click();
+  const begin = () => {
+    click(language === "es" ? "Iniciar Experience" : "Start experience");
+    click(language === "es" ? "Iniciar diagnóstico" : "Begin diagnosis");
+  };
+  return { workspace, documentRef, store, begin, click, registrations: () => registrations };
+}
+
+for (const language of ["es", "en"]) {
+  test(`result workspace ${language}: earned text/media only, accessible Continue and visible load failures`, async () => {
+    const fixture = await resultWorkspace(language);
+    const { workspace, documentRef, click, begin } = fixture;
+    begin();
+    click(language === "es" ? "Cambiar sin comprobar" : "Replace without checking");
+    assert.equal(workspace.getState().interaction, "stage");
+    assert.deepEqual(workspace.element.findAll(item => item.tagName === "IMG").map(item => item.src), ["./generated/experience-engine/assets/fixture/CONTEXT.svg"]);
+    click(language === "es" ? "Inspeccionar conector" : "Inspect connector");
+    assert.equal(workspace.getState().interaction, "result");
+    assert.match(workspace.element.text, language === "es" ? /El conector está suelto/ : /The connector is loose/);
+    assert.match(workspace.element.text, language === "es" ? /No hay daños visibles/ : /No visible damage/);
+    assert.equal(workspace.element.findAll(item => item.className === "experience-decision").length, 0);
+    assert.equal(documentRef.activeElement.text, language === "es" ? "Resultado" : "Result");
+    const images = workspace.element.findAll(item => item.tagName === "IMG");
+    assert.deepEqual(images.map(item => item.src.split("/").at(-1)), ["DETAIL.svg", "CONNECTOR.svg"]);
+    const before = workspace.getState();
+    images[0].listeners.error(); images[0].listeners.error();
+    assert.equal(images[0].parent, null);
+    const notices = workspace.element.findAll(item => item.attributes.role === "status");
+    assert.equal(notices.length, 1);
+    assert.match(notices[0].text, language === "es" ? /No se pudo cargar/ : /Could not load media/);
+    assert.deepEqual(workspace.getState(), before);
+    click(language === "es" ? "Continuar" : "Continue");
+    assert.equal(workspace.getState().currentStage.id, "STAGE-2");
+    assert.deepEqual(workspace.getState().progress, before.progress);
+    assert.equal(documentRef.activeElement.text, language === "es" ? "Evaluar la medición" : "Assess measurement");
+    workspace.destroy();
+  });
+}
+
+test("final result records completion before Continue exactly once, and closing preserves earned progress", async () => {
+  for (const closeBeforeContinue of [false, true]) {
+    const fixture = await resultWorkspace();
+    const { workspace, click, begin, store } = fixture;
+    begin(); click("Inspect connector"); click("Continue"); click("Assess measurement");
+    assert.equal(fixture.registrations(), 0);
+    click("Verify recovery");
+    const result = workspace.getState();
+    assert.equal(result.interaction, "result");
+    assert.equal(result.state, "Completed");
+    assert.equal(fixture.registrations(), 1);
+    assert.deepEqual(store.getEnvironmentProgress("ENV-TEST").experiences, { completed: 1, mastered: 1, total: 1 });
+    assert.deepEqual(createExperienceProgressResult(result), { completed: true, mastered: true });
+    if (closeBeforeContinue) click("All experiences");
+    else {
+      click("Continue");
+      assert.equal(workspace.getState().interaction, "completion");
+      assert.match(workspace.element.text, /Test debrief/);
+      assert.equal(workspace.element.find(item => item.tagName === "IMG").src.split("/").at(-1), "RECOVERY.svg");
+    }
+    assert.equal(fixture.registrations(), 1);
+    assert.equal(store.getEnvironmentProgress("ENV-TEST").experiences.completed, 1);
+    workspace.destroy();
+  }
+});
+
+test("restarting allows one completion registration for the new run without duplicating ENV completion", async () => {
+  const fixture = await resultWorkspace();
+  for (const retry of [true, false]) {
+    fixture.begin();
+    if (retry) fixture.click("Replace without checking");
+    fixture.click("Inspect connector"); fixture.click("Continue");
+    fixture.click("Assess measurement"); fixture.click("Verify recovery");
+    const count = retry ? 1 : 2;
+    assert.equal(fixture.registrations(), count);
+    assert.deepEqual(fixture.store.getEnvironmentProgress("ENV-TEST").experiences, { completed: 1, mastered: retry ? 0 : 1, total: 1 });
+    fixture.click("Continue");
+    assert.equal(fixture.registrations(), count);
+    fixture.click("Restart experience");
+  }
+  fixture.workspace.destroy();
+});
+
+test("reload does not restore active or pending-result sessions; only completion/mastery persists", async () => {
+  for (const phase of ["before-answer", "retry", "result", "after-continue", "final-result", "completion"]) {
+    const values = new Map();
+    const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+    const first = await resultWorkspace("en", storage);
+    first.begin();
+    if (phase !== "before-answer") first.click("Replace without checking");
+    if (!["before-answer", "retry"].includes(phase)) first.click("Inspect connector");
+    if (["after-continue", "final-result", "completion"].includes(phase)) first.click("Continue");
+    if (["final-result", "completion"].includes(phase)) { first.click("Assess measurement"); first.click("Verify recovery"); }
+    if (phase === "completion") first.click("Continue");
+    first.workspace.destroy();
+    const reopened = await resultWorkspace("en", storage);
+    const state = reopened.workspace.getState();
+    assert.equal(state.interaction, "start", phase);
+    assert.deepEqual(state.decisionHistory, []);
+    assert.deepEqual(state.unlockedEvidence, []);
+    assert.equal(state.result, null);
+    assert.equal(reopened.store.getEnvironmentProgress("ENV-TEST").experiences.completed, ["final-result", "completion"].includes(phase) ? 1 : 0);
+    assert.doesNotMatch([...values.values()].join(""), /unlockedEvidence|decisionHistory|stageIndex|interaction/);
+    reopened.workspace.destroy();
+  }
+});
 
 test("Incident Brief resolves a semantic cover without changing Player state or stage media", async () => {
   const artifact = await readArtifact();
@@ -933,6 +1059,10 @@ class FakeElement {
       if (match) return match;
     }
     return null;
+  }
+
+  querySelector(selector) {
+    return this.find(element => element.tagName === selector.toUpperCase());
   }
 
   findAll(predicate) {

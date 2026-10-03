@@ -5,6 +5,7 @@ const incident = (code, path, message) => ({ severity: "error", code, path, mess
 
 export function validateAuthoringV2(candidate, baseIncidents = []) {
   const incidents = [...baseIncidents];
+  validateEvidenceMedia(candidate, incidents);
   if (candidate?.contract_version !== ExperienceV2Contracts.authoringVersion) {
     incidents.push(incident("CONTRACT_VERSION_UNSUPPORTED", "$.contract_version", "Authoring V2 requires contract_version 2.0.0."));
     return result("Digital2Real Experience Authoring Definition V2", "authoring_v2", candidate, incidents);
@@ -37,6 +38,7 @@ export function validateAuthoringV2(candidate, baseIncidents = []) {
 
 export function validateRuntimeV2(candidate, baseIncidents = []) {
   const incidents = [...baseIncidents];
+  validateEvidenceMedia(candidate, incidents);
   if (candidate?.runtime_contract_version !== ExperienceV2Contracts.runtimeVersion) incidents.push(incident("RUNTIME_CONTRACT_VERSION_UNSUPPORTED", "$.runtime_contract_version", "Runtime V2 requires version 2.0.0."));
   const stages = candidate.public?.stages;
   if (!Array.isArray(stages)) incidents.push(incident("V2_STAGES_REQUIRED", "$.public.stages", "Runtime V2 stages are required."));
@@ -56,6 +58,7 @@ export function validateRuntimeV2(candidate, baseIncidents = []) {
 
 export function validateWebArtifactV2(candidate, baseIncidents = []) {
   const incidents = [...baseIncidents];
+  validateEvidenceMedia(candidate, incidents);
   if (candidate?.web_artifact_version !== ExperienceV2Contracts.webArtifactVersion) incidents.push(incident("WEB_ARTIFACT_VERSION_UNSUPPORTED", "$.web_artifact_version", "Web Artifact V2 requires version 2.0.0."));
   scanForbidden(candidate, "$", incidents);
   const stages = candidate.public?.stages;
@@ -66,6 +69,32 @@ export function validateWebArtifactV2(candidate, baseIncidents = []) {
   }
   validateProjectedPolicy(candidate.public?.evaluation_policy, incidents);
   return result("Digital2Real Generated Web Artifact V2", "generated_web_artifact_v2", candidate, incidents);
+}
+
+function validateEvidenceMedia(candidate, incidents) {
+  const evidence = candidate?.public?.evidence;
+  if (!Array.isArray(evidence)) return;
+  const assets = candidate.public.visual?.assets;
+  const assetIds = new Set(Array.isArray(assets) ? assets.map(asset => asset?.id) : []);
+  evidence.forEach((item, index) => {
+    if (!object(item) || !Object.hasOwn(item, "media_ids")) return;
+    const path = `$.public.evidence[${index}].media_ids`;
+    if (!Array.isArray(item.media_ids)) {
+      incidents.push(incident("EVIDENCE_MEDIA_ARRAY_REQUIRED", path, "Evidence media_ids must be an ordered array."));
+      return;
+    }
+    const seen = new Set();
+    item.media_ids.forEach((id, position) => {
+      const referencePath = `${path}[${position}]`;
+      if (typeof id !== "string" || !id.trim()) {
+        incidents.push(incident("EVIDENCE_MEDIA_ID_INVALID", referencePath, "Evidence media IDs must be non-empty strings."));
+        return;
+      }
+      if (seen.has(id)) incidents.push(incident("EVIDENCE_MEDIA_DUPLICATE", referencePath, `Duplicate evidence media ${id}.`));
+      seen.add(id);
+      if (!assetIds.has(id)) incidents.push(incident("EVIDENCE_MEDIA_UNKNOWN", referencePath, `Evidence references unknown media ${id}.`));
+    });
+  });
 }
 
 function validateProjectedPolicy(policy, incidents) {

@@ -30,11 +30,11 @@ capability_references:
 public:
   slug: "sequence-stuck-waiting-for-condition"
   title: "Secuencia bloqueada esperando una condición"
-  summary: "Traza una condición desde el proceso físico hasta la transición GRAPH y detecta una referencia lógica incorrecta aunque la entrada PLC sea válida."
+  summary: "Traza el proceso físico, la señal PLC y la condición GRAPH para explicar por qué la secuencia permanece esperando."
   estimated_duration: 17
   scenario:
-    initial_context: "Una caja alcanza correctamente la posición de parada del transportador, pero la secuencia Siemens GRAPH permanece esperando."
-    operational_state: "El paso S40 está activo y la transición T40 no se satisface, aunque el sensor y la entrada física parecen indicar presencia."
+    initial_context: "Producción informa de una caja en la posición de parada del transportador mientras la secuencia Siemens GRAPH permanece esperando."
+    operational_state: "Se informa de que el transportador está detenido; quedan por inspeccionar el paso activo, la condición pendiente y la señal PLC. Observar y monitorizar según el procedimiento autorizado, con movimientos controlados antes de inspeccionar el proceso o modificar lógica. No forzar pasos ni transiciones."
     initiating_event: "Producción informa de que el transportador queda detenido con la caja en la posición esperada."
     learner_role: "Técnico de automatización responsable de comparar proceso físico, señal PLC y condición lógica realmente evaluada por la secuencia."
     safety_context:
@@ -50,59 +50,59 @@ public:
       capability_id: "ICF-02"
       competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
     - id: "OBJ-SEQUENCE-RECOVERY"
-      description: "Corregir la referencia de T40 y verificar S40, T40, S41 y ciclos repetidos sin forcing."
+      description: "Justificar una intervención a partir de evidencia y verificar la recuperación en ciclos representativos sin forcing."
       capability_id: "ICF-02"
       competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
   stages:
     - id: "STAGE-01-LOCATE-BLOCK"
       phase: "incident"
       title: "Localizar el bloqueo"
-      situation: "La caja está en posición, pero la secuencia no continúa. ¿Cuál es el mejor primer paso?"
+      situation: "Según producción, la caja está en la posición de parada, pero la secuencia no continúa. ¿Cuál es el mejor primer paso?"
       evidence_ids: ["EVID-01-INCIDENT"]
       decision_ids: ["DEC-01-REPLACE-SENSOR", "DEC-01-RESTART-PLC", "DEC-01-INSPECT-ACTIVE-STEP"]
-      media_ids: ["ART-001", "ART-002"]
+      media_ids: ["ART-002"]
     - id: "STAGE-02-IDENTIFY-TRANSITION"
       phase: "investigation"
       title: "Identificar la transición pendiente"
       situation: "La monitorización muestra S40 activo y T40 no satisfecha. ¿Qué debe inspeccionarse ahora?"
       evidence_ids: ["EVID-02-GRAPH-BLOCK"]
       decision_ids: ["DEC-02-FORCE-T40", "DEC-02-EDIT-S40", "DEC-02-RESET-SEQUENCE", "DEC-02-INSPECT-T40-CONDITION"]
-      media_ids: ["ART-003"]
+      media_ids: []
     - id: "STAGE-03-VERIFY-PHYSICAL"
       phase: "investigation"
       title: "Verificar la condición física"
-      situation: "T40 evalúa PartAtStop_2, que está FALSE. Antes de concluir que la lógica es incorrecta, ¿qué evidencia debe comprobarse?"
+      situation: "T40 evalúa PartAtStop_2, que está FALSE. Con los movimientos controlados según el procedimiento autorizado, ¿qué debe comprobarse en el proceso físico?"
       evidence_ids: ["EVID-03-T40-CONDITION"]
       decision_ids: ["DEC-03-REPLACE-INPUT", "DEC-03-VERIFY-BOX-SENSOR", "DEC-03-SET-PARTATSTOP2"]
-      media_ids: ["ART-004"]
+      media_ids: []
     - id: "STAGE-04-VERIFY-PLC-SIGNAL"
       phase: "investigation"
       title: "Verificar la representación PLC"
       situation: "La caja está presente y el sensor detecta. ¿Cuál es el siguiente límite diagnóstico?"
       evidence_ids: ["EVID-04-PHYSICAL-STATE"]
       decision_ids: ["DEC-04-MONITOR-I05-TAG", "DEC-04-REALIGN-SENSOR", "DEC-04-CHANGE-INPUT"]
-      media_ids: ["ART-005"]
+      media_ids: ["ART-004"]
     - id: "STAGE-05-COMPARE-CONDITIONS"
       phase: "investigation"
       title: "Comparar señal y transición"
       situation: "%I0.5 y PartAtStop_Sensor están TRUE, mientras PartAtStop_2 está FALSE. ¿Qué comparación identifica la primera discrepancia lógica?"
       evidence_ids: ["EVID-05-PLC-SIGNALS"]
       decision_ids: ["DEC-05-REPLACE-SENSOR", "DEC-05-FORCE-PARTATSTOP2", "DEC-05-COMPARE-T40-REFERENCE"]
-      media_ids: ["ART-006"]
+      media_ids: ["ART-005"]
     - id: "STAGE-06-DIAGNOSE-ROOT-CAUSE"
       phase: "investigation"
       title: "Diagnosticar la causa"
       situation: "La señal de campo correcta llega al PLC, pero T40 evalúa PartAtStop_2. ¿Cuál es el diagnóstico?"
       evidence_ids: ["EVID-06-MISMATCH"]
       decision_ids: ["DEC-06-SEQUENCE-ENGINE-FAULT", "DEC-06-WRONG-VARIABLE-REFERENCE", "DEC-06-PROFINET-FAULT"]
-      media_ids: []
+      media_ids: ["ART-006"]
     - id: "STAGE-07-CORRECT-VERIFY"
       phase: "solution"
       title: "Corregir y verificar"
-      situation: "La referencia lógica incorrecta está confirmada. ¿Qué intervención y verificación resuelven técnicamente el incidente?"
-      evidence_ids: ["EVID-07-VERIFICATION"]
+      situation: "La referencia lógica incorrecta está confirmada; la recuperación sigue pendiente. Según el procedimiento autorizado y con movimientos controlados antes de modificar lógica, ¿qué intervención y verificación corresponden, sin forcing ni constantes TRUE?"
+      evidence_ids: ["EVID-06-MISMATCH"]
       decision_ids: ["DEC-07-FORCE-TRANSITION", "DEC-07-SET-TRUE-CONSTANT", "DEC-07-CHANGE-PARTATSTOP2", "DEC-07-CORRECT-T40-VERIFY"]
-      media_ids: ["ART-007"]
+      media_ids: []
   evidence:
     - id: "EVID-01-INCIDENT"
       type: "initial_observation"
@@ -110,42 +110,49 @@ public:
       content: "La caja permanece en la posición de parada y la secuencia no avanza."
       reliability: "high"
       revealed_by: []
+      media_ids: []
     - id: "EVID-02-GRAPH-BLOCK"
       type: "diagnostic"
       source: "Siemens GRAPH"
       content: "S40 está activo y T40 permanece no satisfecha."
       reliability: "confirmed"
       revealed_by: ["DEC-01-INSPECT-ACTIVE-STEP"]
+      media_ids: []
     - id: "EVID-03-T40-CONDITION"
       type: "diagnostic"
       source: "TIA Portal / GRAPH"
       content: "T40 referencia PartAtStop_2 y la variable monitorizada está FALSE."
       reliability: "confirmed"
       revealed_by: ["DEC-02-INSPECT-T40-CONDITION"]
+      media_ids: []
     - id: "EVID-04-PHYSICAL-STATE"
       type: "inspection"
       source: "Posición de parada"
-      content: "La caja está físicamente colocada y el sensor fotoeléctrico la detecta."
+      content: "La inspección confirma la caja en la posición de parada y la detección local del sensor; la imagen ilustra la observación, no una medición eléctrica."
       reliability: "confirmed"
       revealed_by: ["DEC-03-VERIFY-BOX-SENSOR"]
+      media_ids: ["ART-004"]
     - id: "EVID-05-PLC-SIGNALS"
       type: "measurement"
       source: "Monitorización PLC"
-      content: "%I0.5 está TRUE y PartAtStop_Sensor está TRUE; PartAtStop_2 permanece FALSE."
+      content: "La monitorización muestra PartAtStop_Sensor, asociado a %I0.5, TRUE y PartAtStop_2 FALSE. Dirección y tag representan la misma entrada, coherente con el estado físico inspeccionado."
       reliability: "confirmed"
       revealed_by: ["DEC-04-MONITOR-I05-TAG"]
+      media_ids: ["ART-005"]
     - id: "EVID-06-MISMATCH"
       type: "diagnostic"
       source: "Comparación PLC / GRAPH"
       content: "La condición verificada es PartAtStop_Sensor TRUE, pero T40 evalúa PartAtStop_2 FALSE."
       reliability: "confirmed"
       revealed_by: ["DEC-05-COMPARE-T40-REFERENCE"]
+      media_ids: ["ART-006"]
     - id: "EVID-07-VERIFICATION"
       type: "functional_test"
       source: "Verificación posterior"
-      content: "T40 referencia PartAtStop_Sensor; con la caja presente, T40 se satisface, S40 finaliza, S41 se activa y la secuencia repite correctamente."
+      content: "Tras la corrección autorizada, la prueba funcional confirma que T40 referencia PartAtStop_Sensor; con la caja presente, T40 se satisface, S40 finaliza y S41 se activa. Se verifican ciclos representativos sin forcing. La imagen estática ilustra la configuración; no demuestra repetibilidad."
       reliability: "confirmed"
-      revealed_by: ["DEC-06-WRONG-VARIABLE-REFERENCE"]
+      revealed_by: ["DEC-07-CORRECT-T40-VERIFY"]
+      media_ids: ["ART-007"]
   decisions:
     - id: "DEC-01-REPLACE-SENSOR"
       stage_id: "STAGE-01-LOCATE-BLOCK"
@@ -173,7 +180,7 @@ public:
       action: "Sustituir el módulo de entrada porque PartAtStop_2 está FALSE."
     - id: "DEC-03-VERIFY-BOX-SENSOR"
       stage_id: "STAGE-03-VERIFY-PHYSICAL"
-      action: "Comprobar la posición real de la caja y la detección local del sensor."
+      action: "Con movimientos controlados según el procedimiento autorizado, comprobar la posición real de la caja y la detección local del sensor."
     - id: "DEC-03-SET-PARTATSTOP2"
       stage_id: "STAGE-03-VERIFY-PHYSICAL"
       action: "Escribir TRUE en PartAtStop_2 para liberar la transición."
@@ -215,9 +222,9 @@ public:
       action: "Manipular PartAtStop_2 para conservar la referencia existente."
     - id: "DEC-07-CORRECT-T40-VERIFY"
       stage_id: "STAGE-07-CORRECT-VERIFY"
-      action: "Cambiar T40 a PartAtStop_Sensor y verificar T40, S40, S41 y ciclos repetidos."
+      action: "Según el procedimiento autorizado, con movimientos controlados antes del cambio, configurar T40 con PartAtStop_Sensor y verificar T40, S40, S41 y ciclos representativos sin forcing."
   visual:
-    educational_purpose: "Comparar evidencia física, señal PLC y condición lógica hasta localizar la referencia incorrecta de T40."
+    educational_purpose: "Comparar la observación física, la representación PLC y la condición evaluada por la secuencia."
     representation: "available"
     cover_asset_id: "ART-001"
     assets:
@@ -242,26 +249,26 @@ public:
       - id: "ART-004"
         type: "image"
         src: "assets/EXP-GRAPH-SEQUENCE-007/04.png"
-        alt: "Caja presente en la parada y sensor fotoeléctrico detectando."
-        caption: "La condición física y la detección local son correctas."
+        alt: "Caja junto al sensor fotoeléctrico con luz roja visible."
+        caption: "Ilustración de la inspección física; el color de la luz no establece por sí solo detección ni estado PLC."
         purpose: "evidence"
       - id: "ART-005"
         type: "image"
         src: "assets/EXP-GRAPH-SEQUENCE-007/05.png"
-        alt: "Monitorización PLC con PartAtStop_Sensor y %I0.5 TRUE frente a PartAtStop_2 FALSE."
-        caption: "La entrada física llega correctamente al PLC."
+        alt: "Tabla de monitorización con PartAtStop_Sensor en %I0.5 TRUE y PartAtStop_2 FALSE."
+        caption: "Estado de entrada observado coherente con la condición física inspeccionada; no demuestra salud global del PLC o de la red."
         purpose: "evidence"
       - id: "ART-006"
         type: "image"
         src: "assets/EXP-GRAPH-SEQUENCE-007/06.png"
-        alt: "Comparación entre PartAtStop_Sensor verificada y PartAtStop_2 usada por T40."
-        caption: "La transición referencia una variable diferente del tag físico verificado."
+        alt: "Condición T40 con PartAtStop_2 junto a la tabla que identifica PartAtStop_Sensor en %I0.5."
+        caption: "Comparación de referencias; los valores online proceden de la monitorización anterior."
         purpose: "evidence"
       - id: "ART-007"
         type: "image"
         src: "assets/EXP-GRAPH-SEQUENCE-007/07.png"
-        alt: "T40 corregida con PartAtStop_Sensor y secuencia avanzada a S41."
-        caption: "La transición y la progresión de la secuencia quedan verificadas."
+        alt: "Referencia T40 configurada con PartAtStop_Sensor y diagrama con S40 y S41."
+        caption: "La prueba funcional establece la recuperación; esta imagen estática no demuestra movimiento ni ciclos repetidos."
         purpose: "completion"
   completion:
     title: "Debrief técnico"
@@ -428,7 +435,7 @@ private:
     - decision_id: "DEC-05-REPLACE-SENSOR"
       is_correct: false
       retry_feedback: "%I0.5 y PartAtStop_Sensor están TRUE. Sustituir el sensor contradice la señal ya verificada; compara qué variable usa T40."
-      rationale: "La cadena física funciona."
+      rationale: "La señal observada concuerda con la condición física inspeccionada."
       classification: "weak"
       consequence: "La referencia incorrecta permanece."
       evidence_revealed: []
@@ -437,7 +444,7 @@ private:
       safety_effect: 0
     - decision_id: "DEC-05-FORCE-PARTATSTOP2"
       is_correct: false
-      retry_feedback: "Forzar PartAtStop_2 no explica por qué T40 ignora el tag físico correcto. Compara ambas referencias sin manipularlas."
+      retry_feedback: "Forzar PartAtStop_2 altera la condición sin explicar la relación entre señal y transición. Compara las referencias sin manipularlas."
       rationale: "El forcing oculta el mapeo incorrecto."
       classification: "unsafe"
       consequence: "La transición se falsea."
@@ -447,10 +454,10 @@ private:
       safety_effect: -8
     - decision_id: "DEC-06-WRONG-VARIABLE-REFERENCE"
       is_correct: true
-      rationale: "Toda la cadena física es válida y la primera divergencia está en la variable usada por T40."
+      rationale: "La inspección y la monitorización concuerdan para el estado observado; la discrepancia identificada está en la referencia usada por T40."
       classification: "strong"
       consequence: "Se confirma la referencia lógica equivocada."
-      evidence_revealed: ["EVID-07-VERIFICATION"]
+      evidence_revealed: []
       next_stage: "STAGE-07-CORRECT-VERIFY"
       score_effect: 10
       safety_effect: 1
@@ -479,7 +486,7 @@ private:
       rationale: "La corrección conecta T40 con la señal física prevista y exige verificar la progresión completa."
       classification: "strong"
       consequence: "T40 se satisface, S41 se activa y los ciclos quedan verificados."
-      evidence_revealed: []
+      evidence_revealed: ["EVID-07-VERIFICATION"]
       next_stage: "COMPLETE"
       score_effect: 10
       safety_effect: 2
@@ -538,4 +545,4 @@ private:
     recovery: ["Cambiar T40 a PartAtStop_Sensor.", "Confirmar T40 satisfecha.", "Confirmar S40 a S41.", "Repetir ciclos sin forcing."]
   technical_validation:
     status: "pass"
-    evidence: ["PartAtStop_Sensor conserva únicamente %I0.5.", "S40, T40 y S41 mantienen sus roles GRAPH.", "La causa queda después de una cadena física y PLC confirmada."]
+    evidence: ["PartAtStop_Sensor conserva únicamente %I0.5.", "S40, T40 y S41 mantienen sus roles GRAPH.", "La causa se establece después de inspección física, monitorización y comparación de referencias.", "ART-003 permanece registrado sin presentación por mostrar S50 en lugar del S41 canónico.", "Solo D7 adquiere EVID-07 tras corrección y verificación; las imágenes no prueban repetibilidad."]

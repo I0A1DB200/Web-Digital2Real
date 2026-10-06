@@ -22,26 +22,81 @@ async function artifact(locale = "es") {
   return packageExperience(localized);
 }
 
-function run(webArtifact, retryStageIds = []) {
+function diagnosticState(state) {
+  return Object.fromEntries(["state", "completionStatus", "progress", "decisionHistory",
+    "attemptsByDecision", "resolvedDecisions", "unlockedEvidence", "evaluationResult"]
+    .map(key => [key, state[key]]));
+}
+
+const expectedResults = {
+  "DEC-01-INSPECT-DRIVE": { id: "EVID-02-DRIVE-STATE", media: ["ART-002"] },
+  "DEC-02-TRACE-PLC": { id: "EVID-03-PLC-AVAILABLE", media: ["ART-003"] },
+  "DEC-03-CHECK-AUTHORITY": { id: "EVID-04-HAND-AUTHORITY", media: ["ART-004"] },
+  "DEC-05-VERIFY-ONLINE": { id: "EVID-06-PLC-RUNCMD", media: ["ART-006"] },
+  "DEC-06-RESTORE-VERIFY": { id: "EVID-07-RECOVERY", media: ["ART-007"] }
+};
+
+function run(webArtifact, retryStageIds = [], retryAll = false) {
   const player = new ExperiencePlayer({ experience: webArtifact });
   const authority = new Map(webArtifact.public.interactions.map(item => [item.action_token, item]));
   const retries = new Set(retryStageIds);
   const progression = [];
+  const results = [];
   player.start();
+  assert.equal(player.getState().visual.cover_asset_id, "ART-001");
   player.continue();
   while (player.getState().interaction !== "completion") {
     const before = player.getState();
+    assert.equal(before.interaction, "stage");
+    assert.equal(before.progress.totalStages, 6);
+    assert.ok(before.media.every(item => !["ART-001", "ART-005", "ART-007"].includes(item.id)));
     progression.push({ id: before.currentStage.id, media: before.media.map(item => item.id) });
     const correct = before.currentStage.decisions.find(item => authority.get(item.action_token).outcome === "advance");
-    const incorrect = before.currentStage.decisions.find(item => authority.get(item.action_token).outcome === "retry");
-    if (retries.has(before.currentStage.id)) {
-      const after = player.selectDecision(incorrect.id);
+    const incorrect = before.currentStage.decisions.filter(item => authority.get(item.action_token).outcome === "retry");
+    const selectedRetries = retryAll ? incorrect : retries.has(before.currentStage.id) ? incorrect.slice(0, 1) : [];
+    for (const [index, option] of selectedRetries.entries()) {
+      const after = player.selectDecision(option.id);
       assert.equal(after.currentStage.id, before.currentStage.id);
       assert.deepEqual(after.unlockedEvidence, before.unlockedEvidence);
-      assert.equal(after.decisionHistory.length, before.decisionHistory.length + 1);
+      assert.equal(after.decisionHistory.length, before.decisionHistory.length + index + 1);
+      assert.equal(after.attemptsByDecision[before.currentStage.id], index + 1);
+      assert.deepEqual(after.resolvedDecisions, before.resolvedDecisions);
+      assert.deepEqual(after.progress, before.progress);
+      assert.deepEqual(after.media, before.media);
+      assert.equal(after.result, null);
+      assert.equal(after.completionStatus, before.completionStatus);
+      assert.match(after.feedback.message, /\S/);
     }
-    player.selectDecision(correct.id);
+    const after = player.selectDecision(correct.id);
+    assert.equal(after.attemptsByDecision[before.currentStage.id], selectedRetries.length + 1);
+    assert.deepEqual(after.unlockedEvidence, [...before.unlockedEvidence, ...authority.get(correct.action_token).unlocks]);
+    if (correct.id === "DEC-06-RESTORE-VERIFY") {
+      assert.equal(after.completionStatus, "completed");
+      assert.equal(after.completion, null);
+      assert.ok(after.unlockedEvidence.includes("EVID-07-RECOVERY"));
+      assert.equal(after.evaluationResult.totalDecisions, 6);
+    } else {
+      assert.notEqual(after.completionStatus, "completed");
+      assert.equal(after.unlockedEvidence.includes("EVID-07-RECOVERY"), false);
+    }
+    if (Object.hasOwn(expectedResults, correct.id)) {
+      assert.equal(after.interaction, "result");
+      assert.equal(after.currentStage, null);
+      assert.deepEqual(after.media, []);
+      assert.deepEqual(after.result.evidence.map(item => ({ id: item.id, media: item.media.map(asset => asset.id) })), [expectedResults[correct.id]]);
+      results.push(correct.id);
+      assert.deepEqual(diagnosticState(player.continue()), diagnosticState(after), "Continue only changes presentation");
+    } else {
+      assert.equal(correct.id, "DEC-04-VERIFY-ARCHITECTURE");
+      assert.equal(after.interaction, "stage");
+      assert.equal(after.currentStage.id, "STAGE-05-VERIFY-PLC-COMMAND");
+      assert.equal(after.result, null);
+      assert.deepEqual(after.media, []);
+    }
   }
+  assert.deepEqual(results, Object.keys(expectedResults));
+  assert.deepEqual(player.getState().media.map(item => item.id), ["ART-007"]);
+  assert.equal(player.getState().resolvedDecisions.length, 6);
   return { state: player.getState(), progression };
 }
 
@@ -49,6 +104,29 @@ function memoryStorage() {
   const values = new Map();
   return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
 }
+
+test("EE-0003 ES/EN preserve all twelve retries, safe acquisition and neutral introductions", async () => {
+  const authoring = await readYaml("experience.yaml");
+  for (const locale of ["es", "en"]) {
+    const localized = resolveExperienceLocalization(authoring, await readYaml(`locales/${locale}.yaml`));
+    const intro = [localized.public.title, localized.public.summary, localized.public.visual.educational_purpose,
+      localized.public.learning_objectives.find(item => item.id === "OBJ-RECOVERY").description].join(" ");
+    assert.doesNotMatch(intro, /HAND|BOP|AUTO|PROFINET|recibe orden|Drive Command Present/);
+    const action = id => localized.public.decisions.find(item => item.id === id).action;
+    assert.match(action("DEC-01-INSPECT-DRIVE"), locale === "es" ? /posición segura.*frecuencia indicada/ : /safe position.*indicated frequency/);
+    assert.match(action("DEC-05-VERIFY-ONLINE"), locale === "es" ? /posición segura/ : /safe position/);
+    assert.match(action("DEC-06-RESTORE-VERIFY"), locale === "es" ? /procedimiento autorizado antes de intervenir.*verificar.*posición segura/ : /authorized procedure before intervention.*verify.*safe position/);
+    const authority = localized.public.evidence.find(item => item.id === "EVID-04-HAND-AUTHORITY").content;
+    assert.match(authority, /HAND\/BOP/);
+    assert.doesNotMatch(authority, /AUTO|PROFINET|incompatible|instead of executing/);
+    const web = packageExperience(localized);
+    assert.ok(web.public.visual.assets.some(item => item.id === "ART-005"));
+    const { state } = run(web, [], true);
+    assert.equal(state.evaluationResult.totalDecisions, 6);
+    assert.equal(state.evaluationResult.additionalAttempts, 12);
+    assert.equal(state.decisionHistory.length, 18);
+  }
+});
 
 test("EE-0003 is a technically validated technical-review Authoring V2 Experience with one authority per stage", async () => {
   const authoring = await readYaml("experience.yaml");
@@ -60,6 +138,14 @@ test("EE-0003 is a technically validated technical-review Authoring V2 Experienc
   assert.equal(authoring.metadata.status, "technical_review");
   assert.equal(authoring.private.technical_validation.status, "pass");
   assert.equal(authoring.public.stages.length, 6);
+  assert.equal(authoring.public.decisions.length, 18);
+  assert.equal(authoring.public.evidence.length, 7);
+  assert.equal(authoring.private.decision_logic.filter(item => !item.is_correct).length, 12);
+  assert.deepEqual(authoring.public.evidence.map(item => item.media_ids ?? []), [
+    [], ["ART-002"], ["ART-003"], ["ART-004"], [], ["ART-006"], ["ART-007"]
+  ]);
+  for (const evidence of authoring.public.evidence)
+    assert.deepEqual(evidence.revealed_by, authoring.private.decision_logic.filter(item => item.evidence_revealed.includes(evidence.id)).map(item => item.decision_id));
   assert.equal(authoring.public.stages.every(stage => stage.decision_ids.length === 3), true);
   assert.equal(authoring.private.decision_logic.filter(item => item.is_correct).length, 6);
   assert.equal(authoring.private.decision_logic.filter(item => !item.is_correct).every(item => item.evidence_revealed.length === 0), true);
@@ -72,8 +158,8 @@ test("EE-0003 resolves all seven assets and localizes ES and EN without hybrid p
   assert.deepEqual(files, authoring.public.visual.assets.map(item => item.src.split("/").at(-1)).sort());
   const spanish = await artifact("es");
   const english = await artifact("en");
-  assert.equal(spanish.metadata.title, "El variador recibe orden, pero el transportador no arranca");
-  assert.equal(english.metadata.title, "Drive Command Present, Conveyor Does Not Start");
+  assert.equal(spanish.metadata.title, "Petición de marcha presente, transportador detenido");
+  assert.equal(english.metadata.title, "Run Request Present, Conveyor Stopped");
   assert.doesNotMatch(english.public.stages.map(item => `${item.title} ${item.situation}`).join(" "), /variador|transportador|marcha|permiso/i);
   assert.doesNotMatch(spanish.public.stages.slice(0, 3).map(item => item.situation).join(" "), /HAND|BOP|autoridad de mando/i);
 });
@@ -96,7 +182,7 @@ test("EE-0003 retries stay in stage and explicit transitions unlock evidence in 
   const pass = run(webArtifact);
   const guided = run(webArtifact, stages.slice(0, 2)).state;
   const retry = run(webArtifact, stages.slice(0, 4)).state;
-  assert.deepEqual(pass.progression.map(item => item.media), [["ART-001"], ["ART-002"], ["ART-003"], ["ART-004"], ["ART-005"], ["ART-006"]]);
+  assert.deepEqual(pass.progression.map(item => item.media), [[], ["ART-002"], ["ART-003"], ["ART-004"], [], ["ART-006"]]);
   assert.equal(pass.state.completionStatus, "completed");
   assert.equal(pass.state.evaluationResult.outcome, "PASS");
   assert.equal(guided.evaluationResult.outcome, "PASS_WITH_GUIDANCE");

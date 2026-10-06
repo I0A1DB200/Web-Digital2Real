@@ -71,37 +71,12 @@ test("EE-0011 has one correct option per decision and a non-cyclic mixed distrib
   }));
 });
 
-test("EE-0011 retries do not progress or unlock evidence; completion requires diagnosis, correction and verification", async () => {
-  for (const locale of ["es", "en"]) {
-    const author = await localized(locale);
-    const artifact = packageExperience(author);
-    const transitions = new Map(artifact.public.interactions.map(item => [item.action_token, item]));
-    const player = new ExperiencePlayer({ experience: artifact });
-    player.start(); player.continue();
-    for (let i = 0; i < 8; i++) {
-      const before = player.getState();
-      assert.equal(before.currentStage.id, author.public.stages[i].id);
-      assert.notEqual(before.interaction, "completion");
-      for (const option of before.currentStage.decisions.filter(item => item.id !== correctIds[i])) {
-        const transition = transitions.get(option.action_token);
-        assert.equal(transition.outcome, "retry");
-        assert.ok(transition.message);
-        assert.equal(Object.hasOwn(transition, "unlocks"), false);
-        for (let retry = 0; retry < 12; retry++) {
-          const afterRetry = player.selectDecision(option.id);
-          assert.equal(afterRetry.currentStage.id, before.currentStage.id);
-          assert.deepEqual(afterRetry.unlockedEvidence, before.unlockedEvidence);
-          assert.deepEqual(afterRetry.media, before.media);
-        }
-      }
-      const correct = before.currentStage.decisions.find(item => item.id === correctIds[i]);
-      assert.equal(transitions.get(correct.action_token).outcome, "advance");
-      const next = player.selectDecision(correct.id);
-      assert.deepEqual(transitions.get(correct.action_token).unlocks, i < 7 ? [author.public.evidence[i + 1].id] : []);
-      if (i < 7) assert.equal(next.currentStage.id, author.public.stages[i + 1].id);
-      else assert.equal(next.interaction, "completion");
-    }
-  }
+test("EE-0011 retries do not progress; completion requires independent verification", async () => {
+ for (const locale of ["es","en"]) {
+  const web=packageExperience(await localized(locale));
+  assert.equal(run(web).evaluationResult.outcome,"PASS");
+  run(web,true);
+ }
 });
 
 test("EE-0011 preserves staged evidence and never claims Sn is an exact threshold", async () => {
@@ -111,13 +86,13 @@ test("EE-0011 preserves staged evidence and never claims Sn is an exact threshol
     const initial = JSON.stringify([author.public.scenario, author.public.stages.slice(0, 3), author.public.evidence.slice(0, 3)]);
     assert.doesNotMatch(initial, /7\.8|4\.86|Sn = 6/);
     assert.deepEqual(author.public.stages.map(stage => stage.media_ids), [
-      ["ART-002"], ["ART-003"], ["ART-004"], ["ART-005"], ["ART-006"], ["ART-006"], ["ART-006"], ["ART-007"]
+      ["ART-002"], [], ["ART-004"], ["ART-005"], ["ART-006"], ["ART-005", "ART-006"], [], []
     ]);
     assert.equal(author.public.visual.cover_asset_id, "ART-001");
     assert.match(author.public.evidence[3].content, /7\.8.*Sn = 6.*4\.86.*0\.81/);
     assert.match(author.public.evidence[4].content, /Active switchpoint = 0/);
-    assert.match(author.public.evidence[7].content, /Active switchpoint = 1.*PartInPosition = 1/);
-    assert.match(author.public.evidence[7].content, /6 mm.*4\.86 mm/);
+    assert.match(author.public.evidence[8].content, /Active switchpoint = 1.*PartInPosition = 1/);
+    assert.match(author.public.evidence[8].content, /6 mm.*4\.86 mm/);
     author.public.evidence.forEach((item, i) => assert.deepEqual(item.revealed_by, i ? [correctIds[i - 1]] : []));
     for (const entry of author.private.decision_logic.filter(item => !item.is_correct)) {
       assert.deepEqual(entry.evidence_revealed, []);
@@ -152,4 +127,114 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
   for (const document of [theory, english]) {
     assert.doesNotMatch(JSON.stringify(document.sections.slice(-3)), /EE-0011|7\.8|Station 1/);
   }
+});
+
+const readYaml = yaml;
+const artifact = async locale => packageExperience(await localized(locale));
+const stageMedia = [["ART-002"], [], ["ART-004"], ["ART-005"], ["ART-006"], ["ART-005", "ART-006"], [], []];
+const evidenceMedia = [[], [], ["ART-004"], ["ART-005"], ["ART-006"], [], [], [], ["ART-007"]];
+const snapshot = state => Object.fromEntries(["state", "completionStatus", "progress", "decisionHistory", "attemptsByDecision", "resolvedDecisions", "unlockedEvidence", "evaluationResult"].map(key => [key, state[key]]));
+
+function run(web, allWrong = false) {
+ const player = new ExperiencePlayer({ experience: web });
+ const authority = new Map(web.public.interactions.map(i => [i.action_token, i]));
+ player.start();
+ assert.equal(player.getState().visual.cover_asset_id, "ART-001");
+ assert.deepEqual(player.getState().unlockedEvidence, []);
+ assert.equal(player.getState().decisionHistory.length, 0);
+ player.continue();
+ const results = [];
+ for (let index = 0; index < 8; index++) {
+  const before = player.getState();
+  assert.equal(before.interaction, "stage");
+  assert.deepEqual(before.media.map(m => m.id), stageMedia[index]);
+  assert.ok(!before.unlockedEvidence.includes("EVID-09-RECOVERY"));
+  assert.equal(before.completionStatus, "active");
+  const correct = before.currentStage.decisions.find(d => authority.get(d.action_token).outcome === "advance");
+  const wrong = allWrong ? before.currentStage.decisions.filter(d => authority.get(d.action_token).outcome === "retry") : [];
+  for (const [attempt, option] of wrong.entries()) {
+   const after = player.selectDecision(option.id);
+   assert.equal(after.currentStage.id, before.currentStage.id);
+   for (const key of ["progress", "unlockedEvidence", "resolvedDecisions", "media", "completionStatus", "evaluationResult"]) assert.deepEqual(after[key], before[key]);
+   assert.equal(after.result, null);
+   assert.equal(after.attemptsByDecision[before.currentStage.id], attempt + 1);
+   assert.match(after.feedback.message, /\S/);
+  }
+  const after = player.selectDecision(correct.id);
+  assert.equal(after.attemptsByDecision[before.currentStage.id], wrong.length + 1);
+  assert.deepEqual(after.unlockedEvidence, [...before.unlockedEvidence, ...authority.get(correct.action_token).unlocks]);
+  assert.equal(after.completionStatus, index === 7 ? "completed" : "active");
+  if ([1, 2, 3, 7].includes(index)) {
+   assert.equal(after.interaction, "result");
+   results.push(index + 1);
+   const acquired = authority.get(correct.action_token).unlocks.map(id => web.public.evidence.find(e => e.id === id));
+   assert.deepEqual(after.result.evidence.map(e => [e.id, e.media.map(m => m.id)]), acquired.map(e => [e.id, e.media_ids]));
+   assert.deepEqual(snapshot(player.continue()), snapshot(after));
+  } else {
+   assert.equal(after.interaction, "stage");
+   assert.equal(after.result, null);
+  }
+ }
+ assert.deepEqual(results, [2, 3, 4, 8]);
+ const final = player.getState();
+ assert.equal(final.interaction, "completion");
+ assert.deepEqual(final.media.map(m => m.id), ["ART-007"]);
+ assert.equal(final.evaluationResult.totalDecisions, 8);
+ assert.equal(final.evaluationResult.additionalAttempts, allWrong ? 16 : 0);
+ assert.equal(final.decisionHistory.length, allWrong ? 24 : 8);
+ return final;
+}
+
+test("canonical acquisition maps, ES/EN and all wrong options", async () => {
+ const source = await readYaml("experience.yaml");
+ assert.equal(source.public.decisions.length, 24);
+ assert.equal(source.private.decision_logic.filter(d => !d.is_correct).length, 16);
+ assert.deepEqual(source.public.evidence.map(e => e.revealed_by), [[], ...correctIds.map(id=>[id])]);
+ for (const e of source.public.evidence) assert.deepEqual(e.revealed_by, source.private.decision_logic.filter(d => d.evidence_revealed.includes(e.id)).map(d => d.decision_id));
+ assert.deepEqual(source.public.stages.map(s => s.media_ids), stageMedia);
+ assert.deepEqual(source.public.evidence.map(e => e.media_ids), evidenceMedia);
+ const structures = [];
+ for (const locale of ["es", "en"]) {
+  const web = await artifact(locale);
+  assert.equal(validateGeneratedWebArtifact(web).valid, true);
+  assert.deepEqual(web.public.evidence.map(e => [e.id, e.media_ids]), source.public.evidence.filter(e => e.revealed_by.length).map(e => [e.id, e.media_ids]));
+  assert.deepEqual(web.public.stages.map(s => s.media_ids), stageMedia);
+  assert.deepEqual(web.public.completion.media_ids, evidenceMedia.at(-1));
+  const refs = [web.public.visual.cover_asset_id, ...web.public.stages.flatMap(s => s.media_ids), ...web.public.evidence.flatMap(e => e.media_ids), ...web.public.completion.media_ids];
+  for (const id of ["ART-003"]) { assert.ok(web.public.visual.assets.some(a => a.id === id)); assert.ok(!refs.includes(id)); }
+  assert.equal(refs.filter(id => id === "ART-001").length, 1);
+  for (const index of [1, 2, 6, 7]) assert.match(web.public.stages[index].situation + web.public.stages[index].decisions.map(d => d.action).join(' '), locale === 'es' ? /procedimiento|segur/ : /procedure|safe/);
+  assert.equal(run(web).evaluationResult.outcome, 'PASS');run(web,true);
+  structures.push({ stages: web.public.stages.map(s => [s.id,s.decisions.map(d=>[d.id,d.action_token]),s.media_ids]), interactions:web.public.interactions.map(({message,...i})=>i) });
+ }
+ assert.deepEqual(structures[0],structures[1]);
+});
+
+test("correction does not reveal successful recovery and final verification owns recovery media", async () => {
+ for(const locale of ["es","en"]) {
+  const web=await artifact(locale);
+  const player=new ExperiencePlayer({experience:web});player.start();player.continue();
+  for(let index=0;index<8;index++) {
+   const before=player.getState();
+   if(index===6) assert.doesNotMatch(before.currentStage.decisions.find(d=>d.id===correctIds[index]).action,/verificar la cadena|verify the complete chain/);
+   if(index===7) {
+    assert.ok(before.unlockedEvidence.includes("EVID-08-VERIFY-CHAIN"));
+    assert.ok(!before.unlockedEvidence.includes("EVID-09-RECOVERY"));
+    assert.equal(before.completionStatus,"active");
+    assert.deepEqual(before.media,[]);
+    assert.doesNotMatch(web.public.evidence.find(e=>e.id==="EVID-08-VERIFY-CHAIN").content,/Active switchpoint = 1|PartInPosition = 1|Output.*= ON/);
+   }
+   const after=player.selectDecision(correctIds[index]);
+   if(index===6) {
+    assert.equal(after.interaction,"stage");
+    assert.equal(after.completionStatus,"active");
+   }
+   if(index===7) {
+    assert.equal(after.interaction,"result");
+    assert.equal(after.completionStatus,"completed");
+    assert.deepEqual(after.result.evidence.map(e=>[e.id,e.media.map(m=>m.id)]),[["EVID-09-RECOVERY",["ART-007"]]]);
+   }
+   if(after.interaction==="result")player.continue();
+  }
+ }
 });

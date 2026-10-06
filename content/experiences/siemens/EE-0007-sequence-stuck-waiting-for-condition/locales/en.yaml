@@ -1,10 +1,10 @@
 locale: "en"
 translations:
   title: "Sequence stuck waiting for a condition"
-  summary: "Trace a condition from the physical process to the GRAPH transition and detect an incorrect logical reference even when the PLC input is valid."
+  summary: "Trace the physical process, PLC signal and GRAPH condition to explain why the sequence is waiting."
   scenario:
-    initial_context: "A box correctly reaches the conveyor stop position, but the Siemens GRAPH sequence remains waiting."
-    operational_state: "Step S40 is active and transition T40 is not satisfied, although the sensor and physical input indicate presence."
+    initial_context: "Production reports a box at the conveyor stop position while the Siemens GRAPH sequence remains waiting."
+    operational_state: "The conveyor is reported stopped; the active step, pending condition and PLC signal still require inspection. Observe and monitor under the authorized procedure, with movement controlled before physical inspection or logic changes. Do not force steps or transitions."
     initiating_event: "Production reports that the conveyor remains stopped with the box in the expected position."
     learner_role: "Automation technician comparing the physical process, PLC signal, and logical condition evaluated by the sequence."
     safety_context:
@@ -16,17 +16,17 @@ translations:
     OBJ-LOGICAL-SIGNAL-TRACE:
       description: "Trace the physical condition, sensor, %I0.5, PartAtStop_Sensor, logical variable, and T40."
     OBJ-SEQUENCE-RECOVERY:
-      description: "Correct the T40 reference and verify S40, T40, S41, and repeated cycles without forcing."
+      description: "Justify an intervention from evidence and verify recovery over representative cycles without forcing."
   stages:
     STAGE-01-LOCATE-BLOCK:
       title: "Locate the blockage"
-      situation: "The box is in position, but the sequence does not continue. What is the best first step?"
+      situation: "Production reports the box at the stop position, but the sequence does not continue. What is the best first step?"
     STAGE-02-IDENTIFY-TRANSITION:
       title: "Identify the pending transition"
       situation: "Monitoring shows S40 active and T40 not satisfied. What should be inspected now?"
     STAGE-03-VERIFY-PHYSICAL:
       title: "Verify the physical condition"
-      situation: "T40 evaluates PartAtStop_2, which is FALSE. Before concluding that the logic is wrong, what evidence should be checked?"
+      situation: "T40 evaluates PartAtStop_2, which is FALSE. With movement controlled under the authorized procedure, what should be checked in the physical process?"
     STAGE-04-VERIFY-PLC-SIGNAL:
       title: "Verify the PLC representation"
       situation: "The box is present and the sensor detects it. What is the next diagnostic boundary?"
@@ -38,7 +38,7 @@ translations:
       situation: "The correct field signal reaches the PLC, but T40 evaluates PartAtStop_2. What is the diagnosis?"
     STAGE-07-CORRECT-VERIFY:
       title: "Correct and verify"
-      situation: "The incorrect logical reference is confirmed. Which intervention and verification resolve the incident?"
+      situation: "The incorrect logical reference is confirmed; recovery is still pending. Under the authorized procedure and with movement controlled before logic changes, which intervention and verification are appropriate, without forcing or TRUE constants?"
   evidence:
     EVID-01-INCIDENT:
       source: "Conveyor"
@@ -51,16 +51,16 @@ translations:
       content: "T40 references PartAtStop_2 and the monitored variable is FALSE."
     EVID-04-PHYSICAL-STATE:
       source: "Stop position"
-      content: "The box is physically positioned and the photoelectric sensor detects it."
+      content: "The inspection confirms the box at the stop position and local sensor detection; the image illustrates the observation, not an electrical measurement."
     EVID-05-PLC-SIGNALS:
       source: "PLC monitoring"
-      content: "%I0.5 is TRUE and PartAtStop_Sensor is TRUE; PartAtStop_2 remains FALSE."
+      content: "Monitoring shows PartAtStop_Sensor, associated with %I0.5, TRUE and PartAtStop_2 FALSE. The address and tag represent the same input, consistent with the inspected physical state."
     EVID-06-MISMATCH:
       source: "PLC / GRAPH comparison"
       content: "The verified condition is PartAtStop_Sensor TRUE, but T40 evaluates PartAtStop_2 FALSE."
     EVID-07-VERIFICATION:
       source: "Post-correction verification"
-      content: "T40 references PartAtStop_Sensor; T40 is satisfied, S40 completes, S41 activates, and the sequence repeats correctly."
+      content: "After the authorized correction, the functional test confirms that T40 references PartAtStop_Sensor; with the box present, T40 is satisfied, S40 completes and S41 activates. Representative cycles are verified without forcing. The static image illustrates the configuration; it does not establish repeatability."
   decisions:
     DEC-01-REPLACE-SENSOR:
       action: "Replace the sensor because the sequence is waiting."
@@ -79,7 +79,7 @@ translations:
     DEC-03-REPLACE-INPUT:
       action: "Replace the input module because PartAtStop_2 is FALSE."
     DEC-03-VERIFY-BOX-SENSOR:
-      action: "Check the actual box position and local sensor detection."
+      action: "With movement controlled under the authorized procedure, check the actual box position and local sensor detection."
     DEC-03-SET-PARTATSTOP2:
       action: "Write TRUE to PartAtStop_2 to release the transition."
     DEC-04-MONITOR-I05-TAG:
@@ -107,7 +107,7 @@ translations:
     DEC-07-CHANGE-PARTATSTOP2:
       action: "Manipulate PartAtStop_2 to preserve the existing reference."
     DEC-07-CORRECT-T40-VERIFY:
-      action: "Change T40 to PartAtStop_Sensor and verify T40, S40, S41, and repeated cycles."
+      action: "Under the authorized procedure, with movement controlled before the change, configure T40 with PartAtStop_Sensor and verify T40, S40, S41 and representative cycles without forcing."
   retry_feedback:
     DEC-01-REPLACE-SENSOR: "The symptom does not identify the sensor. First locate the pending step and transition."
     DEC-01-RESTART-PLC: "Restarting removes context without explaining which condition blocks the sequence."
@@ -119,14 +119,14 @@ translations:
     DEC-04-REALIGN-SENSOR: "Local detection is confirmed. Check %I0.5 and the associated tag."
     DEC-04-CHANGE-INPUT: "Changing the address before monitoring it introduces a new variable."
     DEC-05-REPLACE-SENSOR: "%I0.5 and PartAtStop_Sensor are TRUE; replacing the sensor contradicts the evidence."
-    DEC-05-FORCE-PARTATSTOP2: "Forcing PartAtStop_2 hides why T40 ignores the correct physical tag."
+    DEC-05-FORCE-PARTATSTOP2: "Forcing PartAtStop_2 changes the condition without explaining the signal/transition relationship. Compare the references without manipulating them."
     DEC-06-SEQUENCE-ENGINE-FAULT: "GRAPH correctly evaluates PartAtStop_2 FALSE; inspect the configured reference."
     DEC-06-PROFINET-FAULT: "%I0.5 and PartAtStop_Sensor are TRUE; there is no evidence of a PROFINET loss."
     DEC-07-FORCE-TRANSITION: "Forcing T40 does not correct the reference and permits advancement without a valid condition."
     DEC-07-SET-TRUE-CONSTANT: "A TRUE constant removes the process dependency."
     DEC-07-CHANGE-PARTATSTOP2: "Manipulating another variable preserves the reference error; correct T40."
   visual:
-    educational_purpose: "Compare physical evidence, PLC signal, and logical condition until the incorrect T40 reference is located."
+    educational_purpose: "Compare the physical observation, PLC representation and condition evaluated by the sequence."
   assets:
     ART-001:
       alt: "EE-0007 cover in the ENV-001 automated line."
@@ -138,17 +138,17 @@ translations:
       alt: "Siemens GRAPH with S40 active and T40 evaluating PartAtStop_2 FALSE."
       caption: "S40 waits for a logical condition that remains false."
     ART-004:
-      alt: "Box present and photoelectric sensor detecting it."
-      caption: "The physical condition and local detection are correct."
+      alt: "Box beside the photoelectric sensor with a visible red light."
+      caption: "Illustration of the physical inspection; light colour alone does not establish detection or PLC state."
     ART-005:
-      alt: "PartAtStop_Sensor and %I0.5 TRUE compared with PartAtStop_2 FALSE."
-      caption: "The physical input correctly reaches the PLC."
+      alt: "Watch table showing PartAtStop_Sensor at %I0.5 TRUE and PartAtStop_2 FALSE."
+      caption: "Observed input state consistent with the inspected physical condition; not proof of overall PLC or network health."
     ART-006:
-      alt: "Comparison between PartAtStop_Sensor and PartAtStop_2 used by T40."
-      caption: "T40 references a different variable from the verified physical tag."
+      alt: "T40 condition using PartAtStop_2 beside the tag table identifying PartAtStop_Sensor at %I0.5."
+      caption: "Reference comparison; online values come from the preceding monitoring action."
     ART-007:
-      alt: "T40 corrected to PartAtStop_Sensor and sequence advanced to S41."
-      caption: "The transition and sequence progression are verified."
+      alt: "T40 reference set to PartAtStop_Sensor and diagram containing S40 and S41."
+      caption: "The functional test establishes recovery; this static image does not prove movement or repeated cycles."
   completion:
     title: "Technical debrief"
     summary: "The process, sensor, and %I0.5 were correct, but T40 evaluated PartAtStop_2 instead of PartAtStop_Sensor."

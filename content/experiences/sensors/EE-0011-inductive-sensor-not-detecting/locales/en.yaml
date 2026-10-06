@@ -16,17 +16,17 @@ translations:
     OBJ-SENSING-CONDITIONS:
       description: "Compare the physical application with Sn and secured operating distance without assuming an exact threshold."
     OBJ-VERIFY-RECOVERY:
-      description: "Safely correct geometry and verify the full chain without unjustified replacement or reconfiguration."
+      description: "Apply an evidence-supported correction and verify the full chain without unjustified replacement or reconfiguration."
   stages:
     STAGE-01-INCIDENT:
       title: "Station 1 incident"
       situation: "The workpiece appears present, but PartInPosition = 0. Which check first establishes the scope?"
     STAGE-02-SYSTEM-HEALTH:
       title: "System health"
-      situation: "PLC, network and IO-Link are operational. Where should you now look for the first discrepancy?"
+      situation: "PLC, network and IO-Link are operational. Before inspection, apply the installation's safe procedure with hazardous movement controlled. Where should you now look for the first discrepancy?"
     STAGE-03-PHYSICAL-INSPECTION:
       title: "Physical inspection"
-      situation: "The target is present and the sensor powered, but it is not switching. What should you investigate before intervening?"
+      situation: "The target is present and the sensor powered, but it is not switching. Maintain the safe procedure and control hazardous movement before taking a physical measurement. What should you investigate before adjusting or replacing equipment?"
     STAGE-04-MEASUREMENT:
       title: "Measurement and reference"
       situation: "The measured gap is 7.8 mm. Which conclusion does the documentation support before comparing the state through IO-Link?"
@@ -38,10 +38,10 @@ translations:
       situation: "Combine the physical and digital evidence. Which diagnosis is best supported?"
     STAGE-07-SAFE-CORRECTION:
       title: "Safe physical correction"
-      situation: "The diagnosis locates the problem in the installation. Which intervention removes the cause and allows verification?"
+      situation: "The diagnosis locates the problem in the installation. Apply the safe procedure with hazardous movement controlled before adjustment; do not force signals or bypass safeguards. Which intervention prepares the installation for independent verification?"
     STAGE-08-VERIFY-CHAIN:
       title: "End-to-end verification"
-      situation: "After correcting geometry, review the complete propagation. What permits closing the intervention?"
+      situation: "The mounting has been corrected and secured, but recovery has not yet been verified. Under the installation's safe procedure, check the documented secured condition and full propagation without forcing. What permits closing the intervention?"
   evidence:
     EVID-01-INCIDENT:
       source: "Observation / HMI"
@@ -65,8 +65,11 @@ translations:
       source: "Intervention plan"
       content: "Confirmed diagnosis: sensor-target geometry is outside the secured condition. Correction has not yet been performed or verified."
     EVID-08-VERIFY-CHAIN:
-      source: "Signal-chain verification"
-      content: "After correction: green Power LED = ON, yellow Switching/Output LED = ON, Active switchpoint = 1 and PartInPosition = 1. Verify target → sensor → IO-Link data → PLC → HMI. The asset label ≤ 6 mm does not by itself establish ≤ 4.86 mm; installation acceptance requires checking the documented secured condition, not assuming an exact threshold at Sn."
+      source: "Intervention record"
+      content: "Geometry has been corrected and secured under the safe procedure, without forcing signals or changing PLC, HMI or IO-Link parameters. Acceptance of the secured condition and functional verification of target → sensor → IO-Link → PLC → HMI remain pending. Recovery is not yet established."
+    EVID-09-RECOVERY:
+      source: "Installation acceptance / full-chain functional test"
+      content: "The final check confirms secured mounting and compliance with the documented secured condition ≤ 4.86 mm, without assigning an unsupported exact corrected gap. Green Power LED = ON, yellow Switching/Output LED = ON, Active switchpoint = 1, and propagation through the PLC to HMI PartInPosition = 1 are verified without forcing. The ≤ 6 mm image label alone does not establish ≤ 4.86 mm; installation acceptance comes from the described check, not an assumed exact switching threshold at Sn."
   decisions:
     DEC-01-REPLACE-SENSOR:
       action: "Replace the sensor because the workpiece is present."
@@ -109,11 +112,11 @@ translations:
     DEC-07-CHANGE-LOGIC:
       action: "Modify PLC or HMI to accept the current state."
     DEC-07-CORRECT-GEOMETRY:
-      action: "Control hazardous movement, correct and secure geometry within the documented condition, and verify the complete chain."
+      action: "With hazardous movement controlled and under the safe procedure, correct and secure the geometry to meet the documented condition; leave functional verification pending."
     DEC-08-POWER-ONLY:
       action: "Close after checking only the green LED."
     DEC-08-VERIFY-FULL-CHAIN:
-      action: "Confirm secured mounting, both LEDs on and propagation of Active switchpoint = 1 through to PartInPosition = 1, without forcing."
+      action: "Verify secured mounting and a gap within the documented condition ≤ 4.86 mm, both LEDs on and propagation of Active switchpoint = 1 to the PLC and HMI PartInPosition = 1, without forcing."
     DEC-08-HMI-ONLY:
       action: "Close on PartInPosition = 1 without comparing the sensor and IO-Link."
   retry_feedback:
@@ -156,7 +159,7 @@ translations:
       caption: "Healthy communication of a target not detected."
     ART-007:
       alt: "Verification with both LEDs ON, Active switchpoint = 1 and PartInPosition = 1."
-      caption: "Unmodified original asset: the ≤ 6 mm label does not replace checking the secured condition ≤ 4.86 mm."
+      caption: "The ≤ 6 mm label illustrates adjustment but does not establish the secured condition ≤ 4.86 mm. The evidence records that check and functional verification."
   completion:
     title: "Technical debrief"
     summary: "The 7.8 mm gap was outside the secured condition ≤ 4.86 mm (0.81 × Sn) for the Turck BI6U-MT12-IOL6X2-H1141, with Sn = 6 mm. The sensor was not shown to be defective: IO-Link correctly communicated no detection."

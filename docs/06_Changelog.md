@@ -1,5 +1,75 @@
 # Changelog
 
+## 2026-10-01 — EE-0011 independent recovery verification
+
+Content-only remap: evidence-media Results after acquisition; D7 correction remains distinct from D8 verification and completion. ART-003 hidden due to incompatible master/channel imagery; ART-007 reserved for verified recovery. ES/EN, package documentation and focused tests updated. Engine and image binaries unchanged; browser QA pending globally.
+
+
+## 2026-10-01 — EE-0010 — causal inspection and recovery media remap
+
+Eight diagnostic/action moments replace the former seven: D7 safely inspects B3 before D8 removes the confirmed residue and verifies recovery. Existing recovery stage/decision IDs are retained (STAGE-07-PHYSICAL-RECOVERY / DEC-07-SAFE-REMOVE-VERIFY); D7 inspection has a separate authority. The original final reward is split 4 + 6, preserving total correct-path score; scoring policy is unchanged.
+
+Cover ART-001. Ordered stage media: [ART-002], [ART-003], [], [ART-004], [ART-005], [], [ART-007], [ART-008]. EVID-01 is initial/context with []; EVID-02 through EVID-09 are acquired: [ART-003], [], [ART-004], [ART-005], [], [ART-007], [ART-008], [ART-009]. Completion [ART-009]. Six Results: D1, D3, D4, D6, D7, D8; D2/D5 direct. No multi-evidence Results. Recovery and completion occur only after D8 verification, before presentation-only Continue.
+
+Actual pixels: ART-001 editorial cover; ART-002 incident HMI symptoms; ART-003 network topology does not independently prove PLC RUN, SafetyReady or communication health (authored diagnostic observations do); ART-004 shows both conveyor and pusher commands, so it follows D3, not D2. ART-005 shows S40/T40; ART-006 remains registered but hidden: its TransferClear address conflicts with ART-007 and its tag comment anticipates the logical relationship before D6. No address is promoted into canonical engineering facts. ART-007 illustrates the traced LAD relationship; ART-008 shows the observed residue; ART-009 shows S41 active, while repeated recovery is established by the authored functional test.
+
+Initial common-system health and physical-cause hints are removed. Safety prerequisites are visible before physical inspection and removal; SafetyReady is not authorization to intervene. No new procedure or measurement is invented. No Engine or image changes. Browser QA pending globally.
+
+
+## 2026-10-01 — EE-0009 HMI learning/media remap
+
+Preserve six decisions and nineteen options (B/C/A/D/B/A). D1/D2/D5 are direct; Results D3/D4/D6. EVID-01 is initial context; EVID-02 through EVID-07 are interactive. D6 exclusively acquires EVID-07 after combined correction and verification, earning completion before Continue.
+
+Stage media: [ART-002], [], [], [ART-004], [ART-005], []. Evidence media EVID-01..07: [], [], [], [ART-004], [ART-005], [], [ART-006]. Cover ART-001; completion ART-006. ART-003 remains registered but hidden: pixels show ConveyorTags [DB1], conflicting with canonical DB_HMI [DB10]. ART-002 illustrates the initial contradiction, not verified sensor/PLC health. ART-004 illustrates connection; updating values require observation. ART-005 is inspected mapping, reused in S5. ART-006 is final verification/debrief context, not proof of repeated operation. Existing movement-control prerequisites are visible before physical observation and final verification. Engine and PNG unchanged; Browser QA pending.
+
+
+## 2026-10-01 — EE-0008 content/media semantics remap
+
+- Preserve six decisions and twenty options; three Results at D3/D5/D6, direct D1/D2/D4.
+- Add explicit EVID-07-RECOVERY exclusively after combined restoration/verification D6; keep initial evidence outside interactive projection.
+- Hide registered ART-002/003, align ES/EN acquisition, safety prerequisites and static-media limits; preserve Engine and image binaries.
+- Validate focused tests and canonical preview ES/EN; classify unrelated shared fixture debt separately. Browser QA remains pending.
+
+
+## 2026-10-01 — EE-0007 content/media semantics remap
+
+- Preserve seven decisions and 23 options; four Results at D3/D4/D5/D7, direct D1/D2/D6.
+- Move verification evidence authority exclusively to D7; keep ART-003 registered but hidden because its S50 contradicts canonical S41.
+- Align ES/EN neutral initial context, existing safety prerequisites and static-media limitations; preserve Engine and frozen binaries.
+- Extend focused authority, Retry, Continue and media-map coverage; canonical preview validation in both locales accompanies this package. Browser QA remains pending.
+
+
+
+## 2026-10-01 — EE-0006 content/media semantics remap
+
+- Preserve six decisions and twenty options; five Results at D1/D2/D3/D4/D6 and direct intervention D5.
+- Make installation, local indications and topology acquisition explicit; move EVID-08 recovery authority to D6 verification.
+- Keep ART-005 registered without presentation; align ES/EN neutral introductions, safety prerequisites and static-image claims.
+- Validate focused tests and regenerated canonical preview in ES/EN. Engine and frozen images unchanged; browser QA remains pending due to infrastructure.
+
+
+## 2026-09-30 — EE-0005 content/media semantics remap
+
+- Preserve six decisions and 21 options; four Results at D2/D3/D4/D6, direct transitions at D1/D5.
+- Move recovery authority to D6 verification; keep D5 intervention pending verification and ART-002 registered without presentation.
+- Align ES/EN neutral introductions, existing safety prerequisites and static-image limitations; preserve frozen PNG and Engine.
+- Validate focused tests and regenerated canonical preview in both locales. Browser QA remains pending due to infrastructure.
+
+
+## 2026-09-30 — EE-0004 content and learning-moment remap
+
+- Preserve six decisions and twenty options; add five evidence Results after D1, D2, D3, D4 and D6. D5 remains direct.
+- Move recovery authority from adjustment D5 to verification D6; preserve initial/context evidence outside interactive projection.
+- Align ES/EN acquisition, safety wording and static-image claims; document intentional media reuse.
+- Update focused automated coverage. No Engine, image binary or other Experience changes; preview not regenerated and browser QA pending.
+
+## 2026-09-30 — EE-0003 content and learning-moment remap
+
+- Preserve six decisions, eighteen options and seven evidence items; add Results after D1/D2/D3/D5/D6. D4 retains textual architecture evidence and a direct transition. D6 still combines authorized restoration and functional verification, earning completion before Continue to Debrief.
+- Keep ART-001 as cover only and ART-007 as intentional final Result/Debrief reuse. ART-005 remains registered but unpresented because it mixes design reference with apparent active AUTO authority before correction; all PNG bytes remain unchanged.
+- Align ES/EN titles, summaries, objectives, prompts and evidence with acquired knowledge. Make indicated-frequency observation and existing safety requirements explicit; distinguish CPU RUN, application command and recovery feedback from broader health or movement claims.
+- Extend focused traversal, Retry, media and Continue checks. No Engine changes, other Experience changes, preview generation or browser QA.
+
 ## 2026-09-29 — EE-0002 content and learning-moment remap
 
 - Preserve seven decisions, twenty-one options and nine evidence items; present Results only after D2, D5 and D7. D2 combines EVID-03/ART-002 with textual EVID-04. D5 uses ART-005 and D7 uses ART-007, intentionally reused in Debrief.

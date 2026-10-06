@@ -1,10 +1,10 @@
 locale: "en"
 translations:
   title: "Production Line Stops After Product Jam"
-  summary: "Distinguish secondary symptoms from one physical cause by tracing states, commands, sequence, PLC logic, and process."
+  summary: "Investigate a multisystem stop by tracing states, commands, sequence, PLC logic, and process."
   scenario:
     initial_context: "The transfer area has stopped: the conveyor is stopped, the pusher remains retracted, the HMI reports product detected, and the sequence is waiting."
-    operational_state: "The PLC is in RUN, SafetyReady is TRUE, PROFINET and distributed I/O are healthy, the drive is ready without a fault, and pneumatic pressure is available."
+    operational_state: "The line is stopped. Common infrastructure, commands, and device states have yet to be checked."
     initiating_event: "After product accumulation, several subsystems appear inactive at the same time."
     learner_role: "Automation technician responsible for identifying the first abnormal condition without intervening in subsystems that are responding correctly."
     safety_context:
@@ -16,7 +16,7 @@ translations:
     OBJ-PROVE-LOGIC:
       description: "Prove the relationship among physical condition, signal, PLC logic, transition, and commands."
     OBJ-SAFE-RECOVERY:
-      description: "Correct the physical condition and verify end-to-end recovery without bypassing."
+      description: "Apply an evidence-supported correction and verify end-to-end recovery without bypassing."
   stages:
     STAGE-01-CLASSIFY-SCOPE:
       title: "Classify the scope"
@@ -32,13 +32,16 @@ translations:
       situation: "RunCmd and PusherExtendCmd are FALSE. Which common level should be inspected?"
     STAGE-05-BLOCKING-CONDITION:
       title: "Identify the blocking condition"
-      situation: "S40 Wait_TransferClear is active and T40 depends on TransferClear. Which values should be compared?"
+      situation: "S40 Wait_TransferClear is active and T40 depends on TransferClear. Which values should be compared before assuming how the condition is calculated?"
     STAGE-06-PROVE-CAUSALITY:
       title: "Prove causality in the PLC"
       situation: "B3_TransferSensor is TRUE, DownstreamFree is TRUE, and TransferClear is FALSE. How should the causal relationship be demonstrated?"
+    STAGE-07-INSPECT-B3:
+      title: "Inspect the B3 detection zone"
+      situation: "The online logic relates active B3 detection to TransferClear FALSE, but the physical condition has not been inspected. Follow the safe inspection procedure with hazardous movement controlled; SafetyReady alone is not authorization to intervene. How should the process be checked without forcing or bypassing?"
     STAGE-07-PHYSICAL-RECOVERY:
-      title: "Verify physically and recover"
-      situation: "The logic proves that active B3 detection prevents TransferClear. Which intervention completes the diagnosis?"
+      title: "Remove and verify recovery"
+      situation: "Inspection found residue in the B3 detection zone. Before removing it, apply the safe intervention procedure with hazardous movement controlled; SafetyReady alone does not authorize intervention. Which action corrects the condition and verifies the entire chain without forcing or bypassing?"
   evidence:
     EVID-01-INCIDENT:
       source: "Machine / HMI"
@@ -61,6 +64,12 @@ translations:
     EVID-07-LOGIC-PROVEN:
       source: "Online LAD"
       content: "TransferClear := NOT B3_TransferSensor AND DownstreamFree; the negated B3 condition interrupts logical continuity."
+    EVID-08-PHYSICAL-CAUSE:
+      source: "Physical inspection / B3"
+      content: "Safe inspection finds a small residue in the B3 detection zone, consistent with the active signal. Together with the traced logic, this establishes the physical cause of the wait; no removal or recovery has occurred yet."
+    EVID-09-RECOVERY:
+      source: "Functional test / PLC and process"
+      content: "After safe residue removal, the functional check confirms B3_TransferSensor FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfied and S41 active. Commands and normal operation are verified over repeated cycles without forcing or bypassing. The GRAPH image illustrates one recovered state, not repeatability by itself."
   decisions:
     DEC-01-RESET-DRIVE:
       action: "Reset the drive because the conveyor is stopped."
@@ -87,7 +96,7 @@ translations:
     DEC-04-INSPECT-SEQUENCE:
       action: "Inspect the active step and pending sequence transition."
     DEC-05-REPLACE-SENSOR:
-      action: "Conclude that B3 has failed because it remains TRUE."
+      action: "Conclude that B3 has failed from the sequence waiting."
     DEC-05-MONITOR-CONDITION-TERMS:
       action: "Monitor TransferClear, B3_TransferSensor, and DownstreamFree without forcing them."
     DEC-05-FORCE-T40:
@@ -99,28 +108,36 @@ translations:
     DEC-06-EDIT-GRAPH:
       action: "Remove TransferClear from T40 to avoid the wait."
     DEC-07-SAFE-REMOVE-VERIFY:
-      action: "Inspect B3 safely, remove the residue, and verify B3, TransferClear, T40, S41, and normal cycles."
+      action: "Remove the residue under the safe procedure and verify B3 FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfied, S41 active, commands, and repeated normal cycles without forcing."
     DEC-07-BYPASS-B3:
       action: "Bypass B3 to prevent further stops."
     DEC-07-FORCE-TRANSFER-CLEAR:
       action: "Force TransferClear TRUE and leave the residue in the zone."
+    DEC-07-INSPECT-B3:
+      action: "Safely inspect the B3 detection zone and compare its physical condition with the signal before making a correction."
+    DEC-07-REPLACE-WITHOUT-INSPECTION:
+      action: "Replace B3 because the logic uses its signal, without inspecting the process."
+    DEC-07-DECLARE-FAULT:
+      action: "Declare B3 faulty solely because its signal is TRUE."
   retry_feedback:
     DEC-01-RESET-DRIVE: "A stopped conveyor is a symptom. Verify the common infrastructure first."
     DEC-01-REPLACE-B3: "A TRUE indication does not prove a defective sensor. Establish the common system state first."
     DEC-02-PARAMETERIZE-DRIVE: "Do not change parameters before comparing command, readiness, and fault state."
     DEC-02-REPLACE-DRIVE: "A stopped motor does not equal a failed drive. Check whether it receives RunCmd."
-    DEC-03-ADJUST-PRESSURE: "Pressure does not explain a FALSE command. Check PusherExtendCmd first."
-    DEC-03-REPLACE-VALVE: "A valve cannot execute a command that is not generated. Verify the command."
+    DEC-03-ADJUST-PRESSURE: "Do not adjust pressure before checking PusherExtendCmd and pneumatic availability."
+    DEC-03-REPLACE-VALVE: "Before replacing hardware, check the command and pneumatic availability."
     DEC-04-RESET-PNEUMATICS: "Pneumatics are available and receive no command. Inspect the common sequence."
     DEC-04-FORCE-COMMANDS: "Forcing commands bypasses logic and may cause unjustified movement. Observe the sequence."
-    DEC-05-REPLACE-SENSOR: "B3 TRUE may represent real detection. Compare every TransferClear term."
-    DEC-05-FORCE-T40: "Forcing T40 avoids proving why TransferClear is FALSE and bypasses the interlock."
+    DEC-05-REPLACE-SENSOR: "A waiting sequence does not prove a B3 defect. Compare the condition values."
+    DEC-05-FORCE-T40: "Forcing T40 avoids investigating the pending condition and bypasses the interlock."
     DEC-06-ASSUME-WATCH-CAUSALITY: "Coincidence in a table does not prove how TransferClear is calculated. Trace the PLC logic."
     DEC-06-EDIT-GRAPH: "T40 is waiting for its designed condition. Prove the logic before modifying GRAPH."
     DEC-07-BYPASS-B3: "B3 is detecting a real object. Remove the residue safely; do not defeat detection."
     DEC-07-FORCE-TRANSFER-CLEAR: "Forcing TransferClear leaves the physical cause present and falsifies the T40 condition."
+    DEC-07-REPLACE-WITHOUT-INSPECTION: "An active signal and its use in logic do not prove a sensor defect. Inspect the process safely."
+    DEC-07-DECLARE-FAULT: "An active signal and its use in logic do not prove a sensor defect. Inspect the process safely."
   visual:
-    educational_purpose: "Trace actuator and HMI symptoms back to the first abnormal physical condition by proving causality in the PLC."
+    educational_purpose: "Relate actuator and HMI symptoms to process observations and PLC logic."
   assets:
     ART-001:
       alt: "EE-0010 editorial cover in the automated line."
@@ -129,8 +146,8 @@ translations:
       alt: "Incident with conveyor stopped, pusher retracted, and product detected."
       caption: "Several symptoms appear simultaneously."
     ART-003:
-      alt: "TIA Portal diagnostics with healthy PLC, PROFINET, and ET200SP."
-      caption: "The common infrastructure remains operational."
+      alt: "TIA Portal network view with PLC_1 and ET200SP_1 connected to PN/IE_1."
+      caption: "Reference topology; the evidence text records the diagnostic check results."
     ART-004:
       alt: "Watch table with conveyor and pusher states and commands."
       caption: "The actuators are not receiving movement commands."
@@ -148,7 +165,7 @@ translations:
       caption: "B3 is correctly detecting a real object."
     ART-009:
       alt: "Online GRAPH after recovery with S41 Transfer_Release active."
-      caption: "T40 is satisfied and the sequence advances to S41."
+      caption: "S41 is shown active; repeated cycles are verified by the described functional test."
   completion:
     title: "Technical debrief"
     summary: "Physical residue kept B3_TransferSensor TRUE; the logic held TransferClear FALSE, T40 remained unsatisfied, and the sequence correctly withheld conveyor and pusher commands."

@@ -16,17 +16,17 @@ translations:
     OBJ-SENSING-CONDITIONS:
       description: "Comparar la aplicación física con Sn y la distancia de funcionamiento asegurada sin asumir un umbral exacto."
     OBJ-VERIFY-RECOVERY:
-      description: "Corregir de forma segura la geometría y verificar la cadena completa sin sustituir ni reconfigurar injustificadamente."
+      description: "Aplicar una corrección sustentada por evidencias y verificar la cadena completa sin sustituciones ni reconfiguraciones injustificadas."
   stages:
     STAGE-01-INCIDENT:
       title: "Incidente en Station 1"
       situation: "La pieza parece presente, pero PartInPosition = 0. ¿Qué comprobación delimita primero el problema?"
     STAGE-02-SYSTEM-HEALTH:
       title: "Salud del sistema"
-      situation: "PLC, red e IO-Link están operativos. ¿Dónde buscar ahora la primera discrepancia?"
+      situation: "PLC, red e IO-Link están operativos. Antes de inspeccionar, aplica el procedimiento seguro de la instalación con movimientos peligrosos controlados. ¿Dónde buscar ahora la primera discrepancia?"
     STAGE-03-PHYSICAL-INSPECTION:
       title: "Inspección física"
-      situation: "El objetivo está presente y el sensor alimentado, pero no conmuta. ¿Qué investigas antes de intervenir?"
+      situation: "El objetivo está presente y el sensor alimentado, pero no conmuta. Mantén el procedimiento seguro y los movimientos peligrosos controlados antes de medir físicamente. ¿Qué investigas antes de ajustar o sustituir?"
     STAGE-04-MEASUREMENT:
       title: "Medición y referencia"
       situation: "La separación medida es 7.8 mm. ¿Qué conclusión permite la documentación antes de contrastar el estado por IO-Link?"
@@ -38,10 +38,10 @@ translations:
       situation: "Reúne la evidencia física y digital. ¿Cuál es el diagnóstico mejor sustentado?"
     STAGE-07-SAFE-CORRECTION:
       title: "Corrección física segura"
-      situation: "El diagnóstico localiza la instalación. ¿Qué intervención elimina la causa y permite verificarla?"
+      situation: "El diagnóstico localiza la instalación. Aplica el procedimiento seguro con movimientos peligrosos controlados antes de ajustar; no fuerces señales ni puentes protecciones. ¿Qué intervención prepara la instalación para una verificación independiente?"
     STAGE-08-VERIFY-CHAIN:
       title: "Verificación extremo a extremo"
-      situation: "Tras corregir la geometría, revisa la propagación completa. ¿Qué permite cerrar la intervención?"
+      situation: "Se ha corregido y asegurado el montaje, pero la recuperación aún no está verificada. Bajo el procedimiento seguro de la instalación, comprueba la condición asegurada documentada y la propagación completa sin forzados. ¿Qué permite cerrar la intervención?"
   evidence:
     EVID-01-INCIDENT:
       source: "Observación / HMI"
@@ -65,8 +65,11 @@ translations:
       source: "Plan de intervención"
       content: "Diagnóstico confirmado: la geometría sensor-objetivo está fuera de la condición asegurada. Todavía no se ha realizado ni verificado la corrección."
     EVID-08-VERIFY-CHAIN:
-      source: "Verificación de la cadena"
-      content: "Tras la corrección: LED verde Power = ON, LED amarillo Switching/Output = ON, Active switchpoint = 1 y PartInPosition = 1. Verifica objetivo → sensor → datos IO-Link → PLC → HMI. El rótulo ≤ 6 mm del asset no acredita por sí solo ≤ 4.86 mm; la aceptación de instalación requiere comprobar la condición asegurada documentada, no asumir un umbral exacto en Sn."
+      source: "Registro de intervención"
+      content: "Se ha corregido y asegurado la geometría siguiendo el procedimiento seguro, sin forzar señales ni cambiar PLC, HMI o parámetros IO-Link. Quedan pendientes la aceptación de la condición asegurada y la verificación funcional de objetivo → sensor → IO-Link → PLC → HMI. Todavía no se acredita recuperación."
+    EVID-09-RECOVERY:
+      source: "Aceptación de instalación / prueba funcional de la cadena"
+      content: "La comprobación final confirma montaje asegurado y cumplimiento de la condición documentada ≤ 4.86 mm, sin asignar una separación corregida exacta no documentada. Se verifican LED verde Power = ON, LED amarillo Switching/Output = ON, Active switchpoint = 1 y propagación a través del PLC hasta HMI PartInPosition = 1, sin forzados. El rótulo ≤ 6 mm de la imagen no acredita por sí solo ≤ 4.86 mm; la aceptación de la instalación procede de la comprobación descrita, no de asumir un umbral exacto en Sn."
   decisions:
     DEC-01-REPLACE-SENSOR:
       action: "Sustituir el sensor porque la pieza está presente."
@@ -109,11 +112,11 @@ translations:
     DEC-07-CHANGE-LOGIC:
       action: "Modificar PLC o HMI para aceptar el estado actual."
     DEC-07-CORRECT-GEOMETRY:
-      action: "Controlar los movimientos peligrosos, corregir y asegurar la geometría dentro de la condición documentada y verificar la cadena completa."
+      action: "Con movimientos peligrosos controlados y conforme al procedimiento seguro, corregir y asegurar la geometría para cumplir la condición documentada; dejar pendiente la verificación funcional."
     DEC-08-POWER-ONLY:
       action: "Cerrar al comprobar únicamente el LED verde."
     DEC-08-VERIFY-FULL-CHAIN:
-      action: "Confirmar montaje asegurado, ambos LED encendidos y propagación de Active switchpoint = 1 hasta PartInPosition = 1, sin forzados."
+      action: "Verificar montaje asegurado y separación dentro de la condición documentada ≤ 4.86 mm, ambos LED encendidos y propagación de Active switchpoint = 1 a PLC y HMI PartInPosition = 1, sin forzados."
     DEC-08-HMI-ONLY:
       action: "Cerrar por PartInPosition = 1 sin contrastar sensor e IO-Link."
   retry_feedback:
@@ -156,7 +159,7 @@ translations:
       caption: "Comunicación saludable de un objetivo no detectado."
     ART-007:
       alt: "Verificación con ambos LED ON, Active switchpoint = 1 y PartInPosition = 1."
-      caption: "Asset original sin modificar: el rótulo ≤ 6 mm no sustituye la comprobación de la condición asegurada ≤ 4.86 mm."
+      caption: "El rótulo ≤ 6 mm ilustra el ajuste, pero no acredita la condición asegurada ≤ 4.86 mm. La evidencia registra su comprobación y la verificación funcional."
   completion:
     title: "Debrief técnico"
     summary: "La separación de 7.8 mm estaba fuera de la condición asegurada ≤ 4.86 mm (0.81 × Sn) del Turck BI6U-MT12-IOL6X2-H1141, con Sn = 6 mm. El sensor no estaba demostrado como defectuoso: IO-Link comunicaba correctamente ausencia de detección."

@@ -67,21 +67,8 @@ test("EE-0008 projection hides private truth and retries cannot advance", async 
   for (const forbidden of ["private", "is_correct", "decision_logic", "rationale", "root_cause", "fault_model", "diagnostic_model"])
     assert.equal(serialized.includes(`"${forbidden}"`), false, forbidden);
 
-  const player = new ExperiencePlayer({ experience: web });
-  const authority = new Map(web.public.interactions.map(item => [item.action_token, item]));
-  const media = [];
-  player.start();
-  player.continue();
-  while (player.getState().interaction !== "completion") {
-    const before = player.getState();
-    media.push(before.media.map(item => item.id));
-    const correct = before.currentStage.decisions.find(item => authority.get(item.action_token).outcome === "advance");
-    const retry = before.currentStage.decisions.find(item => authority.get(item.action_token).outcome === "retry");
-    assert.equal(player.selectDecision(retry.id).currentStage.id, before.currentStage.id);
-    player.selectDecision(correct.id);
-  }
-  assert.deepEqual(media, [["ART-001", "ART-002"], ["ART-003"], ["ART-004"], [], ["ART-005"], ["ART-006"]]);
-  assert.equal(player.getState().evaluationResult.outcome, "RETRY_RECOMMENDED");
+  assert.equal(run(web).evaluationResult.outcome, "PASS");
+  assert.equal(run(web, true).evaluationResult.outcome, "RETRY_RECOMMENDED");
 });
 
 test("EE-0008 keeps PROFINET and downstream IO-Link boundaries distinct", async () => {
@@ -90,6 +77,100 @@ test("EE-0008 keeps PROFINET and downstream IO-Link boundaries distinct", async 
   assert.match(publicText, /S7-1500/);
   assert.match(publicText, /TBEN-L5-8IOL/);
   assert.match(publicText, /BI6U-M12-IOL6X2-H1141/);
-  assert.match(publicText, /C0, C1, C2.*C4–C7.*saludables/);
-  assert.match(publicText, /PROFINET llega al master.*dispositivo de C3/i);
+  assert.match(publicText, /C0, C1, C2.*C4–C7/);
+  assert.match(publicText, /ruta individual C3.*puerto, cable y dispositivo/i);
+});
+
+const stageMedia = [[], [], [], ["ART-004"], [], ["ART-005"]];
+const evidenceMedia = [[], [], [], ["ART-004"], [], ["ART-005"], ["ART-006"]];
+const snapshot = state => Object.fromEntries(["state", "completionStatus", "progress", "decisionHistory", "attemptsByDecision", "resolvedDecisions", "unlockedEvidence", "evaluationResult"].map(key => [key, state[key]]));
+
+function run(web, allWrong = false) {
+ const player = new ExperiencePlayer({ experience: web });
+ const authority = new Map(web.public.interactions.map(i => [i.action_token, i]));
+ player.start();
+ assert.equal(player.getState().visual.cover_asset_id, "ART-001");
+ assert.deepEqual(player.getState().unlockedEvidence, []);
+ assert.equal(player.getState().decisionHistory.length, 0);
+ player.continue();
+ const results = [];
+ for (let index = 0; index < 6; index++) {
+  const before = player.getState();
+  assert.equal(before.interaction, "stage");
+  assert.deepEqual(before.media.map(m => m.id), stageMedia[index]);
+  assert.ok(!before.unlockedEvidence.includes("EVID-07-RECOVERY"));
+  assert.equal(before.completionStatus, "active");
+  const correct = before.currentStage.decisions.find(d => authority.get(d.action_token).outcome === "advance");
+  const wrong = allWrong ? before.currentStage.decisions.filter(d => authority.get(d.action_token).outcome === "retry") : [];
+  for (const [attempt, option] of wrong.entries()) {
+   const after = player.selectDecision(option.id);
+   assert.equal(after.currentStage.id, before.currentStage.id);
+   for (const key of ["progress", "unlockedEvidence", "resolvedDecisions", "media", "completionStatus", "evaluationResult"]) assert.deepEqual(after[key], before[key]);
+   assert.equal(after.result, null);
+   assert.equal(after.attemptsByDecision[before.currentStage.id], attempt + 1);
+   assert.match(after.feedback.message, /\S/);
+  }
+  const after = player.selectDecision(correct.id);
+  assert.equal(after.attemptsByDecision[before.currentStage.id], wrong.length + 1);
+  assert.deepEqual(after.unlockedEvidence, [...before.unlockedEvidence, ...authority.get(correct.action_token).unlocks]);
+  assert.equal(after.completionStatus, index === 5 ? "completed" : "active");
+  if ([2, 4, 5].includes(index)) {
+   assert.equal(after.interaction, "result");
+   results.push(index + 1);
+   const acquired = authority.get(correct.action_token).unlocks.map(id => web.public.evidence.find(e => e.id === id));
+   assert.deepEqual(after.result.evidence.map(e => [e.id, e.media.map(m => m.id)]), acquired.map(e => [e.id, e.media_ids]));
+   assert.deepEqual(snapshot(player.continue()), snapshot(after));
+  } else {
+   assert.equal(after.interaction, "stage");
+   assert.equal(after.result, null);
+  }
+ }
+ assert.deepEqual(results, [3, 5, 6]);
+ const final = player.getState();
+ assert.equal(final.interaction, "completion");
+ assert.deepEqual(final.media.map(m => m.id), ["ART-006"]);
+ assert.equal(final.evaluationResult.totalDecisions, 6);
+ assert.equal(final.evaluationResult.additionalAttempts, allWrong ? 14 : 0);
+ assert.equal(final.decisionHistory.length, allWrong ? 20 : 6);
+ return final;
+}
+
+test("EE-0008 exact authority, recovery timing, hidden assets and ES/EN traversal", async () => {
+ const source = await readYaml("experience.yaml");
+ assert.equal(source.public.decisions.length, 20);
+ assert.equal(source.private.decision_logic.filter(d => !d.is_correct).length, 14);
+ assert.equal(source.public.evidence.length, 7);
+ assert.deepEqual(source.public.evidence.map(e => e.revealed_by), [[], ["DEC-01-ESTABLISH-SCOPE"], ["DEC-02-VERIFY-PLC-PN-MASTER"], ["DEC-03-COMPARE-PORTS"], ["DEC-04-DOWNSTREAM-C3"], ["DEC-05-INSPECT-M12"], ["DEC-06-RESTORE-COMPLETE-CHAIN"]]);
+ for (const e of source.public.evidence) assert.deepEqual(e.revealed_by, source.private.decision_logic.filter(d => d.evidence_revealed.includes(e.id)).map(d => d.decision_id));
+ assert.deepEqual(source.public.stages.at(-1).evidence_ids, ["EVID-06-M12-LOOSE"]);
+ assert.deepEqual(source.public.stages.map(s => s.media_ids), stageMedia);
+ assert.deepEqual(source.public.evidence.map(e => e.media_ids), evidenceMedia);
+ const structures = [];
+ for (const locale of ["es", "en"]) {
+  const web = await artifact(locale);
+  assert.equal(validateGeneratedWebArtifact(web).valid, true);
+  assert.deepEqual(web.public.evidence.map(e => [e.id, e.media_ids]), source.public.evidence.slice(1).map(e => [e.id, e.media_ids]));
+  assert.deepEqual(web.public.stages.map(s => s.media_ids), stageMedia);
+  assert.deepEqual(web.public.completion.media_ids, ["ART-006"]);
+  assert.equal(web.public.visual.assets.length, 6);
+  const refs = [web.public.visual.cover_asset_id, ...web.public.stages.flatMap(s => s.media_ids), ...web.public.evidence.flatMap(e => e.media_ids), ...web.public.completion.media_ids];
+  for (const id of ["ART-002", "ART-003"]) { assert.ok(web.public.visual.assets.some(a => a.id === id)); assert.ok(!refs.includes(id)); }
+  assert.equal(refs.filter(id => id === "ART-001").length, 1);
+  const initial = web.public.scenario.initial_context + web.public.scenario.operational_state + web.public.scenario.learner_role + web.public.visual.educational_purpose;
+  assert.doesNotMatch(initial, /saludable|healthy|operativo|operational|flojo|loose|fallo local|local fault/);
+  assert.match(web.public.scenario.operational_state, locale === "es" ? /Quedan por comprobar/ : /remain to be checked/);
+  assert.match(web.public.evidence[0].content, locale === "es" ? /define el plan/ : /defines the plan/);
+  assert.match(web.public.evidence[3].content, locale === "es" ? /no añade una medición/ : /adds no data measurement/);
+  assert.match(web.public.stages[5].situation, locale === "es" ? /recuperación sigue pendiente/ : /recovery is still pending/);
+  for (const index of [4, 5]) {
+   assert.match(web.public.stages[index].situation, locale === "es" ? /procedimiento seguro de mantenimiento.*movimiento peligroso controlado/ : /safe maintenance procedure.*hazardous movement controlled/);
+  }
+  const recovery = web.public.evidence.at(-1).content;
+  assert.match(recovery, /C3.*PROFINET/);
+  assert.match(recovery, locale === "es" ? /ciclos repetidos sin forcing/ : /repeated cycles without forcing/);
+  assert.equal(run(web).evaluationResult.outcome, "PASS");
+  run(web, true);
+  structures.push({ stages: web.public.stages.map(s => [s.id, s.decisions.map(d => [d.id, d.action_token]), s.media_ids]), interactions: web.public.interactions.map(({message, ...i}) => i) });
+ }
+ assert.deepEqual(structures[0], structures[1]);
 });

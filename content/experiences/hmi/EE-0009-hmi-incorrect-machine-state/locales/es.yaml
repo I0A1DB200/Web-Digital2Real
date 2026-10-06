@@ -1,10 +1,10 @@
 locale: "es"
 translations:
   title: "Estado de máquina incorrecto en HMI"
-  summary: "Traza el estado de una caja desde el proceso hasta la pantalla y detecta un tag HMI asociado a la variable PLC equivocada."
+  summary: "Traza el estado de una caja desde el proceso hasta la pantalla para localizar dónde divergen ambas representaciones."
   scenario:
     initial_context: "Una caja está en la posición de parada del transportador, pero la TP700 Comfort muestra Box at Stop: NOT DETECTED."
-    operational_state: "El sensor detecta la caja, el S7-1500 representa el estado correcto y otros valores HMI siguen actualizándose."
+    operational_state: "La indicación NOT DETECTED contradice la caja visible; sensor, estado PLC y comunicación quedan por comprobar. Observar y verificar con los movimientos controlados conforme al procedimiento autorizado, sin forzar variables ni fijar la indicación."
     initiating_event: "El operador comunica que la indicación HMI contradice el proceso visible."
     learner_role: "Técnico de automatización que debe localizar dónde divergen estado real y representación HMI."
     safety_context:
@@ -14,9 +14,9 @@ translations:
     OBJ-TRACE-STATE:
       description: "Comparar condición física, sensor y variable PLC con el estado mostrado."
     OBJ-HMI-BOUNDARY:
-      description: "Distinguir comunicación PLC-HMI saludable de una asociación de tag HMI incorrecta."
+      description: "Distinguir comprobaciones de comunicación y de origen de información HMI."
     OBJ-VERIFY-MAPPING:
-      description: "Corregir el origen del tag HMI y verificar la representación completa sin bypass."
+      description: "Justificar una corrección con evidencia y verificar la representación frente al proceso sin bypass."
   stages:
     STAGE-01-VERIFY-PROCESS:
       title: "Verificar el proceso real"
@@ -35,7 +35,7 @@ translations:
       situation: "BoxAtStop_HMI lee DB_HMI.BoxAtStop_2 en %DB10.DBX1.1. ¿Qué comparación identifica la discrepancia?"
     STAGE-06-CORRECT-VERIFY:
       title: "Corregir y verificar"
-      situation: "La variable correcta es DB_HMI.BoxAtStop en %DB10.DBX0.0. ¿Qué cambio resuelve el incidente?"
+      situation: "La comparación confirma el origen incorrecto; la recuperación sigue pendiente. ¿Qué corrección y verificación de la indicación corresponden con los movimientos controlados conforme al procedimiento autorizado?"
   evidence:
     EVID-01-CONTRADICTION:
       source: "Proceso / TP700 Comfort"
@@ -55,11 +55,14 @@ translations:
     EVID-06-ROOT-CAUSE:
       source: "Comparación PLC-HMI"
       content: "El PLC verifica DB_HMI.BoxAtStop en %DB10.DBX0.0; el tag HMI lee otra variable. La divergencia está en el mapeo HMI."
+    EVID-07-RECOVERY:
+      source: "Verificación de representación"
+      content: "La verificación confirma BoxAtStop_HMI asociado a DB_HMI.BoxAtStop en %DB10.DBX0.0, comunicación PLC-HMI operativa y caja y detección local presentes. La HMI muestra DETECTED y concuerda con el proceso observado, sin forcing ni indicación fija. No se infiere repetibilidad de la imagen estática."
   decisions:
     DEC-01-RESTART-HMI:
       action: "Reiniciar el panel antes de confirmar el estado de campo."
     DEC-01-VERIFY-BOX-SENSOR:
-      action: "Confirmar la posición real de la caja y la detección local del sensor."
+      action: "Con los movimientos controlados conforme al procedimiento autorizado, confirmar la posición real de la caja y la detección local del sensor."
     DEC-01-REPLACE-SENSOR:
       action: "Sustituir el sensor porque la HMI dice NOT DETECTED."
     DEC-02-EDIT-PLC:
@@ -93,7 +96,7 @@ translations:
     DEC-06-MODIFY-PLC:
       action: "Cambiar lógica PLC para hacer TRUE la variable equivocada."
     DEC-06-MAP-AND-VERIFY:
-      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop y verificar DETECTED frente al proceso real."
+      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop en %DB10.DBX0.0 y, con movimientos controlados conforme al procedimiento autorizado, verificar comunicación, caja y sensor y la indicación DETECTED frente al proceso, sin forcing ni constantes."
   retry_feedback:
     DEC-01-RESTART-HMI: "Reiniciar puede borrar contexto; verifica primero caja y sensor."
     DEC-01-REPLACE-SENSOR: "La HMI no demuestra fallo del sensor; comprueba la detección local."
@@ -121,14 +124,14 @@ translations:
       alt: "Estado de sensor y variable PLC correctos."
       caption: "La condición física llega al S7-1500."
     ART-004:
-      alt: "Comunicación entre PLC y TP700 Comfort operativa."
-      caption: "Conexión disponible no equivale a tag correctamente asociado."
+      alt: "Vista de conexión PLC-HMI con estado Online."
+      caption: "La comprobación incluye observar la actualización de otros valores; la imagen estática no demuestra esa actualización temporal."
     ART-005:
       alt: "BoxAtStop_HMI asociado a DB_HMI.BoxAtStop_2."
-      caption: "La configuración HMI apunta a la variable equivocada."
+      caption: "Origen configurado del tag; la comparación con la variable PLC verificada establece la discrepancia."
     ART-006:
       alt: "BoxAtStop_HMI corregido a DB_HMI.BoxAtStop y pantalla DETECTED."
-      caption: "Proceso, PLC y HMI vuelven a concordar."
+      caption: "Configuración corregida e indicación DETECTED ilustradas; la verificación contrasta la pantalla con el proceso observado."
   completion:
     title: "Debrief técnico"
     summary: "Proceso, sensor, PLC y comunicación estaban correctos; BoxAtStop_HMI leía DB_HMI.BoxAtStop_2 en lugar de DB_HMI.BoxAtStop."

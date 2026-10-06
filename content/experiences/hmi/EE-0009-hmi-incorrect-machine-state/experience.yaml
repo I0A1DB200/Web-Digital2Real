@@ -25,11 +25,11 @@ capability_references:
 public:
   slug: "hmi-incorrect-machine-state"
   title: "Estado de máquina incorrecto en HMI"
-  summary: "Traza el estado de una caja desde el proceso hasta la pantalla y detecta un tag HMI asociado a la variable PLC equivocada."
+  summary: "Traza el estado de una caja desde el proceso hasta la pantalla para localizar dónde divergen ambas representaciones."
   estimated_duration: 16
   scenario:
     initial_context: "Una caja está en la posición de parada del transportador, pero la TP700 Comfort muestra Box at Stop: NOT DETECTED."
-    operational_state: "El sensor detecta la caja, el S7-1500 representa el estado correcto y otros valores HMI siguen actualizándose."
+    operational_state: "La indicación NOT DETECTED contradice la caja visible; sensor, estado PLC y comunicación quedan por comprobar. Observar y verificar con los movimientos controlados conforme al procedimiento autorizado, sin forzar variables ni fijar la indicación."
     initiating_event: "El operador comunica que la indicación HMI contradice el proceso visible."
     learner_role: "Técnico de automatización que debe localizar dónde divergen estado real y representación HMI."
     safety_context:
@@ -41,11 +41,11 @@ public:
       capability_id: "ICF-02"
       competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
     - id: "OBJ-HMI-BOUNDARY"
-      description: "Distinguir comunicación PLC-HMI saludable de una asociación de tag HMI incorrecta."
+      description: "Distinguir comprobaciones de comunicación y de origen de información HMI."
       capability_id: "ICF-02"
       competency_id: "COMP-IIO-STATE-INTERPRETATION"
     - id: "OBJ-VERIFY-MAPPING"
-      description: "Corregir el origen del tag HMI y verificar la representación completa sin bypass."
+      description: "Justificar una corrección con evidencia y verificar la representación frente al proceso sin bypass."
       capability_id: "ICF-02"
       competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
   stages:
@@ -55,28 +55,28 @@ public:
       situation: "La caja está visible y la HMI dice NOT DETECTED. ¿Qué evidencia debe establecerse primero?"
       evidence_ids: ["EVID-01-CONTRADICTION"]
       decision_ids: ["DEC-01-RESTART-HMI", "DEC-01-VERIFY-BOX-SENSOR", "DEC-01-REPLACE-SENSOR"]
-      media_ids: ["ART-001", "ART-002"]
+      media_ids: ["ART-002"]
     - id: "STAGE-02-VERIFY-PLC"
       phase: "investigation"
       title: "Verificar el estado PLC"
       situation: "La caja está presente y el sensor detecta. ¿Dónde debe comprobarse la siguiente representación?"
       evidence_ids: ["EVID-02-PHYSICAL"]
       decision_ids: ["DEC-02-EDIT-PLC", "DEC-02-FORCE-INPUT", "DEC-02-MONITOR-PLC"]
-      media_ids: ["ART-003"]
+      media_ids: []
     - id: "STAGE-03-CHECK-CONNECTION"
       phase: "investigation"
       title: "Evaluar la comunicación HMI"
       situation: "DB_HMI.BoxAtStop está TRUE, pero la HMI sigue indicando NOT DETECTED. ¿Qué frontera se comprueba ahora?"
       evidence_ids: ["EVID-03-PLC-TRUE"]
       decision_ids: ["DEC-03-CHECK-HMI-CONNECTION", "DEC-03-REPLACE-PLC", "DEC-03-CHANGE-LOGIC"]
-      media_ids: ["ART-004"]
+      media_ids: []
     - id: "STAGE-04-INSPECT-HMI-TAG"
       phase: "investigation"
       title: "Inspeccionar el tag HMI"
       situation: "La conexión PLC-HMI funciona y otros valores se actualizan. ¿Qué configuración del objeto afectado debe seguirse?"
       evidence_ids: ["EVID-04-CONNECTION-HEALTHY"]
       decision_ids: ["DEC-04-RESET-NETWORK", "DEC-04-REPLACE-HMI", "DEC-04-FORCE-TRUE", "DEC-04-INSPECT-TAG"]
-      media_ids: []
+      media_ids: ["ART-004"]
     - id: "STAGE-05-COMPARE-SOURCES"
       phase: "investigation"
       title: "Comparar orígenes de información"
@@ -87,10 +87,10 @@ public:
     - id: "STAGE-06-CORRECT-VERIFY"
       phase: "solution"
       title: "Corregir y verificar"
-      situation: "La variable correcta es DB_HMI.BoxAtStop en %DB10.DBX0.0. ¿Qué cambio resuelve el incidente?"
+      situation: "La comparación confirma el origen incorrecto; la recuperación sigue pendiente. ¿Qué corrección y verificación de la indicación corresponden con los movimientos controlados conforme al procedimiento autorizado?"
       evidence_ids: ["EVID-06-ROOT-CAUSE"]
       decision_ids: ["DEC-06-MAP-AND-VERIFY", "DEC-06-HARDCODE-TRUE", "DEC-06-MODIFY-PLC"]
-      media_ids: ["ART-006"]
+      media_ids: []
   evidence:
     - id: "EVID-01-CONTRADICTION"
       type: "initial_observation"
@@ -98,43 +98,56 @@ public:
       content: "La caja está en parada; la HMI muestra Box at Stop: NOT DETECTED."
       reliability: "high"
       revealed_by: []
+      media_ids: []
     - id: "EVID-02-PHYSICAL"
       type: "inspection"
       source: "Transportador"
       content: "La caja está físicamente presente y el sensor fotoeléctrico la detecta."
       reliability: "confirmed"
       revealed_by: ["DEC-01-VERIFY-BOX-SENSOR"]
+      media_ids: []
     - id: "EVID-03-PLC-TRUE"
       type: "measurement"
       source: "S7-1500 / TIA Portal"
       content: "La señal llega al PLC y DB_HMI.BoxAtStop en %DB10.DBX0.0 está TRUE."
       reliability: "confirmed"
       revealed_by: ["DEC-02-MONITOR-PLC"]
+      media_ids: []
     - id: "EVID-04-CONNECTION-HEALTHY"
       type: "diagnostic"
       source: "PLC-HMI / PROFINET"
       content: "La TP700 Comfort comunica con el PLC y otros valores HMI se actualizan normalmente."
       reliability: "confirmed"
       revealed_by: ["DEC-03-CHECK-HMI-CONNECTION"]
+      media_ids: ["ART-004"]
     - id: "EVID-05-WRONG-MAPPING"
       type: "diagnostic"
       source: "WinCC Comfort / TIA Portal"
       content: "El objeto usa BoxAtStop_HMI, asociado a DB_HMI.BoxAtStop_2 en %DB10.DBX1.1."
       reliability: "confirmed"
       revealed_by: ["DEC-04-INSPECT-TAG"]
+      media_ids: ["ART-005"]
     - id: "EVID-06-ROOT-CAUSE"
       type: "diagnostic"
       source: "Comparación PLC-HMI"
       content: "El PLC verifica DB_HMI.BoxAtStop en %DB10.DBX0.0; el tag HMI lee otra variable. La divergencia está en el mapeo HMI."
       reliability: "confirmed"
       revealed_by: ["DEC-05-COMPARE-PLC-HMI"]
+      media_ids: []
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Verificación de representación"
+      content: "La verificación confirma BoxAtStop_HMI asociado a DB_HMI.BoxAtStop en %DB10.DBX0.0, comunicación PLC-HMI operativa y caja y detección local presentes. La HMI muestra DETECTED y concuerda con el proceso observado, sin forcing ni indicación fija. No se infiere repetibilidad de la imagen estática."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-MAP-AND-VERIFY"]
+      media_ids: ["ART-006"]
   decisions:
     - id: "DEC-01-RESTART-HMI"
       stage_id: "STAGE-01-VERIFY-PROCESS"
       action: "Reiniciar el panel antes de confirmar el estado de campo."
     - id: "DEC-01-VERIFY-BOX-SENSOR"
       stage_id: "STAGE-01-VERIFY-PROCESS"
-      action: "Confirmar la posición real de la caja y la detección local del sensor."
+      action: "Con los movimientos controlados conforme al procedimiento autorizado, confirmar la posición real de la caja y la detección local del sensor."
     - id: "DEC-01-REPLACE-SENSOR"
       stage_id: "STAGE-01-VERIFY-PROCESS"
       action: "Sustituir el sensor porque la HMI dice NOT DETECTED."
@@ -185,7 +198,7 @@ public:
       action: "Cambiar lógica PLC para hacer TRUE la variable equivocada."
     - id: "DEC-06-MAP-AND-VERIFY"
       stage_id: "STAGE-06-CORRECT-VERIFY"
-      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop y verificar DETECTED frente al proceso real."
+      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop en %DB10.DBX0.0 y, con movimientos controlados conforme al procedimiento autorizado, verificar comunicación, caja y sensor y la indicación DETECTED frente al proceso, sin forcing ni constantes."
   visual:
     educational_purpose: "Comparar proceso, PLC, comunicación y origen del objeto HMI antes de corregir la representación."
     representation: "available"
@@ -212,20 +225,20 @@ public:
       - id: "ART-004"
         type: "image"
         src: "assets/EXP-HMI-STATE-009/04.png"
-        alt: "Comunicación entre PLC y TP700 Comfort operativa."
-        caption: "Conexión disponible no equivale a tag correctamente asociado."
+        alt: "Vista de conexión PLC-HMI con estado Online."
+        caption: "La comprobación incluye observar la actualización de otros valores; la imagen estática no demuestra esa actualización temporal."
         purpose: "evidence"
       - id: "ART-005"
         type: "image"
         src: "assets/EXP-HMI-STATE-009/05.png"
         alt: "BoxAtStop_HMI asociado a DB_HMI.BoxAtStop_2."
-        caption: "La configuración HMI apunta a la variable equivocada."
+        caption: "Origen configurado del tag; la comparación con la variable PLC verificada establece la discrepancia."
         purpose: "evidence"
       - id: "ART-006"
         type: "image"
         src: "assets/EXP-HMI-STATE-009/06.png"
         alt: "BoxAtStop_HMI corregido a DB_HMI.BoxAtStop y pantalla DETECTED."
-        caption: "Proceso, PLC y HMI vuelven a concordar."
+        caption: "Configuración corregida e indicación DETECTED ilustradas; la verificación contrasta la pantalla con el proceso observado."
         purpose: "completion"
   completion:
     title: "Debrief técnico"
@@ -371,7 +384,7 @@ private:
       safety_effect: 0
     - decision_id: "DEC-04-FORCE-TRUE"
       is_correct: false
-      retry_feedback: "Fijar TRUE ocultaría el mapeo incorrecto y dejaría de mostrar el estado real."
+      retry_feedback: "Fijar TRUE ocultaría el origen del problema y dejaría de mostrar el estado real."
       rationale: "Es un bypass informativo."
       classification: "unsafe"
       consequence: "La pantalla deja de reflejar el proceso."
@@ -413,7 +426,7 @@ private:
       rationale: "La reparación pertenece al mapeo HMI y debe verificarse contra el proceso real."
       classification: "strong"
       consequence: "BoxAtStop_HMI lee la variable correcta y muestra DETECTED."
-      evidence_revealed: []
+      evidence_revealed: ["EVID-07-RECOVERY"]
       next_stage: "COMPLETE"
       score_effect: 10
       safety_effect: 2

@@ -1,0 +1,60 @@
+id: SRC-000007
+title: "Schneider EcoStruxure Machine Expert Basic"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["SOFTWARE_DOCUMENTATION"]
+status: active
+availability: metadata_only
+authority:
+  level: official_manufacturer
+  publisher: "Schneider Electric"
+  authoring_organization: "Schneider Electric"
+domain_ids: ["industrial_automation"]
+manufacturer:
+  id: MFR-SCHNEIDER-ELECTRIC
+  name: "Schneider Electric"
+product:
+  family: ""
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: ["EcoStruxure Machine Expert Basic"]
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: ""
+  product_url: ""
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Architect-provided initial Source Library population list"
+  acquired_by: architect_input
+  acquired_at: ""
+  last_verified_at: ""
+  content_hash: ""
+rights:
+  copyright_holder: "Schneider Electric"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Identity is registered from Architect input; no external research or independent technical verification has been performed."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

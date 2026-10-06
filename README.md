@@ -25,3 +25,5 @@ The repository retains these established locations. New top-level product folder
 ## Documentation
 
 Start with [`docs/README.md`](docs/README.md) for the documentation map, governance boundaries, and planned ICF structure.
+
+Coding agents start with [`AGENTS.md`](AGENTS.md). Reusable execution contracts are indexed in [`prompts/README.md`](prompts/README.md), reusable engineering media in [`assets/library/README.md`](assets/library/README.md), and technical source material in [`knowledge/README.md`](knowledge/README.md).

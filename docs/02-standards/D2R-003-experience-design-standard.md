@@ -1,117 +1,239 @@
-# Experience Design Standard
+# Digital2Real --- Experience Design Standard
 
-| Field | Value |
-|---|---|
-| Document ID | D2R-003 |
-| Version | 1.0.0 |
-| Status | Approved baseline |
-| Owner | Digital2Real Architecture |
-| Scope | Educational and architectural requirements for Digital2Real Experiences |
+**Role:** Canonical method for designing Engineering Experiences
 
-## Purpose
+> **D2R Engineering OS**
+>
+> This document is governed by `docs/03-governance/ENGINEERING-DIRECTOR-PLAYBOOK.md`,
+> `AGENTS.md`, and `docs/01-architecture/D2R-ENGINEERING-OS-ARCHITECTURE.md`. Canonical repository paths are authoritative.
 
-This standard defines the types and design obligations of Experiences. Experience Engine retains authority over the detailed structured schema, validation rules, authoring workflow, integration contract, and Player behavior.
+Executable structure and runtime behavior remain governed by the [Experience Engine](../../experience-engine/README.md), its schemas and validators. This standard owns engineering learning design and disclosure semantics.
 
-## Normative language
+## 1. Objective
 
-**MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are normative.
+An Engineering Experience teaches diagnostic judgement through a
+realistic industrial case.
 
-## Definitions
+The learner should not merely recall the answer. The learner should
+progressively establish what is true.
 
-- **Learning Experience:** a guided industrial scenario that connects reusable knowledge to applied reasoning.
-- **Practice Experience:** a scenario that develops independent evidence interpretation and decision-making.
-- **Assessment Experience:** an independently governed scenario that produces evidence for capability validation.
-- **Experience Brief:** the minimum manually authored description of the technical problem; it is not an Experience.
-- **Stage:** a bounded situation in the diagnostic progression.
-- **Evidence:** information available to support or challenge a diagnosis.
-- **Decision:** a learner action selected within a stage.
-- **Consequence:** the declared result of a selected decision.
-- **Debrief:** terminal explanation of reasoning, evidence, outcomes, and transferable lessons.
+## 2. Production sequence
 
-## Rules
-
-### Rules common to every Experience
-
-- Every Experience MUST map to at least one competency in an approved or explicitly provisional capability.
-- The fault model MUST be defined before the learner narrative.
-- Evidence MUST be revealed through declared rules; future evidence MUST NOT be exposed early.
-- Decisions MUST represent credible engineering actions and MUST declare consequences.
-- Unsafe actions MUST NOT receive positive safety outcomes.
-- Completion MUST distinguish temporary restart from diagnosis, recovery, and functional validation.
-- The debrief MUST explain reasoning and MUST NOT introduce facts absent from the structured model.
-- Technical uncertainty MUST be recorded and MUST NOT be replaced by invented vendor facts.
-- Notebook knowledge MUST be referenced rather than duplicated.
-- ENV contract V2 Theory is a narrowly governed exception: it MUST remain independent from Notebook, MUST NOT import or reference Notebook as its source of truth, and MAY duplicate a concept editorially when the ENV needs its own preparation content.
-
-## Experience classes
-
-### Learning Experience
-
-A Learning Experience SHOULD provide guidance, constrained choices, and explicit feedback. It MUST still require the learner to connect evidence with an engineering decision.
-
-### Practice Experience
-
-A Practice Experience SHOULD reduce guidance and increase ambiguity appropriate to the mapped competencies. It MUST preserve technically credible alternatives and consequences.
-
-### Assessment Experience
-
-An Assessment Experience MUST satisfy [D2R-004](D2R-004-assessment-standard.md). It MUST NOT expose teaching guidance, the known practice path, hidden scoring, or private diagnostic information during evaluation.
-
-## Required design elements
-
-- **Brief:** problem, root cause, resolution, learning goals, constraints, and references only.
-- **Stages:** stable identifiers, context, available evidence, allowed decisions, transitions, and terminal behavior.
-- **Evidence:** source, content, reliability where applicable, and reveal conditions.
-- **Decisions:** stable identifiers, actions, rationale, consequences, safety effects, and transitions.
-- **Debrief:** causal chain, evidence hierarchy, decision review, safe recovery, verification, prevention, and Notebook references.
-- **Difficulty:** a declared design property supported by scenario complexity and independence; not a substitute for competency mapping.
-- **Industrial realism:** plausible equipment behavior, operational constraints, safety context, and consequences.
-
-## Functional images
-
-Images MAY provide observable evidence, machine context, schematics, or diagnostic records. Functional images MUST be accurate, legible, traceable, and available only when the related evidence is revealed. Decorative assets MUST NOT imply evidence or state that is absent from the model.
-
-## Experience Engine interface
-
-The following dependency direction is mandatory:
-
-```text
-experience.yaml
-→ YAML Adapter
-→ Normalized Experience Model
-→ Headless Player
-→ Public Player State
-→ Experience Workspace UI
+``` text
+IDEA
+→ ENGINEERING CASE
+→ INFORMATION ARCHITECTURE
+→ DECISIONS
+→ EVIDENCE AUTHORITY
+→ MEDIA SPECIFICATION
+→ YAML / LOCALES
+→ IMPLEMENTATION
+→ AUTOMATED QA
+→ BROWSER QA
+→ PUBLICATION
+→ MAINTENANCE
 ```
 
-- `experience.yaml` MUST remain the structured Experience source of truth.
-- UI code MUST NOT parse YAML, infer transitions, calculate reveal order, or duplicate scoring, safety, completion, or debrief logic.
-- The Headless Player MUST remain presentation-independent.
-- The Workspace MUST render the Player's immutable public state and submit supported actions back to the Player.
-- Browser-consumable assets MUST be produced through deterministic packaging from canonical Experience Engine sources.
-- Preview MAY include validated `technical_review` content. Publish MUST include only validated `published` content.
+## 3. Engineering case
 
-Detailed contracts remain authoritative in:
+Define before writing learner content:
 
-- [`experience-schema.yaml`](../../experience-engine/schemas/experience-schema.yaml)
-- [`experience-validation-rules.md`](../../experience-engine/validation/experience-validation-rules.md)
-- [`web-integration-contract.md`](../../experience-engine/integration/web-integration-contract.md)
-- [`Experience Player`](../../experience-engine/player/README.md)
+-   industrial system;
+-   symptom/incident;
+-   actual root cause;
+-   relevant healthy subsystems;
+-   diagnostic boundaries;
+-   safe intervention boundary;
+-   corrective action;
+-   recovery criteria;
+-   verification method;
+-   facts that are known initially;
+-   facts that must be acquired.
 
-## Interfaces
+If the root cause or technical mechanism is uncertain, research or
+expose uncertainty before authoring.
 
-- Capability mapping: [D2R-002](D2R-002-capability-definition-standard.md)
-- Assessment rules: [D2R-004](D2R-004-assessment-standard.md)
-- Experience Brief template: [`experience-brief-template.md`](../templates/experience-brief-template.md)
-- Experience Engine principles: [`experience-engine-principles.md`](../../experience-engine/architecture/experience-engine-principles.md)
+## 4. Information architecture
 
-## Open decisions
+For every learner-visible item answer:
 
-- Cross-experience persistence and learner identity: `TBD — Requires architecture decision`.
-- Formal difficulty calibration: `TBD — Requires architecture decision`.
+1.  What does the learner know?
+2.  When may they know it?
+3.  What action produced that knowledge?
+4.  What evidence was acquired?
+5.  What media represents it?
+6.  What conclusion becomes justified?
 
-## Version history
+Build the learning sequence from information disclosure, not from
+available screenshots.
 
-| Version | Change |
-|---|---|
-| 1.0.0 | Defined Experience classes, design requirements, and the mandatory engine-to-UI boundary. |
+## 5. Decision design
+
+A decision should represent a real engineering choice.
+
+Good options:
+
+-   are plausible;
+-   differ in diagnostic quality;
+-   reflect common troubleshooting errors;
+-   are safe within the authored context;
+-   move or fail to move the diagnosis for a reason.
+
+Avoid trivia and obviously absurd distractors.
+
+## 6. Evidence design
+
+Classify every evidence item:
+
+``` text
+INITIAL / CONTEXT
+or
+INTERACTIVE / ACQUIRED
+```
+
+For acquired evidence define:
+
+``` text
+ACTION
+→ EVIDENCE
+→ ENGINEERING CONCLUSION
+```
+
+Ensure bidirectional authority between action unlocks and evidence
+provenance.
+
+## 7. Diagnostic moment matrix
+
+Before implementation create a matrix:
+
+  --------------------------------------------------------------------------------
+  Moment     Known      Action     New        Media      Conclusion   Transition
+             before                evidence
+  ---------- ---------- ---------- ---------- ---------- ------------ ------------
+  D1         ...        ...        ...        ...        ...          DIRECT /
+                                                                      RESULT
+
+  --------------------------------------------------------------------------------
+
+This matrix is the semantic design.
+
+## 8. Root-cause timing
+
+Do not reveal root cause before sufficient evidence supports it.
+
+A learner may localize a subsystem before establishing the physical
+cause.
+
+``` text
+logical relationship
+≠
+physical cause
+```
+
+Physical inspection may require its own moment.
+
+## 9. Intervention classification
+
+Classify correct actions as:
+
+-   `DIAGNOSIS`
+-   `INTERVENTION`
+-   `VERIFICATION`
+-   `COMBINED INTERVENTION + VERIFICATION`
+
+Use combined classification only when one action genuinely performs
+correction and establishes recovery.
+
+## 10. Recovery
+
+Define recovery criteria explicitly.
+
+Examples of categories, only when supported by the case:
+
+-   expected signal/state restored;
+-   command accepted;
+-   physical motion observed;
+-   safety chain restored;
+-   repeated cycle succeeds;
+-   process value returns to expected behavior.
+
+Do not invent numerical or normative criteria.
+
+## 11. Completion
+
+Completion is earned at verification, not merely at repair.
+
+``` text
+repair completed
+→ verification pending
+→ no recovery yet
+```
+
+## 12. Media design
+
+Specify media after the reasoning flow exists.
+
+For each asset state:
+
+-   what pixels show;
+-   what it proves;
+-   what it does not prove;
+-   earliest legitimate disclosure;
+-   semantic role;
+-   compatibility with other assets.
+
+An available image is not a reason to create a learner moment.
+
+## 13. Result design
+
+Use Result when a correct action has acquired useful media/evidence
+worth presenting before the next decision.
+
+Several related evidence items may share one Result if acquired
+together.
+
+Text-only evidence may advance directly.
+
+## 14. Safety
+
+Place required safety prerequisites before the action that depends on
+them.
+
+Do not add unsupported procedures.
+
+## 15. Localization
+
+Design technical meaning first, then produce ES/EN equivalents.
+
+Validate equivalence for:
+
+-   options;
+-   evidence;
+-   safety;
+-   spoilers;
+-   root cause;
+-   recovery.
+
+## 16. Experience audit package
+
+Before implementation the design should state:
+
+-   IDs/status/locales;
+-   decision and option counts;
+-   evidence classification;
+-   asset inventory;
+-   stage media map;
+-   evidence media map;
+-   completion media;
+-   hidden assets;
+-   root-cause timing;
+-   intervention/verification boundary;
+-   Engine capability assessment;
+-   expected file scope;
+-   tests.
+
+## 17. Acceptance rule
+
+> A good Experience reveals only the information an engineer could
+> legitimately have at that moment and makes recovery depend on
+> evidence, not narrative convenience.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-06 — Source Library foundation
+
+- Added the metadata-first Source Library index, per-source schema, controlled taxonomies, neutral protocol authority registry, deterministic validator and tests.
+- Added technical-reference and reusable-asset catalog boundaries plus Codex source contracts.
+- Registered one repository-evidence-only Turck pilot as `discovered`; production content, runtime, Frontend and binaries are unchanged.
+- Added eleven Architect-directed discovery records for the initial Siemens, Schneider Electric, Rockwell Automation and Beckhoff source set. No URLs, rights, technical claims or approval states were inferred.
+- Added Batch 02 source records for ifm, SICK, Balluff, the neutral IO-Link authority and IODDfinder, and Festo. Candidate URLs are recorded without downloads or inferred applicability; KEYENCE, Cognex and Pepperl+Fuchs remain external-verification candidates.
+
+## 2026-10-06 — D2R Engineering OS repository governance
+
+Integrated the approved Engineering OS into repository-native authorities: root agent instructions, Engineering Director governance, architecture and content boundaries, Experience/Evidence/Media/Asset/QA standards, reusable Codex contracts, reusable asset catalog governance, and technical reference governance. Updated root and documentation navigation so every authority is discoverable from canonical paths. The numbered `md/` package remains intact as staging provenance. Runtime behavior, production Experience semantics, Notebook content, generated artifacts, and image binaries are unchanged.
+
 ## 2026-10-01 — EE-0011 independent recovery verification
 
 Content-only remap: evidence-media Results after acquisition; D7 correction remains distinct from D8 verification and completion. ART-003 hidden due to incompatible master/channel imagery; ART-007 reserved for verified recovery. ES/EN, package documentation and focused tests updated. Engine and image binaries unchanged; browser QA pending globally.

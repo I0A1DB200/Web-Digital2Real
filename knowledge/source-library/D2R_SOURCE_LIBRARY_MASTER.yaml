@@ -1,0 +1,187 @@
+version: "1.0.0"
+record_pattern: "records/SRC-[0-9]{6}.yaml"
+records:
+  - id: SRC-000001
+    path: records/SRC-000001.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["DATASHEET"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: MFR-TURCK
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000002
+    path: records/SRC-000002.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000003
+    path: records/SRC-000003.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000004
+    path: records/SRC-000004.yaml
+    classification: ASSET_REFERENCE
+    resource_types: ["IMAGE_DATABASE"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000005
+    path: records/SRC-000005.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["MANUAL"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SCHNEIDER-ELECTRIC
+    protocol_ids: []
+  - id: SRC-000006
+    path: records/SRC-000006.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["MANUAL"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SCHNEIDER-ELECTRIC
+    protocol_ids: []
+  - id: SRC-000007
+    path: records/SRC-000007.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-SCHNEIDER-ELECTRIC
+    protocol_ids: []
+  - id: SRC-000008
+    path: records/SRC-000008.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-ROCKWELL-AUTOMATION
+    protocol_ids: []
+  - id: SRC-000009
+    path: records/SRC-000009.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-ROCKWELL-AUTOMATION
+    protocol_ids: []
+  - id: SRC-000010
+    path: records/SRC-000010.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-BECKHOFF
+    protocol_ids: []
+  - id: SRC-000011
+    path: records/SRC-000011.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-BECKHOFF
+    protocol_ids: []
+  - id: SRC-000012
+    path: records/SRC-000012.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["industrial_automation"]
+    manufacturer_id: MFR-BECKHOFF
+    protocol_ids: []
+  - id: SRC-000013
+    path: records/SRC-000013.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-IFM"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000014
+    path: records/SRC-000014.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-IFM"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000015
+    path: records/SRC-000015.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-IFM"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000016
+    path: records/SRC-000016.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["KNOWLEDGEBASE_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-SICK"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000017
+    path: records/SRC-000017.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["TECHNICAL_INFORMATION"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-SICK"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000018
+    path: records/SRC-000018.yaml
+    classification: SUPPORTING_TECHNICAL
+    resource_types: ["TECHNICAL_ARTICLE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-SICK"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000019
+    path: records/SRC-000019.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-BALLUFF"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000020
+    path: records/SRC-000020.yaml
+    classification: SUPPORTING_TECHNICAL
+    resource_types: ["TECHNICAL_ARTICLE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-BALLUFF"
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000021
+    path: records/SRC-000021.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: ""
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000022
+    path: records/SRC-000022.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["IODD", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: ""
+    protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000023
+    path: records/SRC-000023.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["sensors", "io_link"]
+    manufacturer_id: "MFR-FESTO"
+    protocol_ids: ["IO_LINK_IODD"]

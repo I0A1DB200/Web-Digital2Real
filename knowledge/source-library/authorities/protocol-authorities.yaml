@@ -1,0 +1,20 @@
+version: "1.0.0"
+authorities:
+  - protocol_id: PROFINET
+    organization_id: PI
+    organization_name: PROFIBUS & PROFINET International
+  - protocol_id: ETHERNET_IP_CIP
+    organization_id: ODVA
+    organization_name: ODVA
+  - protocol_id: ETHERCAT
+    organization_id: ETG
+    organization_name: EtherCAT Technology Group
+  - protocol_id: IO_LINK_IODD
+    organization_id: IO_LINK_COMMUNITY
+    organization_name: IO-Link Community
+  - protocol_id: OPC_UA
+    organization_id: OPC_FOUNDATION
+    organization_name: OPC Foundation
+  - protocol_id: MODBUS
+    organization_id: MODBUS_ORGANIZATION
+    organization_name: Modbus Organization

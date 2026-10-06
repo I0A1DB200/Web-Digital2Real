@@ -1,0 +1,70 @@
+version: "1.0.0"
+source_classifications:
+  - PRIMARY_TECHNICAL
+  - SUPPORTING_TECHNICAL
+  - ASSET_REFERENCE
+  - DEVICE_DATA
+  - TRAINING
+  - DISCOVERY_ONLY
+resource_types:
+  - TECHNICAL_OVERVIEW
+  - TECHNICAL_INFORMATION
+  - TECHNICAL_ARTICLE
+  - KNOWLEDGEBASE_GATEWAY
+  - PROTOCOL_AUTHORITY
+  - PRODUCT_PAGE
+  - SOFTWARE_DOCUMENTATION
+  - IMAGE_DATABASE
+  - DOWNLOAD_GATEWAY
+  - PRODUCT_PHOTO
+  - DIMENSION_DRAWING
+  - CAD_2D
+  - CAD_3D_STEP
+  - EPLAN
+  - GSDML
+  - EDS
+  - IODD
+  - FIRMWARE
+  - MANUAL
+  - DATASHEET
+  - APPLICATION_NOTE
+review_states:
+  - discovered
+  - metadata_verified
+  - technical_review
+  - approved
+  - restricted
+  - superseded
+  - unavailable
+  - rejected
+authority_levels:
+  - official_protocol_authority
+  - official_manufacturer
+  - official_authoring_organization
+  - reviewed_supporting
+  - unverified
+availability_states:
+  - public
+  - authenticated
+  - local
+  - metadata_only
+  - unavailable
+domain_ids:
+  - industrial_automation
+  - sensors
+  - industrial_networks
+  - io_link
+  - plc
+  - drives
+  - hmi_scada
+  - safety
+  - electrical
+  - pneumatics
+  - mechanical
+protocol_ids:
+  - PROFINET
+  - ETHERNET_IP_CIP
+  - ETHERCAT
+  - IO_LINK_IODD
+  - OPC_UA
+  - MODBUS

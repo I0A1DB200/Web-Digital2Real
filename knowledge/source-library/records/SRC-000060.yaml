@@ -1,0 +1,60 @@
+id: SRC-000060
+title: "PI PROFINET Technology official overview"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+status: active
+availability: public
+authority:
+  level: official_protocol_authority
+  publisher: "PROFIBUS & PROFINET International"
+  authoring_organization: "PROFIBUS & PROFINET International"
+domain_ids: ["diagnostics"]
+manufacturer:
+  id: ORG-PI
+  name: "PROFIBUS & PROFINET International"
+product:
+  family: "PROFINET Technology"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: ["PROFINET", "PROFIBUS"]
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: ["en"]
+locations:
+  canonical_url: "https://www.profibus.com/fileadmin/media/downloadsection/brochures/PROFINET_Technology_The_Easy_Way_engl_04.2026.pdf"
+  product_url: ""
+  download_url: "https://www.profibus.com/fileadmin/media/downloadsection/brochures/PROFINET_Technology_The_Easy_Way_engl_04.2026.pdf"
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "PROFIBUS & PROFINET International"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact applicability and technical claims require D2R technical review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

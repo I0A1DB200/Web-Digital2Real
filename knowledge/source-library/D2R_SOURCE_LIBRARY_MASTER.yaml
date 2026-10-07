@@ -185,3 +185,339 @@ records:
     domain_ids: ["sensors", "io_link"]
     manufacturer_id: "MFR-FESTO"
     protocol_ids: ["IO_LINK_IODD"]
+  - id: SRC-000024
+    path: records/SRC-000024.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "ENCLOSURE_SYSTEM"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-RITTAL
+    protocol_ids: []
+  - id: SRC-000025
+    path: records/SRC-000025.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-RITTAL
+    protocol_ids: []
+  - id: SRC-000026
+    path: records/SRC-000026.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-PHOENIX-CONTACT
+    protocol_ids: []
+  - id: SRC-000027
+    path: records/SRC-000027.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-WAGO
+    protocol_ids: []
+  - id: SRC-000028
+    path: records/SRC-000028.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-WEIDMUELLER
+    protocol_ids: []
+  - id: SRC-000029
+    path: records/SRC-000029.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "POWER_DISTRIBUTION_SYSTEM"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-WEIDMUELLER
+    protocol_ids: []
+  - id: SRC-000030
+    path: records/SRC-000030.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-ABB
+    protocol_ids: []
+  - id: SRC-000031
+    path: records/SRC-000031.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-SCHNEIDER-ELECTRIC
+    protocol_ids: []
+  - id: SRC-000032
+    path: records/SRC-000032.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["DATASHEET"]
+    review_state: discovered
+    domain_ids: ["electrical"]
+    manufacturer_id: MFR-PULS
+    protocol_ids: []
+  - id: SRC-000033
+    path: records/SRC-000033.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000034
+    path: records/SRC-000034.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000035
+    path: records/SRC-000035.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-SEW-EURODRIVE
+    protocol_ids: []
+  - id: SRC-000036
+    path: records/SRC-000036.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-ABB
+    protocol_ids: []
+  - id: SRC-000037
+    path: records/SRC-000037.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-DANFOSS
+    protocol_ids: []
+  - id: SRC-000038
+    path: records/SRC-000038.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-ROCKWELL-AUTOMATION
+    protocol_ids: []
+  - id: SRC-000039
+    path: records/SRC-000039.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["MANUAL"]
+    review_state: discovered
+    domain_ids: ["drives"]
+    manufacturer_id: MFR-BECKHOFF
+    protocol_ids: []
+  - id: SRC-000040
+    path: records/SRC-000040.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["pneumatics"]
+    manufacturer_id: MFR-FESTO
+    protocol_ids: []
+  - id: SRC-000041
+    path: records/SRC-000041.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["ENGINEERING_DATA_GATEWAY", "CAD_3D_STEP"]
+    review_state: discovered
+    domain_ids: ["pneumatics"]
+    manufacturer_id: MFR-EMERSON-AVENTICS
+    protocol_ids: []
+  - id: SRC-000042
+    path: records/SRC-000042.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["pneumatics"]
+    manufacturer_id: MFR-EMERSON-AVENTICS
+    protocol_ids: []
+  - id: SRC-000043
+    path: records/SRC-000043.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["process_instrumentation"]
+    manufacturer_id: MFR-ENDRESS-HAUSER
+    protocol_ids: []
+  - id: SRC-000044
+    path: records/SRC-000044.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["process_instrumentation"]
+    manufacturer_id: MFR-VEGA
+    protocol_ids: []
+  - id: SRC-000045
+    path: records/SRC-000045.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["process_instrumentation"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000046
+    path: records/SRC-000046.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["process_instrumentation"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: []
+  - id: SRC-000047
+    path: records/SRC-000047.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["safety"]
+    manufacturer_id: MFR-PILZ
+    protocol_ids: []
+  - id: SRC-000048
+    path: records/SRC-000048.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["safety"]
+    manufacturer_id: MFR-SICK
+    protocol_ids: []
+  - id: SRC-000049
+    path: records/SRC-000049.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["safety"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: ["PROFINET"]
+  - id: SRC-000050
+    path: records/SRC-000050.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["MANUAL"]
+    review_state: discovered
+    domain_ids: ["safety"]
+    manufacturer_id: MFR-ROCKWELL
+    protocol_ids: ["ETHERNET_IP_CIP"]
+  - id: SRC-000051
+    path: records/SRC-000051.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["SOFTWARE_DOCUMENTATION", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["robotics"]
+    manufacturer_id: MFR-ABB
+    protocol_ids: []
+  - id: SRC-000052
+    path: records/SRC-000052.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["robotics"]
+    manufacturer_id: MFR-ABB
+    protocol_ids: []
+  - id: SRC-000053
+    path: records/SRC-000053.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["vision_identification"]
+    manufacturer_id: MFR-KEYENCE
+    protocol_ids: []
+  - id: SRC-000054
+    path: records/SRC-000054.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["vision_identification"]
+    manufacturer_id: MFR-COGNEX
+    protocol_ids: []
+  - id: SRC-000055
+    path: records/SRC-000055.yaml
+    classification: DISCOVERY_ONLY
+    resource_types: ["ENGINEERING_DATA_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["mechanical"]
+    manufacturer_id: MFR-SKF
+    protocol_ids: []
+  - id: SRC-000056
+    path: records/SRC-000056.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["mechanical"]
+    manufacturer_id: MFR-SCHAEFFLER
+    protocol_ids: []
+  - id: SRC-000057
+    path: records/SRC-000057.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE"]
+    review_state: discovered
+    domain_ids: ["industrial_utilities"]
+    manufacturer_id: MFR-KAESER
+    protocol_ids: []
+  - id: SRC-000058
+    path: records/SRC-000058.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PRODUCT_PAGE", "DOWNLOAD_GATEWAY"]
+    review_state: discovered
+    domain_ids: ["industrial_utilities"]
+    manufacturer_id: MFR-ATLAS-COPCO
+    protocol_ids: []
+  - id: SRC-000059
+    path: records/SRC-000059.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["MANUAL", "SOFTWARE_DOCUMENTATION"]
+    review_state: discovered
+    domain_ids: ["diagnostics"]
+    manufacturer_id: MFR-SIEMENS
+    protocol_ids: ["PROFINET"]
+  - id: SRC-000060
+    path: records/SRC-000060.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["diagnostics"]
+    manufacturer_id: ORG-PI
+    protocol_ids: ["PROFINET", "PROFIBUS"]
+  - id: SRC-000061
+    path: records/SRC-000061.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["industrial_networks"]
+    manufacturer_id: ORG-ODVA
+    protocol_ids: ["ETHERNET_IP_CIP"]
+  - id: SRC-000062
+    path: records/SRC-000062.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["industrial_networks"]
+    manufacturer_id: ORG-ETG
+    protocol_ids: ["ETHERCAT"]
+  - id: SRC-000063
+    path: records/SRC-000063.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["industrial_networks"]
+    manufacturer_id: ORG-OPC-FOUNDATION
+    protocol_ids: ["OPC_UA"]
+  - id: SRC-000064
+    path: records/SRC-000064.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["industrial_networks"]
+    manufacturer_id: ORG-MODBUS
+    protocol_ids: ["MODBUS"]
+  - id: SRC-000065
+    path: records/SRC-000065.yaml
+    classification: PRIMARY_TECHNICAL
+    resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+    review_state: discovered
+    domain_ids: ["industrial_networks"]
+    manufacturer_id: ORG-CIA
+    protocol_ids: ["CANOPEN"]

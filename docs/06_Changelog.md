@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-07 — Source Library autonomous population campaign
+
+- Expanded the metadata-first Source Library from 23 to 65 discovered records across electrical/control cabinets, drives/motion, pneumatics, process instrumentation, safety, robotics, vision, mechanics, utilities, diagnostics, and neutral protocol authorities. Added only official-source metadata and controlled vocabulary needed by verified records; no binaries, production content, runtime, Frontend, or Notebook behavior changed.
+
 ## 2026-10-06 — Source Library foundation
 
 - Added the metadata-first Source Library index, per-source schema, controlled taxonomies, neutral protocol authority registry, deterministic validator and tests.

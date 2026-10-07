@@ -1,0 +1,60 @@
+id: SRC-000050
+title: "Rockwell Automation GuardLogix 5580 Controllers User Manual"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["MANUAL"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Rockwell Automation"
+  authoring_organization: "Rockwell Automation"
+domain_ids: ["safety"]
+manufacturer:
+  id: MFR-ROCKWELL
+  name: "Rockwell Automation"
+product:
+  family: "GuardLogix 5580"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: ["ETHERNET_IP_CIP"]
+document:
+  number: "1756-UM020I-EN-P"
+  revision: ""
+  publication_date: ""
+  languages: ["en"]
+locations:
+  canonical_url: "https://literature.rockwellautomation.com/idc/groups/literature/documents/um/1756-um020_-en-p.pdf"
+  product_url: ""
+  download_url: "https://literature.rockwellautomation.com/idc/groups/literature/documents/um/1756-um020_-en-p.pdf"
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Rockwell Automation"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact applicability and technical claims require D2R technical review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

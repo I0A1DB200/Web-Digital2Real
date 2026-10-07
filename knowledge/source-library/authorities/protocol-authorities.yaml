@@ -1,6 +1,9 @@
-version: "1.0.0"
+﻿version: "1.0.0"
 authorities:
   - protocol_id: PROFINET
+    organization_id: PI
+    organization_name: PROFIBUS & PROFINET International
+  - protocol_id: PROFIBUS
     organization_id: PI
     organization_name: PROFIBUS & PROFINET International
   - protocol_id: ETHERNET_IP_CIP
@@ -18,3 +21,6 @@ authorities:
   - protocol_id: MODBUS
     organization_id: MODBUS_ORGANIZATION
     organization_name: Modbus Organization
+  - protocol_id: CANOPEN
+    organization_id: CIA
+    organization_name: CAN in Automation

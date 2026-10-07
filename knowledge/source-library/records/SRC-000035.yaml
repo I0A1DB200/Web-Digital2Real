@@ -1,0 +1,60 @@
+id: SRC-000035
+title: "SEW-EURODRIVE MOVISUITE engineering software"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["SOFTWARE_DOCUMENTATION"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "SEW-EURODRIVE"
+  authoring_organization: "SEW-EURODRIVE"
+domain_ids: ["drives"]
+manufacturer:
+  id: MFR-SEW-EURODRIVE
+  name: "SEW-EURODRIVE"
+product:
+  family: "MOVI-C"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: ["MOVISUITE"]
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://kz.sew-eurodrive.com/products/software/startup-engineering/movi-c-engineering-software-movisuite/movi-c-engineering-software-movisuite.html"
+  product_url: "https://kz.sew-eurodrive.com/products/software/startup-engineering/movi-c-engineering-software-movisuite/movi-c-engineering-software-movisuite.html"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "SEW-EURODRIVE"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact variants, firmware and technical claims remain unreviewed by D2R Engineering."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

@@ -29,7 +29,7 @@ const recordPath = root => path.join(root, "knowledge", "source-library", "recor
 test("the repository Source Library foundation is valid", async () => {
   const result = await validateSourceLibrary({ repositoryRoot });
   assert.equal(result.valid, true, result.errors.join("\n"));
-  assert.equal(result.recordCount, 23);
+  assert.equal(result.recordCount, 65);
 });
 
 test("rejects malformed source IDs and stale master references", () => withFixture(async root => {

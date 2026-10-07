@@ -7,6 +7,9 @@ source_classifications:
   - TRAINING
   - DISCOVERY_ONLY
 resource_types:
+  - ENGINEERING_DATA_GATEWAY
+  - ENCLOSURE_SYSTEM
+  - POWER_DISTRIBUTION_SYSTEM
   - TECHNICAL_OVERVIEW
   - TECHNICAL_INFORMATION
   - TECHNICAL_ARTICLE
@@ -50,6 +53,11 @@ availability_states:
   - metadata_only
   - unavailable
 domain_ids:
+  - diagnostics
+  - industrial_utilities
+  - robotics
+  - vision_identification
+  - process_instrumentation
   - industrial_automation
   - sensors
   - industrial_networks
@@ -62,6 +70,8 @@ domain_ids:
   - pneumatics
   - mechanical
 protocol_ids:
+  - CANOPEN
+  - PROFIBUS
   - PROFINET
   - ETHERNET_IP_CIP
   - ETHERCAT

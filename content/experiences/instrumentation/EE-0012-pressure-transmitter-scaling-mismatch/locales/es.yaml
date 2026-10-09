@@ -1,0 +1,124 @@
+locale: "es"
+translations:
+  title: "Escala incorrecta del transmisor de presión"
+  summary: "Localiza una discrepancia 4–20 mA comparando proceso, transmisor, lazo, entrada analógica, PLC y HMI."
+  scenario:
+    initial_context: "La referencia de proceso y PT-201 indican 6.0 bar, pero la HMI muestra 3.0 bar."
+    operational_state: "El proceso esta estable. La frontera de la discrepancia aun no esta identificada."
+    initiating_event: "La presión HMI no coincide con la indicación local."
+    learner_role: "Técnico de instrumentación que debe localizar la primera discrepancia sin sustituciones ni reconfiguraciónes sin evidencia."
+    safety_context:
+      safe_state: "Realiza inspecciones y mediciones únicamente conforme al procedimiento seguro de la instalación."
+      intervention_constraints: ["No alterar el lazo energizado fuera del método autorizado.","No forzar variables ni compensar en HMI.","No cambiar rango o calibración antes de localizar la discrepancia."]
+  learning_objectives:
+    OBJ-ANALOG-TRACE:
+      description: "Distinguir proceso, salida 4–20 mA, entrada analógica y escala de ingeniería."
+    OBJ-ANALOG-INTERPRET:
+      description: "Interpretar corriente dentro de un rango authored mediante relacion lineal."
+    OBJ-VERIFY-RECOVERY:
+      description: "Corregir la escala y verificar varios puntos de la cadena."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Discrepancia de presión"
+      situation: "La referencia local y PT-201 indican 6.0 bar, pero la HMI muestra 3.0 bar. ¿Qué acción establece primero una frontera?"
+    STAGE-02-LOOP:
+      title: "Señal del transmisor"
+      situation: "La indicación local coincide con la referencia. ¿Qué comprobación localiza la siguiente frontera?"
+    STAGE-03-SCALING:
+      title: "Frontera PLC"
+      situation: "13.6 mA representan 6.0 bar y el canal recibe 60% del span, pero Pressure_bar vale 3.0. ¿Qué inspeccionas?"
+    STAGE-04-CORRECT:
+      title: "Corrección controlada"
+      situation: "La escala PLC es 0–5 bar y el rango authored es 0–10 bar. ¿Qué intervención corrige la causa?"
+    STAGE-05-VERIFY:
+      title: "Verificación independiente"
+      situation: "La escala se corrigió a 0–10 bar. ¿Qué prueba permite cerrar?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Proceso / transmisor / HMI"
+      content: "Referencia independiente = 6.0 bar; display local PT-201 = 6.0 bar; HMI Pressure = 3.0 bar. La frontera de la discrepancia aun no esta identificada."
+    EVID-02-PROCESS:
+      source: "Comparación local"
+      content: "La referencia independiente y el display local coinciden en 6.0 bar. Esto debilita una hipotesis de cambio real de proceso, pero todavía no demuestra la corriente del lazo."
+    EVID-03-LOOP:
+      source: "Medición e interpretación del lazo"
+      content: "Bajo el procedimiento seguro se miden 13.6 mA. Para el rango authored 0–10 bar: (13.6 - 4) / 16 x 10 = 6.0 bar. No se asume ningún rango bruto de PLC."
+    EVID-04-DIAGNOSIS:
+      source: "Inspección de escala PLC"
+      content: "El canal recibe 60% del span. La escala de ingeniería está configurada 0–5 bar y produce 3.0 bar, mientras el rango authored del transmisor es 0–10 bar."
+    EVID-05-INTERVENTION:
+      source: "Registro de intervención"
+      content: "La escala de ingeniería se corrigió de 0–5 bar a 0–10 bar sin cambiar transmisor, lazo ni HMI. La recuperación todavía no está verificada."
+    EVID-06-RECOVERY:
+      source: "Prueba funcional"
+      content: "Tres puntos authored confirman correspondencia: 2.0 bar <-> 7.2 mA, 6.0 bar <-> 13.6 mA y 8.0 bar <-> 16.8 mA; transmisor, PLC y HMI coinciden."
+  decisions:
+    DEC-01-REPLACE:
+      action: "Sustituir el transmisor. "
+    DEC-01-COMPARE:
+      action: "Comparar referencia de proceso e indicación local."
+    DEC-01-SCALE:
+      action: "Cambiar inmediatamente la escala PLC."
+    DEC-02-MEASURE:
+      action: "Medir la corriente conforme al procedimiento seguro e interpretarla con el rango authored."
+    DEC-02-WIRING:
+      action: "Declarar un fallo de cableado."
+    DEC-02-HMI:
+      action: "Aplicar un factor de dos en HMI."
+    DEC-03-INSPECT:
+      action: "Inspeccionar la conversión del porcentaje de entrada a Pressure_bar."
+    DEC-03-REPLACE-AI:
+      action: "Sustituir el módulo analógico."
+    DEC-03-FORCE:
+      action: "Forzar Pressure_bar a 6.0."
+    DEC-04-CORRECT:
+      action: "Alinear la escala PLC a 0–10 bar y dejar pendiente la verificación."
+    DEC-04-CALIBRATE:
+      action: "Recalibrar el transmisor para adaptar 13.6 mA a 3.0 bar."
+    DEC-04-OFFSET:
+      action: "Duplicar el valor solo en HMI."
+    DEC-05-VERIFY:
+      action: "Verificar varios puntos comparando referencia, corriente, PLC y HMI."
+    DEC-05-ONE:
+      action: "Cerrar al observar 6.0 bar una vez en HMI."
+    DEC-05-CONFIG:
+      action: "Cerrar porque la configuración guardada muestra 0–10 bar."
+  retry_feedback:
+    DEC-01-REPLACE: "La diferencia no demuestra que el transmisor falle. Compara primero el proceso y la indicación local."
+    DEC-01-SCALE: "La escala aun es una hipotesis. Localiza primero la discrepancia."
+    DEC-02-WIRING: "La diferencia no distingue cableado de configuración. Mide la señal."
+    DEC-02-HMI: "Compensar la pantalla oculta el origen. Sigue la señal física."
+    DEC-03-REPLACE-AI: "El canal recibe un porcentaje coherente. Inspecciona su conversión."
+    DEC-03-FORCE: "Forzar elimina evidencia y no corrige la conversión."
+    DEC-04-CALIBRATE: "La corriente ya representa el proceso. No adaptes el transmisor a una escala errónea."
+    DEC-04-OFFSET: "La discrepancia existe antes de HMI. Corrige en la autoridad de escala."
+    DEC-05-ONE: "Un punto puede ocultar pendiente u offset incorrectos. Verifica varios puntos."
+    DEC-05-CONFIG: "Una configuración correcta no demuestra recuperación funcional."
+  visual:
+    educational_purpose: "Localizar una discrepancia analógica sin confundir proceso, señal y representación."
+  assets:
+    ART-001:
+      alt: "Portada editorial de un lazo de presión 4–20 mA."
+      caption: "Cadena de medición de presión."
+    ART-002:
+      alt: "Referencia y transmisor a 6.0 bar; HMI a 3.0 bar."
+      caption: "Discrepancia inicial sin causa revelada."
+    ART-003:
+      alt: "Medición de 13.6 mA y rango authored 0–10 bar."
+      caption: "Resultado de la medición del lazo."
+    ART-004:
+      alt: "Entrada al 60%, escala PLC 0–5 bar y valor 3.0 bar."
+      caption: "La escala incompatible queda localizada."
+    ART-005:
+      alt: "Tres puntos coherentes entre presión, corriente, PLC y HMI."
+      caption: "Recuperacin verificada."
+    ART-006:
+      alt: "Corrección de la escala PLC desde 0–5 bar hasta 0–10 bar, con verificación pendiente."
+      caption: "La configuración se corrige; la recuperación todavía debe verificarse."
+  completion:
+    title: "Debrief técnico"
+    summary: "El transmisor y el lazo representaban correctamente 6.0 bar con 13.6 mA. La escala PLC 0–5 bar convertía el 60% en 3.0 bar aunque el rango authored era 0–10 bar."
+    process: ["Comparar proceso e indicación local.","Medir e interpretar la corriente.","Inspeccionar la conversión a unidades.","Corregir la escala localizada.","Verificar varios puntos hasta HMI."]
+    lesson: "Un valor HMI incorrecto no identifica por sí solo el elemento defectuoso. La primera discrepancia verificable estaba en la conversión a unidades de ingeniería."
+    avoided_errors: ["Sustituir sin medir.","Inventar un rango bruto PLC.","Compensar en HMI.","Confundir corrección con recuperación."]
+    industrial_value: ["Diagnóstico por fronteras.","Menos sustituciones innecesarias.","Verificación trazable."]

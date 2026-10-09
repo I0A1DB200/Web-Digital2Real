@@ -65,12 +65,16 @@ Define reciprocal authority.
 
 ## 5. MEDIA
 
-Search approved asset library first.
+Follow the resolution order in `D2R-STD-003-asset-governance.md`: current Experience assets, reusable D2R assets, technically compatible earlier Experience assets, Source Library references, then governed creation.
 
 Audit candidate assets semantically.
 
 If no suitable asset exists, produce a `NEW ASSET REQUIRED`
 specification using the Asset Spec contract.
+
+Where physical industrial reality contributes to learner judgement, use realistic industrial imagery by default. Use diagrams or overlays as support when the learning moment is primarily mathematical, architectural or conceptual. Inspect every generated or edited image against its Asset Spec, technical constraints, disclosure timing and Experience truth model, and iterate before integration.
+
+Classify each learning moment as physical or abstract. Produce a realistic industrial image for physical moments and a designed technical image for abstract/data/software moments. Follow Asset Governance for reuse, sources and review, then integrate a finished raster learner-facing asset. Vector, code or diagram sources may be internal production tools; avoid raw learner-facing SVG and redundant player-like framing unless an architectural exception is recorded.
 
 Do not distort the Experience to fit existing media.
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-08 — Final learner-facing visual policy
+
+- Established finished raster delivery for learner-facing Experience media while preserving vector/code tools as internal production methods. Replaced EE-0012's raw scaling SVG with a designed PNG, added a separate intervention PNG, removed redundant player-like framing and repaired learner-visible typography without changing technical logic or Engine behavior.
+
+## 2026-10-08 — Realistic Asset First / EE-0012 remediation
+
+- Established realistic industrial imagery as the default Experience visual language when physical reality contributes to learner judgement, with diagrams retained for mathematical and architectural learning moments. Remediated EE-0012 with four reviewed photorealistic D2R-generated assets while preserving its scaling diagram, technical truth, evidence timing and Engine behavior.
+
+## 2026-10-07 — ENV-002 / EE-0012 pressure-transmitter pilot
+
+- Added EE-0012 as the second ENV-002 Experience: a bilingual 4–20 mA pressure-scaling diagnosis that separates signal measurement, PLC engineering scaling, correction and independent multi-point verification. Added five governed D2R SVG diagrams and focused packaging tests; no shared Engine behavior or external binaries changed.
+
 ## 2026-10-07 — Source Library autonomous population campaign
 
 - Expanded the metadata-first Source Library from 23 to 65 discovered records across electrical/control cabinets, drives/motion, pneumatics, process instrumentation, safety, robotics, vision, mechanics, utilities, diagnostics, and neutral protocol authorities. Added only official-source metadata and controlled vocabulary needed by verified records; no binaries, production content, runtime, Frontend, or Notebook behavior changed.

@@ -34,6 +34,24 @@ Do not build diagnostic logic around images merely because they exist.
 
 Reasoning defines the media need.
 
+## 2.1 Realistic asset first for Engineering Experiences
+
+When learner judgement depends on physical industrial reality, realistic industrial representation is the default visual language. Device recognition, installation, wiring, cabinet layout, mechanical condition, indicators, connectors, terminals, measurement setup and operator-interface state should normally be shown through physically plausible imagery.
+
+Diagrammatic SVGs, schematics and overlays remain supporting media for signal flow, mathematical scaling, architecture, conceptual relationships and simplified comparison. They must not replace physical observation when that observation is part of the diagnosis. The direction is approximately 95% realistic or physical representation where physical reality contributes materially; this is editorial direction, not a validator threshold.
+
+Experience engineering assets prioritize technical truth, diagnostic timing, learner judgement and traceability. Notebook and technical-reference visuals choose realism or abstraction by explanatory value. Marketing, website and social visuals may prioritize brand and composition, but that freedom does not lower Experience standards.
+
+Before creating media, resolve candidates in this order: current Experience assets, the reusable D2R Asset Library, technically compatible assets from earlier Experiences, Source Library references, then governed creation. Cross-Experience candidates must be classified as intentional reuse, reusable D2R asset, Experience-specific, reference only or unsuitable after checking state, identity, timing, context and provenance.
+
+## 2.2 Finished learner-facing media
+
+Experience media delivered to the learner should be a finished raster image asset unless a strong architectural exception is documented. Physical learning moments use realistic industrial images. Abstract, data, software, scaling and signal-flow moments use designed technical images. Annotated images may combine either base with restrained callouts.
+
+SVG, canvas, code and diagram tools may be used internally as production methods. A raw SVG diagram is not the preferred final Experience asset. Designed media must also avoid “UI inside UI”: the Experience player owns the Experience number, title, Result or stage heading, navigation, outer card shell and product framing. The visual contains only the engineering information needed for its learning moment. Experience identifiers, D2R branding and editorial titles are not burned into assets by default.
+
+This raster-first delivery rule applies to Engineering Experience media. It does not impose the same constraint on marketing, website or social workflows.
+
 ## 3. Required asset record
 
 For every reusable or Experience-critical asset capture:
@@ -122,6 +140,8 @@ SEMANTIC ROLE:
 LOCALIZATION/TEXT CONSTRAINTS:
 ACCEPTANCE CRITERIA:
 ```
+
+For realistic assets, also record the physical scene, observable state, critical geometry or interfaces, information that must remain hidden, and whether a supporting diagram or overlay is justified. Generated imagery requires inspection against the Asset Spec and Experience truth model; the first generation is not accepted automatically.
 
 ## 10. Binary authority
 

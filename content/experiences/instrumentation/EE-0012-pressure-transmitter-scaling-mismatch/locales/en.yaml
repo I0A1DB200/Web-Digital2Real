@@ -1,0 +1,124 @@
+locale: "en"
+translations:
+  title: "Pressure Transmitter Scaling Mismatch"
+  summary: "Locate a 4–20 mA discrepancy across process, transmitter, loop, analog input, PLC and HMI."
+  scenario:
+    initial_context: "The process reference and PT-201 indicate 6.0 bar, while the HMI shows 3.0 bar."
+    operational_state: "The process is stable. The discrepancy boundary is unknown."
+    initiating_event: "HMI pressure differs from the local indication."
+    learner_role: "Instrumentation technician locating the first discrepancy without unsupported replacement or reconfiguration."
+    safety_context:
+      safe_state: "Perform inspections and measurements only under the installation's safe procedure."
+      intervention_constraints: ["Do not alter an energized loop outside the authorized method.","Do not force variables or compensate in the HMI.","Do not change range or calibration before locating the discrepancy."]
+  learning_objectives:
+    OBJ-ANALOG-TRACE:
+      description: "Distinguish process, 4–20 mA output, analog input and engineering scaling."
+    OBJ-ANALOG-INTERPRET:
+      description: "Interpret current within an authored range using a linear relationship."
+    OBJ-VERIFY-RECOVERY:
+      description: "Correct the scaling and verify several points across the chain."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Pressure discrepancy"
+      situation: "The reference and PT-201 indicate 6.0 bar, but the HMI shows 3.0 bar. What first establishes a boundary?"
+    STAGE-02-LOOP:
+      title: "Transmitter signal"
+      situation: "Local indication matches the reference. Which check locates the next boundary?"
+    STAGE-03-SCALING:
+      title: "PLC boundary"
+      situation: "13.6 mA represent 6.0 bar and the input receives 60% of span, but Pressure_bar is 3.0. What do you inspect?"
+    STAGE-04-CORRECT:
+      title: "Controlled correction"
+      situation: "PLC scaling is 0–5 bar while the authored range is 0–10 bar. Which intervention corrects the cause?"
+    STAGE-05-VERIFY:
+      title: "Independent verification"
+      situation: "Scaling is corrected to 0–10 bar. Which test permits closure?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Process / transmitter / HMI"
+      content: "Independent reference = 6.0 bar; PT-201 local display = 6.0 bar; HMI Pressure = 3.0 bar. The discrepancy boundary remains unknown."
+    EVID-02-PROCESS:
+      source: "Local comparison"
+      content: "The independent reference and local display agree at 6.0 bar. This weakens a real-process-change hypothesis but does not yet prove loop current."
+    EVID-03-LOOP:
+      source: "Loop measurement and interpretation"
+      content: "Under the safe procedure, loop current measures 13.6 mA. For the authored 0–10 bar range: (13.6 - 4) / 16 x 10 = 6.0 bar. No PLC raw range is assumed."
+    EVID-04-DIAGNOSIS:
+      source: "PLC scaling inspection"
+      content: "The channel receives 60% of span. Engineering scaling is configured 0–5 bar and produces 3.0 bar, while the authored transmitter range is 0–10 bar."
+    EVID-05-INTERVENTION:
+      source: "Intervention record"
+      content: "Engineering scaling was corrected from 0–5 bar to 0–10 bar without changing the transmitter, loop or HMI. Recovery remains unverified."
+    EVID-06-RECOVERY:
+      source: "Functional test"
+      content: "Three authored points agree: 2.0 bar <-> 7.2 mA, 6.0 bar <-> 13.6 mA and 8.0 bar <-> 16.8 mA; transmitter, PLC and HMI match."
+  decisions:
+    DEC-01-REPLACE:
+      action: "Replace the transmitter."
+    DEC-01-COMPARE:
+      action: "Compare the process reference with the local indication."
+    DEC-01-SCALE:
+      action: "Immediately change PLC scaling."
+    DEC-02-MEASURE:
+      action: "Measure current under the safe procedure and interpret it with the authored range."
+    DEC-02-WIRING:
+      action: "Declare a wiring fault."
+    DEC-02-HMI:
+      action: "Apply a factor of two in the HMI."
+    DEC-03-INSPECT:
+      action: "Inspect conversión from input percentage to Pressure_bar."
+    DEC-03-REPLACE-AI:
+      action: "Replace the analog input module."
+    DEC-03-FORCE:
+      action: "Force Pressure_bar to 6.0."
+    DEC-04-CORRECT:
+      action: "Align PLC scaling to 0–10 bar and leave verification pending."
+    DEC-04-CALIBRATE:
+      action: "Recalibrate the transmitter so 13.6 mA produces 3.0 bar."
+    DEC-04-OFFSET:
+      action: "Double the value only in the HMI."
+    DEC-05-VERIFY:
+      action: "Verify several points across reference, current, PLC and HMI."
+    DEC-05-ONE:
+      action: "Close after observing 6.0 bar once in the HMI."
+    DEC-05-CONFIG:
+      action: "Close because the saved configuration shows 0–10 bar."
+  retry_feedback:
+    DEC-01-REPLACE: "The discrepancy does not prove transmitter failure. Compare process and local indication first."
+    DEC-01-SCALE: "Scaling remains only a hypothesis. Locate the first discrepancy."
+    DEC-02-WIRING: "The discrepancy does not distinguish wiring from configuration. Measure the signal."
+    DEC-02-HMI: "Compensating in the display hides the origin. Trace the physical signal."
+    DEC-03-REPLACE-AI: "The channel receives a coherent percentage. Inspect its conversión."
+    DEC-03-FORCE: "Forcing removes evidence and does not correct conversión."
+    DEC-04-CALIBRATE: "Current already represents the process. Do not adapt the transmitter to incorrect scaling."
+    DEC-04-OFFSET: "The discrepancy exists before the HMI. Correct it at the scaling authority."
+    DEC-05-ONE: "One point can hide slope or offset errors. Verify several points."
+    DEC-05-CONFIG: "Correct configuration does not prove functional recovery."
+  visual:
+    educational_purpose: "Locate an analog discrepancy without confusing process, signal and representation."
+  assets:
+    ART-001:
+      alt: "Editorial cover of a 4–20 mA pressure loop."
+      caption: "Pressure measurement chain."
+    ART-002:
+      alt: "Reference and transmitter at 6.0 bar; HMI at 3.0 bar."
+      caption: "Initial discrepancy without revealing its cause."
+    ART-003:
+      alt: "13.6 mA measurement and authored 0–10 bar range."
+      caption: "Acquired loop measurement result."
+    ART-004:
+      alt: "Input at 60%, PLC scale 0–5 bar and value 3.0 bar."
+      caption: "The incompatible scale is localized."
+    ART-005:
+      alt: "Three coherent points across pressure, current, PLC and HMI."
+      caption: "Recovery verified."
+    ART-006:
+      alt: "PLC scaling corrected from 0–5 bar to 0–10 bar, with verification pending."
+      caption: "The configuration is corrected; recovery still requires verification."
+  completion:
+    title: "Technical debrief"
+    summary: "The transmitter and loop correctly represented 6.0 bar with 13.6 mA. PLC scaling of 0–5 bar converted 60% into 3.0 bar although the authored range was 0–10 bar."
+    process: ["Compare process and local indication.","Measure and interpret loop current.","Inspect engineering-unit conversión.","Correct the localized scale.","Verify several points through the HMI."]
+    lesson: "An incorrect HMI value does not identify the failed element. The first verifiable discrepancy was engineering-unit conversión."
+    avoided_errors: ["Replacing without measurement.","Inventing a PLC raw range.","Compensating in the HMI.","Confusing correction with recovery."]
+    industrial_value: ["Boundary-based diagnosis.","Fewer unnecessary replacements.","Traceable verification."]

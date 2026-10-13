@@ -1,0 +1,478 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-PNEUMATIC-LINE-013"
+  editorial_id: "EE-0013"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Electro-pneumatic actuation"
+  domain: "Pneumatic cylinder diagnostics"
+  industry: "Packaging"
+  machine_type: "Automated conveyor line"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "pneumatic-cylinder-does-not-extend"
+  title: "El cilindro neumático no extiende"
+  summary: "Localiza por qué un cilindro permanece retraído aunque exista una orden de extensión, siguiendo la cadena desde PLC hasta la conexión neumática local."
+  estimated_duration: 14
+  scenario:
+    initial_context: "La estación ordena extender el cilindro, pero el vástago permanece completamente retraído y el ciclo no continúa."
+    operational_state: "ExtendCmd está activo y ExtendedLS permanece en FALSE. La primera frontera que no cumple todavía no está localizada."
+    initiating_event: "Producción informa de que el cilindro no inicia la extensión."
+    learner_role: "Técnico de automatización responsable de localizar la pérdida de continuidad entre mando, actuación, energía neumática y movimiento físico."
+    safety_context:
+      safe_state: "Realiza observaciones desde una posición segura y aplica el procedimiento autorizado de aislamiento de energías y control de movimiento antes de tocar conexiones neumáticas."
+      intervention_constraints: ["No forzar salidas ni feedback.", "No desconectar ni reconectar líneas presurizadas.", "No sustituir PLC, válvula o cilindro sin evidencia.", "Verificar la recuperación con movimiento controlado desde una posición segura."]
+  learning_objectives:
+    - id: "OBJ-TRACE-ENERGY"
+      description: "Seguir la cadena desde ExtendCmd y la salida hasta válvula, suministro, conexión local y cilindro."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-COMMAND-VS-ENERGY"
+      description: "Distinguir una orden PLC correcta de la presencia real de energía en el actuador."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-MOTION"
+      description: "Restaurar la conexión conforme al procedimiento autorizado y verificar movimiento y feedback."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      phase: "incident"
+      title: "El movimiento no comienza"
+      situation: "La estación solicita extensión, pero el cilindro permanece retraído. ¿Qué comprobación localiza primero la frontera de control?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-CYLINDER", "DEC-01-INSPECT-PLC", "DEC-01-FORCE-FEEDBACK"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-02-OUTPUT"
+      phase: "investigation"
+      title: "Seguir la orden hasta la válvula"
+      situation: "La observación online muestra ExtendCmd TRUE, la lógica de extensión activa y ExtendedLS FALSE. ¿Qué frontera debe comprobarse ahora?"
+      evidence_ids: ["EVID-02-PLC"]
+      decision_ids: ["DEC-02-ASSUME-MOTION", "DEC-02-CHANGE-LOGIC", "DEC-02-INSPECT-ACTUATION"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-SUPPLY"
+      phase: "investigation"
+      title: "Comprobar energía neumática disponible"
+      situation: "La salida y la actuación de control de la válvula son coherentes con la orden. Esto todavía no demuestra energía en el cilindro. ¿Qué compruebas?"
+      evidence_ids: ["EVID-03-ACTUATION"]
+      decision_ids: ["DEC-03-CHECK-SUPPLY", "DEC-03-REPLACE-VALVE", "DEC-03-INCREASE-PRESSURE"]
+      media_ids: []
+    - id: "STAGE-04-LOCAL-CONNECTION"
+      phase: "investigation"
+      title: "Inspeccionar la conexión local"
+      situation: "La comprobación confirma suministro de aire comprimido disponible. Con el cilindro aún retraído, ¿cuál es el siguiente paso?"
+      evidence_ids: ["EVID-04-SUPPLY"]
+      decision_ids: ["DEC-04-REPLACE-CYLINDER", "DEC-04-BYPASS-SAFETY", "DEC-04-INSPECT-CONNECTION"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-RESTORE"
+      phase: "solution"
+      title: "Restaurar la conexión"
+      situation: "La inspección segura muestra una línea neumática desconectada del racor local del cilindro. ¿Qué intervención está justificada?"
+      evidence_ids: ["EVID-05-DISCONNECTION"]
+      decision_ids: ["DEC-05-HOLD-TUBE", "DEC-05-RECONNECT", "DEC-05-REPLACE-PLC"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-VERIFY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "La conexión local ha sido restaurada conforme al procedimiento autorizado. La recuperación todavía no está verificada. ¿Qué prueba permite cerrar?"
+      evidence_ids: ["EVID-06-INTERVENTION"]
+      decision_ids: ["DEC-06-VERIFY", "DEC-06-CLOSE-CONNECTION", "DEC-06-FORCE-FEEDBACK"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Estación de transporte"
+      content: "Con la petición de extensión presente, el cilindro permanece completamente retraído y la secuencia queda detenida."
+      reliability: "high"
+      revealed_by: []
+    - id: "EVID-02-PLC"
+      type: "diagnostic"
+      source: "TIA Portal / observación online"
+      content: "ExtendCmd y la salida ordenada ExtendOutput están TRUE; ExtendedLS permanece FALSE. La comprobación de la lógica confirma que la orden de extensión es correcta."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-INSPECT-PLC"]
+      media_ids: ["ART-003"]
+    - id: "EVID-03-ACTUATION"
+      type: "inspection"
+      source: "Salida PLC y actuación de válvula"
+      content: "La salida ordenada y la actuación de control de la válvula son coherentes con ExtendCmd. Esto no demuestra que el cilindro reciba aire."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-INSPECT-ACTUATION"]
+    - id: "EVID-04-SUPPLY"
+      type: "measurement"
+      source: "Preparación de aire"
+      content: "La comprobación del suministro confirma que hay aire comprimido disponible antes de la conexión local. Esto no demuestra continuidad hasta el cilindro."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-CHECK-SUPPLY"]
+      media_ids: ["ART-004"]
+    - id: "EVID-05-DISCONNECTION"
+      type: "inspection"
+      source: "Conexión local del cilindro"
+      content: "Con las energías controladas según el procedimiento autorizado, se observa la línea neumática fuera del racor local del cilindro."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-INSPECT-CONNECTION"]
+      media_ids: ["ART-005"]
+    - id: "EVID-06-INTERVENTION"
+      type: "inspection"
+      source: "Conexión local del cilindro"
+      content: "La línea se ha asentado de nuevo en el racor local conforme al procedimiento autorizado. El movimiento y el feedback todavía no están verificados."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RECONNECT"]
+      media_ids: ["ART-006"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Prueba funcional controlada"
+      content: "La prueba funcional controlada confirma que el cilindro extiende y ExtendedLS cambia a TRUE de forma coherente con la posición alcanzada."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-VERIFY"]
+      media_ids: ["ART-007"]
+  decisions:
+    - id: "DEC-01-INSPECT-PLC"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Observar online ExtendCmd, la lógica de extensión, la salida asociada y ExtendedLS sin forzar variables."
+    - id: "DEC-01-REPLACE-CYLINDER"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Sustituir el cilindro porque no se mueve."
+    - id: "DEC-01-FORCE-FEEDBACK"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Forzar ExtendedLS para que la secuencia continúe."
+    - id: "DEC-02-INSPECT-ACTUATION"
+      stage_id: "STAGE-02-OUTPUT"
+      action: "Comprobar la salida y la actuación de control de la válvula, sin asumir movimiento físico."
+    - id: "DEC-02-ASSUME-MOTION"
+      stage_id: "STAGE-02-OUTPUT"
+      action: "Concluir que el cilindro recibe aire porque ExtendCmd está TRUE."
+    - id: "DEC-02-CHANGE-LOGIC"
+      stage_id: "STAGE-02-OUTPUT"
+      action: "Modificar la lógica para mantener la orden permanentemente."
+    - id: "DEC-03-CHECK-SUPPLY"
+      stage_id: "STAGE-03-SUPPLY"
+      action: "Desde una posición segura, comprobar la disponibilidad del suministro de aire conforme al procedimiento de la instalación."
+    - id: "DEC-03-REPLACE-VALVE"
+      stage_id: "STAGE-03-SUPPLY"
+      action: "Sustituir la válvula sin comprobar el suministro neumático."
+    - id: "DEC-03-INCREASE-PRESSURE"
+      stage_id: "STAGE-03-SUPPLY"
+      action: "Aumentar la presión para intentar iniciar el movimiento."
+    - id: "DEC-04-INSPECT-CONNECTION"
+      stage_id: "STAGE-04-LOCAL-CONNECTION"
+      action: "Aplicar el procedimiento autorizado de aislamiento de energías y control de movimiento antes de inspeccionar tubo, racor y puerto local del cilindro."
+    - id: "DEC-04-REPLACE-CYLINDER"
+      stage_id: "STAGE-04-LOCAL-CONNECTION"
+      action: "Sustituir el cilindro porque la presión general está disponible."
+    - id: "DEC-04-BYPASS-SAFETY"
+      stage_id: "STAGE-04-LOCAL-CONNECTION"
+      action: "Manipular el tubo con la instalación presurizada para buscar una fuga."
+    - id: "DEC-05-RECONNECT"
+      stage_id: "STAGE-05-RESTORE"
+      action: "Mantener el aislamiento autorizado, comprobar el estado compatible de tubo y racor, y restaurar la conexión local prevista."
+    - id: "DEC-05-HOLD-TUBE"
+      stage_id: "STAGE-05-RESTORE"
+      action: "Sujetar el tubo junto al racor y probar la máquina sin conectarlo."
+    - id: "DEC-05-REPLACE-PLC"
+      stage_id: "STAGE-05-RESTORE"
+      action: "Sustituir el PLC aunque la desconexión física ya está observada."
+    - id: "DEC-06-VERIFY"
+      stage_id: "STAGE-06-VERIFY"
+      action: "Desde una posición segura, verificar con movimiento controlado que el cilindro extiende y ExtendedLS cambia a TRUE."
+    - id: "DEC-06-CLOSE-CONNECTION"
+      stage_id: "STAGE-06-VERIFY"
+      action: "Cerrar la incidencia porque el tubo está conectado visualmente."
+    - id: "DEC-06-FORCE-FEEDBACK"
+      stage_id: "STAGE-06-VERIFY"
+      action: "Forzar ExtendedLS para confirmar el resto de la secuencia."
+  visual:
+    educational_purpose: "Distinguir una orden de control correcta de la entrega física de energía al actuador."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/01-cover.png"
+        alt: "Estación de embalaje con cilindro neumático retraído."
+        caption: "Estación afectada; causa todavía desconocida."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/02-incident.png"
+        alt: "Caja esperando mientras el cilindro permanece retraído."
+        caption: "El movimiento no comienza."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/03-plc-command.png"
+        alt: "Tabla online TIA Portal con ExtendCmd TRUE y ExtendedLS FALSE."
+        caption: "La orden existe; el movimiento físico sigue sin demostrarse."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/04-air-supply.png"
+        alt: "Unidad de preparación de aire y conjunto de válvula con sus conexiones."
+        caption: "Existe suministro general; falta comprobar la conexión local."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/05-disconnected-line.png"
+        alt: "Tubo neumático azul fuera del racor local junto al cilindro retraído."
+        caption: "La pérdida de continuidad neumática queda localizada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/06-reconnection.png"
+        alt: "Técnico reconectando el tubo neumático al racor local."
+        caption: "La conexión se restaura; la recuperación sigue pendiente."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-LINE-013/07-verification.png"
+        alt: "Cilindro con vástago extendido y placa de empuje desplazada."
+        caption: "Condición final ilustrada tras la prueba funcional."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "La orden PLC, la actuación de control y el suministro general eran correctos, pero una línea desconectada en el cilindro interrumpía la entrega local de energía neumática."
+    process: ["Confirmar mando y lógica.", "Seguir salida y actuación.", "Comprobar suministro neumático.", "Inspeccionar la conexión local con energías controladas.", "Restaurar la conexión.", "Verificar extensión y feedback."]
+    lesson: "Una orden PLC correcta no demuestra que el actuador reciba físicamente energía."
+    avoided_errors: ["Forzar feedback.", "Sustituir componentes sin evidencia.", "Manipular una línea presurizada.", "Confundir reconexión con recuperación verificada."]
+    industrial_value: ["Diagnóstico por fronteras.", "Menos sustituciones injustificadas.", "Recuperación funcional verificable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Línea neumática desconectada del racor local del cilindro."
+    recovery_conditions: ["Conexión local restaurada conforme al procedimiento autorizado.", "Cilindro completa la extensión.", "ExtendedLS cambia a TRUE de forma coherente."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-CONTROL"
+        statement: "La orden o la lógica de extensión no son correctas."
+        initial_status: "possible"
+      - id: "HYP-VALVE"
+        statement: "La salida o la actuación de control de la válvula no siguen la orden."
+        initial_status: "possible"
+      - id: "HYP-SUPPLY"
+        statement: "No hay suministro neumático general disponible."
+        initial_status: "possible"
+      - id: "HYP-LOCAL-CONNECTION"
+        statement: "La conexión neumática local del cilindro está interrumpida."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-LOCAL-CONNECTION"
+    critical_path: ["DEC-01-INSPECT-PLC", "DEC-02-INSPECT-ACTUATION", "DEC-03-CHECK-SUPPLY", "DEC-04-INSPECT-CONNECTION", "DEC-05-RECONNECT", "DEC-06-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-INSPECT-PLC"
+      is_correct: true
+      rationale: "Confirma si la orden y la lógica alcanzan la salida antes de intervenir físicamente."
+      classification: "strong"
+      consequence: "Se adquiere la observación PLC."
+      evidence_revealed: ["EVID-02-PLC"]
+      next_stage: "STAGE-02-OUTPUT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE-CYLINDER"
+      is_correct: false
+      retry_feedback: "La ausencia de movimiento no identifica todavía el elemento que rompe la cadena."
+      rationale: "Sustitución sin localizar la frontera."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-OUTPUT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-FORCE-FEEDBACK"
+      is_correct: false
+      retry_feedback: "Forzar el feedback oculta la discrepancia y elimina una protección de secuencia."
+      rationale: "No demuestra posición física."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-OUTPUT"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-02-INSPECT-ACTUATION"
+      is_correct: true
+      rationale: "Distingue lógica correcta de actuación de control antes de seguir hacia la energía neumática."
+      classification: "strong"
+      consequence: "Se confirma la frontera de actuación."
+      evidence_revealed: ["EVID-03-ACTUATION"]
+      next_stage: "STAGE-03-SUPPLY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-ASSUME-MOTION"
+      is_correct: false
+      retry_feedback: "ExtendCmd TRUE demuestra una orden, no aire en el cilindro ni movimiento."
+      rationale: "Confunde mando con resultado físico."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SUPPLY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-CHANGE-LOGIC"
+      is_correct: false
+      retry_feedback: "La lógica observada ya es coherente. Sigue la orden hacia la actuación y la energía."
+      rationale: "Cambiar lógica destruye evidencia válida."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SUPPLY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-CHECK-SUPPLY"
+      is_correct: true
+      rationale: "Determina si la energía neumática general está disponible sin inferir la condición local."
+      classification: "strong"
+      consequence: "Se adquiere la lectura de suministro."
+      evidence_revealed: ["EVID-04-SUPPLY"]
+      next_stage: "STAGE-04-LOCAL-CONNECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-REPLACE-VALVE"
+      is_correct: false
+      retry_feedback: "La actuación de control es coherente; comprueba primero la energía disponible y la continuidad local."
+      rationale: "Sustitución prematura."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-LOCAL-CONNECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-INCREASE-PRESSURE"
+      is_correct: false
+      retry_feedback: "Aumentar presión sin localizar la interrupción no es una prueba diagnóstica justificada."
+      rationale: "Intervención sin evidencia."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-LOCAL-CONNECTION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-04-INSPECT-CONNECTION"
+      is_correct: true
+      rationale: "Con suministro disponible, la inspección segura de la conexión local localiza la primera discontinuidad física."
+      classification: "strong"
+      consequence: "Se observa la línea desconectada."
+      evidence_revealed: ["EVID-05-DISCONNECTION"]
+      next_stage: "STAGE-05-RESTORE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-REPLACE-CYLINDER"
+      is_correct: false
+      retry_feedback: "La presión general no demuestra que el cilindro reciba aire. Inspecciona antes la conexión local."
+      rationale: "Sustitución sin confirmar continuidad."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-RESTORE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-BYPASS-SAFETY"
+      is_correct: false
+      retry_feedback: "No manipules conexiones presurizadas. Controla las energías antes de la inspección física."
+      rationale: "Intervención insegura."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-RESTORE"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-05-RECONNECT"
+      is_correct: true
+      rationale: "Restaura la continuidad física observada sin atribuir todavía recuperación funcional."
+      classification: "strong"
+      consequence: "La conexión queda restaurada y la verificación pendiente."
+      evidence_revealed: ["EVID-06-INTERVENTION"]
+      next_stage: "STAGE-06-VERIFY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-HOLD-TUBE"
+      is_correct: false
+      retry_feedback: "Una conexión improvisada no restablece una condición industrial segura ni verificable."
+      rationale: "No restaura la conexión prevista."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-05-REPLACE-PLC"
+      is_correct: false
+      retry_feedback: "La causa física ya está observada en la conexión local; sustituir el PLC no la corrige."
+      rationale: "Contradice la evidencia adquirida."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-VERIFY"
+      is_correct: true
+      rationale: "La prueba funcional independiente establece movimiento, posición y feedback después de la intervención."
+      classification: "strong"
+      consequence: "Se establece la recuperación."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-CLOSE-CONNECTION"
+      is_correct: false
+      retry_feedback: "Una conexión visible no demuestra extensión ni feedback correcto."
+      rationale: "Confunde intervención con verificación."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-FORCE-FEEDBACK"
+      is_correct: false
+      retry_feedback: "El feedback debe resultar de la posición física, no de un forzado."
+      rationale: "Elimina la prueba funcional."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: -1
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "Una línea desconectada en el racor local impedía que el cilindro recibiera energía neumática aunque la cadena de control fuese correcta."
+    correct_reasoning: ["Confirmar la orden.", "Seguir la actuación.", "Comprobar el suministro.", "Inspeccionar la conexión local con energías controladas.", "Reconectar.", "Verificar movimiento y feedback."]
+    recovery: ["Restaurar la conexión local.", "Verificar extensión y ExtendedLS TRUE mediante una prueba funcional controlada."]
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence: ["Caso técnico definido explícitamente por el encargo EE-0013.", "No se inventan tiempos, procedimientos de aislamiento, componentes concretos ni límites normativos.", "Las imágenes ilustran estados; la evidencia authored establece la verificación funcional."]

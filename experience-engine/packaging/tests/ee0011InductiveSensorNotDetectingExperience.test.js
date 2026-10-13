@@ -120,9 +120,10 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
   const english = await yaml("locales/theory.en.yaml", env);
   assert.deepEqual(environment.hotspots, [
     { experience_editorial_id: "EE-0011", x: 75, y: 61 },
-    { experience_editorial_id: "EE-0012", x: 52, y: 46 }
+    { experience_editorial_id: "EE-0012", x: 52, y: 46 },
+    { experience_editorial_id: "EE-0013", x: 31, y: 67 }
   ]);
-  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012"], theory, theoryLocales: { en: english } });
+  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013"], theory, theoryLocales: { en: english } });
   assert.equal(validation.valid, true, JSON.stringify(validation.incidents));
   assert.equal(theory.sections.length, 9);
   assert.deepEqual(theory.sections.map(item => item.id), english.sections.map(item => item.id));

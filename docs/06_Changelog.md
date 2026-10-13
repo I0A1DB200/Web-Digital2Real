@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-09 — ENV-002 / EE-0013 pneumatic no-extension diagnosis
+
+- Added bilingual EE-0013 in technical review with seven realistic PNGs based on repository visual references. The learner traces PLC command, valve control, available air and a disconnected local line, then restores the connection and independently verifies extension and feedback. Added focused flow tests and ENV-002 discovery. Engine behavior is unchanged; Browser QA remains infrastructure-blocked.
+
 ## 2026-10-08 — Final learner-facing visual policy
 
 - Established finished raster delivery for learner-facing Experience media while preserving vector/code tools as internal production methods. Replaced EE-0012's raw scaling SVG with a designed PNG, added a separate intervention PNG, removed redundant player-like framing and repaired learner-visible typography without changing technical logic or Engine behavior.

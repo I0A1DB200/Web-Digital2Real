@@ -1,0 +1,471 @@
+contract_version: "1.0.0"
+
+metadata:
+  id: "EXP-PNEUMATIC-CYLINDER-014"
+  content_version: "1.0"
+  class: "practice"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Pneumatic systems"
+  domain: "Magnetic cylinder position sensing"
+  industry: "Industrial automation"
+  machine_type: "Pneumatic cylinder station"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids:
+      - "COMP-IIO-SIGNAL-TRACEABILITY"
+      - "COMP-IIO-STATE-INTERPRETATION"
+      - "COMP-IIO-CONTROLLED-RECOVERY"
+
+public:
+  slug: "pneumatic-cylinder-extended-confirmation"
+  title: "Confirmación de extensión del cilindro neumático"
+  summary: "Diagnostica por evidencias una confirmación de extensión ausente y recupera el sensor magnético sin forzar señales ni modificar la lógica."
+  estimated_duration: 12
+  scenario:
+    initial_context: "El cilindro neumático alcanza físicamente su posición extendida, pero la secuencia automática permanece esperando la confirmación de extensión."
+    operational_state: "PLC_1 está en RUN, la orden de extensión y la salida de válvula permanecen TRUE, y no se observan fallos generales de seguridad o comunicación."
+    initiating_event: "El operador informa de que el cilindro llega al extremo, pero la estación no avanza."
+    learner_role: "Técnico de automatización encargado de separar movimiento físico, sensor, entrada PLC, feedback derivado y transición de secuencia."
+    safety_context:
+      safe_state: "Asegurar la estación y evitar el movimiento inesperado antes de acceder al cilindro o ajustar el sensor."
+      intervention_constraints:
+        - "No forzar entradas ni salidas."
+        - "No modificar la lógica ni cambiar direcciones para probar."
+        - "No sustituir el sensor sin evidencia de fallo interno."
+        - "Verificar varios ciclos antes de devolver la estación a producción."
+  learning_objectives:
+    - id: "OBJ-MOVEMENT-FEEDBACK"
+      description: "Distinguir la extensión física del cilindro de la confirmación recibida por el PLC."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-SIGNAL-TRACEABILITY"
+      description: "Relacionar la orden, la salida de válvula, DI_Extended, ExtendedFb y Step_Extended."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-CONTROLLED-RECOVERY"
+      description: "Probar, reposicionar y fijar el sensor magnético y verificar la recuperación sin forzado."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      title: "Incidente de extensión"
+      situation: "El cilindro está en el extremo extendido, pero la estación no avanza. La observación inicial no permite concluir que el actuador o la válvula hayan fallado."
+      evidence_ids: ["EVID-01-OPERATOR"]
+      decision_ids: []
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-OBSERVE"
+      title: "Observar el síntoma"
+      situation: "La extensión física está presente y la orden sigue activa. Debes conservar la diferencia entre movimiento y confirmación antes de intervenir."
+      evidence_ids: ["EVID-02-EXTENDED"]
+      decision_ids: ["DEC-01-OBSERVE", "DEC-01-VALVE", "DEC-01-REPLACE"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-03-PLC"
+      title: "Inspeccionar la Watch Table"
+      situation: "La evidencia online permite comparar la orden, la salida, las entradas y los estados derivados de extensión."
+      evidence_ids: ["EVID-03-WATCH"]
+      decision_ids: ["DEC-02-TRACE", "DEC-02-FORCE", "DEC-02-CODE"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-04-SENSOR"
+      title: "Inspeccionar el sensor magnético"
+      situation: "El sensor está instalado en la ranura longitudinal del cilindro y su indicación local permanece apagada en la posición extendida nominal."
+      evidence_ids: ["EVID-04-SENSOR"]
+      decision_ids: ["DEC-03-INSPECT", "DEC-03-INPUT", "DEC-03-SWAP"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-CONTROLLED-TEST"
+      title: "Realizar una prueba discriminante"
+      situation: "Una prueba controlada permite localizar una posición en la que el sensor conmuta. La indicación local demuestra detección en ese punto, pero no sustituye la verificación independiente del PLC."
+      evidence_ids: ["EVID-05-DETECTION"]
+      decision_ids: ["DEC-04-TEST", "DEC-04-FORCE", "DEC-04-IGNORE"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-06-CORRECTION"
+      title: "Corregir la posición"
+      situation: "La causa coherente con las evidencias es la posición del sensor respecto a la zona de detección del imán del pistón."
+      evidence_ids: ["EVID-06-CORRECTION"]
+      decision_ids: ["DEC-05-ALIGN", "DEC-05-REPLACE", "DEC-05-OVERRIDE"]
+      media_ids: ["ART-006"]
+    - id: "STAGE-07-VERIFICATION"
+      title: "Verificar la recuperación"
+      situation: "Tras reposicionar y fijar el sensor, la indicación local debe coincidir con DI_Extended, ExtendedFb y Step_Extended bajo condiciones normales de operación."
+      evidence_ids: ["EVID-07-RECOVERY"]
+      decision_ids: ["DEC-06-VERIFY", "DEC-06-SINGLE", "DEC-06-HMI"]
+      media_ids: ["ART-007"]
+  evidence:
+    - id: "EVID-01-OPERATOR"
+      type: "operator_report"
+      source: "Operador de la estación"
+      content: "El cilindro llega al extremo, pero la secuencia no continúa."
+      reliability: "medium"
+      revealed_by: []
+    - id: "EVID-02-EXTENDED"
+      type: "initial_observation"
+      source: "Observación de campo"
+      content: "El vástago alcanza la posición extendida mientras la confirmación de proceso sigue ausente."
+      reliability: "high"
+      revealed_by: ["DEC-01-OBSERVE"]
+    - id: "EVID-03-WATCH"
+      type: "diagnostic"
+      source: "Watch Table de PLC_1"
+      content: "ExtendCmd y ValveExtendOut están TRUE; DI_Extended, ExtendedFb y Step_Extended permanecen FALSE."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-TRACE"]
+    - id: "EVID-04-SENSOR"
+      type: "inspection"
+      source: "Sensor magnético del cilindro"
+      content: "El sensor está en la ranura del cilindro y su indicación local está apagada en la posición extendida nominal."
+      reliability: "high"
+      revealed_by: ["DEC-03-INSPECT"]
+    - id: "EVID-05-DETECTION"
+      type: "functional_test"
+      source: "Prueba de detección controlada"
+      content: "El sensor conmuta cuando se desplaza hasta una posición distinta dentro de la zona de detección."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-TEST"]
+    - id: "EVID-06-CORRECTION"
+      type: "inspection"
+      source: "Posición del sensor"
+      content: "El sensor queda reposicionado y asegurado en la zona correspondiente a la posición extendida del pistón."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-ALIGN"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Verificación de estación"
+      content: "La indicación local y las confirmaciones del PLC se recuperan; la secuencia alcanza el estado extendido sin forzado."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-VERIFY"]
+  decisions:
+    - id: "DEC-01-OBSERVE"
+      stage_id: "STAGE-02-OBSERVE"
+      action: "Separar la extensión física de la confirmación y conservar el estado antes de intervenir."
+    - id: "DEC-01-VALVE"
+      stage_id: "STAGE-02-OBSERVE"
+      action: "Concluir que la válvula ha fallado porque la secuencia no avanza."
+    - id: "DEC-01-REPLACE"
+      stage_id: "STAGE-02-OBSERVE"
+      action: "Sustituir el cilindro sin comprobar la señal de posición."
+    - id: "DEC-02-TRACE"
+      stage_id: "STAGE-03-PLC"
+      action: "Comparar ExtendCmd, ValveExtendOut, DI_Extended, ExtendedFb y Step_Extended."
+    - id: "DEC-02-FORCE"
+      stage_id: "STAGE-03-PLC"
+      action: "Forzar DI_Extended para permitir que avance la secuencia."
+    - id: "DEC-02-CODE"
+      stage_id: "STAGE-03-PLC"
+      action: "Cambiar la lógica o la dirección de Step_Extended para probar."
+    - id: "DEC-03-INSPECT"
+      stage_id: "STAGE-04-SENSOR"
+      action: "Inspeccionar la posición del sensor y su indicación local con la estación asegurada."
+    - id: "DEC-03-INPUT"
+      stage_id: "STAGE-04-SENSOR"
+      action: "Concluir que el módulo de entradas está averiado sin una prueba adicional."
+    - id: "DEC-03-SWAP"
+      stage_id: "STAGE-04-SENSOR"
+      action: "Cambiar el sensor antes de registrar su posición y comportamiento."
+    - id: "DEC-04-TEST"
+      stage_id: "STAGE-05-CONTROLLED-TEST"
+      action: "Realizar una prueba controlada para localizar la zona de conmutación del sensor."
+    - id: "DEC-04-FORCE"
+      stage_id: "STAGE-05-CONTROLLED-TEST"
+      action: "Forzar la entrada PLC en lugar de comprobar la detección local."
+    - id: "DEC-04-IGNORE"
+      stage_id: "STAGE-05-CONTROLLED-TEST"
+      action: "Ignorar la indicación del sensor y continuar cambiando componentes."
+    - id: "DEC-05-ALIGN"
+      stage_id: "STAGE-06-CORRECTION"
+      action: "Reposicionar y asegurar el sensor en la zona real de detección del pistón."
+    - id: "DEC-05-REPLACE"
+      stage_id: "STAGE-06-CORRECTION"
+      action: "Sustituir el sensor aunque la prueba demuestre que puede conmutar."
+    - id: "DEC-05-OVERRIDE"
+      stage_id: "STAGE-06-CORRECTION"
+      action: "Mantener un bypass para que la secuencia ignore la confirmación."
+    - id: "DEC-06-VERIFY"
+      stage_id: "STAGE-07-VERIFICATION"
+      action: "Verificar la indicación local, DI_Extended, ExtendedFb, Step_Extended y varios ciclos."
+    - id: "DEC-06-SINGLE"
+      stage_id: "STAGE-07-VERIFICATION"
+      action: "Cerrar la intervención después de una única conmutación."
+    - id: "DEC-06-HMI"
+      stage_id: "STAGE-07-VERIFICATION"
+      action: "Considerar suficiente que la interfaz deje de mostrar el síntoma."
+  visual:
+    educational_purpose: "Presentar progresivamente el movimiento, la evidencia PLC, la inspección del sensor, la prueba controlada, la corrección y la verificación."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-001-cylinder-overview.png"
+        alt: "Vista general de un cilindro neumático horizontal con tubo azul y sensor magnético en la ranura longitudinal."
+        caption: "Estación neumática al inicio del diagnóstico."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-002-cylinder-extended.png"
+        alt: "Cilindro neumático en su posición extendida con el sensor instalado."
+        caption: "Movimiento físico observado en el extremo extendido."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-003-watch-table-failed.png"
+        alt: "Watch Table con ExtendCmd y ValveExtendOut TRUE y DI_Extended, ExtendedFb y Step_Extended FALSE; Step_Extended usa %M20.2."
+        caption: "Estado PLC durante la ausencia de confirmación."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-004-magnetic-sensor-off.png"
+        alt: "Primer plano del sensor magnético instalado en la ranura del cilindro con la indicación local apagada."
+        caption: "Inspección de la posición y la indicación local."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-005-magnetic-sensor-detection.png"
+        alt: "Sensor magnético con indicación local encendida durante una prueba de detección controlada."
+        caption: "Zona de conmutación encontrada durante la prueba."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-006-sensor-correct-position.png"
+        alt: "Sensor magnético reposicionado y asegurado en el cilindro con la indicación local encendida."
+        caption: "Corrección de la posición del sensor."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-PNEUMATIC-CYLINDER-014/ART-007-watch-table-recovered.png"
+        alt: "Watch Table suministrada para documentar la verificación posterior a la corrección del sensor."
+        caption: "Evidencia suministrada para la verificación final; pendiente de QA de direcciones y estados."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "El cilindro sí alcanzaba la posición extendida; la confirmación faltaba porque el sensor magnético no estaba situado en la zona de detección correspondiente al imán del pistón."
+    process:
+      - "Separar movimiento físico de confirmación PLC."
+      - "Comparar orden, salida, entrada, feedback y secuencia."
+      - "Inspeccionar el sensor con la estación asegurada."
+      - "Localizar la zona de conmutación mediante una prueba controlada."
+      - "Reposicionar, fijar y verificar ciclos repetidos sin forzado."
+    lesson: "Una extensión mecánica correcta no prueba por sí sola que el PLC haya recibido la confirmación de posición."
+    avoided_errors:
+      - "Forzar DI_Extended."
+      - "Cambiar la lógica o el direccionamiento."
+      - "Sustituir el sensor sin comprobar su capacidad de conmutación."
+      - "Cerrar la intervención tras una única detección."
+    industrial_value:
+      - "Diagnóstico trazable entre campo y PLC."
+      - "Menor sustitución innecesaria."
+      - "Recuperación segura y repetible."
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "El sensor magnético de posición extendida estaba desplazado dentro de la ranura del cilindro y no coincidía con la zona de detección del imán del pistón."
+    recovery_conditions:
+      - "Estación asegurada antes de la intervención."
+      - "Sensor reposicionado y fijado en la zona real de detección."
+      - "Indicación local coherente con la posición extendida."
+      - "DI_Extended, ExtendedFb y Step_Extended coherentes bajo operación normal."
+      - "Varios ciclos verificados sin forzado ni bypass."
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-VALVE-FAULT"
+        statement: "La válvula de extensión no entrega movimiento suficiente."
+        initial_status: "possible"
+      - id: "HYP-CYLINDER-FAULT"
+        statement: "El cilindro tiene un fallo mecánico interno."
+        initial_status: "possible"
+      - id: "HYP-SENSOR-MISPOSITION"
+        statement: "El sensor magnético está fuera de la zona de detección del imán del pistón."
+        initial_status: "likely"
+      - id: "HYP-WIRING"
+        statement: "La continuidad entre el sensor y la entrada PLC está interrumpida."
+        initial_status: "possible"
+      - id: "HYP-PLC-INPUT"
+        statement: "El canal de entrada PLC no registra la señal."
+        initial_status: "unlikely"
+      - id: "HYP-LOGIC"
+        statement: "La lógica deriva incorrectamente el feedback o la transición."
+        initial_status: "unlikely"
+    confirmed_root_cause: "HYP-SENSOR-MISPOSITION"
+    critical_path: ["DEC-01-OBSERVE", "DEC-02-TRACE", "DEC-03-INSPECT", "DEC-04-TEST", "DEC-05-ALIGN", "DEC-06-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-OBSERVE"
+      rationale: "La extensión física y la confirmación PLC son observaciones distintas."
+      classification: "strong"
+      consequence: "Se conserva la evidencia y se pasa a la Watch Table."
+      evidence_revealed: ["EVID-02-EXTENDED"]
+      next_stage: "STAGE-03-PLC"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-01-VALVE"
+      rationale: "El movimiento observado no respalda una conclusión de fallo de válvula."
+      classification: "weak"
+      consequence: "La hipótesis de válvula queda sin discriminar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PLC"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE"
+      rationale: "Sustituir el actuador elimina evidencia sin explicar la ausencia de confirmación."
+      classification: "unsafe"
+      consequence: "La intervención se detiene por sustitución injustificada."
+      evidence_revealed: []
+      next_stage: "STAGE-03-PLC"
+      score_effect: -8
+      safety_effect: -4
+    - decision_id: "DEC-02-TRACE"
+      rationale: "La comparación de los cinco estados separa orden, movimiento, entrada y secuencia."
+      classification: "strong"
+      consequence: "La ausencia de DI_Extended queda delimitada antes de intervenir."
+      evidence_revealed: ["EVID-03-WATCH"]
+      next_stage: "STAGE-04-SENSOR"
+      score_effect: 8
+      safety_effect: 1
+    - decision_id: "DEC-02-FORCE"
+      rationale: "Forzar la entrada oculta la condición real y elimina la prueba de diagnóstico."
+      classification: "unsafe"
+      consequence: "La intervención se detiene por bypass de una confirmación."
+      evidence_revealed: []
+      next_stage: "STAGE-04-SENSOR"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-02-CODE"
+      rationale: "La Watch Table no aporta evidencia de un defecto lógico."
+      classification: "weak"
+      consequence: "Se evita alterar un programa sin causa confirmada."
+      evidence_revealed: []
+      next_stage: "STAGE-04-SENSOR"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-03-INSPECT"
+      rationale: "La posición y la indicación local discriminan una condición de detección sin cambiar la señal PLC."
+      classification: "strong"
+      consequence: "Se confirma que el sensor debe inspeccionarse en su ranura."
+      evidence_revealed: ["EVID-04-SENSOR"]
+      next_stage: "STAGE-05-CONTROLLED-TEST"
+      score_effect: 8
+      safety_effect: 2
+    - decision_id: "DEC-03-INPUT"
+      rationale: "Un FALSE en DI_Extended no demuestra por sí solo un módulo averiado."
+      classification: "weak"
+      consequence: "La hipótesis eléctrica permanece sin una prueba discriminante."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CONTROLLED-TEST"
+      score_effect: -3
+      safety_effect: 0
+    - decision_id: "DEC-03-SWAP"
+      rationale: "La sustitución anticipada destruye la oportunidad de comprobar la posición y la conmutación."
+      classification: "weak"
+      consequence: "Se mantiene la causa física sin comprobar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CONTROLLED-TEST"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-04-TEST"
+      rationale: "Una prueba controlada muestra si el sensor puede conmutar y dónde lo hace."
+      classification: "strong"
+      consequence: "La desalineación gana evidencia directa sin afirmar continuidad PLC todavía."
+      evidence_revealed: ["EVID-05-DETECTION"]
+      next_stage: "STAGE-06-CORRECTION"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-04-FORCE"
+      rationale: "El forzado evita la prueba que separa sensor y entrada."
+      classification: "unsafe"
+      consequence: "La evidencia queda invalidada y no se permite avanzar por bypass."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECTION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-04-IGNORE"
+      rationale: "Ignorar una conmutación localizada mantiene abierta una hipótesis ya discriminada."
+      classification: "weak"
+      consequence: "Se pospone una corrección justificada."
+      evidence_revealed: []
+      next_stage: "STAGE-06-CORRECTION"
+      score_effect: -4
+      safety_effect: 0
+    - decision_id: "DEC-05-ALIGN"
+      rationale: "Corrige la relación física observada sin cambiar la lógica ni forzar estados."
+      classification: "strong"
+      consequence: "El sensor queda en su zona de detección y se puede verificar la cadena completa."
+      evidence_revealed: ["EVID-06-CORRECTION"]
+      next_stage: "STAGE-07-VERIFICATION"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-05-REPLACE"
+      rationale: "La prueba demuestra que el sensor conmuta en una posición distinta."
+      classification: "weak"
+      consequence: "La sustitución no está justificada antes de corregir la posición."
+      evidence_revealed: []
+      next_stage: "STAGE-07-VERIFICATION"
+      score_effect: -5
+      safety_effect: 0
+    - decision_id: "DEC-05-OVERRIDE"
+      rationale: "Un bypass permite una transición aparente sin recuperar la función de detección."
+      classification: "unsafe"
+      consequence: "La recuperación no se acepta con una confirmación anulada."
+      evidence_revealed: []
+      next_stage: "STAGE-07-VERIFICATION"
+      score_effect: -10
+      safety_effect: -10
+    - decision_id: "DEC-06-VERIFY"
+      rationale: "Solo varios ciclos y la coherencia entre campo, PLC y secuencia demuestran recuperación."
+      classification: "strong"
+      consequence: "La estación queda verificada sin forzado."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: "DEC-06-SINGLE"
+      rationale: "Una sola conmutación no demuestra estabilidad."
+      classification: "acceptable"
+      consequence: "La intervención se cierra con verificación insuficiente."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -2
+      safety_effect: 0
+    - decision_id: "DEC-06-HMI"
+      rationale: "La interfaz no sustituye la confirmación de campo, entrada y secuencia."
+      classification: "weak"
+      consequence: "La recuperación queda incompleta aunque desaparezca el síntoma visible."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -4
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  debrief:
+    fault_summary: "El cilindro alcanzaba el extremo, pero el sensor magnético no coincidía con la zona de detección del imán del pistón."
+    correct_reasoning:
+      - "Separar movimiento físico de confirmación PLC."
+      - "Correlacionar orden, salida, entrada, feedback y secuencia."
+      - "Inspeccionar y probar el sensor antes de sustituirlo."
+      - "Reposicionar, fijar y verificar ciclos repetidos."
+    recovery:
+      - "Asegurar la estación."
+      - "Reposicionar y fijar el sensor magnético."
+      - "Confirmar la indicación local y DI_Extended."
+      - "Confirmar ExtendedFb, Step_Extended y varios ciclos."
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence:
+      - "La authoring definition, las relaciones de decisión y los siete medios siguen el contrato vigente."
+      - "Los siete PNG son independientes y byte-identical entre media y assets."
+      - "ART-005 requiere revisión visual por recorte antes de publicación."
+      - "ART-007 no coincide con la corrección aprobada: muestra Step_Extended en %MW10 y requiere comparación de estados y direcciones."
+      - "ICF-07 está planificado pero no declara competencias canónicas; se reutilizan de forma explícita las competencias ICF-02 pertinentes al razonamiento de señales."

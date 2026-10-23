@@ -1,0 +1,147 @@
+locale: "en"
+translations:
+  title: "Pneumatic Cylinder Extended Position Confirmation"
+  summary: "Use evidence to diagnose a missing extended-position confirmation and recover the magnetic sensor without forcing signals or changing logic."
+  scenario:
+    initial_context: "The pneumatic cylinder physically reaches its extended position, but the automatic sequence remains waiting for the extension confirmation."
+    operational_state: "PLC_1 is in RUN, the extend command and valve output remain TRUE, and no general safety or communication faults are observed."
+    initiating_event: "The operator reports that the cylinder reaches the end position but the station does not advance."
+    learner_role: "Automation technician responsible for separating physical movement, sensor switching, PLC input, derived feedback, and sequence transition."
+    safety_context:
+      safe_state: "Secure the station and prevent unexpected movement before accessing the cylinder or adjusting the sensor."
+      intervention_constraints:
+        - "Do not force inputs or outputs."
+        - "Do not change logic or addresses as a test."
+        - "Do not replace the sensor without evidence of an internal fault."
+        - "Verify multiple cycles before returning the station to production."
+  learning_objectives:
+    OBJ-MOVEMENT-FEEDBACK:
+      description: "Distinguish physical cylinder extension from the confirmation received by the PLC."
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Relate the command, valve output, DI_Extended, ExtendedFb, and Step_Extended."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Test, reposition, secure, and verify the magnetic sensor without forcing signals."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Extension incident"
+      situation: "The cylinder is at the extended end position, but the station does not advance. The initial observation does not prove an actuator or valve failure."
+    STAGE-02-OBSERVE:
+      title: "Observe the symptom"
+      situation: "Physical extension is present and the command remains active. Preserve the distinction between movement and confirmation before intervening."
+    STAGE-03-PLC:
+      title: "Inspect the Watch Table"
+      situation: "Online evidence allows comparison of the command, output, inputs, and derived extension states."
+    STAGE-04-SENSOR:
+      title: "Inspect the magnetic sensor"
+      situation: "The sensor is installed in the cylinder's longitudinal slot and its local indication remains off at the nominal extended position."
+    STAGE-05-CONTROLLED-TEST:
+      title: "Perform a discriminating test"
+      situation: "A controlled test locates a position where the sensor switches. The local indication proves detection at that point but does not replace independent PLC verification."
+    STAGE-06-CORRECTION:
+      title: "Correct the position"
+      situation: "The evidence supports a sensor position mismatch relative to the piston magnet detection zone."
+    STAGE-07-VERIFICATION:
+      title: "Verify recovery"
+      situation: "After repositioning and securing the sensor, its local indication should agree with DI_Extended, ExtendedFb, and Step_Extended under normal operation."
+  evidence:
+    EVID-01-OPERATOR:
+      source: "Station operator"
+      content: "The cylinder reaches the end position, but the sequence does not continue."
+    EVID-02-EXTENDED:
+      source: "Field observation"
+      content: "The rod reaches the extended position while process confirmation remains absent."
+    EVID-03-WATCH:
+      source: "PLC_1 Watch Table"
+      content: "ExtendCmd and ValveExtendOut are TRUE; DI_Extended, ExtendedFb, and Step_Extended remain FALSE."
+    EVID-04-SENSOR:
+      source: "Cylinder magnetic sensor"
+      content: "The sensor is in the cylinder slot and its local indication is off at the nominal extended position."
+    EVID-05-DETECTION:
+      source: "Controlled detection test"
+      content: "The sensor switches when moved to a different position within the detection zone."
+    EVID-06-CORRECTION:
+      source: "Sensor position"
+      content: "The sensor is repositioned and secured in the zone corresponding to the piston extended position."
+    EVID-07-RECOVERY:
+      source: "Station verification"
+      content: "The local indication and PLC confirmations recover; the sequence reaches the extended state without forcing."
+  decisions:
+    DEC-01-OBSERVE:
+      action: "Separate physical extension from confirmation and preserve the state before intervening."
+    DEC-01-VALVE:
+      action: "Conclude that the valve has failed because the sequence does not advance."
+    DEC-01-REPLACE:
+      action: "Replace the cylinder without checking the position signal."
+    DEC-02-TRACE:
+      action: "Compare ExtendCmd, ValveExtendOut, DI_Extended, ExtendedFb, and Step_Extended."
+    DEC-02-FORCE:
+      action: "Force DI_Extended to let the sequence advance."
+    DEC-02-CODE:
+      action: "Change the logic or Step_Extended address as a test."
+    DEC-03-INSPECT:
+      action: "Inspect the sensor position and local indication with the station secured."
+    DEC-03-INPUT:
+      action: "Conclude that the input module has failed without an additional test."
+    DEC-03-SWAP:
+      action: "Replace the sensor before recording its position and behavior."
+    DEC-04-TEST:
+      action: "Perform a controlled test to locate the sensor switching zone."
+    DEC-04-FORCE:
+      action: "Force the PLC input instead of checking local detection."
+    DEC-04-IGNORE:
+      action: "Ignore the sensor indication and continue replacing components."
+    DEC-05-ALIGN:
+      action: "Reposition and secure the sensor in the piston's actual detection zone."
+    DEC-05-REPLACE:
+      action: "Replace the sensor even though the test proves it can switch."
+    DEC-05-OVERRIDE:
+      action: "Keep a bypass so the sequence ignores the confirmation."
+    DEC-06-VERIFY:
+      action: "Verify the local indication, DI_Extended, ExtendedFb, Step_Extended, and multiple cycles."
+    DEC-06-SINGLE:
+      action: "Close the intervention after one successful switch."
+    DEC-06-HMI:
+      action: "Consider it sufficient that the interface no longer shows the symptom."
+  visual:
+    educational_purpose: "Progressively present physical movement, PLC evidence, sensor inspection, controlled testing, correction, and verification."
+  assets:
+    ART-001:
+      alt: "Overview of a horizontal pneumatic cylinder with blue tubing and a magnetic sensor in the longitudinal slot."
+      caption: "Pneumatic station at the start of diagnosis."
+    ART-002:
+      alt: "Pneumatic cylinder at its extended position with the sensor installed."
+      caption: "Physical movement observed at the extended end."
+    ART-003:
+      alt: "Watch Table with the command and output TRUE and confirmations FALSE; Step_Extended uses %M20.2."
+      caption: "PLC state during the missing confirmation."
+    ART-004:
+      alt: "Close-up of the magnetic sensor installed in the cylinder slot with its local indication off."
+      caption: "Inspection of sensor position and local indication."
+    ART-005:
+      alt: "Magnetic sensor with its local indication on during a controlled detection test."
+      caption: "Switching zone found during the test."
+    ART-006:
+      alt: "Magnetic sensor repositioned and secured on the cylinder with its local indication on."
+      caption: "Sensor position correction."
+    ART-007:
+      alt: "Supplied Watch Table image intended to document verification after sensor correction."
+      caption: "Supplied final-verification evidence; address and state QA pending."
+  completion:
+    title: "Technical debrief"
+    summary: "The cylinder reached the extended position; confirmation was absent because the magnetic sensor was not located in the piston magnet's detection zone."
+    process:
+      - "Separate physical movement from PLC confirmation."
+      - "Compare command, output, input, feedback, and sequence."
+      - "Inspect the sensor with the station secured."
+      - "Locate the switching zone through a controlled test."
+      - "Reposition, secure, and verify repeated cycles without forcing."
+    lesson: "Correct mechanical extension alone does not prove that the PLC received the position confirmation."
+    avoided_errors:
+      - "Forcing DI_Extended."
+      - "Changing logic or addressing."
+      - "Replacing the sensor without checking its switching capability."
+      - "Closing the intervention after one detection."
+    industrial_value:
+      - "Traceable field-to-PLC diagnosis."
+      - "Fewer unnecessary replacements."
+      - "Safe and repeatable recovery."

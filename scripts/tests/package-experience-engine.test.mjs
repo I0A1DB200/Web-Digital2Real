@@ -42,7 +42,7 @@ async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
 }
 
-test("preview packages only the remaining canonical Experience", async t => {
+test("preview packages the canonical preview Experiences", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -50,19 +50,28 @@ test("preview packages only the remaining canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
+  assert.deepEqual(result.packaged, [
+    "EXP-PNEUMATIC-CYLINDER-014",
+    "EXP-SENSOR-PHOTOELECTRIC-009"
+  ]);
   assert.deepEqual(result.skipped, [{
     file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
     reason: "publication_state"
   }]);
-  assert.equal(catalog.experiences.length, 1);
-  const remaining = catalog.experiences[0];
+  assert.equal(catalog.experiences.length, 2);
+  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-PHOTOELECTRIC-009");
   assert.equal(remaining.id, "EXP-SENSOR-PHOTOELECTRIC-009");
   assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.es.json");
   assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.en.json");
   assert.equal(remaining.localizedMetadata.en.title, "Photoelectric Sensor Misalignment");
   await access(path.join(generatedRoot, remaining.locales.es));
   await access(path.join(generatedRoot, remaining.locales.en));
+  const pneumatic = catalog.experiences.find(item => item.id === "EXP-PNEUMATIC-CYLINDER-014");
+  assert.equal(pneumatic.locales.es, "experiences/EXP-PNEUMATIC-CYLINDER-014.es.json");
+  assert.equal(pneumatic.locales.en, "experiences/EXP-PNEUMATIC-CYLINDER-014.en.json");
+  assert.equal(pneumatic.localizedMetadata.en.title, "Pneumatic Cylinder Extended Position Confirmation");
+  await access(path.join(generatedRoot, pneumatic.locales.es));
+  await access(path.join(generatedRoot, pneumatic.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
 });
@@ -129,7 +138,7 @@ test("a validation failure preserves the previous generated package", async t =>
   assert.equal(await readFile(path.join(target, "sentinel.txt"), "utf8"), "preserve");
 });
 
-test("publish excludes a technical-review experience while preview includes it", async t => {
+test("publish excludes technical-review Experiences while preview includes them", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -138,7 +147,10 @@ test("publish excludes a technical-review experience while preview includes it",
 
   assert.deepEqual(publish.packaged, []);
   assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, ["EXP-SENSOR-PHOTOELECTRIC-009"]);
+  assert.deepEqual(preview.packaged, [
+    "EXP-PNEUMATIC-CYLINDER-014",
+    "EXP-SENSOR-PHOTOELECTRIC-009"
+  ]);
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {

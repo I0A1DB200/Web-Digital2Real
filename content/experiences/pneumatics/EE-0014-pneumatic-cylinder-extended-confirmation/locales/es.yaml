@@ -1,0 +1,147 @@
+locale: "es"
+translations:
+  title: "Confirmación de extensión del cilindro neumático"
+  summary: "Diagnostica por evidencias una confirmación de extensión ausente y recupera el sensor magnético sin forzar señales ni modificar la lógica."
+  scenario:
+    initial_context: "El cilindro neumático alcanza físicamente su posición extendida, pero la secuencia automática permanece esperando la confirmación de extensión."
+    operational_state: "PLC_1 está en RUN, la orden de extensión y la salida de válvula permanecen TRUE, y no se observan fallos generales de seguridad o comunicación."
+    initiating_event: "El operador informa de que el cilindro llega al extremo, pero la estación no avanza."
+    learner_role: "Técnico de automatización encargado de separar movimiento físico, sensor, entrada PLC, feedback derivado y transición de secuencia."
+    safety_context:
+      safe_state: "Asegurar la estación y evitar el movimiento inesperado antes de acceder al cilindro o ajustar el sensor."
+      intervention_constraints:
+        - "No forzar entradas ni salidas."
+        - "No modificar la lógica ni cambiar direcciones para probar."
+        - "No sustituir el sensor sin evidencia de fallo interno."
+        - "Verificar varios ciclos antes de devolver la estación a producción."
+  learning_objectives:
+    OBJ-MOVEMENT-FEEDBACK:
+      description: "Distinguir la extensión física del cilindro de la confirmación recibida por el PLC."
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Relacionar la orden, la salida de válvula, DI_Extended, ExtendedFb y Step_Extended."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Probar, reposicionar y fijar el sensor magnético y verificar la recuperación sin forzado."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Incidente de extensión"
+      situation: "El cilindro está en el extremo extendido, pero la estación no avanza. La observación inicial no permite concluir que el actuador o la válvula hayan fallado."
+    STAGE-02-OBSERVE:
+      title: "Observar el síntoma"
+      situation: "La extensión física está presente y la orden sigue activa. Debes conservar la diferencia entre movimiento y confirmación antes de intervenir."
+    STAGE-03-PLC:
+      title: "Inspeccionar la Watch Table"
+      situation: "La evidencia online permite comparar la orden, la salida, las entradas y los estados derivados de extensión."
+    STAGE-04-SENSOR:
+      title: "Inspeccionar el sensor magnético"
+      situation: "El sensor está instalado en la ranura longitudinal del cilindro y su indicación local permanece apagada en la posición extendida nominal."
+    STAGE-05-CONTROLLED-TEST:
+      title: "Realizar una prueba discriminante"
+      situation: "Una prueba controlada permite localizar una posición en la que el sensor conmuta. La indicación local demuestra detección en ese punto, pero no sustituye la verificación independiente del PLC."
+    STAGE-06-CORRECTION:
+      title: "Corregir la posición"
+      situation: "La causa coherente con las evidencias es la posición del sensor respecto a la zona de detección del imán del pistón."
+    STAGE-07-VERIFICATION:
+      title: "Verificar la recuperación"
+      situation: "Tras reposicionar y fijar el sensor, la indicación local debe coincidir con DI_Extended, ExtendedFb y Step_Extended bajo condiciones normales de operación."
+  evidence:
+    EVID-01-OPERATOR:
+      source: "Operador de la estación"
+      content: "El cilindro llega al extremo, pero la secuencia no continúa."
+    EVID-02-EXTENDED:
+      source: "Observación de campo"
+      content: "El vástago alcanza la posición extendida mientras la confirmación de proceso sigue ausente."
+    EVID-03-WATCH:
+      source: "Watch Table de PLC_1"
+      content: "ExtendCmd y ValveExtendOut están TRUE; DI_Extended, ExtendedFb y Step_Extended permanecen FALSE."
+    EVID-04-SENSOR:
+      source: "Sensor magnético del cilindro"
+      content: "El sensor está en la ranura del cilindro y su indicación local está apagada en la posición extendida nominal."
+    EVID-05-DETECTION:
+      source: "Prueba de detección controlada"
+      content: "El sensor conmuta cuando se desplaza hasta una posición distinta dentro de la zona de detección."
+    EVID-06-CORRECTION:
+      source: "Posición del sensor"
+      content: "El sensor queda reposicionado y asegurado en la zona correspondiente a la posición extendida del pistón."
+    EVID-07-RECOVERY:
+      source: "Verificación de estación"
+      content: "La indicación local y las confirmaciones del PLC se recuperan; la secuencia alcanza el estado extendido sin forzado."
+  decisions:
+    DEC-01-OBSERVE:
+      action: "Separar la extensión física de la confirmación y conservar el estado antes de intervenir."
+    DEC-01-VALVE:
+      action: "Concluir que la válvula ha fallado porque la secuencia no avanza."
+    DEC-01-REPLACE:
+      action: "Sustituir el cilindro sin comprobar la señal de posición."
+    DEC-02-TRACE:
+      action: "Comparar ExtendCmd, ValveExtendOut, DI_Extended, ExtendedFb y Step_Extended."
+    DEC-02-FORCE:
+      action: "Forzar DI_Extended para permitir que avance la secuencia."
+    DEC-02-CODE:
+      action: "Cambiar la lógica o la dirección de Step_Extended para probar."
+    DEC-03-INSPECT:
+      action: "Inspeccionar la posición del sensor y su indicación local con la estación asegurada."
+    DEC-03-INPUT:
+      action: "Concluir que el módulo de entradas está averiado sin una prueba adicional."
+    DEC-03-SWAP:
+      action: "Cambiar el sensor antes de registrar su posición y comportamiento."
+    DEC-04-TEST:
+      action: "Realizar una prueba controlada para localizar la zona de conmutación del sensor."
+    DEC-04-FORCE:
+      action: "Forzar la entrada PLC en lugar de comprobar la detección local."
+    DEC-04-IGNORE:
+      action: "Ignorar la indicación del sensor y continuar cambiando componentes."
+    DEC-05-ALIGN:
+      action: "Reposicionar y asegurar el sensor en la zona real de detección del pistón."
+    DEC-05-REPLACE:
+      action: "Sustituir el sensor aunque la prueba demuestre que puede conmutar."
+    DEC-05-OVERRIDE:
+      action: "Mantener un bypass para que la secuencia ignore la confirmación."
+    DEC-06-VERIFY:
+      action: "Verificar la indicación local, DI_Extended, ExtendedFb, Step_Extended y varios ciclos."
+    DEC-06-SINGLE:
+      action: "Cerrar la intervención después de una única conmutación."
+    DEC-06-HMI:
+      action: "Considerar suficiente que la interfaz deje de mostrar el síntoma."
+  visual:
+    educational_purpose: "Presentar progresivamente el movimiento, la evidencia PLC, la inspección del sensor, la prueba controlada, la corrección y la verificación."
+  assets:
+    ART-001:
+      alt: "Vista general de un cilindro neumático horizontal con tubo azul y sensor magnético en la ranura longitudinal."
+      caption: "Estación neumática al inicio del diagnóstico."
+    ART-002:
+      alt: "Cilindro neumático en su posición extendida con el sensor instalado."
+      caption: "Movimiento físico observado en el extremo extendido."
+    ART-003:
+      alt: "Watch Table con la orden y la salida TRUE y las confirmaciones FALSE; Step_Extended usa %M20.2."
+      caption: "Estado PLC durante la ausencia de confirmación."
+    ART-004:
+      alt: "Primer plano del sensor magnético instalado en la ranura del cilindro con la indicación local apagada."
+      caption: "Inspección de la posición y la indicación local."
+    ART-005:
+      alt: "Sensor magnético con indicación local encendida durante una prueba de detección controlada."
+      caption: "Zona de conmutación encontrada durante la prueba."
+    ART-006:
+      alt: "Sensor magnético reposicionado y asegurado en el cilindro con la indicación local encendida."
+      caption: "Corrección de la posición del sensor."
+    ART-007:
+      alt: "Watch Table suministrada para documentar la verificación posterior a la corrección del sensor."
+      caption: "Evidencia suministrada para la verificación final; pendiente de QA de direcciones y estados."
+  completion:
+    title: "Debrief técnico"
+    summary: "El cilindro sí alcanzaba la posición extendida; la confirmación faltaba porque el sensor magnético no estaba situado en la zona de detección correspondiente al imán del pistón."
+    process:
+      - "Separar movimiento físico de confirmación PLC."
+      - "Comparar orden, salida, entrada, feedback y secuencia."
+      - "Inspeccionar el sensor con la estación asegurada."
+      - "Localizar la zona de conmutación mediante una prueba controlada."
+      - "Reposicionar, fijar y verificar ciclos repetidos sin forzado."
+    lesson: "Una extensión mecánica correcta no prueba por sí sola que el PLC haya recibido la confirmación de posición."
+    avoided_errors:
+      - "Forzar DI_Extended."
+      - "Cambiar la lógica o el direccionamiento."
+      - "Sustituir el sensor sin comprobar su capacidad de conmutación."
+      - "Cerrar la intervención tras una única detección."
+    industrial_value:
+      - "Diagnóstico trazable entre campo y PLC."
+      - "Menor sustitución innecesaria."
+      - "Recuperación segura y repetible."

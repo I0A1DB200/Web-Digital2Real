@@ -211,7 +211,8 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.deepEqual(catalog.environments[1].hotspots, [
     { experienceEditorialId: "EE-0011", x: 75, y: 61 },
     { experienceEditorialId: "EE-0012", x: 52, y: 46 },
-    { experienceEditorialId: "EE-0013", x: 31, y: 67 }
+    { experienceEditorialId: "EE-0013", x: 31, y: 67 },
+    { experienceEditorialId: "EE-0014", x: 65, y: 72 }
   ]);
   assert.equal(catalog.environments[2].hotspots.length, 0);
   for (const environment of catalog.environments) {

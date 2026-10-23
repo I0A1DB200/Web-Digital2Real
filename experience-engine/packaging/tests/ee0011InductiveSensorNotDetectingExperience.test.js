@@ -19,7 +19,7 @@ const env = new URL("../../../content/environments/ENV-002-field-instrumentation
 const yaml = async (file, base = root) => parseExperienceYaml(await readFile(new URL(file, base), "utf8"));
 const correctIds = ["DEC-01-CHECK-HEALTH","DEC-02-INSPECT-SENSOR","DEC-03-MEASURE-GEOMETRY","DEC-04-COMPARE-SECURED","DEC-05-CORRELATE-STATE","DEC-06-INSTALLATION-DISTANCE","DEC-07-CORRECT-GEOMETRY","DEC-08-VERIFY-FULL-CHAIN"];
 const hashes = ["476126be467ccc22c8f900812b7702f7942623d173e2b9665e4a6b5c6bb4c38f","acb144f65133dba0511bb9dcce1715b344ee117503e7dfd2367d811e794357ac","e7ef1b3ead364705ff82c1e8fa6e0f16130dd1d368bfa226e7de09f87b4a3437","2effa1caedcbd4d43161e08c5eff3ec75558d7fafb5096bc593c00ac3b8c5d3d","6f565598438b30608c9c9655e708d87642f6454252feb0a51a90242bfcaeabeb","af8d172bd790096ee48da90039927b567269ce81d426cc859b96c3e682701200","acc8ee38186c297e12ecc50196bbcbd97b478958d68d1bde101057bac34f6f57"];
-const theoryIds = ["TH-07-INDUCTIVE-SENSING-CONDITIONS","TH-08-RATED-AND-SECURED-DISTANCE","TH-09-POWER-SWITCHING-AND-PROCESS-DATA"];
+const theoryIds = ["TH-10-DISTANCE-MEASUREMENT","TH-11-DISTANCE-VS-HEIGHT","TH-12-SWITCHING-WINDOW-OUTPUT","TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE"];
 
 async function localized(locale) {
   return resolveExperienceLocalization(await yaml("experience.yaml"), await yaml(`locales/${locale}.yaml`));
@@ -122,15 +122,16 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
     { experience_editorial_id: "EE-0011", x: 75, y: 61 },
     { experience_editorial_id: "EE-0012", x: 52, y: 46 },
     { experience_editorial_id: "EE-0013", x: 31, y: 67 },
-    { experience_editorial_id: "EE-0014", x: 65, y: 72 }
+    { experience_editorial_id: "EE-0014", x: 65, y: 72 },
+    { experience_editorial_id: "EE-0015", x: 45, y: 54 }
   ]);
-  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013", "EE-0014"], theory, theoryLocales: { en: english } });
+  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013", "EE-0014", "EE-0015"], theory, theoryLocales: { en: english } });
   assert.equal(validation.valid, true, JSON.stringify(validation.incidents));
-  assert.equal(theory.sections.length, 9);
+  assert.equal(theory.sections.length, 13);
   assert.deepEqual(theory.sections.map(item => item.id), english.sections.map(item => item.id));
-  assert.deepEqual(theory.sections.slice(-3).map(item => item.id), theoryIds);
+  assert.deepEqual(theory.sections.slice(-4).map(item => item.id), theoryIds);
   for (const document of [theory, english]) {
-    assert.doesNotMatch(JSON.stringify(document.sections.slice(-3)), /EE-0011|7\.8|Station 1/);
+    assert.doesNotMatch(JSON.stringify(document.sections.slice(-4)), /EE-0011|7\.8|Station 1/);
   }
 });
 

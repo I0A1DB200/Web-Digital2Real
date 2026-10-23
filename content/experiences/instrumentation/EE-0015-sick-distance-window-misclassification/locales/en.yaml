@@ -1,0 +1,153 @@
+locale: "en"
+translations:
+  title: "Rejects caused by an incorrect distance window"
+  summary: "Locate why valid boxes are rejected by tracing the chain from measured distance through Q1, the PLC, the diverter and the HMI."
+  scenario:
+    initial_context: "A packaging conveyor rejects valid boxes after an overnight interruption. The HMI shows Nº Reject = 20."
+    operational_state: "The distance sensor reads 214 mm and the station continues ejecting; the first abnormal condition is not yet located."
+    initiating_event: "Production reports rejected boxes that meet acceptance criteria. The overnight interruption is temporal context, not a demonstrated cause."
+    learner_role: "Automation technician responsible for separating measurement, classification, PLC input, pneumatic action and verifiable recovery."
+    safety_context:
+      safe_state: "Take readings and make interventions under the plant's approved procedure, keeping the conveyor and diverter in a controlled state."
+      intervention_constraints: ["Do not accept every box or bypass inspection.", "Do not force Q1 or the PLC input.", "Do not replace the sensor, CPU or cylinder without evidence.", "Save and read back parameters with the compatible SICK procedure before verifying production."]
+  learning_objectives:
+    OBJ-TRACE-DISTANCE-CLASSIFICATION:
+      description: "Trace the chain from physical geometry and measured distance through the switching window to classification."
+    OBJ-INTERPRET-Q1-PLC:
+      description: "Distinguish a plausible measurement from Q1 output and correlate it with the S7-1200 input without inventing faults."
+    OBJ-VERIFY-RECOVERY:
+      description: "Restore the approved window and verify reading, Q1, PLC, classification, diverter, persistence and HMI counter with a representative run."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Abnormal rejects"
+      situation: "The HMI shows Nº Reject = 20 and valid boxes are being rejected. Which first check best isolates the problem?"
+    STAGE-02-REJECTION:
+      title: "The diverter does actuate"
+      situation: "The pneumatic pusher works and diverts the box down a short metal ramp into one gray bin. What does this observation establish?"
+    STAGE-03-SWITCHING-WINDOW:
+      title: "Check the switching window"
+      situation: "SOPAS ET shows a distance of 214 mm, a 280–320 mm window and Q1 OFF. Where does the first demonstrated abnormal condition appear?"
+    STAGE-04-PLC-CORRELATION:
+      title: "Correlate Q1 with the PLC"
+      situation: "TIA Portal shows Sensor_Q1 = FALSE at the S7-1200 input, the CPU in RUN and reject logic active. How do you interpret this evidence?"
+    STAGE-05-CORRECTION:
+      title: "Restore the approved configuration"
+      situation: "The 214 mm measurement is plausible but outside the applied window. Which correction prepares a controlled verification?"
+    STAGE-06-VERIFICATION:
+      title: "Verify recovery"
+      situation: "After restoring 180–250 mm, ART-006 shows 214 mm inside the window and Q1 ON. Which test demonstrates station recovery?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Station HMI"
+      content: "The HMI shows Nº Reject = 20 and valid boxes are observed being rejected. The overnight interruption only places the incident in time; it does not demonstrate parameter loss."
+    EVID-02-REJECTION:
+      source: "Diverter observation"
+      content: "The pneumatic pusher performs the diversion down a short metal ramp into one gray bin. Actuation works; this does not yet identify the reject command."
+    EVID-03-SOPAS:
+      source: "SICK SOPAS ET / DT50-2"
+      content: "The reading is 214 mm, the configured window is 280–320 mm and Q1 is OFF. The measurement is plausible; 214 mm is outside the window configured for this application."
+    EVID-04-PLC:
+      source: "TIA Portal / Siemens S7-1200"
+      content: "Sensor_Q1 at %I0.0 is FALSE while the CPU is in RUN; that input is consistent with Q1 OFF. The evidence does not demonstrate a CPU or wiring fault."
+    EVID-05-CRITERIA:
+      source: "SOPAS ET / application configuration"
+      content: "The approved 180–250 mm window is restored; 214 mm is inside and Q1 changes to ON. Parameters are saved and read back with the compatible SICK procedure."
+    EVID-06-RECOVERY:
+      source: "Representative station test"
+      content: "Recovery is established by a stable reading, Q1-to-PLC correlation, representative accepted and rejected boxes, correct diverter action and saved parameters persisting through an approved restart. The counter is then manually reset and a verified fresh run shows Nº Reject = 0."
+  decisions:
+    DEC-01-REPLACE-DIVERTER:
+      action: "Replace the reject cylinder because boxes are being rejected."
+    DEC-01-TRACE-ACCEPTANCE:
+      action: "Compare the rejected product with acceptance criteria and trace the measurement and classification chain before replacing equipment."
+    DEC-01-RESET-COUNTER:
+      action: "Reset the HMI counter so the symptom disappears."
+    DEC-01-REPLACE-PLC:
+      action: "Replace the PLC input even though there is no electrical evidence."
+    DEC-02-REPLACE-CYLINDER:
+      action: "Conclude that the cylinder is defective because it is rejecting product."
+    DEC-02-ASSUME-LASER:
+      action: "Conclude that the laser is measuring incorrectly because the product reaches the bin."
+    DEC-02-TRACE-REJECTION:
+      action: "Recognize that the diverter operates and investigate the upstream reject command."
+    DEC-02-PLC-LOST:
+      action: "Conclude that the PLC lost its program because the ejector operates."
+    DEC-03-DIVERTER:
+      action: "Disassemble the diverter again to look for the cause."
+    DEC-03-CPU:
+      action: "Replace the PLC CPU before checking the sensor parameters."
+    DEC-03-MEASUREMENT:
+      action: "Discard the 214 mm measurement without evidence and replace the sensor."
+    DEC-03-SWITCHING-WINDOW:
+      action: "Compare the switching window with the application criteria: 214 mm is outside 280–320 mm, so Q1 OFF is consistent."
+    DEC-04-CPU-FAULT:
+      action: "Diagnose a defective CPU because the input is FALSE."
+    DEC-04-CORRELATE-Q1:
+      action: "Correlate Sensor_Q1 FALSE with Q1 OFF and investigate and confirm the upstream configuration."
+    DEC-04-FORCE-INPUT:
+      action: "Force Sensor_Q1 to TRUE so boxes are accepted."
+    DEC-04-DISCONNECT:
+      action: "Disconnect the reject cylinder to prevent rejects."
+    DEC-05-ACCEPT-ALL:
+      action: "Accept every box by changing the PLC logic."
+    DEC-05-SPEED:
+      action: "Increase conveyor speed to reduce the number of rejects."
+    DEC-05-RESTORE-WINDOW:
+      action: "Restore the approved 180–250 mm window, verify Q1 function, and save and read back parameters with the compatible SICK procedure."
+    DEC-05-DISCONNECT-Q1:
+      action: "Disconnect Q1 so the PLC no longer receives the signal."
+    DEC-06-SETTINGS-ONCE:
+      action: "Close the incident because the new parameters are visible once."
+    DEC-06-RESET-COUNTER:
+      action: "Reset the counter to zero and use it as the only proof of recovery."
+    DEC-06-MANUAL-CYLINDER:
+      action: "Extend the cylinder manually without checking measurement or classification."
+    DEC-06-VERIFY-RUN:
+      action: "Confirm stable reading, Q1-to-PLC correlation, representative accepted and rejected boxes, diverter action and saved parameters after an approved restart; then verify the fresh run with Nº Reject = 0."
+  retry_feedback:
+    DEC-01-REPLACE-DIVERTER: "Rejects do not demonstrate an actuator fault; first compare product, criteria and classification chain."
+    DEC-01-RESET-COUNTER: "Resetting Nº Reject clears a symptom and does not explain the incorrect classification."
+    DEC-01-REPLACE-PLC: "There is no evidence of an input or CPU fault; trace acceptance before replacing hardware."
+    DEC-02-REPLACE-CYLINDER: "The pusher moves; its operation does not show that the reject command is correct."
+    DEC-02-ASSUME-LASER: "Ejection does not prove a bad measurement; separate measurement, classification and action."
+    DEC-02-PLC-LOST: "An operating ejector does not demonstrate a lost PLC program; inspect the condition generating the command."
+    DEC-03-DIVERTER: "Diverter action already works; the new evidence is upstream in the sensor configuration."
+    DEC-03-CPU: "Nothing in 214 mm, the window or Q1 OFF demonstrates a CPU fault."
+    DEC-03-MEASUREMENT: "214 mm is plausible; do not discard it without evidence when the window comparison explains Q1 OFF."
+    DEC-04-CPU-FAULT: "CPU RUN and a FALSE input do not prove a fault; correlate the input with Q1 OFF."
+    DEC-04-FORCE-INPUT: "Forcing TRUE hides the field state and may accept boxes without valid classification."
+    DEC-04-DISCONNECT: "Disconnecting the diverter removes a quality function and does not correct the sensor window."
+    DEC-05-ACCEPT-ALL: "Accepting every box removes quality control instead of correcting classification."
+    DEC-05-SPEED: "Speed does not correct an inappropriate distance window or validate Q1."
+    DEC-05-DISCONNECT-Q1: "Q1 is the inspection signal; disconnecting it removes classification traceability."
+    DEC-06-SETTINGS-ONCE: "Seeing parameters once does not prove representative samples, action or persistence after restart."
+    DEC-06-RESET-COUNTER: "Nº Reject = 0 is meaningful only after a manual reset and a verified representative run."
+    DEC-06-MANUAL-CYLINDER: "Manually moving the cylinder does not validate measurement, Q1, classification or PLC logic."
+  visual:
+    educational_purpose: "Distinguish a plausible measurement from switching output and verify the complete classification and rejection chain."
+  assets:
+    ART-001:
+      alt: "Station HMI showing Nº Reject = 20 with boxes on the conveyor."
+      caption: "Initial incident: the counter and rejects require locating the first abnormal boundary."
+    ART-002:
+      alt: "Pneumatic pusher diverting a box down a metal ramp into a gray bin."
+      caption: "The diverter performs the physical action; investigate the command next."
+    ART-004:
+      alt: "SOPAS ET showing 214 mm, a 280–320 mm window and Q1 OFF."
+      caption: "The first demonstrated abnormal condition is in the applied window."
+    ART-005:
+      alt: "TIA Portal showing Sensor_Q1 FALSE, S7-1200 CPU RUN and active reject logic."
+      caption: "The PLC input reflects Q1 OFF; it does not prove a CPU fault."
+    ART-006:
+      alt: "SOPAS ET showing 214 mm inside 180–250 mm and Q1 ON."
+      caption: "The approved window is restored and the output changes state."
+    ART-007:
+      alt: "Recovered station with HMI Nº Reject = 0 after a verified run."
+      caption: "Representative run result after resetting the counter."
+  completion:
+    title: "Technical debrief"
+    summary: "The 214 mm distance was plausible and the diverter worked, but the 280–320 mm window classified the box outside the criterion. The 180–250 mm setting made Q1, PLC, classification and physical verification consistent."
+    process: ["Compare product with acceptance criteria.", "Separate diverter action from the upstream command.", "Read distance, window and Q1 in SOPAS ET.", "Correlate Q1 with Sensor_Q1 in the S7-1200.", "Restore, save and read back the approved window.", "Verify representative samples, approved restart and fresh run."]
+    lesson: "A plausible measurement does not imply correct classification; the first abnormal state can be the switching window."
+    avoided_errors: ["Blaming the cylinder or PLC without evidence.", "Confusing sensor-to-box distance with box height.", "Forcing Q1 or accepting every box.", "Using Nº Reject = 0 as the only recovery proof."]
+    industrial_value: ["Signal-chain diagnosis.", "Fewer unjustified replacements.", "Verifiable functional and persistent recovery."]

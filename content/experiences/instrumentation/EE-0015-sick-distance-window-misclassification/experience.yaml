@@ -1,0 +1,548 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-SICK-DISTANCE-015"
+  editorial_id: "EE-0015"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "SICK DT50-2 / SOPAS ET / Siemens S7-1200"
+  domain: "Distance sensor switching-window diagnosis"
+  industry: "Packaging"
+  machine_type: "Packaging conveyor rejection station"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "sick-distance-window-misclassification"
+  title: "Rechazos por ventana de distancia incorrecta"
+  summary: "Localiza por qué cajas válidas son rechazadas siguiendo la cadena desde la distancia medida hasta Q1, PLC, expulsor y HMI."
+  estimated_duration: 16
+  scenario:
+    initial_context: "Una cinta de embalaje rechaza cajas válidas después de una interrupción nocturna. La HMI muestra Nº Reject = 20."
+    operational_state: "El sensor de distancia mide 214 mm y la estación mantiene la expulsión; la primera condición anómala todavía no está localizada."
+    initiating_event: "Producción informa de rechazos de cajas que cumplen los criterios de aceptación. La interrupción nocturna es contexto temporal, no una causa demostrada."
+    learner_role: "Técnico de automatización responsable de separar medición, clasificación, entrada PLC, actuación neumática y recuperación verificable."
+    safety_context:
+      safe_state: "Realiza lecturas e intervenciones conforme al procedimiento autorizado de la instalación, manteniendo la cinta y el expulsor en un estado controlado."
+      intervention_constraints: ["No aceptar todas las cajas ni puentear la inspección.", "No forzar Q1 ni la entrada del PLC.", "No sustituir sensor, CPU o cilindro sin evidencia.", "Guardar y leer de vuelta parámetros con el procedimiento SICK compatible antes de verificar la producción."]
+  learning_objectives:
+    - id: "OBJ-TRACE-DISTANCE-CLASSIFICATION"
+      description: "Seguir la cadena desde la geometría física y la distancia medida hasta la ventana de conmutación y la clasificación."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-INTERPRET-Q1-PLC"
+      description: "Distinguir una medición plausible de la salida Q1 y correlacionarla con la entrada del S7-1200 sin atribuir fallos no demostrados."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-RECOVERY"
+      description: "Restaurar la ventana aprobada y verificar lectura, Q1, PLC, clasificación, expulsor, persistencia y contador HMI mediante una prueba representativa."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      phase: "incident"
+      title: "Rechazos anómalos"
+      situation: "La HMI muestra Nº Reject = 20 y cajas válidas están siendo rechazadas. ¿Qué primera comprobación aísla mejor el problema?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-DIVERTER", "DEC-01-TRACE-ACCEPTANCE", "DEC-01-RESET-COUNTER", "DEC-01-REPLACE-PLC"]
+      media_ids: ["ART-001"]
+    - id: "STAGE-02-REJECTION"
+      phase: "investigation"
+      title: "La expulsión sí actúa"
+      situation: "El empujador neumático funciona y desvía la caja por una rampa metálica corta a un único contenedor gris. ¿Qué establece esta observación?"
+      evidence_ids: ["EVID-02-REJECTION"]
+      decision_ids: ["DEC-02-REPLACE-CYLINDER", "DEC-02-ASSUME-LASER", "DEC-02-TRACE-REJECTION", "DEC-02-PLC-LOST"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-03-SWITCHING-WINDOW"
+      phase: "investigation"
+      title: "Contrastar la ventana de conmutación"
+      situation: "SOPAS ET muestra una distancia de 214 mm, ventana 280–320 mm y Q1 OFF. ¿Dónde aparece la primera condición anómala demostrada?"
+      evidence_ids: ["EVID-03-SOPAS"]
+      decision_ids: ["DEC-03-DIVERTER", "DEC-03-CPU", "DEC-03-MEASUREMENT", "DEC-03-SWITCHING-WINDOW"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-PLC-CORRELATION"
+      phase: "investigation"
+      title: "Correlacionar Q1 con el PLC"
+      situation: "TIA Portal muestra Sensor_Q1 = FALSE en la entrada del S7-1200, CPU en RUN y la lógica de rechazo activa. ¿Cómo interpretas esta evidencia?"
+      evidence_ids: ["EVID-04-PLC"]
+      decision_ids: ["DEC-04-CPU-FAULT", "DEC-04-CORRELATE-Q1", "DEC-04-FORCE-INPUT", "DEC-04-DISCONNECT"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-CORRECTION"
+      phase: "solution"
+      title: "Restaurar la configuración aprobada"
+      situation: "La medición de 214 mm es coherente, pero queda fuera de la ventana aplicada. ¿Qué corrección prepara una verificación controlada?"
+      evidence_ids: []
+      decision_ids: ["DEC-05-ACCEPT-ALL", "DEC-05-SPEED", "DEC-05-RESTORE-WINDOW", "DEC-05-DISCONNECT-Q1"]
+      media_ids: []
+    - id: "STAGE-06-VERIFICATION"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "Tras restaurar 180–250 mm, ART-006 muestra 214 mm dentro de la ventana y Q1 ON. ¿Qué prueba demuestra recuperación de la estación?"
+      evidence_ids: ["EVID-05-CRITERIA"]
+      decision_ids: ["DEC-06-SETTINGS-ONCE", "DEC-06-RESET-COUNTER", "DEC-06-MANUAL-CYLINDER", "DEC-06-VERIFY-RUN"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "HMI de la estación"
+      content: "La HMI muestra Nº Reject = 20 y se observan rechazos de cajas válidas. La interrupción nocturna solo sitúa el momento del incidente; no demuestra pérdida de parámetros."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    - id: "EVID-02-REJECTION"
+      type: "functional_test"
+      source: "Observación del expulsor"
+      content: "El empujador neumático ejecuta la desviación por una rampa metálica corta hasta un único contenedor gris. La actuación funciona; todavía no identifica la orden de rechazo."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-TRACE-ACCEPTANCE"]
+      media_ids: []
+    - id: "EVID-03-SOPAS"
+      type: "diagnostic"
+      source: "SICK SOPAS ET / DT50-2"
+      content: "La lectura es 214 mm, la ventana configurada es 280–320 mm y Q1 está OFF. La medida es plausible; 214 mm queda fuera de la ventana configurada para esta aplicación."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-TRACE-REJECTION"]
+      media_ids: ["ART-004"]
+    - id: "EVID-04-PLC"
+      type: "diagnostic"
+      source: "TIA Portal / Siemens S7-1200"
+      content: "Sensor_Q1 en %I0.0 aparece FALSE mientras la CPU está en RUN; esa entrada es coherente con Q1 OFF. La evidencia no demuestra un fallo de CPU ni de cableado."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-SWITCHING-WINDOW"]
+      media_ids: ["ART-005"]
+    - id: "EVID-05-CRITERIA"
+      type: "functional_test"
+      source: "SOPAS ET / configuración de aplicación"
+      content: "Se restaura la ventana aprobada 180–250 mm; 214 mm queda dentro y Q1 pasa a ON. Los parámetros se guardan y se leen de vuelta con el procedimiento SICK compatible."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RESTORE-WINDOW"]
+      media_ids: ["ART-006"]
+    - id: "EVID-06-RECOVERY"
+      type: "functional_test"
+      source: "Prueba representativa de estación"
+      content: "La recuperación se acredita con lectura estable, correlación Q1–entrada PLC, cajas aceptadas y rechazadas representativas, acción correcta del expulsor y parámetros guardados que persisten en un reinicio aprobado. Después se reinicia manualmente el contador y una nueva corrida verificada muestra Nº Reject = 0."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-VERIFY-RUN"]
+      media_ids: ["ART-007"]
+  decisions:
+    - id: "DEC-01-REPLACE-DIVERTER"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Sustituir el cilindro expulsor porque hay cajas rechazadas."
+    - id: "DEC-01-TRACE-ACCEPTANCE"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Comparar el producto rechazado con los criterios de aceptación y seguir la cadena de medición y clasificación antes de sustituir equipos."
+    - id: "DEC-01-RESET-COUNTER"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Restablecer el contador HMI para que desaparezca el síntoma."
+    - id: "DEC-01-REPLACE-PLC"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Sustituir la entrada del PLC aunque no exista evidencia eléctrica."
+    - id: "DEC-02-REPLACE-CYLINDER"
+      stage_id: "STAGE-02-REJECTION"
+      action: "Concluir que el cilindro es defectuoso porque está rechazando producto."
+    - id: "DEC-02-ASSUME-LASER"
+      stage_id: "STAGE-02-REJECTION"
+      action: "Concluir que el láser mide mal porque el producto acaba en el contenedor."
+    - id: "DEC-02-TRACE-REJECTION"
+      stage_id: "STAGE-02-REJECTION"
+      action: "Reconocer que el desviador funciona e investigar la orden de rechazo aguas arriba."
+    - id: "DEC-02-PLC-LOST"
+      stage_id: "STAGE-02-REJECTION"
+      action: "Concluir que el PLC perdió el programa porque el expulsor actúa."
+    - id: "DEC-03-DIVERTER"
+      stage_id: "STAGE-03-SWITCHING-WINDOW"
+      action: "Volver a desmontar el desviador para buscar la causa."
+    - id: "DEC-03-CPU"
+      stage_id: "STAGE-03-SWITCHING-WINDOW"
+      action: "Cambiar la CPU del PLC antes de contrastar los parámetros del sensor."
+    - id: "DEC-03-MEASUREMENT"
+      stage_id: "STAGE-03-SWITCHING-WINDOW"
+      action: "Descartar la medida de 214 mm sin evidencia y sustituir el sensor."
+    - id: "DEC-03-SWITCHING-WINDOW"
+      stage_id: "STAGE-03-SWITCHING-WINDOW"
+      action: "Contrastar la ventana de conmutación con los criterios de la aplicación: 214 mm está fuera de 280–320 mm, por lo que Q1 OFF es coherente."
+    - id: "DEC-04-CPU-FAULT"
+      stage_id: "STAGE-04-PLC-CORRELATION"
+      action: "Diagnosticar una CPU defectuosa porque la entrada es FALSE."
+    - id: "DEC-04-CORRELATE-Q1"
+      stage_id: "STAGE-04-PLC-CORRELATION"
+      action: "Correlacionar Sensor_Q1 FALSE con Q1 OFF e investigar y confirmar la configuración aguas arriba."
+    - id: "DEC-04-FORCE-INPUT"
+      stage_id: "STAGE-04-PLC-CORRELATION"
+      action: "Forzar Sensor_Q1 a TRUE para aceptar las cajas."
+    - id: "DEC-04-DISCONNECT"
+      stage_id: "STAGE-04-PLC-CORRELATION"
+      action: "Desconectar el cilindro expulsor para evitar rechazos."
+    - id: "DEC-05-ACCEPT-ALL"
+      stage_id: "STAGE-05-CORRECTION"
+      action: "Aceptar todas las cajas modificando la lógica PLC."
+    - id: "DEC-05-SPEED"
+      stage_id: "STAGE-05-CORRECTION"
+      action: "Aumentar la velocidad de la cinta para reducir el número de rechazos."
+    - id: "DEC-05-RESTORE-WINDOW"
+      stage_id: "STAGE-05-CORRECTION"
+      action: "Restaurar la ventana aprobada 180–250 mm, verificar la función de Q1 y guardar y leer de vuelta los parámetros con el procedimiento SICK compatible."
+    - id: "DEC-05-DISCONNECT-Q1"
+      stage_id: "STAGE-05-CORRECTION"
+      action: "Desconectar Q1 para que el PLC deje de recibir la señal."
+    - id: "DEC-06-SETTINGS-ONCE"
+      stage_id: "STAGE-06-VERIFICATION"
+      action: "Cerrar la incidencia porque los nuevos parámetros se ven una sola vez."
+    - id: "DEC-06-RESET-COUNTER"
+      stage_id: "STAGE-06-VERIFICATION"
+      action: "Restablecer el contador a cero y usarlo como única prueba de recuperación."
+    - id: "DEC-06-MANUAL-CYLINDER"
+      stage_id: "STAGE-06-VERIFICATION"
+      action: "Extender manualmente el cilindro sin comprobar medición ni clasificación."
+    - id: "DEC-06-VERIFY-RUN"
+      stage_id: "STAGE-06-VERIFICATION"
+      action: "Confirmar lectura estable, correlación Q1–PLC, cajas aceptadas y rechazadas representativas, acción del expulsor y parámetros guardados tras un reinicio aprobado; después verificar la corrida nueva con Nº Reject = 0."
+  visual:
+    educational_purpose: "Distinguir una medida plausible de la salida de conmutación y verificar la cadena completa de clasificación y rechazo."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-001-hmi-reject-count.png"
+        alt: "HMI de la estación con Nº Reject = 20 y cajas en la cinta."
+        caption: "Incidente inicial: el contador y los rechazos requieren localizar la primera frontera anómala."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-002-pneumatic-diverter-rejection.png"
+        alt: "Empujador neumático desviando una caja por una rampa metálica a un contenedor gris."
+        caption: "El desviador ejecuta la acción física; aún hay que investigar la orden."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-004-sopas-window-fault.png"
+        alt: "SOPAS ET con 214 mm, ventana 280–320 mm y Q1 OFF."
+        caption: "La primera condición anómala demostrada está en la ventana aplicada."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-005-tia-plc-q1-false.png"
+        alt: "TIA Portal con Sensor_Q1 FALSE, CPU S7-1200 en RUN y lógica de rechazo activa."
+        caption: "La entrada PLC refleja Q1 OFF; no prueba un fallo de CPU."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-006-sopas-window-corrected.png"
+        alt: "SOPAS ET con 214 mm dentro de 180–250 mm y Q1 ON."
+        caption: "La ventana aprobada queda restaurada y la salida cambia de estado."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-SICK-DISTANCE-015/ART-007-recovery-hmi-zero.png"
+        alt: "Estación recuperada con HMI Nº Reject = 0 tras una corrida verificada."
+        caption: "Resultado de una corrida representativa después de resetear el contador."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "La distancia de 214 mm era plausible y la expulsión funcionaba, pero la ventana 280–320 mm clasificaba la caja fuera del criterio. La configuración 180–250 mm hizo coherentes Q1, PLC, clasificación y verificación física."
+    process: ["Comparar el producto con los criterios de aceptación.", "Separar acción del desviador y orden aguas arriba.", "Leer distancia, ventana y Q1 en SOPAS ET.", "Correlacionar Q1 con Sensor_Q1 en el S7-1200.", "Restaurar, guardar y leer de vuelta la ventana aprobada.", "Verificar muestras representativas, reinicio aprobado y corrida nueva."]
+    lesson: "Una medición plausible no implica una clasificación correcta; el primer estado anómalo puede ser la ventana de conmutación."
+    avoided_errors: ["Atribuir el fallo al cilindro o al PLC sin evidencia.", "Confundir distancia sensor–caja con altura de caja.", "Forzar Q1 o aceptar todas las cajas.", "Usar Nº Reject = 0 como única prueba de recuperación."]
+    industrial_value: ["Diagnóstico por cadena de señal.", "Menos sustituciones injustificadas.", "Recuperación funcional y persistente verificable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Ventana de conmutación 280–320 mm inapropiada para los criterios de aplicación observados; la medida de 214 mm, Q1 OFF, entrada PLC FALSE y expulsión son consecuencias coherentes del ajuste."
+    recovery_conditions: ["Ventana aprobada 180–250 mm restaurada y leída de vuelta con procedimiento SICK compatible.", "214 mm dentro de la ventana y Q1 ON correlacionado con Sensor_Q1 TRUE.", "Cajas aceptadas y rechazadas representativas verifican clasificación y acción del expulsor.", "Parámetros persisten en un reinicio aprobado y una corrida nueva muestra Nº Reject = 0 después del reset manual."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-ACCEPTANCE"
+        statement: "El criterio de aceptación o la geometría de referencia no está contrastado con la medida."
+        initial_status: "possible"
+      - id: "HYP-DIVERTER"
+        statement: "El desviador neumático no ejecuta la orden de rechazo."
+        initial_status: "possible"
+      - id: "HYP-SENSOR-MEASUREMENT"
+        statement: "La medida de distancia del sensor no es válida para el caso."
+        initial_status: "possible"
+      - id: "HYP-SWITCHING-WINDOW"
+        statement: "La ventana de conmutación configurada no corresponde a la aplicación."
+        initial_status: "possible"
+      - id: "HYP-PLC"
+        statement: "La entrada o la lógica del PLC no reflejan el estado Q1."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-SWITCHING-WINDOW"
+    critical_path: ["DEC-01-TRACE-ACCEPTANCE", "DEC-02-TRACE-REJECTION", "DEC-03-SWITCHING-WINDOW", "DEC-04-CORRELATE-Q1", "DEC-05-RESTORE-WINDOW", "DEC-06-VERIFY-RUN"]
+  decision_logic:
+    - decision_id: "DEC-01-REPLACE-DIVERTER"
+      is_correct: false
+      retry_feedback: "Que haya rechazos no demuestra un fallo del actuador; compara primero producto, criterio y cadena de clasificación."
+      rationale: "Sustituye un elemento aguas abajo sin aislar la orden."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-REJECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-TRACE-ACCEPTANCE"
+      is_correct: true
+      rationale: "Localiza la frontera de aceptación antes de sustituir o resetear equipos."
+      classification: "strong"
+      consequence: "Permite observar la acción física y seguir la orden aguas arriba."
+      evidence_revealed: ["EVID-02-REJECTION"]
+      next_stage: "STAGE-02-REJECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-RESET-COUNTER"
+      is_correct: false
+      retry_feedback: "Resetear Nº Reject borra un síntoma y no explica por qué se clasifican mal las cajas."
+      rationale: "Confunde contador con diagnóstico."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-REJECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-REPLACE-PLC"
+      is_correct: false
+      retry_feedback: "No hay evidencia de fallo de entrada o CPU; sigue la cadena de aceptación antes de reemplazar hardware."
+      rationale: "Sustitución sin evidencia."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-REJECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-REPLACE-CYLINDER"
+      is_correct: false
+      retry_feedback: "El empujador se mueve; su funcionamiento no demuestra que la orden de rechazo sea correcta."
+      rationale: "Confunde actuación con causa."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SWITCHING-WINDOW"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-ASSUME-LASER"
+      is_correct: false
+      retry_feedback: "La expulsión no prueba que la medida sea errónea; separa medición, clasificación y actuación."
+      rationale: "Atribución prematura al sensor."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SWITCHING-WINDOW"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-TRACE-REJECTION"
+      is_correct: true
+      rationale: "La actuación del desviador permite investigar la orden upstream sin inventar un fallo físico."
+      classification: "strong"
+      consequence: "Revela la lectura y la configuración del sensor."
+      evidence_revealed: ["EVID-03-SOPAS"]
+      next_stage: "STAGE-03-SWITCHING-WINDOW"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-PLC-LOST"
+      is_correct: false
+      retry_feedback: "Un expulsor que actúa no demuestra pérdida del programa PLC; inspecciona la condición que genera la orden."
+      rationale: "Conclusión no sustentada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SWITCHING-WINDOW"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-DIVERTER"
+      is_correct: false
+      retry_feedback: "La acción del desviador ya funciona; la evidencia nueva está en la configuración upstream."
+      rationale: "Vuelve a una frontera ya comprobada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-PLC-CORRELATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-CPU"
+      is_correct: false
+      retry_feedback: "Nada en la lectura 214 mm, la ventana o Q1 OFF demuestra un fallo de CPU."
+      rationale: "Sustitución sin diagnóstico."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-PLC-CORRELATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-MEASUREMENT"
+      is_correct: false
+      retry_feedback: "214 mm es una lectura plausible; no la descartes sin evidencia cuando la comparación con la ventana explica Q1 OFF."
+      rationale: "Confunde medida plausible con salida esperada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-PLC-CORRELATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-SWITCHING-WINDOW"
+      is_correct: true
+      rationale: "214 mm queda fuera de 280–320 mm; esta es la primera condición anómala demostrada y explica Q1 OFF."
+      classification: "strong"
+      consequence: "Revela la correlación de Q1 con la entrada del S7-1200."
+      evidence_revealed: ["EVID-04-PLC"]
+      next_stage: "STAGE-04-PLC-CORRELATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-CPU-FAULT"
+      is_correct: false
+      retry_feedback: "CPU en RUN y entrada FALSE no prueban fallo; correlaciona la entrada con Q1 OFF."
+      rationale: "Atribución incorrecta al controlador."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-CORRELATE-Q1"
+      is_correct: true
+      rationale: "La entrada FALSE es coherente con Q1 OFF; la siguiente comprobación es la configuración y no un forzado."
+      classification: "strong"
+      consequence: "Prepara la corrección de la ventana."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-FORCE-INPUT"
+      is_correct: false
+      retry_feedback: "Forzar TRUE oculta el estado de campo y puede aceptar cajas sin una clasificación válida."
+      rationale: "Puentea la evidencia del sensor."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CORRECTION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-04-DISCONNECT"
+      is_correct: false
+      retry_feedback: "Desconectar el expulsor elimina una función de calidad y no corrige la ventana del sensor."
+      rationale: "Intervención que oculta la consecuencia."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-CORRECTION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-05-ACCEPT-ALL"
+      is_correct: false
+      retry_feedback: "Aceptar todas las cajas elimina el control de calidad en lugar de corregir la clasificación."
+      rationale: "Desactiva la protección del proceso."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFICATION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-05-SPEED"
+      is_correct: false
+      retry_feedback: "La velocidad no corrige una ventana de distancia inapropiada ni valida Q1."
+      rationale: "Intervención no relacionada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFICATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-RESTORE-WINDOW"
+      is_correct: true
+      rationale: "Restaura el criterio de aplicación, verifica la función y exige persistencia/readback con el procedimiento compatible."
+      classification: "strong"
+      consequence: "Revela 214 mm dentro de 180–250 mm y Q1 ON."
+      evidence_revealed: ["EVID-05-CRITERIA"]
+      next_stage: "STAGE-06-VERIFICATION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-DISCONNECT-Q1"
+      is_correct: false
+      retry_feedback: "Q1 es la señal de inspección; desconectarla elimina la trazabilidad de la clasificación."
+      rationale: "Desactiva la señal en vez de corregirla."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFICATION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-06-SETTINGS-ONCE"
+      is_correct: false
+      retry_feedback: "Ver parámetros una vez no demuestra muestras aceptadas, rechazadas, actuación ni persistencia tras reinicio."
+      rationale: "Confunde configuración con verificación de proceso."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-RESET-COUNTER"
+      is_correct: false
+      retry_feedback: "Nº Reject = 0 solo es significativo después de un reset manual y una corrida representativa verificada."
+      rationale: "Usa un indicador de resultado como prueba única."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-MANUAL-CYLINDER"
+      is_correct: false
+      retry_feedback: "Mover el cilindro manualmente no valida medición, Q1, clasificación ni lógica PLC."
+      rationale: "Prueba solo una actuación aislada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-VERIFY-RUN"
+      is_correct: true
+      rationale: "La verificación extremo a extremo separa configuración, señal, clasificación, actuación, persistencia y resultado de producción."
+      classification: "strong"
+      consequence: "Establece la recuperación de la estación."
+      evidence_revealed: ["EVID-06-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La ventana 280–320 mm era inapropiada para la aplicación: 214 mm quedaba fuera, Q1 pasaba a OFF, el PLC recibía FALSE y la lógica rechazaba mientras el expulsor funcionaba."
+    correct_reasoning: ["Contrastar criterios de aceptación y geometría.", "Separar actuación del desviador y orden upstream.", "Comparar 214 mm con 280–320 mm.", "Correlacionar Q1 OFF con Sensor_Q1 FALSE.", "Restaurar 180–250 mm con save/readback compatible.", "Verificar muestras, reinicio, expulsor y corrida nueva."]
+    recovery: ["Ventana aprobada 180–250 mm, 214 mm dentro y Q1 ON.", "Entrada PLC TRUE y clasificación correlacionada.", "Prueba representativa y Nº Reject = 0 tras reset manual."]
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence: ["Contrato EE-0015 y seis hashes del manifiesto verificados contra los PNG copiados sin modificación.", "La cadena técnica 214 mm → ventana 280–320 mm → Q1 OFF → Sensor_Q1 FALSE → rechazo está explícita.", "La cadena corregida 214 mm → ventana 180–250 mm → Q1 ON → Sensor_Q1 TRUE → aceptación está explícita.", "Advertencia: la variante exacta del DT50-2 y el comportamiento de persistencia/readback de SOPAS ET requieren revisión de documentación SICK; la documentación externa no estuvo disponible en este entorno."]

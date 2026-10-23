@@ -136,7 +136,6 @@ function createHeader(article, title, titleId) {
 
   const titleBlock = document.createElement("div");
   titleBlock.className = "article-viewer__title-block";
-  appendTextElement(titleBlock, "span", "article-viewer__kicker", article.kicker);
 
   const heading = document.createElement("h1");
   heading.id = titleId;

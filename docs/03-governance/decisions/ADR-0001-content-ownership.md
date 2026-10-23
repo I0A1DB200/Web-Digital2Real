@@ -24,7 +24,7 @@ The current repository stores Experience content under `experience-engine/` and 
 
 ## Decision
 
-Notebook entries, Capability definitions, Experiences, and Assessments are Content.
+Notebook entries, Capability definitions, Experiences, Environments, and Assessments are Content.
 
 Experience Engine MUST process Experience content but MUST NOT own that content. Experience schema, validation, adaptation, runtime execution, integration contracts, workflows, and generation prompts remain Experience Engine responsibilities.
 
@@ -35,8 +35,11 @@ content/
 ├── notebooks/
 ├── capabilities/
 ├── experiences/
+├── environments/
 └── assessments/
 ```
+
+Environment definitions own their identity, canonical background reference, frozen visual dimensions, lifecycle, and ordered Experience hotspot relationships. Experiences do not duplicate an Environment relationship. Experience Engine may validate and package Environment content but does not own it.
 
 Product interfaces remain under `Frontend/products/`. Architecture and governance remain under `docs/`.
 

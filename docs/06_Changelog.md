@@ -1,5 +1,365 @@
 # Changelog
 
+## 2026-10-09 — ENV-002 / EE-0013 pneumatic no-extension diagnosis
+
+- Added bilingual EE-0013 in technical review with seven realistic PNGs based on repository visual references. The learner traces PLC command, valve control, available air and a disconnected local line, then restores the connection and independently verifies extension and feedback. Added focused flow tests and ENV-002 discovery. Engine behavior is unchanged; Browser QA remains infrastructure-blocked.
+
+## 2026-10-08 — Final learner-facing visual policy
+
+- Established finished raster delivery for learner-facing Experience media while preserving vector/code tools as internal production methods. Replaced EE-0012's raw scaling SVG with a designed PNG, added a separate intervention PNG, removed redundant player-like framing and repaired learner-visible typography without changing technical logic or Engine behavior.
+
+## 2026-10-08 — Realistic Asset First / EE-0012 remediation
+
+- Established realistic industrial imagery as the default Experience visual language when physical reality contributes to learner judgement, with diagrams retained for mathematical and architectural learning moments. Remediated EE-0012 with four reviewed photorealistic D2R-generated assets while preserving its scaling diagram, technical truth, evidence timing and Engine behavior.
+
+## 2026-10-07 — ENV-002 / EE-0012 pressure-transmitter pilot
+
+- Added EE-0012 as the second ENV-002 Experience: a bilingual 4–20 mA pressure-scaling diagnosis that separates signal measurement, PLC engineering scaling, correction and independent multi-point verification. Added five governed D2R SVG diagrams and focused packaging tests; no shared Engine behavior or external binaries changed.
+
+## 2026-10-07 — Source Library autonomous population campaign
+
+- Expanded the metadata-first Source Library from 23 to 65 discovered records across electrical/control cabinets, drives/motion, pneumatics, process instrumentation, safety, robotics, vision, mechanics, utilities, diagnostics, and neutral protocol authorities. Added only official-source metadata and controlled vocabulary needed by verified records; no binaries, production content, runtime, Frontend, or Notebook behavior changed.
+
+## 2026-10-06 — Source Library foundation
+
+- Added the metadata-first Source Library index, per-source schema, controlled taxonomies, neutral protocol authority registry, deterministic validator and tests.
+- Added technical-reference and reusable-asset catalog boundaries plus Codex source contracts.
+- Registered one repository-evidence-only Turck pilot as `discovered`; production content, runtime, Frontend and binaries are unchanged.
+- Added eleven Architect-directed discovery records for the initial Siemens, Schneider Electric, Rockwell Automation and Beckhoff source set. No URLs, rights, technical claims or approval states were inferred.
+- Added Batch 02 source records for ifm, SICK, Balluff, the neutral IO-Link authority and IODDfinder, and Festo. Candidate URLs are recorded without downloads or inferred applicability; KEYENCE, Cognex and Pepperl+Fuchs remain external-verification candidates.
+
+## 2026-10-06 — D2R Engineering OS repository governance
+
+Integrated the approved Engineering OS into repository-native authorities: root agent instructions, Engineering Director governance, architecture and content boundaries, Experience/Evidence/Media/Asset/QA standards, reusable Codex contracts, reusable asset catalog governance, and technical reference governance. Updated root and documentation navigation so every authority is discoverable from canonical paths. The numbered `md/` package remains intact as staging provenance. Runtime behavior, production Experience semantics, Notebook content, generated artifacts, and image binaries are unchanged.
+
+## 2026-10-01 — EE-0011 independent recovery verification
+
+Content-only remap: evidence-media Results after acquisition; D7 correction remains distinct from D8 verification and completion. ART-003 hidden due to incompatible master/channel imagery; ART-007 reserved for verified recovery. ES/EN, package documentation and focused tests updated. Engine and image binaries unchanged; browser QA pending globally.
+
+
+## 2026-10-01 — EE-0010 — causal inspection and recovery media remap
+
+Eight diagnostic/action moments replace the former seven: D7 safely inspects B3 before D8 removes the confirmed residue and verifies recovery. Existing recovery stage/decision IDs are retained (STAGE-07-PHYSICAL-RECOVERY / DEC-07-SAFE-REMOVE-VERIFY); D7 inspection has a separate authority. The original final reward is split 4 + 6, preserving total correct-path score; scoring policy is unchanged.
+
+Cover ART-001. Ordered stage media: [ART-002], [ART-003], [], [ART-004], [ART-005], [], [ART-007], [ART-008]. EVID-01 is initial/context with []; EVID-02 through EVID-09 are acquired: [ART-003], [], [ART-004], [ART-005], [], [ART-007], [ART-008], [ART-009]. Completion [ART-009]. Six Results: D1, D3, D4, D6, D7, D8; D2/D5 direct. No multi-evidence Results. Recovery and completion occur only after D8 verification, before presentation-only Continue.
+
+Actual pixels: ART-001 editorial cover; ART-002 incident HMI symptoms; ART-003 network topology does not independently prove PLC RUN, SafetyReady or communication health (authored diagnostic observations do); ART-004 shows both conveyor and pusher commands, so it follows D3, not D2. ART-005 shows S40/T40; ART-006 remains registered but hidden: its TransferClear address conflicts with ART-007 and its tag comment anticipates the logical relationship before D6. No address is promoted into canonical engineering facts. ART-007 illustrates the traced LAD relationship; ART-008 shows the observed residue; ART-009 shows S41 active, while repeated recovery is established by the authored functional test.
+
+Initial common-system health and physical-cause hints are removed. Safety prerequisites are visible before physical inspection and removal; SafetyReady is not authorization to intervene. No new procedure or measurement is invented. No Engine or image changes. Browser QA pending globally.
+
+
+## 2026-10-01 — EE-0009 HMI learning/media remap
+
+Preserve six decisions and nineteen options (B/C/A/D/B/A). D1/D2/D5 are direct; Results D3/D4/D6. EVID-01 is initial context; EVID-02 through EVID-07 are interactive. D6 exclusively acquires EVID-07 after combined correction and verification, earning completion before Continue.
+
+Stage media: [ART-002], [], [], [ART-004], [ART-005], []. Evidence media EVID-01..07: [], [], [], [ART-004], [ART-005], [], [ART-006]. Cover ART-001; completion ART-006. ART-003 remains registered but hidden: pixels show ConveyorTags [DB1], conflicting with canonical DB_HMI [DB10]. ART-002 illustrates the initial contradiction, not verified sensor/PLC health. ART-004 illustrates connection; updating values require observation. ART-005 is inspected mapping, reused in S5. ART-006 is final verification/debrief context, not proof of repeated operation. Existing movement-control prerequisites are visible before physical observation and final verification. Engine and PNG unchanged; Browser QA pending.
+
+
+## 2026-10-01 — EE-0008 content/media semantics remap
+
+- Preserve six decisions and twenty options; three Results at D3/D5/D6, direct D1/D2/D4.
+- Add explicit EVID-07-RECOVERY exclusively after combined restoration/verification D6; keep initial evidence outside interactive projection.
+- Hide registered ART-002/003, align ES/EN acquisition, safety prerequisites and static-media limits; preserve Engine and image binaries.
+- Validate focused tests and canonical preview ES/EN; classify unrelated shared fixture debt separately. Browser QA remains pending.
+
+
+## 2026-10-01 — EE-0007 content/media semantics remap
+
+- Preserve seven decisions and 23 options; four Results at D3/D4/D5/D7, direct D1/D2/D6.
+- Move verification evidence authority exclusively to D7; keep ART-003 registered but hidden because its S50 contradicts canonical S41.
+- Align ES/EN neutral initial context, existing safety prerequisites and static-media limitations; preserve Engine and frozen binaries.
+- Extend focused authority, Retry, Continue and media-map coverage; canonical preview validation in both locales accompanies this package. Browser QA remains pending.
+
+
+
+## 2026-10-01 — EE-0006 content/media semantics remap
+
+- Preserve six decisions and twenty options; five Results at D1/D2/D3/D4/D6 and direct intervention D5.
+- Make installation, local indications and topology acquisition explicit; move EVID-08 recovery authority to D6 verification.
+- Keep ART-005 registered without presentation; align ES/EN neutral introductions, safety prerequisites and static-image claims.
+- Validate focused tests and regenerated canonical preview in ES/EN. Engine and frozen images unchanged; browser QA remains pending due to infrastructure.
+
+
+## 2026-09-30 — EE-0005 content/media semantics remap
+
+- Preserve six decisions and 21 options; four Results at D2/D3/D4/D6, direct transitions at D1/D5.
+- Move recovery authority to D6 verification; keep D5 intervention pending verification and ART-002 registered without presentation.
+- Align ES/EN neutral introductions, existing safety prerequisites and static-image limitations; preserve frozen PNG and Engine.
+- Validate focused tests and regenerated canonical preview in both locales. Browser QA remains pending due to infrastructure.
+
+
+## 2026-09-30 — EE-0004 content and learning-moment remap
+
+- Preserve six decisions and twenty options; add five evidence Results after D1, D2, D3, D4 and D6. D5 remains direct.
+- Move recovery authority from adjustment D5 to verification D6; preserve initial/context evidence outside interactive projection.
+- Align ES/EN acquisition, safety wording and static-image claims; document intentional media reuse.
+- Update focused automated coverage. No Engine, image binary or other Experience changes; preview not regenerated and browser QA pending.
+
+## 2026-09-30 — EE-0003 content and learning-moment remap
+
+- Preserve six decisions, eighteen options and seven evidence items; add Results after D1/D2/D3/D5/D6. D4 retains textual architecture evidence and a direct transition. D6 still combines authorized restoration and functional verification, earning completion before Continue to Debrief.
+- Keep ART-001 as cover only and ART-007 as intentional final Result/Debrief reuse. ART-005 remains registered but unpresented because it mixes design reference with apparent active AUTO authority before correction; all PNG bytes remain unchanged.
+- Align ES/EN titles, summaries, objectives, prompts and evidence with acquired knowledge. Make indicated-frequency observation and existing safety requirements explicit; distinguish CPU RUN, application command and recovery feedback from broader health or movement claims.
+- Extend focused traversal, Retry, media and Continue checks. No Engine changes, other Experience changes, preview generation or browser QA.
+
+## 2026-09-29 — EE-0002 content and learning-moment remap
+
+- Preserve seven decisions, twenty-one options and nine evidence items; present Results only after D2, D5 and D7. D2 combines EVID-03/ART-002 with textual EVID-04. D5 uses ART-005 and D7 uses ART-007, intentionally reused in Debrief.
+- Keep EVID-08-REPAIR under D6 and EVID-09-VALIDATION under D7. Remove recovery media from the pre-verification stage; final Continue changes presentation only.
+- Neutralize ES/EN introduction spoilers, make observation and authorized stop/isolation explicit, limit geometry conclusions and remove unsupported ten-cycle visual claims.
+- Retain all seven image binaries and registrations. Withhold ART-003/004/006 from learner presentation and document unresolved semantics, acquisition and visual limitations. Engine and other Experience sources are unchanged; browser QA remains pending.
+
+## 2026-09-29 — EE-0001 learning-moment and media remap pilot
+
+- Use the existing Phase 2 evidence media contract for six action-earned Results, preserving seven diagnostic decisions and the acquired media as context for the next task.
+- Keep ART-001 as Incident Brief cover and ART-002 as first-stage media. Repair unlocks no recovery evidence; final chain verification alone unlocks EVID-08/ART-008 before Continue to Debrief, which intentionally reuses ART-008.
+- Align ES/EN summaries, objectives, instructional purpose and stage titles with available knowledge. Make online PLC observation and authorized isolation/absence of voltage explicit; retain voltage, continuity and physical localization as separate diagnostic steps.
+- Strengthen EE-0001 traversal, Retry, final recovery timing and Continue invariants; adapt the correct-option audit to Result presentations. No Engine or other Experience changes, generated artifacts or image-binary synchronization; the existing assets/media equality debt remains separate.
+
+## 2026-09-29 — Experience Engine evidence result presentation, Phase 2
+
+- Add optional ordered `public.evidence[].media_ids` to V2, with authoring/runtime/web and defensive Player validation. Preserve references through normalization and projection; `visual.assets` remains the only media registry.
+- Present newly unlocked evidence and its media in `interaction: "result"`, followed by explicit Continue. Derive the presentation from decision history and unlock authority; no extra stage, attempt, progress unit, evaluation or persisted session state.
+- Register diagnostic completion before the final result's Continue, once per run. Preserve earned completion when closing before Debrief; Continue does not register it again.
+- Reuse existing ES/EN evidence and asset text, workspace components and styling. Provide keyboard focus on result/next content and visible localized media-load failures without blocking Continue.
+- Preserve V1, V2 without evidence media, Phase 1 cover/completion semantics and the current reload policy. Production EE-0001–EE-0011 mappings and the EE-0001 assets/media discrepancy remain untouched.
+- Cover the capability using synthetic fixtures and temporary packaging copies; no production content migration or new asset-copy mechanism.
+
+## 2026-09-28 — Experience Engine semantic media contract, Phase 1
+
+- Render the semantic `public.visual.cover_asset_id` inside the existing Incident Brief using the same asset URL projection and media component as stage media. Missing optional references leave the introduction usable; no new Player state or diagnostic side effects.
+- Resolve Debrief media exclusively from `completion.media_ids`, independently of the last stage. The shared resolver now follows requested ID order and skips unresolved references, including empty completion media.
+- Preserve authored stage media, including expected ENV-001 cover reuse. No Experience definitions, schemas, scoring, evidence, Retry or progress persistence rules changed.
+
+## 2026-09-25 — EE-0011 inductive sensor not detecting
+
+- Added EE-0011 to ENV-002 in technical review with six diagnostic decisions followed by safe physical correction and full-chain verification; ES/EN content preserves the distinction between Sn and secured operating distance.
+- Integrated seven byte-identical frozen assets from `EE-0011_validated_assets.zip`. Cover 01 remains editorial only because it depicts switching ON; incident evidence starts at 02. Verification asset 07 retains its original ≤ 6 mm label, with localized text explaining that this alone does not establish the ≤ 4.86 mm secured condition.
+- Reused ENV-002 Theory sections TH-01 and TH-06 and added reusable sections TH-07 through TH-09 for inductive sensing conditions, rated versus secured distance, and power/switching/process-data diagnosis. No Experience-specific Theory or Engine changes.
+- Retained the existing V2 evaluation policy and private correctness authority; no XP, lives or score penalties. Manufacturer reference: https://www.turck.us/en/product/1644874 ; secured-distance reference supplied in validated asset 05.
+
+## 2026-09-25 — ENV-002 Field Instrumentation
+
+- Prepared ENV-002 with ES/EN titles and descriptions and a diagnostic scope spanning physical process, instrument, signal, I/O, PLC and control logic. Optional localized titles reuse environment presentation metadata and fall back to the canonical title for existing environments.
+- Preserved the integrated cover and six existing Theory sections by approval; future Theory additions must derive from validated Experiences, without an advance curriculum or Experience-specific articles. No Experience was created.
+- Aligned the ENV-002 authoring directory, cover filename and test references with Field Instrumentation, preserving its stable identifier and existing content.
+- Regenerated the preview catalog from the canonical environment definition so the selector displays the updated title and description.
+
+## 2026-09-25 — EE-0010 system-level causal diagnosis
+
+- Added EE-0010 as the tenth and final planned ENV-001 Experience, with seven decisions tracing multiple machine symptoms to one physical process condition through commands, sequence state and PLC logic.
+- Integrated nine approved evidence assets, registered the tenth ENV-001 hotspot and extended cumulative ES/EN Theory with reusable system-level causal troubleshooting concepts.
+- Preserved the generic Experience Engine, Player, evaluator, projection, progress and navigation architecture; ENV-001 remains in Preview.
+
+## 2026-09-23 — Experience Lab ENV card visual refinement
+
+- Refined the existing Environment Selector cards into a compact, balanced composition with landscape 16:9 previews, overlaid ENV identity and menu controls, and restrained editorial depth.
+- Widened only the selector catalog to 1240px and removed grid stretching and flexible-row height absorption so three desktop cards retain their natural, near-square proportions.
+- Consolidated the ten progress segments and numeric result into one row while preserving canonical progress, accessibility, navigation, responsive three/two/one-column behavior and all existing ENV interactions.
+
+## 2026-09-22 — Experience Lab Environment Selector
+
+- Expanded the canonical Experience Lab entry selector with reusable ENV cards, representative imagery, localized technical descriptions, Knowledge & Skills, and an achievement preview.
+- Added ten-segment progress derived from existing Experience completion state, explicit card-to-map and map-to-selector navigation, accessible overflow behavior, and a responsive three/two/one-column layout while preserving the existing ENV map, hotspots and Experience interactions.
+
+## 2026-09-22 — EE-0009 HMI incorrect machine state
+
+- Added a six-decision Contract 2.0.0 HMI Experience, six frozen assets, the ninth ENV-001 preview hotspot, and reusable PLC-HMI information architecture Theory.
+- Reassigned the existing archived photoelectric regression Experience's editorial identity from `EE-0009` to `EE-0909` to reserve `EE-0009` for the new HMI Experience; its technical ID, content, assets and archived publication state remain unchanged.
+
+## 2026-09-21 — EE-0008 IO-Link device offline
+
+- Added EE-0008 as a six-decision Experience Engine V2 scenario distinguishing PLC, PROFINET, IO-Link master, individual port/device communication, process data and machine function.
+- Integrated six approved frozen assets, registered the eighth ENV-001 hotspot and added reusable IO-Link master/port/device and physical-connection Theory without duplicating the EE-0006 PROFINET fault boundary.
+
+## 2026-09-21 — EE-0007 sequence stuck waiting for condition
+
+- Added EE-0007 as a seven-decision Experience Engine V2 scenario for tracing a blocked Siemens GRAPH transition from the physical process through `%I0.5` and `PartAtStop_Sensor` to T40.
+- Integrated seven approved frozen assets, registered the seventh ENV-001 hotspot and extended cumulative Theory with reusable step, transition, logical-reference and non-forcing diagnostic concepts.
+
+## 2026-09-11 — EE-0006 PROFINET line-topology link failure
+
+- Added EE-0006 as a six-decision Experience Engine V2 scenario for topology-led diagnosis of a damaged A2–A3 PROFINET segment.
+- Integrated seven approved frozen assets, registered the sixth ENV-001 hotspot and extended cumulative Theory with reusable network-topology and fault-boundary concepts.
+- Extended the option-position regression without prescribing a fixed sequence or percentage.
+
+## 2026-09-10 — EE-0001–EE-0005 option-position audit
+
+- Reordered learner-facing alternatives so presentation position no longer encodes the correct engineering action.
+- Preserved action identities, private correctness, diagnostic paths, evidence unlocks, localization and runtime behavior.
+- Added a transversal regression for correct-action identity, ES/EN ordering, retry/advance behavior and projection security.
+
+## 2026-09-10 — EE-0005 safety gate channel discrepancy
+
+- Added EE-0005 as an Experience Engine V2 technical-review scenario with six evidence-led Safety decisions and seven approved frozen assets.
+- Registered EE-0005 as the fifth ENV-001 Preview Experience and extended cumulative Theory with machine-Safety, dual-channel, F-I/O, STO, reset and functional-verification concepts.
+- Preserved the existing Engine, Player, evaluator, projection, progress and Notebook architecture.
+
+## 2026-09-09 — EE-0004 pneumatic cylinder extension timeout
+
+- Added EE-0004 as an Experience Engine V2 technical-review scenario with six evidence-led decisions.
+- Integrated seven approved pneumatic evidence assets without image modification.
+- Registered EE-0004 in ENV-001 and extended cumulative Theory with pneumatic energy, valves, actuators, flow control and diagnostic-chain concepts.
+- Preserved the existing Engine, Player, evaluator, projection and progress architecture.
+
+## 2026-09-08 — ENV-001 Theory v0.3
+
+- Expanded the cumulative ENV-001 engineering Theory after EE-0001, EE-0002 and EE-0003 into 15 aligned Spanish and English sections.
+- Added six reusable technical diagrams covering digital signal flow, PNP/NPN interfaces, electrical diagnostics, photoelectric principles, operating margin, and the automation control/feedback chain.
+- Preserved ENV ownership and the existing non-interactive Theory contract; ENV-001 Theory remains incremental through EE-0004–EE-0010.
+
+## 2026-09-08 — ENV-001 Theory v0.3
+
+- Expanded the cumulative ENV-001 engineering Theory after EE-0001, EE-0002 and EE-0003 into 15 aligned Spanish and English sections.
+- Added six reusable technical diagrams covering digital signal flow, PNP/NPN interfaces, electrical diagnostics, photoelectric principles, operating margin, and the automation control/feedback chain.
+- Preserved ENV ownership and the existing non-interactive Theory contract; ENV-001 Theory remains incremental through EE-0004–EE-0010.
+
+## 2026-09-07 — EE-0003 ENV-001 hotspot correction
+
+- Moved only the EE-0003 ENV-001 hotspot from the conveyor product box to the visible VFD inside the right-hand electrical cabinet.
+- Preserved the existing percentage-based responsive positioning and all EE-0001/EE-0002 coordinates and interactions.
+
+## 2026-09-07 — EE-0003 final technical validation
+
+- Corrected ART-006 to preserve the pre-recovery HAND/BOP authority state while the PLC produces `RunCmd` and execution feedback remains false.
+- Corrected ART-007 to show the recovered AUTO/PLC-PROFINET state with coherent running and at-speed feedback.
+- Standardized both assets on the same symbolic `FB_CONVEYOR` interface without invented absolute addresses or PLC-output representation of drive feedback.
+- Promoted EE-0003 technical validation to pass after full V2, localization, security, Player, evaluator, ENV, packaging and project regression; its editorial status remains technical review.
+
+## 2026-09-07 — EE-0003 motor/VFD command-authority Preview
+
+- Added EE-0003 as an Authoring V2 practice Experience for diagnosis of the S7-1500 → PROFINET → SINAMICS G120 command chain.
+- Modelled a HAND/BOP versus AUTO/PLC-PROFINET authority mismatch through six explicit diagnostic decisions and seven progressively disclosed evidence assets.
+- Added complete Spanish and English learner content and extended ENV-001 Theory with reusable motor/VFD, READY/RUNNING/FAULT, command/feedback and command-authority concepts.
+- Kept EE-0003 in technical review for explicit editorial publication authorization; ENV-001 remains Preview.
+
+## 2026-08-31 — EE-0002 intermittent detection Preview
+
+- Added EE-0002 as a canonical Authoring V2 practice Experience for evidence-led diagnosis of intermittent photoelectric detection.
+- Integrated EE-0002 generically into the existing ENV-001 Preview hotspot list without changing Experience Lab discovery or the Environment publication contract.
+- Extended ENV-001 Theory in ES/EN with intermittent-fault characterization, correlation, sensor/PLC diagnostic boundaries and repeated verification.
+- Integrated and visually reviewed seven canonical diagnostic assets with progressive disclosure, including a bounded ten-cycle validation result.
+- Promoted EE-0002 to published after Authoring, Runtime, Player, evaluator, localization, packaging and security validation; ENV-001 remains Preview and continues to govern discovery through its canonical hotspot list.
+
+## 2026-08-30 — Experience Engine V2 final regression
+
+- Promoted EE-0001 from technical review to the first published canonical Experience V2 after final validation; Experience Engine V2 is production ready and its architecture is frozen.
+- Audited explicit V1/V2 contracts, Runtime boundaries, Player, evaluator, projection security, ENV Theory, ENV Progress, EE-0001, EE-0009 and deterministic packaging before production freeze.
+- Removed known ES/EN learner-facing UI mixtures by localizing existing Workspace, Theory, progress, action and Debrief copy without introducing a new localization layer.
+- Made the approved Theory content/action separation structural with a local 32px flex gap and regression coverage for the rendered wrapper.
+- Updated D2R-DESIGN-002 from draft planning language to the implemented, validated V2 pilot state while preserving D2R-003 and EXP-MODEL-001 authority.
+
+## 2026-08-30 — EE-0001 V2 pilot migration
+
+- Migrated the single canonical EE-0001 source from Authoring V1 to V2 with seven explicit industrial diagnostic decision points across Incident, Investigation and Solution, followed by terminal Debrief.
+- Preserved the open/cut BK conductor root cause and all eight approved assets while adding sequential evidence unlocks, learner-safe ES/EN retry feedback and explicit transitions.
+- Validated PASS, PASS_WITH_GUIDANCE and RETRY_RECOMMENDED through the existing evaluator, including ENV Progress V2 completion and monotonic mastery promotion.
+- Added V2 retry-feedback localization without changing V1 localization, Player, evaluator, projection, Theory or progress semantics.
+
+## 2026-08-30 — ENV Progress V2
+
+- Added a versioned local ENV progress payload alongside unchanged V1 storage, persisting only completed Theory section IDs and monotonic Experience completed/mastered flags.
+- Added explicit Theory continuation and separate derived Theory, Experience completion and Experience mastery counters without combined scoring, run history or evaluator duplication.
+
+## 2026-08-30 — ENV V2 Theory
+
+- Added explicit ENV contract V2 with ENV-owned ordered Theory, ES/EN localization and validated local media while preserving ENV V1 lifecycle and ten-Experience publication rules.
+- Extended transactional packaging and Environment navigation with on-demand localized Theory artifacts; Notebook, progress V2, mastery and Experience contracts remain independent and unchanged.
+
+## 2026-08-30 — Engineering Note image clarity
+
+- Removed the uniform charcoal veil from full-image Engineering Note cards while retaining localized directional shading behind typography and lower metadata.
+- Preserved the existing active, adjacent and outer brightness and saturation hierarchy without changing card layout or carousel geometry.
+
+## 2026-08-29 — Full-image Engineering Note card composition
+
+- Corrected the compact Engineering Note card to use one continuous full-card photograph with layered charcoal treatment and overlaid D2R branding, title, category and open affordance.
+- Removed excerpt and read-time presentation from the carousel card while preserving source data, responsive proportions and carousel geometry.
+
+## 2026-08-29 — Compact Engineering Note cards
+
+- Reframed the canonical Engineering Note card as a compact image-first editorial landscape component with shared metadata and open affordance.
+- Added consistent charcoal image harmonization, controlled title and excerpt density, and responsive desktop, tablet and mobile proportions without changing Note data or carousel behavior.
+
+## 2026-08-29 — Landing hero character reveal
+
+- Added a one-run overlapping character reveal to the existing landing heading and supporting paragraph without changing their copy, typography or layout.
+- Preserved semantic heading and paragraph elements, screen-reader text and an immediate reduced-motion presentation.
+
+## 2026-08-27 — Notebook Motor Hero V1
+
+- Added a Notebook-owned motor hero controller with a deterministic, one-run activation timeline.
+- Integrated the existing Engineering Notes carousel as the deployment target without changing its interaction logic or content source.
+- Added responsive and reduced-motion presentation for the decorative motor assembly.
+- Added focused controller tests for asset markup, state timing, reduced motion and lifecycle cleanup.
+- Corrected the feature boundary so the motor mounts and activates only inside Engineering Notes when that section first enters the viewport.
+- Corrected the mechanical motion so only the rotor turns around its vertical axis while the body and stator remain fixed.
+- Migrated the Notebook motor from the retired multilayer experiment to the canonical static-assembly and rotor assets.
+- Replaced geometric image rotation with a masked metallic sweep, luminance modulation and sub-pixel rotor micro-motion.
+- Extended the one-shot Notes deployment timeline to provide a distinct motor-active phase before the carousel becomes primary.
+- Refined the final Notebook motion pass with a 2.07-second rotor operation window, fully hidden pre-trigger cards and centered ghosted deployment.
+- Removed rotor vibration and added separate specular, shaft-keyway and laminated-core operating cues.
+- Rebuilt the Notebook sequence as an explicit empty, motor-entering, motor-active, cards-assembling and settled progression.
+- Added deterministic center-out card assembly using the carousel's existing visible-card positions without changing carousel logic.
+
+## 2026-08-27 — Experience Player V2
+
+- Added explicit Player dispatch for Web Artifact V1 and V2, with retry-safe attempts, explicit V2 transitions, evidence unlocks, deterministic decision history, restart and completion evaluation through the existing pure evaluator.
+- Published only the provisional learner-safe evaluation ranges, outcomes and mastery mapping required by Player V2; Workspace presents transient feedback and results without persisting mastery.
+
+## 2026-08-27 — V2 projection and client-side security boundary
+
+- Added an allowlisted V2 interaction projection that separates visible decisions from retry or advance authority, publishes only learner-safe retry messages and required evidence, and keeps evaluation policy and raw Runtime relations private.
+- This boundary provides casual concealment for a client-side application, not authoritative or cryptographic secrecy; authoritative evaluation remains deferred to a trusted server boundary if one is introduced in the future.
+
+## 2026-08-27 — Runtime V2 normalization and evaluation boundary
+
+- Strengthened Runtime V2 validation for explicit decision authority, retry feedback, transitions, evidence unlocks and non-empty evaluable decision points while keeping correctness private.
+- Added a pure, session-independent evaluator that derives exact first-attempt ratios, additional attempts, provisional outcomes and policy-owned mastery without changing Player or Web Artifact payloads.
+
+## 2026-08-27 — Versioned Experience V2 contract boundaries
+
+- Added explicit Authoring, Normalized Runtime and Web Artifact V2 contract boundaries with version dispatch while preserving V1 behavior.
+- Added contractual validation for ordered V2 phase semantics, exactly one explicitly correct option per decision point, learner-safe retry feedback, and complete provisional evaluation thresholds.
+- Kept V2 correctness, feedback and evaluation policy private during normalization; the Phase 1 Web Artifact V2 allowlist publishes phase semantics only and implements no Player behavior.
+
+## 2026-08-26 — Environment & Experience Learning Model V2 draft
+
+- Added D2R-DESIGN-002 as a DRAFT product and learning design for ENV-owned Theory, ten Experiences, the four-phase Experience model, correct-decision progression, retry feedback, attempt tracking, provisional evaluation outcomes, and completion/mastery separation.
+- Kept D2R-003 and EXP-MODEL-001 as existing design and contract authorities, Notebook independent from ENV Theory, and all V2 implementation explicitly out of scope.
+
+## 2026-08-26 — Compact Experience Lab selector
+
+- Scoped selector-only spacing to the existing Environment catalog, removing stacked workspace padding and viewport-based minimum height without changing internal ENV or Player layouts.
+- Set desktop navigation-to-introduction spacing to 48–64px, reduced the heading maximum from 5.8rem to 4.25rem with balanced wrapping across the existing shell width, and tightened subtitle-to-card spacing to 36–48px.
+- Preserved card dimensions, image proportions, responsive stacking, content and all navigation behavior; no fixed heights, negative margins or content-clipping workarounds were added.
+
+## 2026-08-26 — Compact Environment progress
+
+- Integrated a responsive progress card beside the Environment title, using existing graphite and corporate copper tokens with a subtle endpoint glow.
+- Replaced capacity-based segments with an accessible continuous bar counting unique active catalog Experiences assigned through Environment hotspots; empty Environments show 0 / 0.
+- Reused browser-local completion storage and added change subscriptions without storing derived totals or percentages.
+- Added coverage for empty, partial and complete progress, singular/plural labels, subscriptions and archived EE-0009 exclusion. Player, images, hotspot coordinates and generated content remain unchanged.
+
+## 2026-08-15 — Experience Environment vertical slice
+
+- Added three canonical Environment definitions and deterministic Environment publication through the existing Experience Engine packaging pipeline.
+- Changed Experience Lab entry from a flat Experience list to an Environment selector with percentage-based hotspots and generic empty states.
+- Anchored Experience details to their hotspot with collision-aware placement, accessible single-popover behavior, and versioned browser-local completion progress.
+- Retired EE-0009 from generated catalogs through the governed `archived` lifecycle while preserving its canonical package and regression coverage.
+
+## 2026-08-14 — Responsive navigation and editorial rhythm
+
+- Added an accessible small-screen navigation menu while preserving the existing desktop navigation and data source.
+- Simplified Engineering Note headers to retain the note identifier and title without a duplicated kicker.
+- Consolidated editorial body copy around the governed body line-height token.
+
+## 2026-08-14 — Experience Environment Data Contract
+
+- Registered `content/environments/` as the canonical owner of Environment content.
+- Added governed Experience editorial identity and access classification across Authoring, Runtime, Web Artifact, and generated catalogue contracts.
+- Added the Environment Definition v1 schema and deterministic validation boundary for draft and published Environments.
+
 ## Platform Foundation RC1
 
 ### Confirmed
@@ -253,3 +613,16 @@
 ### Notes
 
 This changelog entry established the official file architecture workflow for Digital2Real V2.
+
+---
+
+## Unreleased — Engineering Notes industrial energy scene
+
+### Changed
+
+- Reframed the existing two-asset Notebook motor presentation as an industrial energy field with four SVG infrastructure routes and three copper energy pulses.
+- Added a six-state, one-shot reveal sequence: infrastructure, energy, motor entrance, card assembly, and settled composition.
+- Added restrained layered scroll parallax for routes, energy, and motor, with a static reduced-motion presentation.
+- Preserved the existing Notebook carousel structure, content, interactions, assets, and Engineering Notes hero.
+
+---

@@ -12,17 +12,19 @@ const deepFreeze = value => {
 
 export const ExperienceDefinitionV1Schema = deepFreeze({
   name: "Digital2Real Experience Authoring Definition",
-  contractVersion: "1.0.0",
+  contractVersion: "1.1.0",
   validationContractVersion: "1.0.0",
   legacyProfile: "legacy_unadapted",
   identifierPatterns: {
     experience: "^EXP-[A-Z0-9]+-[A-Z0-9]+-[0-9]{3}$",
+    experienceEditorial: "^EE-[0-9]{4}$",
     capability: "^ICF-[0-9]{2}$",
     local: "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*$",
     slug: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
   },
   enums: {
     experienceClass: ["learning", "practice", "assessment"],
+    access: ["free", "premium"],
     status: ["draft", "technical_review", "approved", "published", "archived"],
     difficulty: ["foundation", "intermediate", "advanced", "expert"],
     decisionClassification: ["strong", "acceptable", "weak", "unsafe"],
@@ -50,7 +52,7 @@ export const ExperienceDefinitionV1Schema = deepFreeze({
       "public",
       "private"
     ],
-    metadata: ["id", "content_version", "class", "status", "language"],
+    metadata: ["id", "editorial_id", "content_version", "class", "access", "status", "language"],
     classification: ["platform", "domain", "industry", "machine_type", "difficulty"],
     capabilityReference: ["capability_id", "competency_ids"],
     public: [

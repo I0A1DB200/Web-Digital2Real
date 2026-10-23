@@ -1,0 +1,414 @@
+﻿contract_version: "2.0.0"
+metadata:
+  id: "EXP-PRESSURE-SCALING-012"
+  editorial_id: "EE-0012"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales: ["es","en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Generic pressure transmitter / 4–20 mA"
+  domain: "Process pressure measurement"
+  industry: "Manufacturing"
+  machine_type: "Process pressure station"
+  difficulty: "foundation"
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY","COMP-IIO-STATE-INTERPRETATION","COMP-IIO-CONTROLLED-RECOVERY"]
+public:
+  slug: "pressure-transmitter-scaling-mismatch"
+  title: "Escala incorrecta del transmisor de presión"
+  summary: "Localiza una discrepancia 4–20 mA comparando proceso, transmisor, lazo, entrada analógica, PLC y HMI."
+  estimated_duration: 16
+  scenario:
+    initial_context: "La referencia de proceso y PT-201 indican 6.0 bar, pero la HMI muestra 3.0 bar."
+    operational_state: "El proceso esta estable. La frontera de la discrepancia aun no esta identificada."
+    initiating_event: "La presión HMI no coincide con la indicación local."
+    learner_role: "Técnico de instrumentación que debe localizar la primera discrepancia sin sustituciones ni reconfiguraciónes sin evidencia."
+    safety_context:
+      safe_state: "Realiza inspecciones y mediciones únicamente conforme al procedimiento seguro de la instalación."
+      intervention_constraints: ["No alterar el lazo energizado fuera del método autorizado.","No forzar variables ni compensar en HMI.","No cambiar rango o calibración antes de localizar la discrepancia."]
+  learning_objectives:
+    - id: "OBJ-ANALOG-TRACE"
+      description: "Distinguir proceso, salida 4–20 mA, entrada analógica y escala de ingeniería."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-ANALOG-INTERPRET"
+      description: "Interpretar corriente dentro de un rango authored mediante relacion lineal."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-RECOVERY"
+      description: "Corregir la escala y verificar varios puntos de la cadena."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-INCIDENT"
+      phase: "incident"
+      title: "Discrepancia de presión"
+      situation: "La referencia local y PT-201 indican 6.0 bar, pero la HMI muestra 3.0 bar. ¿Qué acción establece primero una frontera?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE","DEC-01-COMPARE","DEC-01-SCALE"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-02-LOOP"
+      phase: "investigation"
+      title: "Señal del transmisor"
+      situation: "La indicación local coincide con la referencia. ¿Qué comprobación localiza la siguiente frontera?"
+      evidence_ids: ["EVID-02-PROCESS"]
+      decision_ids: ["DEC-02-MEASURE","DEC-02-WIRING","DEC-02-HMI"]
+      media_ids: []
+    - id: "STAGE-03-SCALING"
+      phase: "investigation"
+      title: "Frontera PLC"
+      situation: "13.6 mA representan 6.0 bar y el canal recibe 60% del span, pero Pressure_bar vale 3.0. ¿Qué inspeccionas?"
+      evidence_ids: ["EVID-03-LOOP"]
+      decision_ids: ["DEC-03-INSPECT","DEC-03-REPLACE-AI","DEC-03-FORCE"]
+      media_ids: []
+    - id: "STAGE-04-CORRECT"
+      phase: "investigation"
+      title: "Corrección controlada"
+      situation: "La escala PLC es 0–5 bar y el rango authored es 0–10 bar. ¿Qué intervención corrige la causa?"
+      evidence_ids: ["EVID-04-DIAGNOSIS"]
+      decision_ids: ["DEC-04-CORRECT","DEC-04-CALIBRATE","DEC-04-OFFSET"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-05-VERIFY"
+      phase: "solution"
+      title: "Verificación independiente"
+      situation: "La escala se corrigió a 0–10 bar. ¿Qué prueba permite cerrar?"
+      evidence_ids: ["EVID-05-INTERVENTION"]
+      decision_ids: ["DEC-05-VERIFY","DEC-05-ONE","DEC-05-CONFIG"]
+      media_ids: []
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Proceso / transmisor / HMI"
+      content: "Referencia independiente = 6.0 bar; display local PT-201 = 6.0 bar; HMI Pressure = 3.0 bar. La frontera de la discrepancia aun no esta identificada."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    - id: "EVID-02-PROCESS"
+      type: "diagnostic"
+      source: "Comparación local"
+      content: "La referencia independiente y el display local coinciden en 6.0 bar. Esto debilita una hipotesis de cambio real de proceso, pero todavía no demuestra la corriente del lazo."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-COMPARE"]
+      media_ids: []
+    - id: "EVID-03-LOOP"
+      type: "measurement"
+      source: "Medición e interpretación del lazo"
+      content: "Bajo el procedimiento seguro se miden 13.6 mA. Para el rango authored 0–10 bar: (13.6 - 4) / 16 x 10 = 6.0 bar. No se asume ningún rango bruto de PLC."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-MEASURE"]
+      media_ids: ["ART-003"]
+    - id: "EVID-04-DIAGNOSIS"
+      type: "diagnostic"
+      source: "Inspección de escala PLC"
+      content: "El canal recibe 60% del span. La escala de ingeniería está configurada 0–5 bar y produce 3.0 bar, mientras el rango authored del transmisor es 0–10 bar."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-INSPECT"]
+      media_ids: ["ART-004"]
+    - id: "EVID-05-INTERVENTION"
+      type: "inspection"
+      source: "Registro de intervención"
+      content: "La escala de ingeniería se corrigió de 0–5 bar a 0–10 bar sin cambiar transmisor, lazo ni HMI. La recuperación todavía no está verificada."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-CORRECT"]
+      media_ids: ["ART-006"]
+    - id: "EVID-06-RECOVERY"
+      type: "measurement"
+      source: "Prueba funcional"
+      content: "Tres puntos authored confirman correspondencia: 2.0 bar <-> 7.2 mA, 6.0 bar <-> 13.6 mA y 8.0 bar <-> 16.8 mA; transmisor, PLC y HMI coinciden."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-VERIFY"]
+      media_ids: ["ART-005"]
+  decisions:
+    - id: "DEC-01-REPLACE"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Sustituir el transmisor. "
+    - id: "DEC-01-COMPARE"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Comparar referencia de proceso e indicación local."
+    - id: "DEC-01-SCALE"
+      stage_id: "STAGE-01-INCIDENT"
+      action: "Cambiar inmediatamente la escala PLC."
+    - id: "DEC-02-MEASURE"
+      stage_id: "STAGE-02-LOOP"
+      action: "Medir la corriente conforme al procedimiento seguro e interpretarla con el rango authored."
+    - id: "DEC-02-WIRING"
+      stage_id: "STAGE-02-LOOP"
+      action: "Declarar un fallo de cableado."
+    - id: "DEC-02-HMI"
+      stage_id: "STAGE-02-LOOP"
+      action: "Aplicar un factor de dos en HMI."
+    - id: "DEC-03-INSPECT"
+      stage_id: "STAGE-03-SCALING"
+      action: "Inspeccionar la conversión del porcentaje de entrada a Pressure_bar."
+    - id: "DEC-03-REPLACE-AI"
+      stage_id: "STAGE-03-SCALING"
+      action: "Sustituir el módulo analógico."
+    - id: "DEC-03-FORCE"
+      stage_id: "STAGE-03-SCALING"
+      action: "Forzar Pressure_bar a 6.0."
+    - id: "DEC-04-CORRECT"
+      stage_id: "STAGE-04-CORRECT"
+      action: "Alinear la escala PLC a 0–10 bar y dejar pendiente la verificación."
+    - id: "DEC-04-CALIBRATE"
+      stage_id: "STAGE-04-CORRECT"
+      action: "Recalibrar el transmisor para adaptar 13.6 mA a 3.0 bar."
+    - id: "DEC-04-OFFSET"
+      stage_id: "STAGE-04-CORRECT"
+      action: "Duplicar el valor solo en HMI."
+    - id: "DEC-05-VERIFY"
+      stage_id: "STAGE-05-VERIFY"
+      action: "Verificar varios puntos comparando referencia, corriente, PLC y HMI."
+    - id: "DEC-05-ONE"
+      stage_id: "STAGE-05-VERIFY"
+      action: "Cerrar al observar 6.0 bar una vez en HMI."
+    - id: "DEC-05-CONFIG"
+      stage_id: "STAGE-05-VERIFY"
+      action: "Cerrar porque la configuración guardada muestra 0–10 bar."
+  visual:
+    educational_purpose: "Localizar una discrepancia analógica sin confundir proceso, señal y representación."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/01-cover.png"
+        alt: "Portada editorial de un lazo de presión 4–20 mA."
+        caption: "Cadena de medición de presión."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/02-incident.png"
+        alt: "Referencia y transmisor a 6.0 bar; HMI a 3.0 bar."
+        caption: "Discrepancia inicial sin causa revelada."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/03-loop-measurement.png"
+        alt: "Medición de 13.6 mA y rango authored 0–10 bar."
+        caption: "Resultado de la medición del lazo."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/04-scaling.png"
+        alt: "Entrada al 60%, escala PLC 0–5 bar y valor 3.0 bar."
+        caption: "La escala incompatible queda localizada."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/05-verification.png"
+        alt: "Tres puntos coherentes entre presión, corriente, PLC y HMI."
+        caption: "Recuperacin verificada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-PRESSURE-SCALING-012/06-intervention.png"
+        alt: "Corrección de la escala PLC desde 0–5 bar hasta 0–10 bar, con verificación pendiente."
+        caption: "La configuración se corrige; la recuperación todavía debe verificarse."
+        purpose: "evidence"
+  completion:
+    title: "Debrief técnico"
+    summary: "El transmisor y el lazo representaban correctamente 6.0 bar con 13.6 mA. La escala PLC 0–5 bar convertía el 60% en 3.0 bar aunque el rango authored era 0–10 bar."
+    process: ["Comparar proceso e indicación local.","Medir e interpretar la corriente.","Inspeccionar la conversión a unidades.","Corregir la escala localizada.","Verificar varios puntos hasta HMI."]
+    lesson: "Un valor HMI incorrecto no identifica por sí solo el elemento defectuoso. La primera discrepancia verificable estaba en la conversión a unidades de ingeniería."
+    avoided_errors: ["Sustituir sin medir.","Inventar un rango bruto PLC.","Compensar en HMI.","Confundir corrección con recuperación."]
+    industrial_value: ["Diagnóstico por fronteras.","Menos sustituciones innecesarias.","Verificación trazable."]
+    media_ids: ["ART-005"]
+private:
+  fault_model:
+    root_cause: "Escala PLC 0–5 bar incompatible con el rango authored 0–10 bar."
+    recovery_conditions: ["Escala PLC alineada a 0–10 bar.","Varios puntos coinciden entre referencia, corriente, PLC y HMI.","Sin forzados ni compensaciones."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-PROCESS"
+        statement: "La presión real es 3.0 bar."
+        initial_status: "possible"
+      - id: "HYP-LOOP"
+        statement: "El transmisor o el lazo representan mal la presión."
+        initial_status: "possible"
+      - id: "HYP-SCALING"
+        statement: "La conversión a unidades usa un span incorrecto."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-SCALING"
+    critical_path: ["DEC-01-COMPARE","DEC-02-MEASURE","DEC-03-INSPECT","DEC-04-CORRECT","DEC-05-VERIFY"]
+  decision_logic:
+    - decision_id: "DEC-01-REPLACE"
+      is_correct: false
+      retry_feedback: "La diferencia no demuestra que el transmisor falle. Compara primero el proceso y la indicación local."
+      rationale: "La diferencia no demuestra que el transmisor falle. Compara primero el proceso y la indicación local."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-02-LOOP"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-COMPARE"
+      is_correct: true
+      rationale: "La acción adquiere evidencia en la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza con evidencia adquirida."
+      evidence_revealed: ["EVID-02-PROCESS"]
+      next_stage: "STAGE-02-LOOP"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-SCALE"
+      is_correct: false
+      retry_feedback: "La escala aun es una hipotesis. Localiza primero la discrepancia."
+      rationale: "La escala aun es una hipotesis. Localiza primero la discrepancia."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-02-LOOP"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-MEASURE"
+      is_correct: true
+      rationale: "La acción adquiere evidencia en la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza con evidencia adquirida."
+      evidence_revealed: ["EVID-03-LOOP"]
+      next_stage: "STAGE-03-SCALING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-WIRING"
+      is_correct: false
+      retry_feedback: "La diferencia no distingue cableado de configuración. Mide la señal."
+      rationale: "La diferencia no distingue cableado de configuración. Mide la señal."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SCALING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-HMI"
+      is_correct: false
+      retry_feedback: "Compensar la pantalla oculta el origen. Sigue la señal física."
+      rationale: "Compensar la pantalla oculta el origen. Sigue la señal física."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-03-SCALING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-INSPECT"
+      is_correct: true
+      rationale: "La acción adquiere evidencia en la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza con evidencia adquirida."
+      evidence_revealed: ["EVID-04-DIAGNOSIS"]
+      next_stage: "STAGE-04-CORRECT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-REPLACE-AI"
+      is_correct: false
+      retry_feedback: "El canal recibe un porcentaje coherente. Inspecciona su conversión."
+      rationale: "El canal recibe un porcentaje coherente. Inspecciona su conversión."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CORRECT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-FORCE"
+      is_correct: false
+      retry_feedback: "Forzar elimina evidencia y no corrige la conversión."
+      rationale: "Forzar elimina evidencia y no corrige la conversión."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-04-CORRECT"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-CORRECT"
+      is_correct: true
+      rationale: "La acción adquiere evidencia en la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza con evidencia adquirida."
+      evidence_revealed: ["EVID-05-INTERVENTION"]
+      next_stage: "STAGE-05-VERIFY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-CALIBRATE"
+      is_correct: false
+      retry_feedback: "La corriente ya representa el proceso. No adaptes el transmisor a una escala errónea."
+      rationale: "La corriente ya representa el proceso. No adaptes el transmisor a una escala errónea."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-OFFSET"
+      is_correct: false
+      retry_feedback: "La discrepancia existe antes de HMI. Corrige en la autoridad de escala."
+      rationale: "La discrepancia existe antes de HMI. Corrige en la autoridad de escala."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-VERIFY"
+      is_correct: true
+      rationale: "La acción adquiere evidencia en la siguiente frontera."
+      classification: "strong"
+      consequence: "Avanza con evidencia adquirida."
+      evidence_revealed: ["EVID-06-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-ONE"
+      is_correct: false
+      retry_feedback: "Un punto puede ocultar pendiente u offset incorrectos. Verifica varios puntos."
+      rationale: "Un punto puede ocultar pendiente u offset incorrectos. Verifica varios puntos."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-CONFIG"
+      is_correct: false
+      retry_feedback: "Una configuración correcta no demuestra recuperación funcional."
+      rationale: "Una configuración correcta no demuestra recuperación funcional."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar ni revelar evidencia."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "El transmisor y el lazo representaban correctamente 6.0 bar con 13.6 mA. La escala PLC 0–5 bar convertía el 60% en 3.0 bar aunque el rango authored era 0–10 bar."
+    correct_reasoning: ["Comparar proceso e indicación local.","Medir e interpretar la corriente.","Inspeccionar la conversión a unidades.","Corregir la escala localizada.","Verificar varios puntos hasta HMI."]
+    recovery: ["Corregir la escala.","Verificar varios puntos."]
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence: ["Valores authored comprobados por cálculo lineal.","No se asume rango bruto, terminal, cable, tolerancia ni código de fabricante.","Contexto: SRC-000043, SRC-000045 y SRC-000046; permanecen discovered."]
+

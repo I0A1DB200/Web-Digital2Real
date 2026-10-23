@@ -1,0 +1,60 @@
+id: SRC-000059
+title: "Siemens PRONETA Basic user manual"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["MANUAL", "SOFTWARE_DOCUMENTATION"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Siemens"
+  authoring_organization: "Siemens"
+domain_ids: ["diagnostics"]
+manufacturer:
+  id: MFR-SIEMENS
+  name: "Siemens"
+product:
+  family: "PRONETA Basic"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: ["PRONETA Basic"]
+protocols_interfaces: ["PROFINET"]
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: ["en"]
+locations:
+  canonical_url: "https://cache.industry.siemens.com/dl/files/624/67460624/att_1072470/v1/PRONETA_Documentation_V3_2_en.pdf"
+  product_url: ""
+  download_url: "https://cache.industry.siemens.com/dl/files/624/67460624/att_1072470/v1/PRONETA_Documentation_V3_2_en.pdf"
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Siemens"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact applicability and technical claims require D2R technical review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

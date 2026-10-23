@@ -3,9 +3,17 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { ExperiencePlayer } from "../../../../experience-engine/player/experiencePlayer.js";
+import { evidenceMediaArtifact } from "../../../../experience-engine/player/tests/fixtures/evidenceMediaArtifact.js";
+import { createEnvironmentNavigator } from "../components/environmentNavigator.js";
+import { chooseEnvironmentPopoverPlacement } from "../components/environmentPopoverPosition.js";
+import { createEnvironmentProgressStore } from "../components/environmentProgressStore.js";
 import {
+  CompletionPanel,
+  createExperienceProgressResult,
   createExperienceWorkspace,
-  createWorkspaceProjection
+  createWorkspaceProjection,
+  DecisionPanel,
+  ExperienceWorkspace
 } from "../components/experienceWorkspace.js";
 
 const artifactUrl = new URL(
@@ -13,6 +21,178 @@ const artifactUrl = new URL(
   import.meta.url
 );
 const readArtifact = async () => JSON.parse(await readFile(artifactUrl, "utf8"));
+
+async function resultWorkspace(language = "en", storage = null) {
+  const artifact = evidenceMediaArtifact(language);
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: language };
+  const store = createEnvironmentProgressStore({ storage });
+  let registrations = 0;
+  const progressStore = { ...store, recordExperienceResult(...args) { registrations++; return store.recordExperienceResult(...args); } };
+  const catalog = { version: 1, experiences: [{
+    id: artifact.identity.id, editorialId: "EE-TEST", title: artifact.metadata.title,
+    summary: artifact.metadata.summary, path: "fixture.json", class: "learning"
+  }], environments: [{
+    id: "ENV-TEST", contractVersion: "2.0.0", title: "Fixture", background: "fixture.svg", width: 16, height: 9,
+    hotspots: [{ experienceEditorialId: "EE-TEST", x: 50, y: 50 }]
+  }] };
+  const workspace = createExperienceWorkspace({ documentRef, progressStore,
+    fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : artifact) }),
+    importPlayer: async () => ({ ExperiencePlayer })
+  });
+  await workspace.initialise(); await workspace.openExperience(artifact.identity.id, "ENV-TEST");
+  const click = text => findButton(workspace.element, text).click();
+  const begin = () => {
+    click(language === "es" ? "Iniciar Experience" : "Start experience");
+    click(language === "es" ? "Iniciar diagnóstico" : "Begin diagnosis");
+  };
+  return { workspace, documentRef, store, begin, click, registrations: () => registrations };
+}
+
+for (const language of ["es", "en"]) {
+  test(`result workspace ${language}: earned text/media only, accessible Continue and visible load failures`, async () => {
+    const fixture = await resultWorkspace(language);
+    const { workspace, documentRef, click, begin } = fixture;
+    begin();
+    click(language === "es" ? "Cambiar sin comprobar" : "Replace without checking");
+    assert.equal(workspace.getState().interaction, "stage");
+    assert.deepEqual(workspace.element.findAll(item => item.tagName === "IMG").map(item => item.src), ["./generated/experience-engine/assets/fixture/CONTEXT.svg"]);
+    click(language === "es" ? "Inspeccionar conector" : "Inspect connector");
+    assert.equal(workspace.getState().interaction, "result");
+    assert.match(workspace.element.text, language === "es" ? /El conector está suelto/ : /The connector is loose/);
+    assert.match(workspace.element.text, language === "es" ? /No hay daños visibles/ : /No visible damage/);
+    assert.equal(workspace.element.findAll(item => item.className === "experience-decision").length, 0);
+    assert.equal(documentRef.activeElement.text, language === "es" ? "Resultado" : "Result");
+    const images = workspace.element.findAll(item => item.tagName === "IMG");
+    assert.deepEqual(images.map(item => item.src.split("/").at(-1)), ["DETAIL.svg", "CONNECTOR.svg"]);
+    const before = workspace.getState();
+    images[0].listeners.error(); images[0].listeners.error();
+    assert.equal(images[0].parent, null);
+    const notices = workspace.element.findAll(item => item.attributes.role === "status");
+    assert.equal(notices.length, 1);
+    assert.match(notices[0].text, language === "es" ? /No se pudo cargar/ : /Could not load media/);
+    assert.deepEqual(workspace.getState(), before);
+    click(language === "es" ? "Continuar" : "Continue");
+    assert.equal(workspace.getState().currentStage.id, "STAGE-2");
+    assert.deepEqual(workspace.getState().progress, before.progress);
+    assert.equal(documentRef.activeElement.text, language === "es" ? "Evaluar la medición" : "Assess measurement");
+    workspace.destroy();
+  });
+}
+
+test("final result records completion before Continue exactly once, and closing preserves earned progress", async () => {
+  for (const closeBeforeContinue of [false, true]) {
+    const fixture = await resultWorkspace();
+    const { workspace, click, begin, store } = fixture;
+    begin(); click("Inspect connector"); click("Continue"); click("Assess measurement");
+    assert.equal(fixture.registrations(), 0);
+    click("Verify recovery");
+    const result = workspace.getState();
+    assert.equal(result.interaction, "result");
+    assert.equal(result.state, "Completed");
+    assert.equal(fixture.registrations(), 1);
+    assert.deepEqual(store.getEnvironmentProgress("ENV-TEST").experiences, { completed: 1, mastered: 1, total: 1 });
+    assert.deepEqual(createExperienceProgressResult(result), { completed: true, mastered: true });
+    if (closeBeforeContinue) click("All experiences");
+    else {
+      click("Continue");
+      assert.equal(workspace.getState().interaction, "completion");
+      assert.match(workspace.element.text, /Test debrief/);
+      assert.equal(workspace.element.find(item => item.tagName === "IMG").src.split("/").at(-1), "RECOVERY.svg");
+    }
+    assert.equal(fixture.registrations(), 1);
+    assert.equal(store.getEnvironmentProgress("ENV-TEST").experiences.completed, 1);
+    workspace.destroy();
+  }
+});
+
+test("restarting allows one completion registration for the new run without duplicating ENV completion", async () => {
+  const fixture = await resultWorkspace();
+  for (const retry of [true, false]) {
+    fixture.begin();
+    if (retry) fixture.click("Replace without checking");
+    fixture.click("Inspect connector"); fixture.click("Continue");
+    fixture.click("Assess measurement"); fixture.click("Verify recovery");
+    const count = retry ? 1 : 2;
+    assert.equal(fixture.registrations(), count);
+    assert.deepEqual(fixture.store.getEnvironmentProgress("ENV-TEST").experiences, { completed: 1, mastered: retry ? 0 : 1, total: 1 });
+    fixture.click("Continue");
+    assert.equal(fixture.registrations(), count);
+    fixture.click("Restart experience");
+  }
+  fixture.workspace.destroy();
+});
+
+test("reload does not restore active or pending-result sessions; only completion/mastery persists", async () => {
+  for (const phase of ["before-answer", "retry", "result", "after-continue", "final-result", "completion"]) {
+    const values = new Map();
+    const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+    const first = await resultWorkspace("en", storage);
+    first.begin();
+    if (phase !== "before-answer") first.click("Replace without checking");
+    if (!["before-answer", "retry"].includes(phase)) first.click("Inspect connector");
+    if (["after-continue", "final-result", "completion"].includes(phase)) first.click("Continue");
+    if (["final-result", "completion"].includes(phase)) { first.click("Assess measurement"); first.click("Verify recovery"); }
+    if (phase === "completion") first.click("Continue");
+    first.workspace.destroy();
+    const reopened = await resultWorkspace("en", storage);
+    const state = reopened.workspace.getState();
+    assert.equal(state.interaction, "start", phase);
+    assert.deepEqual(state.decisionHistory, []);
+    assert.deepEqual(state.unlockedEvidence, []);
+    assert.equal(state.result, null);
+    assert.equal(reopened.store.getEnvironmentProgress("ENV-TEST").experiences.completed, ["final-result", "completion"].includes(phase) ? 1 : 0);
+    assert.doesNotMatch([...values.values()].join(""), /unlockedEvidence|decisionHistory|stageIndex|interaction/);
+    reopened.workspace.destroy();
+  }
+});
+
+test("Incident Brief resolves a semantic cover without changing Player state or stage media", async () => {
+  const artifact = await readArtifact();
+  artifact.public.visual.cover_asset_id = "EDITORIAL";
+  artifact.public.visual.assets = [
+    { id: "ART-001", type: "image", src: "01.png", alt: "Stage", purpose: "evidence" },
+    { id: "EDITORIAL", type: "image", src: "presentation.png", alt: "Semantic cover", purpose: "catalog_cover" }
+  ];
+  artifact.public.stages[0].media_ids = ["ART-001"];
+  const player = new ExperiencePlayer({ experience: artifact });
+  const render = () => ExperienceWorkspace({
+    documentRef: new FakeDocument(),
+    projection: createWorkspaceProjection(player.getState(), "/generated"),
+    onStart: () => player.start(),
+    onContinue: () => player.continue()
+  });
+  const start = render();
+  assert.equal(start.findAll(element => element.tagName === "IMG").length, 0);
+  findButton(start, "Start experience").click();
+  const before = player.getState();
+  const incident = render();
+  assert.deepEqual(player.getState(), before);
+  assert.equal(incident.find(element => element.tagName === "IMG").src, "/generated/presentation.png");
+  for (const text of [before.context.initial_context, before.context.operational_state, before.context.initiating_event]) {
+    assert.ok(incident.text.includes(text));
+  }
+  findButton(incident, "Begin diagnosis").click();
+  assert.equal(player.getState().interaction, "stage");
+  assert.deepEqual(player.getState().progress, before.progress);
+  assert.equal(render().find(element => element.tagName === "IMG").src, "/generated/01.png");
+});
+
+test("optional cover presentation leaves Begin Diagnosis usable and preserves all diagnostic fields", () => {
+  for (const coverId of [undefined, "unknown", "other"]) {
+    const state = createState({ interaction: "introduction", visual: {
+      cover_asset_id: coverId, assets: [{ id: "other", src: "01.png", type: "image" }]
+    }, unlockedEvidence: [], attemptsByDecision: {}, resolvedDecisions: [], evaluationResult: null });
+    const before = structuredClone(state);
+    let continued = false;
+    const shell = ExperienceWorkspace({ documentRef: new FakeDocument(),
+      projection: createWorkspaceProjection(state), onContinue: () => { continued = true; } });
+    assert.equal(shell.findAll(element => element.tagName === "IMG").length, coverId === "other" ? 1 : 0);
+    findButton(shell, "Begin diagnosis").click();
+    assert.equal(continued, true);
+    assert.deepEqual(state, before);
+  }
+});
 
 function createState(overrides = {}) {
   return {
@@ -77,26 +257,61 @@ test("projects a selected decision and public completion", () => {
 
 test("a generated artifact opens and completes through Experience Lab without console access", async () => {
   const artifact = await readArtifact();
-  artifact.identity.id = "EXP-SENSOR-PHOTOELECTRIC-009";
-  artifact.metadata.title = "Photoelectric Sensor Misalignment";
-  artifact.metadata.summary = "A packaging station intermittently fails to detect incoming boxes.";
+  artifact.identity.id = "EXP-SENSOR-SIGNAL-001";
+  artifact.metadata.title = "Sensor ON, PLC Input OFF";
+  artifact.metadata.summary = "Trace a field signal from the sensor to the controller input.";
   const catalog = {
     format: "Digital2Real Generated Web Artifact Catalog",
     version: 1,
     mode: "preview",
     experiences: [{
       id: artifact.identity.id,
+      editorialId: "EE-0001",
+      access: "free",
       class: artifact.identity.class,
       title: artifact.metadata.title,
       summary: artifact.metadata.summary,
       estimatedDuration: artifact.metadata.estimated_duration,
-      cover: "assets/EXP-SENSOR-PHOTOELECTRIC-009/ART-001-machine-overview.png",
+      cover: "assets/EXP-SENSOR-SIGNAL-001/ART-001-machine-overview.png",
       path: `experiences/${artifact.identity.id}.json`
+    }],
+    environments: [{
+      id: "ENV-001",
+      contractVersion: "2.0.0",
+      slug: "automated-factory",
+      title: "Automated Factory",
+      lifecycle: "preview",
+      capacity: 10,
+      background: "environments/ENV-001-automated-factory.png",
+      width: 1672,
+      height: 941,
+      theory: {
+        defaultLocale: "es",
+        sectionIds: ["TH-01-FIRST", "TH-02-SECOND"],
+        locales: { es: "environments/ENV-001/theory.es.json", en: "environments/ENV-001/theory.en.json" }
+      },
+      hotspots: [{ experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 }]
+    }, {
+      id: "ENV-002", slug: "field-instrumentation", title: "Field Instrumentation", lifecycle: "preview", capacity: 10,
+      background: "environments/ENV-002-field-instrumentation.png",
+      width: 1672, height: 941, hotspots: []
+    }, {
+      id: "ENV-003", slug: "diagnostic-cell", title: "Diagnostic Cell", lifecycle: "preview", capacity: 10,
+      background: "environments/ENV-003-sequence-safety-hmi-diagnostic-cell.png",
+      width: 1672, height: 941, hotspots: []
     }]
   };
   const documentRef = new FakeDocument();
   const responses = new Map([
     ["./generated/experience-engine/catalog.json", catalog],
+    ["./generated/experience-engine/environments/ENV-001/theory.es.json", {
+      theory_artifact_version: "1.0.0", environment_id: "ENV-001", locale: "es",
+      sections: [
+        { id: "TH-01-FIRST", title: "Ruta de señal", body: "Primera sección.", media_ids: ["TH-MEDIA-01"] },
+        { id: "TH-02-SECOND", title: "Referencia PNP", body: "Segunda sección.", media_ids: [] }
+      ],
+      media: [{ id: "TH-MEDIA-01", type: "image", src: "environments/ENV-001/media/theory.png", alt: "Ruta de señal" }]
+    }],
     [`./generated/experience-engine/experiences/${artifact.identity.id}.json`, artifact]
   ]);
   const workspace = createExperienceWorkspace({
@@ -110,21 +325,48 @@ test("a generated artifact opens and completes through Experience Lab without co
   });
 
   await workspace.initialise();
-  const card = workspace.element.find(element => element.className === "experience-card");
-  assert.ok(card);
-  assert.equal(card.tagName, "A");
-  assert.equal(card.attributes.href, "#experience-lab");
-  assert.equal(card.attributes["aria-label"], "Begin investigation: Photoelectric Sensor Misalignment");
-  assert.match(card.text, /Photoelectric Sensor Misalignment/);
-  assert.match(card.text, /A packaging station intermittently fails to detect incoming boxes/);
-  assert.match(card.text, /→ Begin Investigation/);
-  assert.doesNotMatch(card.text, /EXP-SENSOR-PHOTOELECTRIC-009|learning|20 min|CASE/);
-  assert.equal(card.find(element => element.className === "experience-card__meta"), null);
-  assert.equal(card.find(element => element.className.includes("experience-action")), null);
-
-  await card.click();
+  assert.equal(workspace.element.findAll(element => element.className === "environment-card").length, 3);
+  workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Field Instrumentation").click();
+  assert.match(workspace.element.text, /being prepared/);
+  assert.match(workspace.element.text, /0 \/ 0/);
+  findButton(workspace.element, "All environments").click();
+  workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Diagnostic Cell").click();
+  assert.match(workspace.element.text, /being prepared/);
+  assert.match(workspace.element.text, /0 \/ 0/);
+  findButton(workspace.element, "All environments").click();
+  const environment = workspace.element.find(
+    element => element.attributes["aria-label"] === "Open environment: Automated Factory"
+  );
+  environment.click();
+  assert.match(workspace.element.text, /0 \/ 1/);
+  await findButton(workspace.element, "Open Theory").click();
+  assert.match(workspace.element.text, /Ruta de señal/);
+  assert.doesNotMatch(workspace.element.text, /Referencia PNP/);
+  const theoryImage = workspace.element.find(element => element.className === "experience-media__asset");
+  assert.equal(theoryImage.src, "./generated/experience-engine/environments/ENV-001/media/theory.png");
+  findButton(workspace.element, "Continue Theory").click();
+  assert.match(workspace.element.text, /Referencia PNP/);
+  findButton(workspace.element, "Complete Theory").click();
+  assert.match(workspace.element.text, /Theory 2 \/ 2/);
+  const hotspot = workspace.element.find(element => element.className === "environment-hotspot");
+  assert.equal(hotspot.tagName, "BUTTON");
+  assert.equal(hotspot.attributes["aria-label"], "Inspect Sensor ON, PLC Input OFF");
+  assert.equal(hotspot.style.properties["--hotspot-x"], "8.6%");
+  assert.equal(hotspot.style.properties["--hotspot-y"], "36.8%");
+  hotspot.click();
+  assert.equal(hotspot.attributes["aria-expanded"], "true");
+  assert.equal(workspace.element.findAll(element => element.className === "environment-popover").length, 1);
+  assert.equal(workspace.element.find(element => element.className === "environment-view__details"), null);
+  assert.match(workspace.element.text, /Sensor ON, PLC Input OFF/);
+  assert.match(workspace.element.text, /Trace a field signal/);
+  await findButton(workspace.element, "Begin investigation").click();
   assert.equal(workspace.getState().interaction, "start");
   assert.match(workspace.element.text, /material handling machine has stopped/i);
+
+  findButton(workspace.element, "All experiences").click();
+  assert.match(workspace.element.text, /0 \/ 1/);
+  workspace.element.find(element => element.className === "environment-hotspot").click();
+  await findButton(workspace.element, "Begin investigation").click();
 
   findButton(workspace.element, "Start experience").click();
   findButton(workspace.element, "Begin diagnosis").click();
@@ -143,11 +385,13 @@ test("a generated artifact opens and completes through Experience Lab without co
 
   findButton(workspace.element, "Restart experience").click();
   assert.equal(workspace.getState().interaction, "start");
+  findButton(workspace.element, "All experiences").click();
+  assert.match(workspace.element.text, /1 \/ 1/);
 });
 
 test("renders safe errors for missing experiences and unsupported contracts", async () => {
   const documentRef = new FakeDocument();
-  const catalog = { version: 1, experiences: [] };
+  const catalog = { version: 1, experiences: [], environments: [] };
   const workspace = createExperienceWorkspace({
     documentRef,
     fetchImpl: async () => ({ ok: true, status: 200, json: async () => catalog }),
@@ -169,6 +413,8 @@ test("selects the document locale and falls back through generated catalog metad
     version: 1,
     experiences: [{
       id: artifact.identity.id,
+      editorialId: "EE-0001",
+      access: "free",
       class: artifact.identity.class,
       title: "Título por defecto",
       summary: "Resumen por defecto",
@@ -182,7 +428,8 @@ test("selects the document locale and falls back through generated catalog metad
         es: { title: "Título por defecto", summary: "Resumen por defecto" },
         en: { title: "English title", summary: "English summary" }
       }
-    }]
+    }],
+    environments: []
   };
   const responses = new Map([
     ["./generated/experience-engine/catalog.json", catalog],
@@ -202,14 +449,471 @@ test("selects the document locale and falls back through generated catalog metad
   });
 
   await workspace.initialise();
-  assert.match(workspace.element.text, /English title/);
   await workspace.openExperience(artifact.identity.id);
   assert.ok(requests.includes("./generated/experience-engine/experiences/item.en.json"));
+});
+
+test("maps completed Player V2 outcomes to the minimal progress boundary", () => {
+  for (const [outcome, mastered] of [["PASS", true], ["PASS_WITH_GUIDANCE", false], ["RETRY_RECOMMENDED", false]]) {
+    assert.deepEqual(createExperienceProgressResult({
+      interaction: "completion", completionStatus: "completed", evaluationResult: { outcome, mastered }
+    }), { completed: true, mastered });
+  }
+  assert.throws(() => createExperienceProgressResult({ interaction: "stage", completionStatus: "active" }));
+});
+
+test("presents Player V2 feedback and completion evaluation without evaluating or persisting it", async () => {
+  const documentRef = new FakeDocument();
+  const feedback = { decisionId: "DEC-01", message: "Review the evidence and try again.", attemptNumber: 2 };
+  const evaluationResult = {
+    totalDecisions: 5, firstAttemptCorrect: 3, additionalAttempts: 2,
+    firstAttemptSuccessRatio: { numerator: 3, denominator: 5 }, displayPercentage: 60,
+    outcome: "PASS_WITH_GUIDANCE", mastered: false
+  };
+  const projection = createWorkspaceProjection(createState({ feedback, evaluationResult }));
+  const decisions = DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision() {} });
+  const completion = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({ interaction: "completion", currentStage: null, evaluationResult })),
+    onRestart() {}
+  });
+
+  assert.equal(projection.feedback, feedback);
+  assert.equal(projection.evaluationResult, evaluationResult);
+  assert.match(decisions.text, /Review the evidence and try again/);
+  assert.match(completion.text, /First-attempt correct3 \/ 5/);
+  assert.match(completion.text, /Additional attempts2/);
+  assert.match(completion.text, /PASS WITH GUIDANCE/);
+  const source = await readFile(new URL("../components/experienceWorkspace.js", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /evaluateExperience|mastery_outcomes|thresholds/);
+});
+
+test("renders complete English and Spanish learner-facing debrief copy without hybrid headings", () => {
+  const documentRef = new FakeDocument();
+  const evaluationResult = {
+    totalDecisions: 5, firstAttemptCorrect: 5, additionalAttempts: 0,
+    outcome: "PASS", mastered: true
+  };
+  const completion = {
+    title: "Technical debrief",
+    summary: "The signal path was restored.",
+    process: ["Trace the signal path."],
+    lesson: "Verify the complete chain.",
+    avoided_errors: ["Replacing B1 without evidence."],
+    industrial_value: ["Traceable diagnosis."]
+  };
+  const english = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({
+      interaction: "completion", completionStatus: "completed", currentStage: null,
+      experience: { title: "English", summary: "Summary", language: "en" },
+      completion, evaluationResult
+    })),
+    onRestart() {}
+  });
+  assert.match(english.text, /Correct process/);
+  assert.match(english.text, /Avoided errors/);
+  assert.match(english.text, /Industrial value/);
+  assert.doesNotMatch(english.text, /Proceso correcto|Errores evitados|Valor industrial/);
+
+  const spanish = CompletionPanel({
+    documentRef,
+    projection: createWorkspaceProjection(createState({
+      interaction: "completion", completionStatus: "completed", currentStage: null,
+      experience: { title: "Español", summary: "Resumen", language: "es" },
+      completion: {
+        title: "Debrief técnico", summary: "Se restauró la ruta de señal.",
+        process: ["Seguir la ruta de la señal."], lesson: "Verificar la cadena completa.",
+        avoided_errors: ["Sustituir B1 sin evidencias."], industrial_value: ["Diagnóstico trazable."]
+      },
+      evaluationResult
+    })),
+    onRestart() {}
+  });
+  assert.match(spanish.text, /Proceso correcto/);
+  assert.match(spanish.text, /Errores evitados/);
+  assert.match(spanish.text, /Valor industrial/);
+  assert.doesNotMatch(spanish.text, /Correct process|Avoided errors|Industrial value/);
+});
+
+test("localizes the active Experience decision UI from the artifact language", () => {
+  const documentRef = new FakeDocument();
+  const spanish = ExperienceWorkspace({
+    documentRef,
+    projection: {
+      ...createWorkspaceProjection(createState({
+        experience: { title: "Diagnóstico", summary: "Resumen", language: "es" }
+      })),
+      phase: "stage"
+    },
+    onStart() {}, onContinue() {}, onDecision() {}, onRestart() {}, onClose() {}
+  });
+  assert.match(spanish.text, /Situación actual/);
+  assert.match(spanish.text, /Decisión técnica/);
+  assert.match(spanish.text, /¿Qué debería hacerse a continuación\?/);
+  assert.doesNotMatch(spanish.text, /Current situation|Engineering decision|What should be done next/);
+
+  const english = ExperienceWorkspace({
+    documentRef,
+    projection: {
+      ...createWorkspaceProjection(createState({
+        experience: { title: "Diagnosis", summary: "Summary", language: "en" }
+      })),
+      phase: "stage"
+    },
+    onStart() {}, onContinue() {}, onDecision() {}, onRestart() {}, onClose() {}
+  });
+  assert.match(english.text, /Current situation/);
+  assert.match(english.text, /Engineering decision/);
+  assert.doesNotMatch(english.text, /Situación actual|Decisión técnica/);
+});
+
+test("localizes Theory actions and keeps content and actions as 32px-gap siblings", async () => {
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "es" };
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  progressStore.registerEnvironment({
+    environmentId: "ENV-TEST", contractVersion: "2.0.0",
+    experienceIds: [], theorySectionIds: ["TH-01", "TH-02"]
+  });
+  const navigator = createEnvironmentNavigator({
+    documentRef,
+    baseUrl: ".",
+    environments: [{
+      id: "ENV-TEST", contractVersion: "2.0.0", title: "Fábrica", background: "factory.png",
+      width: 16, height: 9, hotspots: [], theory: { locales: { es: "theory.es.json" } }
+    }],
+    experiences: [],
+    onOpenExperience() {},
+    progressStore,
+    onOpenTheory: async () => ({
+      locale: "es",
+      media: [{ id: "MEDIA", type: "image", src: "media.png", alt: "Ruta" }],
+      sections: [
+        { id: "TH-01", title: "Ruta", body: "Contenido.", media_ids: ["MEDIA"] },
+        { id: "TH-02", title: "Medición", body: "Contenido.", media_ids: [] }
+      ]
+    }),
+    onTheorySectionCompleted() {}
+  });
+  navigator.renderEnvironment("ENV-TEST");
+  await findButton(navigator.element, "Abrir teoría").click();
+  const section = navigator.element.find(item => item.className === "experience-panel environment-theory__section");
+  assert.equal(section.children[0].className, "environment-theory__content");
+  assert.equal(section.children[1].className, "environment-theory__actions");
+  assert.equal(section.children[1].children[0].textContent, "Continuar teoría");
+  findButton(navigator.element, "Continuar teoría").click();
+  assert.ok(findButton(navigator.element, "Completar teoría"));
+
+  const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
+  assert.match(styles, /\.environment-theory__section\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*gap:\s*32px;/s);
+});
+
+test("keeps one accessible anchored popover and closes it through every supported interaction", () => {
+  const documentRef = new FakeDocument();
+  const opened = [];
+  let resizeCallback = null;
+  const navigator = createEnvironmentNavigator({
+    documentRef,
+    baseUrl: ".",
+    environments: [{
+      id: "ENV-TEST", slug: "test", title: "Test", lifecycle: "preview", capacity: 10,
+      background: "environment.png", width: 1672, height: 941,
+      hotspots: [
+        { experienceEditorialId: "EE-0101", x: 25, y: 50 },
+        { experienceEditorialId: "EE-0102", x: 75, y: 50 }
+      ]
+    }],
+    experiences: [
+      { id: "EXP-TEST-A-101", editorialId: "EE-0101", title: "First", summary: "First summary" },
+      { id: "EXP-TEST-B-102", editorialId: "EE-0102", title: "Second", summary: "Second summary" }
+    ],
+    onOpenExperience: id => opened.push(id),
+    resizeObserverFactory: callback => {
+      resizeCallback = callback;
+      return { observe() {}, disconnect() {} };
+    },
+    windowRef: new FakeEventTarget()
+  });
+
+  navigator.renderEnvironment("ENV-TEST");
+  const hotspots = navigator.element.findAll(item => item.className === "environment-hotspot");
+  hotspots[0].rect = { left: 190, top: 210, width: 20, height: 20 };
+  hotspots[1].rect = { left: 590, top: 210, width: 20, height: 20 };
+  hotspots[0].click();
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 1);
+  assert.equal(hotspots[0].attributes["aria-expanded"], "true");
+  assert.ok(hotspots[0].attributes["aria-controls"]);
+  assert.ok(resizeCallback);
+  resizeCallback();
+  const positionedPopover = navigator.element.find(item => item.className === "environment-popover");
+  assert.ok(positionedPopover.style.properties["--popover-x"]);
+  assert.ok(positionedPopover.style.properties["--popover-y"]);
+
+  hotspots[0].click();
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 0);
+  assert.equal(documentRef.activeElement, hotspots[0]);
+
+  hotspots[0].click();
+  hotspots[1].click();
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 1);
+  assert.match(navigator.element.text, /Second summary/);
+  assert.equal(hotspots[0].attributes["aria-expanded"], "false");
+  documentRef.dispatch("keydown", { key: "Escape" });
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 0);
+  assert.equal(documentRef.activeElement, hotspots[1]);
+
+  hotspots[1].click();
+  documentRef.dispatch("click", { target: new FakeElement("div", documentRef) });
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 0);
+  hotspots[0].click();
+  findButton(navigator.element, "Begin investigation").click();
+  assert.deepEqual(opened, ["EXP-TEST-A-101"]);
+  assert.equal(navigator.element.findAll(item => item.className === "environment-popover").length, 0);
+});
+
+test("positions popovers inside the viewer, avoids hotspots and uses a deterministic docked fallback", () => {
+  const input = {
+    viewer: { x: 0, y: 0, width: 800, height: 450 },
+    popover: { width: 300, height: 160 },
+    anchor: { x: 100, y: 210, width: 20, height: 20 },
+    obstacles: [{ x: 145, y: 150, width: 60, height: 140 }]
+  };
+  const placement = chooseEnvironmentPopoverPlacement(input);
+  assert.notEqual(placement.placement, "right");
+  assert.ok(placement.x >= 12 && placement.y >= 12);
+  assert.ok(placement.x + input.popover.width <= input.viewer.width - 12);
+  assert.ok(placement.y + input.popover.height <= input.viewer.height - 12);
+
+  const blocked = chooseEnvironmentPopoverPlacement({
+    ...input,
+    obstacles: [{ x: 0, y: 0, width: 800, height: 450 }]
+  });
+  const repeated = chooseEnvironmentPopoverPlacement({
+    ...input,
+    obstacles: [{ x: 0, y: 0, width: 800, height: 450 }]
+  });
+  assert.equal(blocked.docked, true);
+  assert.deepEqual(blocked, repeated);
+});
+
+test("persists idempotent completion without storing Player content", () => {
+  const values = new Map();
+  const storage = {
+    getItem: key => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value)
+  };
+  const first = createEnvironmentProgressStore({ storage });
+  assert.equal(first.complete("EXP-TEST-A-101"), true);
+  assert.equal(first.complete("EXP-TEST-A-101"), false);
+  const second = createEnvironmentProgressStore({ storage });
+  assert.equal(second.isCompleted("EXP-TEST-A-101"), true);
+  assert.deepEqual(second.getSnapshot().completedExperienceIds, ["EXP-TEST-A-101"]);
+  assert.doesNotMatch([...values.values()][0], /stage|decision|feedback|private/);
+});
+
+test("environment progress counts unique active assignments and updates without navigation", () => {
+  const experiences = Array.from({ length: 10 }, (_, index) => ({
+    id: `EXP-TEST-${index}`, editorialId: `EE-TEST-${index}`, title: `Test ${index}`
+  }));
+  const excluded = [
+    { id: "archived", editorialId: "EE-0909", status: "archived" },
+    { id: "disabled", editorialId: "EE-DISABLED", status: "disabled" },
+    { id: "off", editorialId: "EE-OFF", enabled: false }
+  ];
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  excluded.forEach(item => progressStore.complete(item.id));
+  const navigator = createEnvironmentNavigator({
+    documentRef: new FakeDocument(), baseUrl: ".", windowRef: null,
+    experiences: [...experiences, ...excluded], progressStore,
+    environments: [{
+      id: "ENV-TEST", title: "Test environment", capacity: 99,
+      width: 100, height: 50, background: "test.png",
+      hotspots: [...experiences, ...excluded, experiences[0], { editorialId: "missing" }]
+        .map(item => ({ experienceEditorialId: item.editorialId, x: 50, y: 50 }))
+    }, { id: "ENV-EMPTY", title: "Empty", width: 100, height: 50, hotspots: [] }]
+  });
+  navigator.renderEnvironment("ENV-TEST");
+  const check = (completed, total) => {
+    const bar = navigator.element.find(item => item.attributes.role === "progressbar");
+    assert.equal(bar.attributes["aria-valuemin"], "0");
+    assert.equal(bar.attributes["aria-valuemax"], String(total));
+    assert.equal(bar.attributes["aria-valuenow"], String(completed));
+    assert.match(bar.attributes["aria-label"], /ENV-/);
+    assert.equal(bar.children[0].style.properties["--environment-progress"], `${total ? completed / total * 100 : 0}%`);
+    assert.equal(bar.children[0].dataset.empty, String(completed === 0));
+    const card = navigator.element.find(item => item.className === "environment-progress");
+    assert.equal(card.parent.className, "environment-view__header");
+    assert.equal(card.children[0].children[1].text, `${completed} / ${total}`);
+    assert.equal(card.children[2].text, `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`);
+  };
+  check(0, 10);
+  experiences.forEach((item, index) => {
+    progressStore.complete(item.id);
+    if ([1, 2, 5, 10].includes(index + 1)) check(index + 1, 10);
+  });
+  progressStore.complete(experiences[0].id);
+  check(10, 10);
+  navigator.renderEnvironment("ENV-EMPTY");
+  check(0, 0);
+  navigator.destroy();
+  progressStore.complete("unassigned");
+  assert.equal(navigator.element.children.length, 0);
+});
+
+test("progress subscriptions notify once and can unsubscribe", () => {
+  const store = createEnvironmentProgressStore({ storage: null });
+  let calls = 0;
+  const unsubscribe = store.subscribe(() => { calls += 1; });
+  store.complete("first");
+  store.complete("first");
+  assert.equal(calls, 1);
+  unsubscribe();
+  store.complete("second");
+  assert.equal(calls, 1);
+});
+
+test("Environment Selector cards navigate, expose accessible metadata and derive ten-segment progress", () => {
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "en" };
+  const experienceIds = Array.from({ length: 10 }, (_, index) => `EXP-CARD-${index + 1}`);
+  const experiences = experienceIds.map((id, index) => ({
+    id, editorialId: `EE-${String(index + 1).padStart(4, "0")}`, title: `Experience ${index + 1}`, summary: "Summary"
+  }));
+  const environment = {
+    id: "ENV-001", contractVersion: "2.0.0", title: "Automated Factory", capacity: 10,
+    background: "factory.png", width: 1672, height: 941,
+    presentation: {
+      description: { es: "DescripciÃ³n", en: "Technical description" },
+      skills: { es: ["Sensores"], en: ["Sensors", "PLC-HMI integration"] }
+    },
+    hotspots: experiences.map((experience, index) => ({
+      experienceEditorialId: experience.editorialId, x: index * 5, y: index * 5
+    }))
+  };
+  const progressStore = createEnvironmentProgressStore({ storage: null });
+  progressStore.registerEnvironment({
+    environmentId: environment.id, contractVersion: "2.0.0", experienceIds, theorySectionIds: []
+  });
+  const navigator = createEnvironmentNavigator({
+    documentRef, baseUrl: ".", environments: [environment], experiences,
+    progressStore, onOpenExperience() {}, windowRef: new FakeEventTarget()
+  });
+
+  assert.match(navigator.element.text, /Technical description/);
+  assert.match(navigator.element.text, /10 Engineering Experiences/);
+  assert.match(navigator.element.text, /0 \/ 10/);
+  const media = navigator.element.find(item => item.className === "environment-card__media");
+  const image = navigator.element.find(item => item.className === "environment-card__image");
+  assert.ok(media);
+  assert.equal(image.parent, media);
+  const segments = navigator.element.findAll(item => item.className === "environment-card__segment");
+  assert.equal(segments.length, 10);
+  assert.equal(segments.every(item => item.dataset.complete === "false"), true);
+
+  const menuButton = navigator.element.find(item => item.attributes["aria-haspopup"] === "menu");
+  menuButton.click();
+  assert.equal(menuButton.attributes["aria-expanded"], "true");
+  assert.equal(navigator.element.find(item => item.className === "environment-stage"), null);
+  documentRef.dispatch("click", { target: new FakeElement("div", documentRef) });
+  assert.equal(menuButton.attributes["aria-expanded"], "false");
+  menuButton.click();
+  findButton(navigator.element, "Knowledge & Skills").click();
+  assert.match(navigator.element.text, /PLC-HMI integration/);
+  assert.equal(navigator.element.find(item => item.attributes.role === "dialog").attributes["aria-modal"], "true");
+  documentRef.dispatch("keydown", { key: "Escape", preventDefault() {} });
+  assert.equal(navigator.element.find(item => item.attributes.role === "dialog"), null);
+
+  menuButton.click();
+  findButton(navigator.element, "Certificate Preview").click();
+  assert.match(navigator.element.text, /Preview · available when the environment is complete/);
+  findButton(navigator.element, "Close").click();
+
+  experienceIds.forEach(id => progressStore.recordExperienceResult(environment.id, id, { completed: true, mastered: false }));
+  assert.match(navigator.element.text, /10 \/ 10/);
+  assert.match(navigator.element.text, /Completed/);
+  assert.equal(navigator.element.findAll(item => item.className === "environment-card__segment").every(item => item.dataset.complete === "true"), true);
+
+  navigator.element.find(item => item.attributes["aria-label"] === "Open environment: Automated Factory").click();
+  assert.ok(navigator.element.find(item => item.className === "environment-stage"));
+  findButton(navigator.element, "All environments").click();
+  assert.ok(navigator.element.find(item => item.className === "environment-catalog"));
+});
+
+test("ENV-002 localizes catalog, accessible labels, environment and Theory titles without changing canonical data", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
+  const environment = catalog.environments.find(item => item.id === "ENV-002");
+  const original = JSON.stringify(environment);
+  const descriptions = {
+    es: "Diagnóstico de sensores e instrumentación industrial a partir de señales reales de campo, estados de proceso y comunicación con el sistema de control.",
+    en: "Diagnosis of industrial sensors and instrumentation using real field signals, process states and communication with the control system."
+  };
+  for (const [locale, expectedTitle] of [["es-ES", "Instrumentación de Campo"], ["en", "Field Instrumentation"], ["fr", "Field Instrumentation"]]) {
+    const documentRef = new FakeDocument();
+    documentRef.documentElement = { lang: locale };
+    const language = locale.startsWith("es") ? "es" : "en";
+    const theory = JSON.parse(await readFile(new URL(`../../../generated/experience-engine/${environment.theory.locales[language]}`, import.meta.url), "utf8"));
+    const progressStore = createEnvironmentProgressStore({ storage: null });
+    progressStore.registerEnvironment({
+      environmentId: environment.id, contractVersion: environment.contractVersion,
+      experienceIds: [], theorySectionIds: theory.sections.map(section => section.id)
+    });
+    const navigator = createEnvironmentNavigator({
+      documentRef, baseUrl: "./generated/experience-engine", environments: [environment], experiences: [],
+      onOpenExperience() {}, onOpenTheory: async () => theory,
+      progressStore, windowRef: new FakeEventTarget()
+    });
+    assert.equal(navigator.element.find(item => item.className === "environment-card__title").text, expectedTitle);
+    assert.equal(navigator.element.find(item => item.className === "environment-card__description").text, descriptions[language]);
+    const image = navigator.element.find(item => item.className === "environment-card__image");
+    assert.ok(image.alt.includes(expectedTitle));
+    assert.equal(image.src, "./generated/experience-engine/environments/ENV-002-field-instrumentation.png");
+    const main = navigator.element.find(item => item.className === "environment-card__main");
+    assert.ok(main.attributes["aria-label"].endsWith(expectedTitle));
+    main.click();
+    assert.ok(navigator.element.find(item => item.text === expectedTitle));
+    assert.equal(navigator.element.find(item => item.className === "environment-stage__image").alt, expectedTitle);
+    await findButton(navigator.element, language === "es" ? "Abrir teoría" : "Open Theory").click();
+    assert.ok(navigator.element.find(item => item.text === expectedTitle));
+    navigator.destroy();
+  }
+  assert.equal(JSON.stringify(environment), original);
+});
+
+test("Environment Selector CSS provides three, two and one-column layouts without intrinsic overflow", async () => {
+  const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
+  const brand = await readFile(new URL("../../../styles/brand.css", import.meta.url), "utf8");
+  assert.match(styles, /\.environment-catalog\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(styles, /\.experience-workspace__shell:has\(>\s*\.environment-catalog\)\s*\{[^}]*width:\s*100%[^}]*max-width:\s*1240px/s);
+  assert.match(styles, /\.environment-catalog\s*\{[^}]*align-items:\s*start/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*grid-template-rows:\s*auto\s+auto/s);
+  assert.match(styles, /@media \(max-width:\s*1100px\)[\s\S]*?\.environment-catalog\s*\{[^}]*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.environment-catalog\s*\{[^}]*grid-template-columns:\s*1fr/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*min-width:\s*0/s);
+  assert.match(styles, /\.environment-card\s*\{[^}]*box-shadow:\s*var\(--shadow-card\)/s);
+  assert.match(styles, /\.environment-card__media\s*\{[^}]*position:\s*relative[^}]*width:\s*100%[^}]*aspect-ratio:\s*16\s*\/\s*9[^}]*overflow:\s*hidden/s);
+  assert.match(styles, /\.environment-card__image\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*cover/s);
+  assert.doesNotMatch(styles, /\.environment-card__description\s*\{[^}]*min-height/s);
+  assert.match(styles, /\.environment-card__progress\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto/s);
+  assert.match(styles, /\.environment-card__segments\s*\{[^}]*grid-column:\s*1[^}]*grid-row:\s*1/s);
+  assert.match(brand, /--shadow-card:\s*0\s+18px\s+42px\s+rgba\(0,\s*0,\s*0,\s*0\.28\)/);
+});
+
+test("the canonical archived EE-0909 stays outside the generated catalog", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0909"), false);
+  assert.equal(catalog.environments.some(item => item.hotspots.some(hotspot => hotspot.experienceEditorialId === "EE-0909")), false);
+  const source = await readFile(new URL("../../../../content/experiences/sensors/EE-0009-photoelectric-sensor-misalignment/experience.yaml", import.meta.url), "utf8");
+  assert.match(source, /status: "archived"/);
 });
 
 test("workspace and application use generated JSON without ID-specific handling", async () => {
   const workspaceSource = await readFile(
     new URL("../components/experienceWorkspace.js", import.meta.url),
+    "utf8"
+  );
+  const navigatorSource = await readFile(
+    new URL("../components/environmentNavigator.js", import.meta.url),
     "utf8"
   );
   const app = await readFile(new URL("../../../app.js", import.meta.url), "utf8");
@@ -228,8 +932,13 @@ test("workspace and application use generated JSON without ID-specific handling"
     /grid-template-columns:\s*clamp\(220px, 28vw, 280px\) minmax\(0, 1fr\)/
   );
   assert.match(styles, /@media \(max-width: 760px\)/);
+  assert.match(styles, /aspect-ratio:\s*var\(--environment-ratio\)/);
+  assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(styles, /\.environment-hotspot\s*\{\s*animation:\s*none;/s);
   assert.match(styles, /\.experience-card:focus-visible/);
   assert.doesNotMatch(styles, /EXP-SENSOR-PHOTOELECTRIC-009|EE-0009/);
+  assert.doesNotMatch(workspaceSource, /EXP-SENSOR-SIGNAL-001|EE-0001/);
+  assert.doesNotMatch(navigatorSource, /EXP-SENSOR-SIGNAL-001|EE-0001|capacity:\s*10/);
   assert.match(app, /export async function openExperience\(experienceId\)/);
   assert.match(app, /"experience-lab": renderExperienceLabView/);
   assert.match(site, /view: "experience-lab"/);
@@ -247,32 +956,58 @@ function findButton(root, text) {
 class FakeDocument {
   constructor() {
     this.baseURI = "https://digital2real.example/";
+    this.listeners = {};
+    this.activeElement = null;
   }
 
   createElement(tagName) {
-    return new FakeElement(tagName);
+    return new FakeElement(tagName, this);
+  }
+
+  addEventListener(name, listener) {
+    this.listeners[name] ??= new Set();
+    this.listeners[name].add(listener);
+  }
+
+  removeEventListener(name, listener) {
+    this.listeners[name]?.delete(listener);
+  }
+
+  dispatch(name, event = {}) {
+    this.listeners[name]?.forEach(listener => listener(event));
   }
 }
 
 class FakeElement {
-  constructor(tagName) {
+  constructor(tagName, documentRef = null) {
     this.tagName = tagName.toUpperCase();
+    this.documentRef = documentRef;
     this.children = [];
+    this.parent = null;
     this.attributes = {};
     this.listeners = {};
-    this.style = { setProperty() {} };
+    const properties = {};
+    this.style = {
+      properties,
+      setProperty(name, value) { properties[name] = value; }
+    };
     this.className = "";
     this.textContent = "";
     this.type = "";
     this.id = "";
+    this.dataset = {};
+    this.rect = null;
   }
 
   appendChild(child) {
+    child.parent = this;
     this.children.push(child);
     return child;
   }
 
   replaceChildren(...children) {
+    this.children.forEach(child => { child.parent = null; });
+    children.forEach(child => { child.parent = this; });
     this.children = children;
   }
 
@@ -280,12 +1015,41 @@ class FakeElement {
     this.attributes[name] = value;
   }
 
+  removeAttribute(name) {
+    delete this.attributes[name];
+  }
+
   addEventListener(name, listener) {
     this.listeners[name] = listener;
   }
 
   click() {
-    return this.listeners.click?.();
+    return this.listeners.click?.({ target: this, stopPropagation() {} });
+  }
+
+  focus() {
+    if (this.documentRef) this.documentRef.activeElement = this;
+  }
+
+  remove() {
+    if (!this.parent) return;
+    this.parent.children = this.parent.children.filter(child => child !== this);
+    this.parent = null;
+  }
+
+  contains(target) {
+    return target === this || this.children.some(child => child.contains(target));
+  }
+
+  getBoundingClientRect() {
+    if (this.rect) return this.rect;
+    if (this.className === "environment-stage") {
+      return { left: 0, top: 0, width: 800, height: 450 };
+    }
+    if (this.className === "environment-popover") {
+      return { left: 0, top: 0, width: 300, height: 160 };
+    }
+    return { left: 100, top: 100, width: 20, height: 20 };
   }
 
   find(predicate) {
@@ -297,7 +1061,32 @@ class FakeElement {
     return null;
   }
 
+  querySelector(selector) {
+    return this.find(element => element.tagName === selector.toUpperCase());
+  }
+
+  findAll(predicate) {
+    return [
+      ...(predicate(this) ? [this] : []),
+      ...this.children.flatMap(child => child.findAll(predicate))
+    ];
+  }
+
   get text() {
     return `${this.textContent}${this.children.map(child => child.text).join("")}`;
+  }
+}
+
+class FakeEventTarget {
+  constructor() {
+    this.listeners = {};
+  }
+
+  addEventListener(name, listener) {
+    this.listeners[name] = listener;
+  }
+
+  removeEventListener(name, listener) {
+    if (this.listeners[name] === listener) delete this.listeners[name];
   }
 }

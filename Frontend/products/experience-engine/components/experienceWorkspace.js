@@ -1,10 +1,14 @@
+import { createEnvironmentNavigator } from "./environmentNavigator.js";
+import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
+
 const defaultBaseUrl = "./generated/experience-engine";
 
 export function createExperienceWorkspace({
   baseUrl = defaultBaseUrl,
   fetchImpl = globalThis.fetch?.bind(globalThis),
   importPlayer = location => import(location),
-  documentRef = globalThis.document
+  documentRef = globalThis.document,
+  progressStore = createEnvironmentProgressStore()
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -12,6 +16,7 @@ export function createExperienceWorkspace({
   if (typeof fetchImpl !== "function" || typeof importPlayer !== "function") {
     throw new Error("Experience Workspace requires fetch and module import boundaries.");
   }
+  const workspaceUi = experienceUiCopy(documentRef.documentElement?.lang);
 
   const element = documentRef.createElement("section");
   element.className = "experience-workspace";
@@ -19,10 +24,14 @@ export function createExperienceWorkspace({
 
   let catalog = null;
   let player = null;
+  let navigator = null;
+  let activeExperienceId = null;
+  let activeEnvironmentId = null;
+  let completionRecorded = false;
   let destroyed = false;
 
   async function initialise() {
-    renderStatus("Loading Experience Lab…");
+    renderStatus(workspaceUi.loadingLab);
     try {
       catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
       assertCatalog(catalog);
@@ -33,7 +42,7 @@ export function createExperienceWorkspace({
     return controller;
   }
 
-  async function openExperience(experienceId) {
+  async function openExperience(experienceId, environmentId = null) {
     if (destroyed) throw new Error("Experience Workspace has been destroyed.");
 
     try {
@@ -46,7 +55,7 @@ export function createExperienceWorkspace({
         documentRef.documentElement?.lang
       );
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
-      renderStatus(`Loading ${item.title}…`);
+      renderStatus(workspaceUi.loading(item.title));
 
       const artifactPath = selectArtifactPath(item, documentRef.documentElement?.lang);
       const [artifact, playerModule] = await Promise.all([
@@ -57,6 +66,9 @@ export function createExperienceWorkspace({
         throw new Error("The generated package does not expose ExperiencePlayer.");
       }
       player = new playerModule.ExperiencePlayer({ experience: artifact });
+      activeExperienceId = item.id;
+      activeEnvironmentId = environmentId;
+      completionRecorded = false;
       renderPlayer();
       return player.getState();
     } catch (error) {
@@ -73,8 +85,9 @@ export function createExperienceWorkspace({
 
   function continueExperience() {
     requirePlayer();
+    const leavingResult = player.getState().interaction === "result";
     player.continue();
-    renderPlayer();
+    renderPlayer(leavingResult);
   }
 
   function selectDecision(decisionId) {
@@ -86,16 +99,33 @@ export function createExperienceWorkspace({
   function restartExperience() {
     requirePlayer();
     player.reset();
+    completionRecorded = false;
     renderPlayer();
   }
 
   function closeExperience() {
     player = null;
-    renderCatalog();
+    navigator.restore();
+    element.replaceChildren(navigator.element);
+    activeExperienceId = null;
+    activeEnvironmentId = null;
+    completionRecorded = false;
   }
 
-  function renderPlayer() {
+  function renderPlayer(focusContent = false) {
     const state = player.getState();
+    if (state.completionStatus === "completed"
+      && activeExperienceId && !completionRecorded) {
+      const environment = catalog.environments.find(item => item.id === activeEnvironmentId);
+      if (environment?.contractVersion === "2.0.0") {
+        progressStore.recordExperienceResult(activeEnvironmentId, activeExperienceId, createExperienceProgressResult(state));
+        navigator?.refreshProgress();
+      } else {
+        progressStore.complete(activeExperienceId);
+        navigator?.completeExperience(activeExperienceId);
+      }
+      completionRecorded = true;
+    }
     element.replaceChildren(ExperienceWorkspace({
       documentRef,
       projection: createWorkspaceProjection(state, baseUrl),
@@ -105,61 +135,47 @@ export function createExperienceWorkspace({
       onRestart: restartExperience,
       onClose: closeExperience
     }));
+    if (state.interaction === "result" || focusContent) {
+      const heading = element.querySelector?.("h2");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus();
+    }
   }
 
   function renderCatalog() {
-    const shell = createElement(documentRef, "div", "experience-workspace__shell");
-    const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
-    appendText(documentRef, header, "span", "experience-workspace__eyebrow", "Experience Lab");
-    appendText(documentRef, header, "h1", "", "Industrial diagnosis through evidence and decisions.");
-    appendText(
-      documentRef,
-      header,
-      "p",
-      "experience-workspace__lede",
-      "Select an experience and work through the incident as a controlled diagnostic session."
-    );
-    shell.appendChild(header);
-
-    const list = createElement(documentRef, "div", "experience-workspace__catalog");
-    if (!catalog.experiences.length) {
-      appendText(documentRef, list, "p", "experience-workspace__empty", "No experiences are available.");
-    }
-    catalog.experiences
-      .map(item => localizeCatalogItem(item, documentRef.documentElement?.lang))
-      .forEach(item => {
-      const card = createElement(documentRef, "a", "experience-card");
-      card.setAttribute("href", "#experience-lab");
-      card.setAttribute("aria-label", `Begin investigation: ${item.title}`);
-      card.addEventListener("click", event => {
-        event?.preventDefault?.();
-        return openExperience(item.id);
+    catalog.environments.filter(item => item.contractVersion === "2.0.0").forEach(environment => {
+      const experienceIds = environment.hotspots.map(hotspot =>
+        catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
+      progressStore.registerEnvironment({
+        environmentId: environment.id,
+        contractVersion: environment.contractVersion,
+        experienceIds,
+        theorySectionIds: environment.theory?.sectionIds ?? []
       });
-
-      const visual = createElement(documentRef, "div", "experience-card__visual");
-      if (item.cover) {
-        const cover = createElement(documentRef, "img", "experience-card__cover");
-        cover.src = `${baseUrl}/${item.cover}`;
-        cover.alt = "";
-        visual.appendChild(cover);
-      }
-      card.appendChild(visual);
-
-      const content = createElement(documentRef, "div", "experience-card__content");
-      appendText(documentRef, content, "h2", "", item.title);
-      appendText(documentRef, content, "p", "", item.summary);
-      appendText(
-        documentRef,
-        content,
-        "span",
-        "experience-card__cta",
-        "→ Begin Investigation"
-      );
-      card.appendChild(content);
-      list.appendChild(card);
     });
-    shell.appendChild(list);
-    element.replaceChildren(shell);
+    navigator = createEnvironmentNavigator({
+      documentRef,
+      baseUrl,
+      environments: catalog.environments,
+      experiences: catalog.experiences.map(item => (
+        localizeCatalogItem(item, documentRef.documentElement?.lang)
+      )),
+      onOpenExperience: openExperience,
+      onOpenTheory: async environment => {
+        const locale = selectTheoryLocale(environment.theory, documentRef.documentElement?.lang);
+        const theory = await loadJson(`${baseUrl}/${environment.theory.locales[locale]}`, fetchImpl);
+        const experienceIds = environment.hotspots.map(hotspot =>
+          catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
+        progressStore.registerEnvironment({
+          environmentId: environment.id, contractVersion: environment.contractVersion,
+          experienceIds, theorySectionIds: theory.sections.map(section => section.id)
+        });
+        return theory;
+      },
+      onTheorySectionCompleted: (environmentId, sectionId) => progressStore.markTheorySectionCompleted(environmentId, sectionId),
+      progressStore
+    });
+    element.replaceChildren(navigator.element);
   }
 
   function renderStatus(message) {
@@ -172,10 +188,10 @@ export function createExperienceWorkspace({
   function renderError(error) {
     const panel = createElement(documentRef, "div", "experience-workspace__status experience-workspace__status--error");
     panel.setAttribute("role", "alert");
-    appendText(documentRef, panel, "span", "experience-workspace__eyebrow", "Experience unavailable");
-    appendText(documentRef, panel, "h2", "", "The Experience Lab could not be loaded.");
-    appendText(documentRef, panel, "p", "", safeErrorMessage(error));
-    const back = createButton(documentRef, "Back to Experience Lab", "experience-action");
+    appendText(documentRef, panel, "span", "experience-workspace__eyebrow", workspaceUi.experienceUnavailable);
+    appendText(documentRef, panel, "h2", "", workspaceUi.labUnavailable);
+    appendText(documentRef, panel, "p", "", safeErrorMessage(error, workspaceUi));
+    const back = createButton(documentRef, workspaceUi.backToLab, "experience-action");
     back.addEventListener("click", renderCatalog);
     panel.appendChild(back);
     element.replaceChildren(panel);
@@ -187,8 +203,12 @@ export function createExperienceWorkspace({
 
   function destroy() {
     destroyed = true;
+    navigator?.destroy();
     player = null;
     catalog = null;
+    navigator = null;
+    activeExperienceId = null;
+    activeEnvironmentId = null;
     element.replaceChildren();
   }
 
@@ -202,12 +222,31 @@ export function createExperienceWorkspace({
   return controller;
 }
 
+export function createExperienceProgressResult(state) {
+  if (state?.completionStatus !== "completed") {
+    throw new TypeError("Experience progress requires a completed Player state.");
+  }
+  return Object.freeze({ completed: true, mastered: state.evaluationResult?.mastered === true });
+}
+
+function selectTheoryLocale(theory, requested) {
+  if (!theory?.locales) throw new Error("Environment Theory is unavailable.");
+  const normalized = typeof requested === "string" ? requested.toLowerCase().split("-")[0] : "";
+  return Object.hasOwn(theory.locales, normalized) ? normalized : theory.defaultLocale;
+}
+
 export function createWorkspaceProjection(state, baseUrl = "") {
   if (!state) return Object.freeze({ phase: "catalog" });
+  const projectAsset = asset => ({
+    ...asset,
+    src: baseUrl ? `${baseUrl}/${asset.src}` : asset.src
+  });
+  const cover = state.visual?.assets?.find(asset => asset.id === state.visual.cover_asset_id);
   return Object.freeze({
     phase: state.interaction,
     title: state.experience.title,
     summary: state.experience.summary,
+    language: state.experience.language,
     status: state.completionStatus,
     progress: state.progress,
     context: state.context,
@@ -216,11 +255,17 @@ export function createWorkspaceProjection(state, baseUrl = "") {
       decision => decision.id === state.selectedDecision
     ) ?? null,
     decisionHistory: state.decisionHistory,
+    feedback: state.feedback ?? null,
+    evaluationResult: state.evaluationResult ?? null,
     visual: state.visual,
-    media: state.media.map(asset => ({
-      ...asset,
-      src: baseUrl ? `${baseUrl}/${asset.src}` : asset.src
-    })),
+    cover: cover ? projectAsset(cover) : null,
+    media: state.media.map(projectAsset),
+    result: state.result ? {
+      evidence: state.result.evidence.map(evidence => ({
+        ...evidence,
+        media: evidence.media.map(projectAsset)
+      }))
+    } : null,
     completion: state.completion
   });
 }
@@ -234,58 +279,62 @@ export function ExperienceWorkspace({
   onRestart,
   onClose
 }) {
+  const ui = experienceUiCopy(projection.language);
   const shell = createElement(documentRef, "div", "experience-workspace__shell");
-  shell.appendChild(ExperienceHeader({ documentRef, projection, onClose }));
+  shell.appendChild(ExperienceHeader({ documentRef, projection, onClose, ui }));
 
   if (!["start", "completion"].includes(projection.phase)) {
-    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress }));
+    shell.appendChild(ProgressIndicator({ documentRef, progress: projection.progress, ui }));
   }
 
   if (projection.phase === "start") {
-    shell.appendChild(createIntroduction(documentRef, projection, onStart, true));
+    shell.appendChild(createIntroduction(documentRef, projection, onStart, true, ui));
   } else if (projection.phase === "introduction") {
-    shell.appendChild(createIntroduction(documentRef, projection, onContinue, false));
+    shell.appendChild(createIntroduction(documentRef, projection, onContinue, false, ui));
   } else if (projection.phase === "stage") {
-    shell.appendChild(StagePanel({ documentRef, stage: projection.stage }));
+    shell.appendChild(StagePanel({ documentRef, stage: projection.stage, ui }));
     if (projection.media.length) {
-      shell.appendChild(MediaPanel({ documentRef, media: projection.media }));
+      shell.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
     }
     if (projection.stage.decisions.length) {
-      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, onDecision }));
+      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision, ui }));
     } else {
-      shell.appendChild(ContinuePanel({ documentRef, onContinue }));
+      shell.appendChild(ContinuePanel({ documentRef, onContinue, ui }));
     }
+  } else if (projection.phase === "result") {
+    shell.appendChild(ResultPanel({ documentRef, result: projection.result, onContinue, ui }));
   } else if (projection.phase === "selection") {
     shell.appendChild(SelectionPanel({
       documentRef,
       decision: projection.selectedDecision,
       onContinue,
-      finalStage: projection.progress.currentStage === projection.progress.totalStages
+      finalStage: projection.progress.currentStage === projection.progress.totalStages,
+      ui
     }));
   } else if (projection.phase === "completion") {
-    shell.appendChild(CompletionPanel({ documentRef, projection, onRestart }));
+    shell.appendChild(CompletionPanel({ documentRef, projection, onRestart, ui }));
   }
 
   return shell;
 }
 
-export function ExperienceHeader({ documentRef, projection, onClose }) {
+export function ExperienceHeader({ documentRef, projection, onClose, ui = experienceUiCopy(projection.language) }) {
   const header = createElement(documentRef, "header", "experience-header");
   const copy = createElement(documentRef, "div", "");
-  appendText(documentRef, copy, "span", "experience-workspace__eyebrow", "Experience Engine");
+  appendText(documentRef, copy, "span", "experience-workspace__eyebrow", ui.engine);
   appendText(documentRef, copy, "h1", "", projection.title);
   appendText(documentRef, copy, "p", "experience-workspace__lede", projection.summary);
   header.appendChild(copy);
-  const close = createButton(documentRef, "All experiences", "experience-action experience-action--quiet");
+  const close = createButton(documentRef, ui.allExperiences, "experience-action experience-action--quiet");
   close.addEventListener("click", onClose);
   header.appendChild(close);
   return header;
 }
 
-export function StagePanel({ documentRef, stage }) {
+export function StagePanel({ documentRef, stage, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel experience-stage");
   panel.setAttribute("aria-labelledby", "experience-stage-title");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Current situation");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.currentSituation);
   const title = appendText(documentRef, panel, "h2", "", stage.title);
   title.id = "experience-stage-title";
   appendText(documentRef, panel, "p", "experience-stage__situation", stage.situation);
@@ -293,10 +342,10 @@ export function StagePanel({ documentRef, stage }) {
   return panel;
 }
 
-export function DecisionPanel({ documentRef, decisions, onDecision }) {
+export function DecisionPanel({ documentRef, decisions, feedback, onDecision, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Engineering decision");
-  appendText(documentRef, panel, "h2", "", "What should be done next?");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.engineeringDecision);
+  appendText(documentRef, panel, "h2", "", ui.whatNext);
   const list = createElement(documentRef, "div", "experience-decisions");
   decisions.forEach((decision, index) => {
     const button = createButton(documentRef, "", "experience-decision");
@@ -306,15 +355,19 @@ export function DecisionPanel({ documentRef, decisions, onDecision }) {
     list.appendChild(button);
   });
   panel.appendChild(list);
+  if (feedback?.message) {
+    const notice = appendText(documentRef, panel, "p", "experience-stage__objective", feedback.message);
+    notice.setAttribute("role", "status");
+  }
   return panel;
 }
 
-export function ContinuePanel({ documentRef, onContinue }) {
+export function ContinuePanel({ documentRef, onContinue, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Incident observed");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.incidentObserved);
   const button = createButton(
     documentRef,
-    "Continue",
+    ui.continue,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", onContinue);
@@ -322,9 +375,29 @@ export function ContinuePanel({ documentRef, onContinue }) {
   return panel;
 }
 
-export function MediaPanel({ documentRef, media }) {
+export function ResultPanel({ documentRef, result, onContinue, ui = experienceUiCopy() }) {
+  const panel = createElement(documentRef, "section", "experience-panel experience-result");
+  panel.setAttribute("aria-labelledby", "experience-result-title");
+  const title = appendText(documentRef, panel, "h2", "", ui.result);
+  title.id = "experience-result-title";
+  result.evidence.forEach(evidence => {
+    const group = createElement(documentRef, "section", "experience-result__evidence");
+    appendText(documentRef, group, "h3", "", evidence.source);
+    appendText(documentRef, group, "p", "experience-stage__situation", evidence.content);
+    if (evidence.media.length) group.appendChild(MediaPanel({
+      documentRef, media: evidence.media, ui, label: ui.evidenceMedia, showLoadErrors: true
+    }));
+    panel.appendChild(group);
+  });
+  const button = createButton(documentRef, ui.continue, "experience-action experience-action--primary");
+  button.addEventListener("click", onContinue);
+  panel.appendChild(button);
+  return panel;
+}
+
+export function MediaPanel({ documentRef, media, ui = experienceUiCopy(), label = ui.stageMedia, showLoadErrors = false }) {
   const panel = createElement(documentRef, "section", "experience-panel experience-media");
-  panel.setAttribute("aria-label", "Multimedia de la etapa");
+  panel.setAttribute("aria-label", label);
   media.forEach(asset => {
     const figure = createElement(documentRef, "figure", "experience-media__item");
     let element;
@@ -340,6 +413,16 @@ export function MediaPanel({ documentRef, media }) {
       element = createElement(documentRef, "img", "experience-media__asset");
       element.alt = asset.alt;
     }
+    if (showLoadErrors) {
+      let failed = false;
+      element.addEventListener("error", () => {
+        if (failed) return;
+        failed = true;
+        element.remove();
+        const notice = appendText(documentRef, figure, "p", "experience-stage__objective", ui.mediaUnavailable(asset.alt));
+        notice.setAttribute("role", "status");
+      });
+    }
     element.src = asset.src;
     figure.appendChild(element);
     if (asset.caption) appendText(documentRef, figure, "figcaption", "", asset.caption);
@@ -348,20 +431,20 @@ export function MediaPanel({ documentRef, media }) {
   return panel;
 }
 
-export function SelectionPanel({ documentRef, decision, onContinue, finalStage }) {
+export function SelectionPanel({ documentRef, decision, onContinue, finalStage, ui = experienceUiCopy() }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Decision recorded");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.decisionRecorded);
   appendText(documentRef, panel, "h2", "", decision.action);
   appendText(
     documentRef,
     panel,
     "p",
     "experience-stage__situation",
-    "Your selection has been recorded for this local session."
+    ui.selectionRecorded
   );
   const button = createButton(
     documentRef,
-    finalStage ? "Complete experience" : "Continue",
+    finalStage ? ui.completeExperience : ui.continue,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", onContinue);
@@ -369,9 +452,9 @@ export function SelectionPanel({ documentRef, decision, onContinue, finalStage }
   return panel;
 }
 
-export function ProgressIndicator({ documentRef, progress }) {
+export function ProgressIndicator({ documentRef, progress, ui = experienceUiCopy() }) {
   const wrapper = createElement(documentRef, "div", "experience-progress");
-  appendText(documentRef, wrapper, "span", "", `Stage ${progress.currentStage} / ${progress.totalStages}`);
+  appendText(documentRef, wrapper, "span", "", `${ui.stage} ${progress.currentStage} / ${progress.totalStages}`);
   const track = createElement(documentRef, "div", "experience-progress__track");
   const fill = createElement(documentRef, "span", "experience-progress__fill");
   fill.style.setProperty("--experience-progress", `${(progress.currentStage / progress.totalStages) * 100}%`);
@@ -380,53 +463,66 @@ export function ProgressIndicator({ documentRef, progress }) {
   return wrapper;
 }
 
-export function CompletionPanel({ documentRef, projection, onRestart }) {
+export function CompletionPanel({ documentRef, projection, onRestart, ui = experienceUiCopy(projection.language) }) {
   const panel = createElement(documentRef, "section", "experience-panel");
-  appendText(documentRef, panel, "span", "experience-panel__label", "Experience complete");
-  appendText(documentRef, panel, "h2", "", projection.completion?.title ?? "Diagnostic session completed");
+  appendText(documentRef, panel, "span", "experience-panel__label", ui.experienceComplete);
+  appendText(documentRef, panel, "h2", "", projection.completion?.title ?? ui.sessionCompleted);
   appendText(
     documentRef,
     panel,
     "p",
     "experience-stage__situation",
-    projection.completion?.summary ?? `You completed ${projection.progress.totalStages} stages.`
+    projection.completion?.summary ?? ui.completedStages(projection.progress.totalStages)
   );
   if (projection.completion?.process) {
-    appendList(documentRef, panel, "Proceso correcto", projection.completion.process);
+    appendList(documentRef, panel, ui.correctProcess, projection.completion.process);
   }
   if (projection.completion?.lesson) {
     appendText(documentRef, panel, "p", "experience-stage__objective", projection.completion.lesson);
   }
   if (projection.completion?.avoided_errors) {
-    appendList(documentRef, panel, "Errores evitados", projection.completion.avoided_errors);
+    appendList(documentRef, panel, ui.avoidedErrors, projection.completion.avoided_errors);
   }
   if (projection.completion?.industrial_value) {
-    appendList(documentRef, panel, "Valor industrial", projection.completion.industrial_value);
+    appendList(documentRef, panel, ui.industrialValue, projection.completion.industrial_value);
   }
-  appendList(
-    documentRef,
-    panel,
-    "Decisions taken",
-    projection.decisionHistory.map(record => record.action)
-  );
+  if (projection.evaluationResult) {
+    const result = projection.evaluationResult;
+    const facts = createElement(documentRef, "dl", "experience-facts");
+    appendFact(documentRef, facts, ui.decisions, String(result.totalDecisions));
+    appendFact(documentRef, facts, ui.firstAttemptCorrect, `${result.firstAttemptCorrect} / ${result.totalDecisions}`);
+    appendFact(documentRef, facts, ui.additionalAttempts, String(result.additionalAttempts));
+    appendFact(documentRef, facts, ui.result, result.outcome.replaceAll("_", " "));
+    panel.appendChild(facts);
+  } else {
+    appendList(
+      documentRef,
+      panel,
+      ui.decisionsTaken,
+      projection.decisionHistory.map(record => record.action)
+    );
+  }
   if (projection.media.length) {
-    panel.appendChild(MediaPanel({ documentRef, media: projection.media }));
+    panel.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
   }
-  const restart = createButton(documentRef, "Restart experience", "experience-action experience-action--primary");
+  const restart = createButton(documentRef, ui.restartExperience, "experience-action experience-action--primary");
   restart.addEventListener("click", onRestart);
   panel.appendChild(restart);
   return panel;
 }
 
-function createIntroduction(documentRef, projection, action, isStart) {
+function createIntroduction(documentRef, projection, action, isStart, ui) {
   const panel = createElement(documentRef, "section", "experience-panel experience-introduction");
-  appendText(documentRef, panel, "span", "experience-panel__label", isStart ? "Ready to begin" : "Incident brief");
+  appendText(documentRef, panel, "span", "experience-panel__label", isStart ? ui.readyToBegin : ui.incidentBrief);
+  if (!isStart && projection.cover) {
+    panel.appendChild(MediaPanel({ documentRef, media: [projection.cover], ui }));
+  }
   appendText(documentRef, panel, "h2", "", projection.context.learner_role);
   appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initial_context);
 
   const facts = createElement(documentRef, "dl", "experience-facts");
-  appendFact(documentRef, facts, "Operational state", projection.context.operational_state);
-  appendFact(documentRef, facts, "Initiating event", projection.context.initiating_event);
+  appendFact(documentRef, facts, ui.operationalState, projection.context.operational_state);
+  appendFact(documentRef, facts, ui.initiatingEvent, projection.context.initiating_event);
   panel.appendChild(facts);
   if (projection.visual?.educational_purpose) {
     appendText(
@@ -440,12 +536,97 @@ function createIntroduction(documentRef, projection, action, isStart) {
 
   const button = createButton(
     documentRef,
-    isStart ? "Start experience" : "Begin diagnosis",
+    isStart ? ui.startExperience : ui.beginDiagnosis,
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", action);
   panel.appendChild(button);
   return panel;
+}
+
+function experienceUiCopy(locale = "en") {
+  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
+  return language === "es" ? {
+    language: "es",
+    loadingLab: "Cargando el Laboratorio de Experiences…",
+    loading: title => `Cargando ${title}…`,
+    experienceUnavailable: "Experience no disponible",
+    labUnavailable: "No se pudo cargar el Laboratorio de Experiences.",
+    unavailable: "La Experience solicitada no está disponible.",
+    backToLab: "Volver al Laboratorio de Experiences",
+    engine: "Experience Engine",
+    allExperiences: "Todas las Experiences",
+    currentSituation: "Situación actual",
+    engineeringDecision: "Decisión técnica",
+    whatNext: "¿Qué debería hacerse a continuación?",
+    incidentObserved: "Incidente observado",
+    continue: "Continuar",
+    stageMedia: "Contenido multimedia de la etapa",
+    evidenceMedia: "Contenido multimedia de la evidencia",
+    mediaUnavailable: description => `No se pudo cargar el contenido multimedia: ${description}`,
+    decisionRecorded: "Decisión registrada",
+    selectionRecorded: "Tu selección se ha registrado para esta sesión local.",
+    completeExperience: "Completar Experience",
+    stage: "Etapa",
+    experienceComplete: "Experience completada",
+    sessionCompleted: "Sesión de diagnóstico completada",
+    completedStages: count => `Has completado ${count} etapas.`,
+    correctProcess: "Proceso correcto",
+    avoidedErrors: "Errores evitados",
+    industrialValue: "Valor industrial",
+    decisions: "Decisiones",
+    firstAttemptCorrect: "Correctas al primer intento",
+    additionalAttempts: "Intentos adicionales",
+    result: "Resultado",
+    decisionsTaken: "Decisiones tomadas",
+    restartExperience: "Reiniciar Experience",
+    readyToBegin: "Listo para comenzar",
+    incidentBrief: "Resumen del incidente",
+    operationalState: "Estado operativo",
+    initiatingEvent: "Evento inicial",
+    startExperience: "Iniciar Experience",
+    beginDiagnosis: "Iniciar diagnóstico"
+  } : {
+    language: "en",
+    loadingLab: "Loading Experience Lab…",
+    loading: title => `Loading ${title}…`,
+    experienceUnavailable: "Experience unavailable",
+    labUnavailable: "The Experience Lab could not be loaded.",
+    unavailable: "The requested experience is unavailable.",
+    backToLab: "Back to Experience Lab",
+    engine: "Experience Engine",
+    allExperiences: "All experiences",
+    currentSituation: "Current situation",
+    engineeringDecision: "Engineering decision",
+    whatNext: "What should be done next?",
+    incidentObserved: "Incident observed",
+    continue: "Continue",
+    stageMedia: "Stage media",
+    evidenceMedia: "Evidence media",
+    mediaUnavailable: description => `Could not load media: ${description}`,
+    decisionRecorded: "Decision recorded",
+    selectionRecorded: "Your selection has been recorded for this local session.",
+    completeExperience: "Complete experience",
+    stage: "Stage",
+    experienceComplete: "Experience complete",
+    sessionCompleted: "Diagnostic session completed",
+    completedStages: count => `You completed ${count} stages.`,
+    correctProcess: "Correct process",
+    avoidedErrors: "Avoided errors",
+    industrialValue: "Industrial value",
+    decisions: "Decisions",
+    firstAttemptCorrect: "First-attempt correct",
+    additionalAttempts: "Additional attempts",
+    result: "Result",
+    decisionsTaken: "Decisions taken",
+    restartExperience: "Restart experience",
+    readyToBegin: "Ready to begin",
+    incidentBrief: "Incident brief",
+    operationalState: "Operational state",
+    initiatingEvent: "Initiating event",
+    startExperience: "Start experience",
+    beginDiagnosis: "Begin diagnosis"
+  };
 }
 
 async function loadJson(location, fetchImpl) {
@@ -455,7 +636,8 @@ async function loadJson(location, fetchImpl) {
 }
 
 function assertCatalog(catalog) {
-  if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)) {
+  if (!catalog || catalog.version !== 1 || !Array.isArray(catalog.experiences)
+    || !Array.isArray(catalog.environments)) {
     throw new Error("The generated Experience Engine catalog is invalid.");
   }
 }
@@ -480,8 +662,8 @@ function localizeCatalogItem(item, requestedLocale) {
   return copy ? { ...item, ...copy } : item;
 }
 
-function safeErrorMessage(error) {
-  if (!error || typeof error.message !== "string") return "The requested experience is unavailable.";
+function safeErrorMessage(error, ui = experienceUiCopy()) {
+  if (ui.language === "es" || !error || typeof error.message !== "string") return ui.unavailable;
   return error.message;
 }
 

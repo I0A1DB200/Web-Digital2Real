@@ -1,10 +1,12 @@
-﻿contract_version: "1.0.0"
+﻿contract_version: "1.1.0"
 
 metadata:
   id: "EXP-SENSOR-PHOTOELECTRIC-009"
+  editorial_id: "EE-0909"
   content_version: "1.0"
   class: "practice"
-  status: "technical_review"
+  access: "premium"
+  status: "archived"
   language: "es"
 
 localization:

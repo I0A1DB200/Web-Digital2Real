@@ -1,0 +1,141 @@
+locale: "en"
+translations:
+  title: "Pneumatic Cylinder Does Not Extend"
+  summary: "Locate why a cylinder remains retracted despite an extension command by tracing the chain from the PLC to the local pneumatic connection."
+  scenario:
+    initial_context: "The station commands cylinder extension, but the rod remains fully retracted and the cycle cannot continue."
+    operational_state: "ExtendCmd is active and ExtendedLS remains FALSE. The first failed boundary has not yet been located."
+    initiating_event: "Production reports that the cylinder does not begin extending."
+    learner_role: "Automation technician responsible for locating the loss of continuity between command, actuation, pneumatic energy and physical movement."
+    safety_context:
+      safe_state: "Observe from a safe position and apply the authorized energy-isolation and motion-control procedure before touching pneumatic connections."
+      intervention_constraints: ["Do not force outputs or feedback.", "Do not disconnect or reconnect pressurized lines.", "Do not replace the PLC, valve or cylinder without evidence.", "Verify recovery with controlled movement from a safe position."]
+  learning_objectives:
+    OBJ-TRACE-ENERGY:
+      description: "Trace ExtendCmd and the output through the valve, supply, local connection and cylinder."
+    OBJ-COMMAND-VS-ENERGY:
+      description: "Distinguish a correct PLC command from actual energy delivery to the actuator."
+    OBJ-VERIFY-MOTION:
+      description: "Restore the connection under the authorized procedure and verify movement and feedback."
+  stages:
+    STAGE-01-INCIDENT:
+      title: "Movement does not begin"
+      situation: "The station requests extension, but the cylinder remains retracted. Which check first locates the control boundary?"
+    STAGE-02-OUTPUT:
+      title: "Trace the command to the valve"
+      situation: "Online observation shows ExtendCmd TRUE, extension logic active and ExtendedLS FALSE. Which boundary should be checked next?"
+    STAGE-03-SUPPLY:
+      title: "Check available pneumatic energy"
+      situation: "The output and valve control actuation are consistent with the command. This still does not prove energy at the cylinder. What do you check?"
+    STAGE-04-LOCAL-CONNECTION:
+      title: "Inspect the local connection"
+      situation: "The supply check confirms compressed air is available. With the cylinder still retracted, what is the next step?"
+    STAGE-05-RESTORE:
+      title: "Restore the connection"
+      situation: "Safe inspection reveals a pneumatic line disconnected from the local cylinder fitting. Which intervention is justified?"
+    STAGE-06-VERIFY:
+      title: "Verify recovery"
+      situation: "The local connection has been restored under the authorized procedure. Recovery remains unverified. Which test permits closure?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Conveyor station"
+      content: "With the extension request present, the cylinder remains fully retracted and the sequence is stopped."
+    EVID-02-PLC:
+      source: "TIA Portal / online observation"
+      content: "ExtendCmd and commanded output ExtendOutput are TRUE; ExtendedLS remains FALSE. The logic check confirms that the extension command is correct."
+    EVID-03-ACTUATION:
+      source: "PLC output and valve actuation"
+      content: "The commanded output and valve control actuation are consistent with ExtendCmd. This does not prove that air reaches the cylinder."
+    EVID-04-SUPPLY:
+      source: "Air preparation"
+      content: "The supply check confirms compressed air is available upstream of the local connection. This does not prove continuity to the cylinder."
+    EVID-05-DISCONNECTION:
+      source: "Local cylinder connection"
+      content: "With energy controlled under the authorized procedure, the pneumatic line is observed outside the local cylinder fitting."
+    EVID-06-INTERVENTION:
+      source: "Local cylinder connection"
+      content: "The line has been reseated in the local fitting under the authorized procedure. Movement and feedback remain unverified."
+    EVID-07-RECOVERY:
+      source: "Controlled functional test"
+      content: "The controlled functional test confirms that the cylinder extends and ExtendedLS changes to TRUE consistently with the reached position."
+  decisions:
+    DEC-01-INSPECT-PLC:
+      action: "Observe ExtendCmd, extension logic, the associated output and ExtendedLS online without forcing variables."
+    DEC-01-REPLACE-CYLINDER:
+      action: "Replace the cylinder because it does not move."
+    DEC-01-FORCE-FEEDBACK:
+      action: "Force ExtendedLS so the sequence can continue."
+    DEC-02-INSPECT-ACTUATION:
+      action: "Check the output and valve control actuation without assuming physical movement."
+    DEC-02-ASSUME-MOTION:
+      action: "Conclude that the cylinder receives air because ExtendCmd is TRUE."
+    DEC-02-CHANGE-LOGIC:
+      action: "Modify the logic to hold the command permanently."
+    DEC-03-CHECK-SUPPLY:
+      action: "From a safe position, check air supply availability under the installation procedure."
+    DEC-03-REPLACE-VALVE:
+      action: "Replace the valve without checking pneumatic supply."
+    DEC-03-INCREASE-PRESSURE:
+      action: "Increase pressure to try to start movement."
+    DEC-04-INSPECT-CONNECTION:
+      action: "Apply the authorized energy-isolation and motion-control procedure before inspecting the local cylinder tube, fitting and port."
+    DEC-04-REPLACE-CYLINDER:
+      action: "Replace the cylinder because general pressure is available."
+    DEC-04-BYPASS-SAFETY:
+      action: "Handle the tube while the installation is pressurized to search for a leak."
+    DEC-05-RECONNECT:
+      action: "Maintain authorized isolation, confirm compatible tube and fitting condition, and restore the intended local connection."
+    DEC-05-HOLD-TUBE:
+      action: "Hold the tube beside the fitting and test the machine without connecting it."
+    DEC-05-REPLACE-PLC:
+      action: "Replace the PLC although the physical disconnection has been observed."
+    DEC-06-VERIFY:
+      action: "From a safe position, verify with controlled movement that the cylinder extends and ExtendedLS changes to TRUE."
+    DEC-06-CLOSE-CONNECTION:
+      action: "Close the incident because the tube looks connected."
+    DEC-06-FORCE-FEEDBACK:
+      action: "Force ExtendedLS to confirm the rest of the sequence."
+  retry_feedback:
+    DEC-01-REPLACE-CYLINDER: "No movement does not yet identify which element breaks the chain."
+    DEC-01-FORCE-FEEDBACK: "Forcing feedback hides the discrepancy and removes sequence protection."
+    DEC-02-ASSUME-MOTION: "ExtendCmd TRUE proves a command, not air at the cylinder or movement."
+    DEC-02-CHANGE-LOGIC: "The observed logic is coherent. Follow the command toward actuation and energy."
+    DEC-03-REPLACE-VALVE: "Control actuation is coherent; first check available energy and local continuity."
+    DEC-03-INCREASE-PRESSURE: "Increasing pressure without locating the interruption is not a justified diagnostic test."
+    DEC-04-REPLACE-CYLINDER: "General pressure does not prove that air reaches the cylinder. Inspect the local connection first."
+    DEC-04-BYPASS-SAFETY: "Do not handle pressurized connections. Control energy before physical inspection."
+    DEC-05-HOLD-TUBE: "An improvised connection does not restore a safe, verifiable industrial condition."
+    DEC-05-REPLACE-PLC: "The physical cause is already observed at the local connection; replacing the PLC cannot correct it."
+    DEC-06-CLOSE-CONNECTION: "A visible connection does not prove extension or correct feedback."
+    DEC-06-FORCE-FEEDBACK: "Feedback must result from physical position, not a force."
+  visual:
+    educational_purpose: "Distinguish a correct control command from physical energy delivery to the actuator."
+  assets:
+    ART-001:
+      alt: "Packaging station with the pneumatic cylinder retracted."
+      caption: "Affected station; cause still unknown."
+    ART-002:
+      alt: "A box waits while the cylinder remains retracted."
+      caption: "Movement does not begin."
+    ART-003:
+      alt: "TIA Portal online table with ExtendCmd TRUE and ExtendedLS FALSE."
+      caption: "The command exists; physical movement remains unproven."
+    ART-004:
+      alt: "Air preparation unit and valve assembly with their connections."
+      caption: "General supply is available; the local connection remains to be checked."
+    ART-005:
+      alt: "Blue pneumatic tube outside the local fitting beside the retracted cylinder."
+      caption: "The pneumatic discontinuity is located."
+    ART-006:
+      alt: "Technician reconnecting the pneumatic tube to the local fitting."
+      caption: "The connection is restored; recovery remains pending."
+    ART-007:
+      alt: "Cylinder with an extended rod and displaced pusher plate."
+      caption: "Final condition illustrated after the functional test."
+  completion:
+    title: "Technical debrief"
+    summary: "The PLC command, control actuation and general supply were correct, but a disconnected line at the cylinder interrupted local pneumatic energy delivery."
+    process: ["Confirm command and logic.", "Trace output and actuation.", "Check pneumatic supply.", "Inspect the local connection with energy controlled.", "Restore the connection.", "Verify extension and feedback."]
+    lesson: "A correct PLC command does not prove that the actuator physically receives energy."
+    avoided_errors: ["Forcing feedback.", "Replacing components without evidence.", "Handling a pressurized line.", "Confusing reconnection with verified recovery."]
+    industrial_value: ["Boundary-based diagnosis.", "Fewer unjustified replacements.", "Verifiable functional recovery."]

@@ -2,6 +2,8 @@
 
 The Experience Engine is the Digital2Real product responsible for creating structured industrial learning experiences based on diagnosis, evidence, decision-making, and troubleshooting.
 
+Its canonical governance boundary is defined by the [D2R Experience Engine architecture](../docs/01-architecture/D2R-EXPERIENCE-ENGINE.md). This directory remains authoritative for executable schemas, validation, normalization, projection, Player behavior, packaging, and implementation documentation.
+
 It does not replace the Notebook.
 
 - **Notebook** explains reusable technical knowledge.

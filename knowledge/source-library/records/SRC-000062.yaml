@@ -1,0 +1,60 @@
+id: SRC-000062
+title: "ETG EtherCAT official technology authority"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PROTOCOL_AUTHORITY", "TECHNICAL_OVERVIEW"]
+status: active
+availability: public
+authority:
+  level: official_protocol_authority
+  publisher: "EtherCAT Technology Group"
+  authoring_organization: "EtherCAT Technology Group"
+domain_ids: ["industrial_networks"]
+manufacturer:
+  id: ORG-ETG
+  name: "EtherCAT Technology Group"
+product:
+  family: "EtherCAT"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: ["ETHERCAT"]
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://www.ethercat.org/en/technology.html"
+  product_url: ""
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official neutral-authority web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "EtherCAT Technology Group"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official authority identity and public location were verified; detailed protocol claims require D2R technical review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

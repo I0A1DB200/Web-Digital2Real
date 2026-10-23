@@ -1,0 +1,158 @@
+locale: "es"
+translations:
+  title: "Sensor ON, entrada PLC OFF"
+  summary: "Investiga por qué la estación espera presencia aunque B1 detecta la caja: sigue la señal hasta I0.3 y Tag_BoxPresent_B1, ambos en FALSE, y verifica la recuperación antes de cerrar."
+  scenario:
+    initial_context: "Una estación de packaging permanece esperando presencia de caja aunque B1 detecta el objetivo y su indicador local está activo."
+    operational_state: "La máquina espera Tag_BoxPresent_B1; B1 indica detección, pero I0.3 y Tag_BoxPresent_B1 permanecen en FALSE."
+    initiating_event: "El operador informa de que la secuencia no continúa con una caja situada frente a B1."
+    learner_role: "Técnico de automatización responsable de seguir la señal antes de sustituir componentes o modificar software."
+    safety_context:
+      safe_state: "Aplicar el procedimiento autorizado de aislamiento y ausencia de tensión antes de manipular conductores o realizar una prueba de continuidad."
+      intervention_constraints: ["No sustituir B1 ni el módulo de entradas sin evidencia.", "No forzar, puentear ni reasignar I0.3.", "No modificar la lógica PLC.", "Restaurar la energía únicamente para mediciones autorizadas y verificación funcional."]
+  learning_objectives:
+    OBJ-SIGNAL-TRACEABILITY:
+      description: "Trazar B1 desde BK y X1:17 hasta I0.3 y Tag_BoxPresent_B1."
+    OBJ-STATE-INTERPRETATION:
+      description: "Diferenciar detección local, tensión de señal, entrada física y tag procesado."
+    OBJ-CONTROLLED-RECOVERY:
+      description: "Determinar la intervención a partir de evidencias y verificar la cadena completa hasta la secuencia."
+  stages:
+    STAGE-01-OBSERVE:
+      title: "Observar el incidente"
+      situation: "La caja está frente a B1 y su indicador está activo, pero I0.3 permanece en FALSE y la estación continúa esperando presencia. ¿Qué harías a continuación?"
+    STAGE-03-ELECTRICAL:
+      title: "Correlacionar la ruta y observar el PLC"
+      situation: "El esquema muestra BN a +24 VDC, BU a 0 VDC y BK desde B1 por X1:17 hasta I0.3."
+    STAGE-04-PLC:
+      title: "Comparar campo y PLC y medir la señal"
+      situation: "La Watch Table muestra I0.3 y Tag_BoxPresent_B1 en FALSE mientras B1 continúa detectando."
+    STAGE-05-MEASURE:
+      title: "Comprobar continuidad en estado seguro"
+      situation: "La medición muestra aproximadamente 24.1 VDC en la salida BK de B1 y 0.0 VDC en el lado PLC de X1:17."
+    STAGE-06-CONTINUITY:
+      title: "Interpretar OL y localizar físicamente"
+      situation: "Con el circuito en estado seguro, la prueba entre X1:17 y PLC I0.3 indica OL."
+    STAGE-07-LOCALIZE:
+      title: "Reparar la sección localizada"
+      situation: "El seguimiento físico del conductor BK revela una sección cortada entre X1:17 y la entrada PLC."
+    STAGE-08-VERIFY:
+      title: "Verificar la recuperación"
+      situation: "La sección dañada ha sido reparada conforme a la práctica autorizada. La recuperación funcional aún no está verificada; debes validar toda la ruta antes de cerrar."
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Estación de packaging"
+      content: "B1 indica detección, pero la condición de presencia de caja no está satisfecha."
+    EVID-02-SENSOR:
+      source: "Sensor B1"
+      content: "El indicador local de B1 está activo con la caja presente; confirma detección local, no la ruta eléctrica completa."
+    EVID-03-SCHEMATIC:
+      source: "Esquema eléctrico"
+      content: "La salida BK de B1 sigue la ruta X1:17 → PLC I0.3 → Tag_BoxPresent_B1."
+    EVID-04-PLC:
+      source: "Watch Table"
+      content: "I0.3 y Tag_BoxPresent_B1 permanecen en FALSE durante la detección local de B1."
+    EVID-05-VOLTAGE:
+      source: "Medición de tensión"
+      content: "B1 BK mide aproximadamente 24.1 VDC; el lado PLC de X1:17 mide 0.0 VDC."
+    EVID-06-OPEN:
+      source: "Prueba de continuidad"
+      content: "La medición entre X1:17 y PLC I0.3 indica OL: circuito abierto."
+    EVID-07-DAMAGE:
+      source: "Conductor BK"
+      content: "Se localiza daño físico y conductor abierto entre X1:17 y PLC I0.3."
+    EVID-08-RECOVERY:
+      source: "Verificación posterior a reparación"
+      content: "B1 detecta, la señal llega al PLC, I0.3 y Tag_BoxPresent_B1 son TRUE y la secuencia se recupera."
+  decisions:
+    DEC-01-TRACE:
+      action: "Confirmar la discrepancia en vivo y seguir la ruta documentada de la señal desde B1."
+    DEC-01-REPLACE:
+      action: "Sustituir B1 porque la secuencia no continúa."
+    DEC-01-PROGRAM:
+      action: "Modificar la lógica para ignorar Tag_BoxPresent_B1."
+    DEC-02-MAP:
+      action: "Correlacionar B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1 con el esquema y observar online la entrada y el tag identificados."
+    DEC-02-GUESS:
+      action: "Buscar una entrada similar sin usar el esquema."
+    DEC-02-BYPASS:
+      action: "Puentear I0.3 para comprobar la secuencia."
+    DEC-03-COMPARE:
+      action: "Registrar la discrepancia y medir en puntos sucesivos de la ruta."
+    DEC-03-PLC-FAULT:
+      action: "Concluir que el canal PLC está averiado porque I0.3 es FALSE."
+    DEC-03-CHANGE:
+      action: "Reasignar Tag_BoxPresent_B1 a otra entrada."
+    DEC-04-LOCALIZE:
+      action: "Aplicar el procedimiento autorizado de aislamiento y ausencia de tensión; después, comprobar continuidad entre X1:17 y PLC I0.3."
+    DEC-04-SENSOR:
+      action: "Sustituir B1 aunque entrega 24.1 VDC."
+    DEC-04-MODULE:
+      action: "Sustituir el módulo PLC antes de comprobar el conductor."
+    DEC-05-OPEN:
+      action: "Interpretar OL como circuito abierto y trazar físicamente BK."
+    DEC-05-IGNORE:
+      action: "Ignorar OL y repetir el arranque."
+    DEC-05-FORCE:
+      action: "Forzar Tag_BoxPresent_B1 para ocultar la interrupción."
+    DEC-06-REPAIR:
+      action: "Reparar o reemplazar la sección dañada según la práctica eléctrica autorizada."
+    DEC-06-REPLACE-SENSOR:
+      action: "Sustituir B1 aunque el daño del conductor está confirmado."
+    DEC-06-REPLACE-PLC:
+      action: "Sustituir la entrada PLC aunque el daño del conductor está confirmado."
+    DEC-07-VERIFY-CHAIN:
+      action: "Verificar B1, tensión PLC-side, I0.3, Tag_BoxPresent_B1 y secuencia."
+    DEC-07-INPUT-ONLY:
+      action: "Comprobar únicamente I0.3 y usar esa comprobación como criterio de cierre."
+    DEC-07-CLOSE:
+      action: "Cerrar sin repetir la condición funcional de la máquina."
+  retry_feedback:
+    DEC-01-REPLACE: "Sustituir B1 todavía no está justificado: su indicador confirma detección local, pero no establece qué ocurre con la señal a lo largo de la ruta."
+    DEC-01-PROGRAM: "Modificar la lógica ocultaría la discrepancia observada sin comprobar primero el recorrido eléctrico documentado de la señal."
+    DEC-02-GUESS: "Una entrada parecida puede pertenecer a otro dispositivo. La investigación necesita conservar la trazabilidad entre B1 y su punto PLC documentado."
+    DEC-02-BYPASS: "Un puente simularía una condición y podría alterar la secuencia; no aporta evidencia sobre el estado real de la ruta de B1."
+    DEC-03-PLC-FAULT: "I0.3 en FALSE confirma el síntoma observado por el PLC, pero por sí solo no distingue entre una pérdida aguas arriba y un canal defectuoso."
+    DEC-03-CHANGE: "Reasignar el tag cambia el sistema documentado antes de localizar la pérdida de señal y puede introducir una segunda anomalía."
+    DEC-04-SENSOR: "La salida medida en B1 demuestra que el dispositivo genera señal; reemplazarlo no explica por qué esa tensión no aparece aguas abajo."
+    DEC-04-MODULE: "La diferencia entre los dos puntos sitúa la investigación en la ruta intermedia. El módulo no debe sustituirse sin comprobar primero esa sección."
+    DEC-05-IGNORE: "Repetir el arranque no resuelve una lectura OL obtenida con el circuito aislado; la evidencia requiere localizar físicamente la discontinuidad."
+    DEC-05-FORCE: "Forzar el tag evita la ruta física confirmada y no restaura su integridad. La discontinuidad debe investigarse bajo condiciones seguras."
+    DEC-06-REPLACE-SENSOR: "El sensor ya entregó la tensión esperada y el daño está localizado fuera de él; su sustitución dejaría intacta la interrupción."
+    DEC-06-REPLACE-PLC: "El daño físico localizado explica la ausencia de señal en I0.3. Sustituir el PLC no restablecería el conductor."
+    DEC-07-INPUT-ONLY: "I0.3 en TRUE es una comprobación necesaria, pero no demuestra por sí sola que el tag y la función de máquina se hayan recuperado."
+    DEC-07-CLOSE: "La integridad de una reparación industrial debe confirmarse bajo la condición funcional original antes de cerrar la intervención."
+  visual:
+    educational_purpose: "Relacionar la indicación local de B1 con la señal eléctrica, la entrada PLC, el tag y la secuencia mediante evidencias obtenidas en cada acción."
+  assets:
+    ART-001:
+      alt: "Vista general de la estación EE-0001 con B1 y el armario PLC."
+      caption: "Incidente inicial de EE-0001."
+    ART-002:
+      alt: "Primer plano de B1 detectando la caja."
+      caption: "Indicación local activa en B1."
+    ART-003:
+      alt: "Esquema de B1, X1:17 e I0.3."
+      caption: "Ruta eléctrica de la señal BK."
+    ART-004:
+      alt: "Watch Table con I0.3 y Tag_BoxPresent_B1 en FALSE."
+      caption: "Estado observado en PLC."
+    ART-005:
+      alt: "Medición de 24.1 VDC en B1 y 0.0 VDC en el lado PLC."
+      caption: "Comparación de tensión en la ruta."
+    ART-006:
+      alt: "Prueba de continuidad con resultado OL entre X1:17 e I0.3."
+      caption: "Circuito abierto confirmado."
+    ART-007:
+      alt: "Daño físico localizado en el conductor BK."
+      caption: "Causa raíz localizada."
+    ART-008:
+      alt: "Reparación y verificación completa de la señal."
+      caption: "Recuperación funcional verificada."
+  completion:
+    title: "Debrief técnico"
+    summary: "B1 detectaba y generaba la señal, pero un daño físico abrió el conductor BK entre X1:17 e I0.3."
+    process: ["Observar sin asumir.", "Identificar y trazar la señal.", "Comparar campo y PLC.", "Medir y comprobar continuidad.", "Localizar, reparar y verificar toda la cadena."]
+    lesson: "La indicación local de un sensor no demuestra que la señal haya llegado al PLC."
+    avoided_errors: ["Sustituir B1.", "Sustituir la entrada PLC.", "Puentear o forzar I0.3.", "Modificar la lógica."]
+    industrial_value: ["Diagnóstico trazable.", "Menos sustituciones injustificadas.", "Recuperación segura y verificable."]

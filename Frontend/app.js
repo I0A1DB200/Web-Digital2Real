@@ -2,9 +2,11 @@ import { site } from "./data/site.js";
 import { notebook } from "./generated/notebooks/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
-import { createNotebookCard } from "./products/notebook/components/notebookCard.js";
+import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
+import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
 import { createArticleViewer } from "./components/articleViewer.js";
 import { createAbout } from "./components/about.js";
+import { applyCharacterReveal, getCharacterRevealDuration } from "./components/heroTextReveal.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
 
 const app = document.querySelector("#app");
@@ -34,6 +36,8 @@ if (!validViews.has("engineering-notes")) {
 let currentView = null;
 let activeArticleViewer = null;
 let activeExperienceWorkspace = null;
+let activeNavbar = null;
+let activeNotebookMotorHero = null;
 let pendingExperienceId = null;
 let revealObserver = null;
 
@@ -75,6 +79,8 @@ function renderView(view) {
   }
 
   disconnectRevealObserver();
+  activeNotebookMotorHero?.destroy();
+  activeNotebookMotorHero = null;
   closeArticle();
   closeExperienceWorkspace();
 
@@ -91,7 +97,10 @@ function renderView(view) {
   currentView = view;
 
   main.appendChild(renderCurrentView());
-  app.replaceChildren(createNavbar(site, currentView, navigateTo), main);
+  activeNavbar?.destroy?.();
+  activeNavbar = createNavbar(site, currentView, navigateTo);
+  app.replaceChildren(activeNavbar, main);
+  activeNotebookMotorHero?.initialise(main.querySelector(".notes-section"));
 
   document.title = getDocumentTitle();
   initialiseRevealAnimations();
@@ -115,7 +124,6 @@ function renderEngineeringNotesView() {
 
   section.innerHTML = `
     <header class="editorial-hero reveal">
-      <span class="section-kicker">${site.home.eyebrow}</span>
       <h1 id="home-title">${site.home.title}</h1>
       <div class="editorial-hero__support">
         <p>${site.home.introduction}</p>
@@ -129,20 +137,41 @@ function renderEngineeringNotesView() {
           <p>${site.engineeringNotes.introduction}</p>
         </div>
       </header>
-      <div class="notebook-list" aria-label="Engineering Notes"></div>
+      <div class="notebook-notes-composition">
+        <div class="notebook-motor-host"></div>
+        <div class="notebook-carousel-host"></div>
+      </div>
     </section>
 
   `;
 
-  const list = section.querySelector(".notebook-list");
-
-  if (!(list instanceof HTMLElement)) {
-    throw new Error("Digital2Real could not render the Engineering Notes list.");
+  const heroHeading = section.querySelector(".editorial-hero h1");
+  const heroParagraph = section.querySelector(".editorial-hero__support p");
+  if (heroHeading instanceof HTMLElement && heroParagraph instanceof HTMLElement) {
+    const headingCharacterCount = applyCharacterReveal(heroHeading, {
+      stagger: 32,
+      duration: 480
+    });
+    const paragraphStartDelay = Math.round(
+      getCharacterRevealDuration(headingCharacterCount, 32, 480) * 0.6
+    );
+    applyCharacterReveal(heroParagraph, {
+      stagger: 16,
+      duration: 380,
+      startDelay: paragraphStartDelay
+    });
   }
 
-  notebook.forEach(note => {
-    list.appendChild(createNotebookCard(note, openArticle));
-  });
+  const carouselHost = section.querySelector(".notebook-carousel-host");
+  const motorHost = section.querySelector(".notebook-motor-host");
+
+  if (!(carouselHost instanceof HTMLElement) || !(motorHost instanceof HTMLElement)) {
+    throw new Error("Digital2Real could not render the Engineering Notes composition.");
+  }
+
+  carouselHost.appendChild(createNotebookCarousel(notebook, openArticle).element);
+  activeNotebookMotorHero = createNotebookMotorHero();
+  motorHost.appendChild(activeNotebookMotorHero.element);
 
   return section;
 }

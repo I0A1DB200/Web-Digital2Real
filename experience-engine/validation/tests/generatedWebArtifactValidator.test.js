@@ -39,7 +39,7 @@ test("requires an independent Web Artifact version", async () => {
 
 test("rejects unsupported Web Artifact versions explicitly", async () => {
   const artifact = await readJson(validFixtureUrl);
-  artifact.web_artifact_version = "2.0.0";
+  artifact.web_artifact_version = "3.0.0";
 
   const result = validateGeneratedWebArtifact(artifact);
 

@@ -27,6 +27,22 @@ This directory contains current project documentation and the governed architect
 | D2R-007 | [Learning Analytics Model](02-standards/D2R-007-learning-analytics-model.md) | Analytics boundary |
 | D2R-008 | [Architecture Governance](03-governance/D2R-008-architecture-governance.md) | Evolution and decision control |
 
+## Engineering OS
+
+| Question | Canonical authority |
+|---|---|
+| How is D2R engineering work governed? | [Engineering Director Playbook](03-governance/ENGINEERING-DIRECTOR-PLAYBOOK.md) |
+| What are the platform and ownership boundaries? | [Engineering OS Architecture](01-architecture/D2R-ENGINEERING-OS-ARCHITECTURE.md) |
+| What does the Experience Engine own? | [Experience Engine Architecture](01-architecture/D2R-EXPERIENCE-ENGINE.md) and [implementation documentation](../experience-engine/README.md) |
+| How is authored content organized? | [Content Model](01-architecture/D2R-CONTENT-MODEL.md) |
+| How is an Experience designed? | [Experience Design Standard](02-standards/D2R-003-experience-design-standard.md) |
+| How do Evidence, Media and Result work? | [Evidence and Media Semantics](02-standards/D2R-STD-002-evidence-media-semantics.md) |
+| How are assets governed? | [Asset Governance](02-standards/D2R-STD-003-asset-governance.md) |
+| What validation is required? | [QA Standard](02-standards/D2R-STD-004-qa-standard.md) |
+| Which Codex contract should run? | [Prompt Library](../prompts/README.md) |
+| Where are reusable assets cataloged? | [Asset Library](../assets/library/README.md) |
+| Where are engineering references cataloged? | [Technical Reference Library](../knowledge/README.md) |
+
 ## Permanent and operational authorities
 
 - [Constitution](Constitution.md) — immutable principles.

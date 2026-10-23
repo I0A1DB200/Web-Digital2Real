@@ -1,0 +1,60 @@
+id: SRC-000012
+title: "Beckhoff TwinSAFE"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PRODUCT_PAGE"]
+status: active
+availability: metadata_only
+authority:
+  level: official_manufacturer
+  publisher: "Beckhoff"
+  authoring_organization: "Beckhoff"
+domain_ids: ["industrial_automation"]
+manufacturer:
+  id: MFR-BECKHOFF
+  name: "Beckhoff"
+product:
+  family: "TwinSAFE"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: ""
+  product_url: ""
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Architect-provided initial Source Library population list"
+  acquired_by: architect_input
+  acquired_at: ""
+  last_verified_at: ""
+  content_hash: ""
+rights:
+  copyright_holder: "Beckhoff"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Identity is registered from Architect input; no external research or independent technical verification has been performed."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

@@ -67,7 +67,7 @@ test("returns structured Authoring validation incidents and no value", async () 
 
 test("rejects an unsupported Authoring contract version", async () => {
   const authoring = await readJson(authoringFixtureUrl);
-  authoring.contract_version = "2.0.0";
+  authoring.contract_version = "3.0.0";
 
   const result = normalizeExperienceDefinition(authoring);
 

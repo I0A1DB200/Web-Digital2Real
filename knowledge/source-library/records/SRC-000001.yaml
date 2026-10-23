@@ -1,0 +1,62 @@
+id: SRC-000001
+title: "Turck product reference 1644874"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["DATASHEET"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: Turck
+  authoring_organization: Turck
+domain_ids: ["sensors", "io_link"]
+manufacturer:
+  id: MFR-TURCK
+  name: Turck
+product:
+  family: ""
+  exact_device: BI6U-MT12-IOL6X2-H1141
+  variant: ""
+  order_number: "1644874"
+engineering_software: []
+protocols_interfaces: ["IO_LINK_IODD"]
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://www.turck.us/en/product/1644874"
+  product_url: "https://www.turck.us/en/product/1644874"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "content/experiences/sensors/EE-0011-inductive-sensor-not-detecting/README.md"
+  acquired_by: repository_evidence
+  acquired_at: ""
+  last_verified_at: ""
+  content_hash: ""
+rights:
+  copyright_holder: Turck
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims:
+    - "Repository evidence associates this manufacturer product page with EE-0011."
+  limitations:
+    - "No web research or independent verification was performed during registration."
+    - "Document revision, languages, licensing and download resources are unknown."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: ["EE-0011"]
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: ["inductive_sensor", "turck"]

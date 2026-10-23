@@ -1,0 +1,176 @@
+schema_uri: "https://json-schema.org/draft/2020-12/schema"
+schema_id: "d2r://knowledge/source-library/source-record.schema.yaml"
+title: D2R Source Record
+type: object
+required: ["id", "title", "record_type", "classification", "resource_types", "status", "availability", "authority", "domain_ids", "manufacturer", "product", "engineering_software", "protocols_interfaces", "document", "locations", "resources", "local_files", "provenance", "rights", "technical_scope", "relationships", "d2r_use", "review", "tags"]
+properties:
+  id:
+    type: string
+    pattern: "^SRC-[0-9]{6}$"
+  title:
+    type: string
+    minLength: 1
+  record_type:
+    const: source
+  classification:
+    type: string
+  resource_types:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items:
+      type: string
+  status:
+    type: string
+    minLength: 1
+  availability:
+    type: string
+  authority:
+    type: object
+    required: ["level", "publisher", "authoring_organization"]
+    properties:
+      level:
+        type: string
+      publisher:
+        type: string
+      authoring_organization:
+        type: string
+  domain_ids:
+    type: array
+    uniqueItems: true
+    items:
+      type: string
+  manufacturer:
+    type: object
+    required: ["id", "name"]
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  product:
+    type: object
+    required: ["family", "exact_device", "variant", "order_number"]
+    properties:
+      family:
+        type: string
+      exact_device:
+        type: string
+      variant:
+        type: string
+      order_number:
+        type: string
+  engineering_software:
+    type: array
+  protocols_interfaces:
+    type: array
+    uniqueItems: true
+    items:
+      type: string
+  document:
+    type: object
+    required: ["number", "revision", "publication_date", "languages"]
+    properties:
+      number:
+        type: string
+      revision:
+        type: string
+      publication_date:
+        type: string
+      languages:
+        type: array
+        uniqueItems: true
+  locations:
+    type: object
+    required: ["canonical_url", "product_url", "download_url"]
+    properties:
+      canonical_url:
+        type: string
+      product_url:
+        type: string
+      download_url:
+        type: string
+  resources:
+    type: array
+    items:
+      type: object
+      required: ["id", "language", "resource_type", "url"]
+      properties:
+        id:
+          type: string
+        language:
+          type: string
+        resource_type:
+          type: string
+        url:
+          type: string
+  local_files:
+    type: array
+  provenance:
+    type: object
+    required: ["discovered_from", "acquired_by", "acquired_at", "last_verified_at", "content_hash"]
+    properties:
+      discovered_from:
+        type: string
+      acquired_by:
+        type: string
+      acquired_at:
+        type: string
+      last_verified_at:
+        type: string
+      content_hash:
+        type: string
+  rights:
+    type: object
+    required: ["copyright_holder", "license", "repository_storage_permitted", "production_use_permitted"]
+    properties:
+      copyright_holder:
+        type: string
+      license:
+        type: string
+      repository_storage_permitted:
+        type: boolean
+      production_use_permitted:
+        type: boolean
+  technical_scope:
+    type: object
+    required: ["supported_claims", "limitations"]
+    properties:
+      supported_claims:
+        type: array
+      limitations:
+        type: array
+  relationships:
+    type: object
+    required: ["supersedes", "related_sources"]
+    properties:
+      supersedes:
+        type: array
+      related_sources:
+        type: array
+  d2r_use:
+    type: object
+    required: ["notebooks", "experiences", "assets"]
+    properties:
+      notebooks:
+        type: array
+      experiences:
+        type: array
+      assets:
+        type: array
+  review:
+    type: object
+    required: ["state", "reviewed_by", "reviewed_at"]
+    properties:
+      state:
+        type: string
+      reviewed_by:
+        type: string
+      reviewed_at:
+        type: string
+  tags:
+    type: array
+    uniqueItems: true
+    items:
+      type: string
+additionalProperties: false

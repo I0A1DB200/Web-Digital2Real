@@ -18,7 +18,7 @@
   max-width: 820px;
   color: var(--ink-soft);
   font-size: clamp(1rem, 1.3vw, 1.18rem);
-  line-height: 1.82;
+  line-height: var(--line-height-body);
 }
 
 .about-view__stack {

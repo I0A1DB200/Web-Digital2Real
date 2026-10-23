@@ -1,4 +1,8 @@
-const SUPPORTED_WEB_ARTIFACT_VERSION = "1.0.0";
+import { evaluateExperience } from "../evaluation/experienceEvaluator.js";
+
+const WEB_ARTIFACT_V1 = "1.0.0";
+const WEB_ARTIFACT_V2 = "2.0.0";
+const SUPPORTED_WEB_ARTIFACT_VERSIONS = new Set([WEB_ARTIFACT_V1, WEB_ARTIFACT_V2]);
 
 export const ExperiencePlayerState = Object.freeze({
   NotStarted: "NotStarted",
@@ -24,12 +28,16 @@ export class ExperiencePlayerError extends Error {
 export class ExperiencePlayer {
   #model;
   #stages;
+  #interactions;
   #state;
+  #version;
 
   constructor({ experience } = {}) {
     validateExperience(experience);
     this.#model = deepFreeze(clone(experience));
     this.#stages = new Map(this.#model.public.stages.map(stage => [stage.id, stage]));
+    this.#version = this.#model.web_artifact_version;
+    this.#interactions = new Map((this.#model.public.interactions ?? []).map(item => [item.action_token, item]));
     this.#state = this.#createInitialState();
   }
 
@@ -45,11 +53,27 @@ export class ExperiencePlayer {
   }
 
   continue() {
-    this.#assertInteraction("continue", ["introduction", "stage", "selection"]);
+    this.#assertInteraction("continue", ["introduction", "stage", "selection", "result"]);
+
+    if (this.#state.interaction === "result") {
+      this.#state = {
+        ...this.#state,
+        interaction: this.#state.state === ExperiencePlayerState.Completed ? "completion" : "stage"
+      };
+      return this.getState();
+    }
 
     if (this.#state.interaction === "introduction") {
       this.#state = { ...this.#state, interaction: "stage" };
       return this.getState();
+    }
+
+    if (this.#version === WEB_ARTIFACT_V2) {
+      throw new ExperiencePlayerError(
+        "V2_SELECTION_REQUIRED",
+        "Player V2 progression requires an explicit decision transition.",
+        { stageId: this.#model.public.stages[this.#state.stageIndex].id }
+      );
     }
 
     if (this.#state.interaction === "stage") {
@@ -97,6 +121,8 @@ export class ExperiencePlayer {
       );
     }
 
+    if (this.#version === WEB_ARTIFACT_V2) return this.#selectDecisionV2(stage, decision);
+
     this.#state = {
       ...this.#state,
       interaction: "selection",
@@ -117,6 +143,7 @@ export class ExperiencePlayer {
 
   getSnapshot() {
     const stage = this.#model.public.stages[this.#state.stageIndex];
+    const presentingResult = this.#state.interaction === "result";
     return deepFreeze({
       experience: {
         id: this.#model.identity.id,
@@ -136,11 +163,26 @@ export class ExperiencePlayer {
         currentStage: this.#state.stageIndex + 1,
         totalStages: this.#model.public.stages.length
       },
-      currentStage: this.#state.interaction === "completion" ? null : clone(stage),
+      currentStage: presentingResult || this.#state.interaction === "completion" ? null : clone(stage),
       selectedDecision: this.#state.selectedDecision,
       decisionHistory: clone(this.#state.decisionHistory),
       visual: clone(this.#model.public.visual),
-      media: clone(resolveMedia(this.#model, stage?.media_ids ?? [])),
+      media: presentingResult ? [] : clone(resolveMedia(this.#model, this.#state.interaction === "completion"
+        ? this.#model.public.completion?.media_ids ?? []
+        : stage?.media_ids ?? [])),
+      ...(this.#version === WEB_ARTIFACT_V2 ? {
+        attemptsByDecision: clone(this.#state.attemptsByDecision),
+        resolvedDecisions: [...this.#state.resolvedDecisions],
+        unlockedEvidence: [...this.#state.unlockedEvidence],
+        result: presentingResult ? {
+          evidence: newlyUnlockedEvidence(this.#model, this.#state.decisionHistory).map(evidence => ({
+            ...clone(evidence),
+            media: clone(resolveMedia(this.#model, evidence.media_ids ?? []))
+          }))
+        } : null,
+        feedback: clone(this.#state.feedback),
+        evaluationResult: clone(this.#state.evaluationResult)
+      } : {}),
       completion: this.#state.interaction === "completion"
         ? clone(this.#model.public.completion ?? null)
         : null
@@ -152,7 +194,7 @@ export class ExperiencePlayer {
   }
 
   #createInitialState() {
-    return {
+    const initial = {
       state: ExperiencePlayerState.NotStarted,
       completionStatus: ExperienceCompletionStatus.NotStarted,
       interaction: "start",
@@ -160,6 +202,77 @@ export class ExperiencePlayer {
       selectedDecision: null,
       decisionHistory: []
     };
+    return this.#version === WEB_ARTIFACT_V2 ? {
+      ...initial,
+      attemptsByDecision: {},
+      resolvedDecisions: [],
+      unlockedEvidence: [],
+      feedback: null,
+      evaluationResult: null
+    } : initial;
+  }
+
+  #selectDecisionV2(stage, decision) {
+    const decisionPointId = stage.id;
+    if (this.#state.resolvedDecisions.includes(decisionPointId)) {
+      throw new ExperiencePlayerError("DECISION_ALREADY_RESOLVED", `Decision point ${decisionPointId} is already resolved.`, { decisionPointId });
+    }
+    const interaction = this.#interactions.get(decision.action_token);
+    if (!interaction) throw new ExperiencePlayerError("INTERACTION_AUTHORITY_MISSING", `Decision ${decision.id} has no interaction authority.`, { decisionId: decision.id });
+    const attemptNumber = (this.#state.attemptsByDecision[decisionPointId] ?? 0) + 1;
+    const record = { decisionPointId, selectedDecisionId: decision.id, attemptNumber, outcome: interaction.outcome };
+    const attemptsByDecision = { ...this.#state.attemptsByDecision, [decisionPointId]: attemptNumber };
+    const decisionHistory = [...this.#state.decisionHistory, record];
+
+    if (interaction.outcome === "retry") {
+      this.#state = {
+        ...this.#state,
+        selectedDecision: decision.id,
+        attemptsByDecision,
+        decisionHistory,
+        feedback: { decisionId: decision.id, message: interaction.message, attemptNumber }
+      };
+      return this.getState();
+    }
+
+    const resolvedDecisions = [...this.#state.resolvedDecisions, decisionPointId];
+    const unlockedEvidence = [...new Set([...this.#state.unlockedEvidence, ...interaction.unlocks])];
+    const shared = {
+      ...this.#state,
+      selectedDecision: decision.id,
+      attemptsByDecision,
+      decisionHistory,
+      resolvedDecisions,
+      unlockedEvidence,
+      feedback: null
+    };
+    const hasResult = newlyUnlockedEvidence(this.#model, decisionHistory)
+      .some(evidence => evidence.media_ids?.length);
+    if (interaction.next === "COMPLETE") {
+      const decisionPoints = this.#model.public.stages.filter(item => item.decisions.length).map(item => item.id);
+      let evaluationResult;
+      try {
+        evaluationResult = evaluateExperience({
+          decisionPoints,
+          attemptsByDecision,
+          policy: this.#model.public.evaluation_policy
+        });
+      } catch (error) {
+        throw new ExperiencePlayerError("V2_EVALUATION_FAILED", "Player V2 could not evaluate the completed Experience.", { cause: error.code ?? error.message });
+      }
+      this.#state = {
+        ...shared,
+        state: ExperiencePlayerState.Completed,
+        completionStatus: ExperienceCompletionStatus.Completed,
+        interaction: hasResult ? "result" : "completion",
+        evaluationResult
+      };
+      return this.getState();
+    }
+    const stageIndex = this.#model.public.stages.findIndex(item => item.id === interaction.next);
+    if (stageIndex < 0) throw new ExperiencePlayerError("INVALID_V2_TRANSITION", `Transition destination ${interaction.next} is unavailable.`, { destination: interaction.next });
+    this.#state = { ...shared, interaction: hasResult ? "result" : "stage", stageIndex, selectedDecision: null };
+    return this.getState();
   }
 
   #assertInteraction(operation, allowed) {
@@ -174,10 +287,10 @@ export class ExperiencePlayer {
 
 function validateExperience(candidate) {
   if (!plainObject(candidate)) invalidModel("The experience must be a generated web artifact.");
-  if (candidate.web_artifact_version !== SUPPORTED_WEB_ARTIFACT_VERSION) {
+  if (!SUPPORTED_WEB_ARTIFACT_VERSIONS.has(candidate.web_artifact_version)) {
     throw new ExperiencePlayerError(
       "UNSUPPORTED_CONTRACT_VERSION",
-      `Supported web artifact version is ${SUPPORTED_WEB_ARTIFACT_VERSION}.`,
+      `Supported web artifact versions are ${[...SUPPORTED_WEB_ARTIFACT_VERSIONS].join(", ")}.`,
       { received: candidate.web_artifact_version ?? null }
     );
   }
@@ -211,8 +324,11 @@ function validateExperience(candidate) {
       ["id", "action"].forEach(field => requireText(decision[field], `Stage ${stage.id} decision ${field}`));
       if (decisionIds.has(decision.id)) invalidModel(`Duplicate decision identifier ${decision.id}.`);
       decisionIds.add(decision.id);
+      if (candidate.web_artifact_version === WEB_ARTIFACT_V2) requireText(decision.action_token, `Stage ${stage.id} decision action_token`);
     });
   });
+
+  if (candidate.web_artifact_version === WEB_ARTIFACT_V2) validateV2Experience(candidate, stageIds, decisionIds);
 
   const assets = candidate.public.visual.assets ?? [];
   if (!Array.isArray(assets)) invalidModel("public.visual.assets must be an array.");
@@ -233,11 +349,64 @@ function validateExperience(candidate) {
       if (!assetIds.has(id)) invalidModel(`Stage ${stage.id} references unknown media ${id}.`);
     });
   });
+  if (candidate.web_artifact_version === WEB_ARTIFACT_V2) {
+    (candidate.public.evidence ?? []).forEach(evidence => {
+      if (!Object.hasOwn(evidence, "media_ids")) return;
+      if (!Array.isArray(evidence.media_ids)) invalidModel(`Evidence ${evidence.id} media_ids must be an array.`);
+      const seen = new Set();
+      evidence.media_ids.forEach(id => {
+        requireText(id, `Evidence ${evidence.id} media ID`);
+        if (seen.has(id)) invalidModel(`Evidence ${evidence.id} repeats media ${id}.`);
+        seen.add(id);
+        if (!assetIds.has(id)) invalidModel(`Evidence ${evidence.id} references unknown media ${id}.`);
+      });
+    });
+  }
+}
+
+function validateV2Experience(candidate, stageIds, decisionIds) {
+  const interactions = candidate.public.interactions;
+  if (!Array.isArray(interactions)) invalidModel("public.interactions must be an array for Player V2.");
+  if (!plainObject(candidate.public.evaluation_policy)) invalidModel("public.evaluation_policy is required for Player V2.");
+  const tokens = new Set(candidate.public.stages.flatMap(stage => stage.decisions.map(item => item.action_token)));
+  const evidenceIds = new Set((candidate.public.evidence ?? []).map(item => item.id));
+  if (tokens.size !== decisionIds.size) invalidModel("Player V2 action tokens must be unique.");
+  const authorities = new Set();
+  interactions.forEach((interaction, index) => {
+    if (!plainObject(interaction)) invalidModel(`public.interactions[${index}] must be an object.`);
+    requireText(interaction.action_token, `public.interactions[${index}].action_token`);
+    if (!tokens.has(interaction.action_token) || authorities.has(interaction.action_token)) invalidModel(`Invalid V2 interaction authority ${interaction.action_token}.`);
+    authorities.add(interaction.action_token);
+    if (interaction.outcome === "retry") {
+      requireText(interaction.message, `public.interactions[${index}].message`);
+      if (Object.hasOwn(interaction, "next") || Object.hasOwn(interaction, "unlocks")) invalidModel("Player V2 retry interactions cannot progress or unlock evidence.");
+    }
+    else if (interaction.outcome === "advance") {
+      requireText(interaction.next, `public.interactions[${index}].next`);
+      if (interaction.next !== "COMPLETE" && !stageIds.has(interaction.next)) invalidModel(`Unknown V2 transition ${interaction.next}.`);
+      if (!Array.isArray(interaction.unlocks)) invalidModel(`public.interactions[${index}].unlocks must be an array.`);
+      interaction.unlocks.forEach(id => { if (!evidenceIds.has(id)) invalidModel(`Unknown V2 evidence unlock ${id}.`); });
+    } else invalidModel(`Unsupported V2 interaction outcome ${interaction.outcome}.`);
+  });
+  if (authorities.size !== tokens.size) invalidModel("Every Player V2 action token requires one interaction authority.");
+}
+
+// Derive the current action's delta from existing history; never store a second
+// unlock list, destination or acknowledgement alongside diagnostic state.
+function newlyUnlockedEvidence(model, history) {
+  const latest = history.at(-1);
+  if (!latest || latest.outcome !== "advance") return [];
+  const decisions = new Map(model.public.stages.flatMap(stage => stage.decisions.map(decision => [decision.id, decision])));
+  const interactions = new Map(model.public.interactions.map(item => [item.action_token, item]));
+  const unlocksFor = record => interactions.get(decisions.get(record.selectedDecisionId)?.action_token)?.unlocks ?? [];
+  const previous = new Set(history.slice(0, -1).filter(record => record.outcome === "advance").flatMap(unlocksFor));
+  const evidence = new Map((model.public.evidence ?? []).map(item => [item.id, item]));
+  return [...new Set(unlocksFor(latest))].filter(id => !previous.has(id)).map(id => evidence.get(id));
 }
 
 function resolveMedia(model, identifiers) {
-  const requested = new Set(identifiers);
-  return (model.public.visual.assets ?? []).filter(asset => requested.has(asset.id));
+  const assets = new Map((model.public.visual.assets ?? []).map(asset => [asset.id, asset]));
+  return identifiers.map(id => assets.get(id)).filter(Boolean);
 }
 
 function plainObject(value) {

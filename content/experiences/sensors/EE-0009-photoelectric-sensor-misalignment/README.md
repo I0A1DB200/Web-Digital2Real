@@ -1,12 +1,12 @@
-# EE-0009 — Photoelectric Sensor Misalignment
+# EE-0909 — Photoelectric Sensor Misalignment (archived)
 
 | Field | Value |
 |---|---|
-| Editorial ID | `EE-0009` |
+| Editorial ID | `EE-0909` (formerly `EE-0009`; reassigned to avoid the HMI Experience identity collision) |
 | Technical ID | `EXP-SENSOR-PHOTOELECTRIC-009` |
 | Domain | Industrial I/O — photoelectric sensing |
 | Preliminary objective | Develop evidence-led reasoning about photoelectric sensor alignment |
-| Status | Technical review — Preview eligible |
+| Status | Archived — retained as a canonical regression reference |
 | Principal Capability | `ICF-02` — Industrial I/O |
 | Competencies | `COMP-IIO-SIGNAL-TRACEABILITY`, `COMP-IIO-STATE-INTERPRETATION`, `COMP-IIO-CONTROLLED-RECOVERY` |
 | Languages | Spanish (`es`) and English (`en`) complete; Spanish fallback |
@@ -26,7 +26,7 @@ Approved Blueprint
 → Publication
 ```
 
-`experience.yaml` is a complete Authoring Definition v1 in `technical_review`. Generic catalog policy includes it in Preview and excludes it from Production.
+`experience.yaml` remains a complete Authoring Definition v1. Its governed `archived` lifecycle retains the canonical package while excluding it from Preview and Production catalogs through the generic publication policy.
 
 ## Approved source and derivatives
 

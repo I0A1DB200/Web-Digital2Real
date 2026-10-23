@@ -1,0 +1,25 @@
+contract_version: "2.0.0"
+
+environment:
+  id: "ENV-002"
+  slug: "field-instrumentation"
+  title: "Field Instrumentation"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+  presentation:
+    description:
+      es: "Instrumentación de campo, señales analógicas, sensores y transmisión de proceso en una celda industrial."
+      en: "Field instrumentation, analog signals, sensors and process transmission in an industrial cell."
+    skills:
+      es: ["Instrumentación de campo", "Señales analógicas", "Diagnóstico de lazo", "Sensores y transmisores", "Puesta en marcha"]
+      en: ["Field instrumentation", "Analog signals", "Loop diagnosis", "Sensors and transmitters", "Commissioning"]
+
+visual:
+  background: "media/ENV-002-motion-pneumatics-profinet-cell.png"
+  width: 1672
+  height: 941
+
+theory: "theory.yaml"
+
+hotspots: []

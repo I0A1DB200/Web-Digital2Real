@@ -1,0 +1,60 @@
+id: SRC-000028
+title: "Weidmüller online product catalogue"
+record_type: source
+classification: DISCOVERY_ONLY
+resource_types: ["DOWNLOAD_GATEWAY"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Weidmüller"
+  authoring_organization: "Weidmüller"
+domain_ids: ["electrical"]
+manufacturer:
+  id: MFR-WEIDMUELLER
+  name: "Weidmüller"
+product:
+  family: ""
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://eshop.weidmueller.com/"
+  product_url: "https://eshop.weidmueller.com/"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Weidmüller"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; technical claims and exact-device applicability remain unreviewed by D2R Engineering."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

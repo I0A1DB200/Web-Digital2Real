@@ -1,0 +1,60 @@
+id: SRC-000033
+title: "Siemens SINAMICS G120"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PRODUCT_PAGE"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Siemens"
+  authoring_organization: "Siemens"
+domain_ids: ["drives"]
+manufacturer:
+  id: MFR-SIEMENS
+  name: "Siemens"
+product:
+  family: "SINAMICS G120"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: ["SINAMICS Startdrive"]
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://www.siemens.com/es-es/products/sinamics/g120/"
+  product_url: "https://www.siemens.com/es-es/products/sinamics/g120/"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Siemens"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact variants, firmware and technical claims remain unreviewed by D2R Engineering."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

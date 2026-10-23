@@ -21,11 +21,15 @@
   /* Lines and interaction */
   --color-line: rgba(242, 240, 236, 0.14);
   --color-line-soft: rgba(242, 240, 236, 0.07);
+  --shadow-card: 0 18px 42px rgba(0, 0, 0, 0.28);
   --color-selection-bg: var(--brand-primary-soft);
+  --color-technical-signal: #2bc4df;
+  --color-technical-signal-soft: rgba(43, 196, 223, 0.24);
 
   /* Typography */
   --font-brand: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", "Inter", system-ui, sans-serif;
+  --line-height-body: 1.55;
 
   /* Layout */
   --container: min(1520px, calc(100vw - 72px));

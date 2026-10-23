@@ -1,0 +1,60 @@
+id: SRC-000043
+title: "Endress+Hauser field instruments overview"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PRODUCT_PAGE"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Endress+Hauser"
+  authoring_organization: "Endress+Hauser"
+domain_ids: ["process_instrumentation"]
+manufacturer:
+  id: MFR-ENDRESS-HAUSER
+  name: "Endress+Hauser"
+product:
+  family: "Field instruments"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://www.endress.com/en/field-instruments-overview"
+  product_url: "https://www.endress.com/en/field-instruments-overview"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Endress+Hauser"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; measurement principle, range, signal and device applicability require exact-device review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

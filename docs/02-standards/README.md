@@ -19,5 +19,8 @@ This directory contains mandatory standards governing how Digital2Real defines:
 - [D2R-005 — Professional Profile Standard](D2R-005-professional-profile-standard.md)
 - [D2R-006 — Certification Standard](D2R-006-certification-standard.md)
 - [D2R-007 — Learning Analytics Model](D2R-007-learning-analytics-model.md)
+- [D2R-STD-002 — Evidence and Media Semantics](D2R-STD-002-evidence-media-semantics.md)
+- [D2R-STD-003 — Asset Governance](D2R-STD-003-asset-governance.md)
+- [D2R-STD-004 — QA Standard](D2R-STD-004-qa-standard.md)
 
 Experience Engine schemas, validation rules, and integration contracts remain authoritative for executable Experience structure and behavior. These standards link to them and MUST NOT duplicate their contracts.

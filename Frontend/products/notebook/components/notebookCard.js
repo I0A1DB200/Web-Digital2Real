@@ -1,4 +1,6 @@
-export function createNotebookCard(article, onOpen) {
+export function createNotebookCard(article, onOpen, {
+  documentRef = globalThis.document
+} = {}) {
   if (!article || typeof article !== "object") {
     throw new TypeError("Notebook card requires article data.");
   }
@@ -8,16 +10,20 @@ export function createNotebookCard(article, onOpen) {
   }
 
   const title = getText(article.title, "Notebook article");
-  const card = document.createElement(onOpen ? "button" : "article");
+  if (!documentRef || typeof documentRef.createElement !== "function") {
+    throw new TypeError("Notebook card requires a document.");
+  }
+
+  const card = documentRef.createElement(onOpen ? "button" : "article");
   card.className = "notebook-card reveal";
 
-  if (card instanceof HTMLButtonElement) {
+  if (onOpen) {
     card.type = "button";
     card.setAttribute("aria-label", `Read ${title}`);
     card.addEventListener("click", () => onOpen(article, card));
   }
 
-  const thumbnail = createThumbnail(article);
+  const thumbnail = createThumbnail(documentRef, article);
 
   if (thumbnail) {
     card.appendChild(thumbnail);
@@ -25,37 +31,56 @@ export function createNotebookCard(article, onOpen) {
     card.classList.add("notebook-card--text-only");
   }
 
-  const content = document.createElement("div");
+  const content = documentRef.createElement("div");
   content.className = "notebook-card__content";
   const articleNumber = getArticleNumber(article);
+
+  const branding = documentRef.createElement("div");
+  branding.className = "notebook-card__branding";
+  appendTextElement(branding, "span", "notebook-card__brand", "D2R");
   appendTextElement(
-    content,
+    branding,
     "span",
     "notebook-card__identity",
     articleNumber ? `Engineering Note #${articleNumber}` : "Engineering Note"
   );
-  appendTextElement(content, "span", "notebook-card__kicker", article.kicker);
+  content.appendChild(branding);
   appendTextElement(content, "h2", "", title);
-  appendTextElement(content, "p", "notebook-card__excerpt", article.excerpt ?? article.summary);
 
-  const metadata = createMetadata(article);
+  const accent = documentRef.createElement("span");
+  accent.className = "notebook-card__accent";
+  accent.setAttribute("aria-hidden", "true");
+  content.appendChild(accent);
 
-  if (metadata) {
-    content.appendChild(metadata);
+  const category = createCategory(documentRef, article);
+  const footer = documentRef.createElement("div");
+  footer.className = "notebook-card__footer";
+
+  if (category) {
+    footer.appendChild(category);
   }
 
+  if (onOpen) {
+    const openIcon = documentRef.createElement("span");
+    openIcon.className = "notebook-card__open-icon";
+    openIcon.setAttribute("aria-hidden", "true");
+    openIcon.textContent = "→";
+    footer.appendChild(openIcon);
+  }
+
+  if (footer.children.length > 0) content.appendChild(footer);
   card.appendChild(content);
   return card;
 }
 
-function createThumbnail(article) {
+function createThumbnail(documentRef, article) {
   if (!getText(article.coverImage)) {
     return null;
   }
 
-  const figure = document.createElement("figure");
+  const figure = documentRef.createElement("figure");
   figure.className = "notebook-card__thumbnail";
-  const image = document.createElement("img");
+  const image = documentRef.createElement("img");
   image.src = article.coverImage;
   image.alt = getText(article.coverAlt);
   image.loading = "lazy";
@@ -63,28 +88,17 @@ function createThumbnail(article) {
   return figure;
 }
 
-function createMetadata(article) {
-  const values = [];
+function createCategory(documentRef, article) {
   const category = Array.isArray(article.categories)
     ? article.categories.find(value => getText(value))
     : "";
 
-  if (category) {
-    values.push(category);
-  }
+  if (!category) return null;
 
-  if (Number.isFinite(article.readingTime) && article.readingTime > 0) {
-    values.push(`${article.readingTime} min read`);
-  }
-
-  if (values.length === 0) {
-    return null;
-  }
-
-  const metadata = document.createElement("div");
-  metadata.className = "notebook-card__meta";
-  metadata.textContent = values.join(" · ");
-  return metadata;
+  const element = documentRef.createElement("span");
+  element.className = "notebook-card__category";
+  element.textContent = category;
+  return element;
 }
 
 function appendTextElement(container, tagName, className, value) {
@@ -94,7 +108,7 @@ function appendTextElement(container, tagName, className, value) {
     return;
   }
 
-  const element = document.createElement(tagName);
+  const element = container.ownerDocument.createElement(tagName);
   element.className = className;
   element.textContent = text;
   container.appendChild(element);

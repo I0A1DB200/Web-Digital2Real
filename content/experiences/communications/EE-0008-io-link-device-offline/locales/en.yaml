@@ -1,0 +1,144 @@
+locale: "en"
+translations:
+  title: "IO-Link Device Offline"
+  summary: "Locate an unavailable IO-Link device by distinguishing PLC, PROFINET, master, port, process data, and physical connection."
+  scenario:
+    initial_context: "The Turck BI6U-M12-IOL6X2-H1141 connected to port C3 stops providing the expected information."
+    operational_state: "The S7-1500 state, PROFINET communication, TBEN-L5-8IOL availability and other ports remain to be checked. Do not force data, suppress diagnostics or modify neighboring ports or PROFINET configuration."
+    initiating_event: "The machine reports a diagnostic condition associated with the C3 field device."
+    learner_role: "Automation technician responsible for determining the scope of the abnormal state through layered checks."
+    safety_context:
+      safe_state: "Inspect the physical connection only under the safe maintenance procedure and with hazardous movement controlled."
+      intervention_constraints: ["Do not force PLC values or process data.", "Do not suppress diagnostics.", "Do not modify neighboring ports or PROFINET configuration.", "Do not replace equipment without evidence."]
+  learning_objectives:
+    OBJ-LAYERED-COMMUNICATION:
+      description: "Distinguish PLC state, PROFINET, IO-Link master, port, device, process data, and machine function."
+    OBJ-PORT-FAULT-BOUNDARY:
+      description: "Locate the first abnormal condition by comparing C3 with the other ports."
+    OBJ-CONNECTION-RECOVERY:
+      description: "Justify an intervention from evidence and verify communication, data and function without bypassing."
+  stages:
+    STAGE-01-ESTABLISH-SCOPE:
+      title: "Establish the scope"
+      situation: "A field device appears offline. What is the best first step?"
+    STAGE-02-VERIFY-UPSTREAM:
+      title: "Verify the upper layers"
+      situation: "The incident may belong to the PLC, PROFINET, the master, or a downstream device. Which evidence should be verified?"
+    STAGE-03-LOCALIZE-PORT:
+      title: "Locate the affected port"
+      situation: "The PLC, PROFINET, and master are available. How should the fault domain be narrowed?"
+    STAGE-04-INTERPRET-BOUNDARY:
+      title: "Interpret the communication boundary"
+      situation: "The comparison confirms communication on C0–C2 and C4–C7; C3 does not communicate with its device. Which conclusion guides the next step?"
+    STAGE-05-INSPECT-PHYSICAL-PATH:
+      title: "Inspect the physical C3 path"
+      situation: "The investigation is focused on the individual C3 path. Under the safe maintenance procedure and with hazardous movement controlled, what should be inspected?"
+    STAGE-06-RESTORE-VERIFY:
+      title: "Restore and verify"
+      situation: "Inspection identifies a partially loose M12 connection in C3; recovery is still pending. Under the safe maintenance procedure and with hazardous movement controlled before intervention, which restoration and verification are appropriate?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Machine"
+      content: "The BI6U-M12-IOL6X2-H1141 connected to C3 does not provide the expected information."
+    EVID-02-SCOPE:
+      source: "Hierarchical diagnosis"
+      content: "The checks are organized by layer: PLC, PROFINET, IO-Link master and downstream device. This choice defines the plan; it does not yet confirm availability."
+    EVID-03-UPSTREAM-HEALTHY:
+      source: "System state"
+      content: "The checks confirm the S7-1500 operational and PROFINET communication to the reachable TBEN-L5-8IOL in the observed state. They do not certify overall PLC or network health."
+    EVID-04-C3-ABNORMAL:
+      source: "Port comparison"
+      content: "The diagnostic query shows no communication with the C3 device; comparison confirms communication on C0, C1, C2 and C4–C7. The message does not establish an internal device failure."
+    EVID-05-BOUNDARY:
+      source: "Master / device"
+      content: "Master availability and the port comparison indicate that the investigation should focus on the individual C3 path, including the port, cable and device. This interpretation adds no data measurement and does not yet identify the causal component."
+    EVID-06-M12-LOOSE:
+      source: "Physical C3 path"
+      content: "Inspection of the C3 path confirms the M12 connector partially loose and not correctly seated. The image illustrates the observed seating; it establishes neither electrical continuity nor tightening torque."
+    EVID-07-RECOVERY:
+      source: "Post-restoration verification"
+      content: "Restoration under the safe maintenance procedure leaves the M12 correctly seated. Verification confirms C3 device communication, expected process data, preserved PROFINET and neighboring-port availability and stable machine function over repeated cycles without forcing. These results come from the functional test, not the image indicators."
+  decisions:
+    DEC-01-REPLACE-DEVICE:
+      action: "Immediately replace the field device."
+    DEC-01-RESTART-LINE:
+      action: "Restart the entire line to try to recover the information."
+    DEC-01-CHANGE-IP:
+      action: "Change the PLC and master IP configuration."
+    DEC-01-ESTABLISH-SCOPE:
+      action: "Organize checks to determine whether the first abnormal state belongs to the PLC, PROFINET, master or downstream device."
+    DEC-02-REPLACE-MASTER:
+      action: "Replace the IO-Link master before checking its availability."
+    DEC-02-VERIFY-PLC-PN-MASTER:
+      action: "Verify PLC state, PROFINET communication, and master availability."
+    DEC-02-FORCE-DATA:
+      action: "Force the expected process data in the PLC."
+    DEC-03-RESET-PLC:
+      action: "Restart the PLC although it remains operational."
+    DEC-03-RECONFIGURE-PN:
+      action: "Reconfigure PROFINET although the master is reachable."
+    DEC-03-COMPARE-PORTS:
+      action: "Read the C3 diagnostic and compare its communication with the other ports to distinguish a common fault from an individual one."
+    DEC-04-DOWNSTREAM-C3:
+      action: "Focus the investigation on the individual C3 path, including the port, cable and device."
+    DEC-04-GENERAL-PROFINET:
+      action: "Diagnose a general PROFINET outage."
+    DEC-04-MASTER-TOTAL-FAILURE:
+      action: "Conclude that the complete master has failed."
+    DEC-05-REPLACE-SENSOR:
+      action: "Replace the device without inspecting its connection."
+    DEC-05-CHANGE-PORT:
+      action: "Move the device to a healthy neighboring port."
+    DEC-05-SUPPRESS-DIAGNOSTIC:
+      action: "Suppress the diagnostic to restore production."
+    DEC-05-INSPECT-M12:
+      action: "Under the safe maintenance procedure and with hazardous movement controlled, inspect C3, the cable and M12 connector seating."
+    DEC-06-FORCE-PROCESS-DATA:
+      action: "Force valid process data and leave the connection unchanged."
+    DEC-06-RESTORE-COMPLETE-CHAIN:
+      action: "Under the safe maintenance procedure and with hazardous movement controlled before intervention, seat the M12 and verify C3 communication, data, PROFINET, neighboring ports and function over repeated cycles without forcing."
+    DEC-06-IGNORE-REPEATABILITY:
+      action: "Seat the connector and close the incident after one valid data sample."
+  retry_feedback:
+    DEC-01-REPLACE-DEVICE: "Offline does not prove that the device is defective. First establish the abnormal layer."
+    DEC-01-RESTART-LINE: "Restarting does not establish whether the fault belongs to the PLC, network, master, or device."
+    DEC-01-CHANGE-IP: "No evidence justifies changing network configuration."
+    DEC-02-REPLACE-MASTER: "Check master availability before replacing it."
+    DEC-02-FORCE-DATA: "Forcing data hides the real state and does not restore communication."
+    DEC-03-RESET-PLC: "The PLC is operational. Compare the ports to locate the affected branch."
+    DEC-03-RECONFIGURE-PN: "PROFINET and the master are available. Locate the affected port."
+    DEC-04-GENERAL-PROFINET: "The master remains reachable and the other ports work. The abnormal state is downstream."
+    DEC-04-MASTER-TOTAL-FAILURE: "Master availability and healthy neighboring ports contradict a total failure."
+    DEC-05-REPLACE-SENSOR: "Loss of communication does not prove internal damage. Inspect the cable and M12 connection."
+    DEC-05-CHANGE-PORT: "Moving the device avoids inspecting the original C3 path."
+    DEC-05-SUPPRESS-DIAGNOSTIC: "Suppressing the warning restores neither communication nor data."
+    DEC-06-FORCE-PROCESS-DATA: "Forcing data does not repair the M12 and presents an unconfirmed state."
+    DEC-06-IGNORE-REPEATABILITY: "One valid sample does not prove stability; verify the complete chain."
+  visual:
+    educational_purpose: "Distinguish observations of the PLC, PROFINET, master and device to locate the first abnormal condition."
+  assets:
+    ART-001:
+      alt: "EE-0008 cover illustration with PLC, master and IO-Link device."
+      caption: "Illustrative incident context; depicted indications do not replace diagnostic checks."
+    ART-002:
+      alt: "Physical context of the affected IO-Link device."
+      caption: "The incident is associated with the device on C3."
+    ART-003:
+      alt: "Operational S7-1500, PROFINET, and IO-Link master path."
+      caption: "The PLC, PROFINET, and master remain available."
+    ART-004:
+      alt: "Display with a diagnostic reporting no communication with the C3 device."
+      caption: "The display illustrates the C3 diagnostic; neighboring-port state comes from the performed comparison, not colours or cable labels."
+    ART-005:
+      alt: "Close-up of the C3 connector with exposed thread and incomplete seating."
+      caption: "Inspection confirms incorrect seating; the image does not prove electrical continuity."
+    ART-006:
+      alt: "Seated C3 connector with visible master indicators."
+      caption: "Post-restoration illustration; communication, data and repeatability are confirmed through the functional test."
+  completion:
+    title: "Technical debrief"
+    summary: "The PLC, PROFINET, and master were operational; the first abnormal state appeared in the C3 path because of a partially loose M12 connector."
+    process: ["Establish scope.", "Verify PLC, PROFINET, and master.", "Compare ports.", "Locate C3.", "Inspect the M12 path.", "Restore and verify the complete chain."]
+    lesson: "An offline device does not prove a general network outage or a defective device: locate the first abnormal layer."
+    avoided_errors: ["Replacing the device without evidence.", "Reconfiguring PROFINET.", "Forcing process data.", "Suppressing the diagnostic."]
+    industrial_value: ["Hierarchical fault localization.", "Fewer unjustified replacements.", "Verifiable physical recovery."]

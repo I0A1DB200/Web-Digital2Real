@@ -1,0 +1,265 @@
+locale: en
+
+media:
+  - id: TH-MEDIA-AUTOMATED-FACTORY
+    alt: Overview of an automated installation placing sensors, control and drives within the same machine
+  - id: TH-MEDIA-DIGITAL-SIGNAL-PATH
+    alt: Digital signal path from a physical event and three-wire sensor to the PLC input, process image and program
+  - id: TH-MEDIA-PNP-NPN
+    alt: Conceptual comparison between a PNP output that sources current and an NPN output that sinks current toward 0 V
+  - id: TH-MEDIA-ELECTRICAL-DIAGNOSTICS
+    alt: Measurement points locating an interruption using energized-circuit voltage and continuity with the conductor isolated
+  - id: TH-MEDIA-PHOTOELECTRIC-PRINCIPLES
+    alt: Comparison of through-beam, retro-reflective, diffuse reflective and background-suppression photoelectric sensing
+  - id: TH-MEDIA-PHOTOELECTRIC-MARGIN
+    alt: Comparison between robust and marginal photoelectric detection under displacement, vibration, contamination and target variation
+  - id: TH-MEDIA-CONTROL-FEEDBACK-CHAIN
+    alt: Command chain from operator and PLC to drive, motor and load, with a separate state and feedback return to PLC and HMI
+
+sections:
+  - id: TH-01-ELECTRICAL-FOUNDATIONS
+    title: Electrical foundations for automation
+    body: |-
+      Voltage is the potential difference between two points, so every reading needs a defined reference. Current is the flow of charge around a closed path and resistance opposes that flow. Available potential alone does not prove that current is flowing. Automation control supplies commonly use 24 VDC with a 0 V reference, while motors and other loads may use AC. DC maintains polarity; AC changes polarity periodically.
+
+      A digital signal represents discrete states such as HIGH/LOW or ON/OFF. It may be maintained, appear as a pulse, or change through a rising or falling edge. Duration and frequency matter: a pulse shorter than the response of the sensor, input module or observation cycle may not be registered. An analog signal represents a continuous value; 0–10 V and 4–20 mA are common interfaces, but they require different treatment from a digital input.
+    media_ids:
+      - TH-MEDIA-AUTOMATED-FACTORY
+
+  - id: TH-02-PLC-INPUTS-OUTPUTS
+    title: PLC inputs and outputs
+    body: |-
+      A digital input (DI) converts an electrical field signal into a state the PLC can process. A digital output (DO) converts a logic command into electrical switching for the field. In the input chain, a physical event acts on the sensor; its output passes through cable, terminal and input channel, enters the process image and reaches the PLC program. In the output chain, logic produces a command, the output channel switches, field wiring supplies or controls the actuator and a physical action occurs.
+
+      The sensor LED, module LED and software-observed variable are separate boundaries. The first reports the sensor's local evaluation, the second the state recognized by the channel and the variable the data used by the program. Comparing them in order reveals where the event, electrical signal and logic state stop agreeing.
+    media_ids:
+      - TH-MEDIA-DIGITAL-SIGNAL-PATH
+
+  - id: TH-03-INDUSTRIAL-SENSOR-WIRING
+    title: Industrial sensor wiring
+    body: |-
+      Two-wire sensors share supply and signal on the same pair; three-wire sensors separate positive supply, reference and output; four-wire sensors commonly add a second output or function. In a frequent convention for DC sensors, BN (brown) is +24 VDC, BU (blue) is 0 V, BK (black) is a switching output and WH (white) is an additional output or function. This convention is not universal: always verify every conductor's function against the actual device datasheet or wiring diagram.
+
+      A PNP output sources current from positive potential into a compatible input circuit; an NPN output sinks current from the input toward 0 V. Sensor and input must be electrically compatible. NO and NC describe switching behaviour under the condition defined by the manufacturer, not whether the output is PNP or NPN. A status LED helps observe switching but does not prove that the signal reaches the PLC. PNP is commonly encountered in European industrial automation, but it is not universal.
+    media_ids:
+      - TH-MEDIA-PNP-NPN
+
+  - id: TH-04-ELECTRICAL-MEASUREMENT
+    title: Electrical measurement and fault finding
+    body: |-
+      Measuring voltage in VDC asks what potential exists at a point relative to the selected reference. Continuity asks whether a conductive path exists, and resistance quantifies opposition under suitable conditions. Current confirms whether charge is actually flowing through the circuit. Check continuity and resistance only when the circuit is isolated and de-energized; they do not answer the same question as a voltage measurement.
+
+      Compare upstream and downstream points to locate the first boundary that changes. An open circuit interrupts the path; a short circuit creates an unintended path, including a short to +24 V or to 0 V. A loose connection may vary with movement or vibration. Voltage drop under load can reveal unwanted resistance even when unloaded continuity exists. After repair, verify polarity, voltage, continuity where appropriate, input state and real operation under the original conditions.
+    media_ids:
+      - TH-MEDIA-ELECTRICAL-DIAGNOSTICS
+
+  - id: TH-05-SENSOR-LANDSCAPE
+    title: Industrial sensor landscape
+    body: |-
+      Inductive, capacitive, photoelectric and ultrasonic sensors are common for presence or proximity. Limit switches, encoders and distance sensors serve position or movement. Pressure, temperature, level and flow describe process variables. Each family converts a different physical interaction into information the control system can use.
+
+      Selection begins with the target and phenomenon to detect: material, sensing distance, precision, response speed, environment and mechanical installation. A sensor suitable on paper can become unstable if the target, positional tolerance, contamination, temperature or installation falls outside its real application.
+    media_ids: []
+
+  - id: TH-06-PHOTOELECTRIC-SENSORS
+    title: Photoelectric sensors
+    body: |-
+      A photoelectric sensor emits light, establishes an optical path and evaluates received light to switch an output. Through-beam uses a separate emitter and receiver, and the target interrupts the beam. Retro-reflective combines emitter and receiver in one housing and uses a reflector to return light. Diffuse reflective uses the target itself to return light to the sensor. Background suppression helps favour a target within the intended range while reducing the influence of a farther background.
+
+      Detection depends on distance, target size and position, beam or spot diameter, surface, colour, reflectivity, transparency, background, ambient light, contamination, vibration and mechanical tolerance. The detection zone and switching threshold are not an ideal line. Stable detection retains operating margin under variation; marginal detection may work at nominal position and fail after a small change.
+
+      Alignment means positioning the optical path and target with sufficient reserve, not merely making an LED turn on. Some sensors provide signal quality, operating reserve, teach-in, software diagnostics or IO-Link; not every sensor includes these functions. Light-ON and Dark-ON define whether the output switches when light is received or when the beam is obscured, according to the sensing principle and device configuration.
+    media_ids:
+      - TH-MEDIA-PHOTOELECTRIC-PRINCIPLES
+      - TH-MEDIA-PHOTOELECTRIC-MARGIN
+
+  - id: TH-07-SENSOR-ECOSYSTEM
+    title: Industrial sensor ecosystem
+    body: |-
+      Manufacturers such as SICK, KEYENCE, ifm, Pepperl+Fuchs, Balluff and Omron may use different names, interfaces and tools. The electrical, optical and diagnostic principles remain transferable. Brand does not replace compatibility checks or make an optional function universal.
+
+      In a datasheet, identify sensing principle, supply voltage, switching behaviour, output type, range, response time, connection, diagnostics, communications and environmental or IP rating. Compare these data with the real target, machine rate, wiring, environment and installation.
+    media_ids: []
+
+  - id: TH-08-INTERMITTENT-FAULTS
+    title: Intermittent faults
+    body: |-
+      A permanent fault maintains a discrepancy; an intermittent one must be reproduced and correct and failed cycles compared under equivalent conditions. Record position, speed, vibration, product variation, temperature, timing, contamination, cable movement and mechanical tolerance. Repeated correlation narrows the search domain, but does not prove causation by itself.
+
+      Distinguish an electrical signal-path loss from marginal optical or mechanical detection. If the sensor output switches but the PLC input does not, investigate transmission, connections and channel. If the sensor output is already unstable, investigate sensing principle, alignment, margin and physical conditions. Validate the repair by recreating the original fault condition and repeating a sufficient sample of cycles.
+    media_ids: []
+
+  - id: TH-09-MOTORS
+    title: Motors in automated machinery
+    body: |-
+      A motor is an actuator that converts electrical energy into mechanical movement. Speed, torque and direction determine how it delivers movement to the load; acceleration and transmission shape the system response. A gearmotor adapts speed and torque, and on a conveyor it must overcome the load, losses and mechanical resistance of the transmission.
+
+      A motor not moving does not prove that the motor is faulty. A request, permissive, communication, command authority, power, drive enable or mechanical freedom may be missing. Diagnostics must follow the entire chain before assigning the symptom to the motor.
+    media_ids: []
+
+  - id: TH-10-VARIABLE-FREQUENCY-DRIVES
+    title: Variable frequency drives
+    body: |-
+      A variable frequency drive controls the motor through run and stop commands, direction, a frequency or speed setpoint and acceleration and deceleration ramps. It also exposes variables such as current, warnings and faults. READY commonly expresses availability, RUNNING execution of a run command and AtSpeed achievement of a reference within configured criteria. Exact names and conditions depend on the manufacturer and parameterization.
+
+      Command source and setpoint source may come from the operator panel, terminals or a PLC over fieldbus. HAND introduces manual or local control and AUTO automatic control as defined by the design. HAND is not inherently a fault: compare the actual mode with the one required for the intended operation.
+    media_ids: []
+
+  - id: TH-11-INDUSTRIAL-COMMUNICATIONS
+    title: Industrial communications
+    body: |-
+      Industrial networks reduce point-to-point wiring and exchange commands, states, process values and diagnostics among PLCs, remote I/O, drives, HMIs and instrumentation. Selection depends on architecture, response time, required determinism, environment, interoperability and device support.
+
+      PROFIBUS DP, Modbus RTU and CANopen represent established fieldbus or serial solutions with different models. PROFINET, EtherNet/IP, EtherCAT and Modbus TCP use industrial Ethernet technologies, also with different models and capabilities. Sharing an Ethernet medium does not make them interchangeable or one universally better.
+
+      Physical topology may be line, star or mixed. An industrial switch may distribute branches, while field devices with two integrated ports may chain segments close to sensors and actuators. Physical infrastructure does not necessarily match the logical project representation: a switch appears as an engineering device only when the actual equipment and configuration establish that role.
+    media_ids: []
+
+  - id: TH-12-PROFINET-FUNDAMENTALS
+    title: PROFINET fundamentals
+    body: |-
+      In ENV-001, a Siemens S7-1500 acts as controller and a SINAMICS G120 as device within PROFINET communication. The controller exchanges cyclic input and output data with the device: commands and setpoints travel toward the drive; states, values and diagnostics return to the control system.
+
+      Device identity or name associates the device with the expected configuration, while the IP address supports network communication. They are related concepts, but an IP address alone does not define the complete PROFINET relationship. Communication loss or an unavailable device breaks the exchange. Established communication confirms only the data channel; it does not prove that logic, authority, drive or machine operation is correct.
+
+      TIA Portal provides controller context, the configured system and online diagnostics. PRONETA can complement that context through discovery and topology analysis, but it is not required for every fault and does not by itself prove the exact damage location. IO-Link masters or distributed I/O modules may connect over PROFINET and bring signals close to the process; IO-Link and the Ethernet/PROFINET link remain distinct layers.
+    media_ids:
+      - TH-MEDIA-CONTROL-FEEDBACK-CHAIN
+
+  - id: TH-13-COMMAND-STATE-FEEDBACK
+    title: Command, state and feedback
+    body: |-
+      The command expresses what is requested. State describes what a controller or device reports internally. Feedback provides evidence of what actually occurred in the equipment or process. These layers can agree or diverge and must be observed separately.
+
+      RunCmd = TRUE with Running = FALSE proves that a request exists, but does not explain why it was not executed. Permissives, communication, authority, device availability, actuator and mechanical process still need to be checked. The same reasoning applies to valves, cylinders, contactors and other actuators.
+
+      In a sequence, the physical condition, PLC input address, tag that represents it, derived logical variable and condition written in a transition are different boundaries. A TRUE sensor, %I0.5 and PartAtStop_Sensor do not satisfy a transition that evaluates another variable. Diagnostics must explicitly compare the configured reference with the verified signal.
+    media_ids: []
+
+  - id: TH-14-CONTROL-AUTHORITY
+    title: Control authority and operating modes
+    body: |-
+      Local and remote describe where control originates; manual and automatic describe how commands are generated within the architecture. HAND, AUTO, maintenance and commissioning are operating contexts whose exact implementation depends on the equipment and design. No mode is wrong in isolation.
+
+      Ask two questions: who owns the command now? Who should own it under the intended operating condition? A mismatch between actual and required authority can block automatic control even when the PLC, network, drive and motor are available.
+    media_ids: []
+
+  - id: TH-15-SYSTEMATIC-TROUBLESHOOTING
+    title: Systematic industrial troubleshooting
+    body: |-
+      Start from the symptom, define expected behaviour, record observed behaviour and find the first boundary where they diverge. Separate observation from conclusion, gather evidence, narrow the fault domain, confirm the cause, intervene and verify. This is an adaptable mental model, not a rigid checklist.
+
+      In a machine, follow the operator request through PLC logic, permissives and interlocks, command, communication, authority, device, actuator and mechanical process; then trace sensor or feedback, PLC and HMI. The first verifiable discrepancy focuses diagnostics and prevents unsupported replacement, forcing or program changes.
+    media_ids: []
+
+  - id: TH-16-PNEUMATIC-ENERGY
+    title: Pneumatic energy and air preparation
+    body: |-
+      Compressed air carries energy to pneumatic actuators. Pressure expresses potential to produce force, while flow describes how much air passes through the circuit over time and influences speed. Available pressure is not sufficient flow: a correct static reading does not prove that valves, tubes, fittings and exhausts allow the required dynamic flow.
+
+      Air preparation establishes a usable condition through isolation, filtration and regulation. An FRL may combine filter, regulator and lubrication where required, but its composition depends on design. Diagnostics distinguish general availability from local restriction, and intervention must follow authorized energy isolation.
+    media_ids: []
+
+  - id: TH-17-VALVES-ACTUATORS
+    title: Directional valves and pneumatic actuators
+    body: |-
+      A directional valve connects supply, working lines and exhausts. A 3/2 conceptually has three ports and two positions and is common with single-acting actuators. A 5/2 has five ports and two positions and alternates supply and exhaust between double-acting cylinder chambers. A 5/3 adds a centre position whose behaviour depends on configuration. Port names and numbers must be checked on the actual diagram.
+
+      A single-acting cylinder uses air in one direction and another means, such as a spring, to return. A double-acting cylinder applies pressure alternately to both chambers. Stroke, load, transmission and friction determine movement. Solenoid command, valve shift, cylinder movement and end-position detection are separate boundaries.
+    media_ids: []
+
+  - id: TH-18-PNEUMATIC-FLOW-CONTROL
+    title: Flow and speed control
+    body: |-
+      A one-way flow control combines free flow in one direction with adjustable restriction in the other. Meter-in controls inlet flow; meter-out controls exhaust from the opposite chamber. Exhaust control often provides stable movement, but no arrangement is universal: orientation, load and design determine the suitable solution.
+
+      Excessive restriction can allow pressure and initial movement while preventing the exhaust needed to reach expected speed and stroke in time. Correction means restoring the intended regulated condition, not fully opening or removing control, nor compensating without evidence through more pressure or time.
+    media_ids: []
+
+  - id: TH-19-ELECTRO-PNEUMATIC-DIAGNOSIS
+    title: Electro-pneumatic diagnostic chain
+    body: |-
+      Trace PLC request, digital output, solenoid, valve, pressure and flow, actuator, movement, position sensor and PLC feedback. Command, electrical actuation, valve shift, physical movement and feedback are not equivalent. A FALSE end-position signal may result from incomplete stroke.
+
+      Locate the first boundary where expected and observed behaviour diverge. If the solenoid actuates, general pressure is available and the cylinder begins moving, the domain shifts toward local flow, exhaust, load and dynamics. Confirm before intervention, then verify stroke, timing, feedback and repeatability.
+    media_ids: []
+
+  - id: TH-20-MACHINE-SAFETY-FUNDAMENTALS
+    title: Practical machine-safety fundamentals
+    body: |-
+      Standard control governs production; a Safety function reduces risk by bringing or keeping the machine in a safe condition when its actuation conditions are met. A valid production command cannot replace protective-function evaluation. Likewise, a stopped machine alone does not reveal whether the cause belongs to standard control, Safety inhibition or the physical process.
+
+      Physical state and evaluated Safety state are different evidence. A gate that appears closed may not produce the valid condition expected by the safety system. Diagnosis compares physical condition, field signals, safe evaluation and the function applied to hazardous motion without defeating any protection.
+    media_ids: []
+
+  - id: TH-21-SAFETY-DEVICES-DUAL-CHANNELS
+    title: Safety devices and dual-channel signals
+    body: |-
+      Emergency stops, guard interlocks and light curtains are examples of devices associated with protective functions, but they do not necessarily share the same electrical architecture or behaviour. Interpret them according to the design, documentation and intended evaluation of the actual machine.
+
+      A dual-channel architecture observes two paths to support redundancy and diagnostics. Channel disagreement is discrepancy evidence, not automatic identification of its cause: it may arise from the device, wiring, installation, timing or mechanical condition. Two channels alone also do not prove that a function is adequate or validated.
+    media_ids: []
+
+  - id: TH-22-SAFETY-PLC-SAFE-FUNCTIONS
+    title: Safety PLC, F-I/O and safe functions
+    body: |-
+      A conceptual chain may pass through a Safety device, F-DI inputs, a safety PLC such as an S7-1500F, safety logic, F-DO outputs and a safe function applied to an actuator or drive. Each boundary supplies different evidence: an F-DI indication reports a diagnostic condition, but does not by itself prove that the module has failed.
+
+      STO is a safe drive function intended to prevent torque generation according to the applicable design. It must not be described as universally disconnecting all electrical energy. Active STO may be the correct consequence of an unsatisfied Safety condition, so diagnosis should trace back to the function and first discrepancy.
+    media_ids: []
+
+  - id: TH-23-SAFETY-DIAGNOSIS-RESET
+    title: Safety diagnosis, reset and verification
+    body: |-
+      Begin with the machine symptom, separate standard control from Safety inhibition, and identify the active protective function. Then trace the device, input channels, safe evaluation, applied output or function and physical condition. A discrepancy narrows the domain, but the cause is confirmed only through coherent evidence and authorized inspection under safe conditions.
+
+      Restoring the physical condition, acknowledging or resetting the Safety function, and commanding Start are separate steps. Closing a guard must not cause unexpected restart. After intervention, production recovery is insufficient: verify protective-function operation, the intended recovery sequence, associated signals and absence of automatic restart.
+    media_ids: []
+
+  - id: TH-24-NETWORK-FAULT-BOUNDARY
+    title: Network fault propagation and boundary
+    body: |-
+      In a line topology, one interrupted segment can make several downstream devices unavailable. This does not prove independent failures in every device. Topology determines how the symptom propagates, so the pattern of available and unavailable nodes is diagnostic evidence.
+
+      Locate the last reachable node, the first unavailable node and the segment between them. Then distinguish power, physical link, network reachability, the PROFINET controller-device relationship, cyclic I/O exchange and machine function. Restoring one layer does not automatically validate the next: repair ends after communications, process data and representative operation are verified.
+    media_ids: []
+
+  - id: TH-25-SEQUENCE-STATE-CONTROL
+    title: Step-and-transition sequence control
+    body: |-
+      A sequence organizes behavior through steps, actions and transitions. An active step executes or enables the actions defined for that state; the sequence advances only when the following transition evaluates its condition as true. A step that remains active does not by itself prove a sequence-engine fault: the pending transition and the exact expression it evaluates must be identified.
+
+      To diagnose a blockage, observe online state without altering it, identify the last active step and first unsatisfied transition, and trace every term in its condition to the logical variable, PLC tag and corresponding physical process. Compare expected and observed at every boundary. This traceability distinguishes an absent physical condition from a valid signal that the logic does not reference correctly.
+
+      Recovery must correct the confirmed cause and then verify the transition, exit from the previous step, activation of the next step and several representative cycles. Forcing steps or transitions, writing variables to bypass conditions, or replacing them with TRUE constants hides the defect and may cause unjustified progression; it is not a repair.
+    media_ids: []
+
+  - id: TH-26-IO-LINK-DEVICE-ARCHITECTURE
+    title: IO-Link device architecture and diagnosis
+    body: |-
+      IO-Link is a point-to-point communication technology between a master port and a compatible field device. The master presents those devices to the control system through a higher-level network such as PROFINET, but the two communications are different layers. An operational PLC, PROFINET access to the master, or master availability does not prove that every port and device is communicating.
+
+      Diagnosis should follow the PLC, higher-level network, IO-Link master, individual port, device, process data, and machine function. The first abnormal layer defines the useful boundary. Comparing an affected port with healthy neighboring ports under the same master distinguishes a common master or network problem from a loss localized in the port-to-device path.
+
+      The physical connection remains part of communication. Cabling, M12 connectors, and mechanical seating should be inspected under the safe procedure when evidence localizes the fault to an individual path. After restoring the cause, verify device availability, expected data, preservation of higher-level communication, machine function, and stability; do not force data or suppress diagnostics to simulate recovery.
+    media_ids: []
+
+  - id: TH-27-HMI-INFORMATION-ARCHITECTURE
+    title: PLC-HMI information architecture
+    body: |-
+      An HMI represents machine information and permits interaction as designed, but a displayed indication is not itself a direct measurement of the process. The information chain runs from physical condition, sensor, PLC input and variable, through PLC-HMI communication, HMI tag and screen object to the visible indication. Each boundary may agree with or diverge from the previous one.
+
+      An available PLC-HMI connection and other updating values demonstrate general communication, not that every HMI tag reads the intended variable. A screen object depends on the configured association between its tag and PLC source; an incorrect association can display a wrong state even when the process and PLC are correct.
+
+      When indications disagree, verify process and PLC first, then communication availability, and finally the source of the tag used by the affected object. Correct the confirmed association in the visualization layer and check that screen, PLC variable and process agree under representative conditions. Do not force values or change control logic to compensate for a representation error.
+    media_ids: []
+
+  - id: TH-28-SYSTEM-LEVEL-CAUSAL-TROUBLESHOOTING
+    title: System-level causal troubleshooting
+    body: |-
+      A machine can present several simultaneous symptoms without having several independent faults. One actuator stopped, another retracted, and a sequence waiting may all be coherent consequences of one earlier condition. Diagnosis should separate primary cause from secondary effects and should not automatically assign the loudest symptom to the device displaying it.
+
+      A reusable chain follows symptom, device state, command, sequence state, transition or condition, PLC signal, field signal, and physical process. Move upstream while comparing expected and observed until the first abnormal condition is found. A subsystem receiving no command may be responding correctly; a TRUE signal may represent valid physical detection rather than a defective sensor.
+
+      Variables appearing together in a watch table establish temporal correlation, but causality is demonstrated by tracing the logic that calculates the condition. Correction should address the confirmed cause, avoid unnecessary replacement, reset, adjustment, or forcing, and finish by verifying signals, conditions, transitions, commands, movement, and several representative end-to-end cycles.
+    media_ids: []

@@ -477,3 +477,42 @@ If not approved, the current vertical slice may continue operating, but its impl
 - **Approval date:** 2026-07-30
 - **Approval scope:** Decisions 1–8 required for Experience Definition v1
 - **Implementation authorization:** Package 5A may proceed within the approved boundaries
+
+## 19. V2 evidence result presentation — Phase 2
+
+Approved for implementation by the Product Owner in the Phase 2 implementation request, 2026-09-29. This additive V2 capability does not migrate production Experience content.
+
+### Canonical media ownership
+
+`public.visual.assets` remains the only media registry. References express different learning moments:
+
+| Reference | Meaning |
+|---|---|
+| `public.visual.cover_asset_id` | Incident presentation inside the existing Incident Brief |
+| `public.stages[].media_ids` | Information available before the current decision |
+| `public.evidence[].media_ids` | Information earned through the correct action that unlocks the evidence |
+| `public.completion.media_ids` | Final synthesis in Debrief |
+
+V2 evidence `media_ids` is optional: absent and empty arrays are valid. Each entry must be a non-empty string referencing a registered asset, with no duplicate within the same evidence. Declared order is authoritative. Authoring, normalized runtime, web artifact and Player reject invalid references. Assets shared between evidence items or reused later in stage/completion media remain valid; there is no global presentation deduplication.
+
+Normalization and projection preserve the relation. Existing asset packaging remains unchanged: registered `visual.assets` determine physical files. Evidence source/content and asset alt/caption use existing localization; no separate authored Result entity or duplicated copy is introduced. Deploy the updated Player and generated artifacts together before authoring content that relies on this capability.
+
+### Diagnostic state and presentation
+
+For a correct action, the Player records the attempt, resolved decision, unlocks and diagnostic destination once. If at least one newly unlocked evidence item has media, it sets `interaction: "result"`. Otherwise the existing direct transition applies.
+
+The result is derived from the most recent correct history entry, its interaction unlocks minus prior earned unlocks, and the evidence/asset registries. No pending destination, result evidence/assets or acknowledgement state is stored separately. One action produces one presentation, in unlock order, grouping source/content and ordered media per evidence. Text-only evidence from that action is included when the batch contains media. Previously unlocked evidence cannot retrigger a result.
+
+During result, active `currentStage` is null and active stage `media` is empty. The snapshot exposes derived `result.evidence[].media`; the renderer does not display the next decision. Explicit Continue changes only presentation to `stage` or `completion`. It never adds a stage, attempt, evidence unlock, progress increment or evaluation.
+
+On the final correct action, `state: Completed` and `completionStatus: completed` are earned and evaluation is calculated before result presentation. Workspace registers completion from diagnostic completion status, once per run, rather than waiting for `interaction: completion`. The existing progress store remains idempotent and mastery remains monotonic. Final Continue opens Debrief, where the same asset may validly appear again.
+
+Incorrect actions retain their current stage, media and prior knowledge, record only the existing attempt/feedback, and never enter result. Reset clears the transient Player state. V1 and V2 without evidence media retain their previous flows; evaluator semantics and progress denominators do not change.
+
+### Failure, accessibility and reload boundaries
+
+A missing registered physical file fails packaging. A browser media-load failure preserves evidence text and the earned decision, displays a localized visible error and leaves Continue available. Result and destination headings receive focus on the corresponding presentation transition; Continue is a native keyboard-accessible button.
+
+Active sessions are not restored after reload. No stage, history, unlock or pending result persistence is added. Existing completion/mastery persists, including completion earned while the final result is visible. Reopening starts a new diagnostic session.
+
+This is learner-presentation gating, not asset secrecy: public artifacts and packaged files remain inspectable. Content authors must avoid referencing a discovered-state asset before its producing action. Engine support does not correct premature evidence unlocks or media placement in existing Experiences.

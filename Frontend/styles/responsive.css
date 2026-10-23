@@ -36,9 +36,35 @@
     --topbar-h: 66px;
   }
 
-  .topbar__nav { gap: 16px; }
+  .topbar__menu-toggle {
+    display: grid;
+    place-items: center;
+  }
 
-  .topbar__link { font-size: .76rem; }
+  .topbar__nav {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 0;
+    display: none;
+    width: min(300px, var(--container));
+    padding: 18px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .topbar.is-menu-open .topbar__nav {
+    display: grid;
+    gap: 0;
+  }
+
+  .topbar__link {
+    min-height: 44px;
+    padding: 12px 4px;
+    font-size: .76rem;
+    text-align: left;
+  }
+
+  .topbar__link::after { bottom: 4px; }
 
   .app-main { padding-top: calc(var(--topbar-h) + 22px); }
 

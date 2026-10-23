@@ -1,4 +1,5 @@
 import { NormalizedExperienceV1Schema } from "../schemas/normalizedExperienceV1Schema.js";
+import { validateRuntimeV2 } from "./experienceV2ContractValidator.js";
 
 const patterns = Object.fromEntries(
   Object.entries(NormalizedExperienceV1Schema.identifierPatterns)
@@ -22,6 +23,14 @@ const immutableCopy = value => {
 };
 
 export function validateNormalizedExperience(candidate) {
+  if (candidate?.runtime_contract_version === "2.0.0") {
+    const base = structuredClone(candidate);
+    base.runtime_contract_version = NormalizedExperienceV1Schema.contractVersion;
+    base.public?.stages?.forEach(stage => { delete stage.phase; });
+    base.private?.relations?.forEach(relation => { delete relation.is_correct; delete relation.retry_feedback; });
+    if (base.private) delete base.private.evaluation_policy;
+    return validateRuntimeV2(candidate, validateNormalizedExperience(base).incidents);
+  }
   const incidents = [];
   const add = (severity, code, path, message) => {
     incidents.push({ severity, code, path, message });

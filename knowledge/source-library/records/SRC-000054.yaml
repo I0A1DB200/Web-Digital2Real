@@ -1,0 +1,60 @@
+id: SRC-000054
+title: "Cognex 3D machine vision systems"
+record_type: source
+classification: PRIMARY_TECHNICAL
+resource_types: ["PRODUCT_PAGE"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "Cognex"
+  authoring_organization: "Cognex"
+domain_ids: ["vision_identification"]
+manufacturer:
+  id: MFR-COGNEX
+  name: "Cognex"
+product:
+  family: "3D machine vision systems"
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: []
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://www.cognex.com/products/machine-vision/3d-laser-profilers"
+  product_url: "https://www.cognex.com/products/machine-vision/3d-laser-profilers"
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Official-source web discovery during autonomous campaign Phase 1"
+  acquired_by: codex_official_web_research
+  acquired_at: "2026-10-07"
+  last_verified_at: "2026-10-07"
+  content_hash: ""
+rights:
+  copyright_holder: "Cognex"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Official source identity and public location were verified; exact applicability and technical claims require D2R technical review."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: []

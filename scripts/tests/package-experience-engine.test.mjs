@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import {
   access,
   cp,
@@ -34,6 +35,9 @@ async function createRepository() {
   await cp(new URL("../../content/experiences/", import.meta.url), path.join(root, "content", "experiences"), {
     recursive: true
   });
+  await cp(new URL("../../content/environments/", import.meta.url), path.join(root, "content", "environments"), {
+    recursive: true
+  });
   await mkdir(path.join(root, "Frontend", "generated"), { recursive: true });
   return root;
 }
@@ -42,7 +46,62 @@ async function readJson(location) {
   return JSON.parse(await readFile(location, "utf8"));
 }
 
-test("preview packages the canonical preview Experiences", async t => {
+async function sha256(location) {
+  return createHash("sha256").update(await readFile(location)).digest("hex");
+}
+
+test("evidence-only media packages in both locales and missing physical files fail without replacing the package", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  // Only the isolated temporary copy is adapted; production YAML is untouched.
+  const experienceRoot = path.join(root, "content", "experiences", "sensors", "EE-0001-sensor-on-plc-input-off");
+  const sourcePath = path.join(experienceRoot, "experience.yaml");
+  const source = await readFile(sourcePath, "utf8");
+  const adapted = source
+    .replace(
+      '      revealed_by: ["DEC-07-VERIFY-CHAIN"]\n      media_ids: ["ART-008"]',
+      '      revealed_by: ["DEC-07-VERIFY-CHAIN"]\n      media_ids: ["RESULT-ONLY"]'
+    )
+    .replace("  completion:", '      - id: "RESULT-ONLY"\n        type: "image"\n        src: "assets/EXP-SENSOR-SIGNAL-001/result-only.svg"\n        alt: "Result fixture"\n        purpose: "evidence"\n  completion:');
+  assert.notEqual(adapted, source);
+  await writeFile(sourcePath, adapted, "utf8");
+  for (const language of ["es", "en"]) {
+    const localePath = path.join(experienceRoot, "locales", `${language}.yaml`);
+    const locale = await readFile(localePath, "utf8");
+    await writeFile(localePath, locale.replace("  assets:", '  assets:\n    RESULT-ONLY:\n      alt: "Result fixture"\n      caption: "Result fixture caption"'), "utf8");
+  }
+  const physicalAsset = path.join(experienceRoot, "assets", "result-only.svg");
+  await writeFile(physicalAsset, '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"><rect width="16" height="9"/></svg>');
+  await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+  const output = path.join(root, "Frontend", "generated", "experience-engine");
+  for (const language of ["es", "en"]) {
+    const artifact = await readJson(path.join(output, "experiences", `EXP-SENSOR-SIGNAL-001.${language}.json`));
+    assert.deepEqual(artifact.public.evidence.find(item => item.id === "EVID-08-RECOVERY").media_ids, ["RESULT-ONLY"]);
+    assert.equal(artifact.public.stages.some(stage => stage.media_ids?.includes("RESULT-ONLY")), false);
+    assert.equal(artifact.public.completion.media_ids.includes("RESULT-ONLY"), false);
+  }
+  const packagedAsset = path.join(output, "assets", "EXP-SENSOR-SIGNAL-001", "result-only.svg");
+  assert.equal(await sha256(packagedAsset), await sha256(physicalAsset));
+  const originalCatalog = await sha256(path.join(output, "catalog.json"));
+  await rm(physicalAsset);
+  await assert.rejects(packageExperienceEngine({ repositoryRoot: root, mode: "preview" }), /result-only\.svg/);
+  assert.equal(await sha256(path.join(output, "catalog.json")), originalCatalog);
+  await access(packagedAsset);
+});
+
+test("ENV-002 is authored as a V2 field instrumentation environment", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+
+  const source = path.join(root, "content", "environments", "ENV-002-field-instrumentation", "environment.yaml");
+  const definition = await readFile(source, "utf8");
+
+  assert.match(definition, /contract_version:\s*"2\.0\.0"/u, "ENV-002 must declare the V2 environment contract.");
+  assert.match(definition, /title:\s*"Field Instrumentation"/u, "ENV-002 title must reflect field instrumentation.");
+  assert.match(definition, /theory:\s*"theory\.yaml"/u, "ENV-002 must declare the theory source.");
+});
+
+test("preview packages every eligible canonical Experience", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
 
@@ -50,30 +109,158 @@ test("preview packages the canonical preview Experiences", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, [
-    "EXP-PNEUMATIC-CYLINDER-014",
-    "EXP-SENSOR-PHOTOELECTRIC-009"
+  assert.deepEqual(result.packaged, ["EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
+  assert.equal(result.skipped.length, 2);
+  assert.equal(catalog.experiences.length, 14);
+  const inductive = catalog.experiences.find(item => item.editorialId === "EE-0011");
+  assert.equal(inductive.id, "EXP-INDUCTIVE-GAP-011");
+  assert.equal(inductive.locales.es, "experiences/EXP-INDUCTIVE-GAP-011.es.json");
+  assert.equal(inductive.locales.en, "experiences/EXP-INDUCTIVE-GAP-011.en.json");
+  for (let i = 1; i <= 7; i++) {
+    const name = `${String(i).padStart(2, "0")}.png`;
+    assert.equal(await sha256(path.join(generatedRoot, "assets", inductive.id, name)),
+      await sha256(path.join(root, "content", "experiences", "sensors", "EE-0011-inductive-sensor-not-detecting", "assets", name)));
+  }
+  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-SIGNAL-001");
+  const intermittent = catalog.experiences.find(item => item.id === "EXP-SENSOR-INTERMITTENT-002");
+  const drive = catalog.experiences.find(item => item.id === "EXP-VFD-AUTHORITY-003");
+  const pneumatic = catalog.experiences.find(item => item.id === "EXP-PNEUMATIC-CYLINDER-004");
+  const safetyGate = catalog.experiences.find(item => item.id === "EXP-SAFETY-GATE-005");
+  const profinetLink = catalog.experiences.find(item => item.id === "EXP-PROFINET-LINK-006");
+  const graphSequence = catalog.experiences.find(item => item.id === "EXP-GRAPH-SEQUENCE-007");
+  const ioLinkDevice = catalog.experiences.find(item => item.id === "EXP-IOLINK-DEVICE-008");
+  const hmiState = catalog.experiences.find(item => item.id === "EXP-HMI-STATE-009");
+  assert.equal(remaining.id, "EXP-SENSOR-SIGNAL-001");
+  assert.equal(remaining.editorialId, "EE-0001");
+  assert.equal(remaining.access, "free");
+  assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-SIGNAL-001.es.json");
+  assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-SIGNAL-001.en.json");
+  assert.equal(intermittent.editorialId, "EE-0002");
+  assert.equal(intermittent.locales.es, "experiences/EXP-SENSOR-INTERMITTENT-002.es.json");
+  assert.equal(intermittent.locales.en, "experiences/EXP-SENSOR-INTERMITTENT-002.en.json");
+  assert.equal(drive.editorialId, "EE-0003");
+  assert.equal(drive.locales.es, "experiences/EXP-VFD-AUTHORITY-003.es.json");
+  assert.equal(drive.locales.en, "experiences/EXP-VFD-AUTHORITY-003.en.json");
+  assert.equal(pneumatic.editorialId, "EE-0004");
+  assert.equal(pneumatic.locales.es, "experiences/EXP-PNEUMATIC-CYLINDER-004.es.json");
+  assert.equal(pneumatic.locales.en, "experiences/EXP-PNEUMATIC-CYLINDER-004.en.json");
+  assert.equal(safetyGate.editorialId, "EE-0005");
+  assert.equal(safetyGate.locales.es, "experiences/EXP-SAFETY-GATE-005.es.json");
+  assert.equal(safetyGate.locales.en, "experiences/EXP-SAFETY-GATE-005.en.json");
+  assert.equal(profinetLink.editorialId, "EE-0006");
+  assert.equal(profinetLink.locales.es, "experiences/EXP-PROFINET-LINK-006.es.json");
+  assert.equal(profinetLink.locales.en, "experiences/EXP-PROFINET-LINK-006.en.json");
+  assert.equal(graphSequence.editorialId, "EE-0007");
+  assert.equal(graphSequence.locales.es, "experiences/EXP-GRAPH-SEQUENCE-007.es.json");
+  assert.equal(graphSequence.locales.en, "experiences/EXP-GRAPH-SEQUENCE-007.en.json");
+  assert.equal(ioLinkDevice.editorialId, "EE-0008");
+  assert.equal(ioLinkDevice.locales.es, "experiences/EXP-IOLINK-DEVICE-008.es.json");
+  assert.equal(ioLinkDevice.locales.en, "experiences/EXP-IOLINK-DEVICE-008.en.json");
+  assert.equal(hmiState.editorialId, "EE-0009");
+  assert.equal(hmiState.locales.es, "experiences/EXP-HMI-STATE-009.es.json");
+  assert.equal(hmiState.locales.en, "experiences/EXP-HMI-STATE-009.en.json");
+  assert.equal(catalog.environments.length, 3);
+  assert.deepEqual(catalog.environments[0].hotspots, [
+    { experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 },
+    { experienceEditorialId: "EE-0002", x: 24, y: 45.5 },
+    { experienceEditorialId: "EE-0003", x: 88.5, y: 56.5 },
+    { experienceEditorialId: "EE-0004", x: 44, y: 42 },
+    { experienceEditorialId: "EE-0005", x: 52, y: 68 },
+    { experienceEditorialId: "EE-0006", x: 61, y: 50 },
+    { experienceEditorialId: "EE-0007", x: 82, y: 38 },
+    { experienceEditorialId: "EE-0008", x: 68, y: 40 },
+    { experienceEditorialId: "EE-0009", x: 81, y: 44 },
+    { experienceEditorialId: "EE-0010", x: 50, y: 53 }
   ]);
-  assert.deepEqual(result.skipped, [{
-    file: "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
-    reason: "publication_state"
-  }]);
-  assert.equal(catalog.experiences.length, 2);
-  const remaining = catalog.experiences.find(item => item.id === "EXP-SENSOR-PHOTOELECTRIC-009");
-  assert.equal(remaining.id, "EXP-SENSOR-PHOTOELECTRIC-009");
-  assert.equal(remaining.locales.es, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.es.json");
-  assert.equal(remaining.locales.en, "experiences/EXP-SENSOR-PHOTOELECTRIC-009.en.json");
-  assert.equal(remaining.localizedMetadata.en.title, "Photoelectric Sensor Misalignment");
+  assert.deepEqual(catalog.environments[0].theory, {
+    defaultLocale: "es",
+    sectionIds: [
+      "TH-01-ELECTRICAL-FOUNDATIONS", "TH-02-PLC-INPUTS-OUTPUTS", "TH-03-INDUSTRIAL-SENSOR-WIRING",
+      "TH-04-ELECTRICAL-MEASUREMENT", "TH-05-SENSOR-LANDSCAPE", "TH-06-PHOTOELECTRIC-SENSORS",
+      "TH-07-SENSOR-ECOSYSTEM", "TH-08-INTERMITTENT-FAULTS", "TH-09-MOTORS",
+      "TH-10-VARIABLE-FREQUENCY-DRIVES", "TH-11-INDUSTRIAL-COMMUNICATIONS", "TH-12-PROFINET-FUNDAMENTALS",
+      "TH-13-COMMAND-STATE-FEEDBACK", "TH-14-CONTROL-AUTHORITY", "TH-15-SYSTEMATIC-TROUBLESHOOTING",
+      "TH-16-PNEUMATIC-ENERGY", "TH-17-VALVES-ACTUATORS", "TH-18-PNEUMATIC-FLOW-CONTROL",
+      "TH-19-ELECTRO-PNEUMATIC-DIAGNOSIS", "TH-20-MACHINE-SAFETY-FUNDAMENTALS",
+      "TH-21-SAFETY-DEVICES-DUAL-CHANNELS", "TH-22-SAFETY-PLC-SAFE-FUNCTIONS",
+      "TH-23-SAFETY-DIAGNOSIS-RESET", "TH-24-NETWORK-FAULT-BOUNDARY", "TH-25-SEQUENCE-STATE-CONTROL",
+      "TH-26-IO-LINK-DEVICE-ARCHITECTURE", "TH-27-HMI-INFORMATION-ARCHITECTURE",
+      "TH-28-SYSTEM-LEVEL-CAUSAL-TROUBLESHOOTING"
+    ],
+    locales: {
+      es: "environments/ENV-001/theory.es.json",
+      en: "environments/ENV-001/theory.en.json"
+    }
+  });
+  assert.equal(catalog.environments[0].contractVersion, "2.0.0");
+  assert.match(catalog.environments[0].presentation.description.es, /Transporte industrial/);
+  assert.match(catalog.environments[0].presentation.description.en, /Industrial transport/);
+  assert.equal(catalog.environments[0].presentation.skills.es.length, 8);
+  assert.equal(catalog.environments[0].presentation.skills.en.length, 8);
+  assert.equal(catalog.environments[1].contractVersion, "2.0.0");
+  const theoryEs = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.es));
+  const theoryEn = await readJson(path.join(generatedRoot, catalog.environments[0].theory.locales.en));
+  assert.deepEqual(theoryEs.sections.map(item => item.id), theoryEn.sections.map(item => item.id));
+  assert.match(theoryEs.sections[0].title, /eléctricos/i);
+  assert.match(theoryEn.sections[0].title, /electrical/i);
+  assert.equal(theoryEs.media.length, 7);
+  await Promise.all(theoryEs.media.map(item => access(path.join(generatedRoot, item.src))));
+  assert.equal(Object.hasOwn(catalog.environments[1], "theory"), true);
+  assert.equal(catalog.environments[1].theory.sectionIds.length, 9);
+  assert.deepEqual(catalog.environments[1].hotspots, [
+    { experienceEditorialId: "EE-0011", x: 75, y: 61 },
+    { experienceEditorialId: "EE-0012", x: 52, y: 46 },
+    { experienceEditorialId: "EE-0013", x: 31, y: 67 }
+  ]);
+  assert.equal(catalog.environments[2].hotspots.length, 0);
+  for (const environment of catalog.environments) {
+    assert.equal(environment.capacity, 10);
+    assert.equal(environment.width, 1672);
+    assert.equal(environment.height, 941);
+    assert.equal(Object.hasOwn(environment, "summary"), false);
+    assert.equal(Object.hasOwn(environment, "access"), false);
+    assert.equal(Object.hasOwn(environment, "completed"), false);
+    const generatedImage = path.join(generatedRoot, environment.background);
+    const sourceImage = path.join(
+      root,
+      "content",
+      "environments",
+      `${environment.id}-${environment.slug}`,
+      "media",
+      path.basename(environment.background)
+    );
+    assert.equal(await sha256(generatedImage), await sha256(sourceImage));
+  }
+  assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0909"), false);
+  await access(path.join(
+    root,
+    "content",
+    "experiences",
+    "sensors",
+    "EE-0009-photoelectric-sensor-misalignment",
+    "experience.yaml"
+  ));
+  await assert.rejects(access(path.join(
+    generatedRoot,
+    "experiences",
+    "EXP-SENSOR-PHOTOELECTRIC-009.es.json"
+  )));
   await access(path.join(generatedRoot, remaining.locales.es));
   await access(path.join(generatedRoot, remaining.locales.en));
-  const pneumatic = catalog.experiences.find(item => item.id === "EXP-PNEUMATIC-CYLINDER-014");
-  assert.equal(pneumatic.locales.es, "experiences/EXP-PNEUMATIC-CYLINDER-014.es.json");
-  assert.equal(pneumatic.locales.en, "experiences/EXP-PNEUMATIC-CYLINDER-014.en.json");
-  assert.equal(pneumatic.localizedMetadata.en.title, "Pneumatic Cylinder Extended Position Confirmation");
-  await access(path.join(generatedRoot, pneumatic.locales.es));
-  await access(path.join(generatedRoot, pneumatic.locales.en));
+  await access(path.join(generatedRoot, intermittent.locales.es));
+  await access(path.join(generatedRoot, intermittent.locales.en));
+  await access(path.join(generatedRoot, drive.locales.es));
+  await access(path.join(generatedRoot, drive.locales.en));
+  await access(path.join(generatedRoot, graphSequence.locales.es));
+  await access(path.join(generatedRoot, graphSequence.locales.en));
+  await access(path.join(generatedRoot, ioLinkDevice.locales.es));
+  await access(path.join(generatedRoot, ioLinkDevice.locales.en));
+  await access(path.join(generatedRoot, hmiState.locales.es));
+  await access(path.join(generatedRoot, hmiState.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
+  await access(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"));
 });
 
 test("published browser files contain no reserved runtime data or authoring document", async t => {
@@ -83,11 +270,14 @@ test("published browser files contain no reserved runtime data or authoring docu
 
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const artifactText = await readFile(
-    path.join(generatedRoot, "experiences", "EXP-SENSOR-PHOTOELECTRIC-009.es.json"),
+    path.join(generatedRoot, "experiences", "EXP-SENSOR-SIGNAL-001.es.json"),
     "utf8"
   );
   const playerText = await readFile(path.join(generatedRoot, "player", "experiencePlayer.js"), "utf8");
-  const browserPayload = `${artifactText}\n${playerText}`;
+  const evaluatorText = await readFile(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"), "utf8");
+  const browserPayload = `${artifactText}\n${playerText}\n${evaluatorText}`;
+
+  assert.match(playerText, /\.\.\/evaluation\/experienceEvaluator\.js/);
 
   reservedTerms.forEach(term => assert.equal(browserPayload.includes(term), false, term));
   assert.equal(browserPayload.includes("contract_version"), false);
@@ -118,18 +308,13 @@ test("a validation failure preserves the previous generated package", async t =>
   await mkdir(target, { recursive: true });
   await writeFile(path.join(target, "sentinel.txt"), "preserve", "utf8");
 
-  const source = path.join(
-    root,
-    "content",
-    "experiences",
-    "sensors",
-    "EE-0009-photoelectric-sensor-misalignment",
-    "experience.yaml"
+  const source = path.join(root, "content", "environments", "ENV-001-automated-factory", "theory.yaml");
+  const original = await readFile(source, "utf8");
+  const invalid = original.replace(
+    /version:\s*"[^"]+"/u,
+    'version: "unsupported"'
   );
-  const invalid = (await readFile(source, "utf8")).replace(
-    'contract_version: "1.0.0"',
-    'contract_version: "unsupported"'
-  );
+  assert.notEqual(invalid, original, "The Theory fixture version must be invalidated.");
   await writeFile(source, invalid, "utf8");
 
   await assert.rejects(
@@ -138,19 +323,43 @@ test("a validation failure preserves the previous generated package", async t =>
   assert.equal(await readFile(path.join(target, "sentinel.txt"), "utf8"), "preserve");
 });
 
-test("publish excludes technical-review Experiences while preview includes them", async t => {
+test("publish excludes technical-review experiences while preview includes them", async t => {
   const root = await createRepository();
   t.after(() => rm(root, { recursive: true, force: true }));
+  const source = path.join(
+    root,
+    "content",
+    "experiences",
+    "sensors",
+    "EE-0001-sensor-on-plc-input-off",
+    "experience.yaml"
+  );
+  const authoring = (await readFile(source, "utf8"))
+    .replace('  status: "published"', '  status: "technical_review"')
+    .replace('    status: "pass"', '    status: "pass_with_warnings"');
+  await writeFile(source, authoring, "utf8");
 
   const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
   const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
 
-  assert.deepEqual(publish.packaged, []);
-  assert.equal(publish.skipped[0].reason, "publication_state");
-  assert.deepEqual(preview.packaged, [
-    "EXP-PNEUMATIC-CYLINDER-014",
-    "EXP-SENSOR-PHOTOELECTRIC-009"
-  ]);
+  assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
+  assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
+  assert.deepEqual(preview.packaged, ["EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
+  assert.deepEqual(publish.environments, []);
+});
+
+test("Theory packaging copies only media referenced by canonical sections", async t => {
+  const root = await createRepository();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const environmentRoot = path.join(root, "content", "environments", "ENV-001-automated-factory");
+  await cp(path.join(environmentRoot, "media", "ENV-001-automated-factory.png"), path.join(environmentRoot, "media", "unused.png"));
+  const theoryFile = path.join(environmentRoot, "theory.yaml");
+  const source = await readFile(theoryFile, "utf8");
+  await writeFile(theoryFile, source.replace("\nsections:", "\n  - id: \"TH-MEDIA-UNUSED\"\n    type: \"image\"\n    src: \"media/unused.png\"\n    alt: \"Unused declared media\"\n\nsections:"), "utf8");
+
+  await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
+  await assert.rejects(access(path.join(root, "Frontend", "generated", "experience-engine", "environments", "ENV-001", "media", "unused.png")));
 });
 
 test("catalog modes enforce the complete approved publication-state boundary", async t => {
@@ -169,23 +378,23 @@ test("catalog modes enforce the complete approved publication-state boundary", a
       "content",
       "experiences",
       "sensors",
-      "EE-0009-photoelectric-sensor-misalignment",
+      "EE-0001-sensor-on-plc-input-off",
       "experience.yaml"
     );
     const authoring = (await readFile(source, "utf8"))
-      .replace('  status: "technical_review"', `  status: "${scenario.status}"`)
-      .replace('    status: "pass_with_warnings"', `    status: "${scenario.validation}"`);
+      .replace('  status: "published"', `  status: "${scenario.status}"`)
+      .replace('    status: "pass"', `    status: "${scenario.validation}"`);
     await writeFile(source, authoring, "utf8");
 
     const preview = await packageExperienceEngine({ repositoryRoot: root, mode: "preview" });
     const publish = await packageExperienceEngine({ repositoryRoot: root, mode: "publish" });
     assert.equal(
-      preview.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
+      preview.packaged.includes("EXP-SENSOR-SIGNAL-001"),
       scenario.preview,
       `preview/${scenario.status}/${scenario.validation}`
     );
     assert.equal(
-      publish.packaged.includes("EXP-SENSOR-PHOTOELECTRIC-009"),
+      publish.packaged.includes("EXP-SENSOR-SIGNAL-001"),
       scenario.publish,
       `publish/${scenario.status}/${scenario.validation}`
     );
@@ -200,7 +409,7 @@ test("duplicate identifiers fail and no legacy fallback is used", async t => {
     "content",
     "experiences",
     "sensors",
-    "EE-0009-photoelectric-sensor-misalignment"
+    "EE-0001-sensor-on-plc-input-off"
   );
   await cp(
     source,

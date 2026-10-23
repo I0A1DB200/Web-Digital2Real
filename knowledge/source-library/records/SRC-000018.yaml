@@ -1,0 +1,61 @@
+id: SRC-000018
+title: "SICK IO-Link Data Storage technical article"
+record_type: source
+classification: SUPPORTING_TECHNICAL
+resource_types: ["TECHNICAL_ARTICLE"]
+status: active
+availability: public
+authority:
+  level: official_manufacturer
+  publisher: "SICK"
+  authoring_organization: "SICK"
+domain_ids: ["sensors", "io_link"]
+manufacturer:
+  id: "MFR-SICK"
+  name: "SICK"
+product:
+  family: ""
+  exact_device: ""
+  variant: ""
+  order_number: ""
+engineering_software: []
+protocols_interfaces: ["IO_LINK_IODD"]
+document:
+  number: ""
+  revision: ""
+  publication_date: ""
+  languages: []
+locations:
+  canonical_url: "https://support.sick.com/sick-knowledgebase/article/?code=KA-02663"
+  product_url: ""
+  download_url: ""
+resources: []
+local_files: []
+provenance:
+  discovered_from: "Architect-provided Batch 02 source-mapping candidate"
+  acquired_by: architect_input
+  acquired_at: ""
+  last_verified_at: ""
+  content_hash: ""
+rights:
+  copyright_holder: "SICK"
+  license: ""
+  repository_storage_permitted: false
+  production_use_permitted: false
+technical_scope:
+  supported_claims: []
+  limitations:
+    - "Candidate identity and URL were supplied by the Architect; no external verification or technical-content review was performed during registration."
+    - "No exact-device applicability, capability coverage, language equivalence, license or reuse right is inferred."
+relationships:
+  supersedes: []
+  related_sources: []
+d2r_use:
+  notebooks: []
+  experiences: []
+  assets: []
+review:
+  state: discovered
+  reviewed_by: ""
+  reviewed_at: ""
+tags: ["io_link"]

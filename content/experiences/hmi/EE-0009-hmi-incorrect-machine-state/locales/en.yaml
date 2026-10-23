@@ -60,13 +60,13 @@ translations:
       content: "Verification confirms BoxAtStop_HMI associated with DB_HMI.BoxAtStop at %DB10.DBX0.0, operational PLC-HMI communication and box presence with local detection. The HMI shows DETECTED and agrees with the observed process, without forcing or a fixed indication. Repeatability is not inferred from the static image."
   decisions:
     DEC-01-RESTART-HMI:
-      action: "Restart the panel before confirming the field state."
+      action: "Restart the panel before confirming the field state; available evidence does not yet justify that intervention."
     DEC-01-VERIFY-BOX-SENSOR:
-      action: "With movement controlled under the authorized procedure, confirm the actual box position and local sensor detection."
+      action: "Under the authorized procedure, confirm the actual box position and local sensor detection."
     DEC-01-REPLACE-SENSOR:
-      action: "Replace the sensor because the HMI says NOT DETECTED."
+      action: "Replace the sensor because the HMI says NOT DETECTED; available evidence does not yet justify that intervention."
     DEC-02-EDIT-PLC:
-      action: "Change PLC logic so the HMI changes state."
+      action: "Change PLC logic so the HMI changes state; available evidence does not yet justify that intervention."
     DEC-02-FORCE-INPUT:
       action: "Force the PLC signal while inspecting the HMI."
     DEC-02-MONITOR-PLC:
@@ -88,15 +88,15 @@ translations:
     DEC-05-COMPARE-PLC-HMI:
       action: "Compare the BoxAtStop_HMI source with DB_HMI.BoxAtStop verified in the PLC."
     DEC-05-EDIT-SENSOR:
-      action: "Realign the sensor although the PLC correctly records the box."
+      action: "Realign the sensor although the PLC correctly records the box; available evidence does not yet justify that intervention."
     DEC-05-RESTART-PANEL:
-      action: "Restart the panel while keeping the current association."
+      action: "Restart the panel while keeping the current association; available evidence does not yet justify that intervention."
     DEC-06-HARDCODE-TRUE:
-      action: "Set the HMI object permanently to DETECTED."
+      action: "Set the HMI object permanently to DETECTED; energy control and independent verification are omitted."
     DEC-06-MODIFY-PLC:
-      action: "Change PLC logic to make the wrong variable TRUE."
+      action: "Change PLC logic to make the wrong variable TRUE; available evidence does not yet justify that intervention."
     DEC-06-MAP-AND-VERIFY:
-      action: "Associate BoxAtStop_HMI with DB_HMI.BoxAtStop at %DB10.DBX0.0 and, with movement controlled under the authorized procedure, verify communication, box and sensor and the DETECTED indication against the process, without forcing or constants."
+      action: "Under the authorized procedure, associate BoxAtStop_HMI with DB_HMI.BoxAtStop (%DB10.DBX0.0) and verify box, sensor and process without forcing."
   retry_feedback:
     DEC-01-RESTART-HMI: "Restarting may erase context; first verify box and sensor."
     DEC-01-REPLACE-SENSOR: "The HMI does not prove sensor failure; check local detection."

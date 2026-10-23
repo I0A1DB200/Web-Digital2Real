@@ -54,33 +54,33 @@ translations:
       content: "Three authored points agree: 2.0 bar <-> 7.2 mA, 6.0 bar <-> 13.6 mA and 8.0 bar <-> 16.8 mA; transmitter, PLC and HMI match."
   decisions:
     DEC-01-REPLACE:
-      action: "Replace the transmitter."
+      action: "Replace the transmitter; available evidence does not yet justify that intervention."
     DEC-01-COMPARE:
       action: "Compare the process reference with the local indication."
     DEC-01-SCALE:
-      action: "Immediately change PLC scaling."
+      action: "Immediately change PLC scaling; available evidence does not yet justify that intervention."
     DEC-02-MEASURE:
       action: "Measure current under the safe procedure and interpret it with the authored range."
     DEC-02-WIRING:
-      action: "Declare a wiring fault."
+      action: "Declare a wiring fault; available evidence does not yet justify that intervention."
     DEC-02-HMI:
-      action: "Apply a factor of two in the HMI."
+      action: "Apply a factor of two in the HMI; available evidence does not yet justify that intervention."
     DEC-03-INSPECT:
       action: "Inspect conversión from input percentage to Pressure_bar."
     DEC-03-REPLACE-AI:
-      action: "Replace the analog input module."
+      action: "Replace the analog input module; available evidence does not yet justify that intervention."
     DEC-03-FORCE:
-      action: "Force Pressure_bar to 6.0."
+      action: "Force Pressure_bar to 6.0; available evidence does not yet justify that intervention."
     DEC-04-CORRECT:
       action: "Align PLC scaling to 0–10 bar and leave verification pending."
     DEC-04-CALIBRATE:
       action: "Recalibrate the transmitter so 13.6 mA produces 3.0 bar."
     DEC-04-OFFSET:
-      action: "Double the value only in the HMI."
+      action: "Double the value only in the HMI; available evidence does not yet justify that intervention."
     DEC-05-VERIFY:
       action: "Verify several points across reference, current, PLC and HMI."
     DEC-05-ONE:
-      action: "Close after observing 6.0 bar once in the HMI."
+      action: "Close after observing 6.0 bar once in the HMI; available evidence does not yet justify that intervention."
     DEC-05-CONFIG:
       action: "Close because the saved configuration shows 0–10 bar."
   retry_feedback:

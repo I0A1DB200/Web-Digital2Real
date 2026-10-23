@@ -62,39 +62,39 @@ translations:
     DEC-01-INSPECT-DRIVE:
       action: "Desde una posición segura, inspeccionar READY, RUNNING, FAULT y la frecuencia indicada en el variador antes de intervenir."
     DEC-01-REPLACE-MOTOR:
-      action: "Sustituir el motor inmediatamente porque el eje no gira."
+      action: "Sustituir el motor inmediatamente porque el eje no gira; la evidencia disponible aún no justifica esa intervención."
     DEC-01-FORCE-OUTPUT:
-      action: "Forzar la salida de marcha para comprobar si aparece movimiento."
+      action: "Forzar la salida de marcha para comprobar si aparece movimiento sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-TRACE-PLC:
       action: "Comprobar el estado operativo de la CPU del PLC; dejar pendiente la verificación de RunCmd y de su aceptación por el variador."
     DEC-02-RESET-REPEATEDLY:
-      action: "Resetear repetidamente el variador aunque no presenta fallo."
+      action: "Resetear repetidamente el variador aunque no presenta fallo; la evidencia disponible aún no justifica esa intervención."
     DEC-02-REPLACE-VFD:
-      action: "Sustituir el variador porque READY no produce movimiento."
+      action: "Sustituir el variador porque READY no produce movimiento; la evidencia disponible aún no justifica esa intervención."
     DEC-03-CHECK-AUTHORITY:
       action: "Comprobar qué fuente tiene actualmente autoridad para aceptar el mando del variador."
     DEC-03-CHANGE-LOGIC:
-      action: "Modificar el programa porque el transportador no responde."
+      action: "Modificar el programa porque el transportador no responde; la evidencia disponible aún no justifica esa intervención."
     DEC-03-BYPASS-PERMISSIVES:
-      action: "Puentear permisivos para descartar rápidamente la lógica."
+      action: "Puentear permisivos para descartar rápidamente la lógica sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-VERIFY-ARCHITECTURE:
       action: "Consultar la arquitectura aprobada y comparar la autoridad actual con la requerida en producción."
     DEC-04-ASSUME-HAND-FAULT:
-      action: "Declarar que HAND siempre es un fallo y cambiarlo sin verificar el diseño."
+      action: "Declarar que HAND siempre es un fallo y cambiarlo sin verificar el diseño; la evidencia disponible aún no justifica esa intervención."
     DEC-04-CHANGE-PARAMETERS:
       action: "Cambiar parámetros de fuente de mando sin establecer primero la configuración prevista."
     DEC-05-VERIFY-ONLINE:
       action: "Desde una posición segura, verificar online permisivos, RunCmd y feedback en FB_CONVEYOR antes de corregir la autoridad."
     DEC-05-REPROGRAM:
-      action: "Reprogramar FB_CONVEYOR para compensar el estado local del variador."
+      action: "Reprogramar FB_CONVEYOR para compensar el estado local del variador; la evidencia disponible aún no justifica esa intervención."
     DEC-05-REPLACE-DRIVE:
-      action: "Sustituir el variador sin comprobar si la lógica genera RunCmd."
+      action: "Sustituir el variador sin comprobar si la lógica genera RunCmd; la evidencia disponible aún no justifica esa intervención."
     DEC-06-RESTORE-VERIFY:
-      action: "Aplicar el procedimiento autorizado antes de intervenir y restaurar AUTO/PLC-PROFINET según el procedimiento aprobado de la máquina; solicitar marcha y verificar mando, estado, velocidad y movimiento desde una posición segura."
+      action: "Aplicar el procedimiento autorizado antes de intervenir; restaurar AUTO/PLC-PROFINET y verificar mando y movimiento desde una posición segura."
     DEC-06-CLOSE-ON-MODE:
-      action: "Cerrar la intervención en cuanto la pantalla muestre AUTO."
+      action: "Cerrar la intervención en cuanto la pantalla muestre AUTO; la evidencia disponible aún no justifica esa intervención."
     DEC-06-FORCE-RUNNING:
-      action: "Forzar el feedback Running para que coincida con RunCmd."
+      action: "Forzar el feedback Running para que coincida con RunCmd sin aplicar el procedimiento de energías ni una verificación independiente."
   retry_feedback:
     DEC-01-REPLACE-MOTOR: "La ausencia de movimiento no demuestra un fallo del motor. Comprueba primero si el variador está disponible, ejecutando o en fallo."
     DEC-01-FORCE-OUTPUT: "Forzar una salida elude la cadena autorizada y no identifica qué equipo acepta el mando. Inspecciona primero el estado del variador."

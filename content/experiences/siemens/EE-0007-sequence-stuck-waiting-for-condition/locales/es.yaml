@@ -63,9 +63,9 @@ translations:
       content: "Tras la corrección autorizada, la prueba funcional confirma que T40 referencia PartAtStop_Sensor; con la caja presente, T40 se satisface, S40 finaliza y S41 se activa. Se verifican ciclos representativos sin forcing. La imagen estática ilustra la configuración; no demuestra repetibilidad."
   decisions:
     DEC-01-REPLACE-SENSOR:
-      action: "Sustituir el sensor porque la secuencia está esperando."
+      action: "Sustituir el sensor porque la secuencia está esperando; la evidencia disponible aún no justifica esa intervención."
     DEC-01-RESTART-PLC:
-      action: "Reiniciar el PLC para reinicializar la secuencia."
+      action: "Reiniciar el PLC para reinicializar la secuencia; la evidencia disponible aún no justifica esa intervención."
     DEC-01-INSPECT-ACTIVE-STEP:
       action: "Monitorizar GRAPH e identificar el paso activo y la transición pendiente."
     DEC-02-FORCE-T40:
@@ -77,37 +77,37 @@ translations:
     DEC-02-INSPECT-T40-CONDITION:
       action: "Inspeccionar la condición lógica que T40 evalúa y su estado online."
     DEC-03-REPLACE-INPUT:
-      action: "Sustituir el módulo de entrada porque PartAtStop_2 está FALSE."
+      action: "Sustituir el módulo de entrada porque PartAtStop_2 está FALSE; la evidencia disponible aún no justifica esa intervención."
     DEC-03-VERIFY-BOX-SENSOR:
       action: "Con movimientos controlados según el procedimiento autorizado, comprobar la posición real de la caja y la detección local del sensor."
     DEC-03-SET-PARTATSTOP2:
-      action: "Escribir TRUE en PartAtStop_2 para liberar la transición."
+      action: "Escribir TRUE en PartAtStop_2 para liberar la transición sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-MONITOR-I05-TAG:
       action: "Monitorizar %I0.5 y PartAtStop_Sensor y comparar ambos con el estado físico."
     DEC-04-REALIGN-SENSOR:
-      action: "Realinear el sensor aunque la detección local está confirmada."
+      action: "Realinear el sensor aunque la detección local está confirmada; la evidencia disponible aún no justifica esa intervención."
     DEC-04-CHANGE-INPUT:
-      action: "Cambiar PartAtStop_Sensor a otra dirección de entrada."
+      action: "Cambiar PartAtStop_Sensor a otra dirección de entrada; la evidencia disponible aún no justifica esa intervención."
     DEC-05-REPLACE-SENSOR:
-      action: "Sustituir el sensor aunque %I0.5 está TRUE."
+      action: "Sustituir el sensor aunque %I0.5 está TRUE; la evidencia disponible aún no justifica esa intervención."
     DEC-05-FORCE-PARTATSTOP2:
-      action: "Forzar PartAtStop_2 para que T40 sea TRUE."
+      action: "Forzar PartAtStop_2 para que T40 sea TRUE sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-COMPARE-T40-REFERENCE:
       action: "Comparar la variable usada por T40 con el tag que representa la entrada física verificada."
     DEC-06-SEQUENCE-ENGINE-FAULT:
-      action: "Concluir que el motor de ejecución GRAPH ha fallado."
+      action: "Concluir que el motor de ejecución GRAPH ha fallado; la evidencia disponible aún no justifica esa intervención."
     DEC-06-WRONG-VARIABLE-REFERENCE:
       action: "Diagnosticar que T40 referencia la variable lógica equivocada."
     DEC-06-PROFINET-FAULT:
-      action: "Atribuir el bloqueo a una pérdida PROFINET."
+      action: "Atribuir el bloqueo a una pérdida PROFINET; la evidencia disponible aún no justifica esa intervención."
     DEC-07-FORCE-TRANSITION:
-      action: "Forzar T40 durante producción para evitar el bloqueo."
+      action: "Forzar T40 durante producción para evitar el bloqueo sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-07-SET-TRUE-CONSTANT:
-      action: "Sustituir la condición por una constante TRUE."
+      action: "Sustituir la condición por una constante TRUE sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-07-CHANGE-PARTATSTOP2:
-      action: "Manipular PartAtStop_2 para conservar la referencia existente."
+      action: "Manipular PartAtStop_2 para conservar la referencia existente; la evidencia disponible aún no justifica esa intervención."
     DEC-07-CORRECT-T40-VERIFY:
-      action: "Según el procedimiento autorizado, con movimientos controlados antes del cambio, configurar T40 con PartAtStop_Sensor y verificar T40, S40, S41 y ciclos representativos sin forcing."
+      action: "Según el procedimiento autorizado, configurar T40 con PartAtStop_Sensor y verificar T40, S40, S41 y ciclos representativos sin forcing."
   retry_feedback:
     DEC-01-REPLACE-SENSOR: "El síntoma no identifica el sensor. Localiza primero el paso y la transición pendientes."
     DEC-01-RESTART-PLC: "Reiniciar elimina contexto sin explicar qué condición bloquea la secuencia."

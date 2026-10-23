@@ -62,45 +62,45 @@ translations:
     DEC-01-IDENTIFY-SAFETY-FUNCTION:
       action: "From the safe diagnostic condition, determine which Safety function prevents the machine from becoming ready."
     DEC-01-REPLACE-DRIVE:
-      action: "Replace the drive because STO remains active."
+      action: "Replace the drive because STO remains active; available evidence does not yet justify that intervention."
     DEC-01-REPEAT-RESET:
-      action: "Repeat the reset until SafetyReady changes."
+      action: "Repeat the reset until SafetyReady changes; available evidence does not yet justify that intervention."
     DEC-01-CHANGE-STANDARD-LOGIC:
-      action: "Change standard Start logic to ignore the inhibition."
+      action: "Change standard Start logic to ignore the inhibition; energy control and independent verification are omitted."
     DEC-02-INSPECT-GUARD-FINPUTS:
-      action: "From the safe diagnostic condition, inspect the guard-function diagnostic indication and associated safe inputs."
+      action: "In the safe condition, inspect the guard function and its safe inputs."
     DEC-02-REPLACE-FPLC:
-      action: "Replace the S7-1500F without reviewing its inputs."
+      action: "Replace the S7-1500F without reviewing its inputs; available evidence does not yet justify that intervention."
     DEC-02-BLAME-START:
-      action: "Attribute the inhibition to the Start pushbutton."
+      action: "Attribute the inhibition to the Start pushbutton; available evidence does not yet justify that intervention."
     DEC-03-OPEN-ONLINE-DIAGNOSTICS:
       action: "From the safe diagnostic condition, consult online detail for the function and its channels without assigning a physical cause yet."
     DEC-03-REPLACE-FDI:
-      action: "Replace the F-DI because it shows a diagnostic indication."
+      action: "Replace the F-DI because it shows a diagnostic indication; available evidence does not yet justify that intervention."
     DEC-03-RESET-INDEFINITELY:
-      action: "Continue resetting without consulting diagnostic detail."
+      action: "Continue resetting without consulting diagnostic detail; available evidence does not yet justify that intervention."
     DEC-03-BYPASS-INPUT:
-      action: "Defeat the safe input to recover production."
+      action: "Defeat the safe input to recover production; energy control and independent verification are omitted."
     DEC-04-INSPECT-PHYSICAL-RELATION:
-      action: "Apply the authorized isolation and maintenance procedure before physical intervention; under safe conditions, inspect the relationship among gate, actuator, interlock and mounting."
+      action: "Under authorized isolation and maintenance, inspect the relationship among gate, actuator, interlock and mounting."
     DEC-04-REPLACE-CH2-WIRING:
-      action: "Immediately replace CH2 wiring."
+      action: "Immediately replace CH2 wiring; available evidence does not yet justify that intervention."
     DEC-04-REPLACE-INTERLOCK:
-      action: "Replace the interlock based only on the discrepancy."
+      action: "Replace the interlock based only on the discrepancy; available evidence does not yet justify that intervention."
     DEC-05-RESTORE-ALIGNMENT:
-      action: "Apply the authorized isolation and maintenance procedure before physical adjustment and restore intended alignment and mounting; leave functional verification pending."
+      action: "Under authorized isolation and maintenance, restore alignment and leave functional verification pending."
     DEC-05-INCREASE-DISCREPANCY-TIME:
-      action: "Increase discrepancy time to accept the condition."
+      action: "Increase discrepancy time to accept the condition; energy control and independent verification are omitted."
     DEC-05-DEFEAT-CHANNEL:
-      action: "Defeat one channel to allow reset."
+      action: "Defeat one channel to allow reset; energy control and independent verification are omitted."
     DEC-05-REPLACE-FDI:
-      action: "Replace the F-DI although the mechanical cause is confirmed."
+      action: "Replace the F-DI although the mechanical cause is confirmed; available evidence does not yet justify that intervention."
     DEC-06-FUNCTIONAL-TEST:
-      action: "Perform the intended safe functional test: check channels, expected reset behavior, SafetyReady and STO according to design, protective response and representative inhibition and recovery, without automatic restart. Keep Safety reset and Start separate."
+      action: "Run the safe test of channels, reset, STO and protective response; keep Safety Reset and Start separate."
     DEC-06-CLOSE-ONCE:
-      action: "Close the intervention because the machine starts once."
+      action: "Close the intervention because the machine starts once; available evidence does not yet justify that intervention."
     DEC-06-AUTO-RESTART:
-      action: "Configure automatic restart when the gate closes."
+      action: "Configure automatic restart when the gate closes; energy control and independent verification are omitted."
   retry_feedback:
     DEC-01-REPLACE-DRIVE: "Active STO describes safe torque inhibition; it does not prove the drive has failed. Identify the active Safety function first."
     DEC-01-REPEAT-RESET: "Repeated reset does not correct an invalid Safety condition. Determine which function prevents SafetyReady."

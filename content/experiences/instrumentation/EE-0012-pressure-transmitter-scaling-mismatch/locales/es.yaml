@@ -54,35 +54,35 @@ translations:
       content: "Tres puntos authored confirman correspondencia: 2.0 bar <-> 7.2 mA, 6.0 bar <-> 13.6 mA y 8.0 bar <-> 16.8 mA; transmisor, PLC y HMI coinciden."
   decisions:
     DEC-01-REPLACE:
-      action: "Sustituir el transmisor. "
+      action: "Sustituir el transmisor; la evidencia disponible aún no justifica esa intervención."
     DEC-01-COMPARE:
       action: "Comparar referencia de proceso e indicación local."
     DEC-01-SCALE:
-      action: "Cambiar inmediatamente la escala PLC."
+      action: "Cambiar inmediatamente la escala PLC; la evidencia disponible aún no justifica esa intervención."
     DEC-02-MEASURE:
       action: "Medir la corriente conforme al procedimiento seguro e interpretarla con el rango authored."
     DEC-02-WIRING:
-      action: "Declarar un fallo de cableado."
+      action: "Declarar un fallo de cableado; la evidencia disponible aún no justifica esa intervención."
     DEC-02-HMI:
-      action: "Aplicar un factor de dos en HMI."
+      action: "Aplicar un factor de dos en HMI; la evidencia disponible aún no justifica esa intervención."
     DEC-03-INSPECT:
       action: "Inspeccionar la conversión del porcentaje de entrada a Pressure_bar."
     DEC-03-REPLACE-AI:
-      action: "Sustituir el módulo analógico."
+      action: "Sustituir el módulo analógico; la evidencia disponible aún no justifica esa intervención."
     DEC-03-FORCE:
-      action: "Forzar Pressure_bar a 6.0."
+      action: "Forzar Pressure_bar a 6.0; la evidencia disponible aún no justifica esa intervención."
     DEC-04-CORRECT:
       action: "Alinear la escala PLC a 0–10 bar y dejar pendiente la verificación."
     DEC-04-CALIBRATE:
-      action: "Recalibrar el transmisor para adaptar 13.6 mA a 3.0 bar."
+      action: "Recalibrar el transmisor para adaptar 13.6 mA a 3.0 bar; la evidencia disponible aún no justifica esa intervención."
     DEC-04-OFFSET:
-      action: "Duplicar el valor solo en HMI."
+      action: "Duplicar el valor solo en HMI; la evidencia disponible aún no justifica esa intervención."
     DEC-05-VERIFY:
       action: "Verificar varios puntos comparando referencia, corriente, PLC y HMI."
     DEC-05-ONE:
-      action: "Cerrar al observar 6.0 bar una vez en HMI."
+      action: "Cerrar al observar 6.0 bar una vez en HMI; la evidencia disponible aún no justifica esa intervención."
     DEC-05-CONFIG:
-      action: "Cerrar porque la configuración guardada muestra 0–10 bar."
+      action: "Cerrar porque la configuración guardada muestra 0–10 bar; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-REPLACE: "La diferencia no demuestra que el transmisor falle. Compara primero el proceso y la indicación local."
     DEC-01-SCALE: "La escala aun es una hipotesis. Localiza primero la discrepancia."

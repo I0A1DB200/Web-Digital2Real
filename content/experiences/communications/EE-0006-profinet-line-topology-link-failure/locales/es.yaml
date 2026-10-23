@@ -63,43 +63,43 @@ translations:
       content: "La verificación posterior confirma enlace presente, A3/A4 alcanzables, intercambio cíclico e I/O de proceso válidos y recuperación de la función afectada en condiciones representativas."
   decisions:
     DEC-01-RESTART-PLC:
-      action: "Reiniciar inmediatamente el PLC."
+      action: "Reiniciar inmediatamente el PLC; la evidencia disponible aún no justifica esa intervención."
     DEC-01-REPLACE-A3-A4:
-      action: "Sustituir A3 y A4 porque ambos aparecen no disponibles."
+      action: "Sustituir A3 y A4 porque ambos aparecen no disponibles; la evidencia disponible aún no justifica esa intervención."
     DEC-01-COMPARE-NETWORK-AREAS:
-      action: "Desde una condición segura, comparar las áreas afectada y no afectada y observar la disposición de la instalación, sus ramas y segmentos para relacionar el alcance reportado con la red física."
+      action: "Desde una condición segura, observar la disposición de las áreas afectada y no afectada y relacionarla con la topología física."
     DEC-01-INVESTIGATE-STRING-B:
-      action: "Comenzar por diagnosticar String B aunque funciona normalmente."
+      action: "Comenzar por diagnosticar String B aunque funciona normalmente; la evidencia disponible aún no justifica esa intervención."
     DEC-02-DOWNLOAD-PROJECT:
-      action: "Descargar de nuevo el proyecto PLC."
+      action: "Descargar de nuevo el proyecto PLC; la evidencia disponible aún no justifica esa intervención."
     DEC-02-USE-TIA-DIAGNOSTICS:
       action: "Desde una condición segura de diagnóstico, consultar TIA Portal online para comparar la disponibilidad de los dispositivos configurados."
     DEC-02-CHANGE-IP:
-      action: "Cambiar las direcciones IP de los nodos no disponibles."
+      action: "Cambiar las direcciones IP de los nodos no disponibles; la evidencia disponible aún no justifica esa intervención."
     DEC-03-REPLACE-A3:
-      action: "Sustituir A3 porque es el primer dispositivo no disponible."
+      action: "Sustituir A3 porque es el primer dispositivo no disponible; la evidencia disponible aún no justifica esa intervención."
     DEC-03-ASSUME-IO-LINK:
-      action: "Tratar el incidente como un fallo de sensor IO-Link."
+      action: "Tratar el incidente como un fallo de sensor IO-Link; la evidencia disponible aún no justifica esa intervención."
     DEC-03-REPLACE-SWITCH:
-      action: "Sustituir el switch industrial porque varios nodos están no disponibles."
+      action: "Sustituir el switch industrial porque varios nodos están no disponibles; la evidencia disponible aún no justifica esa intervención."
     DEC-03-FIND-GOOD-BAD-BOUNDARY:
-      action: "Desde una condición segura, localizar el último nodo alcanzable, el primero no disponible y el segmento entre ambos; observar las indicaciones locales de alimentación y enlace."
+      action: "Desde una condición segura, localizar el último nodo alcanzable, el primero no disponible y el segmento entre ambos; observar alimentación y enlace."
     DEC-04-ASSUME-POWER-FAULT:
-      action: "Concluir que A3 ha perdido 24 V aunque permanece alimentado."
+      action: "Concluir que A3 ha perdido 24 V aunque permanece alimentado; la evidencia disponible aún no justifica esa intervención."
     DEC-04-INSPECT-A2-A3-LINK:
-      action: "Consultar la información topológica disponible en PRONETA e inspeccionar el segmento A2 Turck–A3 Murr; aplicar el procedimiento de mantenimiento autorizado antes de intervenir físicamente en cableado o conectores."
+      action: "Consultar PRONETA e inspeccionar el segmento A2 Turck–A3 Murr según el procedimiento de mantenimiento autorizado."
     DEC-04-REPLACE-A3:
-      action: "Sustituir A3 sin comprobar el segmento que lo conecta."
+      action: "Sustituir A3 sin comprobar el segmento que lo conecta; la evidencia disponible aún no justifica esa intervención."
     DEC-05-RESTORE-SEGMENT:
       action: "Restaurar o sustituir el segmento industrial defectuoso conforme al procedimiento de mantenimiento aplicable."
     DEC-05-RENAME-DEVICES:
-      action: "Asignar nuevos nombres PROFINET a A3 y A4."
+      action: "Asignar nuevos nombres PROFINET a A3 y A4; la evidencia disponible aún no justifica esa intervención."
     DEC-05-REPAIR-IMPROVISED:
-      action: "Realizar una reparación improvisada del cable para recuperar producción."
+      action: "Realizar una reparación improvisada del cable para recuperar producción sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-CLOSE-ON-GREEN:
-      action: "Cerrar la intervención cuando un icono de diagnóstico aparezca en verde."
+      action: "Cerrar la intervención cuando un icono de diagnóstico aparezca en verde; la evidencia disponible aún no justifica esa intervención."
     DEC-06-CHECK-A3-ONLY:
-      action: "Comprobar únicamente que A3 vuelve a estar disponible."
+      action: "Comprobar únicamente que A3 vuelve a estar disponible; la evidencia disponible aún no justifica esa intervención."
     DEC-06-VERIFY-FULL-CHAIN:
       action: "Desde una condición segura, verificar enlace, A3/A4, comunicación cíclica, I/O de proceso y función de máquina en condiciones representativas."
   retry_feedback:

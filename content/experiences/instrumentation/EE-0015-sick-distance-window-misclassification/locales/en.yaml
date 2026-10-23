@@ -57,13 +57,13 @@ translations:
       content: "Recovery is established by a stable reading, Q1-to-PLC correlation, representative accepted and rejected boxes, correct diverter action and saved parameters persisting through an approved restart. The counter is then manually reset and a verified fresh run shows Nº Reject = 0."
   decisions:
     DEC-01-REPLACE-DIVERTER:
-      action: "Replace the reject cylinder because boxes are being rejected."
+      action: "Replace the reject cylinder because boxes are being rejected; available evidence does not yet justify that intervention."
     DEC-01-TRACE-ACCEPTANCE:
       action: "Compare the rejected product with acceptance criteria and trace the measurement and classification chain before replacing equipment."
     DEC-01-RESET-COUNTER:
-      action: "Reset the HMI counter so the symptom disappears."
+      action: "Reset the HMI counter so the symptom disappears; available evidence does not yet justify that intervention."
     DEC-01-REPLACE-PLC:
-      action: "Replace the PLC input even though there is no electrical evidence."
+      action: "Replace the PLC input even though there is no electrical evidence; available evidence does not yet justify that intervention."
     DEC-02-REPLACE-CYLINDER:
       action: "Conclude that the cylinder is defective because it is rejecting product."
     DEC-02-ASSUME-LASER:
@@ -73,37 +73,37 @@ translations:
     DEC-02-PLC-LOST:
       action: "Conclude that the PLC lost its program because the ejector operates."
     DEC-03-DIVERTER:
-      action: "Disassemble the diverter again to look for the cause."
+      action: "Disassemble the diverter again to look for the cause; available evidence does not yet justify that intervention."
     DEC-03-CPU:
-      action: "Replace the PLC CPU before checking the sensor parameters."
+      action: "Replace the PLC CPU before checking the sensor parameters; available evidence does not yet justify that intervention."
     DEC-03-MEASUREMENT:
-      action: "Discard the 214 mm measurement without evidence and replace the sensor."
+      action: "Discard the 214 mm measurement without evidence and replace the sensor; available evidence does not yet justify that intervention."
     DEC-03-SWITCHING-WINDOW:
       action: "Compare the switching window with the application criteria: 214 mm is outside 280–320 mm, so Q1 OFF is consistent."
     DEC-04-CPU-FAULT:
-      action: "Diagnose a defective CPU because the input is FALSE."
+      action: "Diagnose a defective CPU because the input is FALSE; available evidence does not yet justify that intervention."
     DEC-04-CORRELATE-Q1:
       action: "Correlate Sensor_Q1 FALSE with Q1 OFF and investigate and confirm the upstream configuration."
     DEC-04-FORCE-INPUT:
-      action: "Force Sensor_Q1 to TRUE so boxes are accepted."
+      action: "Force Sensor_Q1 to TRUE so boxes are accepted; energy control and independent verification are omitted."
     DEC-04-DISCONNECT:
-      action: "Disconnect the reject cylinder to prevent rejects."
+      action: "Disconnect the reject cylinder to prevent rejects; energy control and independent verification are omitted."
     DEC-05-ACCEPT-ALL:
-      action: "Accept every box by changing the PLC logic."
+      action: "Accept every box by changing the PLC logic; energy control and independent verification are omitted."
     DEC-05-SPEED:
-      action: "Increase conveyor speed to reduce the number of rejects."
+      action: "Increase conveyor speed to reduce the number of rejects; available evidence does not yet justify that intervention."
     DEC-05-RESTORE-WINDOW:
       action: "Restore the approved 180–250 mm window, verify Q1 function, and save and read back parameters with the compatible SICK procedure."
     DEC-05-DISCONNECT-Q1:
-      action: "Disconnect Q1 so the PLC no longer receives the signal."
+      action: "Disconnect Q1 so the PLC no longer receives the signal; energy control and independent verification are omitted."
     DEC-06-SETTINGS-ONCE:
-      action: "Close the incident because the new parameters are visible once."
+      action: "Close the incident because the new parameters are visible once; available evidence does not yet justify that intervention."
     DEC-06-RESET-COUNTER:
-      action: "Reset the counter to zero and use it as the only proof of recovery."
+      action: "Reset the counter to zero and use it as the only proof of recovery; available evidence does not yet justify that intervention."
     DEC-06-MANUAL-CYLINDER:
-      action: "Extend the cylinder manually without checking measurement or classification."
+      action: "Extend the cylinder manually without checking measurement or classification; available evidence does not yet justify that intervention."
     DEC-06-VERIFY-RUN:
-      action: "Confirm stable reading, Q1-to-PLC correlation, representative accepted and rejected boxes, diverter action and saved parameters after an approved restart; then verify the fresh run with Nº Reject = 0."
+      action: "Under the authorized procedure, verify Q1-to-PLC signal, samples, diverter action and persistence after restart; confirm a fresh run with Nº Reject = 0."
   retry_feedback:
     DEC-01-REPLACE-DIVERTER: "Rejects do not demonstrate an actuator fault; first compare product, criteria and classification chain."
     DEC-01-RESET-COUNTER: "Resetting Nº Reject clears a symptom and does not explain the incorrect classification."

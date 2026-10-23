@@ -62,13 +62,13 @@ translations:
     DEC-01-TRACE-ACTUATION:
       action: "From a safe position, observe the local Y1 indication with the extension request active."
     DEC-01-REPLACE-CYLINDER:
-      action: "Replace the cylinder immediately because ExtendedLS does not arrive."
+      action: "Replace the cylinder immediately because ExtendedLS does not arrive; available evidence does not yet justify that intervention."
     DEC-01-INCREASE-TIMEOUT:
-      action: "Increase timeout so the sequence can continue."
+      action: "Increase timeout so the sequence can continue; available evidence does not yet justify that intervention."
     DEC-01-FORCE-FEEDBACK:
-      action: "Force ExtendedLS to confirm the rest of the sequence."
+      action: "Force ExtendedLS to confirm the rest of the sequence; energy control and independent verification are omitted."
     DEC-02-CONTINUE-DOWNSTREAM:
-      action: "From a safe position, check the regulated supply reading and observations of an air alarm or major leak; leave cylinder dynamics pending."
+      action: "Check the regulated supply and air alarms from a safe position."
     DEC-02-REPLACE-PLC:
       action: "Replace the PLC output even though the local Y1 indicator is on."
     DEC-02-ASSUME-MOVEMENT:
@@ -76,29 +76,29 @@ translations:
     DEC-03-INVESTIGATE-LOCAL-FLOW:
       action: "With the pressure reading available, observe cylinder extension against the intended time window from a safe position."
     DEC-03-INCREASE-PRESSURE:
-      action: "Immediately increase regulator pressure."
+      action: "Immediately increase regulator pressure; energy control and independent verification are omitted."
     DEC-03-BLAME-COMPRESSOR:
-      action: "Attribute the timeout to the plant compressor."
+      action: "Attribute the timeout to the plant compressor; available evidence does not yet justify that intervention."
     DEC-04-INSPECT-FLOW-LOAD:
-      action: "Inspect local regulation, exhaust and load; before intervention, apply the authorized energy-isolation and motion-control procedure."
+      action: "Inspect regulation, exhaust and load under energy-isolation and motion control."
     DEC-04-REPLACE-LS:
-      action: "Replace ExtendedLS because it remains FALSE."
+      action: "Replace ExtendedLS because it remains FALSE; available evidence does not yet justify that intervention."
     DEC-04-REPLACE-VALVE:
-      action: "Replace the 5/2 valve without inspecting flow control."
+      action: "Replace the 5/2 valve without inspecting flow control; available evidence does not yet justify that intervention."
     DEC-05-RESTORE-SETTING:
       action: "Apply the authorized energy-isolation and motion-control procedure before intervention and restore the intended flow setting."
     DEC-05-REMOVE-CONTROL:
-      action: "Remove the controller to eliminate any restriction."
+      action: "Remove the controller to eliminate any restriction; energy control and independent verification are omitted."
     DEC-05-INCREASE-PRESSURE:
-      action: "Compensate for the restriction by increasing supply pressure."
+      action: "Compensate for the restriction by increasing supply pressure; energy control and independent verification are omitted."
     DEC-05-OPEN-FULLY:
-      action: "Open the controller fully without reference to the intended condition."
+      action: "Open the controller fully without reference to the intended condition; energy control and independent verification are omitted."
     DEC-06-REPEAT-CYCLES:
-      action: "From a safe position, run repeated representative cycles with controlled movement and verify timing, full stroke, feedback and absence of recurrence."
+      action: "Run representative cycles from a safe position and verify timing, stroke, feedback and absence of recurrence."
     DEC-06-CLOSE-ONCE:
-      action: "Close the intervention after one successful extension."
+      action: "Close the intervention after one successful extension without first comparing field evidence with the control logic."
     DEC-06-KEEP-LONG-TIMEOUT:
-      action: "Keep an artificially increased timeout as a preventive measure."
+      action: "Keep an artificially increased timeout as a preventive measure; available evidence does not yet justify that intervention."
   retry_feedback:
     DEC-01-REPLACE-CYLINDER: "A timeout does not identify the failed component. First confirm how far the command travels."
     DEC-01-INCREASE-TIMEOUT: "Increasing timeout can hide physical degradation; it does not explain missing feedback under the intended condition."

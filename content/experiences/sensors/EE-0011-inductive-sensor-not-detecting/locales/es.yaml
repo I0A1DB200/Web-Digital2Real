@@ -72,53 +72,53 @@ translations:
       content: "La comprobación final confirma montaje asegurado y cumplimiento de la condición documentada ≤ 4.86 mm, sin asignar una separación corregida exacta no documentada. Se verifican LED verde Power = ON, LED amarillo Switching/Output = ON, Active switchpoint = 1 y propagación a través del PLC hasta HMI PartInPosition = 1, sin forzados. El rótulo ≤ 6 mm de la imagen no acredita por sí solo ≤ 4.86 mm; la aceptación de la instalación procede de la comprobación descrita, no de asumir un umbral exacto en Sn."
   decisions:
     DEC-01-REPLACE-SENSOR:
-      action: "Sustituir el sensor porque la pieza está presente."
+      action: "Sustituir el sensor porque la pieza está presente; la evidencia disponible aún no justifica esa intervención."
     DEC-01-CHECK-HEALTH:
       action: "Comprobar el estado del PLC, la red y la comunicación IO-Link."
     DEC-01-EDIT-HMI:
-      action: "Cambiar la representación HMI de PartInPosition."
+      action: "Cambiar la representación HMI de PartInPosition; la evidencia disponible aún no justifica esa intervención."
     DEC-02-RESTART-NETWORK:
-      action: "Reiniciar la red para recuperar PartInPosition."
+      action: "Reiniciar la red para recuperar PartInPosition; la evidencia disponible aún no justifica esa intervención."
     DEC-02-REMAP-PLC:
-      action: "Reasignar la señal en el PLC."
+      action: "Reasignar la señal en el PLC; la evidencia disponible aún no justifica esa intervención."
     DEC-02-INSPECT-SENSOR:
       action: "Inspeccionar de forma segura objetivo, alimentación y LED de conmutación del sensor."
     DEC-03-MEASURE-GEOMETRY:
       action: "Medir la separación sensor-objetivo y compararla con la documentación del dispositivo."
     DEC-03-REPLACE-POWERED:
-      action: "Sustituir el sensor porque tiene alimentación pero no conmuta."
+      action: "Sustituir el sensor porque tiene alimentación pero no conmuta; la evidencia disponible aún no justifica esa intervención."
     DEC-03-CHANGE-PARAMETERS:
-      action: "Cambiar los parámetros IO-Link para activar la salida."
+      action: "Cambiar los parámetros IO-Link para activar la salida; la evidencia disponible aún no justifica esa intervención."
     DEC-04-EXACT-THRESHOLD:
-      action: "Considerar 6 mm el punto exacto de conmutación para cualquier condición."
+      action: "Considerar 6 mm el punto exacto de conmutación para cualquier condición; la evidencia disponible aún no justifica esa intervención."
     DEC-04-COMPARE-SECURED:
       action: "Identificar una instalación fuera de la condición asegurada y contrastar el estado de detección por IO-Link."
     DEC-04-TUNE-RANGE:
-      action: "Aumentar un parámetro de alcance para compensar la separación."
+      action: "Aumentar un parámetro de alcance para compensar la separación; la evidencia disponible aún no justifica esa intervención."
     DEC-05-CORRELATE-STATE:
       action: "Correlacionar el cero con el LED apagado y la separación medida para formular el diagnóstico."
     DEC-05-BLAME-IO-LINK:
-      action: "Diagnosticar fallo IO-Link porque el dato vale cero."
+      action: "Diagnosticar fallo IO-Link porque el dato vale cero; la evidencia disponible aún no justifica esa intervención."
     DEC-05-BLAME-HMI:
-      action: "Atribuir la ausencia de detección a la HMI."
+      action: "Atribuir la ausencia de detección a la HMI; la evidencia disponible aún no justifica esa intervención."
     DEC-06-DEFECTIVE-SENSOR:
-      action: "Sensor averiado: la alimentación debería garantizar la detección."
+      action: "Sensor averiado: la alimentación debería garantizar la detección; la evidencia disponible aún no justifica esa intervención."
     DEC-06-PLC-FAILURE:
-      action: "Fallo del PLC al interpretar un sensor que sí detecta."
+      action: "Fallo del PLC al interpretar un sensor que sí detecta; la evidencia disponible aún no justifica esa intervención."
     DEC-06-INSTALLATION-DISTANCE:
       action: "Distancia de instalación sensor-objetivo incorrecta; problema de aplicación física, sin evidencia de sensor defectuoso."
     DEC-07-FORCE-INPUT:
-      action: "Forzar PartInPosition para liberar la estación."
+      action: "Forzar PartInPosition para liberar la estación; la evidencia disponible aún no justifica esa intervención."
     DEC-07-CHANGE-LOGIC:
-      action: "Modificar PLC o HMI para aceptar el estado actual."
+      action: "Modificar PLC o HMI para aceptar el estado actual; la evidencia disponible aún no justifica esa intervención."
     DEC-07-CORRECT-GEOMETRY:
-      action: "Con movimientos peligrosos controlados y conforme al procedimiento seguro, corregir y asegurar la geometría para cumplir la condición documentada; dejar pendiente la verificación funcional."
+      action: "Con movimiento controlado y procedimiento seguro, corregir y asegurar la geometría según la condición documentada."
     DEC-08-POWER-ONLY:
-      action: "Cerrar al comprobar únicamente el LED verde."
+      action: "Cerrar al comprobar únicamente el LED verde; la evidencia disponible aún no justifica esa intervención."
     DEC-08-VERIFY-FULL-CHAIN:
-      action: "Verificar montaje asegurado y separación dentro de la condición documentada ≤ 4.86 mm, ambos LED encendidos y propagación de Active switchpoint = 1 a PLC y HMI PartInPosition = 1, sin forzados."
+      action: "Verificar montaje, condición documentada, LEDs y propagación del estado hasta PLC y HMI, sin forzados."
     DEC-08-HMI-ONLY:
-      action: "Cerrar por PartInPosition = 1 sin contrastar sensor e IO-Link."
+      action: "Cerrar por PartInPosition = 1 sin contrastar sensor e IO-Link; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-REPLACE-SENSOR: "La discrepancia aún no localiza el fallo. Comprueba la salud del sistema antes de sustituir equipos."
     DEC-01-EDIT-HMI: "Una indicación a cero puede representar fielmente la señal. Primero establece el estado del sistema."

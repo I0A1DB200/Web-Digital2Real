@@ -71,45 +71,45 @@ translations:
     DEC-01-OBSERVE-CYCLES:
       action: "Observar varios ciclos desde una posición segura y conservar ejemplos correctos y fallidos antes de intervenir."
     DEC-01-REPLACE-SENSOR:
-      action: "Sustituir inmediatamente el sensor porque alguna caja no se detecta."
+      action: "Sustituir inmediatamente el sensor porque alguna caja no se detecta; la evidencia disponible aún no justifica esa intervención."
     DEC-01-CHANGE-LOGIC:
-      action: "Modificar la lógica para aceptar una caja aunque no llegue la señal."
+      action: "Modificar la lógica para aceptar una caja aunque no llegue la señal sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-COMPARE-STATES:
-      action: "Observar la salida física del sensor, monitorizar la entrada PLC y comprobar el registro de producción en los ejemplos conservados; comparar sus estados entre ciclos correctos y fallidos."
+      action: "Observar la salida del sensor, monitorizar la entrada PLC y contrastar el registro de producción entre ciclos correctos y fallidos."
     DEC-02-INCREASE-SENSITIVITY:
-      action: "Aumentar sensibilidad sin relacionar el ajuste con el fallo."
+      action: "Aumentar sensibilidad sin relacionar el ajuste con el fallo; la evidencia disponible aún no justifica esa intervención."
     DEC-02-REPLACE-INPUT:
-      action: "Sustituir el módulo de entradas antes de observar el estado del sensor."
+      action: "Sustituir el módulo de entradas antes de observar el estado del sensor; la evidencia disponible aún no justifica esa intervención."
     DEC-03-MOVE-UPSTREAM:
       action: "Concluir que la señal no se origina durante el fallo y mover la investigación aguas arriba del PLC."
     DEC-03-BLAME-PLC:
-      action: "Atribuir la omisión al programa PLC porque la entrada permanece OFF."
+      action: "Atribuir la omisión al programa PLC porque la entrada permanece OFF; la evidencia disponible aún no justifica esa intervención."
     DEC-03-REMAP-INPUT:
-      action: "Cambiar el mapeo de E/S para probar otro canal."
+      action: "Cambiar el mapeo de E/S para probar otro canal sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-CORRELATE-POSITION:
       action: "Comparar posición y trayectoria de las cajas entre detecciones correctas y omitidas."
     DEC-04-REPLACE-SENSOR:
-      action: "Sustituir el sensor sin observar las condiciones físicas del fallo."
+      action: "Sustituir el sensor sin observar las condiciones físicas del fallo; la evidencia disponible aún no justifica esa intervención."
     DEC-04-CHANGE-PROGRAM:
-      action: "Ampliar una ventana de software para compensar la señal ausente."
+      action: "Ampliar una ventana de software para compensar la señal ausente; la evidencia disponible aún no justifica esa intervención."
     DEC-05-INSPECT-ALIGNMENT:
       action: "Inspeccionar la alineación del eje de detección respecto a toda la trayectoria real del producto."
     DEC-05-ADJUST-BLINDLY:
-      action: "Girar el sensor sin registrar su geometría ni confirmar la correlación."
+      action: "Girar el sensor sin registrar su geometría ni confirmar la correlación; la evidencia disponible aún no justifica esa intervención."
     DEC-05-REPLACE-HARDWARE:
-      action: "Sustituir sensor y módulo PLC para eliminar posibilidades."
+      action: "Sustituir sensor y módulo PLC para eliminar posibilidades; la evidencia disponible aún no justifica esa intervención."
     DEC-06-REALIGN-SECURE:
-      action: "Aplicar el procedimiento autorizado de parada y aislamiento antes de realinear el sensor sobre la trayectoria efectiva y asegurar mecánicamente el soporte."
+      action: "Aplicar parada y aislamiento antes de realinear el sensor y asegurar el soporte."
     DEC-06-SENSOR-ONLY:
-      action: "Instalar otro sensor en la misma alineación marginal."
+      action: "Instalar otro sensor en la misma alineación marginal; la evidencia disponible aún no justifica esa intervención."
     DEC-06-SOFTWARE-WINDOW:
-      action: "Modificar tiempos PLC para compensar la ausencia de señal física."
+      action: "Modificar tiempos PLC para compensar la ausencia de señal física; la evidencia disponible aún no justifica esa intervención."
     DEC-07-VALIDATE-SAMPLE:
-      action: "Tras la intervención, ejecutar una muestra repetida que incluya las posiciones antes asociadas al fallo y comprobar la salida del sensor, la entrada PLC y el registro de producción."
+      action: "Tras la intervención, ejecutar una muestra repetida y comprobar salida del sensor, entrada PLC y registro."
     DEC-07-ONE-CYCLE:
-      action: "Aceptar un único ciclo correcto como validación suficiente."
+      action: "Aceptar un único ciclo correcto como validación suficiente sin comparar antes la evidencia de campo con la lógica de control."
     DEC-07-CLOSE-NOW:
-      action: "Cerrar la intervención inmediatamente después del ajuste."
+      action: "Cerrar la intervención inmediatamente después del ajuste; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-REPLACE-SENSOR: "La omisión ocasional no demuestra un fallo interno. Primero conserva ciclos correctos y fallidos para identificar qué estado cambia."
     DEC-01-CHANGE-LOGIC: "Aceptar una caja sin señal ocultaría el síntoma y alteraría el comportamiento documentado antes de localizar la causa."

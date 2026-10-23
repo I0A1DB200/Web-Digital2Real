@@ -62,39 +62,39 @@ translations:
     DEC-01-INSPECT-PLC:
       action: "Observar online ExtendCmd, la lógica de extensión, la salida asociada y ExtendedLS sin forzar variables."
     DEC-01-REPLACE-CYLINDER:
-      action: "Sustituir el cilindro porque no se mueve."
+      action: "Sustituir el cilindro porque no se mueve; la evidencia disponible aún no justifica esa intervención."
     DEC-01-FORCE-FEEDBACK:
-      action: "Forzar ExtendedLS para que la secuencia continúe."
+      action: "Forzar ExtendedLS para que la secuencia continúe sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-INSPECT-ACTUATION:
       action: "Comprobar la salida y la actuación de control de la válvula, sin asumir movimiento físico."
     DEC-02-ASSUME-MOTION:
-      action: "Concluir que el cilindro recibe aire porque ExtendCmd está TRUE."
+      action: "Concluir que el cilindro recibe aire porque ExtendCmd está TRUE; la evidencia disponible aún no justifica esa intervención."
     DEC-02-CHANGE-LOGIC:
-      action: "Modificar la lógica para mantener la orden permanentemente."
+      action: "Modificar la lógica para mantener la orden permanentemente; la evidencia disponible aún no justifica esa intervención."
     DEC-03-CHECK-SUPPLY:
       action: "Desde una posición segura, comprobar la disponibilidad del suministro de aire conforme al procedimiento de la instalación."
     DEC-03-REPLACE-VALVE:
-      action: "Sustituir la válvula sin comprobar el suministro neumático."
+      action: "Sustituir la válvula sin comprobar el suministro neumático; la evidencia disponible aún no justifica esa intervención."
     DEC-03-INCREASE-PRESSURE:
-      action: "Aumentar la presión para intentar iniciar el movimiento."
+      action: "Aumentar la presión para intentar iniciar el movimiento sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-INSPECT-CONNECTION:
       action: "Aplicar el procedimiento autorizado de aislamiento de energías y control de movimiento antes de inspeccionar tubo, racor y puerto local del cilindro."
     DEC-04-REPLACE-CYLINDER:
-      action: "Sustituir el cilindro porque la presión general está disponible."
+      action: "Sustituir el cilindro porque la presión general está disponible; la evidencia disponible aún no justifica esa intervención."
     DEC-04-BYPASS-SAFETY:
-      action: "Manipular el tubo con la instalación presurizada para buscar una fuga."
+      action: "Manipular el tubo con la instalación presurizada para buscar una fuga sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-RECONNECT:
       action: "Mantener el aislamiento autorizado, comprobar el estado compatible de tubo y racor, y restaurar la conexión local prevista."
     DEC-05-HOLD-TUBE:
-      action: "Sujetar el tubo junto al racor y probar la máquina sin conectarlo."
+      action: "Sujetar el tubo junto al racor y probar la máquina sin conectarlo sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-REPLACE-PLC:
-      action: "Sustituir el PLC aunque la desconexión física ya está observada."
+      action: "Sustituir el PLC aunque la desconexión física ya está observada; la evidencia disponible aún no justifica esa intervención."
     DEC-06-VERIFY:
       action: "Desde una posición segura, verificar con movimiento controlado que el cilindro extiende y ExtendedLS cambia a TRUE."
     DEC-06-CLOSE-CONNECTION:
-      action: "Cerrar la incidencia porque el tubo está conectado visualmente."
+      action: "Cerrar la incidencia porque el tubo está conectado visualmente; la evidencia disponible aún no justifica esa intervención."
     DEC-06-FORCE-FEEDBACK:
-      action: "Forzar ExtendedLS para confirmar el resto de la secuencia."
+      action: "Forzar ExtendedLS para confirmar el resto de la secuencia sin aplicar el procedimiento de energías ni una verificación independiente."
   retry_feedback:
     DEC-01-REPLACE-CYLINDER: "La ausencia de movimiento no identifica todavía el elemento que rompe la cadena."
     DEC-01-FORCE-FEEDBACK: "Forzar el feedback oculta la discrepancia y elimina una protección de secuencia."

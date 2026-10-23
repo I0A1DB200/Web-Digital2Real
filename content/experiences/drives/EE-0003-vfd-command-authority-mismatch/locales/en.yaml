@@ -62,39 +62,39 @@ translations:
     DEC-01-INSPECT-DRIVE:
       action: "From a safe position, inspect drive READY, RUNNING, FAULT and the indicated frequency before intervening."
     DEC-01-REPLACE-MOTOR:
-      action: "Replace the motor immediately because its shaft does not rotate."
+      action: "Replace the motor immediately because its shaft does not rotate; available evidence does not yet justify that intervention."
     DEC-01-FORCE-OUTPUT:
-      action: "Force the run output to see whether movement appears."
+      action: "Force the run output to see whether movement appears; energy control and independent verification are omitted."
     DEC-02-TRACE-PLC:
       action: "Check the PLC CPU operating state; leave verification of RunCmd and its acceptance by the drive pending."
     DEC-02-RESET-REPEATEDLY:
-      action: "Reset the drive repeatedly even though no fault is present."
+      action: "Reset the drive repeatedly even though no fault is present; available evidence does not yet justify that intervention."
     DEC-02-REPLACE-VFD:
-      action: "Replace the drive because READY does not produce movement."
+      action: "Replace the drive because READY does not produce movement; available evidence does not yet justify that intervention."
     DEC-03-CHECK-AUTHORITY:
       action: "Check which source currently has authority to command the drive."
     DEC-03-CHANGE-LOGIC:
       action: "Change the program because the conveyor does not respond."
     DEC-03-BYPASS-PERMISSIVES:
-      action: "Bypass permissives to eliminate the logic quickly."
+      action: "Bypass permissives to eliminate the logic quickly; energy control and independent verification are omitted."
     DEC-04-VERIFY-ARCHITECTURE:
       action: "Consult the approved architecture and compare current authority with that required for production."
     DEC-04-ASSUME-HAND-FAULT:
-      action: "Declare that HAND is always a fault and change it without checking the design."
+      action: "Declare that HAND is always a fault and change it without checking the design; available evidence does not yet justify that intervention."
     DEC-04-CHANGE-PARAMETERS:
-      action: "Change command-source parameters before establishing the intended configuration."
+      action: "Change command-source parameters before establishing the intended configuration; available evidence does not yet justify that intervention."
     DEC-05-VERIFY-ONLINE:
       action: "From a safe position, verify permissives, RunCmd and feedback online in FB_CONVEYOR before correcting authority."
     DEC-05-REPROGRAM:
-      action: "Reprogram FB_CONVEYOR to compensate for the drive's local state."
+      action: "Reprogram FB_CONVEYOR to compensate for the drive's local state; available evidence does not yet justify that intervention."
     DEC-05-REPLACE-DRIVE:
-      action: "Replace the drive without checking whether the logic produces RunCmd."
+      action: "Replace the drive without checking whether the logic produces RunCmd; available evidence does not yet justify that intervention."
     DEC-06-RESTORE-VERIFY:
-      action: "Apply the authorized procedure before intervention and restore AUTO/PLC-PROFINET through the machine's approved procedure; request run and verify command, state, speed and movement from a safe position."
+      action: "Apply the authorized procedure before intervention; restore AUTO/PLC-PROFINET and verify command and movement from a safe position."
     DEC-06-CLOSE-ON-MODE:
-      action: "Close the intervention as soon as the display shows AUTO."
+      action: "Close the intervention as soon as the display shows AUTO; available evidence does not yet justify that intervention."
     DEC-06-FORCE-RUNNING:
-      action: "Force Running feedback to make it match RunCmd."
+      action: "Force Running feedback to make it match RunCmd; energy control and independent verification are omitted."
   retry_feedback:
     DEC-01-REPLACE-MOTOR: "No movement does not prove a motor fault. First determine whether the drive is available, executing or faulted."
     DEC-01-FORCE-OUTPUT: "Forcing an output bypasses the authorized chain and does not identify which device accepts the command. Inspect drive state first."

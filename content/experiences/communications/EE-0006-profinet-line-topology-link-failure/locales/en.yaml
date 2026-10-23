@@ -63,43 +63,43 @@ translations:
       content: "Post-intervention verification confirms link present, A3/A4 reachable, valid cyclic exchange and process I/O, and recovery of the affected function under representative conditions."
   decisions:
     DEC-01-RESTART-PLC:
-      action: "Restart the PLC immediately."
+      action: "Restart the PLC immediately; available evidence does not yet justify that intervention."
     DEC-01-REPLACE-A3-A4:
-      action: "Replace A3 and A4 because both appear unavailable."
+      action: "Replace A3 and A4 because both appear unavailable; available evidence does not yet justify that intervention."
     DEC-01-COMPARE-NETWORK-AREAS:
-      action: "From a safe condition, compare affected and unaffected areas and observe the installation layout, branches and segments to relate the reported scope to the physical network."
+      action: "From a safe condition, observe the installation layout across affected and unaffected areas and relate it to the physical topology."
     DEC-01-INVESTIGATE-STRING-B:
-      action: "Begin troubleshooting String B although it operates normally."
+      action: "Begin troubleshooting String B although it operates normally; available evidence does not yet justify that intervention."
     DEC-02-DOWNLOAD-PROJECT:
-      action: "Download the PLC project again."
+      action: "Download the PLC project again; available evidence does not yet justify that intervention."
     DEC-02-USE-TIA-DIAGNOSTICS:
       action: "From a safe diagnostic condition, use TIA Portal online diagnostics to compare availability of configured devices."
     DEC-02-CHANGE-IP:
-      action: "Change IP addresses on the unavailable nodes."
+      action: "Change IP addresses on the unavailable nodes; available evidence does not yet justify that intervention."
     DEC-03-REPLACE-A3:
-      action: "Replace A3 because it is the first unavailable device."
+      action: "Replace A3 because it is the first unavailable device; available evidence does not yet justify that intervention."
     DEC-03-ASSUME-IO-LINK:
-      action: "Treat the incident as an IO-Link sensor fault."
+      action: "Treat the incident as an IO-Link sensor fault; available evidence does not yet justify that intervention."
     DEC-03-REPLACE-SWITCH:
-      action: "Replace the industrial switch because several nodes are unavailable."
+      action: "Replace the industrial switch because several nodes are unavailable; available evidence does not yet justify that intervention."
     DEC-03-FIND-GOOD-BAD-BOUNDARY:
-      action: "From a safe condition, locate the last reachable node, the first unavailable node and their connecting segment; observe local power and link indications."
+      action: "From a safe condition, locate the last reachable node, the first unavailable node and their segment; observe power and link."
     DEC-04-ASSUME-POWER-FAULT:
-      action: "Conclude that A3 lost 24 V although it remains powered."
+      action: "Conclude that A3 lost 24 V although it remains powered; available evidence does not yet justify that intervention."
     DEC-04-INSPECT-A2-A3-LINK:
-      action: "Consult available topology information in PRONETA and inspect the A2 Turck–A3 Murr segment; apply the authorized maintenance procedure before physically intervening on cabling or connectors."
+      action: "Consult PRONETA and inspect the A2 Turck–A3 Murr segment under the authorized maintenance procedure."
     DEC-04-REPLACE-A3:
-      action: "Replace A3 without checking its connecting segment."
+      action: "Replace A3 without checking its connecting segment; available evidence does not yet justify that intervention."
     DEC-05-RESTORE-SEGMENT:
       action: "Restore or replace the defective industrial segment according to the applicable maintenance procedure."
     DEC-05-RENAME-DEVICES:
-      action: "Assign new PROFINET names to A3 and A4."
+      action: "Assign new PROFINET names to A3 and A4; available evidence does not yet justify that intervention."
     DEC-05-REPAIR-IMPROVISED:
-      action: "Make an improvised cable repair to recover production."
+      action: "Make an improvised cable repair to recover production; energy control and independent verification are omitted."
     DEC-06-CLOSE-ON-GREEN:
-      action: "Close the intervention when one diagnostic icon turns green."
+      action: "Close the intervention when one diagnostic icon turns green; available evidence does not yet justify that intervention."
     DEC-06-CHECK-A3-ONLY:
-      action: "Check only that A3 becomes available again."
+      action: "Check only that A3 becomes available again; available evidence does not yet justify that intervention."
     DEC-06-VERIFY-FULL-CHAIN:
       action: "From a safe condition, verify link, A3/A4, cyclic communication, process I/O and machine function under representative conditions."
   retry_feedback:

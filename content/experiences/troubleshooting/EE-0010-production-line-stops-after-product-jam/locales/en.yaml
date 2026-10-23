@@ -72,15 +72,15 @@ translations:
       content: "After safe residue removal, the functional check confirms B3_TransferSensor FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfied and S41 active. Commands and normal operation are verified over repeated cycles without forcing or bypassing. The GRAPH image illustrates one recovered state, not repeatability by itself."
   decisions:
     DEC-01-RESET-DRIVE:
-      action: "Reset the drive because the conveyor is stopped."
+      action: "Reset the drive because the conveyor is stopped; available evidence does not yet justify that intervention."
     DEC-01-VERIFY-INFRASTRUCTURE:
       action: "First verify PLC, Safety, PROFINET, and distributed I/O as common infrastructure."
     DEC-01-REPLACE-B3:
-      action: "Replace B3 because the HMI reports product detected."
+      action: "Replace B3 because the HMI reports product detected; available evidence does not yet justify that intervention."
     DEC-02-PARAMETERIZE-DRIVE:
-      action: "Change drive parameters to recover motion."
+      action: "Change drive parameters to recover motion; available evidence does not yet justify that intervention."
     DEC-02-REPLACE-DRIVE:
-      action: "Replace the drive because the motor does not turn."
+      action: "Replace the drive because the motor does not turn; available evidence does not yet justify that intervention."
     DEC-02-COMPARE-RUN-READY-FAULT:
       action: "Compare RunCmd, DriveReady, and DriveFault before intervening in the drive."
     DEC-03-CHECK-PUSHER-COMMAND:
@@ -96,29 +96,29 @@ translations:
     DEC-04-INSPECT-SEQUENCE:
       action: "Inspect the active step and pending sequence transition."
     DEC-05-REPLACE-SENSOR:
-      action: "Conclude that B3 has failed from the sequence waiting."
+      action: "Conclude that B3 has failed from the sequence waiting; available evidence does not yet justify that intervention."
     DEC-05-MONITOR-CONDITION-TERMS:
       action: "Monitor TransferClear, B3_TransferSensor, and DownstreamFree without forcing them."
     DEC-05-FORCE-T40:
-      action: "Force T40 so GRAPH advances."
+      action: "Force T40 so GRAPH advances; energy control and independent verification are omitted."
     DEC-06-TRACE-LAD-LOGIC:
       action: "Open the online logic and trace how B3_TransferSensor and DownstreamFree generate TransferClear."
     DEC-06-ASSUME-WATCH-CAUSALITY:
-      action: "Assume causality because all three variables appear together in the watch table."
+      action: "Assume causality because all three variables appear together in the watch table; available evidence does not yet justify that intervention."
     DEC-06-EDIT-GRAPH:
-      action: "Remove TransferClear from T40 to avoid the wait."
+      action: "Remove TransferClear from T40 to avoid the wait; energy control and independent verification are omitted."
     DEC-07-SAFE-REMOVE-VERIFY:
-      action: "Remove the residue under the safe procedure and verify B3 FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfied, S41 active, commands, and repeated normal cycles without forcing."
+      action: "Remove the residue under the safe procedure and verify B3, DownstreamFree, TransferClear, T40, S41 and normal cycles."
     DEC-07-BYPASS-B3:
-      action: "Bypass B3 to prevent further stops."
+      action: "Bypass B3 to prevent further stops; energy control and independent verification are omitted."
     DEC-07-FORCE-TRANSFER-CLEAR:
-      action: "Force TransferClear TRUE and leave the residue in the zone."
+      action: "Force TransferClear TRUE and leave the residue in the zone; energy control and independent verification are omitted."
     DEC-07-INSPECT-B3:
       action: "Safely inspect the B3 detection zone and compare its physical condition with the signal before making a correction."
     DEC-07-REPLACE-WITHOUT-INSPECTION:
-      action: "Replace B3 because the logic uses its signal, without inspecting the process."
+      action: "Replace B3 because the logic uses its signal, without inspecting the process; available evidence does not yet justify that intervention."
     DEC-07-DECLARE-FAULT:
-      action: "Declare B3 faulty solely because its signal is TRUE."
+      action: "Declare B3 faulty solely because its signal is TRUE; available evidence does not yet justify that intervention."
   retry_feedback:
     DEC-01-RESET-DRIVE: "A stopped conveyor is a symptom. Verify the common infrastructure first."
     DEC-01-REPLACE-B3: "A TRUE indication does not prove a defective sensor. Establish the common system state first."

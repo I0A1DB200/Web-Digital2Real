@@ -60,11 +60,11 @@ translations:
       content: "La restauración conforme al procedimiento seguro deja el M12 correctamente asentado. La verificación confirma comunicación del dispositivo C3, datos de proceso esperados, disponibilidad PROFINET y de los puertos vecinos preservada y función de máquina estable en ciclos repetidos sin forcing. Estos resultados proceden de la prueba funcional, no de los indicadores de la imagen."
   decisions:
     DEC-01-REPLACE-DEVICE:
-      action: "Sustituir inmediatamente el dispositivo de campo."
+      action: "Sustituir inmediatamente el dispositivo de campo; la evidencia disponible aún no justifica esa intervención."
     DEC-01-RESTART-LINE:
-      action: "Reiniciar toda la línea para intentar recuperar la información."
+      action: "Reiniciar toda la línea para intentar recuperar la información; la evidencia disponible aún no justifica esa intervención."
     DEC-01-CHANGE-IP:
-      action: "Cambiar la configuración IP del PLC y del master."
+      action: "Cambiar la configuración IP del PLC y del master; la evidencia disponible aún no justifica esa intervención."
     DEC-01-ESTABLISH-SCOPE:
       action: "Organizar las comprobaciones para determinar si la primera anomalía pertenece al PLC, PROFINET, master o dispositivo descendente."
     DEC-02-REPLACE-MASTER:
@@ -72,33 +72,33 @@ translations:
     DEC-02-VERIFY-PLC-PN-MASTER:
       action: "Verificar estado del PLC, comunicación PROFINET y disponibilidad del master."
     DEC-02-FORCE-DATA:
-      action: "Forzar los datos de proceso esperados en el PLC."
+      action: "Forzar los datos de proceso esperados en el PLC sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-03-RESET-PLC:
-      action: "Reiniciar el PLC aunque permanece operativo."
+      action: "Reiniciar el PLC aunque permanece operativo; la evidencia disponible aún no justifica esa intervención."
     DEC-03-RECONFIGURE-PN:
-      action: "Reconfigurar PROFINET aunque el master está accesible."
+      action: "Reconfigurar PROFINET aunque el master está accesible; la evidencia disponible aún no justifica esa intervención."
     DEC-03-COMPARE-PORTS:
       action: "Consultar el diagnóstico de C3 y comparar su comunicación con los demás puertos para distinguir un fallo común de uno individual."
     DEC-04-DOWNSTREAM-C3:
       action: "Centrar la investigación en la ruta individual C3, incluido el puerto, cable y dispositivo."
     DEC-04-GENERAL-PROFINET:
-      action: "Diagnosticar una caída general de PROFINET."
+      action: "Diagnosticar una caída general de PROFINET; la evidencia disponible aún no justifica esa intervención."
     DEC-04-MASTER-TOTAL-FAILURE:
-      action: "Concluir que el master completo ha fallado."
+      action: "Concluir que el master completo ha fallado; la evidencia disponible aún no justifica esa intervención."
     DEC-05-REPLACE-SENSOR:
-      action: "Sustituir el dispositivo sin inspeccionar su conexión."
+      action: "Sustituir el dispositivo sin inspeccionar su conexión; la evidencia disponible aún no justifica esa intervención."
     DEC-05-CHANGE-PORT:
-      action: "Mover el dispositivo a un puerto vecino saludable."
+      action: "Mover el dispositivo a un puerto vecino saludable; la evidencia disponible aún no justifica esa intervención."
     DEC-05-SUPPRESS-DIAGNOSTIC:
-      action: "Suprimir el diagnóstico para recuperar la producción."
+      action: "Suprimir el diagnóstico para recuperar la producción sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-INSPECT-M12:
       action: "Conforme al procedimiento seguro de mantenimiento y con el movimiento peligroso controlado, inspeccionar C3, el cable y el asiento del conector M12."
     DEC-06-FORCE-PROCESS-DATA:
-      action: "Forzar datos de proceso válidos y mantener la conexión sin cambios."
+      action: "Forzar datos de proceso válidos y mantener la conexión sin cambios, sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-RESTORE-COMPLETE-CHAIN:
-      action: "Conforme al procedimiento seguro de mantenimiento y con el movimiento peligroso controlado antes de intervenir, asentar el M12 y verificar comunicación C3, datos, PROFINET, puertos vecinos y función en ciclos repetidos sin forcing."
+      action: "Con movimiento controlado y conforme al procedimiento seguro, asentar el M12 y verificar C3, datos, PROFINET, puertos vecinos y ciclos repetidos sin forcing."
     DEC-06-IGNORE-REPEATABILITY:
-      action: "Asentar el conector y cerrar cuando aparezca un único dato válido."
+      action: "Asentar el conector y cerrar cuando aparezca un único dato válido; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-REPLACE-DEVICE: "Fuera de línea no demuestra que el dispositivo esté averiado. Establece primero la capa anormal."
     DEC-01-RESTART-LINE: "Reiniciar no establece si el fallo pertenece a PLC, red, master o dispositivo."

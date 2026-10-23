@@ -60,11 +60,11 @@ translations:
       content: "La verificación confirma BoxAtStop_HMI asociado a DB_HMI.BoxAtStop en %DB10.DBX0.0, comunicación PLC-HMI operativa y caja y detección local presentes. La HMI muestra DETECTED y concuerda con el proceso observado, sin forcing ni indicación fija. No se infiere repetibilidad de la imagen estática."
   decisions:
     DEC-01-RESTART-HMI:
-      action: "Reiniciar el panel antes de confirmar el estado de campo."
+      action: "Reiniciar el panel antes de confirmar el estado de campo; la evidencia disponible aún no justifica esa intervención."
     DEC-01-VERIFY-BOX-SENSOR:
-      action: "Con los movimientos controlados conforme al procedimiento autorizado, confirmar la posición real de la caja y la detección local del sensor."
+      action: "Con procedimiento autorizado, confirmar la posición real de la caja y la detección local del sensor."
     DEC-01-REPLACE-SENSOR:
-      action: "Sustituir el sensor porque la HMI dice NOT DETECTED."
+      action: "Sustituir el sensor porque la HMI dice NOT DETECTED; la evidencia disponible aún no justifica esa intervención."
     DEC-02-EDIT-PLC:
       action: "Modificar la lógica PLC para que la HMI cambie de estado."
     DEC-02-FORCE-INPUT:
@@ -80,23 +80,23 @@ translations:
     DEC-04-RESET-NETWORK:
       action: "Reiniciar la red PROFINET pese a la actualización de otros valores."
     DEC-04-REPLACE-HMI:
-      action: "Sustituir la TP700 Comfort sin revisar el objeto."
+      action: "Sustituir la TP700 Comfort sin revisar el objeto; la evidencia disponible aún no justifica esa intervención."
     DEC-04-INSPECT-TAG:
       action: "Inspeccionar el tag BoxAtStop_HMI utilizado por el objeto de pantalla."
     DEC-04-FORCE-TRUE:
-      action: "Fijar la indicación de pantalla en TRUE."
+      action: "Fijar la indicación de pantalla en TRUE sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-COMPARE-PLC-HMI:
       action: "Comparar el origen de BoxAtStop_HMI con DB_HMI.BoxAtStop verificada en el PLC."
     DEC-05-EDIT-SENSOR:
-      action: "Realinear el sensor aunque el PLC registra correctamente la caja."
+      action: "Realinear el sensor aunque el PLC registra correctamente la caja; la evidencia disponible aún no justifica esa intervención."
     DEC-05-RESTART-PANEL:
-      action: "Reiniciar el panel para conservar la asociación actual."
+      action: "Reiniciar el panel para conservar la asociación actual; la evidencia disponible aún no justifica esa intervención."
     DEC-06-HARDCODE-TRUE:
-      action: "Fijar el objeto HMI en DETECTED permanentemente."
+      action: "Fijar el objeto HMI en DETECTED permanentemente sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-MODIFY-PLC:
-      action: "Cambiar lógica PLC para hacer TRUE la variable equivocada."
+      action: "Cambiar lógica PLC para hacer TRUE la variable equivocada; la evidencia disponible aún no justifica esa intervención."
     DEC-06-MAP-AND-VERIFY:
-      action: "Asociar BoxAtStop_HMI a DB_HMI.BoxAtStop en %DB10.DBX0.0 y, con movimientos controlados conforme al procedimiento autorizado, verificar comunicación, caja y sensor y la indicación DETECTED frente al proceso, sin forcing ni constantes."
+      action: "Con procedimiento autorizado, asociar BoxAtStop_HMI a DB_HMI.BoxAtStop (%DB10.DBX0.0) y verificar caja, sensor y proceso sin forcing."
   retry_feedback:
     DEC-01-RESTART-HMI: "Reiniciar puede borrar contexto; verifica primero caja y sensor."
     DEC-01-REPLACE-SENSOR: "La HMI no demuestra fallo del sensor; comprueba la detección local."

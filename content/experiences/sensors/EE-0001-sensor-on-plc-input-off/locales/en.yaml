@@ -68,45 +68,45 @@ translations:
     DEC-01-TRACE:
       action: "Confirm the live discrepancy and follow the documented signal path from B1."
     DEC-01-REPLACE:
-      action: "Replace B1 because the sequence does not continue."
+      action: "Replace B1 because the sequence does not continue; available evidence does not yet justify that intervention."
     DEC-01-PROGRAM:
-      action: "Modify the logic to ignore Tag_BoxPresent_B1."
+      action: "Modify the logic to ignore Tag_BoxPresent_B1; energy control and independent verification are omitted."
     DEC-02-MAP:
       action: "Correlate B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1 with the schematic and observe the identified input and tag online."
     DEC-02-GUESS:
-      action: "Search for a similar input without using the schematic."
+      action: "Search for a similar input without using the schematic; available evidence does not yet justify that intervention."
     DEC-02-BYPASS:
-      action: "Bridge I0.3 to test the sequence."
+      action: "Bridge I0.3 to test the sequence without controlling energy or preserving independent verification and leave verifiable evidence."
     DEC-03-COMPARE:
       action: "Record the discrepancy and measure successive points along the path."
     DEC-03-PLC-FAULT:
       action: "Conclude that the PLC channel has failed because I0.3 is FALSE."
     DEC-03-CHANGE:
-      action: "Reassign Tag_BoxPresent_B1 to another input."
+      action: "Reassign Tag_BoxPresent_B1 to another input; energy control and independent verification are omitted."
     DEC-04-LOCALIZE:
       action: "Apply the authorized isolation and absence-of-voltage procedure; then test continuity between X1:17 and PLC I0.3."
     DEC-04-SENSOR:
-      action: "Replace B1 although it delivers 24.1 VDC."
+      action: "Replace B1 although it delivers 24.1 VDC; available evidence does not yet justify that intervention."
     DEC-04-MODULE:
-      action: "Replace the PLC module before testing the conductor."
+      action: "Replace the PLC module before testing the conductor; available evidence does not yet justify that intervention."
     DEC-05-OPEN:
       action: "Interpret OL as an open circuit and physically trace BK."
     DEC-05-IGNORE:
-      action: "Ignore OL and repeat the start attempt."
+      action: "Ignore OL and repeat the start attempt; available evidence does not yet justify that intervention."
     DEC-05-FORCE:
       action: "Force Tag_BoxPresent_B1 to hide the interruption."
     DEC-06-REPAIR:
       action: "Repair or replace the damaged section according to authorized electrical practice."
     DEC-06-REPLACE-SENSOR:
-      action: "Replace B1 although conductor damage is confirmed."
+      action: "Replace B1 although conductor damage is confirmed; available evidence does not yet justify that intervention."
     DEC-06-REPLACE-PLC:
-      action: "Replace the PLC input although conductor damage is confirmed."
+      action: "Replace the PLC input although conductor damage is confirmed; available evidence does not yet justify that intervention."
     DEC-07-VERIFY-CHAIN:
       action: "Verify B1, PLC-side voltage, I0.3, Tag_BoxPresent_B1 and the sequence."
     DEC-07-INPUT-ONLY:
       action: "Check only I0.3 and use that check as the closing criterion."
     DEC-07-CLOSE:
-      action: "Close without repeating the functional machine condition."
+      action: "Close without repeating the functional machine condition; available evidence does not yet justify that intervention."
   retry_feedback:
     DEC-01-REPLACE: "Replacing B1 is not yet justified: its indicator confirms local detection but does not establish what happens to the signal along the route."
     DEC-01-PROGRAM: "Changing the logic would hide the observed discrepancy before the documented electrical signal path has been checked."

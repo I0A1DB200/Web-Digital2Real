@@ -71,45 +71,45 @@ translations:
     DEC-01-OBSERVE-CYCLES:
       action: "Observe several cycles from a safe position and preserve successful and failed examples before intervening."
     DEC-01-REPLACE-SENSOR:
-      action: "Replace the sensor immediately because some boxes are not detected."
+      action: "Replace the sensor immediately because some boxes are not detected; available evidence does not yet justify that intervention."
     DEC-01-CHANGE-LOGIC:
-      action: "Change the logic to accept a box even when no signal arrives."
+      action: "Change the logic to accept a box even when no signal arrives; energy control and independent verification are omitted."
     DEC-02-COMPARE-STATES:
-      action: "Observe the physical sensor output, monitor the PLC input and check the production record in the retained examples; compare their states across successful and failed cycles."
+      action: "Observe sensor output, monitor the PLC input and compare the production record across successful and failed cycles."
     DEC-02-INCREASE-SENSITIVITY:
-      action: "Increase sensitivity without relating the adjustment to the fault."
+      action: "Increase sensitivity without relating the adjustment to the fault; available evidence does not yet justify that intervention."
     DEC-02-REPLACE-INPUT:
-      action: "Replace the input module before observing the sensor state."
+      action: "Replace the input module before observing the sensor state; available evidence does not yet justify that intervention."
     DEC-03-MOVE-UPSTREAM:
       action: "Conclude that the signal does not originate during the fault and move the investigation upstream of the PLC."
     DEC-03-BLAME-PLC:
-      action: "Attribute the miss to the PLC program because the input remains OFF."
+      action: "Attribute the miss to the PLC program because the input remains OFF; available evidence does not yet justify that intervention."
     DEC-03-REMAP-INPUT:
-      action: "Change the I/O mapping to test another channel."
+      action: "Change the I/O mapping to test another channel; energy control and independent verification are omitted."
     DEC-04-CORRELATE-POSITION:
       action: "Compare box position and trajectory between successful and missed detections."
     DEC-04-REPLACE-SENSOR:
       action: "Replace the sensor without observing the physical conditions of the fault."
     DEC-04-CHANGE-PROGRAM:
-      action: "Expand a software window to compensate for the missing signal."
+      action: "Expand a software window to compensate for the missing signal; available evidence does not yet justify that intervention."
     DEC-05-INSPECT-ALIGNMENT:
       action: "Inspect the detection axis alignment against the complete actual product path."
     DEC-05-ADJUST-BLINDLY:
       action: "Turn the sensor without recording its geometry or confirming the correlation."
     DEC-05-REPLACE-HARDWARE:
-      action: "Replace the sensor and PLC module to eliminate possibilities."
+      action: "Replace the sensor and PLC module to eliminate possibilities; available evidence does not yet justify that intervention."
     DEC-06-REALIGN-SECURE:
-      action: "Apply the authorized stop and isolation procedure before realigning the sensor over the effective path and mechanically securing the bracket."
+      action: "Apply the stop and isolation procedure before realigning the sensor and securing the bracket."
     DEC-06-SENSOR-ONLY:
-      action: "Install another sensor with the same marginal alignment."
+      action: "Install another sensor with the same marginal alignment; available evidence does not yet justify that intervention."
     DEC-06-SOFTWARE-WINDOW:
-      action: "Change PLC timing to compensate for the absent physical signal."
+      action: "Change PLC timing to compensate for the absent physical signal; available evidence does not yet justify that intervention."
     DEC-07-VALIDATE-SAMPLE:
-      action: "After intervention, run a repeated sample including positions previously associated with the fault and check the sensor output, PLC input and production record."
+      action: "After intervention, run a repeated sample and check sensor output, PLC input and production record."
     DEC-07-ONE-CYCLE:
-      action: "Accept one successful cycle as sufficient validation."
+      action: "Accept one successful cycle as sufficient validation without first comparing field evidence with the control logic."
     DEC-07-CLOSE-NOW:
-      action: "Close the intervention immediately after adjustment."
+      action: "Close the intervention immediately after adjustment; available evidence does not yet justify that intervention."
   retry_feedback:
     DEC-01-REPLACE-SENSOR: "An occasional miss does not prove an internal fault. First preserve successful and failed cycles to identify which state changes."
     DEC-01-CHANGE-LOGIC: "Accepting a box without a signal would hide the symptom and alter documented behavior before locating the cause."

@@ -72,15 +72,15 @@ translations:
       content: "Tras retirar el residuo de forma segura, la comprobación funcional confirma B3_TransferSensor FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfecha y S41 activa. Se verifican comandos y funcionamiento normal en ciclos repetidos sin forzados ni bypass. La imagen GRAPH ilustra un estado recuperado, no demuestra por sí sola la repetibilidad."
   decisions:
     DEC-01-RESET-DRIVE:
-      action: "Resetear el drive porque el transportador está parado."
+      action: "Resetear el drive porque el transportador está parado; la evidencia disponible aún no justifica esa intervención."
     DEC-01-VERIFY-INFRASTRUCTURE:
       action: "Verificar primero PLC, Safety, PROFINET y E/S distribuida como infraestructura común."
     DEC-01-REPLACE-B3:
-      action: "Sustituir B3 porque la HMI muestra producto detectado."
+      action: "Sustituir B3 porque la HMI muestra producto detectado; la evidencia disponible aún no justifica esa intervención."
     DEC-02-PARAMETERIZE-DRIVE:
-      action: "Cambiar parámetros del drive para recuperar la marcha."
+      action: "Cambiar parámetros del drive para recuperar la marcha; la evidencia disponible aún no justifica esa intervención."
     DEC-02-REPLACE-DRIVE:
-      action: "Sustituir el drive porque el motor no gira."
+      action: "Sustituir el drive porque el motor no gira; la evidencia disponible aún no justifica esa intervención."
     DEC-02-COMPARE-RUN-READY-FAULT:
       action: "Comparar RunCmd, DriveReady y DriveFault antes de intervenir en el drive."
     DEC-03-CHECK-PUSHER-COMMAND:
@@ -92,7 +92,7 @@ translations:
     DEC-04-RESET-PNEUMATICS:
       action: "Rearmar el sistema neumático aunque no recibe orden de extensión."
     DEC-04-FORCE-COMMANDS:
-      action: "Forzar RunCmd y PusherExtendCmd para observar movimiento."
+      action: "Forzar RunCmd y PusherExtendCmd para observar movimiento sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-INSPECT-SEQUENCE:
       action: "Inspeccionar el paso activo y la transición pendiente de la secuencia."
     DEC-05-REPLACE-SENSOR:
@@ -100,25 +100,25 @@ translations:
     DEC-05-MONITOR-CONDITION-TERMS:
       action: "Monitorizar TransferClear, B3_TransferSensor y DownstreamFree sin forzarlos."
     DEC-05-FORCE-T40:
-      action: "Forzar T40 para que GRAPH avance."
+      action: "Forzar T40 para que GRAPH avance sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-TRACE-LAD-LOGIC:
       action: "Abrir la lógica online y trazar cómo B3_TransferSensor y DownstreamFree generan TransferClear."
     DEC-06-ASSUME-WATCH-CAUSALITY:
-      action: "Asumir causalidad porque las tres variables aparecen juntas en la tabla."
+      action: "Asumir causalidad porque las tres variables aparecen juntas en la tabla; la evidencia disponible aún no justifica esa intervención."
     DEC-06-EDIT-GRAPH:
-      action: "Eliminar TransferClear de T40 para evitar la espera."
+      action: "Eliminar TransferClear de T40 para evitar la espera sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-07-SAFE-REMOVE-VERIFY:
-      action: "Retirar el residuo conforme al procedimiento seguro y verificar B3 FALSE, DownstreamFree TRUE, TransferClear TRUE, T40 satisfecha, S41 activa, comandos y ciclos normales repetidos sin forzados."
+      action: "Retirar el residuo según procedimiento seguro y verificar B3, DownstreamFree, TransferClear, T40, S41 y ciclos normales."
     DEC-07-BYPASS-B3:
-      action: "Puentear B3 para impedir nuevas detenciones."
+      action: "Puentear B3 para impedir nuevas detenciones sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-07-FORCE-TRANSFER-CLEAR:
-      action: "Forzar TransferClear a TRUE y dejar el residuo en la zona."
+      action: "Forzar TransferClear a TRUE y dejar el residuo en la zona sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-07-INSPECT-B3:
       action: "Inspeccionar de forma segura la zona de detección de B3 y contrastar la condición física con la señal, antes de corregir."
     DEC-07-REPLACE-WITHOUT-INSPECTION:
-      action: "Sustituir B3 porque la lógica usa su señal, sin inspeccionar el proceso."
+      action: "Sustituir B3 porque la lógica usa su señal, sin inspeccionar el proceso; la evidencia disponible aún no justifica esa intervención."
     DEC-07-DECLARE-FAULT:
-      action: "Declarar B3 averiado únicamente porque su señal es TRUE."
+      action: "Declarar B3 averiado únicamente porque su señal es TRUE; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-RESET-DRIVE: "El transportador parado es un síntoma. Verifica primero la infraestructura común."
     DEC-01-REPLACE-B3: "Una indicación TRUE no demuestra sensor defectuoso. Establece primero el estado común del sistema."

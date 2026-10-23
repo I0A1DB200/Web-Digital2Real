@@ -62,39 +62,39 @@ translations:
     DEC-01-INSPECT-PLC:
       action: "Observe ExtendCmd, extension logic, the associated output and ExtendedLS online without forcing variables."
     DEC-01-REPLACE-CYLINDER:
-      action: "Replace the cylinder because it does not move."
+      action: "Replace the cylinder because it does not move; available evidence does not yet justify that intervention."
     DEC-01-FORCE-FEEDBACK:
-      action: "Force ExtendedLS so the sequence can continue."
+      action: "Force ExtendedLS so the sequence can continue; energy control and independent verification are omitted."
     DEC-02-INSPECT-ACTUATION:
       action: "Check the output and valve control actuation without assuming physical movement."
     DEC-02-ASSUME-MOTION:
-      action: "Conclude that the cylinder receives air because ExtendCmd is TRUE."
+      action: "Conclude that the cylinder receives air because ExtendCmd is TRUE; available evidence does not yet justify that intervention."
     DEC-02-CHANGE-LOGIC:
-      action: "Modify the logic to hold the command permanently."
+      action: "Modify the logic to hold the command permanently; available evidence does not yet justify that intervention."
     DEC-03-CHECK-SUPPLY:
       action: "From a safe position, check air supply availability under the installation procedure."
     DEC-03-REPLACE-VALVE:
-      action: "Replace the valve without checking pneumatic supply."
+      action: "Replace the valve without checking pneumatic supply; available evidence does not yet justify that intervention."
     DEC-03-INCREASE-PRESSURE:
-      action: "Increase pressure to try to start movement."
+      action: "Increase pressure to try to start movement; energy control and independent verification are omitted."
     DEC-04-INSPECT-CONNECTION:
       action: "Apply the authorized energy-isolation and motion-control procedure before inspecting the local cylinder tube, fitting and port."
     DEC-04-REPLACE-CYLINDER:
-      action: "Replace the cylinder because general pressure is available."
+      action: "Replace the cylinder because general pressure is available; available evidence does not yet justify that intervention."
     DEC-04-BYPASS-SAFETY:
-      action: "Handle the tube while the installation is pressurized to search for a leak."
+      action: "Handle the tube while the installation is pressurized to search for a leak; energy control and independent verification are omitted."
     DEC-05-RECONNECT:
       action: "Maintain authorized isolation, confirm compatible tube and fitting condition, and restore the intended local connection."
     DEC-05-HOLD-TUBE:
-      action: "Hold the tube beside the fitting and test the machine without connecting it."
+      action: "Hold the tube beside the fitting and test the machine without connecting it; energy control and independent verification are omitted."
     DEC-05-REPLACE-PLC:
-      action: "Replace the PLC although the physical disconnection has been observed."
+      action: "Replace the PLC although the physical disconnection has been observed; available evidence does not yet justify that intervention."
     DEC-06-VERIFY:
       action: "From a safe position, verify with controlled movement that the cylinder extends and ExtendedLS changes to TRUE."
     DEC-06-CLOSE-CONNECTION:
-      action: "Close the incident because the tube looks connected."
+      action: "Close the incident because the tube looks connected; available evidence does not yet justify that intervention."
     DEC-06-FORCE-FEEDBACK:
-      action: "Force ExtendedLS to confirm the rest of the sequence."
+      action: "Force ExtendedLS to confirm the rest of the sequence; energy control and independent verification are omitted."
   retry_feedback:
     DEC-01-REPLACE-CYLINDER: "No movement does not yet identify which element breaks the chain."
     DEC-01-FORCE-FEEDBACK: "Forcing feedback hides the discrepancy and removes sequence protection."

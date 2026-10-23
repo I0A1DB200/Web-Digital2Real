@@ -68,37 +68,37 @@ translations:
     DEC-01-TRACE:
       action: "Confirmar la discrepancia en vivo y seguir la ruta documentada de la señal desde B1."
     DEC-01-REPLACE:
-      action: "Sustituir B1 porque la secuencia no continúa."
+      action: "Sustituir B1 porque la secuencia no continúa; la evidencia disponible aún no justifica esa intervención."
     DEC-01-PROGRAM:
-      action: "Modificar la lógica para ignorar Tag_BoxPresent_B1."
+      action: "Modificar la lógica para ignorar Tag_BoxPresent_B1 sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-MAP:
       action: "Correlacionar B1 → BK → X1:17 → I0.3 → Tag_BoxPresent_B1 con el esquema y observar online la entrada y el tag identificados."
     DEC-02-GUESS:
-      action: "Buscar una entrada similar sin usar el esquema."
+      action: "Buscar una entrada similar sin usar el esquema; la evidencia disponible aún no justifica esa intervención."
     DEC-02-BYPASS:
-      action: "Puentear I0.3 para comprobar la secuencia."
+      action: "Puentear I0.3 para comprobar la secuencia sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-03-COMPARE:
       action: "Registrar la discrepancia y medir en puntos sucesivos de la ruta."
     DEC-03-PLC-FAULT:
       action: "Concluir que el canal PLC está averiado porque I0.3 es FALSE."
     DEC-03-CHANGE:
-      action: "Reasignar Tag_BoxPresent_B1 a otra entrada."
+      action: "Reasignar Tag_BoxPresent_B1 a otra entrada sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-LOCALIZE:
       action: "Aplicar el procedimiento autorizado de aislamiento y ausencia de tensión; después, comprobar continuidad entre X1:17 y PLC I0.3."
     DEC-04-SENSOR:
-      action: "Sustituir B1 aunque entrega 24.1 VDC."
+      action: "Sustituir B1 aunque entrega 24.1 VDC; la evidencia disponible aún no justifica esa intervención."
     DEC-04-MODULE:
-      action: "Sustituir el módulo PLC antes de comprobar el conductor."
+      action: "Sustituir el módulo PLC antes de comprobar el conductor; la evidencia disponible aún no justifica esa intervención."
     DEC-05-OPEN:
       action: "Interpretar OL como circuito abierto y trazar físicamente BK."
     DEC-05-IGNORE:
-      action: "Ignorar OL y repetir el arranque."
+      action: "Ignorar OL y repetir el arranque; la evidencia disponible aún no justifica esa intervención."
     DEC-05-FORCE:
       action: "Forzar Tag_BoxPresent_B1 para ocultar la interrupción."
     DEC-06-REPAIR:
       action: "Reparar o reemplazar la sección dañada según la práctica eléctrica autorizada."
     DEC-06-REPLACE-SENSOR:
-      action: "Sustituir B1 aunque el daño del conductor está confirmado."
+      action: "Sustituir B1 aunque el daño del conductor está confirmado; la evidencia disponible aún no justifica esa intervención."
     DEC-06-REPLACE-PLC:
       action: "Sustituir la entrada PLC aunque el daño del conductor está confirmado."
     DEC-07-VERIFY-CHAIN:

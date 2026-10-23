@@ -62,13 +62,13 @@ translations:
     DEC-01-TRACE-ACTUATION:
       action: "Desde una posición segura, observar la indicación local de Y1 con la petición de extensión activa."
     DEC-01-REPLACE-CYLINDER:
-      action: "Sustituir inmediatamente el cilindro porque ExtendedLS no llega."
+      action: "Sustituir inmediatamente el cilindro porque ExtendedLS no llega; la evidencia disponible aún no justifica esa intervención."
     DEC-01-INCREASE-TIMEOUT:
-      action: "Aumentar el timeout para que la secuencia pueda continuar."
+      action: "Aumentar el timeout para que la secuencia pueda continuar; la evidencia disponible aún no justifica esa intervención."
     DEC-01-FORCE-FEEDBACK:
-      action: "Forzar ExtendedLS para confirmar el resto de la secuencia."
+      action: "Forzar ExtendedLS para confirmar el resto de la secuencia sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-CONTINUE-DOWNSTREAM:
-      action: "Desde una posición segura, comprobar la lectura del suministro regulado y las observaciones de alarma de aire o fuga importante; dejar la dinámica del cilindro pendiente."
+      action: "Comprobar suministro regulado y alarmas de aire desde una posición segura."
     DEC-02-REPLACE-PLC:
       action: "Sustituir la salida PLC aunque el indicador local de Y1 está encendido."
     DEC-02-ASSUME-MOVEMENT:
@@ -76,29 +76,29 @@ translations:
     DEC-03-INVESTIGATE-LOCAL-FLOW:
       action: "Con la lectura de presión disponible, observar desde una posición segura la extensión del cilindro respecto a la ventana de tiempo prevista."
     DEC-03-INCREASE-PRESSURE:
-      action: "Aumentar inmediatamente la presión del regulador."
+      action: "Aumentar inmediatamente la presión del regulador sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-03-BLAME-COMPRESSOR:
-      action: "Atribuir el timeout al compresor de planta."
+      action: "Atribuir el timeout al compresor de planta; la evidencia disponible aún no justifica esa intervención."
     DEC-04-INSPECT-FLOW-LOAD:
-      action: "Inspeccionar regulación local, escape y carga; antes de intervenir, aplicar el procedimiento autorizado de aislamiento de energías y control de movimiento."
+      action: "Inspeccionar regulación, escape y carga con aislamiento de energías y control de movimiento."
     DEC-04-REPLACE-LS:
-      action: "Sustituir ExtendedLS porque permanece en FALSE."
+      action: "Sustituir ExtendedLS porque permanece en FALSE; la evidencia disponible aún no justifica esa intervención."
     DEC-04-REPLACE-VALVE:
-      action: "Sustituir la válvula 5/2 sin inspeccionar el control de caudal."
+      action: "Sustituir la válvula 5/2 sin inspeccionar el control de caudal; la evidencia disponible aún no justifica esa intervención."
     DEC-05-RESTORE-SETTING:
       action: "Aplicar el procedimiento autorizado de aislamiento de energías y control de movimiento antes de intervenir y restaurar el ajuste de caudal previsto."
     DEC-05-REMOVE-CONTROL:
-      action: "Eliminar el regulador para evitar cualquier restricción."
+      action: "Eliminar el regulador para evitar cualquier restricción sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-INCREASE-PRESSURE:
-      action: "Compensar la restricción aumentando la presión de alimentación."
+      action: "Compensar la restricción aumentando la presión de alimentación sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-OPEN-FULLY:
-      action: "Abrir completamente el regulador sin consultar la condición prevista."
+      action: "Abrir completamente el regulador sin consultar la condición prevista sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-REPEAT-CYCLES:
-      action: "Desde una posición segura, ejecutar ciclos representativos repetidos con movimiento controlado y verificar tiempo, carrera completa, feedback y ausencia de recurrencia."
+      action: "Ejecutar ciclos representativos desde una posición segura y verificar tiempo, carrera, feedback y ausencia de recurrencia."
     DEC-06-CLOSE-ONCE:
-      action: "Cerrar la intervención después de una única extensión correcta."
+      action: "Cerrar la intervención después de una única extensión correcta sin comparar antes la evidencia de campo con la lógica de control."
     DEC-06-KEEP-LONG-TIMEOUT:
-      action: "Mantener un timeout artificialmente aumentado como medida preventiva."
+      action: "Mantener un timeout artificialmente aumentado como medida preventiva; la evidencia disponible aún no justifica esa intervención."
   retry_feedback:
     DEC-01-REPLACE-CYLINDER: "El timeout no identifica el componente averiado. Primero confirma hasta dónde llega el mando."
     DEC-01-INCREASE-TIMEOUT: "Aumentar el timeout puede ocultar una degradación física; no explica la ausencia de feedback dentro de la condición prevista."

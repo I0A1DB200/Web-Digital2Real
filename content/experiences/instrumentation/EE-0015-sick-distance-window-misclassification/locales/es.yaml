@@ -57,13 +57,13 @@ translations:
       content: "La recuperación se acredita con lectura estable, correlación Q1–entrada PLC, cajas aceptadas y rechazadas representativas, acción correcta del expulsor y parámetros guardados que persisten en un reinicio aprobado. Después se reinicia manualmente el contador y una nueva corrida verificada muestra Nº Reject = 0."
   decisions:
     DEC-01-REPLACE-DIVERTER:
-      action: "Sustituir el cilindro expulsor porque hay cajas rechazadas."
+      action: "Sustituir el cilindro expulsor porque hay cajas rechazadas; la evidencia disponible aún no justifica esa intervención."
     DEC-01-TRACE-ACCEPTANCE:
       action: "Comparar el producto rechazado con los criterios de aceptación y seguir la cadena de medición y clasificación antes de sustituir equipos."
     DEC-01-RESET-COUNTER:
-      action: "Restablecer el contador HMI para que desaparezca el síntoma."
+      action: "Restablecer el contador HMI para que desaparezca el síntoma; la evidencia disponible aún no justifica esa intervención."
     DEC-01-REPLACE-PLC:
-      action: "Sustituir la entrada del PLC aunque no exista evidencia eléctrica."
+      action: "Sustituir la entrada del PLC aunque no exista evidencia eléctrica; la evidencia disponible aún no justifica esa intervención."
     DEC-02-REPLACE-CYLINDER:
       action: "Concluir que el cilindro es defectuoso porque está rechazando producto."
     DEC-02-ASSUME-LASER:
@@ -71,39 +71,39 @@ translations:
     DEC-02-TRACE-REJECTION:
       action: "Reconocer que el desviador funciona e investigar la orden de rechazo aguas arriba."
     DEC-02-PLC-LOST:
-      action: "Concluir que el PLC perdió el programa porque el expulsor actúa."
+      action: "Concluir que el PLC perdió el programa porque el expulsor actúa; la evidencia disponible aún no justifica esa intervención."
     DEC-03-DIVERTER:
-      action: "Volver a desmontar el desviador para buscar la causa."
+      action: "Volver a desmontar el desviador para buscar la causa; la evidencia disponible aún no justifica esa intervención."
     DEC-03-CPU:
-      action: "Cambiar la CPU del PLC antes de contrastar los parámetros del sensor."
+      action: "Cambiar la CPU del PLC antes de contrastar los parámetros del sensor; la evidencia disponible aún no justifica esa intervención."
     DEC-03-MEASUREMENT:
-      action: "Descartar la medida de 214 mm sin evidencia y sustituir el sensor."
+      action: "Descartar la medida de 214 mm sin evidencia y sustituir el sensor; la evidencia disponible aún no justifica esa intervención."
     DEC-03-SWITCHING-WINDOW:
       action: "Contrastar la ventana de conmutación con los criterios de la aplicación: 214 mm está fuera de 280–320 mm, por lo que Q1 OFF es coherente."
     DEC-04-CPU-FAULT:
-      action: "Diagnosticar una CPU defectuosa porque la entrada es FALSE."
+      action: "Diagnosticar una CPU defectuosa porque la entrada es FALSE; la evidencia disponible aún no justifica esa intervención."
     DEC-04-CORRELATE-Q1:
       action: "Correlacionar Sensor_Q1 FALSE con Q1 OFF e investigar y confirmar la configuración aguas arriba."
     DEC-04-FORCE-INPUT:
-      action: "Forzar Sensor_Q1 a TRUE para aceptar las cajas."
+      action: "Forzar Sensor_Q1 a TRUE para aceptar las cajas sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-DISCONNECT:
-      action: "Desconectar el cilindro expulsor para evitar rechazos."
+      action: "Desconectar el cilindro expulsor para evitar rechazos sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-ACCEPT-ALL:
-      action: "Aceptar todas las cajas modificando la lógica PLC."
+      action: "Aceptar todas las cajas modificando la lógica PLC sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-SPEED:
-      action: "Aumentar la velocidad de la cinta para reducir el número de rechazos."
+      action: "Aumentar la velocidad de la cinta para reducir el número de rechazos; la evidencia disponible aún no justifica esa intervención."
     DEC-05-RESTORE-WINDOW:
       action: "Restaurar la ventana aprobada 180–250 mm, verificar la función de Q1 y guardar y leer de vuelta los parámetros con el procedimiento SICK compatible."
     DEC-05-DISCONNECT-Q1:
-      action: "Desconectar Q1 para que el PLC deje de recibir la señal."
+      action: "Desconectar Q1 para que el PLC deje de recibir la señal sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-06-SETTINGS-ONCE:
-      action: "Cerrar la incidencia porque los nuevos parámetros se ven una sola vez."
+      action: "Cerrar la incidencia porque los nuevos parámetros se ven una sola vez; la evidencia disponible aún no justifica esa intervención."
     DEC-06-RESET-COUNTER:
-      action: "Restablecer el contador a cero y usarlo como única prueba de recuperación."
+      action: "Restablecer el contador a cero y usarlo como única prueba de recuperación; la evidencia disponible aún no justifica esa intervención."
     DEC-06-MANUAL-CYLINDER:
-      action: "Extender manualmente el cilindro sin comprobar medición ni clasificación."
+      action: "Extender manualmente el cilindro sin comprobar medición ni clasificación; la evidencia disponible aún no justifica esa intervención."
     DEC-06-VERIFY-RUN:
-      action: "Confirmar lectura estable, correlación Q1–PLC, cajas aceptadas y rechazadas representativas, acción del expulsor y parámetros guardados tras un reinicio aprobado; después verificar la corrida nueva con Nº Reject = 0."
+      action: "Con procedimiento autorizado, verificar Q1–PLC, muestras, expulsor y persistencia tras reinicio; confirmar una corrida nueva con Nº Reject = 0."
   retry_feedback:
     DEC-01-REPLACE-DIVERTER: "Que haya rechazos no demuestra un fallo del actuador; compara primero producto, criterio y cadena de clasificación."
     DEC-01-RESET-COUNTER: "Resetear Nº Reject borra un síntoma y no explica por qué se clasifican mal las cajas."

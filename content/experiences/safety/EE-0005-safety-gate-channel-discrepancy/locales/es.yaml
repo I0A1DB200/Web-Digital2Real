@@ -62,45 +62,45 @@ translations:
     DEC-01-IDENTIFY-SAFETY-FUNCTION:
       action: "Desde la condición segura de diagnóstico, determinar qué función Safety impide que la máquina alcance el estado preparado."
     DEC-01-REPLACE-DRIVE:
-      action: "Sustituir el variador porque STO permanece activo."
+      action: "Sustituir el variador porque STO permanece activo; la evidencia disponible aún no justifica esa intervención."
     DEC-01-REPEAT-RESET:
-      action: "Repetir el rearme hasta que SafetyReady cambie."
+      action: "Repetir el rearme hasta que SafetyReady cambie; la evidencia disponible aún no justifica esa intervención."
     DEC-01-CHANGE-STANDARD-LOGIC:
-      action: "Modificar la lógica estándar de Start para ignorar la inhibición."
+      action: "Modificar la lógica estándar de Start para ignorar la inhibición sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-INSPECT-GUARD-FINPUTS:
-      action: "Desde la condición segura de diagnóstico, inspeccionar la indicación diagnóstica de la función de puerta y sus entradas seguras asociadas."
+      action: "En condición segura, inspeccionar la función de puerta y sus entradas seguras."
     DEC-02-REPLACE-FPLC:
-      action: "Sustituir el S7-1500F sin revisar las entradas."
+      action: "Sustituir el S7-1500F sin revisar las entradas; la evidencia disponible aún no justifica esa intervención."
     DEC-02-BLAME-START:
-      action: "Atribuir la inhibición al pulsador Start."
+      action: "Atribuir la inhibición al pulsador Start; la evidencia disponible aún no justifica esa intervención."
     DEC-03-OPEN-ONLINE-DIAGNOSTICS:
       action: "Desde la condición segura de diagnóstico, consultar el detalle online de la función y sus canales, sin atribuir todavía una causa física."
     DEC-03-REPLACE-FDI:
-      action: "Sustituir el F-DI porque muestra una indicación diagnóstica."
+      action: "Sustituir el F-DI porque muestra una indicación diagnóstica; la evidencia disponible aún no justifica esa intervención."
     DEC-03-RESET-INDEFINITELY:
-      action: "Continuar rearmando sin consultar el detalle."
+      action: "Continuar rearmando sin consultar el detalle; la evidencia disponible aún no justifica esa intervención."
     DEC-03-BYPASS-INPUT:
-      action: "Anular la entrada segura para recuperar producción."
+      action: "Anular la entrada segura para recuperar producción sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-INSPECT-PHYSICAL-RELATION:
-      action: "Aplicar el procedimiento autorizado de aislamiento y mantenimiento antes de intervenir físicamente; inspeccionar bajo condición segura la relación entre puerta, actuador, enclavamiento y montaje."
+      action: "Con aislamiento y mantenimiento autorizados, inspeccionar la relación entre puerta, actuador, enclavamiento y montaje."
     DEC-04-REPLACE-CH2-WIRING:
-      action: "Sustituir directamente el cableado CH2."
+      action: "Sustituir directamente el cableado CH2; la evidencia disponible aún no justifica esa intervención."
     DEC-04-REPLACE-INTERLOCK:
-      action: "Sustituir el enclavamiento basándose solo en la discrepancia."
+      action: "Sustituir el enclavamiento basándose solo en la discrepancia; la evidencia disponible aún no justifica esa intervención."
     DEC-05-RESTORE-ALIGNMENT:
-      action: "Aplicar el procedimiento autorizado de aislamiento y mantenimiento antes del ajuste físico y restaurar la alineación y el montaje previstos; dejar la verificación funcional pendiente."
+      action: "Con aislamiento y mantenimiento autorizados, restaurar la alineación y dejar pendiente la verificación funcional."
     DEC-05-INCREASE-DISCREPANCY-TIME:
-      action: "Aumentar el tiempo de discrepancia para aceptar la condición."
+      action: "Aumentar el tiempo de discrepancia para aceptar la condición sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-DEFEAT-CHANNEL:
-      action: "Anular uno de los canales para permitir el rearme."
+      action: "Anular uno de los canales para permitir el rearme sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-05-REPLACE-FDI:
-      action: "Sustituir el F-DI aunque la causa mecánica está confirmada."
+      action: "Sustituir el F-DI aunque la causa mecánica está confirmada; la evidencia disponible aún no justifica esa intervención."
     DEC-06-FUNCTIONAL-TEST:
-      action: "Ejecutar la prueba funcional segura prevista: comprobar los canales, el rearme esperado, SafetyReady y STO según el diseño, la respuesta protectora y la inhibición y recuperación representativas, sin rearranque automático. Mantener separados rearme Safety y Start."
+      action: "Ejecutar la prueba segura de canales, rearme, STO y respuesta protectora; separar Safety Reset y Start."
     DEC-06-CLOSE-ONCE:
-      action: "Cerrar la intervención porque la máquina arranca una vez."
+      action: "Cerrar la intervención porque la máquina arranca una vez; la evidencia disponible aún no justifica esa intervención."
     DEC-06-AUTO-RESTART:
-      action: "Configurar el rearranque automático al cerrar la puerta."
+      action: "Configurar el rearranque automático al cerrar la puerta sin aplicar el procedimiento de energías ni una verificación independiente."
   retry_feedback:
     DEC-01-REPLACE-DRIVE: "STO activo describe una inhibición segura del par; no demuestra que el variador esté averiado. Identifica primero la función Safety activa."
     DEC-01-REPEAT-RESET: "Repetir el rearme no corrige una condición Safety inválida. Determina qué función impide SafetyReady."

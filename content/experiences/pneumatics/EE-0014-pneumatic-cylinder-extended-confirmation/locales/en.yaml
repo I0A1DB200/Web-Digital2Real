@@ -69,21 +69,21 @@ translations:
     DEC-01-OBSERVE:
       action: "Separate physical extension from confirmation and preserve the state before intervening."
     DEC-01-VALVE:
-      action: "Conclude that the valve has failed because the sequence does not advance."
+      action: "Conclude that the valve has failed because the sequence does not advance; available evidence does not yet justify that intervention."
     DEC-01-REPLACE:
-      action: "Replace the cylinder without checking the position signal."
+      action: "Replace the cylinder without checking the position signal; energy control and independent verification are omitted."
     DEC-02-TRACE:
       action: "Compare ExtendCmd, ValveExtendOut, DI_Extended, ExtendedFb, and Step_Extended."
     DEC-02-FORCE:
-      action: "Force DI_Extended to let the sequence advance."
+      action: "Force DI_Extended to let the sequence advance; energy control and independent verification are omitted."
     DEC-02-CODE:
-      action: "Change the logic or Step_Extended address as a test."
+      action: "Change the logic or Step_Extended address as a test; available evidence does not yet justify that intervention."
     DEC-03-INSPECT:
       action: "Inspect the sensor position and local indication with the station secured."
     DEC-03-INPUT:
       action: "Conclude that the input module has failed without an additional test."
     DEC-03-SWAP:
-      action: "Replace the sensor before recording its position and behavior."
+      action: "Replace the sensor before recording its position and behavior; available evidence does not yet justify that intervention."
     DEC-04-TEST:
       action: "Perform a controlled test to locate the sensor switching zone."
     DEC-04-FORCE:
@@ -95,13 +95,13 @@ translations:
     DEC-05-REPLACE:
       action: "Replace the sensor even though the test proves it can switch."
     DEC-05-OVERRIDE:
-      action: "Keep a bypass so the sequence ignores the confirmation."
+      action: "Keep a bypass so the sequence ignores the confirmation; energy control and independent verification are omitted."
     DEC-06-VERIFY:
       action: "Verify the local indication, DI_Extended, ExtendedFb, Step_Extended, and multiple cycles."
     DEC-06-SINGLE:
-      action: "Close the intervention after one successful switch."
+      action: "Close the intervention after one successful switch without first comparing field evidence with the control logic."
     DEC-06-HMI:
-      action: "Consider it sufficient that the interface no longer shows the symptom."
+      action: "Consider it sufficient that the interface no longer shows the symptom; available evidence does not yet justify that intervention."
   visual:
     educational_purpose: "Progressively present physical movement, PLC evidence, sensor inspection, controlled testing, correction, and verification."
   assets:

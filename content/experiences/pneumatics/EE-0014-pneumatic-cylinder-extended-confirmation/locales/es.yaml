@@ -69,27 +69,27 @@ translations:
     DEC-01-OBSERVE:
       action: "Separar la extensión física de la confirmación y conservar el estado antes de intervenir."
     DEC-01-VALVE:
-      action: "Concluir que la válvula ha fallado porque la secuencia no avanza."
+      action: "Concluir que la válvula ha fallado porque la secuencia no avanza; la evidencia disponible aún no justifica esa intervención."
     DEC-01-REPLACE:
-      action: "Sustituir el cilindro sin comprobar la señal de posición."
+      action: "Sustituir el cilindro sin comprobar la señal de posición sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-TRACE:
       action: "Comparar ExtendCmd, ValveExtendOut, DI_Extended, ExtendedFb y Step_Extended."
     DEC-02-FORCE:
-      action: "Forzar DI_Extended para permitir que avance la secuencia."
+      action: "Forzar DI_Extended para permitir que avance la secuencia sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-02-CODE:
-      action: "Cambiar la lógica o la dirección de Step_Extended para probar."
+      action: "Cambiar la lógica o la dirección de Step_Extended para probar; la evidencia disponible aún no justifica esa intervención."
     DEC-03-INSPECT:
       action: "Inspeccionar la posición del sensor y su indicación local con la estación asegurada."
     DEC-03-INPUT:
       action: "Concluir que el módulo de entradas está averiado sin una prueba adicional."
     DEC-03-SWAP:
-      action: "Cambiar el sensor antes de registrar su posición y comportamiento."
+      action: "Cambiar el sensor antes de registrar su posición y comportamiento; la evidencia disponible aún no justifica esa intervención."
     DEC-04-TEST:
       action: "Realizar una prueba controlada para localizar la zona de conmutación del sensor."
     DEC-04-FORCE:
-      action: "Forzar la entrada PLC en lugar de comprobar la detección local."
+      action: "Forzar la entrada PLC en lugar de comprobar la detección local sin aplicar el procedimiento de energías ni una verificación independiente."
     DEC-04-IGNORE:
-      action: "Ignorar la indicación del sensor y continuar cambiando componentes."
+      action: "Ignorar la indicación del sensor y continuar cambiando componentes; la evidencia disponible aún no justifica esa intervención."
     DEC-05-ALIGN:
       action: "Reposicionar y asegurar el sensor en la zona real de detección del pistón."
     DEC-05-REPLACE:
@@ -99,9 +99,9 @@ translations:
     DEC-06-VERIFY:
       action: "Verificar la indicación local, DI_Extended, ExtendedFb, Step_Extended y varios ciclos."
     DEC-06-SINGLE:
-      action: "Cerrar la intervención después de una única conmutación."
+      action: "Cerrar la intervención después de una única conmutación sin comparar antes la evidencia de campo con la lógica de control."
     DEC-06-HMI:
-      action: "Considerar suficiente que la interfaz deje de mostrar el síntoma."
+      action: "Considerar suficiente que la interfaz deje de mostrar el síntoma; la evidencia disponible aún no justifica esa intervención."
   visual:
     educational_purpose: "Presentar progresivamente el movimiento, la evidencia PLC, la inspección del sensor, la prueba controlada, la corrección y la verificación."
   assets:

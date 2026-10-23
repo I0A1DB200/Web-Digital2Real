@@ -853,6 +853,10 @@ test("ENV-002 localizes catalog, accessible labels, environment and Theory title
     documentRef.documentElement = { lang: locale };
     const language = locale.startsWith("es") ? "es" : "en";
     const theory = JSON.parse(await readFile(new URL(`../../../generated/experience-engine/${environment.theory.locales[language]}`, import.meta.url), "utf8"));
+    assert.deepEqual(theory.sections.map(section => section.id), [
+      "TH-01-INSTRUMENTATION-FOUNDATIONS", "TH-02-INDUCTIVE-SENSING",
+      "TH-03-DISTANCE-MEASUREMENT", "TH-04-SIGNALS-AND-DIAGNOSIS"
+    ]);
     const progressStore = createEnvironmentProgressStore({ storage: null });
     progressStore.registerEnvironment({
       environmentId: environment.id, contractVersion: environment.contractVersion,
@@ -875,6 +879,7 @@ test("ENV-002 localizes catalog, accessible labels, environment and Theory title
     assert.equal(navigator.element.find(item => item.className === "environment-stage__image").alt, expectedTitle);
     await findButton(navigator.element, language === "es" ? "Abrir teoría" : "Open Theory").click();
     assert.ok(navigator.element.find(item => item.text === expectedTitle));
+    assert.equal(navigator.element.find(item => item.className === "experience-panel__label").text, language === "es" ? "Teoría 1 / 4" : "Theory 1 / 4");
     navigator.destroy();
   }
   assert.equal(JSON.stringify(environment), original);

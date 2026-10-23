@@ -19,7 +19,17 @@ const env = new URL("../../../content/environments/ENV-002-field-instrumentation
 const yaml = async (file, base = root) => parseExperienceYaml(await readFile(new URL(file, base), "utf8"));
 const correctIds = ["DEC-01-CHECK-HEALTH","DEC-02-INSPECT-SENSOR","DEC-03-MEASURE-GEOMETRY","DEC-04-COMPARE-SECURED","DEC-05-CORRELATE-STATE","DEC-06-INSTALLATION-DISTANCE","DEC-07-CORRECT-GEOMETRY","DEC-08-VERIFY-FULL-CHAIN"];
 const hashes = ["476126be467ccc22c8f900812b7702f7942623d173e2b9665e4a6b5c6bb4c38f","acb144f65133dba0511bb9dcce1715b344ee117503e7dfd2367d811e794357ac","e7ef1b3ead364705ff82c1e8fa6e0f16130dd1d368bfa226e7de09f87b4a3437","2effa1caedcbd4d43161e08c5eff3ec75558d7fafb5096bc593c00ac3b8c5d3d","6f565598438b30608c9c9655e708d87642f6454252feb0a51a90242bfcaeabeb","af8d172bd790096ee48da90039927b567269ce81d426cc859b96c3e682701200","acc8ee38186c297e12ecc50196bbcbd97b478958d68d1bde101057bac34f6f57"];
-const theoryIds = ["TH-10-DISTANCE-MEASUREMENT","TH-11-DISTANCE-VS-HEIGHT","TH-12-SWITCHING-WINDOW-OUTPUT","TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE"];
+const theoryIds = [
+  "TH-01-INSTRUMENTATION-FOUNDATIONS", "TH-02-INDUCTIVE-SENSING",
+  "TH-03-DISTANCE-MEASUREMENT", "TH-04-SIGNALS-AND-DIAGNOSIS"
+];
+const legacyTheoryIds = [
+  "TH-01-FIELD-INSTRUMENTATION-CHAIN", "TH-02-ANALOG-SIGNAL-LOOPS", "TH-03-SENSOR-OUTPUT-TYPES",
+  "TH-04-TRANSMITTERS-AND-SETPOINTS", "TH-05-ANALOG-FAULTS", "TH-06-COMMISSIONING-AND-VALIDATION",
+  "TH-07-INDUCTIVE-SENSING-CONDITIONS", "TH-08-RATED-AND-SECURED-DISTANCE",
+  "TH-09-POWER-SWITCHING-AND-PROCESS-DATA", "TH-10-DISTANCE-MEASUREMENT", "TH-11-DISTANCE-VS-HEIGHT",
+  "TH-12-SWITCHING-WINDOW-OUTPUT", "TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE"
+];
 
 async function localized(locale) {
   return resolveExperienceLocalization(await yaml("experience.yaml"), await yaml(`locales/${locale}.yaml`));
@@ -127,12 +137,21 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
   ]);
   const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013", "EE-0014", "EE-0015"], theory, theoryLocales: { en: english } });
   assert.equal(validation.valid, true, JSON.stringify(validation.incidents));
-  assert.equal(theory.sections.length, 13);
+  assert.equal(theory.sections.length, 4);
   assert.deepEqual(theory.sections.map(item => item.id), english.sections.map(item => item.id));
-  assert.deepEqual(theory.sections.slice(-4).map(item => item.id), theoryIds);
+  assert.deepEqual(theory.sections.map(item => item.id), theoryIds);
   for (const document of [theory, english]) {
-    assert.doesNotMatch(JSON.stringify(document.sections.slice(-4)), /EE-0011|7\.8|Station 1|DT50-2|214|280|320|180|250/);
+    const serialized = JSON.stringify(document.sections);
+    assert.doesNotMatch(serialized, /Turck|BI6U|SICK|DT50|Station 1|PartInPosition|Active switchpoint|4\.86|0\.81\s*×?\s*Sn|\b6\s*mm\b/u);
+    legacyTheoryIds.forEach(id => assert.equal(serialized.includes(id), false, id));
+    assert.equal(document.sections.every(section => Array.isArray(section.media_ids)), true);
   }
+  assert.match(theory.sections[0].title, /Bloque 01.*Fundamentos/);
+  assert.match(theory.sections[1].title, /Bloque 02.*proximidad inductivos/);
+  assert.match(theory.sections[2].body, /700 mm.*260 mm.*440 mm/);
+  assert.match(english.sections[2].body, /700 mm.*260 mm.*440 mm/);
+  assert.match(theory.sections[3].body, /No es universal/);
+  assert.match(english.sections[3].body, /not universal/);
 });
 
 const readYaml = yaml;

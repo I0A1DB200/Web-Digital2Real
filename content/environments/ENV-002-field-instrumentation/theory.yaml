@@ -7,81 +7,44 @@ supported_locales:
 media: []
 
 sections:
-  - id: TH-01-FIELD-INSTRUMENTATION-CHAIN
-    title: Cadena de instrumentación de campo
+  - id: TH-01-INSTRUMENTATION-FOUNDATIONS
+    title: "Bloque 01 — Fundamentos de instrumentación industrial"
     body: |-
-      La instrumentación de campo convierte una variable física en una señal útil para el control. Temperatura, presión, nivel, caudal, posición y vibración pueden alimentar sensores, transmisores y acondicionadores que convierten el fenómeno en un valor medible. La medición no termina en el sensor; debe seguir la cadena hasta la entrada del PLC, la visualización del HMI y el criterio de decisión del sistema.
+      La instrumentación industrial observa variables físicas como presión, temperatura, nivel, caudal, posición o vibración y las convierte en información utilizable por un sistema de control. La cadena de medida puede incluir el proceso, un sensor o transductor, un transmisor, un acondicionador, el cableado, una entrada de PLC, la lógica de decisión y la representación en HMI. Cada frontera aporta una evidencia distinta: magnitud física, señal eléctrica, dato de proceso o estado lógico.
 
-      Un mismo proceso puede observarse desde varias fronteras: el fenómeno físico, la salida del sensor, la señal de proceso y la variable lógica que toma el control. Cada una de estas capas puede coincidir o divergir. El diagnóstico correcto compara la evidencia de cada etapa sin asumir que el valor observado en software refleja automáticamente la condición real del proceso.
+      Un sensor responde a una magnitud; un transductor convierte esa respuesta; un transmisor la entrega en una señal normalizada; y un acondicionador puede filtrarla, aislarla o adaptarla. Las salidas pueden ser analógicas, discretas, digitales o de comunicación. En señales discretas, PNP, NPN y contacto seco describen formas distintas de conmutar y referenciar la carga, por lo que la alimentación, la polaridad, la referencia común, el aislamiento, la carga y el modo de entrada deben ser compatibles con el PLC.
+
+      Las interfaces 0–10 V y 4–20 mA representan un rango continuo que después se escala a unidades de ingeniería. En un lazo 4–20 mA, 4 mA suele corresponder al extremo inferior y 20 mA al superior, pero la escala efectiva y las alarmas dependen de la configuración. La variable medida describe el proceso; la consigna define el valor de referencia con el que la lógica decide cuándo actuar. No son la misma magnitud aunque usen las mismas unidades.
+
+      Una lectura fija, saturada, ruidosa o inestable puede originarse en alimentación, cableado, conectores, tierra, módulo, calibración, acondicionamiento, sensor o proceso. El síntoma no identifica por sí solo la causa: compara la señal con una referencia independiente y con la condición física conocida. La puesta en marcha valida alimentación, polaridad, rango, escala, respuesta del lazo y correspondencia entre proceso, PLC, lógica y HMI; la primera discrepancia verificable indica dónde continuar.
     media_ids: []
 
-  - id: TH-02-ANALOG-SIGNAL-LOOPS
-    title: Bucles analógicos y 4–20 mA
+  - id: TH-02-INDUCTIVE-SENSING
+    title: "Bloque 02 — Sensores de proximidad inductivos"
     body: |-
-      Las señales analógicas representan un valor continuo dentro de un rango definido. En instrumentación de campo, un lazo 4–20 mA es una interfaz muy habitual porque ofrece buena inmunidad al ruido, aceptación de longitudes de cable grandes y un nivel de diagnóstico útil mediante su tendencia y su margen de operación.
+      Un sensor de proximidad inductivo genera un campo electromagnético alterno en su cara activa. Cuando un objetivo metálico entra en ese campo, las corrientes inducidas modifican la oscilación del sensor y el dispositivo puede cambiar de estado al alcanzar su criterio interno. La detección es sin contacto, pero depende de la interacción entre el campo y el objetivo, no solo de que la pieza sea visible.
 
-      En un lazo 4–20 mA, el valor 4 mA suele representar el mínimo medido o el cero de escala, mientras que 20 mA representa el máximo. Si la señal se encuentra fuera de este rango, o si se queda en 0 mA o en un valor de saturación, puede indicar un fallo de alimentación, un circuito abierto, un sensor defectuoso o una condición de proceso fuera del rango esperado.
+      El material, tamaño, forma, orientación, alineación, separación y velocidad del objetivo influyen en la respuesta. El montaje enrasado o no enrasado, la presencia de metal próximo y la geometría de la cara activa también deben ser compatibles con el diseño del sensor. Que el dispositivo esté alimentado confirma una condición eléctrica, no que el objetivo esté dentro de las condiciones de detección.
 
-      El diagnóstico de una señal analógica debe separarse del diagnóstico del sensor. Un transductor puede ser correcto y aún así la señal puede llegar alterada por cableado, tierra, módulo de entrada, configuración del rango o valor de referencia del sistema.
+      Sn es la distancia nominal declarada como referencia; Sr describe la distancia real obtenida bajo las condiciones definidas para la medición. Su puede expresar una distancia útil y Sa una distancia de funcionamiento asegurada cuando esas categorías son aplicables según la definición técnica pertinente. Sus límites y relaciones dependen de la norma o documentación del dispositivo: no debe extrapolarse un factor universal. Una conmutación observada confirma un estado en ese instante, mientras que el funcionamiento asegurado exige comprobar las condiciones documentadas y el margen de montaje.
     media_ids: []
 
-  - id: TH-03-SENSOR-OUTPUT-TYPES
-    title: Tipos de salida y compatibilidad eléctrica
+  - id: TH-03-DISTANCE-MEASUREMENT
+    title: "Bloque 03 — Medición de distancia y magnitudes"
     body: |-
-      Los sensores, transmisores y acondicionadores pueden entregar señales analógicas, digitales, discretas o de comunicación. Las salidas analógicas suelen ser 0–10 V, 1–5 V o 4–20 mA; las señales digitales pueden comportarse como un contacto seco, un estado discreto o un mensaje digital serializado.
+      Un instrumento de distancia estima la separación entre una referencia física del instrumento y la superficie de un objeto. Según el principio aplicado, puede calcularla a partir del tiempo de vuelo de una señal o de la geometría de triangulación, entre otros métodos. La lectura es distancia sensor–objeto; no se convierte automáticamente en altura, nivel, espesor ni criterio de aceptación.
 
-      La compatibilidad eléctrica exige verificar tensión de alimentación, tipo de salida, polaridad, referencia, aislamiento y consumo del canal de entrada. Un sensor que se ve correcto por su LED puede aún producir un valor incompatible con el módulo del PLC o con la configuración de escala del sistema. La compatibilidad no se demuestra solo con el nombre del fabricante ni con la etiqueta del cable.
+      Cuando existe una referencia sensor–base conocida y la geometría permite proyectar ambas distancias sobre el mismo eje, puede calcularse una dimensión: Altura = distancia de referencia sensor–base − distancia sensor–objeto. Por ejemplo, con una referencia de 700 mm y una distancia medida de 260 mm, la altura calculada es 440 mm.
+
+      La relación requiere la misma unidad, una referencia estable, superficies correctamente identificadas y una orientación coherente, normalmente perpendicular al eje de medida. Si el sensor o la base se desplazan, la superficie está inclinada o hay un offset no compensado, debe utilizarse el modelo geométrico correspondiente. La interpretación también exige conocer rango, resolución, repetibilidad, exactitud, incertidumbre, alineación, temperatura, obstrucciones y condiciones de montaje.
     media_ids: []
 
-  - id: TH-04-TRANSMITTERS-AND-SETPOINTS
-    title: Transmisores, acondicionadores y consignas
+  - id: TH-04-SIGNALS-AND-DIAGNOSIS
+    title: "Bloque 04 — Señales, decisiones y diagnóstico"
     body: |-
-      Un transmisor convierte la variable física en un valor normalizado para control y registro. Un acondicionador puede preparar la señal para distancia, aislamiento o conversión de escala. El punto de medida, la referencia de calibración y la escala de ingeniería deben interpretarse junto con la definición del proceso y la consigna del sistema.
+      Alimentación, estado de conmutación y comunicación son comprobaciones diferentes. Un sensor puede estar energizado y comunicar datos sin que su salida discreta esté activa. Las salidas PNP o NPN dependen del cableado y del modo de entrada configurado; IO-Link puede transportar valores medidos, estados y parámetros, pero el significado de cada bit, palabra o estado depende del dispositivo, su perfil y su configuración.
 
-      La consigna o setpoint no es solo un valor numérico; es la referencia que decide cuándo el control debe actuar. Si la señal del sensor está dentro del rango, pero la lógica de control compara con un valor incorrecto o una escala equivocada, el comportamiento del sistema puede seguir siendo erróneo sin que el proceso físico esté fuera de límites.
-    media_ids: []
+      Una medida continua puede ser plausible mientras una salida discreta permanece inactiva porque la decisión depende de un umbral, una ventana, una histéresis, una polaridad o un modo de salida. La medición describe un valor y la salida comunica el resultado de una función de decisión. No es universal que 0 signifique “no detectado” ni que 1 signifique “detectado”.
 
-  - id: TH-05-ANALOG-FAULTS
-    title: Fallos frecuentes en lazo analógico
-    body: |-
-      Un fallo analógico puede ser de fuente de alimentación, cableado, conexión, tierra, módulo, referencia, calibración o sensibilidad del sensor. Una señal anclada a 0 mA puede indicar corte de corriente, circuito abierto o ausencia de energía. Un valor fijo en un extremo del rango puede sugerir una salida bloqueada, una condición de saturación o una configuración incorrecta de escala.
-
-      El ruido, la deriva térmica, la vibración y la evaporación o contaminación del proceso también degradan la señal. Antes de reemplazar equipos, conviene comparar el valor del transmisor con la lectura del instrumento de referencia y con la condición física observada. La primera discrepancia verificable suele señalar el punto de ruptura.
-    media_ids: []
-
-  - id: TH-06-COMMISSIONING-AND-VALIDATION
-    title: Puesta en marcha y validación de la medición
-    body: |-
-      La puesta en marcha de instrumentación exige validar la escala, la polaridad, la referencia, el rango de trabajo y el comportamiento del lazo en condiciones reales. No basta con confirmar que el transmisor enciende; debe verificarse que la señal que llega al PLC corresponde con el proceso real y con la lógica del control.
-
-      Un diagnostico robusto sigue flujo de la variable física hacia el sensor, el transmisor, el cableado, la entrada del PLC, la variable de proceso y la lógica de control. La validación final debe recrear la condición del proceso real y confirmar que la actuación del sistema sigue el valor esperado. Esa secuencia reduce errores de sustitución y mantiene la confianza en la medición.
-    media_ids: []
-
-  - id: "TH-07-INDUCTIVE-SENSING-CONDITIONS"
-    title: "Detección inductiva y condiciones físicas"
-    body: "Un sensor de proximidad inductivo detecta un objetivo metálico sin contacto. La presencia visible de una pieza no demuestra que la cara activa, la separación, la geometría del objetivo y las condiciones de montaje permitan detectarla. La investigación debe comparar la aplicación con la documentación del dispositivo antes de sustituirlo o modificar parámetros. Un sensor alimentado puede funcionar correctamente sin conmutar si el objetivo queda fuera de sus condiciones de detección."
-    media_ids: []
-  - id: "TH-08-RATED-AND-SECURED-DISTANCE"
-    title: "Distancia nominal y distancia asegurada"
-    body: "Sn es la distancia nominal de conmutación, no un umbral digital exacto aplicable a cualquier montaje. La distancia de funcionamiento asegurada define la condición documentada que debe comprobarse para la instalación. En el Turck BI6U-MT12-IOL6X2-H1141, Sn = 6 mm y la referencia asegurada es ≤ 4.86 mm (0.81 × Sn). No generalices ese factor a otros dispositivos sin consultar su documentación. Una conmutación observada no demuestra por sí sola margen de funcionamiento asegurado. La aceptación exige comprobar geometría, montaje y condición documentada, además del resultado funcional."
-    media_ids: []
-  - id: "TH-09-POWER-SWITCHING-AND-PROCESS-DATA"
-    title: "Alimentación, conmutación y datos de proceso"
-    body: "Alimentación, conmutación y salud de comunicación son comprobaciones distintas. El LED Power indica alimentación, mientras que el LED Switching/Output representa el estado de conmutación según el dispositivo. Un enlace IO-Link operativo puede transmitir correctamente un estado de no detección. Interpreta los datos de proceso con la documentación: en la representación Active switchpoint utilizada, 0 significa objetivo no detectado y 1 objetivo detectado. Contrasta el estado físico con el sensor, el dato comunicado, el PLC y la HMI. Localiza la primera discrepancia y verifica de nuevo toda la cadena después de corregirla, sin forzar señales."
-    media_ids: []
-  - id: TH-10-DISTANCE-MEASUREMENT
-    title: Medición de distancia y principios de funcionamiento
-    body: "Un instrumento de distancia estima la separación entre una referencia del sensor y un objeto mediante el principio que documenta el fabricante, por ejemplo tiempo de vuelo o triangulación. La lectura representa distancia sensor–objeto; no es automáticamente altura, nivel ni una orden de aceptación. Para interpretar una medida hay que conocer la referencia, el rango, la resolución, la incertidumbre y las condiciones de aplicación del instrumento."
-    media_ids: []
-  - id: TH-11-DISTANCE-VS-HEIGHT
-    title: Referencia geométrica y conversión de magnitudes
-    body: "La distancia entre el sensor y un objeto y la dimensión física que interesa al proceso son magnitudes diferentes. Si existe una referencia geométrica documentada, una dimensión puede calcularse combinando esa referencia con la distancia medida, por ejemplo: altura = referencia sensor–base menos distancia sensor–objeto. Una lectura aislada no permite calcular una dimensión del producto sin la referencia y la geometría de la aplicación."
-    media_ids: []
-  - id: TH-12-SWITCHING-WINDOW-OUTPUT
-    title: Valor medido y salida discreta
-    body: "Un valor medido puede ser plausible y aun así producir una salida discreta inactiva si queda fuera del umbral o de la ventana configurada. La medición continua y la salida de decisión son capas distintas. El diagnóstico debe comparar límites, histéresis, modo de salida, polaridad, estado normal y criterios de aplicación. Una salida discreta no es otra medición: es el resultado de una función de decisión configurada."
-    media_ids: []
-  - id: TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE
-    title: Trazabilidad, persistencia y validación
-    body: "Sigue la cadena completa: fenómeno físico → sensor → medida → función de decisión → señal → entrada de control → lógica → actuador y representación HMI. Guarda y lee de vuelta los parámetros con el procedimiento compatible, comprueba su persistencia tras un reinicio autorizado y valida el resultado con condiciones representativas. La primera discrepancia verificable guía el diagnóstico; un indicador final o un contador a cero por sí solo no acredita recuperación."
+      La trazabilidad sigue el recorrido fenómeno físico → sensor → medida → función de decisión → señal → entrada de control → lógica → actuador y HMI. Revisa límites, estado normal, polaridad, tiempo de respuesta y criterio de aplicación; guarda y lee de vuelta los parámetros con un procedimiento compatible y comprueba su persistencia tras un reinicio autorizado cuando corresponda. La validación final usa condiciones representativas y una comprobación funcional independiente; un indicador final o un contador a cero por sí solo no demuestra que la cadena esté validada.
     media_ids: []

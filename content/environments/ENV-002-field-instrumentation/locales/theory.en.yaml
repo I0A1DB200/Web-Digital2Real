@@ -1,81 +1,44 @@
 locale: en
 media: []
 sections:
-  - id: TH-01-FIELD-INSTRUMENTATION-CHAIN
-    media_ids: []
-    title: Field instrumentation chain
+  - id: TH-01-INSTRUMENTATION-FOUNDATIONS
+    title: "Block 01 — Industrial instrumentation fundamentals"
     body: |-
-      Field instrumentation converts a physical variable into a signal that the control system can use. Temperature, pressure, level, flow, position and vibration can feed sensors, transmitters and conditioners that turn the phenomenon into a measurable value. The measurement does not end at the sensor; it must follow the chain to the PLC input, the HMI display and the decision logic.
+      Industrial instrumentation observes physical variables such as pressure, temperature, level, flow, position or vibration and converts them into information that a control system can use. The measurement chain may include the process, a sensor or transducer, a transmitter, a conditioner, wiring, a PLC input, decision logic and an HMI representation. Each boundary provides different evidence: a physical quantity, an electrical signal, a process value or a logic state.
 
-      The same process can be observed at several boundaries: the physical phenomenon, the sensor output, the process signal and the logic variable the controller uses. These layers may align or diverge. Correct diagnosis compares the evidence at each step instead of assuming the value seen in software automatically reflects the real process condition.
+      A sensor responds to a variable; a transducer converts that response; a transmitter delivers it as a normalized signal; and a conditioner may filter, isolate or adapt it. Outputs may be analog, discrete, digital or communication based. In discrete signals, PNP, NPN and dry contact describe different ways of switching and referencing the load, so supply, polarity, common reference, isolation, load and input mode must be compatible with the PLC.
 
-  - id: TH-02-ANALOG-SIGNAL-LOOPS
+      0–10 V and 4–20 mA interfaces represent a continuous range that is then scaled into engineering units. In a 4–20 mA loop, 4 mA usually corresponds to the lower endpoint and 20 mA to the upper endpoint, but the effective scale and alarms depend on configuration. The measured variable describes the process; the setpoint defines the reference value used by logic to decide when to act. They are not the same quantity even when they use the same units.
+
+      A fixed, saturated, noisy or unstable reading may originate in the power supply, wiring, connectors, ground, module, calibration, conditioning, sensor or process. The symptom does not identify the cause by itself: compare the signal with an independent reference and the known physical condition. Commissioning validates supply, polarity, range, scaling, loop response and the correspondence between process, PLC, logic and HMI; the first verified discrepancy indicates where to continue.
     media_ids: []
-    title: Analog signal loops and 4–20 mA
+
+  - id: TH-02-INDUCTIVE-SENSING
+    title: "Block 02 — Inductive proximity sensors"
     body: |-
-      Analog signals represent a continuous value within a defined range. In field instrumentation, a 4–20 mA loop is a common interface because it has good noise immunity, supports long cable runs and provides useful diagnostic information through its trend and operating margin.
+      An inductive proximity sensor generates an alternating electromagnetic field at its active face. When a metallic target enters that field, induced currents change the sensor's oscillation and the device may switch state when its internal criterion is reached. Detection is contactless, but it depends on the interaction between the field and the target, not only on the part being visible.
 
-      In a 4–20 mA loop, 4 mA usually represents the minimum measured value or zero-scale; 20 mA represents the maximum. If the signal sits outside this range, or if it collapses to 0 mA or a saturated value, that can indicate power failure, an open circuit, a defective sensor or a process condition outside the expected range.
+      Target material, size, shape, orientation, alignment, gap and speed influence the response. Flush or non-flush mounting, nearby metal and the active-face geometry must also be compatible with the sensor design. A powered device confirms an electrical condition, not that the target is within the detection conditions.
 
-      The diagnosis of an analog signal must be separated from the diagnosis of the sensor itself. A transmitter may be correct while the signal is still degraded by wiring, grounding, the input module, scale configuration or the reference value used by the system.
-
-  - id: TH-03-SENSOR-OUTPUT-TYPES
+      Sn is the nominal sensing distance declared as a reference; Sr describes the real sensing distance obtained under the conditions defined for the measurement. Su may express a useful distance and Sa an assured operating distance when those categories apply under the relevant technical definition. Their limits and relationships depend on the applicable standard or device documentation; no universal factor should be extrapolated. An observed switch confirms a state at that moment, while assured operation requires checking the documented conditions and mounting margin.
     media_ids: []
-    title: Output types and electrical compatibility
+
+  - id: TH-03-DISTANCE-MEASUREMENT
+    title: "Block 03 — Distance measurement and magnitudes"
     body: |-
-      Sensors, transmitters and signal conditioners can provide analog, digital, discrete or communication outputs. Analog outputs are often 0–10 V, 1–5 V or 4–20 mA; digital signals may operate as a dry contact, discrete state or serialized message.
+      A distance instrument estimates the separation between a physical instrument reference and an object's surface. Depending on the applied principle, it may calculate that separation from the time of flight of a signal or from triangulation geometry, among other methods. The reading is sensor-to-object distance; it does not automatically become height, level, thickness or an acceptance criterion.
 
-      Electrical compatibility requires checking the supply voltage, output type, polarity, reference, isolation and channel consumption. A sensor that looks healthy by its LED can still produce a signal incompatible with the PLC module or with the configured engineering scale. Compatibility is not proven by the manufacturer name or the cable label alone.
+      When a known sensor-to-base reference exists and the geometry allows both distances to be projected on the same axis, a dimension can be calculated: Height = sensor-to-base reference distance − sensor-to-object distance. For example, with a 700 mm reference and a 260 mm measured distance, the calculated height is 440 mm.
 
-  - id: TH-04-TRANSMITTERS-AND-SETPOINTS
+      The relationship requires the same unit, a stable reference, correctly identified surfaces and a coherent orientation, normally perpendicular to the measurement axis. If the sensor or base moves, the surface is inclined or an offset is uncompensated, the applicable geometric model must be used. Interpretation also requires the operating range, resolution, repeatability, accuracy, uncertainty, alignment, temperature, obstructions and mounting conditions.
     media_ids: []
-    title: Transmitters, conditioners and setpoints
+
+  - id: TH-04-SIGNALS-AND-DIAGNOSIS
+    title: "Block 04 — Signals, decisions and diagnosis"
     body: |-
-      A transmitter converts the physical variable into a standardized value for control and recording. A conditioner may prepare the signal for distance transmission, isolation or scale conversion. The measurement point, calibration reference and engineering scale must be interpreted alongside the process definition and the system setpoint.
+      Power, switching state and communication are different checks. A sensor can be energized and communicate data without its discrete output being active. PNP or NPN outputs depend on the wiring and configured input mode; IO-Link can carry measured values, states and parameters, but the meaning of each bit, word or state depends on the device, its profile and its configuration.
 
-      A setpoint is not just a numeric value; it is the reference that tells the control system when it should act. If the sensor signal is within range, but the logic compares it to the wrong value or wrong scale, system behavior can still be wrong without the physical process actually exceeding its limits.
+      A continuous measurement can be plausible while a discrete output remains inactive because the decision depends on a threshold, window, hysteresis, polarity or output mode. The measurement describes a value and the output communicates the result of a decision function. It is not universal that 0 means “not detected” or that 1 means “detected”.
 
-  - id: TH-05-ANALOG-FAULTS
-    media_ids: []
-    title: Common analog-loop faults
-    body: |-
-      Analog faults may come from the power source, wiring, connector, ground reference, module, calibration or sensor sensitivity. A signal stuck at 0 mA may indicate no power, an open circuit or a missing supply. A value fixed at one end of the range can suggest a blocked output, saturation condition or incorrect scale configuration.
-
-      Noise, thermal drift, vibration and process contamination also degrade the signal. Before replacing equipment, compare the transmitter value with the reference instrument and the actual physical condition. The first verified discrepancy usually points to the break in the chain.
-
-  - id: TH-06-COMMISSIONING-AND-VALIDATION
-    media_ids: []
-    title: Commissioning and measurement validation
-    body: |-
-      Commissioning of instrumentation requires validating the scale, polarity, reference, operating range and loop behavior under real conditions. It is not enough to confirm that the transmitter powers on; the signal arriving at the PLC must match the actual process and the control logic.
-
-      A robust diagnosis follows the physical variable from the sensor through the transmitter, wiring, PLC input, process variable and final control logic. Final validation must recreate the real operating condition and confirm that the system response matches the expected value. That sequence reduces replacement errors and preserves confidence in the measurement.
-
-  - id: "TH-07-INDUCTIVE-SENSING-CONDITIONS"
-    title: "Inductive sensing and physical conditions"
-    body: "An inductive proximity sensor detects a metallic target without contact. A visibly present workpiece does not establish that the active face, gap, target geometry and mounting conditions permit detection. Compare the application with the device documentation before replacing equipment or changing parameters. A powered sensor may operate correctly without switching when the target lies outside its sensing conditions."
-    media_ids: []
-  - id: "TH-08-RATED-AND-SECURED-DISTANCE"
-    title: "Rated and secured operating distance"
-    body: "Sn is the rated switching distance, not an exact digital threshold for every installation. The secured operating distance defines the documented condition to check for the application. For the Turck BI6U-MT12-IOL6X2-H1141, Sn = 6 mm and the secured reference is ≤ 4.86 mm (0.81 × Sn). Do not generalize that factor to other devices without consulting their documentation. Observed switching alone does not establish secured operating margin. Acceptance requires checking geometry, mounting and the documented condition as well as functional behavior."
-    media_ids: []
-  - id: "TH-09-POWER-SWITCHING-AND-PROCESS-DATA"
-    title: "Power, switching and process data"
-    body: "Power, switching and communication health are separate checks. The Power LED indicates power, while the Switching/Output LED represents the device switching state. An operational IO-Link connection can correctly transmit no detection. Interpret process data using the documentation: in the Active switchpoint representation used here, 0 means target not detected and 1 means target detected. Compare the physical state with the sensor, transmitted data, PLC and HMI. Locate the first discrepancy and verify the complete chain again after correction, without forcing signals."
-    media_ids: []
-  - id: TH-10-DISTANCE-MEASUREMENT
-    title: Distance measurement and operating principles
-    body: "A distance instrument estimates the separation between a sensor reference and an object using the principle documented by the manufacturer, such as time of flight or triangulation. The reading represents sensor-to-object distance; it is not automatically height, level or an acceptance command. Interpreting a measurement requires knowing the reference, range, resolution, uncertainty and application conditions."
-    media_ids: []
-  - id: TH-11-DISTANCE-VS-HEIGHT
-    title: Geometric reference and derived quantities
-    body: "The distance between a sensor and an object and the physical dimension relevant to the process are different quantities. If a documented geometric reference exists, a dimension can be calculated by combining that reference with the measured distance, for example: height = sensor-to-base reference minus sensor-to-object distance. An isolated reading cannot produce a product dimension without the reference and application geometry."
-    media_ids: []
-  - id: TH-12-SWITCHING-WINDOW-OUTPUT
-    title: Measured value and discrete output
-    body: "A measured value can be plausible while a discrete output remains inactive when the value lies outside a configured threshold or window. Continuous measurement and decision output are separate layers. Diagnosis must compare limits, hysteresis, output mode, polarity, normal state and application criteria. A discrete output is not a second measurement; it is the result of a configured decision function."
-    media_ids: []
-  - id: TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE
-    title: Traceability, persistence and validation
-    body: "Trace the full chain: physical phenomenon → sensor → measurement → decision function → signal → control input → logic → actuator and HMI representation. Save and read back parameters with the compatible procedure, check persistence after an authorized restart and validate the result with representative conditions. The first verified discrepancy guides diagnosis; a final indicator or zero counter alone does not establish recovery."
+      Traceability follows the path physical phenomenon → sensor → measurement → decision function → signal → control input → logic → actuator and HMI. Check limits, normal state, polarity, response time and application criterion; save and read back parameters using a compatible procedure and check their persistence after an authorized restart when required. Final validation uses representative conditions and an independent functional check; a final indicator or zero counter alone does not prove that the chain is validated.
     media_ids: []

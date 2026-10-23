@@ -211,7 +211,15 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.equal(theoryEs.media.length, 7);
   await Promise.all(theoryEs.media.map(item => access(path.join(generatedRoot, item.src))));
   assert.equal(Object.hasOwn(catalog.environments[1], "theory"), true);
-  assert.equal(catalog.environments[1].theory.sectionIds.length, 13);
+  assert.deepEqual(catalog.environments[1].theory.sectionIds, [
+    "TH-01-INSTRUMENTATION-FOUNDATIONS", "TH-02-INDUCTIVE-SENSING",
+    "TH-03-DISTANCE-MEASUREMENT", "TH-04-SIGNALS-AND-DIAGNOSIS"
+  ]);
+  const env002TheoryEs = await readJson(path.join(generatedRoot, catalog.environments[1].theory.locales.es));
+  const env002TheoryEn = await readJson(path.join(generatedRoot, catalog.environments[1].theory.locales.en));
+  assert.equal(env002TheoryEs.sections.length, 4);
+  assert.deepEqual(env002TheoryEs.sections.map(item => item.id), env002TheoryEn.sections.map(item => item.id));
+  assert.equal(env002TheoryEs.media.length, 0);
   assert.deepEqual(catalog.environments[1].hotspots, [
     { experienceEditorialId: "EE-0011", x: 75, y: 61 },
     { experienceEditorialId: "EE-0012", x: 52, y: 46 },

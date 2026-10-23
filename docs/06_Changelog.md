@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-23 — ENV-002 Theory four-block presentation
+
+- Reduced ENV-002 Theory from thirteen visible sections to four canonical sections with integrated fundamentals, inductive sensing, distance measurement and signals/diagnosis content. The existing Theory renderer now presents four blocks without Engine or Player changes; media remains empty until approved binaries are available.
+- Updated ENV-002 packaging and focused regression assertions for the four IDs. Engineering Experiences, progress APIs and image binaries remain unchanged.
+
+## 2026-10-23 — ENV-002 Theory didactic refactor
+
+- Reordered and rewrote ENV-002's 13 bilingual Theory sections into four editorial blocks: instrumentation fundamentals, inductive proximity, distance and magnitudes, and signals/diagnosis. Canonical IDs, ENV V2 ownership, media registrations, Experiences and Engine behavior remain unchanged.
+- Generalized detection-distance definitions, distance-to-height geometry, signal semantics and validation guidance; removed product/model-specific content from Theory. Updated the focused ENV-002 order and content assertions. No image binaries were modified.
+
 ## 2026-10-09 — ENV-002 / EE-0013 pneumatic no-extension diagnosis
 
 - Added bilingual EE-0013 in technical review with seven realistic PNGs based on repository visual references. The learner traces PLC command, valve control, available air and a disconnected local line, then restores the connection and independently verifies extension and feedback. Added focused flow tests and ENV-002 discovery. Engine behavior is unchanged; Browser QA remains infrastructure-blocked.

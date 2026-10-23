@@ -70,18 +70,18 @@ sections:
     body: "Alimentación, conmutación y salud de comunicación son comprobaciones distintas. El LED Power indica alimentación, mientras que el LED Switching/Output representa el estado de conmutación según el dispositivo. Un enlace IO-Link operativo puede transmitir correctamente un estado de no detección. Interpreta los datos de proceso con la documentación: en la representación Active switchpoint utilizada, 0 significa objetivo no detectado y 1 objetivo detectado. Contrasta el estado físico con el sensor, el dato comunicado, el PLC y la HMI. Localiza la primera discrepancia y verifica de nuevo toda la cadena después de corregirla, sin forzar señales."
     media_ids: []
   - id: TH-10-DISTANCE-MEASUREMENT
-    title: Medición de distancia por tiempo de vuelo
-    body: "Un sensor de distancia láser estima la separación entre su referencia y el objeto a partir del principio de medición que documenta el fabricante, como el tiempo de vuelo. La lectura representa distancia sensor–objeto; no es automáticamente altura, nivel ni una orden de aceptación. Para un DT50-2 concreto deben comprobarse variante, rango, referencia y comportamiento de salida en su documentación."
+    title: Medición de distancia y principios de funcionamiento
+    body: "Un instrumento de distancia estima la separación entre una referencia del sensor y un objeto mediante el principio que documenta el fabricante, por ejemplo tiempo de vuelo o triangulación. La lectura representa distancia sensor–objeto; no es automáticamente altura, nivel ni una orden de aceptación. Para interpretar una medida hay que conocer la referencia, el rango, la resolución, la incertidumbre y las condiciones de aplicación del instrumento."
     media_ids: []
   - id: TH-11-DISTANCE-VS-HEIGHT
-    title: Distancia de referencia y altura del producto
-    body: "La distancia sensor–caja y la altura de la caja son magnitudes distintas. Si existe una referencia sensor–cinta documentada, la altura puede calcularse como altura = distancia de referencia sensor–cinta menos distancia sensor–caja. Una lectura aislada de 214 mm no permite calcular una altura sin esa referencia y sin conocer la geometría de la aplicación."
+    title: Referencia geométrica y conversión de magnitudes
+    body: "La distancia entre el sensor y un objeto y la dimensión física que interesa al proceso son magnitudes diferentes. Si existe una referencia geométrica documentada, una dimensión puede calcularse combinando esa referencia con la distancia medida, por ejemplo: altura = referencia sensor–base menos distancia sensor–objeto. Una lectura aislada no permite calcular una dimensión del producto sin la referencia y la geometría de la aplicación."
     media_ids: []
   - id: TH-12-SWITCHING-WINDOW-OUTPUT
-    title: Valor medido, ventana y salida de conmutación
-    body: "Un valor medido puede ser plausible y aun así dejar la salida Q1 en OFF si queda fuera de la ventana configurada. El diagnóstico debe contrastar límites, modo de salida, polaridad y persistencia con los criterios de aplicación. Q1 no es otra medición de distancia: es el resultado de la función de conmutación configurada."
+    title: Valor medido y salida discreta
+    body: "Un valor medido puede ser plausible y aun así producir una salida discreta inactiva si queda fuera del umbral o de la ventana configurada. La medición continua y la salida de decisión son capas distintas. El diagnóstico debe comparar límites, histéresis, modo de salida, polaridad, estado normal y criterios de aplicación. Una salida discreta no es otra medición: es el resultado de una función de decisión configurada."
     media_ids: []
   - id: TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE
-    title: Trazabilidad de medida y persistencia de parámetros
-    body: "Sigue la cadena completa: geometría física → distancia medida → ventana y función de salida → Q1 → entrada PLC → lógica de aceptación o rechazo → actuador → HMI. Guarda y lee de vuelta los parámetros con el procedimiento compatible, verifica el comportamiento tras un reinicio aprobado y usa muestras aceptadas y rechazadas. El primer estado anómalo verificable guía el diagnóstico; un contador a cero por sí solo no acredita recuperación."
+    title: Trazabilidad, persistencia y validación
+    body: "Sigue la cadena completa: fenómeno físico → sensor → medida → función de decisión → señal → entrada de control → lógica → actuador y representación HMI. Guarda y lee de vuelta los parámetros con el procedimiento compatible, comprueba su persistencia tras un reinicio autorizado y valida el resultado con condiciones representativas. La primera discrepancia verificable guía el diagnóstico; un indicador final o un contador a cero por sí solo no acredita recuperación."
     media_ids: []

@@ -64,18 +64,18 @@ sections:
     body: "Power, switching and communication health are separate checks. The Power LED indicates power, while the Switching/Output LED represents the device switching state. An operational IO-Link connection can correctly transmit no detection. Interpret process data using the documentation: in the Active switchpoint representation used here, 0 means target not detected and 1 means target detected. Compare the physical state with the sensor, transmitted data, PLC and HMI. Locate the first discrepancy and verify the complete chain again after correction, without forcing signals."
     media_ids: []
   - id: TH-10-DISTANCE-MEASUREMENT
-    title: Time-of-flight distance measurement
-    body: "A laser distance sensor estimates the separation between its reference and the object using the measurement principle documented by the manufacturer, such as time of flight. The reading represents sensor-to-object distance; it is not automatically height, level or an acceptance command. For a specific DT50-2, verify the variant, range, reference and output behavior in its documentation."
+    title: Distance measurement and operating principles
+    body: "A distance instrument estimates the separation between a sensor reference and an object using the principle documented by the manufacturer, such as time of flight or triangulation. The reading represents sensor-to-object distance; it is not automatically height, level or an acceptance command. Interpreting a measurement requires knowing the reference, range, resolution, uncertainty and application conditions."
     media_ids: []
   - id: TH-11-DISTANCE-VS-HEIGHT
-    title: Reference distance and product height
-    body: "Sensor-to-box distance and box height are different quantities. If a documented sensor-to-belt reference exists, height can be calculated as sensor-to-belt reference distance minus sensor-to-box distance. An isolated 214 mm reading cannot produce a height without that reference and the application geometry."
+    title: Geometric reference and derived quantities
+    body: "The distance between a sensor and an object and the physical dimension relevant to the process are different quantities. If a documented geometric reference exists, a dimension can be calculated by combining that reference with the measured distance, for example: height = sensor-to-base reference minus sensor-to-object distance. An isolated reading cannot produce a product dimension without the reference and application geometry."
     media_ids: []
   - id: TH-12-SWITCHING-WINDOW-OUTPUT
-    title: Measured value, window and switching output
-    body: "A measured value can be plausible while Q1 remains OFF when it lies outside the configured window. Diagnosis must compare limits, output mode, polarity and persistence with the application criteria. Q1 is not a second distance measurement; it is the result of the configured switching function."
+    title: Measured value and discrete output
+    body: "A measured value can be plausible while a discrete output remains inactive when the value lies outside a configured threshold or window. Continuous measurement and decision output are separate layers. Diagnosis must compare limits, hysteresis, output mode, polarity, normal state and application criteria. A discrete output is not a second measurement; it is the result of a configured decision function."
     media_ids: []
   - id: TH-13-MEASUREMENT-TRACE-AND-PERSISTENCE
-    title: Measurement traceability and parameter persistence
-    body: "Trace the full chain: physical geometry → measured distance → window and output function → Q1 → PLC input → acceptance or reject logic → actuator → HMI. Save and read back parameters with the compatible procedure, verify behavior after an approved restart, and use accepted and rejected samples. The first verified abnormal state guides diagnosis; a zero counter alone does not establish recovery."
+    title: Traceability, persistence and validation
+    body: "Trace the full chain: physical phenomenon → sensor → measurement → decision function → signal → control input → logic → actuator and HMI representation. Save and read back parameters with the compatible procedure, check persistence after an authorized restart and validate the result with representative conditions. The first verified discrepancy guides diagnosis; a final indicator or zero counter alone does not establish recovery."
     media_ids: []

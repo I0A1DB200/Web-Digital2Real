@@ -131,7 +131,7 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
   assert.deepEqual(theory.sections.map(item => item.id), english.sections.map(item => item.id));
   assert.deepEqual(theory.sections.slice(-4).map(item => item.id), theoryIds);
   for (const document of [theory, english]) {
-    assert.doesNotMatch(JSON.stringify(document.sections.slice(-4)), /EE-0011|7\.8|Station 1/);
+    assert.doesNotMatch(JSON.stringify(document.sections.slice(-4)), /EE-0011|7\.8|Station 1|DT50-2|214|280|320|180|250/);
   }
 });
 

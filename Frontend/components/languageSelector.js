@@ -10,6 +10,7 @@ export function createLanguageSelector(preference, { documentRef = globalThis.do
     button.className = "language-selector__option";
     button.textContent = locale.toUpperCase();
     button.setAttribute("lang", locale);
+    button.setAttribute("aria-label", locale === "es" ? "Español" : "English");
     button.addEventListener("click", async () => {
       const changed = await preference.setLocale(locale);
       status.textContent = changed ? "" : preference.getLocale() === "es"

@@ -20,8 +20,10 @@ test("global selector exposes ES/EN, selected state, persistence and native butt
   const [es, en] = selector.element.children;
   assert.equal(es.type, "button");
   assert.equal(es.textContent, "ES");
+  assert.equal(es.attributes["aria-label"], "Español");
   assert.equal(es.attributes["aria-pressed"], "true");
   await en.listeners.click();
+  assert.equal(en.attributes["aria-label"], "English");
   assert.equal(en.attributes["aria-pressed"], "true");
   assert.equal(en.focused, true);
   assert.equal(createLocalePreference({ storage }).getLocale(), "en");

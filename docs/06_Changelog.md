@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Visible global language control
+
+- Reworked the global ES/EN selector as a clearly visible segmented control in the fixed navigation, with an explicit selected state and accessible language labels. Language behavior and persistence remain unchanged.
+
 ## 2026-10-23 — ENV-002 Theory four-block presentation
 
 - Reduced ENV-002 Theory from thirteen visible sections to four canonical sections with integrated fundamentals, inductive sensing, distance measurement and signals/diagnosis content. The existing Theory renderer now presents four blocks without Engine or Player changes; media remains empty until approved binaries are available.

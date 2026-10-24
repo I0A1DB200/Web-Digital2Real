@@ -118,7 +118,7 @@
   left: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0.65rem 0.55rem 0.65rem 0.85rem;
   pointer-events: none;
 }
@@ -176,17 +176,8 @@
   object-position: center;
 }
 
-.environment-card__id {
-  color: var(--accent);
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.environment-card__id {
-  padding: 0.42rem 0.55rem;
-  background: var(--color-navbar-bg);
+.environment-card__media[data-image-treatment="crop-inset"] .environment-card__image {
+  transform: scale(1.24);
 }
 
 .environment-card__content {

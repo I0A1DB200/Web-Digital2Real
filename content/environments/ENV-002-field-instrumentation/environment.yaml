@@ -17,6 +17,7 @@ environment:
     skills:
       es: ["Proceso físico", "Sensor / instrumento", "Señal", "E/S / comunicación", "PLC", "Lógica de control", "Localización de fallos a lo largo de la cadena de señal"]
       en: ["Physical process", "Sensor / instrument", "Signal", "I/O / communication", "PLC", "Control logic", "Fault localization along the signal chain"]
+    catalog_image_treatment: "crop-inset"
 
 visual:
   background: "media/ENV-002-field-instrumentation.png"

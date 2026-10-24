@@ -52,7 +52,6 @@ export function createEnvironmentNavigator({
     environments.forEach(environment => {
       const card = createElement(documentRef, "article", "environment-card");
       const top = createElement(documentRef, "div", "environment-card__topbar");
-      appendText(documentRef, top, "span", "environment-card__id", environment.id);
       const menuButton = createButton(documentRef, ui.environmentMenu(environmentTitle(environment)), "environment-card__menu-button");
       menuButton.setAttribute("aria-label", ui.environmentMenu(environmentTitle(environment)));
       menuButton.setAttribute("aria-haspopup", "menu");
@@ -68,6 +67,10 @@ export function createEnvironmentNavigator({
       main.type = "button";
       main.setAttribute("aria-label", `${ui.openEnvironment}: ${environmentTitle(environment)}`);
       const media = createElement(documentRef, "span", "environment-card__media");
+      const imageTreatment = environment.presentation?.catalog_image_treatment;
+      if (typeof imageTreatment === "string" && imageTreatment.trim()) {
+        media.dataset.imageTreatment = imageTreatment;
+      }
       const image = createElement(documentRef, "img", "environment-card__image");
       image.src = `${baseUrl}/${environment.background}`;
       image.alt = ui.environmentImage(environmentTitle(environment));

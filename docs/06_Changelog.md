@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Environment catalog card framing
+
+- Standardized Environment catalog media presentation to a shared 16:9 card frame, cropped the inset ENV-002 catalog artwork only at card level, and removed the redundant ENV identifier label from card corners. Interactive environment imagery and hotspot coordinates remain unchanged.
+
 ## 2026-10-24 — Visible global language control
 
 - Reworked the global ES/EN selector as a clearly visible segmented control in the fixed navigation, with an explicit selected state and accessible language labels. Language behavior and persistence remain unchanged.

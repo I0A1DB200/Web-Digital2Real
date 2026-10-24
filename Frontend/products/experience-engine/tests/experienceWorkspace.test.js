@@ -990,6 +990,7 @@ test("Environment Selector cards navigate, expose accessible metadata and derive
   const image = navigator.element.find(item => item.className === "environment-card__image");
   assert.ok(media);
   assert.equal(image.parent, media);
+  assert.equal(navigator.element.find(item => item.className === "environment-card__id"), null);
   const segments = navigator.element.findAll(item => item.className === "environment-card__segment");
   assert.equal(segments.length, 10);
   assert.equal(segments.every(item => item.dataset.complete === "false"), true);
@@ -1054,6 +1055,7 @@ test("ENV-002 localizes catalog, accessible labels, environment and Theory title
     assert.equal(navigator.element.find(item => item.className === "environment-card__description").text, descriptions[language]);
     const image = navigator.element.find(item => item.className === "environment-card__image");
     assert.ok(image.alt.includes(expectedTitle));
+    assert.equal(navigator.element.find(item => item.className === "environment-card__media").dataset.imageTreatment, "crop-inset");
     assert.equal(image.src, "./generated/experience-engine/environments/ENV-002-field-instrumentation.png");
     const main = navigator.element.find(item => item.className === "environment-card__main");
     assert.ok(main.attributes["aria-label"].endsWith(expectedTitle));
@@ -1081,6 +1083,7 @@ test("Environment Selector CSS provides three, two and one-column layouts withou
   assert.match(styles, /\.environment-card\s*\{[^}]*box-shadow:\s*var\(--shadow-card\)/s);
   assert.match(styles, /\.environment-card__media\s*\{[^}]*position:\s*relative[^}]*width:\s*100%[^}]*aspect-ratio:\s*16\s*\/\s*9[^}]*overflow:\s*hidden/s);
   assert.match(styles, /\.environment-card__image\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*cover/s);
+  assert.match(styles, /\.environment-card__media\[data-image-treatment="crop-inset"\]\s+\.environment-card__image\s*\{[^}]*transform:\s*scale\(1\.24\)/s);
   assert.doesNotMatch(styles, /\.environment-card__description\s*\{[^}]*min-height/s);
   assert.match(styles, /\.environment-card__progress\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+auto/s);
   assert.match(styles, /\.environment-card__segments\s*\{[^}]*grid-column:\s*1[^}]*grid-row:\s*1/s);

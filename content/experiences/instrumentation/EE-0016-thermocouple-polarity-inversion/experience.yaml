@@ -1,0 +1,562 @@
+contract_version: "2.0.0"
+
+metadata:
+  id: "EXP-THERMOCOUPLE-POLARITY-016"
+  editorial_id: "EE-0016"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+
+localization:
+  default_locale: "es"
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+
+classification:
+  platform: "Type K thermocouple / temperature input module / PLC"
+  domain: "Thermocouple polarity and temperature-input diagnosis"
+  industry: "Process heating"
+  machine_type: "Heated stainless process vessel"
+  difficulty: "foundation"
+
+capability_references:
+  - capability_id: "ICF-02"
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+
+public:
+  slug: "thermocouple-polarity-inversion"
+  title: "Temperatura invertida en el termopar"
+  summary: "Localiza por qué la temperatura de la HMI cae mientras el proceso se calienta, siguiendo el termopar, la entrada, la polaridad y la verificación de tendencia."
+  estimated_duration: 18
+  scenario:
+    initial_context: "El recipiente de proceso está calentando de forma estable, pero la HMI muestra una temperatura que cae mientras el proceso continúa caliente."
+    operational_state: "La primera frontera anómala todavía puede estar en el proceso, la sonda, la extensión, el módulo de temperatura o la representación PLC/HMI."
+    initiating_event: "La regulación térmica se detiene porque la lectura no sigue el comportamiento observado del proceso."
+    learner_role: "Técnico de automatización responsable de separar magnitud física, termopar, cable de compensación, entrada de temperatura, PLC y HMI."
+    safety_context:
+      safe_state: "Realiza lecturas e intervenciones conforme al procedimiento autorizado, manteniendo el proceso térmico en un estado seguro y evitando contacto con superficies calientes."
+      intervention_constraints:
+        - "No forzar el valor de temperatura ni puentear alarmas de regulación."
+        - "No cambiar la escala PLC o HMI para ocultar una lectura incorrecta."
+        - "No sustituir sonda ni módulo antes de localizar la primera discrepancia."
+        - "Aislar el circuito conforme al procedimiento antes de abrir terminales o corregir la extensión."
+  learning_objectives:
+    - id: "OBJ-TRACE-THERMAL-CHAIN"
+      description: "Seguir la cadena desde la magnitud térmica y el termopar hasta la entrada de temperatura, el PLC y la HMI."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-SIGNAL-TRACEABILITY"
+    - id: "OBJ-INTERPRET-TC-POLARITY"
+      description: "Distinguir una tendencia física de una representación invertida e interpretar tipo de entrada, polaridad y cable de compensación sin inventar colores universales."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-STATE-INTERPRETATION"
+    - id: "OBJ-VERIFY-THERMAL-RECOVERY"
+      description: "Restaurar la polaridad prevista y verificar con una rampa controlada la referencia independiente, el módulo, el PLC y la HMI."
+      capability_id: "ICF-02"
+      competency_id: "COMP-IIO-CONTROLLED-RECOVERY"
+  stages:
+    - id: "STAGE-01-THERMAL-INCIDENT"
+      phase: "incident"
+      title: "Incidente de temperatura"
+      situation: "El recipiente continúa caliente, pero la HMI muestra una tendencia descendente y la regulación se detiene. ¿Qué primera comprobación delimita mejor el problema?"
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-REPLACE-PROBE", "DEC-01-CHECK-REFERENCE", "DEC-01-RAISE-SETPOINT", "DEC-01-CLEAR-ALARM"]
+      media_ids: ["ART-002"]
+    - id: "STAGE-02-INDEPENDENT-REFERENCE"
+      phase: "investigation"
+      title: "Separar proceso y representación"
+      situation: "La referencia independiente sube mientras la HMI cae. ¿Qué frontera debe revisarse antes de intervenir en el calentamiento?"
+      evidence_ids: ["EVID-02-REFERENCE"]
+      decision_ids: ["DEC-02-FORCE-HMI", "DEC-02-REPLACE-MODULE", "DEC-02-CHECK-INPUT", "DEC-02-LOWER-HEAT"]
+      media_ids: ["ART-003"]
+    - id: "STAGE-03-INPUT-AND-WIRING"
+      phase: "investigation"
+      title: "Inspeccionar la entrada y la extensión"
+      situation: "El canal está configurado para Type K y no presenta diagnóstico de circuito abierto; la sonda está instalada en el recipiente. ¿Qué inspección aporta la siguiente evidencia?"
+      evidence_ids: ["EVID-03-INPUT"]
+      decision_ids: ["DEC-03-INSPECT-POLARITY", "DEC-03-CHANGE-PLC", "DEC-03-ADJUST-HMI", "DEC-03-REPLACE-PROBE"]
+      media_ids: ["ART-004"]
+    - id: "STAGE-04-POLARITY-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar la polaridad"
+      situation: "La inspección muestra que los conductores del termopar están cruzados en la extensión. ¿Qué conclusión está mejor sustentada antes de corregir?"
+      evidence_ids: ["EVID-04-POLARITY"]
+      decision_ids: ["DEC-04-FAULT-SENSOR", "DEC-04-RESCALE-PLC", "DEC-04-FORCE-VALUE", "DEC-04-CONFIRM-POLARITY"]
+      media_ids: ["ART-005"]
+    - id: "STAGE-05-SAFE-CORRECTION"
+      phase: "solution"
+      title: "Restaurar la conexión prevista"
+      situation: "La polaridad invertida explica la tendencia opuesta, pero la recuperación aún no está verificada. ¿Qué intervención prepara una prueba independiente?"
+      evidence_ids: []
+      decision_ids: ["DEC-05-RECALIBRATE-PLC", "DEC-05-RESTORE-WIRING", "DEC-05-REPLACE-MODULE", "DEC-05-INVERT-HMI"]
+      media_ids: []
+    - id: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      phase: "solution"
+      title: "Verificar la recuperación térmica"
+      situation: "La extensión se ha corregido conforme al procedimiento y la HMI vuelve a seguir la referencia. ¿Qué prueba permite cerrar la intervención?"
+      evidence_ids: ["EVID-06-INTERVENTION"]
+      decision_ids: ["DEC-06-CLOSE-ONCE", "DEC-06-CHECK-ALARM", "DEC-06-VERIFY-RAMP", "DEC-06-CLEAR-HISTORY"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: "EVID-01-INCIDENT"
+      type: "initial_observation"
+      source: "Proceso térmico y HMI"
+      content: "El recipiente continúa caliente, mientras la HMI muestra una tendencia descendente y la regulación se detiene. El síntoma no identifica por sí solo la frontera defectuosa."
+      reliability: "high"
+      revealed_by: []
+      media_ids: ["ART-002"]
+    - id: "EVID-02-REFERENCE"
+      type: "measurement"
+      source: "Referencia independiente de proceso"
+      content: "Una referencia independiente confirma que la temperatura del proceso aumenta mientras la tendencia HMI disminuye. La discrepancia está después de la magnitud observada o en la cadena de medida, no necesariamente en el calentador."
+      reliability: "confirmed"
+      revealed_by: ["DEC-01-CHECK-REFERENCE"]
+      media_ids: ["ART-003"]
+    - id: "EVID-03-INPUT"
+      type: "diagnostic"
+      source: "Módulo de entrada de temperatura"
+      content: "El canal está configurado para termopar tipo K y no indica circuito abierto. La configuración del tipo de entrada no demuestra todavía que la polaridad de la extensión sea correcta."
+      reliability: "confirmed"
+      revealed_by: ["DEC-02-CHECK-INPUT"]
+      media_ids: ["ART-004"]
+    - id: "EVID-04-POLARITY"
+      type: "inspection"
+      source: "Terminales de la extensión del termopar"
+      content: "La inspección segura muestra que los conductores positivo y negativo están cruzados en la extensión. El termopar y el módulo no se declaran defectuosos solo por el síntoma inicial."
+      reliability: "confirmed"
+      revealed_by: ["DEC-03-INSPECT-POLARITY"]
+      media_ids: ["ART-005"]
+    - id: "EVID-05-DIAGNOSIS"
+      type: "diagnostic"
+      source: "Síntesis de la cadena de medida"
+      content: "El proceso y la referencia independiente aumentan, el módulo acepta Type K y la extensión invierte la polaridad. La primera causa física demostrada es la conexión cruzada, no una escala HMI ni un fallo de PLC."
+      reliability: "confirmed"
+      revealed_by: ["DEC-04-CONFIRM-POLARITY"]
+      media_ids: []
+    - id: "EVID-06-INTERVENTION"
+      type: "inspection"
+      source: "Terminales corregidos"
+      content: "La extensión ha sido reconectada con la polaridad prevista y los terminales han quedado asegurados mediante el procedimiento autorizado. La recuperación funcional todavía debe verificarse."
+      reliability: "confirmed"
+      revealed_by: ["DEC-05-RESTORE-WIRING"]
+      media_ids: ["ART-006"]
+    - id: "EVID-07-RECOVERY"
+      type: "functional_test"
+      source: "Rampa térmica controlada"
+      content: "Tres puntos representativos confirman que la referencia independiente, el módulo, el PLC y la HMI siguen la misma tendencia sin alarma de entrada ni inversión de señal. La cadena térmica queda verificada."
+      reliability: "confirmed"
+      revealed_by: ["DEC-06-VERIFY-RAMP"]
+      media_ids: ["ART-007"]
+  decisions:
+    - id: "DEC-01-REPLACE-PROBE"
+      stage_id: "STAGE-01-THERMAL-INCIDENT"
+      action: "Sustituir la sonda porque la HMI no sigue la temperatura."
+    - id: "DEC-01-CHECK-REFERENCE"
+      stage_id: "STAGE-01-THERMAL-INCIDENT"
+      action: "Comparar referencia independiente con tendencia HMI."
+    - id: "DEC-01-RAISE-SETPOINT"
+      stage_id: "STAGE-01-THERMAL-INCIDENT"
+      action: "Subir la consigna para que la lectura vuelva a subir."
+    - id: "DEC-01-CLEAR-ALARM"
+      stage_id: "STAGE-01-THERMAL-INCIDENT"
+      action: "Borrar la alarma térmica y continuar el calentamiento."
+    - id: "DEC-02-FORCE-HMI"
+      stage_id: "STAGE-02-INDEPENDENT-REFERENCE"
+      action: "Forzar el valor HMI para mantener la producción."
+    - id: "DEC-02-REPLACE-MODULE"
+      stage_id: "STAGE-02-INDEPENDENT-REFERENCE"
+      action: "Cambiar el módulo sin revisar el tipo de entrada."
+    - id: "DEC-02-CHECK-INPUT"
+      stage_id: "STAGE-02-INDEPENDENT-REFERENCE"
+      action: "Revisar canal, tipo K y diagnóstico."
+    - id: "DEC-02-LOWER-HEAT"
+      stage_id: "STAGE-02-INDEPENDENT-REFERENCE"
+      action: "Reducir el calentamiento para que ambas lecturas se igualen."
+    - id: "DEC-03-INSPECT-POLARITY"
+      stage_id: "STAGE-03-INPUT-AND-WIRING"
+      action: "Aislar y comprobar tipo y polaridad de la extensión."
+    - id: "DEC-03-CHANGE-PLC"
+      stage_id: "STAGE-03-INPUT-AND-WIRING"
+      action: "Cambiar la lógica PLC antes de revisar la conexión del termopar."
+    - id: "DEC-03-ADJUST-HMI"
+      stage_id: "STAGE-03-INPUT-AND-WIRING"
+      action: "Ajustar la escala HMI para compensar la tendencia observada."
+    - id: "DEC-03-REPLACE-PROBE"
+      stage_id: "STAGE-03-INPUT-AND-WIRING"
+      action: "Reemplazar la sonda sin registrar la polaridad de la extensión."
+    - id: "DEC-04-FAULT-SENSOR"
+      stage_id: "STAGE-04-POLARITY-DIAGNOSIS"
+      action: "Declarar fallo del sensor porque su valor no sigue la tendencia."
+    - id: "DEC-04-RESCALE-PLC"
+      stage_id: "STAGE-04-POLARITY-DIAGNOSIS"
+      action: "Cambiar la escala de ingeniería aunque la señal sea de termopar."
+    - id: "DEC-04-FORCE-VALUE"
+      stage_id: "STAGE-04-POLARITY-DIAGNOSIS"
+      action: "Forzar el valor de temperatura para que la secuencia continúe."
+    - id: "DEC-04-CONFIRM-POLARITY"
+      stage_id: "STAGE-04-POLARITY-DIAGNOSIS"
+      action: "Confirmar la polaridad cruzada antes de corregir."
+    - id: "DEC-05-RECALIBRATE-PLC"
+      stage_id: "STAGE-05-SAFE-CORRECTION"
+      action: "Recalibrar el PLC para aceptar una entrada conectada al revés."
+    - id: "DEC-05-RESTORE-WIRING"
+      stage_id: "STAGE-05-SAFE-CORRECTION"
+      action: "Restaurar polaridad y asegurar terminales."
+    - id: "DEC-05-REPLACE-MODULE"
+      stage_id: "STAGE-05-SAFE-CORRECTION"
+      action: "Cambiar el módulo aunque el canal acepte Type K."
+    - id: "DEC-05-INVERT-HMI"
+      stage_id: "STAGE-05-SAFE-CORRECTION"
+      action: "Invertir el signo en HMI para ocultar la conexión cruzada."
+    - id: "DEC-06-CLOSE-ONCE"
+      stage_id: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      action: "Cerrar al ver que la HMI sube una vez."
+    - id: "DEC-06-CHECK-ALARM"
+      stage_id: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      action: "Verificar únicamente que no aparece una alarma de entrada."
+    - id: "DEC-06-VERIFY-RAMP"
+      stage_id: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      action: "Comparar tendencias durante una rampa controlada."
+    - id: "DEC-06-CLEAR-HISTORY"
+      stage_id: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      action: "Borrar el histórico de alarmas para dar por cerrada la incidencia."
+  visual:
+    educational_purpose: "Distinguir una magnitud térmica real de una señal de termopar invertida y verificar la cadena completa de temperatura."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-001-thermal-vessel.png"
+        alt: "Recipiente industrial calentado con termopar tipo K y transmisor de temperatura."
+        caption: "Portada: la cadena térmica comienza en el proceso y termina en la representación de control."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-002-thermal-incident.png"
+        alt: "Recipiente térmico y armario de control durante un incidente de regulación."
+        caption: "Incidente inicial: la escena física y la HMI deben compararse antes de intervenir."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-003-reference-vs-hmi.png"
+        alt: "Gráfica que contrasta una referencia de proceso ascendente con una tendencia HMI descendente."
+        caption: "La referencia independiente y la HMI se mueven en sentidos opuestos."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-004-thermocouple-terminals.png"
+        alt: "Inspección cercana del cabezal de termopar, cable de extensión y caja de terminales."
+        caption: "La inspección segura lleva la búsqueda hasta el circuito de extensión."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-005-polarity-diagnosis.png"
+        alt: "Diagrama de un termopar tipo K con conductores cruzados hacia la entrada."
+        caption: "La polaridad cruzada explica la tendencia inversa; no demuestra que la sonda esté averiada."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-006-authorized-correction.png"
+        alt: "Técnico con protección inspeccionando una caja de terminales térmica desenergizada."
+        caption: "La reconexión se realiza con aislamiento y control del proceso."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-THERMOCOUPLE-POLARITY-016/ART-007-verification-ramp.png"
+        alt: "Gráfica de una rampa controlada donde referencia y HMI siguen la misma tendencia."
+        caption: "La recuperación se acredita comparando la cadena en varios puntos de la rampa."
+        purpose: "completion"
+  completion:
+    title: "Debrief técnico"
+    summary: "El proceso térmico y la referencia independiente aumentaban, pero la polaridad cruzada del termopar invertía la tendencia en la cadena de entrada. La reconexión correcta y la rampa controlada hicieron coherentes módulo, PLC y HMI."
+    process: ["Comparar proceso y HMI con una referencia independiente.", "Revisar tipo de entrada y diagnóstico del canal.", "Inspeccionar extensión y polaridad bajo aislamiento autorizado.", "Separar polaridad cruzada de fallo de sonda o PLC.", "Restaurar la conexión prevista y asegurar terminales.", "Verificar la cadena completa mediante una rampa térmica controlada."]
+    lesson: "Una entrada sin diagnóstico de circuito abierto puede seguir representando mal la magnitud; la tendencia y la polaridad también son evidencia."
+    avoided_errors: ["Sustituir la sonda antes de comprobar la cadena.", "Cambiar la escala PLC o HMI para ocultar una conexión cruzada.", "Confundir ausencia de alarma con recuperación.", "Cerrar después de un único valor sin comprobar tendencia y referencia."]
+    industrial_value: ["Menos sustituciones injustificadas.", "Mejor separación entre proceso, señal y representación.", "Verificación térmica reproducible y trazable."]
+    media_ids: ["ART-007"]
+
+private:
+  fault_model:
+    root_cause: "Polaridad del termopar tipo K invertida en la extensión entre el cabezal de campo y la entrada de temperatura; la inversión explica la tendencia HMI opuesta mientras el proceso aumenta."
+    recovery_conditions: ["Canal configurado para Type K y sin diagnóstico de circuito abierto.", "Polaridad de la extensión restaurada y terminales asegurados según el procedimiento autorizado.", "Referencia independiente, módulo, PLC y HMI siguen la misma tendencia en tres puntos de una rampa térmica.", "No se utilizan forzados ni cambios de escala para declarar recuperación."]
+  diagnostic_model:
+    hypotheses:
+      - id: "HYP-PROCESS-COOLING"
+        statement: "El proceso realmente está enfriándose y la referencia independiente confirmará una tendencia descendente."
+        initial_status: "possible"
+      - id: "HYP-INPUT-CONFIGURATION"
+        statement: "El módulo no está configurado para el tipo de termopar o presenta un diagnóstico de entrada."
+        initial_status: "possible"
+      - id: "HYP-PLC-HMI"
+        statement: "La entrada es coherente pero el PLC o la HMI transforman la tendencia."
+        initial_status: "possible"
+      - id: "HYP-POLARITY"
+        statement: "La extensión del termopar tiene la polaridad cruzada."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-POLARITY"
+    critical_path: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-INPUT", "DEC-03-INSPECT-POLARITY", "DEC-04-CONFIRM-POLARITY", "DEC-05-RESTORE-WIRING", "DEC-06-VERIFY-RAMP"]
+  decision_logic:
+    - decision_id: "DEC-01-REPLACE-PROBE"
+      is_correct: false
+      retry_feedback: "La tendencia HMI no demuestra que la sonda esté averiada; compara primero la magnitud con una referencia independiente."
+      rationale: "Sustituye el dispositivo antes de separar proceso y representación."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-INDEPENDENT-REFERENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-CHECK-REFERENCE"
+      is_correct: true
+      rationale: "Una referencia independiente establece si la tendencia física coincide con la HMI."
+      classification: "strong"
+      consequence: "Revela la discrepancia entre proceso y representación."
+      evidence_revealed: ["EVID-02-REFERENCE"]
+      next_stage: "STAGE-02-INDEPENDENT-REFERENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-RAISE-SETPOINT"
+      is_correct: false
+      retry_feedback: "Cambiar la consigna modifica el proceso y no identifica por qué la lectura sigue una tendencia opuesta."
+      rationale: "Actúa sobre la regulación antes de localizar la medida."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-INDEPENDENT-REFERENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-01-CLEAR-ALARM"
+      is_correct: false
+      retry_feedback: "Borrar la alarma elimina un síntoma y no demuestra que la magnitud ni la señal sean correctas."
+      rationale: "Confunde reconocimiento de alarma con diagnóstico."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-02-INDEPENDENT-REFERENCE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-FORCE-HMI"
+      is_correct: false
+      retry_feedback: "Forzar la HMI oculta la discrepancia y no prueba la señal del termopar."
+      rationale: "Modifica la representación en lugar de observar la frontera."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-INPUT-AND-WIRING"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-02-REPLACE-MODULE"
+      is_correct: false
+      retry_feedback: "La referencia independiente no demuestra un fallo del módulo; revisa primero configuración y diagnóstico."
+      rationale: "Sustituye hardware antes de confirmar la entrada."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-INPUT-AND-WIRING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-CHECK-INPUT"
+      is_correct: true
+      rationale: "La frontera siguiente es el canal de temperatura: tipo de termopar y diagnóstico de entrada."
+      classification: "strong"
+      consequence: "Revela que el canal acepta Type K y no declara circuito abierto."
+      evidence_revealed: ["EVID-03-INPUT"]
+      next_stage: "STAGE-03-INPUT-AND-WIRING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-02-LOWER-HEAT"
+      is_correct: false
+      retry_feedback: "Reducir el calentamiento puede cambiar el proceso, pero no localiza la inversión de tendencia."
+      rationale: "Confunde una acción de proceso con una comprobación de señal."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-03-INPUT-AND-WIRING"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-INSPECT-POLARITY"
+      is_correct: true
+      rationale: "Con el tipo de entrada validado, la extensión y su polaridad son la siguiente frontera física."
+      classification: "strong"
+      consequence: "Revela la inspección de terminales y polaridad."
+      evidence_revealed: ["EVID-04-POLARITY"]
+      next_stage: "STAGE-04-POLARITY-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-CHANGE-PLC"
+      is_correct: false
+      retry_feedback: "No hay evidencia de lógica incorrecta; todavía falta inspeccionar la conexión física del termopar."
+      rationale: "Salta a la lógica sin verificar la entrada física."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-POLARITY-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-03-ADJUST-HMI"
+      is_correct: false
+      retry_feedback: "Ajustar la HMI puede ocultar un signo invertido y rompe la trazabilidad de la medida."
+      rationale: "Corrige la representación antes de localizar la señal."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-POLARITY-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-03-REPLACE-PROBE"
+      is_correct: false
+      retry_feedback: "El canal válido y el síntoma no justifican cambiar la sonda sin comprobar extensión y polaridad."
+      rationale: "Sustituye el sensor antes de inspeccionar el cableado."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-04-POLARITY-DIAGNOSIS"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-FAULT-SENSOR"
+      is_correct: false
+      retry_feedback: "Un termopar con polaridad cruzada puede invertir la tendencia sin demostrar que el elemento sensor esté averiado."
+      rationale: "Atribuye la causa al dispositivo antes de interpretar la conexión."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-RESCALE-PLC"
+      is_correct: false
+      retry_feedback: "La polaridad es una relación de conexión del termopar, no una escala de ingeniería que deba invertirse en el PLC."
+      rationale: "Confunde polaridad con escalado."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-04-FORCE-VALUE"
+      is_correct: false
+      retry_feedback: "Forzar la temperatura elimina la evidencia de campo y puede dejar la regulación basada en un valor falso."
+      rationale: "Puentea la señal en lugar de corregir su origen."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-05-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-04-CONFIRM-POLARITY"
+      is_correct: true
+      rationale: "La referencia, el tipo de entrada y la inspección convergen en la extensión cruzada como primera causa física demostrada."
+      classification: "strong"
+      consequence: "Prepara una corrección de cableado separada de la verificación térmica."
+      evidence_revealed: ["EVID-05-DIAGNOSIS"]
+      next_stage: "STAGE-05-SAFE-CORRECTION"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-RECALIBRATE-PLC"
+      is_correct: false
+      retry_feedback: "Recalibrar el PLC para aceptar una entrada cruzada conserva el defecto y oculta la causa física."
+      rationale: "Compensa software en lugar de restaurar la conexión prevista."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-05-RESTORE-WIRING"
+      is_correct: true
+      rationale: "La corrección debe restaurar la polaridad física y dejar la verificación para una prueba controlada."
+      classification: "strong"
+      consequence: "Registra la reconexión y deja pendiente la recuperación funcional."
+      evidence_revealed: ["EVID-06-INTERVENTION"]
+      next_stage: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-REPLACE-MODULE"
+      is_correct: false
+      retry_feedback: "El canal acepta Type K y no presenta circuito abierto; cambiarlo no está justificado."
+      rationale: "Sustituye un módulo sin una evidencia de fallo."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-05-INVERT-HMI"
+      is_correct: false
+      retry_feedback: "Invertir el signo en HMI haría coincidir una pantalla, pero mantendría incorrecta la cadena de campo."
+      rationale: "Oculta la conexión cruzada en la representación."
+      classification: "unsafe"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "STAGE-06-VERIFY-THERMAL-CHAIN"
+      score_effect: 0
+      safety_effect: -1
+    - decision_id: "DEC-06-CLOSE-ONCE"
+      is_correct: false
+      retry_feedback: "Un único valor ascendente no demuestra que referencia, módulo, PLC y HMI sigan la misma tendencia."
+      rationale: "Confunde una observación puntual con recuperación."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-CHECK-ALARM"
+      is_correct: false
+      retry_feedback: "La ausencia de alarma no demuestra polaridad correcta ni respuesta térmica coherente."
+      rationale: "Usa un estado de diagnóstico como única prueba funcional."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-VERIFY-RAMP"
+      is_correct: true
+      rationale: "La rampa controlada verifica dirección, coherencia entre fronteras y respuesta en varios puntos."
+      classification: "strong"
+      consequence: "Establece recuperación de la cadena térmica."
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: "DEC-06-CLEAR-HISTORY"
+      is_correct: false
+      retry_feedback: "Borrar el histórico no demuestra que la temperatura medida siga al proceso."
+      rationale: "Confunde limpieza de registro con verificación."
+      classification: "weak"
+      consequence: "Reintenta sin avanzar."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: 0
+      safety_effect: 0
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      - outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      - outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "La referencia independiente mostraba que el proceso aumentaba, el canal aceptaba Type K y la extensión invertía la polaridad. La corrección física y la rampa controlada restauraron la coherencia de la cadena."
+    correct_reasoning: ["Separar proceso y HMI con una referencia independiente.", "Comprobar tipo de entrada y diagnóstico del módulo.", "Inspeccionar la extensión bajo aislamiento autorizado.", "Interpretar polaridad cruzada antes de sustituir componentes.", "Restaurar la conexión física sin compensarla en software.", "Verificar tendencia y coherencia en varios puntos."]
+    recovery: ["Polaridad prevista restaurada y terminales asegurados.", "Referencia, módulo, PLC y HMI siguen la misma tendencia.", "Rampa térmica controlada sin alarma de entrada ni forzados."]
+  technical_validation:
+    status: "pass_with_warnings"
+    evidence: ["Caso authored para diagnóstico genérico de termopar tipo K; no se atribuyen colores de cable universales ni un fabricante concreto.", "La cadena proceso → termopar → extensión → módulo → PLC → HMI está separada por fronteras.", "La polaridad cruzada es causa authored y debe contrastarse con la documentación del módulo y del cable instalado antes de producción.", "Los assets fotográficos son ilustrativos; los valores y conclusiones pertenecen a la evidencia authored y a los diagramas controlados."]

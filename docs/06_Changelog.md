@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-25 — ENV-002 / EE-0016 thermocouple polarity diagnosis
+
+- Added bilingual EE-0016 in technical review for a Type K thermocouple whose extension polarity is crossed, causing the HMI trend to oppose an independently observed thermal rise.
+- Added six staged diagnostic decisions with mixed correct-option positions, seven governed 1672×941 PNG assets, reciprocal evidence acquisition and a controlled-ramp completion check across reference, module, PLC and HMI.
+- Registered EE-0016 at the new ENV-002 hotspot and extended packaging, localization, asset, retry and presentation tests. No shared Engine behavior or existing Experience content was changed.
+
 ## 2026-10-24 — EE-0004 cover identifier cleanup
 
 - Removed the embedded `EXPERIENCE / EE-0004` title from the EE-0004 incident cover. The cleaned ART-001 preserves the original dimensions and equipment scene, while the Experience title remains available in the interface and the authored diagnostic evidence is unchanged.

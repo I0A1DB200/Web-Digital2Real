@@ -133,9 +133,10 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
     { experience_editorial_id: "EE-0012", x: 52, y: 46 },
     { experience_editorial_id: "EE-0013", x: 31, y: 67 },
     { experience_editorial_id: "EE-0014", x: 65, y: 72 },
-    { experience_editorial_id: "EE-0015", x: 45, y: 54 }
+    { experience_editorial_id: "EE-0015", x: 45, y: 54 },
+    { experience_editorial_id: "EE-0016", x: 84, y: 31 }
   ]);
-  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013", "EE-0014", "EE-0015"], theory, theoryLocales: { en: english } });
+  const validation = validateEnvironmentDefinition(environment, { experienceEditorialIds: ["EE-0011", "EE-0012", "EE-0013", "EE-0014", "EE-0015", "EE-0016"], theory, theoryLocales: { en: english } });
   assert.equal(validation.valid, true, JSON.stringify(validation.incidents));
   assert.equal(theory.sections.length, 4);
   assert.deepEqual(theory.sections.map(item => item.id), english.sections.map(item => item.id));

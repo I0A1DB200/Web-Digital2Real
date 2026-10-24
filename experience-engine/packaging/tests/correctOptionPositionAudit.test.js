@@ -63,6 +63,11 @@ const experiences = [
     id: "EE-0010",
     path: "../../../content/experiences/troubleshooting/EE-0010-production-line-stops-after-product-jam/",
     correctIds: ["DEC-01-VERIFY-INFRASTRUCTURE", "DEC-02-COMPARE-RUN-READY-FAULT", "DEC-03-CHECK-PUSHER-COMMAND", "DEC-04-INSPECT-SEQUENCE", "DEC-05-MONITOR-CONDITION-TERMS", "DEC-06-TRACE-LAD-LOGIC", "DEC-07-INSPECT-B3", "DEC-07-SAFE-REMOVE-VERIFY"]
+  },
+  {
+    id: "EE-0016",
+    path: "../../../content/experiences/instrumentation/EE-0016-thermocouple-polarity-inversion/",
+    correctIds: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-INPUT", "DEC-03-INSPECT-POLARITY", "DEC-04-CONFIRM-POLARITY", "DEC-05-RESTORE-WIRING", "DEC-06-VERIFY-RAMP"]
   }
 ];
 

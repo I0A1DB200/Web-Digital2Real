@@ -1,0 +1,159 @@
+locale: en
+translations:
+  title: Reversed thermocouple temperature
+  summary: Locate why the HMI temperature falls while the process heats by tracing the thermocouple, input, polarity and verification trend.
+  scenario:
+    initial_context: The process vessel is heating steadily, but the HMI shows a falling temperature while the process remains hot.
+    operational_state: The first anomalous boundary may still be the process, probe, extension, temperature module or PLC/HMI representation.
+    initiating_event: Temperature regulation stops because the reading does not follow the observed process behavior.
+    learner_role: An automation technician must separate the physical temperature, thermocouple, extension cable, temperature input, PLC and HMI.
+    safety_context:
+      safe_state: Take readings and perform interventions under the authorized procedure, keeping the thermal process safe and avoiding contact with hot surfaces.
+      intervention_constraints: ["Do not force the temperature value or bypass regulation alarms.", "Do not change PLC or HMI scaling to hide an incorrect reading.", "Do not replace the probe or module before locating the first discrepancy.", "Isolate the circuit under the approved procedure before opening terminals or correcting the extension."]
+  learning_objectives:
+    OBJ-TRACE-THERMAL-CHAIN:
+      description: Trace the chain from the thermal variable and thermocouple to the temperature input, PLC and HMI.
+    OBJ-INTERPRET-TC-POLARITY:
+      description: Distinguish a physical trend from an inverted representation and interpret input type, polarity and extension cable without inventing universal wire colors.
+    OBJ-VERIFY-THERMAL-RECOVERY:
+      description: Restore the intended polarity and verify the independent reference, module, PLC and HMI with a controlled ramp.
+  stages:
+    STAGE-01-THERMAL-INCIDENT:
+      title: Temperature incident
+      situation: The vessel remains hot, but the HMI shows a falling trend and regulation stops. Which first check best bounds the problem?
+    STAGE-02-INDEPENDENT-REFERENCE:
+      title: Separate process and representation
+      situation: The independent reference rises while the HMI falls. Which boundary should be checked before intervening in the heating process?
+    STAGE-03-INPUT-AND-WIRING:
+      title: Inspect the input and extension
+      situation: The channel is configured for Type K and shows no open-circuit diagnostic; the probe is installed in the vessel. Which inspection provides the next evidence?
+    STAGE-04-POLARITY-DIAGNOSIS:
+      title: Interpret polarity
+      situation: The inspection shows that the thermocouple conductors are crossed in the extension. Which conclusion is best supported before correcting it?
+    STAGE-05-SAFE-CORRECTION:
+      title: Restore the intended connection
+      situation: The reversed polarity explains the opposite trend, but recovery is not yet verified. Which intervention prepares an independent test?
+    STAGE-06-VERIFY-THERMAL-CHAIN:
+      title: Verify thermal recovery
+      situation: The extension has been corrected under the procedure and the HMI follows the reference again. Which test allows closure?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Thermal process and HMI
+      content: The vessel remains hot while the HMI shows a falling trend and regulation stops. The symptom alone does not identify the failed boundary.
+    EVID-02-REFERENCE:
+      source: Independent process reference
+      content: An independent reference confirms that process temperature rises while the HMI trend falls. The discrepancy is after the observed physical condition or in the measurement chain, not necessarily in the heater.
+    EVID-03-INPUT:
+      source: Temperature input module
+      content: The channel is configured for a Type K thermocouple and reports no open circuit. The input type does not yet prove that the extension polarity is correct.
+    EVID-04-POLARITY:
+      source: Thermocouple extension terminals
+      content: The safe inspection shows that the positive and negative conductors are crossed in the extension. The probe and module are not declared faulty from the initial symptom alone.
+    EVID-05-DIAGNOSIS:
+      source: Measurement-chain diagnosis
+      content: The process and independent reference rise, the module accepts Type K and the extension reverses polarity. The first demonstrated physical cause is the crossed connection, not HMI scaling or a PLC fault.
+    EVID-06-INTERVENTION:
+      source: Corrected terminals
+      content: The extension has been reconnected with the intended polarity and the terminals secured under the authorized procedure. Functional recovery still needs to be verified.
+    EVID-07-RECOVERY:
+      source: Controlled thermal ramp
+      content: Three representative points confirm that the independent reference, module, PLC and HMI follow the same trend without an input alarm or signal inversion. The thermal chain is verified.
+  decisions:
+    DEC-01-REPLACE-PROBE:
+      action: Replace the probe because the HMI does not follow temperature.
+    DEC-01-CHECK-REFERENCE:
+      action: Compare the independent reference with the HMI trend.
+    DEC-01-RAISE-SETPOINT:
+      action: Raise the setpoint so the reading starts rising again.
+    DEC-01-CLEAR-ALARM:
+      action: Clear the thermal alarm and continue heating.
+    DEC-02-FORCE-HMI:
+      action: Force the HMI value to keep production running.
+    DEC-02-REPLACE-MODULE:
+      action: Replace the module without checking the input type.
+    DEC-02-CHECK-INPUT:
+      action: Check the channel type and diagnostics.
+    DEC-02-LOWER-HEAT:
+      action: Lower the heat so both readings become equal.
+    DEC-03-INSPECT-POLARITY:
+      action: Isolate and check extension type and polarity.
+    DEC-03-CHANGE-PLC:
+      action: Change the PLC logic before checking the thermocouple connection.
+    DEC-03-ADJUST-HMI:
+      action: Adjust HMI scaling to compensate for the observed trend.
+    DEC-03-REPLACE-PROBE:
+      action: Replace the probe without recording the extension polarity.
+    DEC-04-FAULT-SENSOR:
+      action: Declare a sensor fault because its value does not follow the trend.
+    DEC-04-RESCALE-PLC:
+      action: Change engineering scaling even though the signal is a thermocouple.
+    DEC-04-FORCE-VALUE:
+      action: Force the temperature value so the sequence can continue.
+    DEC-04-CONFIRM-POLARITY:
+      action: Confirm crossed polarity before correction.
+    DEC-05-RECALIBRATE-PLC:
+      action: Recalibrate the PLC to accept a reversed connection.
+    DEC-05-RESTORE-WIRING:
+      action: Restore polarity and secure terminals.
+    DEC-05-REPLACE-MODULE:
+      action: Replace the module even though the channel accepts Type K.
+    DEC-05-INVERT-HMI:
+      action: Invert the HMI sign to hide the crossed connection.
+    DEC-06-CLOSE-ONCE:
+      action: Close the incident when the HMI rises once.
+    DEC-06-CHECK-ALARM:
+      action: Check only that no input alarm appears.
+    DEC-06-VERIFY-RAMP:
+      action: Compare all trends during a controlled ramp.
+    DEC-06-CLEAR-HISTORY:
+      action: Clear the alarm history and close the incident.
+  retry_feedback:
+    DEC-01-REPLACE-PROBE: The HMI trend does not prove a failed probe; compare the physical variable with an independent reference first.
+    DEC-01-RAISE-SETPOINT: Changing the setpoint changes the process but does not locate why the reading follows the opposite trend.
+    DEC-01-CLEAR-ALARM: Clearing the alarm removes a symptom and does not prove that the variable or signal is correct.
+    DEC-02-FORCE-HMI: Forcing the HMI hides the discrepancy and does not test the thermocouple signal.
+    DEC-02-REPLACE-MODULE: The independent reference does not demonstrate a module failure; check configuration and diagnostics first.
+    DEC-02-LOWER-HEAT: Lowering the heat may change the process, but it does not locate the inverted trend.
+    DEC-03-CHANGE-PLC: There is no evidence of incorrect logic; inspect the physical thermocouple connection first.
+    DEC-03-ADJUST-HMI: Adjusting the HMI can hide an inverted sign and breaks measurement traceability.
+    DEC-03-REPLACE-PROBE: A valid channel and this symptom do not justify replacing the probe before checking the extension polarity.
+    DEC-04-FAULT-SENSOR: A crossed thermocouple can invert the trend without proving that the sensing element is faulty.
+    DEC-04-RESCALE-PLC: Polarity is a thermocouple connection relationship, not an engineering scale to invert in the PLC.
+    DEC-04-FORCE-VALUE: Forcing temperature removes field evidence and may leave regulation based on a false value.
+    DEC-05-RECALIBRATE-PLC: Recalibrating the PLC around a reversed input keeps the physical defect and hides its cause.
+    DEC-05-REPLACE-MODULE: The channel accepts Type K and shows no open circuit; a module replacement is not justified.
+    DEC-05-INVERT-HMI: Inverting the HMI sign would make one screen agree while the field chain remains wrong.
+    DEC-06-CLOSE-ONCE: One rising value does not prove that the reference, module, PLC and HMI share the same trend.
+    DEC-06-CHECK-ALARM: No alarm does not prove correct polarity or coherent thermal response.
+    DEC-06-CLEAR-HISTORY: Clearing the history does not demonstrate that measured temperature follows the process.
+  visual:
+    educational_purpose: Distinguish a real thermal variable from an inverted thermocouple signal and verify the complete temperature chain.
+  assets:
+    ART-001:
+      alt: Heated industrial vessel with a Type K thermocouple and temperature transmitter.
+      caption: 'Cover: the thermal chain starts at the process and ends in the control representation.'
+    ART-002:
+      alt: Thermal vessel and control cabinet during a regulation incident.
+      caption: 'Initial incident: compare the physical scene and HMI before intervening.'
+    ART-003:
+      alt: Chart contrasting a rising process reference with a falling HMI trend.
+      caption: The independent reference and HMI move in opposite directions.
+    ART-004:
+      alt: Close inspection of a thermocouple head, extension cable and terminal box.
+      caption: Safe inspection takes the search to the extension circuit.
+    ART-005:
+      alt: Diagram of a Type K thermocouple with crossed conductors at the input.
+      caption: Crossed polarity explains the inverse trend; it does not prove a failed probe.
+    ART-006:
+      alt: PPE-equipped technician inspecting a de-energized thermal terminal box.
+      caption: The reconnection is performed with isolation and process control.
+    ART-007:
+      alt: Controlled ramp chart where the reference and HMI follow the same trend.
+      caption: Recovery is established by comparing the chain at several ramp points.
+  completion:
+    title: Technical debrief
+    summary: The process and independent reference were rising, but crossed thermocouple polarity inverted the trend at the input chain. The physical reconnection and controlled ramp restored consistency across the module, PLC and HMI.
+    process: ["Compare the process and HMI with an independent reference.", "Check input type and module diagnostics.", "Inspect the extension under authorized isolation.", "Interpret crossed polarity before replacing components.", "Restore the physical connection without compensating in software.", "Verify the complete chain with a controlled thermal ramp."]
+    lesson: An input without an open-circuit diagnostic can still represent the variable incorrectly; trend and polarity are evidence too.
+    avoided_errors: ["Replacing the probe before checking the chain.", "Changing PLC or HMI scaling to hide a crossed connection.", "Confusing no alarm with recovery.", "Closing after one value without checking trend and reference."]
+    industrial_value: ["Fewer unjustified replacements.", "Clearer separation between process, signal and representation.", "Traceable, repeatable thermal verification."]

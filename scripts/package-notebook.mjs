@@ -25,12 +25,16 @@ export async function packageNotebook({
   assertInside(frontendRoot, targetRoot);
   assertInside(frontendRoot, temporaryRoot);
   await access(source);
-  await validateNotebookModule(source);
+  const multilingual = await validateNotebookModule(source);
   await rm(temporaryRoot, { recursive: true, force: true });
 
   try {
     await mkdir(temporaryRoot, { recursive: true });
     await cp(source, path.join(temporaryRoot, "notebook.js"));
+    if (multilingual) {
+      await cp(path.join(path.dirname(source), "localization.js"), path.join(temporaryRoot, "localization.js"));
+      await cp(path.join(path.dirname(source), "locales"), path.join(temporaryRoot, "locales"), { recursive: true });
+    }
     await rm(targetRoot, { recursive: true, force: true });
     await rename(temporaryRoot, targetRoot);
   } catch (error) {
@@ -75,6 +79,12 @@ async function validateNotebookModule(source) {
     identifiers.add(entry.id);
     slugs.add(entry.slug);
   });
+  if (typeof module.getNotebook === "function") {
+    module.getNotebook("en");
+    module.getNotebook("es");
+    return true;
+  }
+  return false;
 }
 
 function requireText(value, field) {

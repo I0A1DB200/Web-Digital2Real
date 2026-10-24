@@ -48,9 +48,25 @@ Before creating media, resolve candidates in this order: current Experience asse
 
 Experience media delivered to the learner should be a finished raster image asset unless a strong architectural exception is documented. Physical learning moments use realistic industrial images. Abstract, data, software, scaling and signal-flow moments use designed technical images. Annotated images may combine either base with restrained callouts.
 
-SVG, canvas, code and diagram tools may be used internally as production methods. A raw SVG diagram is not the preferred final Experience asset. Designed media must also avoid “UI inside UI”: the Experience player owns the Experience number, title, Result or stage heading, navigation, outer card shell and product framing. The visual contains only the engineering information needed for its learning moment. Experience identifiers, D2R branding and editorial titles are not burned into assets by default.
+SVG, canvas, code and diagram tools may be used internally as production methods. A raw SVG diagram is not the preferred final Experience asset. Designed media must also avoid “UI inside UI”: the Experience player owns the localized title, Result or stage heading, navigation, outer card shell and product framing. The visual contains only the engineering information needed for its learning moment. Experience identifiers, D2R branding and editorial titles are not burned into assets by default.
 
 This raster-first delivery rule applies to Engineering Experience media. It does not impose the same constraint on marketing, website or social workflows.
+
+## 2.3 Identity-independent and cross-locale reuse
+
+Reusable technical imagery must not embed EE numbers, ENV numbers,
+language-specific product framing or navigation labels by default.
+Asset = engineering content; UI = product identity and navigation. Sequence
+numbers must not be visual dependencies across ENV ordering, isolated access,
+commercial packs, user-selected order or future reorganizations.
+
+Embedded text is allowed when technically meaningful: software screens, HMI,
+equipment labels, measurement values, warnings, diagnostic states and technical
+annotations. Preserve technical state when removing editorial framing.
+
+Record existing embedded product numbers as `LEGACY ASSET IDENTIFIER DEBT`.
+Removal requires bounded asset review; presentation changes do not authorize mass
+regeneration, cropping technical evidence or resolving duplicate binary authority.
 
 ## 3. Required asset record
 
@@ -149,6 +165,13 @@ If duplicate binary collections exist, determine source authority before
 synchronization.
 
 Semantic remapping and binary-source reconciliation are separate tasks.
+
+Legacy cover identifier cleanup must remove only the burned-in EE text/container.
+Use editing/inpainting rather than scene regeneration; preserve framing, equipment,
+state, interfaces and engineering evidence. Record authoritative source, original
+and replacement hashes, method and visual acceptance. Reject edits that change
+technical information. Clean covers need no change. Unresolved duplicate authority
+blocks that asset only; EE-0001 remains excluded until authority is resolved.
 
 ## 11. Quality gate
 

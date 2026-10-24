@@ -26,6 +26,11 @@ standards.
 Inspect representative repository Experiences and actual package
 conventions.
 
+Read Content Model identity/localization policy. Keep the mandatory canonical EE
+ID internal; learner-facing covers, titles and hotspots use localized titles
+without sequence prefixes. Author independently of ENV order. Apply Asset
+Governance cross-locale framing policy.
+
 ## 2. ESTABLISH ENGINEERING CASE
 
 Define:
@@ -89,12 +94,27 @@ Create canonical package content using repository conventions:
 -   YAML;
 -   ES;
 -   EN;
+-   IT once activated under the Engine language-entry policy;
 -   docs/source notes;
 -   asset references;
 -   focused tests;
 -   required indexes/associations.
 
+Use one canonical technical structure with ID-keyed translations. Every active
+language must preserve technical truth, decisions, evidence, asset timing, safety
+and completion criteria. Do not register incomplete locales, invent Italian
+placeholders or mass-translate historical content. New shared UI copy belongs in
+localization resources. Record the active locale set and fallback.
+
 ## 8. ENGINE GATE
+
+Use the global header language selector and `Frontend/data/locale.js` preference;
+do not create Experience-local controls or stores. Validate session preservation
+when switching. Covers must not bake canonical EE identifiers into pixels: keep
+IDs in metadata and render any needed identity as UI. For legacy cleanup, remove
+only the identifier/container by bounded editing, inspect technical preservation,
+and record original/new hashes and provenance. Stop per asset if binary authority
+is unresolved; never repair authority by changing tests or arbitrary synchronization.
 
 If the valid design requires unsupported reusable runtime behavior,
 classify `ENGINE` and stop before shared architecture changes unless
@@ -109,7 +129,7 @@ Run:
 -   A--F failure classification;
 -   `git diff --check`;
 -   preview generation;
--   generated ES/EN inspection;
+-   generated ES/EN inspection, and IT once active, with semantic parity/fallback;
 -   automatic learner flow.
 
 ## 10. STATUS

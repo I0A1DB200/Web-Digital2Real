@@ -4,7 +4,7 @@ This document records the approved content remap against the effective PNGs in a
 
 | ART / actual filename | Effective visual information | Approved presentation | Limitation / unresolved debt |
 |---|---|---|---|
-| ART-001 / 01-cycle-observation.png | Editorial EE-0002 identity, conveyor, box, B1 and PLC cabinet | Incident Brief cover only | A static presentation does not prove a repeated cycle sample |
+| ART-001 / 01-cycle-observation.png | Conveyor, box, B1 and PLC cabinet; editorial identifier removed in the 2026-10-14 cover derivative | Incident Brief cover only | A static presentation does not prove a repeated cycle sample |
 | ART-002 / 02-successful-cycle.png | Box at B1 and active I0.3 indicator | EVID-03 after D2, then Stage 03 context | Production registration is acquired textual evidence; no counter is visibly shown |
 | ART-003 / 03-failed-cycle.png | Active I0.3 and 24.1 VDC reading | Registered, intentionally not presented | Contradicts the failed-cycle role; measurement points and acquisition are undocumented |
 | ART-004 / 04-position-correlation.png | Inactive I0.3 and 0.0 VDC reading | Registered, intentionally not presented | Does not show a position comparison; measurement points and acquisition are undocumented |

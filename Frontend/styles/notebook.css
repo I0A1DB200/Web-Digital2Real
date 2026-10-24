@@ -1034,6 +1034,15 @@
   line-height: 1;
 }
 
+.article-viewer__language {
+  position: sticky;
+  top: 18px;
+  z-index: 5;
+  float: right;
+  margin: 18px 12px 0 0;
+  background: var(--bg);
+}
+
 /* Engineering Note header */
 .article-viewer__header {
   padding: clamp(56px, 7vw, 92px) clamp(24px, 7vw, 88px) 0;

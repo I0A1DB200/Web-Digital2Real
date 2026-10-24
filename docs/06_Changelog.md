@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-13 - Shared baseline, title presentation and language entry point
+
+- Repaired catalog-load recovery and stale EE-0010 sequence / duplicate-media packaging fixtures without changing production Experience content.
+- Removed the rendered EE identifier from hotspot popovers; localized titles remain learner-facing identity. Embedded legacy numbers and EE-0001 binary authority remain separate debt.
+- Added a persisted ES/EN Workspace control using generated locale packages, existing progress keys and session-preserving localized Player replay. Centralized Experience/ENV UI resources; preserved ENV/Theory navigation and deterministic fallback.
+- Updated Experience, Notebook and asset authoring governance with explicit Italian activation requirements, without incomplete translations.
+- Browser QA is infrastructure-blocked: no connected browser and Playwright MCP's configured Firefox executable is missing. See the [validation record](VALIDATION_SHARED_BASELINE_LANGUAGE.md).
+
+
 ## 2026-10-09 — ENV-002 / EE-0013 pneumatic no-extension diagnosis
 
 - Added bilingual EE-0013 in technical review with seven realistic PNGs based on repository visual references. The learner traces PLC command, valve control, available air and a disconnected local line, then restores the connection and independently verifies extension and feedback. Added focused flow tests and ENV-002 discovery. Engine behavior is unchanged; Browser QA remains infrastructure-blocked.

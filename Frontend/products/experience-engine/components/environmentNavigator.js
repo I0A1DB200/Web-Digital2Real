@@ -1,9 +1,11 @@
+import { environmentUiCopy } from "./experienceLocale.js";
 import { chooseEnvironmentPopoverPlacement } from "./environmentPopoverPosition.js";
 import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
 
 export function createEnvironmentNavigator({
   documentRef,
   baseUrl,
+  locale = documentRef.documentElement?.lang,
   environments,
   experiences,
   onOpenExperience,
@@ -15,13 +17,14 @@ export function createEnvironmentNavigator({
 }) {
   const element = documentRef.createElement("div");
   element.className = "environment-navigator";
-  const ui = environmentUiCopy(documentRef.documentElement?.lang);
+  const ui = environmentUiCopy(locale);
   const experienceByEditorialId = new Map(
     experiences.filter(experience => experience.enabled !== false
       && !["archived", "disabled"].includes(experience.status))
       .map(experience => [experience.editorialId, experience])
   );
   let selectedEnvironment = null;
+  let theorySectionIndex = null;
   let stage = null;
   let progressElement = null;
   let hotspotRecords = [];
@@ -36,14 +39,15 @@ export function createEnvironmentNavigator({
   const unsubscribeProgress = progressStore.subscribe?.(renderProgress);
 
   function environmentTitle(environment) {
-    return localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang).title;
+    return localizeEnvironmentPresentation(environment, locale).title;
   }
 
   function renderCatalog() {
     leaveEnvironment();
     leaveCatalog();
     selectedEnvironment = null;
-    const fragment = createShell(documentRef);
+    theorySectionIndex = null;
+    const fragment = createShell(documentRef, locale);
     const list = createElement(documentRef, "div", "environment-catalog");
     environments.forEach(environment => {
       const card = createElement(documentRef, "article", "environment-card");
@@ -73,7 +77,7 @@ export function createEnvironmentNavigator({
       main.appendChild(media);
       const content = createElement(documentRef, "span", "environment-card__content");
       appendText(documentRef, content, "span", "environment-card__title", environmentTitle(environment));
-      appendText(documentRef, content, "span", "environment-card__description", localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang).description);
+      appendText(documentRef, content, "span", "environment-card__description", localizeEnvironmentPresentation(environment, locale).description);
       appendText(documentRef, content, "span", "environment-card__count", ui.experienceCount(environment.capacity));
       main.appendChild(content);
       main.addEventListener("click", () => renderEnvironment(environment.id));
@@ -99,6 +103,7 @@ export function createEnvironmentNavigator({
     const environment = environments.find(item => item.id === environmentId);
     if (!environment) throw new Error(`Environment ${environmentId} is not available.`);
     selectedEnvironment = environment;
+    theorySectionIndex = null;
     const shell = createElement(documentRef, "div", "experience-workspace__shell");
     const back = createElement(documentRef, "button", "experience-action experience-action--quiet");
     back.type = "button";
@@ -161,7 +166,7 @@ export function createEnvironmentNavigator({
     windowRef?.addEventListener?.("resize", positionActivePopover);
   }
 
-  function renderTheory(environment, theory) {
+  function renderTheory(environment, theory, initialSectionIndex = 0) {
     leaveEnvironment();
     const shell = createElement(documentRef, "div", "experience-workspace__shell");
     const back = createButton(documentRef, ui.backToEnvironment, "experience-action experience-action--quiet");
@@ -173,13 +178,15 @@ export function createEnvironmentNavigator({
     appendText(documentRef, header, "p", "experience-workspace__lede", ui.theoryLede);
     shell.appendChild(header);
     const mediaById = new Map(theory.media.map(item => [item.id, item]));
-    let sectionIndex = 0;
+    let sectionIndex = Math.min(initialSectionIndex, theory.sections.length - 1);
     const content = createElement(documentRef, "div", "");
     shell.appendChild(content);
     const renderSection = () => {
+      theorySectionIndex = sectionIndex;
       const section = theory.sections[sectionIndex];
       const panel = createElement(documentRef, "section", "experience-panel environment-theory__section");
       const sectionContent = createElement(documentRef, "div", "environment-theory__content");
+      sectionContent.setAttribute("lang", theory.locale ?? locale);
       appendText(documentRef, sectionContent, "span", "experience-panel__label", `${ui.theory} ${sectionIndex + 1} / ${theory.sections.length}`);
       appendText(documentRef, sectionContent, "h2", "", section.title);
       appendText(documentRef, sectionContent, "p", "experience-stage__situation", section.body);
@@ -227,7 +234,6 @@ export function createEnvironmentNavigator({
     activePopover.setAttribute("aria-modal", "false");
     const titleId = `${popoverId}-title`;
     activePopover.setAttribute("aria-labelledby", titleId);
-    appendText(documentRef, activePopover, "span", "environment-experience__id", record.experience.editorialId);
     const title = appendText(documentRef, activePopover, "h2", "", record.experience.title);
     title.id = titleId;
     appendText(documentRef, activePopover, "p", "", record.experience.summary);
@@ -427,7 +433,7 @@ export function createEnvironmentNavigator({
 
   function openCatalogSurface(environment, kind, returnFocus) {
     closeCatalogSurface({ restoreFocus: false });
-    const presentation = localizeEnvironmentPresentation(environment, documentRef.documentElement?.lang);
+    const presentation = localizeEnvironmentPresentation(environment, locale);
     const backdrop = createElement(documentRef, "div", "environment-catalog-surface");
     const panel = createElement(documentRef, "section", "environment-catalog-surface__panel");
     panel.setAttribute("role", "dialog"); panel.setAttribute("aria-modal", "true");
@@ -488,6 +494,25 @@ export function createEnvironmentNavigator({
     catalogProgressRecords = [];
   }
 
+  function getViewState() {
+    return { environmentId: selectedEnvironment?.id ?? null, theorySectionIndex,
+      hotspotId: activeRecord?.experience.editorialId ?? null };
+  }
+
+  async function restoreView(view) {
+    if (!view?.environmentId) { renderCatalog(); return; }
+    const environment = environments.find(item => item.id === view.environmentId);
+    // Load before altering the displayed view, so failure preserves navigation.
+    const theory = view.theorySectionIndex !== null && environment?.theory
+      ? await onOpenTheory(environment) : null;
+    renderEnvironment(view.environmentId);
+    if (theory) renderTheory(environment, theory, view.theorySectionIndex);
+    else if (view.hotspotId) {
+      const record = hotspotRecords.find(item => item.experience.editorialId === view.hotspotId);
+      if (record) togglePopover(record);
+    }
+  }
+
   function restore() {
     if (selectedEnvironment) renderEnvironment(selectedEnvironment.id);
     else renderCatalog();
@@ -498,6 +523,7 @@ export function createEnvironmentNavigator({
     leaveEnvironment();
     leaveCatalog();
     selectedEnvironment = null;
+    theorySectionIndex = null;
     element.replaceChildren();
   }
 
@@ -507,14 +533,16 @@ export function createEnvironmentNavigator({
     renderCatalog,
     renderEnvironment,
     restore,
+    getViewState,
+    restoreView,
     completeExperience,
     refreshProgress: renderProgress,
     destroy
   });
 }
 
-function createShell(documentRef) {
-  const ui = environmentUiCopy(documentRef.documentElement?.lang);
+function createShell(documentRef, locale) {
+  const ui = environmentUiCopy(locale);
   const shell = createElement(documentRef, "div", "experience-workspace__shell");
   const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
   appendText(documentRef, header, "span", "experience-workspace__eyebrow", ui.experienceLab);
@@ -533,7 +561,7 @@ function createShell(documentRef) {
 function localizeEnvironmentPresentation(environment, locale) {
   const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
   const presentation = environment.presentation ?? {};
-  const selected = language === "es" ? "es" : "en";
+  const selected = language;
   return {
     title: presentation.title?.[selected]
       ?? presentation.title?.en
@@ -550,74 +578,6 @@ function localizeEnvironmentPresentation(environment, locale) {
   };
 }
 
-function environmentUiCopy(locale) {
-  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
-  return language === "es" ? {
-    experienceLab: "Laboratorio de Experiences",
-    catalogTitle: "Entornos industriales. Decisiones de diagnóstico reales.",
-    catalogLede: "Selecciona un entorno, inspecciona la máquina e inicia una investigación disponible.",
-    openEnvironment: "Abrir entorno",
-    noEnvironments: "No hay entornos disponibles.",
-    backToEnvironments: "← Todos los entornos",
-    backToEnvironment: "Volver al entorno",
-    openTheory: "Abrir teoría",
-    theory: "Teoría",
-    theoryLede: "Fundamentos técnicos para las Experiences de diagnóstico de este entorno.",
-    continueTheory: "Continuar teoría",
-    completeTheory: "Completar teoría",
-    inspect: "Inspeccionar",
-    environmentPending: "Este entorno se está preparando. Las Experiences estarán disponibles cuando completen su revisión.",
-    beginInvestigation: "Iniciar investigación",
-    close: "Cerrar",
-    environmentProgress: "Progreso del entorno",
-    progress: "Progreso",
-    completed: "Completado",
-    environmentImage: title => `Vista previa de ${title}`,
-    environmentMenu: title => `Más opciones para ${title}`,
-    experienceCount: capacity => `${capacity} Engineering Experiences`,
-    knowledgeSkills: "Conocimientos y habilidades",
-    certificatePreview: "Vista previa del reconocimiento",
-    engineeringExperiencesCompleted: "Engineering Experiences completadas",
-    achievementEarned: "Reconocimiento de diagnóstico industrial completado",
-    achievementPreviewNotice: "Vista previa · disponible al completar el entorno",
-    experiencesCompleted: "Experiences completadas",
-    experiencesMastered: "Experiences dominadas",
-    completedValue: (completed, total) => `${completed} de ${total} Experiences completadas`,
-    completedSummary: completed => `${completed} ${completed === 1 ? "Experience completada" : "Experiences completadas"}`
-  } : {
-    experienceLab: "Experience Lab",
-    catalogTitle: "Industrial environments. Real diagnostic decisions.",
-    catalogLede: "Select an environment, inspect the machine and begin an available investigation.",
-    openEnvironment: "Open environment",
-    noEnvironments: "No environments are available.",
-    backToEnvironments: "← All environments",
-    backToEnvironment: "Back to environment",
-    openTheory: "Open Theory",
-    theory: "Theory",
-    theoryLede: "Technical foundations for the diagnostic Experiences in this environment.",
-    continueTheory: "Continue Theory",
-    completeTheory: "Complete Theory",
-    inspect: "Inspect",
-    environmentPending: "This environment is being prepared. Experiences will become available here as they complete review.",
-    beginInvestigation: "Begin investigation",
-    close: "Close",
-    environmentProgress: "Environment progress",
-    progress: "Progress",
-    completed: "Completed",
-    environmentImage: title => `${title} environment preview`,
-    environmentMenu: title => `More options for ${title}`,
-    experienceCount: capacity => `${capacity} Engineering Experiences`,
-    knowledgeSkills: "Knowledge & Skills",
-    certificatePreview: "Certificate Preview",
-    engineeringExperiencesCompleted: "Engineering Experiences Completed",
-    achievementEarned: "Industrial Troubleshooting Achievement completed",
-    achievementPreviewNotice: "Preview · available when the environment is complete",
-    experiencesCompleted: "Experiences completed",
-    experiencesMastered: "Experiences mastered",
-    completedValue: (completed, total) => `${completed} of ${total} Experiences completed`,
-    completedSummary: completed => `${completed} ${completed === 1 ? "Experience" : "Experiences"} completed`
-  };
-}
 
 function defaultResizeObserverFactory(callback) {
   return typeof globalThis.ResizeObserver === "function"

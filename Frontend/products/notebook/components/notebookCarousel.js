@@ -1,3 +1,4 @@
+import { notebookUi } from "../../../data/notebookUi.js";
 import { createNotebookCard } from "./notebookCard.js";
 
 const ALL_CATEGORIES = "__all__";
@@ -19,8 +20,9 @@ export function createNotebookCarousel(articles, onOpen, {
     throw new TypeError("Notebook carousel requires a document.");
   }
 
-  const source = [...articles];
-  const categories = deriveCategories(source);
+  let source = [...articles];
+  let categories = deriveCategories(source);
+  let copy = notebookUi(source[0]?.locale);
   let activeCategory = ALL_CATEGORIES;
   let activeIndex = 0;
   let menuExpanded = false;
@@ -97,7 +99,7 @@ export function createNotebookCarousel(articles, onOpen, {
   function renderFilters() {
     filters.replaceChildren();
     filterMenu.replaceChildren();
-    categoryEntries(categories).forEach(([value, label]) => {
+    categoryEntries(categories, copy).forEach(([value, label]) => {
       filters.appendChild(createFilterButton(documentRef, value, label, activeCategory, selectCategory));
       filterMenu.appendChild(createFilterButton(
         documentRef,
@@ -124,7 +126,7 @@ export function createNotebookCarousel(articles, onOpen, {
     if (collection.length === 0) {
       const empty = documentRef.createElement("p");
       empty.className = "notebook-carousel__empty";
-      empty.textContent = "No Engineering Notes are available in this category.";
+      empty.textContent = copy.empty;
       track.appendChild(empty);
       previous.disabled = true;
       next.disabled = true;
@@ -166,7 +168,7 @@ export function createNotebookCarousel(articles, onOpen, {
   function renderPosition(collectionLength) {
     const label = documentRef.createElement("span");
     label.className = "notebook-carousel__position-label";
-    label.textContent = collectionLength === 0 ? "0 of 0" : `${activeIndex + 1} of ${collectionLength}`;
+    label.textContent = `${collectionLength === 0 ? 0 : activeIndex + 1} ${copy.of} ${collectionLength}`;
 
     const segments = documentRef.createElement("span");
     segments.className = "notebook-carousel__segments";
@@ -182,6 +184,13 @@ export function createNotebookCarousel(articles, onOpen, {
   }
 
   function render() {
+    element.lang = source[0]?.locale ?? "en";
+    element.setAttribute("aria-label", copy.carousel);
+    filters.setAttribute("aria-label", copy.filter);
+    filterMenu.setAttribute("aria-label", copy.filter);
+    filterToggle.setAttribute("aria-label", copy.choose);
+    previous.setAttribute("aria-label", copy.previous);
+    next.setAttribute("aria-label", copy.next);
     renderFilters();
     renderCollection();
   }
@@ -229,6 +238,17 @@ export function createNotebookCarousel(articles, onOpen, {
 
   return Object.freeze({
     element,
+    updateArticles(nextArticles) {
+      const activeId = filteredArticles()[activeIndex]?.id;
+      const owner = source.find(article => article.categories?.includes(activeCategory));
+      const categoryIndex = owner?.categories.indexOf(activeCategory);
+      source = [...nextArticles];
+      categories = deriveCategories(source);
+      copy = notebookUi(source[0]?.locale);
+      activeCategory = owner ? source.find(article => article.id === owner.id)?.categories?.[categoryIndex] ?? ALL_CATEGORIES : ALL_CATEGORIES;
+      activeIndex = Math.max(0, filteredArticles().findIndex(article => article.id === activeId));
+      render();
+    },
     getState: () => Object.freeze({
       activeCategory: activeCategory === ALL_CATEGORIES ? "All" : activeCategory,
       activeIndex,
@@ -265,8 +285,8 @@ function createControl(documentRef, label, text) {
   return button;
 }
 
-function categoryEntries(categories) {
-  return [[ALL_CATEGORIES, "All"], ...categories.map(category => [category, category])];
+function categoryEntries(categories, copy) {
+  return [[ALL_CATEGORIES, copy.all], ...categories.map(category => [category, category])];
 }
 
 function createFilterButton(

@@ -1,3 +1,4 @@
+import { notebookUi } from "../../../data/notebookUi.js";
 export function createNotebookCard(article, onOpen, {
   documentRef = globalThis.document
 } = {}) {
@@ -9,6 +10,7 @@ export function createNotebookCard(article, onOpen, {
     throw new TypeError("Notebook card activation must be a function.");
   }
 
+  const copy = notebookUi(article.locale);
   const title = getText(article.title, "Notebook article");
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new TypeError("Notebook card requires a document.");
@@ -16,10 +18,11 @@ export function createNotebookCard(article, onOpen, {
 
   const card = documentRef.createElement(onOpen ? "button" : "article");
   card.className = "notebook-card reveal";
+  card.lang = article.locale ?? "en";
 
   if (onOpen) {
     card.type = "button";
-    card.setAttribute("aria-label", `Read ${title}`);
+    card.setAttribute("aria-label", `${copy.read} ${title}`);
     card.addEventListener("click", () => onOpen(article, card));
   }
 
@@ -42,7 +45,7 @@ export function createNotebookCard(article, onOpen, {
     branding,
     "span",
     "notebook-card__identity",
-    articleNumber ? `Engineering Note #${articleNumber}` : "Engineering Note"
+    articleNumber ? `${copy.note} #${articleNumber}` : copy.note
   );
   content.appendChild(branding);
   appendTextElement(content, "h2", "", title);

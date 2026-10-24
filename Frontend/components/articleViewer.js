@@ -1,3 +1,4 @@
+import { notebookUi } from "../data/notebookUi.js";
 const FOCUSABLE_SELECTOR = [
   "a[href]",
   "button:not([disabled])",
@@ -7,7 +8,7 @@ const FOCUSABLE_SELECTOR = [
   "[tabindex]:not([tabindex='-1'])"
 ].join(",");
 
-export function createArticleViewer(article, onClose, returnFocusTo = null) {
+export function createArticleViewer(article, onClose, returnFocusTo = null, { languageControl = null } = {}) {
   if (!article || typeof article !== "object") {
     throw new TypeError("Article viewer requires publication data.");
   }
@@ -16,7 +17,7 @@ export function createArticleViewer(article, onClose, returnFocusTo = null) {
     throw new TypeError("Article viewer requires a close callback.");
   }
 
-  const title = getText(article.title, "Notebook article");
+  let title = getText(article.title, "Notebook article");
   const titleId = `article-title-${getIdentifier(article.slug ?? article.id ?? title)}`;
   const overlay = document.createElement("section");
   overlay.className = "article-viewer";
@@ -33,10 +34,18 @@ export function createArticleViewer(article, onClose, returnFocusTo = null) {
   const closeButton = document.createElement("button");
   closeButton.type = "button";
   closeButton.className = "article-viewer__close";
-  closeButton.setAttribute("aria-label", "Close article");
+  closeButton.setAttribute("aria-label", notebookUi(article.locale).close);
   closeButton.textContent = "×";
 
-  panel.append(closeButton, createHeader(article, title, titleId), createBody(article));
+  const languageHome = languageControl?.parentNode;
+  const languageNext = languageControl?.nextSibling;
+  const toolbar = document.createElement("div");
+  toolbar.className = "article-viewer__language";
+  if (languageControl) toolbar.appendChild(languageControl);
+  let header = createHeader(article, title, titleId);
+  let body = createBody(article);
+  panel.append(closeButton, toolbar, header, body);
+  overlay.lang = article.locale ?? "en";
   overlay.append(backdrop, panel);
 
   let isActive = false;
@@ -101,6 +110,7 @@ export function createArticleViewer(article, onClose, returnFocusTo = null) {
     closeButton.removeEventListener("click", requestClose);
     backdrop.removeEventListener("click", requestClose);
     document.removeEventListener("keydown", handleKeydown);
+    if (languageHome && languageControl) languageHome.insertBefore(languageControl, languageNext);
     overlay.remove();
     document.body.classList.remove("is-locked");
 
@@ -112,6 +122,22 @@ export function createArticleViewer(article, onClose, returnFocusTo = null) {
   return {
     element: overlay,
     activate,
+    getArticleId: () => article.id,
+    updateArticle(nextArticle) {
+      if (nextArticle.id !== article.id) throw new Error("Cannot change article identity during localization.");
+      const scrollTop = panel.scrollTop;
+      article = nextArticle;
+      title = getText(article.title, "Notebook article");
+      const nextHeader = createHeader(article, title, titleId);
+      const nextBody = createBody(article);
+      header.replaceWith(nextHeader);
+      body.replaceWith(nextBody);
+      header = nextHeader;
+      body = nextBody;
+      overlay.lang = article.locale ?? "en";
+      closeButton.setAttribute("aria-label", notebookUi(article.locale).close);
+      panel.scrollTop = scrollTop;
+    },
     destroy
   };
 }
@@ -131,7 +157,7 @@ function createHeader(article, title, titleId) {
     header,
     "span",
     "article-viewer__identity",
-    noteNumber ? `Engineering Note #${noteNumber}` : "Engineering Note"
+    noteNumber ? `${notebookUi(article.locale).note} #${noteNumber}` : notebookUi(article.locale).note
   );
 
   const titleBlock = document.createElement("div");
@@ -161,7 +187,7 @@ function createMetadata(article) {
   appendTextElement(metadata, "span", "", category);
 
   if (Number.isFinite(article.readingTime) && article.readingTime > 0) {
-    appendTextElement(metadata, "span", "", `${article.readingTime} min read`);
+    appendTextElement(metadata, "span", "", `${article.readingTime} ${notebookUi(article.locale).readingTime}`);
   }
 
   return metadata;
@@ -230,7 +256,7 @@ function createEditorialNote(section) {
 
   const aside = document.createElement("aside");
   aside.className = "article-section article-section--engineering-note";
-  appendTextElement(aside, "span", "article-section__label", "Digital2Real Engineering Note");
+  appendTextElement(aside, "span", "article-section__label", `Digital2Real ${notebookUi(section.locale).note}`);
   appendTextElement(aside, "h3", "", section.title);
   appendTextElement(aside, "p", "", content);
   return aside;

@@ -402,7 +402,7 @@ export function ExperienceWorkspace({
   onClose
 }) {
   const ui = experienceUiCopy(projection.language);
-  const shell = createElement(documentRef, "div", "experience-workspace__shell");
+  const shell = createElement(documentRef, "div", "experience-workspace__shell experience-workspace__shell--interactive");
   shell.appendChild(ExperienceHeader({ documentRef, projection, onClose, ui }));
 
   if (!["start", "completion"].includes(projection.phase)) {

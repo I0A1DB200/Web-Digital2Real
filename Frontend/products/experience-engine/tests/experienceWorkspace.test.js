@@ -1151,6 +1151,10 @@ test("workspace and application use generated JSON without ID-specific handling"
   assert.match(styles, /\.experience-stage-layout--with-media\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*0\.86fr\)/s);
   assert.match(styles, /\.experience-introduction__layout--with-media\s*\{[^}]*grid-template-columns:/s);
   assert.match(styles, /\.experience-media__zoom\s*\{[^}]*border:\s*0/s);
+  assert.match(styles, /\.experience-workspace__shell--interactive\s*\{[^}]*max-width:\s*1180px/s);
+  assert.match(styles, /\.experience-workspace:has\(\.experience-workspace__shell--interactive\)\s*\{[^}]*padding-block:\s*clamp\(1\.5rem/s);
+  assert.match(styles, /\.experience-workspace__shell--interactive \.experience-panel h2[\s\S]*?font-size:\s*clamp\(1\.35rem/s);
+  assert.match(styles, /\.experience-workspace__shell--interactive \.experience-stage__situation[\s\S]*?line-height:\s*1\.5/s);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(styles, /\.environment-hotspot\s*\{\s*animation:\s*none;/s);
   assert.match(styles, /\.experience-card:focus-visible/);

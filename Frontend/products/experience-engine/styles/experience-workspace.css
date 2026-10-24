@@ -850,7 +850,104 @@
 
 .experience-panel.experience-stage h2,
 .experience-panel.experience-introduction h2 {
-  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+}
+
+/* Interactive Experiences use a denser reading rhythm than the editorial site. */
+.experience-workspace:has(.experience-workspace__shell--interactive) {
+  padding-block: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.experience-workspace__shell--interactive {
+  max-width: 1180px;
+  gap: clamp(0.9rem, 1.6vw, 1.5rem);
+}
+
+.experience-workspace__shell--interactive .experience-header {
+  gap: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.experience-workspace__shell--interactive .experience-header h1 {
+  max-width: 24ch;
+  margin: 0.35rem 0 0.65rem;
+  font-size: clamp(1.85rem, 3vw, 3.4rem);
+  line-height: 1.02;
+}
+
+.experience-workspace__shell--interactive .experience-workspace__lede {
+  max-width: 68ch;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.45;
+}
+
+.experience-workspace__shell--interactive .experience-panel {
+  padding: clamp(1.2rem, 2.5vw, 2rem);
+}
+
+.experience-workspace__shell--interactive .experience-panel h2 {
+  margin: 0.35rem 0 0.9rem;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.15;
+}
+
+.experience-workspace__shell--interactive .experience-stage__situation,
+.experience-workspace__shell--interactive .experience-introduction__context,
+.experience-workspace__shell--interactive .experience-consequence__text,
+.experience-workspace__shell--interactive .experience-debrief__diagnosis {
+  font-size: clamp(0.98rem, 1.25vw, 1.15rem);
+  line-height: 1.5;
+}
+
+.experience-workspace__shell--interactive .experience-stage__objective,
+.experience-workspace__shell--interactive .experience-consequence__reason {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  line-height: 1.5;
+}
+
+.experience-workspace__shell--interactive .experience-stage-layout__content {
+  gap: 1rem;
+}
+
+.experience-workspace__shell--interactive .experience-facts {
+  margin-top: 1.25rem;
+}
+
+.experience-workspace__shell--interactive .experience-facts dt,
+.experience-workspace__shell--interactive .experience-facts dd {
+  padding: 0.7rem 0;
+}
+
+.experience-workspace__shell--interactive .experience-decision {
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+}
+
+.experience-workspace__shell--interactive .experience-decision__action {
+  line-height: 1.4;
+}
+
+.experience-workspace__shell--interactive .experience-evidence__item {
+  padding: 0.9rem 0;
+}
+
+.experience-workspace__shell--interactive .experience-consequence .experience-action,
+.experience-workspace__shell--interactive .experience-introduction .experience-action,
+.experience-workspace__shell--interactive .experience-debrief .experience-action {
+  margin-top: 1.25rem;
+}
+
+.experience-workspace__shell--interactive .experience-debrief {
+  gap: 0.75rem;
+}
+
+.experience-workspace__shell--interactive .experience-debrief__section {
+  padding-top: 1rem;
+}
+
+.experience-workspace__shell--interactive .experience-debrief__section ul {
+  line-height: 1.45;
 }
 
 .experience-stage__situation,

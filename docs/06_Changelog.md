@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Compact Experience reading rhythm
+
+- Reduced typography scale, line height and panel spacing only within interactive Experience views so diagnostic context and choices are easier to scan. Notebook, Environment catalog and other editorial presentation remain unchanged.
+
 ## 2026-10-24 — Experience responsive diagnostic layout
 
 - Reorganized Experience introduction and stage views into a responsive reading layout: diagnostic copy and decisions stay together while media occupies a compact companion column on larger screens and stacks on smaller screens. Removed nested media framing and changed image enlargement to a lightweight accessible control; Player state, evidence order and authored content remain unchanged.

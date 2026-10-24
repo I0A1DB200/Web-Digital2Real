@@ -191,6 +191,18 @@ function visibleArticles(root) {
     .map(card => [card.getAttribute("data-position"), card.getAttribute("data-article-id")]);
 }
 
+test("language switch preserves active Note and category while updating accessible text", () => {
+  const { carousel } = setup();
+  byText(carousel.element, "Controls").dispatchEvent(createEvent("click"));
+  byClass(carousel.element, "notebook-carousel__control--next")[0].dispatchEvent(createEvent("click"));
+  const id = activeCard(carousel.element).getAttribute("data-article-id");
+  carousel.updateArticles(articles.map(entry => ({ ...entry, locale: "es", title: `ES ${entry.title}`, categories: entry.categories.map(c => `ES ${c}`) })));
+  assert.equal(activeCard(carousel.element).getAttribute("data-article-id"), id);
+  assert.equal(carousel.getState().activeCategory, "ES Controls");
+  assert.equal(carousel.element.getAttribute("aria-label"), "Carrusel de notas de ingeniería");
+  assert.equal(byClass(carousel.element, "notebook-carousel__position-label")[0].textContent, "2 de 3");
+});
+
 test("derives categories dynamically in canonical first-seen order without mutation", () => {
   const before = JSON.stringify(articles);
   assert.deepEqual(deriveNotebookCategories(articles), ["Controls", "Networks", "Safety"]);

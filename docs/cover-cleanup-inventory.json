@@ -1,0 +1,266 @@
+[
+  {
+    "id": "EE-0001",
+    "runtimeId": "EXP-SENSOR-SIGNAL-001",
+    "path": "content/experiences/sensors/EE-0001-sensor-on-plc-input-off/assets/ART-001-machine-overview.png",
+    "classification": "EMBEDDED_EE_IDENTIFIER",
+    "status": "AUTHORITY_BLOCKED",
+    "originalSha256": "c988253c73c17633e80b6ff0bb2e5e8d3b5e884fc2c099a27ef8bea41683a8b5",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1536,
+      1024
+    ],
+    "currentSha256": "c988253c73c17633e80b6ff0bb2e5e8d3b5e884fc2c099a27ef8bea41683a8b5"
+  },
+  {
+    "id": "EE-0002",
+    "runtimeId": "EXP-SENSOR-INTERMITTENT-002",
+    "path": "content/experiences/sensors/EE-0002-intermittent-photoelectric-sensor-detection/assets/01-cycle-observation.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "7636727681bb222afe1412fb1713ac9341ff6a7a0761c83b705af4dbec3cc5fd",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1536,
+      1024
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-0057b183-7c07-45ed-9e81-0c1e442cdbdc.png",
+    "candidateSha256": "149b3bf538ea73060d345e508985227589b6a705fb699f12dad0a19097391978",
+    "candidateDimensions": [
+      1536,
+      1024
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0002",
+    "currentSha256": "149b3bf538ea73060d345e508985227589b6a705fb699f12dad0a19097391978"
+  },
+  {
+    "id": "EE-0003",
+    "runtimeId": "EXP-VFD-AUTHORITY-003",
+    "path": "content/experiences/drives/EE-0003-vfd-command-authority-mismatch/assets/01-incident-run-request.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "6bc58eeeeb8117d560de50df7350469c1a498c4a1ace0ba3f0c12ede24e61b0b",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1537,
+      1023
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-e6ec988c-7862-401a-9502-b9b0d94880a9.png",
+    "candidateSha256": "bcd0e0b7942e54ff3012c49a06b42833e713b0109aa3f9a45512bfba2424b948",
+    "candidateDimensions": [
+      1537,
+      1023
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0003",
+    "currentSha256": "bcd0e0b7942e54ff3012c49a06b42833e713b0109aa3f9a45512bfba2424b948"
+  },
+  {
+    "id": "EE-0004",
+    "runtimeId": "EXP-PNEUMATIC-CYLINDER-004",
+    "path": "content/experiences/pneumatics/EE-0004-pneumatic-cylinder-extension-timeout/assets/01.png",
+    "classification": "EMBEDDED_EE_IDENTIFIER",
+    "status": "REJECTED_ORIGINAL_RETAINED",
+    "originalSha256": "171d063aa9f5c51440c8f59ee9b93117ba5f3fa1fcefccc33d928090c30c1447",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-9c3bbdae-d5c0-4f0e-b050-c8c211ac50a7.png",
+    "candidateSha256": "70ae34687a3936c07fad3285c8cb071067b9d5fea054f704975dd527bb335980",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "reason": "Gauge lettering/details changed outside badge.",
+    "removedIdentifier": null,
+    "currentSha256": "171d063aa9f5c51440c8f59ee9b93117ba5f3fa1fcefccc33d928090c30c1447"
+  },
+  {
+    "id": "EE-0005",
+    "runtimeId": "EXP-SAFETY-GATE-005",
+    "path": "content/experiences/safety/EE-0005-safety-gate-channel-discrepancy/assets/01.png",
+    "classification": "EMBEDDED_EE_IDENTIFIER",
+    "status": "REJECTED_ORIGINAL_RETAINED",
+    "originalSha256": "898c19b994006b9ce4838d92924f3bff280320a845063aa5d48f02f70f0a8fa3",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-c1a85a52-bf19-4e8a-a784-4d054c6afa5a.png",
+    "candidateSha256": "1342ca0c08030fe8c5dc1e47caf3ca85129aa171e8bbe411e0f677e2a8a50d85",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "reason": "PLC safety display text was reinterpreted outside badge.",
+    "removedIdentifier": null,
+    "currentSha256": "898c19b994006b9ce4838d92924f3bff280320a845063aa5d48f02f70f0a8fa3"
+  },
+  {
+    "id": "EE-0006",
+    "runtimeId": "EXP-PROFINET-LINK-006",
+    "path": "content/experiences/communications/EE-0006-profinet-line-topology-link-failure/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "dcd625f8dc9833631226c290cca84eebb420f1499831ae19ca44f7333a463a82",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-ba56577d-30fa-4d80-b910-5c22e4eb2b21.png",
+    "candidateSha256": "8a474bdb7611132e41e418185b51ebffa7f6d08af335c05101620c6f7c85702d",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0006",
+    "currentSha256": "8a474bdb7611132e41e418185b51ebffa7f6d08af335c05101620c6f7c85702d"
+  },
+  {
+    "id": "EE-0007",
+    "runtimeId": "EXP-GRAPH-SEQUENCE-007",
+    "path": "content/experiences/siemens/EE-0007-sequence-stuck-waiting-for-condition/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "f3bb2b02852213fae4ff3ea09b1b371b5f727f3431cfe837858e2b36babb8f92",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-e9d87fe8-6218-4b20-bfdf-2ff560cb8bc3.png",
+    "candidateSha256": "4887a9a0c54395561b172a55e8151adee476161e02e154abcbeb05b31ca46831",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0007",
+    "currentSha256": "4887a9a0c54395561b172a55e8151adee476161e02e154abcbeb05b31ca46831"
+  },
+  {
+    "id": "EE-0008",
+    "runtimeId": "EXP-IOLINK-DEVICE-008",
+    "path": "content/experiences/communications/EE-0008-io-link-device-offline/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "5da7a69cfdc8f007397ab38524ed224a061d57661b6ab8dba11e3ae47e7893b4",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1536,
+      1024
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-6d7b5954-4541-4dae-88f1-b7d54c6bc314.png",
+    "candidateSha256": "03be1761f80101776826c1aa0c7ebdc9692e7352a04622a7545a503e17b5a9a0",
+    "candidateDimensions": [
+      1536,
+      1024
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0008",
+    "currentSha256": "03be1761f80101776826c1aa0c7ebdc9692e7352a04622a7545a503e17b5a9a0"
+  },
+  {
+    "id": "EE-0009",
+    "runtimeId": "EXP-HMI-STATE-009",
+    "path": "content/experiences/hmi/EE-0009-hmi-incorrect-machine-state/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "366652d522266de6e07ccae178d3c94ee9bf2e67cf17e0453bc047e797f0446b",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-9a1c6124-531b-4615-840a-f1db43a1a145.png",
+    "candidateSha256": "9de547e1a89ad7063b8f5f61c05943e3853542e6a4a2149be7a7afe9eebef1eb",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0009",
+    "currentSha256": "9de547e1a89ad7063b8f5f61c05943e3853542e6a4a2149be7a7afe9eebef1eb"
+  },
+  {
+    "id": "EE-0010",
+    "runtimeId": "EXP-MULTISYSTEM-JAM-010",
+    "path": "content/experiences/troubleshooting/EE-0010-production-line-stops-after-product-jam/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "3bcdb6299d297121168043d2a4edd43a525d6d3e7c753225c1ca46344c665229",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1536,
+      1024
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-707ce6ce-71cb-4f6f-9ed7-955eedef715b.png",
+    "candidateSha256": "9db68ae6339d070a647a81b345a72e203025e2694d69bcff7349540eeac2430c",
+    "candidateDimensions": [
+      1536,
+      1024
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0010",
+    "currentSha256": "9db68ae6339d070a647a81b345a72e203025e2694d69bcff7349540eeac2430c"
+  },
+  {
+    "id": "EE-0011",
+    "runtimeId": "EXP-INDUCTIVE-GAP-011",
+    "path": "content/experiences/sensors/EE-0011-inductive-sensor-not-detecting/assets/01.png",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
+    "originalSha256": "476126be467ccc22c8f900812b7702f7942623d173e2b9665e4a6b5c6bb4c38f",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-97845559-14b8-4c11-853b-43e0f151b4b6.png",
+    "candidateSha256": "06688db7c775b7548660903117abddeda63b58e1a293c189f660a29bb84c92ae",
+    "candidateDimensions": [
+      1672,
+      941
+    ],
+    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
+    "removedIdentifier": "EE-0011",
+    "currentSha256": "06688db7c775b7548660903117abddeda63b58e1a293c189f660a29bb84c92ae"
+  },
+  {
+    "id": "EE-0012",
+    "runtimeId": "EXP-PRESSURE-SCALING-012",
+    "path": "content/experiences/instrumentation/EE-0012-pressure-transmitter-scaling-mismatch/assets/01-cover.png",
+    "classification": "CLEAN",
+    "status": "CLEAN_UNCHANGED",
+    "originalSha256": "58b7bf5d1215e779dac2145e897a61b4ffbbdb2103a56de1fc58dd6b38cdcfa8",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "currentSha256": "58b7bf5d1215e779dac2145e897a61b4ffbbdb2103a56de1fc58dd6b38cdcfa8"
+  },
+  {
+    "id": "EE-0013",
+    "runtimeId": "EXP-PNEUMATIC-LINE-013",
+    "path": "content/experiences/pneumatics/EE-0013-pneumatic-cylinder-does-not-extend/assets/01-cover.png",
+    "classification": "CLEAN",
+    "status": "CLEAN_UNCHANGED",
+    "originalSha256": "04c7ed983feb5e9089a87d60fd28543428aa7ab73d0dac260568efa1501d4d98",
+    "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
+    "originalDimensions": [
+      1672,
+      941
+    ],
+    "currentSha256": "04c7ed983feb5e9089a87d60fd28543428aa7ab73d0dac260568efa1501d4d98"
+  }
+]

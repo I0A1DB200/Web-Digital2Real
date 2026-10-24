@@ -176,8 +176,7 @@
   object-position: center;
 }
 
-.environment-card__id,
-.environment-experience__id {
+.environment-card__id {
   color: var(--accent);
   font-size: 0.72rem;
   font-weight: 650;

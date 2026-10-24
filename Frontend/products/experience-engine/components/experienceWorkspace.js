@@ -1,3 +1,4 @@
+import { experienceUiCopy, supportedLocale, localeStorage, readLocale, saveLocale } from "./experienceLocale.js";
 import { createEnvironmentNavigator } from "./environmentNavigator.js";
 import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
 
@@ -8,7 +9,9 @@ export function createExperienceWorkspace({
   fetchImpl = globalThis.fetch?.bind(globalThis),
   importPlayer = location => import(location),
   documentRef = globalThis.document,
-  progressStore = createEnvironmentProgressStore()
+  progressStore = createEnvironmentProgressStore(),
+  preferenceStorage = localeStorage(),
+  localePreference = null
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -16,7 +19,8 @@ export function createExperienceWorkspace({
   if (typeof fetchImpl !== "function" || typeof importPlayer !== "function") {
     throw new Error("Experience Workspace requires fetch and module import boundaries.");
   }
-  const workspaceUi = experienceUiCopy(documentRef.documentElement?.lang);
+  let locale = localePreference?.getLocale() ?? readLocale(preferenceStorage, documentRef.documentElement?.lang);
+  let workspaceUi = experienceUiCopy(locale);
 
   const element = documentRef.createElement("section");
   element.className = "experience-workspace";
@@ -29,14 +33,91 @@ export function createExperienceWorkspace({
   let activeEnvironmentId = null;
   let completionRecorded = false;
   let destroyed = false;
+  let switchingLanguage = false;
+  let loadingExperience = false;
+  let loadingCatalog = false;
+  let commands = [];
+  let languageError = false;
+  let currentContent = null;
+
+  function show(content) {
+    currentContent = content;
+    element.setAttribute("lang", locale);
+    if (languageError) {
+      const message = createElement(documentRef, "p", "experience-language__error");
+      message.textContent = workspaceUi.languageFailed;
+      message.setAttribute("role", "alert");
+      element.replaceChildren(message, content);
+    } else element.replaceChildren(content);
+  }
+
+  async function setLanguage(requested) {
+    const nextLocale = supportedLocale(requested);
+    if (destroyed || switchingLanguage || loadingExperience || loadingCatalog || nextLocale === locale) return false;
+    switchingLanguage = true;
+    languageError = false;
+    const previousContent = currentContent;
+    if (previousContent) { previousContent.inert = true; show(previousContent); }
+    let nextNavigator = null;
+    try {
+      let nextPlayer = player;
+      if (player) {
+        const item = catalog.experiences.find(item => item.id === activeExperienceId);
+        const [artifact, module] = await Promise.all([
+          loadJson(`${baseUrl}/${selectArtifactPath(item, nextLocale)}`, fetchImpl),
+          importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
+        ]);
+        nextPlayer = new module.ExperiencePlayer({ experience: artifact });
+        // Reapply only this session's accepted commands to a detached Player.
+        // No UI, completion registration or persistence occurs during replay.
+        commands.forEach(([method, argument]) => nextPlayer[method](argument));
+        if (JSON.stringify(sessionPosition(nextPlayer.getState())) !== JSON.stringify(sessionPosition(player.getState()))) {
+          throw new Error("Localized Experience changed the session contract.");
+        }
+      }
+      const view = navigator?.getViewState();
+      if (catalog) {
+        nextNavigator = buildNavigator(nextLocale);
+        await nextNavigator.restoreView(view);
+      }
+      if (destroyed) { nextNavigator?.destroy(); return false; }
+      locale = nextLocale;
+      workspaceUi = experienceUiCopy(locale);
+      if (!localePreference) saveLocale(preferenceStorage, locale);
+      navigator?.destroy();
+      navigator = nextNavigator;
+      player = nextPlayer;
+      switchingLanguage = false;
+      if (player) renderPlayer();
+      else if (navigator) show(navigator.element);
+      else await initialise();
+      return true;
+    } catch {
+      nextNavigator?.destroy();
+      if (!destroyed) {
+        languageError = true;
+        switchingLanguage = false;
+        if (previousContent) show(previousContent);
+      }
+      return false;
+    } finally {
+      switchingLanguage = false;
+      if (previousContent) previousContent.inert = false;
+
+    }
+  }
 
   async function initialise() {
+    loadingCatalog = true;
     renderStatus(workspaceUi.loadingLab);
     try {
       catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
       assertCatalog(catalog);
+      loadingCatalog = false;
       if (!destroyed) renderCatalog();
     } catch (error) {
+      loadingCatalog = false;
+      catalog = null;
       if (!destroyed) renderError(error);
     }
     return controller;
@@ -44,6 +125,8 @@ export function createExperienceWorkspace({
 
   async function openExperience(experienceId, environmentId = null) {
     if (destroyed) throw new Error("Experience Workspace has been destroyed.");
+    if (switchingLanguage) return null;
+    loadingExperience = true;
 
     try {
       if (!catalog) {
@@ -52,12 +135,12 @@ export function createExperienceWorkspace({
       }
       const item = localizeCatalogItem(
         catalog.experiences.find(experience => experience.id === experienceId),
-        documentRef.documentElement?.lang
+        locale
       );
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
       renderStatus(workspaceUi.loading(item.title));
 
-      const artifactPath = selectArtifactPath(item, documentRef.documentElement?.lang);
+      const artifactPath = selectArtifactPath(item, locale);
       const [artifact, playerModule] = await Promise.all([
         loadJson(`${baseUrl}/${artifactPath}`, fetchImpl),
         importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
@@ -65,14 +148,18 @@ export function createExperienceWorkspace({
       if (typeof playerModule.ExperiencePlayer !== "function") {
         throw new Error("The generated package does not expose ExperiencePlayer.");
       }
+      if (destroyed) return null;
       player = new playerModule.ExperiencePlayer({ experience: artifact });
+      commands = [];
+      loadingExperience = false;
       activeExperienceId = item.id;
       activeEnvironmentId = environmentId;
       completionRecorded = false;
       renderPlayer();
       return player.getState();
     } catch (error) {
-      renderError(error);
+      loadingExperience = false;
+      if (!destroyed) renderError(error);
       throw error;
     }
   }
@@ -80,6 +167,7 @@ export function createExperienceWorkspace({
   function startExperience() {
     requirePlayer();
     player.start();
+    commands.push(["start"]);
     renderPlayer();
   }
 
@@ -87,26 +175,30 @@ export function createExperienceWorkspace({
     requirePlayer();
     const leavingResult = player.getState().interaction === "result";
     player.continue();
+    commands.push(["continue"]);
     renderPlayer(leavingResult);
   }
 
   function selectDecision(decisionId) {
     requirePlayer();
     player.selectDecision(decisionId);
+    commands.push(["selectDecision", decisionId]);
     renderPlayer();
   }
 
   function restartExperience() {
     requirePlayer();
     player.reset();
+    commands = [];
     completionRecorded = false;
     renderPlayer();
   }
 
   function closeExperience() {
     player = null;
+    commands = [];
     navigator.restore();
-    element.replaceChildren(navigator.element);
+    show(navigator.element);
     activeExperienceId = null;
     activeEnvironmentId = null;
     completionRecorded = false;
@@ -126,7 +218,7 @@ export function createExperienceWorkspace({
       }
       completionRecorded = true;
     }
-    element.replaceChildren(ExperienceWorkspace({
+    const presentation = ExperienceWorkspace({
       documentRef,
       projection: createWorkspaceProjection(state, baseUrl),
       onStart: startExperience,
@@ -134,7 +226,9 @@ export function createExperienceWorkspace({
       onDecision: selectDecision,
       onRestart: restartExperience,
       onClose: closeExperience
-    }));
+    });
+    presentation.setAttribute("lang", state.experience.language);
+    show(presentation);
     if (state.interaction === "result" || focusContent) {
       const heading = element.querySelector?.("h2");
       heading?.setAttribute("tabindex", "-1");
@@ -143,6 +237,12 @@ export function createExperienceWorkspace({
   }
 
   function renderCatalog() {
+    player = null;
+    commands = [];
+    activeExperienceId = null;
+    activeEnvironmentId = null;
+    completionRecorded = false;
+    navigator?.destroy();
     catalog.environments.filter(item => item.contractVersion === "2.0.0").forEach(environment => {
       const experienceIds = environment.hotspots.map(hotspot =>
         catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
@@ -153,17 +253,23 @@ export function createExperienceWorkspace({
         theorySectionIds: environment.theory?.sectionIds ?? []
       });
     });
-    navigator = createEnvironmentNavigator({
+    navigator = buildNavigator(locale);
+    show(navigator.element);
+  }
+
+  function buildNavigator(targetLocale) {
+    return createEnvironmentNavigator({
+      locale: targetLocale,
       documentRef,
       baseUrl,
       environments: catalog.environments,
       experiences: catalog.experiences.map(item => (
-        localizeCatalogItem(item, documentRef.documentElement?.lang)
+        localizeCatalogItem(item, targetLocale)
       )),
       onOpenExperience: openExperience,
       onOpenTheory: async environment => {
-        const locale = selectTheoryLocale(environment.theory, documentRef.documentElement?.lang);
-        const theory = await loadJson(`${baseUrl}/${environment.theory.locales[locale]}`, fetchImpl);
+        const theoryLocale = selectTheoryLocale(environment.theory, targetLocale);
+        const theory = await loadJson(`${baseUrl}/${environment.theory.locales[theoryLocale]}`, fetchImpl);
         const experienceIds = environment.hotspots.map(hotspot =>
           catalog.experiences.find(item => item.editorialId === hotspot.experienceEditorialId)?.id).filter(Boolean);
         progressStore.registerEnvironment({
@@ -175,14 +281,13 @@ export function createExperienceWorkspace({
       onTheorySectionCompleted: (environmentId, sectionId) => progressStore.markTheorySectionCompleted(environmentId, sectionId),
       progressStore
     });
-    element.replaceChildren(navigator.element);
   }
 
   function renderStatus(message) {
     const status = createElement(documentRef, "div", "experience-workspace__status");
     status.setAttribute("role", "status");
     appendText(documentRef, status, "p", "", message);
-    element.replaceChildren(status);
+    show(status);
   }
 
   function renderError(error) {
@@ -192,16 +297,19 @@ export function createExperienceWorkspace({
     appendText(documentRef, panel, "h2", "", workspaceUi.labUnavailable);
     appendText(documentRef, panel, "p", "", safeErrorMessage(error, workspaceUi));
     const back = createButton(documentRef, workspaceUi.backToLab, "experience-action");
-    back.addEventListener("click", renderCatalog);
+    back.addEventListener("click", () => catalog ? renderCatalog() : initialise());
     panel.appendChild(back);
-    element.replaceChildren(panel);
+    show(panel);
   }
 
   function requirePlayer() {
     if (!player) throw new Error("No experience is open.");
   }
 
+  const releaseLocaleGuard = localePreference?.beforeChange(setLanguage);
+
   function destroy() {
+    releaseLocaleGuard?.();
     destroyed = true;
     navigator?.destroy();
     player = null;
@@ -215,11 +323,25 @@ export function createExperienceWorkspace({
   const controller = Object.freeze({
     element,
     initialise,
+    setLanguage,
+    getLocale: () => locale,
     openExperience,
     getState: () => player?.getState() ?? null,
     destroy
   });
   return controller;
+}
+
+function sessionPosition(state) {
+  return {
+    id: state.experience.id, version: state.experience.contentVersion,
+    state: state.state, interaction: state.interaction,
+    completionStatus: state.completionStatus, progress: state.progress,
+    stage: state.currentStage?.id, selectedDecision: state.selectedDecision,
+    decisions: state.decisionHistory.map(item => [item.stageId, item.decisionId]),
+    attempts: state.attemptsByDecision, resolved: state.resolvedDecisions,
+    evidence: state.unlockedEvidence, evaluation: state.evaluationResult
+  };
 }
 
 export function createExperienceProgressResult(state) {
@@ -544,90 +666,6 @@ function createIntroduction(documentRef, projection, action, isStart, ui) {
   return panel;
 }
 
-function experienceUiCopy(locale = "en") {
-  const language = typeof locale === "string" ? locale.toLowerCase().split("-")[0] : "en";
-  return language === "es" ? {
-    language: "es",
-    loadingLab: "Cargando el Laboratorio de Experiences…",
-    loading: title => `Cargando ${title}…`,
-    experienceUnavailable: "Experience no disponible",
-    labUnavailable: "No se pudo cargar el Laboratorio de Experiences.",
-    unavailable: "La Experience solicitada no está disponible.",
-    backToLab: "Volver al Laboratorio de Experiences",
-    engine: "Experience Engine",
-    allExperiences: "Todas las Experiences",
-    currentSituation: "Situación actual",
-    engineeringDecision: "Decisión técnica",
-    whatNext: "¿Qué debería hacerse a continuación?",
-    incidentObserved: "Incidente observado",
-    continue: "Continuar",
-    stageMedia: "Contenido multimedia de la etapa",
-    evidenceMedia: "Contenido multimedia de la evidencia",
-    mediaUnavailable: description => `No se pudo cargar el contenido multimedia: ${description}`,
-    decisionRecorded: "Decisión registrada",
-    selectionRecorded: "Tu selección se ha registrado para esta sesión local.",
-    completeExperience: "Completar Experience",
-    stage: "Etapa",
-    experienceComplete: "Experience completada",
-    sessionCompleted: "Sesión de diagnóstico completada",
-    completedStages: count => `Has completado ${count} etapas.`,
-    correctProcess: "Proceso correcto",
-    avoidedErrors: "Errores evitados",
-    industrialValue: "Valor industrial",
-    decisions: "Decisiones",
-    firstAttemptCorrect: "Correctas al primer intento",
-    additionalAttempts: "Intentos adicionales",
-    result: "Resultado",
-    decisionsTaken: "Decisiones tomadas",
-    restartExperience: "Reiniciar Experience",
-    readyToBegin: "Listo para comenzar",
-    incidentBrief: "Resumen del incidente",
-    operationalState: "Estado operativo",
-    initiatingEvent: "Evento inicial",
-    startExperience: "Iniciar Experience",
-    beginDiagnosis: "Iniciar diagnóstico"
-  } : {
-    language: "en",
-    loadingLab: "Loading Experience Lab…",
-    loading: title => `Loading ${title}…`,
-    experienceUnavailable: "Experience unavailable",
-    labUnavailable: "The Experience Lab could not be loaded.",
-    unavailable: "The requested experience is unavailable.",
-    backToLab: "Back to Experience Lab",
-    engine: "Experience Engine",
-    allExperiences: "All experiences",
-    currentSituation: "Current situation",
-    engineeringDecision: "Engineering decision",
-    whatNext: "What should be done next?",
-    incidentObserved: "Incident observed",
-    continue: "Continue",
-    stageMedia: "Stage media",
-    evidenceMedia: "Evidence media",
-    mediaUnavailable: description => `Could not load media: ${description}`,
-    decisionRecorded: "Decision recorded",
-    selectionRecorded: "Your selection has been recorded for this local session.",
-    completeExperience: "Complete experience",
-    stage: "Stage",
-    experienceComplete: "Experience complete",
-    sessionCompleted: "Diagnostic session completed",
-    completedStages: count => `You completed ${count} stages.`,
-    correctProcess: "Correct process",
-    avoidedErrors: "Avoided errors",
-    industrialValue: "Industrial value",
-    decisions: "Decisions",
-    firstAttemptCorrect: "First-attempt correct",
-    additionalAttempts: "Additional attempts",
-    result: "Result",
-    decisionsTaken: "Decisions taken",
-    restartExperience: "Restart experience",
-    readyToBegin: "Ready to begin",
-    incidentBrief: "Incident brief",
-    operationalState: "Operational state",
-    initiatingEvent: "Initiating event",
-    startExperience: "Start experience",
-    beginDiagnosis: "Begin diagnosis"
-  };
-}
 
 async function loadJson(location, fetchImpl) {
   const response = await fetchImpl(location, { headers: { Accept: "application/json" } });

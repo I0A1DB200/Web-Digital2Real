@@ -14,6 +14,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { packageExperienceEngine } from "../package-experience-engine.mjs";
+import { parseExperienceYaml } from "../../experience-engine/adapter/yamlExperienceAdapter.js";
 
 const repositoryRoot = new URL("../../", import.meta.url);
 const reservedTerms = [
@@ -57,13 +58,18 @@ test("evidence-only media packages in both locales and missing physical files fa
   const experienceRoot = path.join(root, "content", "experiences", "sensors", "EE-0001-sensor-on-plc-input-off");
   const sourcePath = path.join(experienceRoot, "experience.yaml");
   const source = await readFile(sourcePath, "utf8");
+  // Bound the mutation to the recovery evidence block and replace its existing
+  // media authority, rather than inserting a second mapping key.
+  const recoveryBlock = /(^    - id: "EVID-08-RECOVERY"\r?\n)([\s\S]*?)(?=^    - id:|^  \w)/m;
+  assert.match(source, recoveryBlock);
   const adapted = source
-    .replace(
-      '      revealed_by: ["DEC-07-VERIFY-CHAIN"]\n      media_ids: ["ART-008"]',
-      '      revealed_by: ["DEC-07-VERIFY-CHAIN"]\n      media_ids: ["RESULT-ONLY"]'
-    )
+.replace(recoveryBlock, (block) => {
+      assert.match(block, /^      media_ids:.*$/m);
+      return block.replace(/^      media_ids:.*$/m, '      media_ids: ["RESULT-ONLY"]');
+    })
     .replace("  completion:", '      - id: "RESULT-ONLY"\n        type: "image"\n        src: "assets/EXP-SENSOR-SIGNAL-001/result-only.svg"\n        alt: "Result fixture"\n        purpose: "evidence"\n  completion:');
   assert.notEqual(adapted, source);
+  assert.deepEqual(parseExperienceYaml(adapted).public.evidence.find(item => item.id === "EVID-08-RECOVERY").media_ids, ["RESULT-ONLY"]);
   await writeFile(sourcePath, adapted, "utf8");
   for (const language of ["es", "en"]) {
     const localePath = path.join(experienceRoot, "locales", `${language}.yaml`);

@@ -13,3 +13,20 @@ Cover ART-001. Ordered stage media: [ART-002], [], [ART-004], [ART-005], [ART-00
 Actual-pixel audit: ART-001 is editorial illustration with both LEDs lit, never incident proof. ART-002 contains the initial HMI zero and available sensor power, without a measured gap. ART-003 remains registered but hidden: its CM 4x IO-Link/channel 1 architecture differs from the TBEN/port 6 interface in ART-006/007. System health is valid authored textual evidence; no topology reconciliation is invented. ART-004 illustrates target and indicator inspection. ART-005 is the measurement/reference acquisition (7.8 mm, Sn 6 mm, secured ≤ 4.86 mm), without turning Sn into an exact threshold. ART-006 follows the IO-Link read in D4. ART-005/006 are intentionally reused for diagnosis review. ART-007 appears only after D8 and in Debrief; its ≤ 6 mm label does not prove secured-distance acceptance or repeatability. The authored final check establishes acceptance and signal propagation; no exact corrected gap, cycle count or new measurement is fabricated.
 
 Safety prerequisites are visible before inspection, measurement, adjustment and final verification. The post-adjustment stage contains no stale pre-adjustment zero image and no premature recovery image. No Engine or image changes. Browser QA pending globally.
+
+## Authorized cover derivative - 2026-10-14
+
+This task explicitly authorizes removal of the `EE-0011` editorial badge from
+`01.png` only. Built-in imagegen localized editing used the existing
+canonical cover as its edit target; no scene regeneration was requested.
+Visual comparison found the depicted equipment, arrangement and operational
+indications preserved. This is not a byte-identity claim outside the edited region;
+generative texture differences remain. No manufacturer ownership or rights are implied.
+
+- Previous SHA-256: `476126be467ccc22c8f900812b7702f7942623d173e2b9665e4a6b5c6bb4c38f`
+- Current SHA-256: `06688db7c775b7548660903117abddeda63b58e1a293c189f660a29bb84c92ae`
+- Dimensions unchanged: 1672 x 941.
+- Full audit/method/status: [cover cleanup inventory](../../../../../docs/cover-cleanup-inventory.json).
+
+This entry supersedes historical frozen/source-byte statements for the cover only.
+All other asset files and their semantic disclosure contracts remain unchanged.

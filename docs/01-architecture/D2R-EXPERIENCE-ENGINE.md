@@ -256,3 +256,47 @@ An Engine change is complete only when:
 > Keep the Engine generic and Experiences declarative. If a behavior is
 > reusable runtime semantics, implement it once in the Engine; if it is
 > engineering meaning, keep it in content.
+
+## 17. Language entry point
+
+The global header owns one ES/EN selector, shared by Experience and Notebook.
+`Frontend/data/locale.js` owns active UI locales, preference and guarded transitions.
+`experienceLocale.js` owns Experience/ENV UI copy and reexports compatibility helpers.
+`Frontend/data/notebookUi.js` owns Notebook UI copy; `Frontend/data/site.js` owns shell copy.
+No product-local preference or second visible selector may be introduced.
+
+The existing preference key `digital2real.experience-locale.v1` is retained for
+compatibility, now globally authoritative and separate from progress. Selection
+order is a valid saved preference, then document language, with unsupported languages
+resolving to EN. The document declares the global language; content surfaces declare
+their actual language (the untranslated About content remains EN). The same selector
+moves into the article dialog while open so the modal focus trap includes it, and
+returns to the header on close. Notebook switching updates the same article identity,
+section order and URL; category and selected card survive. Experience guards must
+finish successfully before the global preference commits.
+Experience and Theory packages missing the requested locale use their declared
+`defaultLocale`. ENV presentation uses the requested field, then EN, ES and its
+canonical title. Experience/Theory content declares its actual language for
+assistive technology.
+
+Switching keeps ENV selection, open hotspot and current Theory section. For an
+active Experience, the Workspace replays accepted session commands against a
+detached localized Player and checks identity, position, attempts, evidence and
+evaluation before replacing the visible Player. Replay has no completion-store
+side effects. Failed loading or incompatible localized state leaves the original
+session and preference intact. Active sessions remain memory-only and are not
+restored after a page reload; completion/mastery persistence remains independent
+of locale.
+
+IT is not an active UI locale. An IT request currently resolves to EN; no empty
+Italian locale files are registered. Activation requires:
+
+- Italian shared UI resources and addition to the active locale list;
+- complete reviewed Experience translations before listing `it` in that package's
+  `supported_locales` and `locale_files`; the existing resolver enforces completeness;
+- an approved extension of ENV V2 Theory schema/validator, currently requiring
+  exactly ES/EN, plus corresponding Theory translations and validation;
+- semantic parity, fallback, session preservation and real browser QA.
+
+Historical packages may retain their declared default fallback. Adding a language
+does not require redesigning the selector or changing Experience IDs.

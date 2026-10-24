@@ -1,5 +1,7 @@
-import { site } from "./data/site.js";
-import { notebook } from "./generated/notebooks/notebook.js";
+import { getSite } from "./data/site.js";
+import { createLocalePreference } from "./data/locale.js";
+import { createLanguageSelector } from "./components/languageSelector.js";
+import { getNotebook } from "./generated/notebooks/notebook.js";
 
 import { createNavbar } from "./components/navbar.js";
 import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
@@ -10,6 +12,13 @@ import { applyCharacterReveal, getCharacterRevealDuration } from "./components/h
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
 
 const app = document.querySelector("#app");
+const localePreference = createLocalePreference();
+const languageControl = createLanguageSelector(localePreference);
+let site = getSite(localePreference.getLocale());
+let notebook = getNotebook(localePreference.getLocale());
+let activeNotebookCarousel = null;
+let renderedLocale = localePreference.getLocale();
+document.documentElement.lang = renderedLocale;
 
 if (!(app instanceof HTMLElement)) {
   throw new Error('Digital2Real could not start because "#app" was not found.');
@@ -81,6 +90,7 @@ function renderView(view) {
   disconnectRevealObserver();
   activeNotebookMotorHero?.destroy();
   activeNotebookMotorHero = null;
+  activeNotebookCarousel = null;
   closeArticle();
   closeExperienceWorkspace();
 
@@ -90,7 +100,7 @@ function renderView(view) {
   const viewRenderers = {
     "engineering-notes": renderEngineeringNotesView,
     "experience-lab": renderExperienceLabView,
-    about: () => createAbout(site)
+    about: () => { const about = createAbout(site); about.lang = "en"; return about; }
   };
 
   const renderCurrentView = viewRenderers[view] ?? viewRenderers["engineering-notes"];
@@ -98,8 +108,9 @@ function renderView(view) {
 
   main.appendChild(renderCurrentView());
   activeNavbar?.destroy?.();
-  activeNavbar = createNavbar(site, currentView, navigateTo);
+  activeNavbar = createNavbar(site, currentView, navigateTo, { languageControl: languageControl.element });
   app.replaceChildren(activeNavbar, main);
+  updateNavigationLanguage();
   activeNotebookMotorHero?.initialise(main.querySelector(".notes-section"));
 
   document.title = getDocumentTitle();
@@ -169,7 +180,8 @@ function renderEngineeringNotesView() {
     throw new Error("Digital2Real could not render the Engineering Notes composition.");
   }
 
-  carouselHost.appendChild(createNotebookCarousel(notebook, openArticle).element);
+  activeNotebookCarousel = createNotebookCarousel(notebook, openArticle);
+  carouselHost.appendChild(activeNotebookCarousel.element);
   activeNotebookMotorHero = createNotebookMotorHero();
   motorHost.appendChild(activeNotebookMotorHero.element);
 
@@ -177,7 +189,7 @@ function renderEngineeringNotesView() {
 }
 
 function renderExperienceLabView() {
-  const workspace = createExperienceWorkspace();
+  const workspace = createExperienceWorkspace({ localePreference });
   activeExperienceWorkspace = workspace;
   workspace.initialise().then(async () => {
     if (!pendingExperienceId || activeExperienceWorkspace !== workspace) return;
@@ -214,7 +226,7 @@ function closeExperienceWorkspace() {
 function openArticle(article, opener) {
   closeArticle();
 
-  const viewer = createArticleViewer(article, closeArticle, opener);
+  const viewer = createArticleViewer(article, closeArticle, opener, { languageControl: languageControl.element });
   activeArticleViewer = viewer;
   document.body.appendChild(viewer.element);
   viewer.activate();
@@ -228,6 +240,9 @@ function closeArticle() {
   const viewer = activeArticleViewer;
   activeArticleViewer = null;
   viewer.destroy();
+  if (document.activeElement === document.body) {
+    activeNotebookCarousel?.element.querySelector('[aria-current="true"]')?.focus();
+  }
 }
 
 function initialiseRevealAnimations() {
@@ -265,6 +280,39 @@ function disconnectRevealObserver() {
 
 function handleHashChange() {
   renderView(getRequestedView());
+}
+
+localePreference.subscribe((locale, pending) => {
+  if (pending || locale === renderedLocale) return;
+  renderedLocale = locale;
+  site = getSite(locale);
+  notebook = getNotebook(locale);
+  document.documentElement.lang = locale;
+  activeNotebookCarousel?.updateArticles(notebook);
+  if (activeArticleViewer) activeArticleViewer.updateArticle(notebook.find(article => article.id === activeArticleViewer.getArticleId()));
+  const textUpdates = {
+    ".editorial-hero h1": site.home.title,
+    ".editorial-hero__support p": site.home.introduction,
+    "#notes-title": site.engineeringNotes.title,
+    ".section-introduction p": site.engineeringNotes.introduction
+  };
+  if (currentView === "engineering-notes") for (const [selector, text] of Object.entries(textUpdates)) {
+    const element = app.querySelector(selector);
+    if (element) element.textContent = text;
+  }
+  updateNavigationLanguage();
+  document.title = getDocumentTitle();
+});
+
+function updateNavigationLanguage() {
+  for (const item of site.navigation) {
+    const link = activeNavbar?.querySelector(`.topbar__link[data-view="${item.view}"]`);
+    if (link) link.textContent = item.label;
+  }
+  const es = localePreference.getLocale() === "es";
+  activeNavbar?.querySelector(".brand")?.setAttribute("aria-label", es ? "Ir a notas de ingenier\u00eda" : "Go to Engineering Notes");
+  activeNavbar?.querySelector(".topbar__menu-toggle")?.setAttribute("aria-label", es ? "Abrir o cerrar navegaci\u00f3n principal" : "Toggle main navigation");
+  activeNavbar?.querySelector(".topbar__nav")?.setAttribute("aria-label", es ? "Navegaci\u00f3n principal" : "Main navigation");
 }
 
 window.addEventListener("hashchange", handleHashChange);

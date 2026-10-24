@@ -74,12 +74,17 @@ An Experience is a bounded engineering case with:
 Keep technical and editorial identity distinct when both exist.
 
 ``` text
-editorial_id → learner/catalog identity, e.g. EE-0012
+editorial_id → canonical internal editorial/catalog identity, e.g. EE-0012
 technical_id → stable technical/package identity
 ```
 
 References must use the repository's canonical identifier for that
 relationship. Do not substitute one identifier for another casually.
+
+Learner-facing covers, headings and hotspot labels use localized Experience
+titles, not EE sequence prefixes. IDs, associations, filenames, access and
+progress keys remain stable. Author Experiences independently of ENV ordering.
+Asset framing follows Asset Governance.
 
 ## 5. Stage
 
@@ -156,6 +161,20 @@ Completion should identify final synthesis/debrief media where useful.
 ## 12. Localization
 
 ES and EN must be structurally equivalent and semantically equivalent.
+
+Active global UI locales are ES/EN. The runtime entry point and Italian
+activation requirements are governed by [Experience Engine](D2R-EXPERIENCE-ENGINE.md#17-language-entry-point).
+Once IT is active, new Experiences require ES/EN/IT presentations of one canonical
+technical case, with identical decisions, evidence timing and completion criteria.
+
+Notebook (shown as Notes / Engineering Notes) has one canonical English JavaScript
+technical model and ID-keyed Spanish presentation. Active ES/EN are complete for
+all eight publications. `content/notebooks/README.md` defines field ownership,
+permanent section IDs, technical-code invariants and publication validation.
+Unsupported IT resolves to EN; missing ES content blocks publication. Future IT
+activation requires complete reviewed translations, never placeholder corpora.
+Global language preference belongs to `Frontend/data/locale.js`; content locale
+resolvers determine actual fallback language. No language may change technical truth.
 
 Localization may adapt natural wording but must preserve:
 

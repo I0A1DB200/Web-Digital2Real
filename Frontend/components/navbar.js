@@ -2,7 +2,8 @@ const MOBILE_NAVIGATION_QUERY = "(max-width: 700px)";
 
 export function createNavbar(site, currentView, onNavigate, {
   documentRef = globalThis.document,
-  windowRef = globalThis.window
+  windowRef = globalThis.window,
+  languageControl = null
 } = {}) {
   if (!site || !Array.isArray(site.navigation)) {
     throw new TypeError("Navbar requires site navigation data.");
@@ -67,6 +68,7 @@ export function createNavbar(site, currentView, onNavigate, {
   });
 
   inner.append(brand, menuButton, navigation);
+  if (languageControl) inner.appendChild(languageControl);
   header.appendChild(inner);
 
   let isMenuOpen = false;

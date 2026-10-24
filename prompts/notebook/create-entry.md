@@ -17,6 +17,16 @@ Sources: `<repository references / supplied sources>`
 Create reusable engineering knowledge for the permanent D2R technical
 SSOT.
 
+Follow `content/notebooks/README.md`: one technical model in `notebook.js`,
+permanent article/section IDs, and complete ES presentation in `locales/es.js`.
+English remains canonical; never fork technical code, measurements or references.
+All new Notes require ES/EN title, excerpt, headings, body, lists, captions and
+category labels. Mark translatable text diagrams explicitly; executable code is
+shared. Validate `getNotebook("es")`, `getNotebook("en")`, IT -> EN fallback and
+packaging, then inspect both languages in the global UI and article detail.
+Italian becomes required only upon approved activation with complete resources.
+Notes / Engineering Notes is the Notebook display label, not a new content product.
+
 ## REQUIRED STRUCTURE
 
 1.  Industrial problem

@@ -96,8 +96,14 @@ test("EE-0006 localizes completely and preserves seven frozen assets", async t =
   const files = (await readdir(new URL("assets/", directory))).filter(name => name.endsWith(".png")).sort();
   assert.deepEqual(files, ["01.png", "02.png", "03.png", "04.png", "05.png", "06.png", "07.png"]);
   for (const name of files) {
+    if (name === "01.png") {
+      // Authorized 2026-10-14 cover-only derivative; provenance pins the original separately.
+      assert.equal(digest(await readFile(new URL(`assets/${name}`, directory))), "8a474bdb7611132e41e418185b51ebffa7f6d08af335c05101620c6f7c85702d", name);
+    }
     try {
-      assert.equal(digest(await readFile(new URL(`assets/${name}`, directory))), digest(await readFile(new URL(name, sourceAssets))), name);
+      const original = digest(await readFile(new URL(name, sourceAssets)));
+      if (name === "01.png") assert.equal(original, "dcd625f8dc9833631226c290cca84eebb420f1499831ae19ca44f7333a463a82", "Original cover provenance");
+      else assert.equal(digest(await readFile(new URL(`assets/${name}`, directory))), original, name);
     } catch (error) {
       if (error.code === "ENOENT") t.diagnostic(`Approved external source unavailable for ${name}; canonical asset still validated.`);
       else throw error;

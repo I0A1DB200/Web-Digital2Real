@@ -1,3 +1,4 @@
+import { createLocalePreference } from "../../../data/locale.js";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
@@ -22,7 +23,28 @@ const artifactUrl = new URL(
 );
 const readArtifact = async () => JSON.parse(await readFile(artifactUrl, "utf8"));
 
-async function resultWorkspace(language = "en", storage = null) {
+test("catalog recovery retries failed and malformed loads before returning to a usable catalog", async () => {
+  for (const firstResponse of [null, { version: 99 }]) {
+    let requests = 0;
+    const workspace = createExperienceWorkspace({
+      documentRef: new FakeDocument(),
+      fetchImpl: async () => {
+        requests++;
+        if (requests === 1 && firstResponse === null) throw new Error("Network failure");
+        return { ok: true, json: async () => requests === 1 ? firstResponse : { version: 1, experiences: [], environments: [] } };
+      },
+      importPlayer: async () => ({})
+    });
+    await workspace.initialise();
+    assert.match(workspace.element.text, /could not be loaded/);
+    await findButton(workspace.element, "Back to Experience Lab").click();
+    assert.equal(requests, 2);
+    assert.match(workspace.element.text, /No environments are available/);
+    workspace.destroy();
+  }
+});
+
+async function resultWorkspace(language = "en", storage = null, localePreference = null) {
   const artifact = evidenceMediaArtifact(language);
   const documentRef = new FakeDocument();
   documentRef.documentElement = { lang: language };
@@ -31,13 +53,14 @@ async function resultWorkspace(language = "en", storage = null) {
   const progressStore = { ...store, recordExperienceResult(...args) { registrations++; return store.recordExperienceResult(...args); } };
   const catalog = { version: 1, experiences: [{
     id: artifact.identity.id, editorialId: "EE-TEST", title: artifact.metadata.title,
-    summary: artifact.metadata.summary, path: "fixture.json", class: "learning"
+    summary: artifact.metadata.summary, path: "fixture.json", class: "learning",
+    defaultLocale: "en", locales: { es: "fixture.es.json", en: "fixture.en.json" }
   }], environments: [{
     id: "ENV-TEST", contractVersion: "2.0.0", title: "Fixture", background: "fixture.svg", width: 16, height: 9,
     hotspots: [{ experienceEditorialId: "EE-TEST", x: 50, y: 50 }]
   }] };
-  const workspace = createExperienceWorkspace({ documentRef, progressStore,
-    fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : artifact) }),
+  const workspace = createExperienceWorkspace({ documentRef, progressStore, localePreference,
+    fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : evidenceMediaArtifact(location.endsWith(".es.json") ? "es" : "en")) }),
     importPlayer: async () => ({ ExperiencePlayer })
   });
   await workspace.initialise(); await workspace.openExperience(artifact.identity.id, "ENV-TEST");
@@ -48,6 +71,165 @@ async function resultWorkspace(language = "en", storage = null) {
   };
   return { workspace, documentRef, store, begin, click, registrations: () => registrations };
 }
+
+test("the shared global preference switches Experience session without a local selector", async () => {
+  const preference = createLocalePreference({ storage: null, initialLocale: "en" });
+  const fixture = await resultWorkspace("en", null, preference);
+  fixture.begin(); fixture.click("Inspect connector");
+  const before = fixture.workspace.getState();
+  assert.equal(await preference.setLocale("es"), true);
+  assert.equal(fixture.workspace.getLocale(), preference.getLocale());
+  assert.equal(fixture.workspace.getState().interaction, "result");
+  assert.deepEqual(fixture.workspace.getState().unlockedEvidence, before.unlockedEvidence);
+  assert.equal(fixture.registrations(), 0);
+  fixture.workspace.destroy();
+  assert.equal(await preference.setLocale("en"), true);
+});
+
+test("language changes preserve retries, pending Results, completion and one progress registration", async () => {
+  const fixture = await resultWorkspace("en");
+  const { workspace, begin, click, store } = fixture;
+  const compare = state => ({
+    phase: state.interaction, progress: state.progress, evidence: state.unlockedEvidence,
+    attempts: state.attemptsByDecision, resolved: state.resolvedDecisions,
+    evaluation: state.evaluationResult, decisions: state.decisionHistory.map(item => item.decisionId)
+  });
+  begin(); click("Replace without checking");
+  let before = compare(workspace.getState());
+  assert.equal(await workspace.setLanguage("es"), true);
+  assert.deepEqual(compare(workspace.getState()), before);
+  assert.equal(workspace.getState().experience.language, "es");
+  assert.equal(workspace.element.attributes.lang, "es");
+  click("Inspeccionar conector");
+  before = compare(workspace.getState());
+  assert.equal(await workspace.setLanguage("en"), true);
+  assert.deepEqual(compare(workspace.getState()), before);
+  assert.equal(workspace.getState().interaction, "result");
+  click("Continue"); click("Assess measurement"); click("Verify recovery");
+  const earned = store.getEnvironmentProgress("ENV-TEST");
+  before = compare(workspace.getState());
+  assert.equal(fixture.registrations(), 1);
+  assert.equal(await workspace.setLanguage("es"), true);
+  assert.deepEqual(compare(workspace.getState()), before);
+  assert.deepEqual(store.getEnvironmentProgress("ENV-TEST"), earned);
+  assert.equal(fixture.registrations(), 1);
+  click("Continuar");
+  assert.equal(await workspace.setLanguage("en"), true);
+  assert.equal(workspace.getState().interaction, "completion");
+  assert.equal(fixture.registrations(), 1);
+  workspace.destroy();
+});
+
+test("failed language loading preserves the active session and permits a later retry", async () => {
+  const documentRef = new FakeDocument();
+  documentRef.documentElement = { lang: "en" };
+  const artifact = evidenceMediaArtifact("en");
+  let fail = true;
+  const workspace = createExperienceWorkspace({ documentRef, preferenceStorage: null,
+    fetchImpl: async location => {
+      if (location.endsWith("es.json") && fail) throw new Error("Offline");
+      return { ok: true, json: async () => location.endsWith("catalog.json")
+        ? { version: 1, environments: [], experiences: [{ id: artifact.identity.id, title: "Test", defaultLocale: "en", locales: { en: "en.json", es: "es.json" } }] }
+        : evidenceMediaArtifact(location.endsWith("es.json") ? "es" : "en") };
+    }, importPlayer: async () => ({ ExperiencePlayer })
+  });
+  await workspace.initialise(); await workspace.openExperience(artifact.identity.id);
+  findButton(workspace.element, "Start experience").click();
+  const before = workspace.getState();
+  assert.equal(await workspace.setLanguage("es"), false);
+  assert.deepEqual(workspace.getState(), before);
+  assert.equal(workspace.getLocale(), "en");
+  assert.match(workspace.element.text, /session is preserved/);
+  fail = false;
+  assert.equal(await workspace.setLanguage("es"), true);
+  assert.equal(workspace.getState().interaction, "introduction");
+  workspace.destroy();
+});
+
+test("language switches retain the ENV, title-only hotspot and current Theory section", async () => {
+  const store = createEnvironmentProgressStore({ storage: null });
+  const environment = { id: "ENV-TEST", contractVersion: "2.0.0", title: "Cell", capacity: 1,
+    background: "cell.png", width: 16, height: 9,
+    presentation: { title: { es: "Celda", en: "Cell" } },
+    theory: { defaultLocale: "es", sectionIds: ["one", "two"], locales: { es: "theory.es.json", en: "theory.en.json" } },
+    hotspots: [{ experienceEditorialId: "EE-TEST", x: 25, y: 40 }] };
+  const catalog = { version: 1, environments: [environment], experiences: [{ id: "EXP-TEST", editorialId: "EE-TEST",
+    defaultLocale: "en", localizedMetadata: { es: { title: "Sensor parado", summary: "Resumen" }, en: { title: "Stopped sensor", summary: "Summary" } } }] };
+  const documentRef = new FakeDocument();
+  const workspace = createExperienceWorkspace({ documentRef, progressStore: store, preferenceStorage: null,
+    fetchImpl: async location => ({ ok: true, json: async () => location.endsWith("catalog.json") ? catalog : {
+      locale: location.includes(".es.") ? "es" : "en", media: [], sections: ["one", "two"].map(id => ({ id,
+        title: `${location.includes(".es.") ? "Sección" : "Section"} ${id}`, body: "Text", media_ids: [] })) } }),
+    importPlayer: async () => ({}) });
+  await workspace.initialise();
+  workspace.element.find(item => item.className === "environment-card__main").click();
+  workspace.element.find(item => item.className === "environment-hotspot").click();
+  assert.doesNotMatch(workspace.element.text, /EE-TEST/);
+  assert.equal(await workspace.setLanguage("es"), true);
+  assert.match(workspace.element.text, /Sensor parado/);
+  assert.doesNotMatch(workspace.element.text, /Stopped sensor|EE-TEST/);
+  const marker = workspace.element.find(item => item.className === "environment-hotspot");
+  assert.equal(marker.style.properties["--hotspot-x"], "25%");
+  assert.equal(marker.attributes["aria-expanded"], "true");
+  await findButton(workspace.element, "Abrir teoría").click();
+  findButton(workspace.element, "Continuar teoría").click();
+  const before = store.getEnvironmentProgress("ENV-TEST");
+  assert.match(workspace.element.text, /Sección two/);
+  assert.equal(await workspace.setLanguage("en"), true);
+  assert.match(workspace.element.text, /Section two/);
+  assert.doesNotMatch(workspace.element.text, /Section one/);
+  assert.deepEqual(store.getEnvironmentProgress("ENV-TEST"), before);
+  workspace.destroy();
+});
+
+test("language preference persists independently and unsupported Italian requests fall back to English", async () => {
+  const values = new Map();
+  const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) };
+  const create = () => createExperienceWorkspace({ documentRef: new FakeDocument(), preferenceStorage: storage,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ version: 1, experiences: [], environments: [] }) }),
+    importPlayer: async () => ({}) });
+  const first = create(); await first.initialise();
+  await first.setLanguage("es");
+  assert.equal(first.getLocale(), "es");
+  assert.equal(values.size, 1);
+  assert.equal([...values.keys()][0], "digital2real.experience-locale.v1");
+  first.destroy();
+  const second = create(); await second.initialise();
+  assert.equal(second.getLocale(), "es");
+  assert.equal(second.element.attributes.lang, "es");
+  assert.equal(await second.setLanguage("it"), true);
+  assert.equal(second.getLocale(), "en");
+  assert.equal(second.element.findAll(item => item.className === "experience-language__option").length, 0);
+  second.destroy();
+});
+
+test("legacy V1 selection survives language switching even when preference storage is blocked", async () => {
+  const artifact = await readArtifact();
+  const workspace = createExperienceWorkspace({ documentRef: new FakeDocument(),
+    preferenceStorage: { getItem() { throw new Error("Blocked"); }, setItem() { throw new Error("Blocked"); } },
+    fetchImpl: async location => ({ ok: true, json: async () => {
+      if (location.endsWith("catalog.json")) return { version: 1, environments: [], experiences: [{
+        id: artifact.identity.id, title: "Legacy", defaultLocale: "en", locales: { en: "en.json", es: "es.json" }
+      }] };
+      const translated = structuredClone(artifact);
+      translated.metadata.language = location.endsWith("es.json") ? "es" : "en";
+      return translated;
+    } }), importPlayer: async () => ({ ExperiencePlayer })
+  });
+  await workspace.initialise(); await workspace.openExperience(artifact.identity.id);
+  findButton(workspace.element, "Start experience").click();
+  findButton(workspace.element, "Begin diagnosis").click();
+  const decision = workspace.getState().currentStage.decisions[0];
+  findButton(workspace.element, decision.action).click();
+  assert.equal(workspace.getState().interaction, "selection");
+  const before = workspace.getState();
+  assert.equal(await workspace.setLanguage("es"), true);
+  const after = workspace.getState();
+  assert.equal(after.interaction, before.interaction);
+  assert.deepEqual(after.progress, before.progress);
+  assert.deepEqual(after.decisionHistory, before.decisionHistory);
+  workspace.destroy();
+});
 
 for (const language of ["es", "en"]) {
   test(`result workspace ${language}: earned text/media only, accessible Continue and visible load failures`, async () => {
@@ -288,7 +470,8 @@ test("a generated artifact opens and completes through Experience Lab without co
       theory: {
         defaultLocale: "es",
         sectionIds: ["TH-01-FIRST", "TH-02-SECOND"],
-        locales: { es: "environments/ENV-001/theory.es.json", en: "environments/ENV-001/theory.en.json" }
+        // This fixture deliberately exercises fallback to its only available Theory locale.
+        locales: { es: "environments/ENV-001/theory.es.json" }
       },
       hotspots: [{ experienceEditorialId: "EE-0001", x: 8.6, y: 36.8 }]
     }, {

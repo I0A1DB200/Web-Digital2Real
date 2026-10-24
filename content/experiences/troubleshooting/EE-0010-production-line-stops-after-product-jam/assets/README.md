@@ -13,3 +13,20 @@ Cover ART-001. Ordered stage media: [ART-002], [ART-003], [], [ART-004], [ART-00
 Actual pixels: ART-001 editorial cover; ART-002 incident HMI symptoms; ART-003 network topology does not independently prove PLC RUN, SafetyReady or communication health (authored diagnostic observations do); ART-004 shows both conveyor and pusher commands, so it follows D3, not D2. ART-005 shows S40/T40; ART-006 remains registered but hidden: its TransferClear address conflicts with ART-007 and its tag comment anticipates the logical relationship before D6. No address is promoted into canonical engineering facts. ART-007 illustrates the traced LAD relationship; ART-008 shows the observed residue; ART-009 shows S41 active, while repeated recovery is established by the authored functional test.
 
 Initial common-system health and physical-cause hints are removed. Safety prerequisites are visible before physical inspection and removal; SafetyReady is not authorization to intervene. No new procedure or measurement is invented. No Engine or image changes. Browser QA pending globally.
+
+## Authorized cover derivative - 2026-10-14
+
+This task explicitly authorizes removal of the `EE-0010` editorial badge from
+`01.png` only. Built-in imagegen localized editing used the existing
+canonical cover as its edit target; no scene regeneration was requested.
+Visual comparison found the depicted equipment, arrangement and operational
+indications preserved. This is not a byte-identity claim outside the edited region;
+generative texture differences remain. No manufacturer ownership or rights are implied.
+
+- Previous SHA-256: `3bcdb6299d297121168043d2a4edd43a525d6d3e7c753225c1ca46344c665229`
+- Current SHA-256: `9db68ae6339d070a647a81b345a72e203025e2694d69bcff7349540eeac2430c`
+- Dimensions unchanged: 1536 x 1024.
+- Full audit/method/status: [cover cleanup inventory](../../../../../docs/cover-cleanup-inventory.json).
+
+This entry supersedes historical frozen/source-byte statements for the cover only.
+All other asset files and their semantic disclosure contracts remain unchanged.

@@ -205,6 +205,16 @@ Do not add unsupported procedures.
 
 Design technical meaning first, then produce ES/EN equivalents.
 
+Use the active language set governed by the [Content Model](../01-architecture/D2R-CONTENT-MODEL.md#12-localization).
+Once IT becomes active, new Experiences require ES/EN/IT equivalents of the same
+technical case, decisions, evidence timing, assets and recovery criteria. Register
+a locale only with complete validated translations.
+
+The canonical EE ID remains mandatory internal metadata. Localized learner titles
+and hotspot labels must not depend on EE numbering or ENV order. Design for
+isolated access, different commercial packs and user-selected order. Follow Asset
+Governance for reusable imagery and technical-text exceptions.
+
 Validate equivalence for:
 
 -   options;

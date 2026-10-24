@@ -238,6 +238,7 @@ for (const language of ["es", "en"]) {
     begin();
     click(language === "es" ? "Cambiar sin comprobar" : "Replace without checking");
     assert.equal(workspace.getState().interaction, "stage");
+    assert.ok(workspace.element.find(item => item.className === "experience-stage-layout experience-stage-layout--with-media"));
     assert.deepEqual(workspace.element.findAll(item => item.tagName === "IMG").map(item => item.src), ["./generated/experience-engine/assets/fixture/CONTEXT.svg"]);
     click(language === "es" ? "Inspeccionar conector" : "Inspect connector");
     assert.equal(workspace.getState().interaction, "result");
@@ -358,6 +359,7 @@ test("Incident Brief resolves a semantic cover without changing Player state or 
   const incident = render();
   assert.deepEqual(player.getState(), before);
   assert.equal(incident.find(element => element.tagName === "IMG").src, "/generated/presentation.png");
+  assert.ok(incident.find(element => element.className.includes("experience-introduction__layout--with-media")));
   for (const text of [before.context.initial_context, before.context.operational_state, before.context.initiating_event]) {
     assert.ok(incident.text.includes(text));
   }
@@ -1146,6 +1148,9 @@ test("workspace and application use generated JSON without ID-specific handling"
   assert.match(styles, /aspect-ratio:\s*var\(--environment-ratio\)/);
   assert.match(styles, /\.experience-media__asset\s*\{[^}]*max-height:\s*min\(42vh,\s*30rem\)/s);
   assert.match(styles, /\.experience-media__item\[data-expanded="true"\]\s+\.experience-media__asset\s*\{[^}]*max-height:\s*none/s);
+  assert.match(styles, /\.experience-stage-layout--with-media\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*0\.86fr\)/s);
+  assert.match(styles, /\.experience-introduction__layout--with-media\s*\{[^}]*grid-template-columns:/s);
+  assert.match(styles, /\.experience-media__zoom\s*\{[^}]*border:\s*0/s);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(styles, /\.environment-hotspot\s*\{\s*animation:\s*none;/s);
   assert.match(styles, /\.experience-card:focus-visible/);

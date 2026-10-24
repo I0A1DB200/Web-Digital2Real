@@ -414,15 +414,29 @@ export function ExperienceWorkspace({
   } else if (projection.phase === "introduction") {
     shell.appendChild(createIntroduction(documentRef, projection, onContinue, false, ui));
   } else if (projection.phase === "stage") {
-    shell.appendChild(StagePanel({ documentRef, stage: projection.stage, ui }));
+    const stageLayout = createElement(
+      documentRef,
+      "div",
+      projection.media.length
+        ? "experience-stage-layout experience-stage-layout--with-media"
+        : "experience-stage-layout"
+    );
+    const stageContent = createElement(documentRef, "div", "experience-stage-layout__content");
+    stageContent.appendChild(StagePanel({ documentRef, stage: projection.stage, ui }));
     if (projection.media.length) {
-      shell.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
+      const stageMedia = createElement(documentRef, "div", "experience-stage-layout__media");
+      stageMedia.appendChild(MediaPanel({ documentRef, media: projection.media, ui }));
+      stageLayout.appendChild(stageContent);
+      stageLayout.appendChild(stageMedia);
+    } else {
+      stageLayout.appendChild(stageContent);
     }
     if (projection.stage.decisions.length) {
-      shell.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision, ui }));
+      stageContent.appendChild(DecisionPanel({ documentRef, decisions: projection.stage.decisions, feedback: projection.feedback, onDecision, ui }));
     } else {
-      shell.appendChild(ContinuePanel({ documentRef, onContinue, ui }));
+      stageContent.appendChild(ContinuePanel({ documentRef, onContinue, ui }));
     }
+    shell.appendChild(stageLayout);
   } else if (projection.phase === "result") {
     shell.appendChild(ResultPanel({ documentRef, result: projection.result, onContinue, ui }));
   } else if (projection.phase === "selection") {
@@ -649,20 +663,28 @@ export function CompletionPanel({ documentRef, projection, onRestart, ui = exper
 function createIntroduction(documentRef, projection, action, isStart, ui) {
   const panel = createElement(documentRef, "section", "experience-panel experience-introduction");
   appendText(documentRef, panel, "span", "experience-panel__label", isStart ? ui.readyToBegin : ui.incidentBrief);
-  if (!isStart && projection.cover) {
-    panel.appendChild(MediaPanel({ documentRef, media: [projection.cover], ui }));
+  const hasCover = !isStart && Boolean(projection.cover);
+  const layout = createElement(
+    documentRef,
+    "div",
+    hasCover ? "experience-introduction__layout experience-introduction__layout--with-media" : "experience-introduction__layout"
+  );
+  const content = createElement(documentRef, "div", "experience-introduction__content");
+  const media = createElement(documentRef, "div", "experience-introduction__media");
+  if (hasCover) {
+    media.appendChild(MediaPanel({ documentRef, media: [projection.cover], ui }));
   }
-  appendText(documentRef, panel, "h2", "", projection.context.learner_role);
-  appendText(documentRef, panel, "p", "experience-introduction__context", projection.context.initial_context);
+  appendText(documentRef, content, "h2", "", projection.context.learner_role);
+  appendText(documentRef, content, "p", "experience-introduction__context", projection.context.initial_context);
 
   const facts = createElement(documentRef, "dl", "experience-facts");
   appendFact(documentRef, facts, ui.operationalState, projection.context.operational_state);
   appendFact(documentRef, facts, ui.initiatingEvent, projection.context.initiating_event);
-  panel.appendChild(facts);
+  content.appendChild(facts);
   if (projection.visual?.educational_purpose) {
     appendText(
       documentRef,
-      panel,
+      content,
       "p",
       "experience-stage__objective",
       projection.visual.educational_purpose
@@ -675,7 +697,10 @@ function createIntroduction(documentRef, projection, action, isStart, ui) {
     "experience-action experience-action--primary"
   );
   button.addEventListener("click", action);
-  panel.appendChild(button);
+  content.appendChild(button);
+  layout.appendChild(content);
+  layout.appendChild(media);
+  panel.appendChild(layout);
   return panel;
 }
 

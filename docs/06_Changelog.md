@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Experience responsive diagnostic layout
+
+- Reorganized Experience introduction and stage views into a responsive reading layout: diagnostic copy and decisions stay together while media occupies a compact companion column on larger screens and stacks on smaller screens. Removed nested media framing and changed image enlargement to a lightweight accessible control; Player state, evidence order and authored content remain unchanged.
+
 ## 2026-10-24 — Equal Environment catalog card rows
 
 - Equalized Environment catalog card heights within each responsive grid row so longer localized descriptions do not make one card appear taller than its neighbors. Text remains complete and the progress footer stays aligned.

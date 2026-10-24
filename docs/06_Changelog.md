@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Equal Environment catalog card rows
+
+- Equalized Environment catalog card heights within each responsive grid row so longer localized descriptions do not make one card appear taller than its neighbors. Text remains complete and the progress footer stays aligned.
+
 ## 2026-10-24 — Complete Environment catalog localization
 
 - Added Spanish titles for ENV-001 and ENV-003 and localized the Spanish Experience count so the catalog no longer mixes English and Spanish presentation text.

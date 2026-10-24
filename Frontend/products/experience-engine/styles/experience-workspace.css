@@ -89,7 +89,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1rem, 2.4vw, 1.75rem);
-  align-items: start;
+  align-items: stretch;
 }
 
 .environment-card {

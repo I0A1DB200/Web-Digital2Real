@@ -1095,7 +1095,7 @@ test("Environment Selector CSS provides three, two and one-column layouts withou
   const brand = await readFile(new URL("../../../styles/brand.css", import.meta.url), "utf8");
   assert.match(styles, /\.environment-catalog\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/s);
   assert.match(styles, /\.experience-workspace__shell:has\(>\s*\.environment-catalog\)\s*\{[^}]*width:\s*100%[^}]*max-width:\s*1240px/s);
-  assert.match(styles, /\.environment-catalog\s*\{[^}]*align-items:\s*start/s);
+  assert.match(styles, /\.environment-catalog\s*\{[^}]*align-items:\s*stretch/s);
   assert.match(styles, /\.environment-card\s*\{[^}]*grid-template-rows:\s*auto\s+auto/s);
   assert.match(styles, /@media \(max-width:\s*1100px\)[\s\S]*?\.environment-catalog\s*\{[^}]*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
   assert.match(styles, /@media \(max-width:\s*760px\)[\s\S]*?\.environment-catalog\s*\{[^}]*grid-template-columns:\s*1fr/s);

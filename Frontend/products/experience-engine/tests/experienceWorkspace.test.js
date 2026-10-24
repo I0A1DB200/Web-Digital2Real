@@ -247,6 +247,13 @@ for (const language of ["es", "en"]) {
     assert.equal(documentRef.activeElement.text, language === "es" ? "Resultado" : "Result");
     const images = workspace.element.findAll(item => item.tagName === "IMG");
     assert.deepEqual(images.map(item => item.src.split("/").at(-1)), ["DETAIL.svg", "CONNECTOR.svg"]);
+    const zoomButton = workspace.element.find(item => item.className === "experience-media__zoom");
+    assert.equal(zoomButton.text, language === "es" ? "Ampliar imagen" : "View larger");
+    zoomButton.click();
+    assert.equal(zoomButton.attributes["aria-expanded"], "true");
+    assert.equal(zoomButton.text, language === "es" ? "Reducir imagen" : "View smaller");
+    zoomButton.click();
+    assert.equal(zoomButton.attributes["aria-expanded"], "false");
     const before = workspace.getState();
     images[0].listeners.error(); images[0].listeners.error();
     assert.equal(images[0].parent, null);
@@ -1124,6 +1131,8 @@ test("workspace and application use generated JSON without ID-specific handling"
   );
   assert.match(styles, /@media \(max-width: 760px\)/);
   assert.match(styles, /aspect-ratio:\s*var\(--environment-ratio\)/);
+  assert.match(styles, /\.experience-media__asset\s*\{[^}]*max-height:\s*min\(42vh,\s*30rem\)/s);
+  assert.match(styles, /\.experience-media__item\[data-expanded="true"\]\s+\.experience-media__asset\s*\{[^}]*max-height:\s*none/s);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(styles, /\.environment-hotspot\s*\{\s*animation:\s*none;/s);
   assert.match(styles, /\.experience-card:focus-visible/);

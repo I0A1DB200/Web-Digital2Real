@@ -523,6 +523,7 @@ export function MediaPanel({ documentRef, media, ui = experienceUiCopy(), label 
   media.forEach(asset => {
     const figure = createElement(documentRef, "figure", "experience-media__item");
     let element;
+    let zoomButton = null;
     if (asset.type === "video") {
       element = createElement(documentRef, "video", "experience-media__asset");
       element.autoplay = asset.autoplay === true;
@@ -541,12 +542,24 @@ export function MediaPanel({ documentRef, media, ui = experienceUiCopy(), label 
         if (failed) return;
         failed = true;
         element.remove();
+        zoomButton?.remove();
         const notice = appendText(documentRef, figure, "p", "experience-stage__objective", ui.mediaUnavailable(asset.alt));
         notice.setAttribute("role", "status");
       });
     }
     element.src = asset.src;
     figure.appendChild(element);
+    if (asset.type === "image") {
+      zoomButton = createButton(documentRef, ui.expandMedia, "experience-media__zoom");
+      zoomButton.setAttribute("aria-expanded", "false");
+      zoomButton.addEventListener("click", () => {
+        const expanded = figure.dataset.expanded === "true";
+        figure.dataset.expanded = String(!expanded);
+        zoomButton.setAttribute("aria-expanded", String(!expanded));
+        zoomButton.textContent = expanded ? ui.expandMedia : ui.collapseMedia;
+      });
+      figure.appendChild(zoomButton);
+    }
     if (asset.caption) appendText(documentRef, figure, "figcaption", "", asset.caption);
     panel.appendChild(figure);
   });

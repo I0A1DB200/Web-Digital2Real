@@ -61,24 +61,23 @@
     "id": "EE-0004",
     "runtimeId": "EXP-PNEUMATIC-CYLINDER-004",
     "path": "content/experiences/pneumatics/EE-0004-pneumatic-cylinder-extension-timeout/assets/01.png",
-    "classification": "EMBEDDED_EE_IDENTIFIER",
-    "status": "REJECTED_ORIGINAL_RETAINED",
+    "classification": "SAFE_EDIT",
+    "status": "REMEDIATED",
     "originalSha256": "171d063aa9f5c51440c8f59ee9b93117ba5f3fa1fcefccc33d928090c30c1447",
     "sourceAuthority": "Canonical assets/ directory consumed by package-experience-engine.mjs; EE-0001 exception remains blocked.",
     "originalDimensions": [
       1672,
       941
     ],
-    "candidate": "C:/Users/asanc/.codex/generated_images/01a1369b-9fa2-7390-a700-d54eca493a7e/exec-9c3bbdae-d5c0-4f0e-b050-c8c211ac50a7.png",
-    "candidateSha256": "70ae34687a3936c07fad3285c8cb071067b9d5fea054f704975dd527bb335980",
+    "candidate": "/workspace/generated_images/exec-0a34f6f8-75e6-4f68-b3b2-8abcc4fdbb63.png",
+    "candidateSha256": "2dcc28eaff729768f9f137949e9a59f098d6772e166089b9e45423622a92f1c3",
     "candidateDimensions": [
       1672,
       941
     ],
-    "method": "Built-in imagegen referenced-image localized inpainting; no full regeneration requested.",
-    "reason": "Gauge lettering/details changed outside badge.",
-    "removedIdentifier": null,
-    "currentSha256": "171d063aa9f5c51440c8f59ee9b93117ba5f3fa1fcefccc33d928090c30c1447"
+    "method": "Built-in imagegen referenced-image localized inpainting composited only into the upper-left title region; all pixels outside that region remain from the original master.",
+    "removedIdentifier": "EE-0004",
+    "currentSha256": "35120c0d191efc7d46dd59c48f805be7b9c3a3f1e0b82c000f9eae340bf54f48"
   },
   {
     "id": "EE-0005",

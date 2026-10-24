@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — EE-0004 cover identifier cleanup
+
+- Removed the embedded `EXPERIENCE / EE-0004` title from the EE-0004 incident cover. The cleaned ART-001 preserves the original dimensions and equipment scene, while the Experience title remains available in the interface and the authored diagnostic evidence is unchanged.
+
 ## 2026-10-24 — Compact Experience reading rhythm
 
 - Reduced typography scale, line height and panel spacing only within interactive Experience views so diagnostic context and choices are easier to scan. Notebook, Environment catalog and other editorial presentation remain unchanged.

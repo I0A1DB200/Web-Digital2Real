@@ -116,7 +116,7 @@ export function environmentUiCopy(locale) {
     completed: "Completado",
     environmentImage: title => `Vista previa de ${title}`,
     environmentMenu: title => `Más opciones para ${title}`,
-    experienceCount: capacity => `${capacity} Engineering Experiences`,
+    experienceCount: capacity => `${capacity} Experiences de ingeniería`,
     knowledgeSkills: "Conocimientos y habilidades",
     certificatePreview: "Vista previa del reconocimiento",
     engineeringExperiencesCompleted: "Engineering Experiences completadas",

@@ -8,6 +8,9 @@ environment:
   version: "1.0"
   capacity: 10
   presentation:
+    title:
+      es: "Fábrica Automatizada"
+      en: "Automated Factory"
     description:
       es: "Transporte industrial, sensores, accionamientos y control secuencial en una línea automatizada."
       en: "Industrial transport, sensors, drives and sequence control in an automated line."

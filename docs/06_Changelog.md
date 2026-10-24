@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — Complete Environment catalog localization
+
+- Added Spanish titles for ENV-001 and ENV-003 and localized the Spanish Experience count so the catalog no longer mixes English and Spanish presentation text.
+
 ## 2026-10-24 — Compact Experience media flow
 
 - Reduced learner-facing Experience media to a responsive compact height so stage context and engineering decisions enter the viewport sooner. Added localized `Ampliar imagen` / `View larger` controls for technical inspection without changing authored evidence timing or Player behavior.

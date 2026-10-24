@@ -1077,6 +1077,19 @@ test("ENV-002 localizes catalog, accessible labels, environment and Theory title
   assert.equal(JSON.stringify(environment), original);
 });
 
+test("Environment catalog provides complete Spanish presentation copy", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
+  const expected = new Map([
+    ["ENV-001", "Fábrica Automatizada"],
+    ["ENV-002", "Instrumentación de Campo"],
+    ["ENV-003", "Célula de Diagnóstico de Secuencia, Seguridad y HMI"]
+  ]);
+  for (const environment of catalog.environments) {
+    assert.equal(environment.presentation.title.es, expected.get(environment.id));
+    assert.equal(typeof environment.presentation.description.es, "string");
+  }
+});
+
 test("Environment Selector CSS provides three, two and one-column layouts without intrinsic overflow", async () => {
   const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
   const brand = await readFile(new URL("../../../styles/brand.css", import.meta.url), "utf8");

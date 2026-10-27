@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-27 — ENV-002 / EE-0019 impulse-line response diagnosis
+
+- Added bilingual EE-0019 for a differential-pressure measurement whose process reference changes before the transmitter/control value because a partial restriction slows the impulse path.
+- Added six staged decisions with mixed correct-option positions, dynamic boundary testing, safe isolation/conditioning, reciprocal evidence and seven coherent 1672×941 PNG assets using one vessel, transmitter, manifold and impulse-line installation.
+- Added didactic lag, boundary and multipoint recovery graphics, focused packaging/learner-flow tests and asset specifications. No shared Engine behavior or existing Experience content was changed.
+
 ## 2026-10-27 — ENV-002 / EE-0018 0–10 V level reference diagnosis
 
 - Added bilingual EE-0018 for a stable tank level whose PLC/HMI representation oscillates when a nearby load disturbs an installation-specific 0–10 V reference or screen path.

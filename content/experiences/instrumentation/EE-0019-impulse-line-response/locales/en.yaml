@@ -1,0 +1,181 @@
+locale: "en"
+translations:
+  title: "Slow response from a restricted impulse line"
+  summary: "Locate why a pressure reference changes before the transmitter by tracing the process, local indication, manifold, impulse path, control input and dynamic verification."
+  scenario:
+    initial_context: "An independent reference changes during a maneuver, but the transmitter signal reaches the PLC and HMI late."
+    operational_state: "The first mismatch may be in the process, transmitter, manifold, impulse line, analog input or representation."
+    initiating_event: "Pressure supervision raises a slow-response alarm and may delay a control decision."
+    learner_role: "Instrumentation technician responsible for locating the first dynamic boundary without changing scaling or intervening without a procedure."
+    safety_context:
+      safe_state: "Keep the process in a safe condition and take readings or interventions only under the authorized procedure for the vessel, manifold and impulse lines."
+      intervention_constraints: ["Do not vent, loosen connections or purge a pressurized line outside the approved procedure.","Do not change scaling or damping before locating the mismatch.","Do not force values or bypass alarms or inputs.","Use test points, isolation and discharge methods authorized by the installation."]
+  learning_objectives:
+    OBJ-TRACE-PRESSURE-CHAIN:
+      description: "Trace the chain from the process and local reference through the transmitter, pressure path, input, PLC and HMI."
+    OBJ-LOCALIZE-IMPULSE-BOUNDARY:
+      description: "Distinguish process variation, electronic response and physical restriction using a dynamic test and authorized boundaries."
+    OBJ-VERIFY-PRESSURE-RECOVERY:
+      description: "Restore the pressure path and verify multiple changes without compensating the cause in PLC or HMI."
+  stages:
+    STAGE-01-IMPULSE-INCIDENT:
+      title: "Response incident"
+      situation: "An independent reference changes, but the transmitter signal reaches the PLC and HMI late. What first check preserves the symptom without intervening?"
+    STAGE-02-SEPARATE-PROCESS:
+      title: "Separate process and indication"
+      situation: "The independent reference and local indication follow the change while the control trend lags. Which comparison defines the next boundary?"
+    STAGE-03-CHECK-MEASUREMENT:
+      title: "Check measurement response"
+      situation: "The process and local indication agree, but the dynamic behavior does not reach the control input. Which test adds a useful boundary?"
+    STAGE-04-TRACE-IMPULSE:
+      title: "Locate the restriction"
+      situation: "The test keeps the instrument stable and concentrates the lag in the pressure path. Which inspection distinguishes manifold, valve and impulse line?"
+    STAGE-05-RESTORE-PATH:
+      title: "Restore the pressure path"
+      situation: "Inspection confirms a partial restriction in the impulse line. Which intervention corrects the cause within the process energy boundary?"
+    STAGE-06-VERIFY-RESPONSE:
+      title: "Verify the response"
+      situation: "The line is restored and the indication remains stable. Which test proves that process, instrument, input, PLC and HMI are coherent again?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Local reference and control trend"
+      content: "The local reference changes, but the transmitter signal reaches the PLC and HMI late. The symptom does not yet identify whether process, instrument or pressure path limits the response."
+    EVID-02-REFERENCE-CORRELATION:
+      source: "Independent reference and local indication"
+      content: "The independent reference and local indication follow the process change. The physical quantity and local instrument do not show the delay seen in the control representation."
+    EVID-03-DYNAMIC-TEST:
+      source: "Dynamic test and measurement boundary"
+      content: "A controlled maneuver shows a coherent local transmitter response while the lag appears across the pressure path. Scaling remains unchanged."
+    EVID-04-IMPULSE-RESTRICTION:
+      source: "Manifold and impulse lines"
+      content: "Inspection identifies a partial restriction in an impulse line or its immediate connection. The section limits the pressure change and explains the damped response."
+    EVID-05-DIAGNOSIS:
+      source: "Pressure-chain synthesis"
+      content: "Process and electronics remain operational; evidence concentrates the cause in physical pressure transmission. There is no basis to change the transmitter, module or scaling."
+    EVID-06-INTERVENTION:
+      source: "Restored pressure path"
+      content: "The line has been isolated and conditioned under the installation procedure. The indication responds steadily in an initial check; recovery still requires multiple changes."
+    EVID-07-RECOVERY:
+      source: "Multipoint response test"
+      content: "At low, mid and high changes, reference and process variable follow the same transition; input, PLC and HMI remain coherent without visible lag. Recovery is verified."
+  decisions:
+    DEC-01-RESET-HMI:
+      action: "Restart the HMI to see whether the trend catches up."
+    DEC-01-CHECK-REFERENCE:
+      action: "Compare the change with an independent reference and preserve the condition."
+    DEC-01-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter before checking the process response."
+    DEC-01-CHANGE-PROCESS:
+      action: "Deliberately change the process to try to hide the lag."
+    DEC-02-CHECK-DYNAMIC:
+      action: "Compare reference, local indication and trend during a controlled maneuver."
+    DEC-02-CHANGE-SCALE:
+      action: "Change the engineering range so the lag appears smaller."
+    DEC-02-RESTART-PLC:
+      action: "Restart the PLC to see whether the time difference disappears."
+    DEC-02-ACK-ALARM:
+      action: "Acknowledge the alarm and continue watching the trend."
+    DEC-03-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter because the control signal arrives late."
+    DEC-03-MEASURE-STATIC:
+      action: "Measure only a static value without changing the reference."
+    DEC-03-READ-HMI:
+      action: "Read the HMI again to confirm that the value is delayed."
+    DEC-03-CHECK-MANIFOLD:
+      action: "Check the dynamic response and pressure at the manifold boundary."
+    DEC-04-EDIT-PARAMETER:
+      action: "Edit transmitter damping before checking the impulse line."
+    DEC-04-CYCLE-SUPPLY:
+      action: "Cycle the power to try to make the instrument respond faster."
+    DEC-04-INSPECT-IMPULSE:
+      action: "Inspect the manifold and impulse lines under the authorized process condition."
+    DEC-04-FORCE-PV:
+      action: "Force the PLC variable while leaving the pressure path unverified."
+    DEC-05-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter even though its local indication remains stable."
+    DEC-05-ISOLATE-FLUSH:
+      action: "Isolate, depressurize and condition the line under the authorized procedure."
+    DEC-05-RESCALE-PLC:
+      action: "Change the PLC scaling to compensate for the slow response."
+    DEC-05-BYPASS-INPUT:
+      action: "Bypass the input to hold a value while the cause remains present."
+    DEC-06-CLOSE-ONE-POINT:
+      action: "Close after observing one stable value."
+    DEC-06-CLEAR-ALARM:
+      action: "Clear the alarm and document the repair without repeating the maneuver."
+    DEC-06-CHANGE-AVERAGING:
+      action: "Increase filtering to hide any remaining lag."
+    DEC-06-VERIFY-RESPONSE:
+      action: "Repeat low, mid and high changes and follow the chain to the HMI."
+  retry_feedback:
+    DEC-01-RESET-HMI: "Restarting the screen can hide the lag and removes a useful observation."
+    DEC-01-REPLACE-TRANSMITTER: "The symptom does not prove a transmitter fault; the chain has not been compared yet."
+    DEC-01-CHANGE-PROCESS: "Changing the process changes the test condition and does not locate the cause."
+    DEC-02-CHANGE-SCALE: "Scaling does not explain a physical lag that has not been localized."
+    DEC-02-RESTART-PLC: "A restart may repeat the effect and breaks continuity of the observation."
+    DEC-02-ACK-ALARM: "Acknowledging the alarm changes its presentation but does not separate measurement boundaries."
+    DEC-03-REPLACE-TRANSMITTER: "A coherent local response does not justify replacing the instrument."
+    DEC-03-MEASURE-STATIC: "A static value cannot reveal a fault that appears during a change."
+    DEC-03-READ-HMI: "Another HMI reading repeats the effect and adds no diagnostic boundary."
+    DEC-04-EDIT-PARAMETER: "Editing damping may hide the symptom and leaves the physical cause unchecked."
+    DEC-04-CYCLE-SUPPLY: "Cycling power does not prove a restriction in the impulse line."
+    DEC-04-FORCE-PV: "Forcing the variable replaces the measurement with an assumption and breaks traceability."
+    DEC-05-REPLACE-TRANSMITTER: "A stable local indication and pressure-path evidence do not justify replacing it."
+    DEC-05-RESCALE-PLC: "Changing the scale would hide an incorrect physical response."
+    DEC-05-BYPASS-INPUT: "Bypassing the input removes a diagnostic barrier and can present an unmeasured value."
+    DEC-06-CLOSE-ONE-POINT: "One stable value does not prove the response during changes."
+    DEC-06-CLEAR-ALARM: "Clearing the alarm does not verify the chain response time."
+    DEC-06-CHANGE-AVERAGING: "More filtering can hide the lag and does not verify recovery."
+  visual:
+    educational_purpose: "Distinguish a pressure change from a delay introduced by the impulse path and verify the complete response."
+    assets:
+      ART-001:
+        alt: "Process vessel with a blue differential transmitter, manifold, two impulse lines and local gauge."
+        caption: "Cover: a pressure chain connects process, instrument and control."
+      ART-002:
+        alt: "Chart comparing a process reference with a transmitter variable that responds late."
+        caption: "Initial incident: the reference changes before the control variable."
+      ART-003:
+        alt: "Diagram of boundaries between process, transmitter, impulse path and control input."
+        caption: "The measurement chain is separated by boundaries before equipment is changed."
+      ART-004:
+        alt: "Technician inspecting the same manifold and impulse lines."
+        caption: "Inspection compares instrument response with the physical pressure path."
+      ART-005:
+        alt: "Diagram locating a partial restriction between the process tap and differential transmitter."
+        caption: "The restriction explains the lag without blaming process or electronics."
+      ART-006:
+        alt: "Technician conditioning a test point after isolating the pressure path."
+        caption: "The intervention follows isolation and verification of a safe condition."
+      ART-007:
+        alt: "Verification chart at low, mid and high changes with aligned reference and process variable."
+        caption: "Recovery is demonstrated by multiple changes with a coherent chain."
+  assets:
+    ART-001:
+      alt: "Process vessel with a blue differential transmitter, manifold, two impulse lines and local gauge."
+      caption: "Cover: a pressure chain connects process, instrument and control."
+    ART-002:
+      alt: "Chart comparing a process reference with a transmitter variable that responds late."
+      caption: "Initial incident: the reference changes before the control variable."
+    ART-003:
+      alt: "Diagram of boundaries between process, transmitter, impulse path and control input."
+      caption: "The measurement chain is separated by boundaries before equipment is changed."
+    ART-004:
+      alt: "Technician inspecting the same manifold and impulse lines."
+      caption: "Inspection compares instrument response with the physical pressure path."
+    ART-005:
+      alt: "Diagram locating a partial restriction between the process tap and differential transmitter."
+      caption: "The restriction explains the lag without blaming process or electronics."
+    ART-006:
+      alt: "Technician conditioning a test point after isolating the pressure path."
+      caption: "The intervention follows isolation and verification of a safe condition."
+    ART-007:
+      alt: "Verification chart at low, mid and high changes with aligned reference and process variable."
+      caption: "Recovery is demonstrated by multiple changes with a coherent chain."
+  completion:
+    title: "Technical debrief"
+    summary: "Process, transmitter and scaling remained operational, but a partial restriction in the impulse line damped and delayed pressure reaching the transmitter. The authorized intervention restored the path and the multipoint check confirmed the complete response."
+    process: ["Preserve the symptom and compare an independent reference.","Separate process, local indication and control trend.","Perform a dynamic test at the manifold boundary.","Inspect valves and impulse lines with the process in an authorized condition.","Isolate and condition the line without changing validated scaling.","Verify low, mid and high changes from process to HMI."]
+    lesson: "A stable local indication does not prove that the pressure path responds in time; locate the first dynamic mismatch before replacing the instrument or filtering the signal."
+    avoided_errors: ["Replacing the transmitter because of a slow control response.","Changing scaling or damping to hide the lag.","Opening a pressurized line outside the procedure.","Closing after one stable value.","Confusing filtering with restored physical transmission."]
+    industrial_value: ["Fewer unjustified replacements and parameter changes.","Better traceability of dynamic instrumentation faults.","Repeatable verification from process to HMI."]

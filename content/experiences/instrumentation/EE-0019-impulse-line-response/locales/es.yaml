@@ -1,0 +1,182 @@
+locale: "es"
+translations:
+  title: "Respuesta lenta por obstrucción en la línea de impulso"
+  summary: "Localiza por qué una referencia de presión cambia antes que el transmisor siguiendo proceso, indicación local, manifold, líneas de impulso, entrada de control y verificación dinámica."
+  scenario:
+    initial_context: "Una referencia local cambia durante una maniobra, pero la señal del transmisor llega tarde al PLC y la HMI."
+    operational_state: "La primera discrepancia puede estar en el proceso, el transmisor, el manifold, una línea de impulso, la entrada analógica o la representación."
+    initiating_event: "La supervisión de presión genera una alarma de respuesta lenta y puede retrasar una decisión de control."
+    learner_role: "Técnico de instrumentación responsable de localizar la primera frontera dinámica sin cambiar el escalado ni intervenir sobre el proceso sin procedimiento."
+    safety_context:
+      safe_state: "Mantén el proceso en una condición segura y realiza lecturas e intervenciones únicamente conforme al procedimiento autorizado para el depósito, el manifold y las líneas de impulso."
+      intervention_constraints: ["No ventear, aflojar conexiones ni purgar una línea presurizada fuera del procedimiento aprobado.","No cambiar el escalado ni el amortiguamiento antes de localizar la discrepancia.","No forzar valores ni puentear alarmas o entradas.","Usar puntos de prueba, aislamiento y descarga autorizados por la instalación."]
+  learning_objectives:
+    OBJ-TRACE-PRESSURE-CHAIN:
+      description: "Seguir la cadena desde el proceso y la referencia local hasta el transmisor, el camino de presión, la entrada, el PLC y la HMI."
+    OBJ-LOCALIZE-IMPULSE-BOUNDARY:
+      description: "Distinguir una variación de proceso, una respuesta electrónica y una restricción física mediante una prueba dinámica y fronteras autorizadas."
+    OBJ-VERIFY-PRESSURE-RECOVERY:
+      description: "Restaurar el camino de presión y verificar varios cambios sin compensar la causa en PLC o HMI."
+  stages:
+    STAGE-01-IMPULSE-INCIDENT:
+      title: "Incidente de respuesta"
+      situation: "La referencia local cambia durante una maniobra, pero la señal del transmisor llega tarde al PLC y la HMI. ¿Qué primera comprobación conserva el síntoma sin intervenir?"
+    STAGE-02-SEPARATE-PROCESS:
+      title: "Separar proceso e indicación"
+      situation: "La referencia independiente y la indicación local siguen el cambio, mientras la tendencia de control se retrasa. ¿Qué comparación delimita la siguiente frontera?"
+    STAGE-03-CHECK-MEASUREMENT:
+      title: "Comprobar la respuesta de medida"
+      situation: "El proceso y la indicación local son coherentes, pero el comportamiento dinámico no llega a la entrada de control. ¿Qué prueba aporta una frontera útil?"
+    STAGE-04-TRACE-IMPULSE:
+      title: "Localizar la restricción"
+      situation: "La prueba mantiene estable el instrumento y concentra el retraso en el camino de presión. ¿Qué inspección permite distinguir manifold, válvula y línea de impulso?"
+    STAGE-05-RESTORE-PATH:
+      title: "Restaurar el camino de presión"
+      situation: "La inspección confirma una restricción parcial en la línea de impulso. ¿Qué intervención corrige la causa respetando el límite de energía del proceso?"
+    STAGE-06-VERIFY-RESPONSE:
+      title: "Verificar la respuesta"
+      situation: "La línea se ha restaurado y la indicación sigue estable. ¿Qué prueba demuestra que la respuesta del proceso, instrumento, entrada, PLC y HMI vuelve a ser coherente?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Referencia local y tendencia de control"
+      content: "La referencia local cambia, pero la señal del transmisor llega tarde al PLC y la HMI. El síntoma todavía no identifica si el proceso, el instrumento o el camino de presión limita la respuesta."
+    EVID-02-REFERENCE-CORRELATION:
+      source: "Referencia independiente e indicación local"
+      content: "La referencia independiente y la indicación local siguen el cambio de proceso. La magnitud física y la lectura del instrumento no presentan el retraso observado en la representación de control."
+    EVID-03-DYNAMIC-TEST:
+      source: "Prueba dinámica y frontera de medida"
+      content: "Una maniobra controlada muestra que el transmisor mantiene una respuesta local coherente mientras el retraso aparece al recorrer el camino de presión. El escalado permanece sin cambios."
+    EVID-04-IMPULSE-RESTRICTION:
+      source: "Manifold y líneas de impulso"
+      content: "La inspección identifica una restricción parcial en una línea de impulso o en su conexión inmediata. La sección limita el cambio de presión y explica la respuesta amortiguada."
+    EVID-05-DIAGNOSIS:
+      source: "Síntesis de la cadena de presión"
+      content: "El proceso y la electrónica permanecen operativos; la evidencia concentra la causa en la transmisión física de presión. No hay base para cambiar transmisor, módulo ni escalado."
+    EVID-06-INTERVENTION:
+      source: "Camino de presión restaurado"
+      content: "La línea ha sido aislada y acondicionada conforme al procedimiento de la instalación. La indicación responde de forma estable en una comprobación inicial; la recuperación todavía debe verificarse con varios cambios."
+    EVID-07-RECOVERY:
+      source: "Prueba multipunto de respuesta"
+      content: "En cambios bajo, medio y alto, la referencia y la variable de proceso siguen la misma transición; la entrada, el PLC y la HMI mantienen la coherencia sin retraso visible. La recuperación queda verificada."
+  decisions:
+    DEC-01-RESET-HMI:
+      action: "Reiniciar la HMI para comprobar si la tendencia se pone al día."
+    DEC-01-CHECK-REFERENCE:
+      action: "Comparar el cambio con una referencia independiente y conservar la condición."
+    DEC-01-REPLACE-TRANSMITTER:
+      action: "Sustituir el transmisor antes de comprobar la respuesta del proceso."
+    DEC-01-CHANGE-PROCESS:
+      action: "Cambiar el proceso de forma deliberada para intentar ocultar el retraso."
+    DEC-02-CHECK-DYNAMIC:
+      action: "Comparar referencia, indicación local y tendencia durante una maniobra controlada."
+    DEC-02-CHANGE-SCALE:
+      action: "Cambiar el rango de ingeniería para que el retraso parezca menor."
+    DEC-02-RESTART-PLC:
+      action: "Reiniciar el PLC para comprobar si desaparece la diferencia temporal."
+    DEC-02-ACK-ALARM:
+      action: "Reconocer la alarma y continuar observando la tendencia."
+    DEC-03-REPLACE-TRANSMITTER:
+      action: "Cambiar el transmisor porque la señal de control llega tarde."
+    DEC-03-MEASURE-STATIC:
+      action: "Medir solo un valor estático sin provocar un cambio de referencia."
+    DEC-03-READ-HMI:
+      action: "Leer otra vez la HMI para confirmar que el valor está retrasado."
+    DEC-03-CHECK-MANIFOLD:
+      action: "Comprobar la respuesta dinámica y la presión en la frontera del manifold."
+    DEC-04-EDIT-PARAMETER:
+      action: "Editar el amortiguamiento del transmisor antes de revisar la línea de impulso."
+    DEC-04-CYCLE-SUPPLY:
+      action: "Ciclar la alimentación para intentar que el instrumento responda más rápido."
+    DEC-04-INSPECT-IMPULSE:
+      action: "Inspeccionar manifold, válvulas y líneas de impulso con el proceso en condición autorizada."
+    DEC-04-FORCE-PV:
+      action: "Forzar la variable en PLC mientras se mantiene sin verificar el camino de presión."
+    DEC-05-REPLACE-TRANSMITTER:
+      action: "Sustituir el transmisor aunque su indicación local permanezca estable."
+    DEC-05-ISOLATE-FLUSH:
+      action: "Aislar, despresurizar y acondicionar la línea conforme al procedimiento autorizado."
+    DEC-05-RESCALE-PLC:
+      action: "Modificar el escalado para compensar la respuesta lenta."
+    DEC-05-BYPASS-INPUT:
+      action: "Puentear la entrada para mantener un valor mientras la causa sigue presente."
+    DEC-06-CLOSE-ONE-POINT:
+      action: "Cerrar después de observar un único valor estable."
+    DEC-06-CLEAR-ALARM:
+      action: "Borrar la alarma y documentar la reparación sin repetir la maniobra."
+    DEC-06-CHANGE-AVERAGING:
+      action: "Aumentar el filtrado para ocultar cualquier retraso residual."
+    DEC-06-VERIFY-RESPONSE:
+      action: "Repetir cambios bajo, medio y alto y seguir la cadena hasta la HMI."
+  retry_feedback:
+    DEC-01-RESET-HMI: "Reiniciar la pantalla puede ocultar el retraso y elimina una observación útil."
+    DEC-01-REPLACE-TRANSMITTER: "El síntoma no demuestra que el transmisor esté averiado; todavía no se ha comparado la cadena."
+    DEC-01-CHANGE-PROCESS: "Cambiar el proceso modifica la condición de prueba y no localiza la causa."
+    DEC-02-CHANGE-SCALE: "El escalado no explica un retraso físico que aún no se ha localizado."
+    DEC-02-RESTART-PLC: "Un reinicio puede repetir el efecto y rompe la continuidad de la observación."
+    DEC-02-ACK-ALARM: "Reconocer la alarma cambia su presentación, pero no separa las fronteras de medida."
+    DEC-03-REPLACE-TRANSMITTER: "Una respuesta local coherente no justifica sustituir el instrumento."
+    DEC-03-MEASURE-STATIC: "Un valor estático no revela un problema que solo aparece durante un cambio."
+    DEC-03-READ-HMI: "Otra lectura HMI repite el efecto y no aporta una frontera diagnóstica."
+    DEC-04-EDIT-PARAMETER: "Editar el amortiguamiento puede ocultar el síntoma y deja sin revisar la causa física."
+    DEC-04-CYCLE-SUPPLY: "Ciclar la alimentación no demuestra una restricción en la línea de impulso."
+    DEC-04-FORCE-PV: "Forzar la variable sustituye la medida por una suposición y rompe la trazabilidad."
+    DEC-05-REPLACE-TRANSMITTER: "La indicación local estable y la evidencia de la línea no justifican cambiarlo."
+    DEC-05-RESCALE-PLC: "Modificar la escala ocultaría una respuesta física incorrecta."
+    DEC-05-BYPASS-INPUT: "Puentear la entrada elimina una barrera de diagnóstico y puede presentar un valor no medido."
+    DEC-06-CLOSE-ONE-POINT: "Un único valor estable no demuestra la respuesta durante cambios."
+    DEC-06-CLEAR-ALARM: "Borrar la alarma no verifica el tiempo de respuesta de la cadena."
+    DEC-06-CHANGE-AVERAGING: "Más filtrado puede ocultar el retraso y no comprueba la recuperación."
+  visual:
+    educational_purpose: "Distinguir una variación de presión de un retraso introducido por el camino de impulso y verificar la respuesta completa."
+    assets:
+      ART-001:
+        alt: "Depósito de proceso con transmisor diferencial azul, manifold, dos líneas de impulso y manómetro local."
+        caption: "Portada: una cadena de presión conecta proceso, instrumento y control."
+      ART-002:
+        alt: "Gráfica que compara una referencia de proceso con una variable de transmisor que responde con retraso."
+        caption: "Incidente inicial: la referencia cambia antes que la variable de control."
+      ART-003:
+        alt: "Diagrama de las fronteras entre proceso, transmisor, camino de impulso y entrada de control."
+        caption: "La cadena de medida se separa por fronteras antes de cambiar equipos."
+      ART-004:
+        alt: "Técnico inspeccionando el mismo manifold y las líneas de impulso de la instalación."
+        caption: "La inspección compara la respuesta del instrumento con el camino físico de presión."
+      ART-005:
+        alt: "Diagrama que localiza una restricción parcial entre la toma de proceso y el transmisor diferencial."
+        caption: "La restricción explica el retraso sin culpar al proceso ni a la electrónica."
+      ART-006:
+        alt: "Técnico acondicionando un punto de prueba después de aislar el camino de presión."
+        caption: "La intervención se realiza después de aislar y verificar la condición segura."
+      ART-007:
+        alt: "Gráfica de verificación en cambios bajo, medio y alto con referencia y variable alineadas."
+        caption: "La recuperación se acredita con varios cambios y con toda la cadena coherente."
+  assets:
+    ART-001:
+      alt: "Depósito de proceso con transmisor diferencial azul, manifold, dos líneas de impulso y manómetro local."
+      caption: "Portada: una cadena de presión conecta proceso, instrumento y control."
+    ART-002:
+      alt: "Gráfica que compara una referencia de proceso con una variable de transmisor que responde con retraso."
+      caption: "Incidente inicial: la referencia cambia antes que la variable de control."
+    ART-003:
+      alt: "Diagrama de las fronteras entre proceso, transmisor, camino de impulso y entrada de control."
+      caption: "La cadena de medida se separa por fronteras antes de cambiar equipos."
+    ART-004:
+      alt: "Técnico inspeccionando el mismo manifold y las líneas de impulso de la instalación."
+      caption: "La inspección compara la respuesta del instrumento con el camino físico de presión."
+    ART-005:
+      alt: "Diagrama que localiza una restricción parcial entre la toma de proceso y el transmisor diferencial."
+      caption: "La restricción explica el retraso sin culpar al proceso ni a la electrónica."
+    ART-006:
+      alt: "Técnico acondicionando un punto de prueba después de aislar el camino de presión."
+      caption: "La intervención se realiza después de aislar y verificar la condición segura."
+    ART-007:
+      alt: "Gráfica de verificación en cambios bajo, medio y alto con referencia y variable alineadas."
+      caption: "La recuperación se acredita con varios cambios y con toda la cadena coherente."
+  completion:
+    title: "Debrief técnico"
+    summary: "El proceso y la electrónica permanecían operativos, pero una restricción parcial en la línea de impulso amortiguaba y retrasaba la presión que llegaba al transmisor. La intervención autorizada restauró el camino y la verificación multipunto confirmó la respuesta de toda la cadena."
+    process: ["Conservar el síntoma y comparar con una referencia independiente.","Separar proceso, indicación local y representación de control.","Realizar una prueba dinámica en la frontera del manifold.","Inspeccionar válvulas y líneas de impulso con el proceso en condición autorizada.","Aislar y acondicionar la línea sin cambiar el escalado validado.","Verificar cambios bajo, medio y alto desde proceso hasta HMI."]
+    lesson: "Una indicación local estable no demuestra que el camino de presión responda a tiempo; la primera discrepancia dinámica debe localizarse antes de sustituir el instrumento o filtrar la señal."
+    avoided_errors: ["Cambiar el transmisor por un síntoma de respuesta lenta.","Modificar el escalado o el amortiguamiento para ocultar el retraso.","Abrir una línea presurizada fuera del procedimiento.","Cerrar después de un único valor estable.","Confundir filtrado con recuperación de la transmisión física."]
+    industrial_value: ["Menos sustituciones y cambios de parámetros injustificados.","Mejor trazabilidad de fallos dinámicos de instrumentación.","Verificación repetible desde proceso hasta HMI."]
+    media_ids: ["ART-007"]

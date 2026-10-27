@@ -1,7 +1,7 @@
 contract_version: 2.0.0
 metadata:
-  id: EXP-SEQUENCE-STATE-017
-  editorial_id: EE-0017
+  id: EXP-SEQUENCE-STATE-021
+  editorial_id: EE-0021
   content_version: '1.0'
   class: practice
   access: free
@@ -221,43 +221,43 @@ public:
     assets:
       - id: ART-001
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-001-diagnostic-cell.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-001-diagnostic-cell.png
         alt: Célula de montaje automatizada protegida con transportador, robot, HMI y armario de control.
         caption: 'Portada: una célula secuencial con fronteras físicas, lógica de control y representación HMI.'
         purpose: catalog_cover
       - id: ART-002
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-002-restart-incident.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-002-restart-incident.png
         alt: Pieza detenida dentro de una célula protegida después de un reinicio controlado.
         caption: 'Incidente inicial: la posición física y el estado mostrado deben conservarse antes de intervenir.'
         purpose: evidence
       - id: ART-003
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-003-safe-hold.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-003-safe-hold.png
         alt: Diagrama de una célula detenida con permisos de seguridad y movimiento inhibido.
         caption: La parada segura es una frontera previa al diagnóstico de secuencia.
         purpose: evidence
       - id: ART-004
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-004-state-comparison.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-004-state-comparison.png
         alt: Armario de control PLC y observación de la célula durante un diagnóstico de estado.
         caption: La comparación entre HMI, PLC, evento de arranque y posición física localiza el propietario del estado.
         purpose: evidence
       - id: ART-005
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-005-retention-diagnosis.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-005-retention-diagnosis.png
         alt: Diagrama de arranque que contrasta contexto de secuencia retenido, reinicializado y estado seguro.
         caption: La ruta de inicialización explica la pérdida de contexto sin depender de una marca de fabricante.
         purpose: evidence
       - id: ART-006
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-006-controlled-recovery.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-006-controlled-recovery.png
         alt: Técnico con protección realizando una recuperación autorizada en una célula parada.
         caption: La pieza se retira o reposiciona bajo procedimiento antes de verificar la secuencia.
         purpose: evidence
       - id: ART-007
         type: image
-        src: assets/EXP-SEQUENCE-STATE-017/ART-007-verification-cycle.png
+        src: assets/EXP-SEQUENCE-STATE-021/ART-007-verification-cycle.png
         alt: Diagrama de ciclo seco y reinicio controlado que convergen en un estado conocido.
         caption: La verificación prueba la secuencia, la inhibición de arranque y la coherencia entre PLC, HMI y célula.
         purpose: completion

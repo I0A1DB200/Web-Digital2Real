@@ -13,7 +13,7 @@ import { validateNormalizedExperience } from "../../validation/normalizedExperie
 import { validateGeneratedWebArtifact } from "../../validation/generatedWebArtifactValidator.js";
 import { ExperienceV2Contracts } from "../../schemas/experienceV2Contracts.js";
 
-const root = new URL("../../../content/experiences/siemens/EE-0017-sequence-state-lost-after-restart/", import.meta.url);
+const root = new URL("../../../content/experiences/siemens/EE-0021-sequence-state-lost-after-restart/", import.meta.url);
 const yaml = async file => parseExperienceYaml(await readFile(new URL(file, root), "utf8"));
 const correctIds = [
   "DEC-01-CHECK-SAFE-HOLD", "DEC-02-VERIFY-PERMISSIVES", "DEC-03-TRACE-STATE-OWNER",
@@ -29,7 +29,7 @@ async function localized(locale) {
   return resolveExperienceLocalization(await yaml("experience.yaml"), await yaml(`locales/${locale}.yaml`));
 }
 
-test("EE-0017 validates, normalizes, projects and packages equivalent ES and EN artifacts", async () => {
+test("EE-0021 validates, normalizes, projects and packages equivalent ES and EN artifacts", async () => {
   const artifacts = [];
   for (const locale of ["es", "en"]) {
     const authored = await localized(locale);
@@ -52,7 +52,7 @@ test("EE-0017 validates, normalizes, projects and packages equivalent ES and EN 
   assert.deepEqual(artifacts[0].public.stages.map(stage => stage.id), artifacts[1].public.stages.map(stage => stage.id));
 });
 
-test("EE-0017 preserves mixed answer positions, progressive evidence and the repair/verification boundary", async () => {
+test("EE-0021 preserves mixed answer positions, progressive evidence and the repair/verification boundary", async () => {
   const authored = await yaml("experience.yaml");
   const truth = new Map(authored.private.decision_logic.map(item => [item.decision_id, item.is_correct]));
   assert.deepEqual(authored.private.decision_logic.filter(item => item.is_correct).map(item => item.decision_id), correctIds);
@@ -66,7 +66,7 @@ test("EE-0017 preserves mixed answer positions, progressive evidence and the rep
   assert.doesNotMatch(JSON.stringify(authored.public), /HYP-STARTUP-RETENTION/u);
 });
 
-test("EE-0017 keeps seven governed RGB PNG assets at 1672x941", async () => {
+test("EE-0021 keeps seven governed RGB PNG assets at 1672x941", async () => {
   assert.deepEqual((await readdir(new URL("assets/", root))).filter(name => name.endsWith(".png")).sort(), [...assetNames].sort());
   for (const name of assetNames) {
     const bytes = await readFile(new URL(`assets/${name}`, root));
@@ -78,7 +78,7 @@ test("EE-0017 keeps seven governed RGB PNG assets at 1672x941", async () => {
 });
 
 for (const locale of ["es", "en"]) for (const retryAll of [false, true]) {
-  test(`EE-0017 ${locale} ${retryAll ? "all wrong options" : "clean path"} requires controlled restart verification`, async () => {
+  test(`EE-0021 ${locale} ${retryAll ? "all wrong options" : "clean path"} requires controlled restart verification`, async () => {
     const artifact = packageExperience(await localized(locale));
     const authority = new Map(artifact.public.interactions.map(item => [item.action_token, item]));
     const player = new ExperiencePlayer({ experience: artifact });

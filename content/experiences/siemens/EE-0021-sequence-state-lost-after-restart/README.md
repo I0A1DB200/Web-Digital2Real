@@ -1,4 +1,4 @@
-# EE-0017 — Secuencia perdida tras un reinicio
+# EE-0021 — Secuencia perdida tras un reinicio
 
 ENV-003 Experience for diagnosing a guarded assembly cell whose HMI appears available after a controlled restart while the physical workpiece and PLC sequence state no longer agree.
 

@@ -78,6 +78,11 @@ const experiences = [
     id: "EE-0017",
     path: "../../../content/experiences/instrumentation/EE-0017-flow-loop-intermittent/",
     correctIds: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-LOCAL", "DEC-03-MEASURE-LOOP-BOUNDARIES", "DEC-04-TRACE-TERMINAL", "DEC-05-RETERMINATE-LOOP", "DEC-06-VERIFY-MULTIPOINT"]
+  },
+  {
+    id: "EE-0018",
+    path: "../../../content/experiences/instrumentation/EE-0018-level-reference-noise/",
+    correctIds: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-LOCAL", "DEC-03-MEASURE-VOLTAGE-BOUNDARIES", "DEC-04-TRACE-REFERENCE", "DEC-05-RESTORE-REFERENCE", "DEC-06-VERIFY-MULTIPOINT"]
   }
 ];
 

@@ -115,14 +115,18 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, ["EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SEQUENCE-STATE-021", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(result.packaged, ["EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SEQUENCE-STATE-021", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.equal(result.skipped.length, 2);
-  assert.equal(catalog.experiences.length, 18);
+  assert.equal(catalog.experiences.length, 19);
   const flowLoop = catalog.experiences.find(item => item.id === "EXP-FLOW-LOOP-017");
   assert.equal(flowLoop.editorialId, "EE-0017");
   assert.equal(flowLoop.locales.es, "experiences/EXP-FLOW-LOOP-017.es.json");
   assert.equal(flowLoop.locales.en, "experiences/EXP-FLOW-LOOP-017.en.json");
+  const levelReference = catalog.experiences.find(item => item.id === "EXP-LEVEL-REFERENCE-018");
+  assert.equal(levelReference.editorialId, "EE-0018");
+  assert.equal(levelReference.locales.es, "experiences/EXP-LEVEL-REFERENCE-018.es.json");
+  assert.equal(levelReference.locales.en, "experiences/EXP-LEVEL-REFERENCE-018.en.json");
   const inductive = catalog.experiences.find(item => item.editorialId === "EE-0011");
   assert.equal(inductive.id, "EXP-INDUCTIVE-GAP-011");
   assert.equal(inductive.locales.es, "experiences/EXP-INDUCTIVE-GAP-011.es.json");
@@ -245,7 +249,8 @@ test("preview packages every eligible canonical Experience", async t => {
     { experienceEditorialId: "EE-0014", x: 65, y: 72 },
     { experienceEditorialId: "EE-0015", x: 45, y: 54 },
     { experienceEditorialId: "EE-0016", x: 84, y: 31 },
-    { experienceEditorialId: "EE-0017", x: 18, y: 35 }
+    { experienceEditorialId: "EE-0017", x: 18, y: 35 },
+    { experienceEditorialId: "EE-0018", x: 67, y: 20 }
   ]);
   assert.deepEqual(catalog.environments[2].hotspots, [
     { experienceEditorialId: "EE-0021", x: 56, y: 48 }
@@ -300,6 +305,8 @@ test("preview packages every eligible canonical Experience", async t => {
   await access(path.join(generatedRoot, sequenceState.locales.en));
   await access(path.join(generatedRoot, flowLoop.locales.es));
   await access(path.join(generatedRoot, flowLoop.locales.en));
+  await access(path.join(generatedRoot, levelReference.locales.es));
+  await access(path.join(generatedRoot, levelReference.locales.en));
   await assert.rejects(access(path.join(generatedRoot, "media-source")));
   await access(path.join(generatedRoot, "player", "experiencePlayer.js"));
   await access(path.join(generatedRoot, "evaluation", "experienceEvaluator.js"));
@@ -386,7 +393,7 @@ test("publish excludes technical-review experiences while preview includes them"
 
   assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
   assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
-  assert.deepEqual(preview.packaged, ["EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SEQUENCE-STATE-021", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"]);
+  assert.deepEqual(preview.packaged, ["EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-MULTISYSTEM-JAM-010", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SEQUENCE-STATE-021", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"]);
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003"]);
   assert.deepEqual(publish.environments, []);
 });

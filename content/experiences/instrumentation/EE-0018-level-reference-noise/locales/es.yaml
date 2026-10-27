@@ -1,0 +1,159 @@
+locale: es
+translations:
+  title: Nivel inestable por referencia común 0–10 V
+  summary: Localiza por qué un nivel estable oscila en PLC y HMI siguiendo proceso, transmisor, señal 0–10 V, referencia común, entrada analógica y verificación.
+  scenario:
+    initial_context: El nivel de un depósito permanece estable según una referencia independiente, pero la HMI oscila y genera falsas alarmas.
+    operational_state: La primera discrepancia puede estar en el proceso, el transmisor, la señal 0–10 V, su referencia común, la entrada analógica o la representación PLC/HMI.
+    initiating_event: La supervisión de nivel genera una alarma intermitente cuando conmuta una carga cercana.
+    learner_role: Técnico de instrumentación responsable de separar magnitud física, transmisor, tensión, referencia, entrada y HMI sin cambiar el escalado sin evidencia.
+    safety_context:
+      safe_state: Mantén el proceso en una condición segura y realiza lecturas e intervenciones únicamente conforme al procedimiento autorizado para el depósito y la instalación.
+      intervention_constraints: ["No forzar valores ni puentear alarmas.", "No cambiar el escalado antes de localizar la discrepancia.", "No abrir terminales ni modificar pantalla o referencia fuera del método aprobado.", "Verificar la arquitectura real de 0 V y pantalla antes de desconectar o reterminar."]
+  learning_objectives:
+    OBJ-TRACE-LEVEL-CHAIN:
+      description: Seguir la cadena desde el nivel físico y el transmisor hasta la señal 0–10 V, la referencia, la entrada, el PLC y la HMI.
+    OBJ-LOCALIZE-VOLTAGE-REFERENCE:
+      description: Distinguir una variación física de nivel, una salida estable y una perturbación de referencia mediante mediciones en fronteras autorizadas.
+    OBJ-VERIFY-LEVEL-RECOVERY:
+      description: Restaurar la referencia según la arquitectura instalada y verificar varios niveles con cargas próximas.
+  stages:
+    STAGE-01-LEVEL-INCIDENT:
+      title: Incidente de nivel
+      situation: El nivel real del depósito parece estable, pero la HMI oscila y genera falsas alarmas. ¿Qué primera comprobación conserva el síntoma sin modificar el proceso?
+    STAGE-02-CHECK-INDEPENDENT-REFERENCE:
+      title: Separar nivel y representación
+      situation: La referencia independiente permanece estable mientras la HMI fluctúa. ¿Qué comparación delimita la siguiente frontera?
+    STAGE-03-MEASURE-VOLTAGE-BOUNDARIES:
+      title: Medir las fronteras 0–10 V
+      situation: El indicador local del transmisor es estable, pero la entrada analógica presenta oscilaciones. ¿Qué medición separa la salida y su referencia de la entrada de control?
+    STAGE-04-TRACE-REFERENCE-NOISE:
+      title: Localizar la referencia y el ruido
+      situation: La tensión es estable respecto al 0 V del transmisor, pero el valor cambia respecto a la referencia de la entrada cuando conmuta una carga cercana. ¿Qué inspección aporta la siguiente evidencia?
+    STAGE-05-RESTORE-REFERENCE:
+      title: Restaurar la referencia
+      situation: La inspección confirma una referencia común o pantalla terminada de forma incompatible con la instalación. ¿Qué intervención corrige el camino sin ocultar el ruido en PLC o HMI?
+    STAGE-06-VERIFY-LEVEL-CHAIN:
+      title: Verificar el nivel
+      situation: La referencia se ha corregido y la señal queda estable. ¿Qué prueba demuestra que el nivel, 0–10 V, entrada, PLC y HMI siguen coherentes?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Nivel del depósito y HMI
+      content: La referencia visual del depósito permanece estable, pero la HMI oscila y genera falsas alarmas de nivel. El síntoma todavía no identifica si cambia el proceso, el transmisor, la referencia de señal o la entrada.
+    EVID-02-REFERENCE:
+      source: Referencia independiente de nivel
+      content: Una referencia independiente confirma que el nivel permanece estable mientras la tendencia HMI fluctúa. La discrepancia está después de la magnitud observada o en la cadena de medida, no necesariamente en el depósito.
+    EVID-03-LOCAL-CORRELATION:
+      source: Indicador local y transmisor de nivel
+      content: El indicador local del transmisor permanece estable durante la oscilación HMI. La medida local y el proceso no comparten el comportamiento de la entrada analógica.
+    EVID-04-VOLTAGE-MEASUREMENT:
+      source: Puntos de prueba 0–10 V y referencias comunes
+      content: La salida 0–10 V es estable respecto al 0 V del transmisor, pero la entrada analógica presenta una oscilación respecto a su propia referencia durante el mismo evento. El escalado permanece sin cambios.
+    EVID-05-REFERENCE-FAULT:
+      source: Referencia común, pantalla y carga próxima
+      content: La carga cercana introduce una perturbación en el camino común o en la terminación de pantalla según la instalación observada. La relación de referencia no cumple el método documentado para esa arquitectura.
+    EVID-06-INTERVENTION:
+      source: Conexión de referencia corregida
+      content: La referencia común y la pantalla se han corregido conforme al procedimiento y la señal permanece estable durante una observación inicial. La recuperación todavía debe verificarse con varios niveles y conmutaciones representativas.
+    EVID-07-RECOVERY:
+      source: Prueba multipunto y cargas próximas
+      content: En puntos bajo, medio y alto, el nivel de referencia, la salida 0–10 V, la entrada analógica, el PLC y la HMI permanecen coherentes mientras conmutan cargas próximas. No reaparece la oscilación.
+  decisions:
+    DEC-01-RESTART-HMI:
+      action: Reiniciar la pantalla para comprobar si la oscilación desaparece.
+    DEC-01-CHECK-REFERENCE:
+      action: Comparar la tendencia con una referencia independiente.
+    DEC-01-REPLACE-TRANSMITTER:
+      action: Sustituir el transmisor antes de confirmar el nivel y la señal.
+    DEC-01-RAISE-LEVEL:
+      action: Cambiar el nivel del depósito para intentar que la HMI responda.
+    DEC-02-CHECK-LOCAL:
+      action: Comparar referencia independiente, indicador local y HMI.
+    DEC-02-CHANGE-SCALE:
+      action: Cambiar el rango de ingeniería para suavizar la oscilación.
+    DEC-02-RESTART-PLC:
+      action: Reiniciar el PLC para comprobar si desaparece la alarma.
+    DEC-02-ACK-ALARM:
+      action: Reconocer la alarma y seguir observando la pantalla.
+    DEC-03-REPLACE-AI:
+      action: Cambiar el módulo analógico porque el valor HMI oscila.
+    DEC-03-CHECK-SUPPLY:
+      action: Medir solo la alimentación del transmisor y cerrar la frontera.
+    DEC-03-READ-HMI:
+      action: Leer de nuevo la HMI para registrar el mismo síntoma.
+    DEC-03-MEASURE-VOLTAGE-BOUNDARIES:
+      action: Medir 0–10 V y referencia en transmisor e input.
+    DEC-04-CHECK-PARAMETER:
+      action: Editar los parámetros del transmisor antes de revisar la referencia.
+    DEC-04-TRACE-REFERENCE:
+      action: Comprobar 0 V, pantalla y cargas próximas bajo procedimiento.
+    DEC-04-RESTART-LOAD:
+      action: Ciclar la carga cercana para intentar reproducir el ruido.
+    DEC-04-FORCE-PV:
+      action: Forzar el valor de nivel para mantener la supervisión.
+    DEC-05-REPLACE-TRANSMITTER:
+      action: Cambiar el transmisor aunque su indicación local y su salida sean estables.
+    DEC-05-RESCALE-PLC:
+      action: Modificar el escalado PLC para compensar la oscilación.
+    DEC-05-RESTORE-REFERENCE:
+      action: Restaurar 0 V y pantalla según el método documentado para la instalación.
+    DEC-05-BYPASS-SHIELD:
+      action: Desconectar la pantalla sin verificar el esquema de referencia.
+    DEC-06-VERIFY-MULTIPOINT:
+      action: Comparar nivel bajo, medio y alto con cargas próximas.
+    DEC-06-CLOSE-ONE-POINT:
+      action: Cerrar tras observar un valor estable sin repetir la prueba.
+    DEC-06-CLEAR-ALARM:
+      action: Borrar la alarma y documentar la recuperación sin revisar la cadena.
+    DEC-06-INCREASE-FILTER:
+      action: Aumentar el filtrado para ocultar la oscilación durante la producción.
+  retry_feedback:
+    DEC-01-RESTART-HMI: Reiniciar la pantalla puede ocultar la oscilación y elimina una observación útil.
+    DEC-01-REPLACE-TRANSMITTER: El síntoma no demuestra que el transmisor esté averiado; primero hay que comparar la magnitud.
+    DEC-01-RAISE-LEVEL: Cambiar el proceso modifica la condición de prueba y no localiza la oscilación.
+    DEC-02-CHANGE-SCALE: La oscilación no se corrige cambiando una escala que todavía no se ha demostrado incorrecta.
+    DEC-02-RESTART-PLC: Un reinicio puede repetir el síntoma y destruye la continuidad de la observación.
+    DEC-02-ACK-ALARM: Reconocer una alarma cambia su presentación, pero no separa proceso e instrumentación.
+    DEC-03-REPLACE-AI: La entrada que registra el síntoma todavía no está demostrada como averiada.
+    DEC-03-CHECK-SUPPLY: La alimentación puede ser correcta mientras la referencia de la señal introduce ruido.
+    DEC-03-READ-HMI: Otra lectura HMI repite el efecto y no compara tensión ni referencias eléctricas.
+    DEC-04-CHECK-PARAMETER: Los parámetros no explican una diferencia de referencia entre salida e input.
+    DEC-04-RESTART-LOAD: Ciclar la carga puede repetir el ruido sin conservar ni localizar la condición de referencia.
+    DEC-04-FORCE-PV: Forzar el nivel sustituye la señal real por una suposición y rompe la trazabilidad.
+    DEC-05-REPLACE-TRANSMITTER: La indicación local y la salida estable no justifican sustituir el transmisor.
+    DEC-05-RESCALE-PLC: Modificar el escalado ocultaría la referencia defectuosa y dejaría el ruido físico sin resolver.
+    DEC-05-BYPASS-SHIELD: Desconectar la pantalla sin conocer la arquitectura puede crear otra ruta de ruido.
+    DEC-06-CLOSE-ONE-POINT: Un único valor estable no demuestra que la referencia permanezca limpia en operación.
+    DEC-06-CLEAR-ALARM: Borrar la alarma no comprueba tensión, referencia ni propagación de la medida.
+    DEC-06-INCREASE-FILTER: Filtrar más puede ocultar ruido y no verifica la instalación eléctrica.
+  visual:
+    educational_purpose: Distinguir un nivel físico estable de una señal 0–10 V oscilante por referencia común y verificar la cadena completa.
+  assets:
+    ART-001:
+      alt: Depósito de proceso con transmisor de nivel, indicador local y armario de control.
+      caption: 'Portada: la medida de nivel conecta proceso, instrumento y control.'
+    ART-002:
+      alt: Transmisor de nivel y HMI durante una oscilación de lectura.
+      caption: 'Incidente inicial: el proceso parece estable mientras la representación fluctúa.'
+    ART-003:
+      alt: Diagrama que compara nivel, transmisor, señal 0–10 V y entrada PLC/HMI.
+      caption: La comparación de fronteras separa nivel estable de señal oscilante.
+    ART-004:
+      alt: Técnico midiendo tensión 0–10 V en puntos de prueba autorizados.
+      caption: La tensión y su referencia se miden en ambos lados antes de cambiar parámetros.
+    ART-005:
+      alt: Diagrama de referencia común, pantalla y carga próxima que introduce ruido.
+      caption: La inspección localiza el camino que acopla perturbación a la entrada.
+    ART-006:
+      alt: Técnico corrigiendo una terminación de referencia en una caja de conexiones.
+      caption: La reparación sigue el método de instalación sin imponer una regla universal de pantalla.
+    ART-007:
+      alt: Diagrama de verificación de nivel bajo, medio y alto con cargas próximas.
+      caption: La recuperación se acredita con varios puntos y sin nueva oscilación.
+  completion:
+    title: Debrief técnico
+    summary: El nivel y el transmisor permanecían estables, pero una referencia común o pantalla incompatible acoplaba perturbación de una carga cercana a la entrada 0–10 V. La corrección según la arquitectura y la prueba multipunto restauraron la coherencia.
+    process: ["Conservar la oscilación y comparar con una referencia independiente.", "Separar nivel, indicador local y HMI.", "Medir tensión y referencia en las dos fronteras.", "Relacionar la perturbación con cargas próximas e inspeccionar 0 V y pantalla.", "Restaurar la referencia conforme al método documentado.", "Verificar puntos bajo, medio y alto con conmutaciones representativas."]
+    lesson: Una señal 0–10 V no se interpreta sin su referencia; la salida puede parecer estable respecto a su propio 0 V y oscilar respecto a la referencia de entrada.
+    avoided_errors: ["Cambiar el transmisor por un síntoma HMI.", "Modificar el escalado para ocultar ruido.", "Aplicar una regla universal de pantalla o tierra sin revisar la arquitectura.", "Cerrar después de un único valor estable.", "Confundir filtrado con corrección de la referencia."]
+    industrial_value: ["Menos falsas alarmas y cambios de escala injustificados.", "Mejor trazabilidad de referencias analógicas y ruido de campo.", "Verificación repetible bajo cargas próximas."]

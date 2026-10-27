@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-27 — ENV-002 / EE-0018 0–10 V level reference diagnosis
+
+- Added bilingual EE-0018 for a stable tank level whose PLC/HMI representation oscillates when a nearby load disturbs an installation-specific 0–10 V reference or screen path.
+- Added six staged decisions with mixed correct-option positions, voltage/reference boundary measurements, architecture-specific correction, reciprocal evidence and seven governed 1672×941 PNG assets. The case does not prescribe a universal grounding or shielding rule.
+- Registered EE-0018 at the ENV-002 hotspot and extended packaging, localization, asset, retry and option-length tests without changing shared Engine behavior or the existing ENV-002 Experiences.
+
 ## 2026-10-27 — ENV-002 / EE-0017 intermittent flow loop diagnosis
 
 - Added bilingual EE-0017 for a stable flow process whose PLC/HMI signal drops intermittently because of a field-terminal integrity fault in a generic 4–20 mA loop.

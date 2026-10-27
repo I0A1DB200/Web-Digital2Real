@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-27 — ENV-003 / EE-0017 sequence state after restart
+
+- Added bilingual EE-0017 in technical review for a guarded automated cell whose sequence context is lost or disagrees with the physical process after a controlled restart.
+- Added six staged diagnostic decisions with mixed correct-option positions, reciprocal evidence acquisition, seven governed 1672×941 PNG assets and a controlled dry-cycle/restart verification.
+- Registered EE-0017 at the ENV-003 hotspot and extended packaging, localization, asset, retry and presentation tests. The case remains vendor-neutral and does not assert a private PLC implementation detail as public fact.
+
 ## 2026-10-25 — ENV-002 / EE-0016 thermocouple polarity diagnosis
 
 - Added bilingual EE-0016 in technical review for a Type K thermocouple whose extension polarity is crossed, causing the HMI trend to oppose an independently observed thermal rise.

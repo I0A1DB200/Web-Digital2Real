@@ -1,0 +1,159 @@
+locale: en
+translations:
+  title: Sequence state lost after restart
+  summary: Diagnose why a guarded cell appears available after a restart while the workpiece and sequence state no longer agree.
+  scenario:
+    initial_context: After a controlled restart, an assembly cell is stopped with a workpiece inside the transfer zone while the HMI shows availability that does not explain the physical situation.
+    operational_state: The first discrepancy may belong to safety, physical position, PLC state, startup initialization or HMI representation.
+    initiating_event: A control interruption or restart leaves the sequence without continuity and stops production.
+    learner_role: An automation technician must separate physical state, permissives, sequence context, PLC and HMI before recovering the cell.
+    safety_context:
+      safe_state: Keep the cell stopped and take readings or intervene under the authorized procedure; do not enter the guarded area or enable motion without permission.
+      intervention_constraints: ["Do not resume automatic operation with an unknown workpiece position.", "Do not force steps, ready states or safety permissions.", "Do not clear state or reinitialize the block before preserving evidence.", "Isolate and control the cell under the procedure before removing or repositioning the workpiece."]
+  learning_objectives:
+    OBJ-PRESERVE-RESTART-EVIDENCE:
+      description: Preserve restart evidence and separate HMI availability from physical and sequence state.
+    OBJ-TRACE-STATE-OWNER:
+      description: Locate the state owner by comparing permissives, position, startup event, PLC and HMI.
+    OBJ-VERIFY-CONTROLLED-RECOVERY:
+      description: Recover a known state and verify it with a dry cycle and controlled restart.
+  stages:
+    STAGE-01-RESTART-INCIDENT:
+      title: Restart incident
+      situation: After a controlled restart, the cell appears available but a workpiece remains in the transfer zone and the sequence does not continue. Which first action preserves evidence and keeps the cell safe?
+    STAGE-02-SAFE-HOLD:
+      title: Confirm the safe hold
+      situation: The cell remains stopped and no automatic motion is occurring. Which boundary must be confirmed before reading or changing sequence state?
+    STAGE-03-STATE-OWNER:
+      title: Locate the state owner
+      situation: Safety signals are available, but the HMI shows ready without explaining the workpiece position. Which comparison provides the next evidence?
+    STAGE-04-STARTUP-DIAGNOSIS:
+      title: Interpret startup
+      situation: The PLC keeps the last startup event, but the active-step variable returns to its initial value. Which conclusion must be confirmed before correction?
+    STAGE-05-CONTROLLED-RECOVERY:
+      title: Recover a known state
+      situation: Initialization cleared sequence context while the workpiece remains in the cell. Which intervention recovers the machine to a known state without inventing a step or bypassing protection?
+    STAGE-06-VERIFY-RESTART:
+      title: Verify the next restart
+      situation: The cell is back in a known state and the workpiece was removed or repositioned under the procedure. Which test demonstrates that recovery works?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Cell and HMI
+      content: After a controlled restart, the cell has no motion and the HMI shows an available state while a workpiece remains in the transfer zone. The symptom does not yet identify which state was lost.
+    EVID-02-SAFE-HOLD:
+      source: Cell permissives
+      content: The cell is stopped, automatic motion is inhibited and safety permissives are observed before opening sequence diagnostics. No motion alone does not prove that logical state is correct.
+    EVID-03-STATE-COMPARISON:
+      source: HMI, PLC and physical position
+      content: The HMI shows available, the PLC does not retain a step coherent with physical position and the workpiece has not completed transfer. The ready representation is not by itself the sequence owner.
+    EVID-04-STARTUP-TRACE:
+      source: Startup event and sequence state
+      content: The startup event is recorded, but initialization returns active step to its initial state instead of retaining or blocking previous context. The loss belongs to sequence-state management, not an isolated HMI command.
+    EVID-05-RETENTION-FAULT:
+      source: PLC startup model
+      content: The startup path reinitializes non-retained context and leaves the cell without an explicit transition to a known safe state. This explains the divergence between workpiece, PLC and HMI.
+    EVID-06-RECOVERY:
+      source: Recovery procedure
+      content: The workpiece is removed or repositioned under the authorized procedure, a known initial state is established and automatic resumption is documented as inhibited. Functional behavior still needs a controlled test.
+    EVID-07-VERIFICATION:
+      source: Dry cycle and controlled restart
+      content: A dry cycle completes the sequence and a later controlled restart remains inhibited until a known state is confirmed. HMI, PLC, permissives and physical position agree again.
+  decisions:
+    DEC-01-RESET-SEQUENCE:
+      action: Reset the sequence so it returns to its initial step.
+    DEC-01-CHECK-SAFE-HOLD:
+      action: Confirm the safe hold and preserve the observed state.
+    DEC-01-RESUME-AUTO:
+      action: Resume automatic operation to see whether the workpiece continues.
+    DEC-01-CLEAR-FAULT:
+      action: Clear the alarm and return the cell to ready.
+    DEC-02-FORCE-STEP:
+      action: Force the step that seems to match the workpiece.
+    DEC-02-OPEN-GUARD:
+      action: Open the guard to inspect the workpiece directly.
+    DEC-02-VERIFY-PERMISSIVES:
+      action: Verify motion, safety and restart permissives.
+    DEC-02-ACK-ALARM:
+      action: Acknowledge the alarm before reviewing logical state.
+    DEC-03-TRACE-STATE-OWNER:
+      action: Compare HMI, PLC, startup event and physical position.
+    DEC-03-CHANGE-HMI:
+      action: Change the screen so it shows the expected step.
+    DEC-03-RESTART-AGAIN:
+      action: Repeat the restart to see whether the state recovers.
+    DEC-03-FORCE-READY:
+      action: Force ready to allow the next command.
+    DEC-04-CHANGE-STEP:
+      action: Edit the active step to match the workpiece.
+    DEC-04-RESET-DB:
+      action: Clear the state block and reload the program.
+    DEC-04-RELOAD-RECIPE:
+      action: Reload the recipe before reviewing startup.
+    DEC-04-CONFIRM-RETENTION:
+      action: Confirm whether startup retains or resets context.
+    DEC-05-RESUME-MIDSTEP:
+      action: Resume the assumed step without removing the workpiece.
+    DEC-05-RECOVER-KNOWN-STATE:
+      action: Isolate, remove the workpiece and recover a known state.
+    DEC-05-FORCE-STEP:
+      action: Force a recovery step to save time.
+    DEC-05-BYPASS-INTERLOCK:
+      action: Bypass the permission that prevents continuation.
+    DEC-06-CLOSE-HANDOVER:
+      action: Close the incident after one cycle.
+    DEC-06-CLEAR-HISTORY:
+      action: Clear the history to leave the screen clean.
+    DEC-06-VERIFY-DRY-CYCLE:
+      action: Run a dry cycle and repeat a controlled restart.
+    DEC-06-ENABLE-AUTO:
+      action: Enable automatic operation and observe whether state holds.
+  retry_feedback:
+    DEC-01-RESET-SEQUENCE: Reiniciar oculta la condición inicial y destruye evidencia antes de separar seguridad y estado.
+    DEC-01-RESUME-AUTO: Reanudar con una pieza en posición desconocida puede convertir una incertidumbre de estado en movimiento no controlado.
+    DEC-01-CLEAR-FAULT: Borrar una alarma no identifica la relación entre la posición física y la secuencia.
+    DEC-02-FORCE-STEP: Todavía no se ha confirmado el estado de seguridad ni quién posee el paso activo.
+    DEC-02-OPEN-GUARD: La observación física requiere autorización y aislamiento; abrir la protección no es la siguiente comprobación lógica.
+    DEC-02-ACK-ALARM: Reconocer una alarma cambia su presentación, pero no confirma el estado que gobierna la secuencia.
+    DEC-03-CHANGE-HMI: La HMI presenta el estado; cambiarla no corrige ni localiza la memoria de secuencia.
+    DEC-03-RESTART-AGAIN: Otro reinicio puede repetir la pérdida y elimina una oportunidad de observar el estado actual.
+    DEC-03-FORCE-READY: Forzar listo rompe la trazabilidad y puede habilitar una orden con la pieza aún presente.
+    DEC-04-CHANGE-STEP: Editar el paso sin confirmar la política de arranque compensa el síntoma y puede crear una transición inválida.
+    DEC-04-RESET-DB: Borrar el bloque elimina información y no demuestra cómo la inicialización produjo la pérdida.
+    DEC-04-RELOAD-RECIPE: La receta puede ser correcta mientras el contexto de secuencia se reinicializa; cargarla no prueba retención.
+    DEC-05-RESUME-MIDSTEP: Reanudar un paso supuesto no establece una referencia segura ni explica cómo tratar la pieza.
+    DEC-05-FORCE-STEP: Forzar un paso sustituye la recuperación documentada por una suposición sobre la posición de la pieza.
+    DEC-05-BYPASS-INTERLOCK: Un puente de protección elimina una barrera de seguridad y no demuestra recuperación.
+    DEC-06-CLOSE-HANDOVER: Un único ciclo no prueba el comportamiento ante el reinicio que originó la incidencia.
+    DEC-06-CLEAR-HISTORY: Limpiar el histórico no prueba que el estado físico, PLC y HMI vuelvan a coincidir.
+    DEC-06-ENABLE-AUTO: Activar automático sin una prueba controlada puede repetir la condición de arranque no validada.
+  visual:
+    educational_purpose: Distinguish represented availability, sequence state and physical condition during a controlled restart.
+  assets:
+    ART-001:
+      alt: Guarded automated assembly cell with conveyor, robot, HMI and control cabinet.
+      caption: 'Cover: a sequential cell combines physical boundaries, control logic and HMI representation.'
+    ART-002:
+      alt: Workpiece stopped inside a guarded cell after a controlled restart.
+      caption: 'Initial incident: preserve physical position and displayed state before intervening.'
+    ART-003:
+      alt: Diagram of a stopped cell with safety permissions and motion inhibited.
+      caption: The safe hold is a boundary before sequence diagnosis.
+    ART-004:
+      alt: PLC control cabinet and cell observation during a state diagnosis.
+      caption: Compare HMI, PLC, startup event and physical position to locate state ownership.
+    ART-005:
+      alt: Startup diagram contrasting retained, reset and known-safe sequence context.
+      caption: The initialization path explains lost context without depending on a manufacturer.
+    ART-006:
+      alt: Protected technician performing an authorized recovery at a stopped cell.
+      caption: Remove or reposition the workpiece under procedure before verification.
+    ART-007:
+      alt: Dry-cycle and controlled-restart diagram converging on a known state.
+      caption: Verification tests sequence, restart inhibit and agreement across PLC, HMI and cell.
+  completion:
+    title: Technical debrief
+    summary: Initialization cleared sequence context while the workpiece remained in the cell. Recovery established a known state, and the dry-cycle plus controlled-restart test realigned PLC, HMI, permissions and physical position.
+    process: ["Preserve the hold and restart evidence.", "Confirm permissives, motion inhibition and intervention boundaries.", "Compare HMI, PLC, startup event and physical position.", "Confirm context retention or reset policy.", "Recover the cell to a documented known state.", "Verify dry cycle, controlled restart and cross-boundary coherence."]
+    lesson: An HMI ready state does not prove that sequence or physical position is ready to resume; restart requires an explicit retention or safe-recovery policy.
+    avoided_errors: ["Resuming automatic operation with unknown position.", "Forcing steps, ready or permissions to overcome the stop.", "Clearing evidence before locating state ownership.", "Closing after one cycle without repeating the controlled restart."]
+    industrial_value: ["Fewer improvised restart recoveries.", "Clearer separation of safety, sequence state and HMI.", "More traceable and repeatable startup tests."]

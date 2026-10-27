@@ -68,6 +68,11 @@ const experiences = [
     id: "EE-0016",
     path: "../../../content/experiences/instrumentation/EE-0016-thermocouple-polarity-inversion/",
     correctIds: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-INPUT", "DEC-03-INSPECT-POLARITY", "DEC-04-CONFIRM-POLARITY", "DEC-05-RESTORE-WIRING", "DEC-06-VERIFY-RAMP"]
+  },
+  {
+    id: "EE-0017",
+    path: "../../../content/experiences/siemens/EE-0017-sequence-state-lost-after-restart/",
+    correctIds: ["DEC-01-CHECK-SAFE-HOLD", "DEC-02-VERIFY-PERMISSIVES", "DEC-03-TRACE-STATE-OWNER", "DEC-04-CONFIRM-RETENTION", "DEC-05-RECOVER-KNOWN-STATE", "DEC-06-VERIFY-DRY-CYCLE"]
   }
 ];
 

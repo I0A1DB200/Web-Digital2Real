@@ -21,4 +21,7 @@ visual:
   width: 1672
   height: 941
 
-hotspots: []
+hotspots:
+  - experience_editorial_id: "EE-0017"
+    x: 56
+    y: 48

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-27 — ENV-002 / EE-0020 4–20 mA loop margin under load
+
+- Added bilingual EE-0020 for a two-wire 4–20 mA loop whose current drops when its connected burden reduces the available voltage margin; the process, transmitter and scaling remain correct.
+- Added six staged decisions with mixed correct-option positions, source/path/load boundary measurements, authorized loop restoration, external diagnostic context and seven human-free 1672×941 PNG assets with two multimeters and controlled graphs.
+- Registered EE-0020 at the ENV-002 hotspot and extended packaging, localization, asset, retry and option-length tests without changing shared Engine behavior or existing Experience content.
+
 ## 2026-10-27 — ENV-002 / EE-0019 impulse-line response diagnosis
 
 - Added bilingual EE-0019 for a differential-pressure measurement whose process reference changes before the transmitter/control value because a partial restriction slows the impulse path.

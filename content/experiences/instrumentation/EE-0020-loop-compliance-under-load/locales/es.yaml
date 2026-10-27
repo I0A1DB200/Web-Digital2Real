@@ -1,0 +1,160 @@
+locale: "es"
+translations:
+  title: "Caída del lazo 4–20 mA bajo carga"
+  summary: "Localiza por qué un lazo 4–20 mA pierde margen cuando trabaja con su carga siguiendo fuente, cableado, transmisor, entrada analógica, PLC y HMI."
+  scenario:
+    initial_context: "La referencia de proceso y la indicación local son estables, pero al conectar la carga normal la corriente y la HMI caen."
+    operational_state: "La primera discrepancia puede estar en la fuente de 24 VDC, el cableado, los bornes, la carga, el transmisor, la entrada analógica o la representación."
+    initiating_event: "Al conectar una carga o una entrada adicional, el lazo pierde corriente y el valor de control se separa de la referencia."
+    learner_role: "Técnico de instrumentación responsable de localizar el límite eléctrico sin cambiar el escalado ni sustituir equipos sin evidencia."
+    safety_context:
+      safe_state: "Mantén el circuito en una condición segura y realiza mediciones e intervenciones únicamente conforme al procedimiento autorizado para la fuente, el lazo y la entrada."
+      intervention_constraints: ["No puentear, cortocircuitar ni abrir un circuito energizado fuera del procedimiento aprobado.","Medir corriente en serie solo en puntos de prueba y con el método autorizado.","No cambiar la configuración del transmisor ni el escalado para ocultar la caída.","Desenergizar y verificar polaridad antes de modificar cableado, carga o bornes."]
+  learning_objectives:
+    OBJ-TRACE-LOOP-POWER:
+      description: "Seguir la cadena eléctrica desde la fuente de 24 VDC y la carga hasta el transmisor, la entrada, el PLC y la HMI."
+    OBJ-LOCALIZE-LOOP-MARGIN:
+      description: "Distinguir un proceso estable de una pérdida de margen causada por alimentación, recorrido o carga mediante mediciones en fronteras."
+    OBJ-VERIFY-LOOP-RECOVERY:
+      description: "Restaurar el recorrido eléctrico y verificar corriente, tensión y representación en varios puntos sin compensar la causa en software."
+  stages:
+    STAGE-01-LOOP-INCIDENT:
+      title: "Incidente bajo carga"
+      situation: "La referencia de proceso y la indicación local son estables, pero al conectar la carga normal la corriente y la HMI caen. ¿Qué primera comprobación conserva el síntoma?"
+    STAGE-02-CHECK-REFERENCE:
+      title: "Medir la frontera del lazo"
+      situation: "El proceso no ha cambiado y el transmisor sigue indicando localmente. ¿Qué medida separa la señal de la condición eléctrica del lazo?"
+    STAGE-03-MEASURE-BOUNDARIES:
+      title: "Comparar tensión disponible"
+      situation: "La corriente cae únicamente con la carga conectada. ¿Qué comparación localiza si la pérdida aparece en la fuente, el cableado, la carga o el transmisor?"
+    STAGE-04-TRACE-LOAD:
+      title: "Inspeccionar la carga"
+      situation: "La tensión disponible en el transmisor cae bajo carga y el software de diagnóstico no acusa un fallo interno. ¿Qué inspección permite encontrar la resistencia o carga añadida?"
+    STAGE-05-RESTORE-LOOP:
+      title: "Restaurar el margen"
+      situation: "La inspección confirma una carga o conexión que reduce el margen del lazo. ¿Qué intervención corrige la causa sin ocultarla en el PLC?"
+    STAGE-06-VERIFY-MULTIPOINT:
+      title: "Verificar bajo carga"
+      situation: "El lazo vuelve a entregar corriente y el valor local es coherente. ¿Qué prueba demuestra que la cadena conserva margen en condiciones representativas?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Referencia de proceso y tendencia HMI"
+      content: "La referencia de proceso y la indicación local permanecen estables; al conectar la carga normal del lazo, la corriente y la HMI caen. El síntoma todavía no separa fuente, carga, transmisor o entrada."
+    EVID-02-REFERENCE-CORRELATION:
+      source: "Referencia independiente e indicación local"
+      content: "La referencia independiente y la indicación local siguen siendo coherentes. El cambio aparece en la cadena eléctrica cuando la carga queda conectada."
+    EVID-03-VOLTAGE-BOUNDARY:
+      source: "Medición de corriente y tensión"
+      content: "La corriente del lazo y la tensión en bornes del transmisor se comparan con la carga conectada. La fuente mantiene su presencia, pero el margen en el dispositivo se reduce bajo carga."
+    EVID-04-LOAD-DIAGNOSIS:
+      source: "Cableado, carga y software de diagnóstico"
+      content: "La inspección encuentra una resistencia o carga añadida en el recorrido del lazo. El software externo muestra el dispositivo conectado y sin una avería interna que explique por sí sola la caída."
+    EVID-05-DIAGNOSIS:
+      source: "Síntesis del presupuesto de tensión"
+      content: "El proceso, el transmisor y el escalado permanecen operativos; el margen insuficiente aparece en la alimentación y la carga total del lazo. No hay base para compensar el síntoma en el PLC."
+    EVID-06-INTERVENTION:
+      source: "Recorrido eléctrico restaurado"
+      content: "La carga y las conexiones han sido corregidas conforme al procedimiento de la instalación. La corriente vuelve a seguir la referencia, pero la recuperación aún debe probarse en varios puntos."
+    EVID-07-RECOVERY:
+      source: "Prueba multipunto bajo carga"
+      content: "En puntos bajo, medio y alto, la referencia, la corriente, el transmisor, la entrada, el PLC y la HMI siguen la misma transición con margen eléctrico conservado. La recuperación queda verificada."
+  decisions:
+    DEC-01-RESET-HMI:
+      action: "Reiniciar la HMI para que el valor parezca actualizado."
+    DEC-01-PRESERVE-REFERENCE:
+      action: "Comparar referencia e indicación local antes de intervenir."
+    DEC-01-CHANGE-SCALE:
+      action: "Cambiar el escalado para compensar la caída de la variable."
+    DEC-01-REPLACE-TRANSMITTER:
+      action: "Sustituir el transmisor antes de medir el lazo bajo carga."
+    DEC-02-READ-HMI:
+      action: "Leer otra vez la HMI sin medir la corriente ni la tensión del lazo."
+    DEC-02-MEASURE-BOUNDARIES:
+      action: "Medir corriente y tensión en el transmisor con la carga conectada."
+    DEC-02-RESTART-PLC:
+      action: "Reiniciar el PLC para comprobar si desaparece la caída."
+    DEC-02-ADD-SUPPLY:
+      action: "Añadir una fuente temporal sin documentar la carga ni la polaridad."
+    DEC-03-MEASURE-SOURCE:
+      action: "Medir solo la fuente y dar por correcta toda la cadena."
+    DEC-03-REMOVE-BURDEN:
+      action: "Desconectar la carga y declarar correcto el transmisor porque vuelve la corriente."
+    DEC-03-REPLACE-TRANSMITTER:
+      action: "Cambiar el transmisor porque la corriente cae con la carga."
+    DEC-03-COMPARE-VOLTAGES:
+      action: "Comparar tensión de fuente, recorrido y transmisor bajo carga."
+    DEC-04-EDIT-SCALING:
+      action: "Editar el escalado para que el valor de HMI se acerque al esperado."
+    DEC-04-CYCLE-POWER:
+      action: "Ciclar la alimentación para intentar recuperar el margen."
+    DEC-04-INSPECT-LOAD:
+      action: "Inspeccionar bornes, cableado y carga bajo el procedimiento."
+    DEC-04-FORCE-INPUT:
+      action: "Forzar la entrada analógica mientras la carga sigue sin verificarse."
+    DEC-05-REPLACE-TRANSMITTER:
+      action: "Sustituir el transmisor aunque la indicación local sea coherente."
+    DEC-05-RESTORE-LOOP:
+      action: "Restaurar alimentación, cableado y carga según procedimiento."
+    DEC-05-BYPASS-BURDEN:
+      action: "Puentear la carga para mantener un valor mientras la causa sigue presente."
+    DEC-05-SET-OVERRANGE:
+      action: "Configurar un rango distinto para ocultar la caída de corriente."
+    DEC-06-CHECK-ONE-POINT:
+      action: "Cerrar después de observar un único punto estable."
+    DEC-06-CLEAR-ALARM:
+      action: "Borrar la alarma y documentar la reparación sin repetir la carga."
+    DEC-06-INCREASE-FILTER:
+      action: "Aumentar el filtrado para esconder cualquier caída residual."
+    DEC-06-VERIFY-MULTIPOINT:
+      action: "Repetir puntos bajo, medio y alto y verificar la cadena."
+  retry_feedback:
+    DEC-01-RESET-HMI: "Reiniciar la pantalla cambia la presentación y no separa el síntoma eléctrico."
+    DEC-01-CHANGE-SCALE: "El escalado no crea margen eléctrico y ocultaría una caída del lazo."
+    DEC-01-REPLACE-TRANSMITTER: "La caída aparece bajo carga y todavía no demuestra una avería interna."
+    DEC-02-READ-HMI: "Otra lectura de HMI repite el efecto y no identifica la frontera de tensión."
+    DEC-02-RESTART-PLC: "Un reinicio no modifica el presupuesto eléctrico del lazo y rompe la continuidad de la observación."
+    DEC-02-ADD-SUPPLY: "Añadir una fuente sin revisar polaridad y carga introduce una condición insegura y no localiza la causa."
+    DEC-03-MEASURE-SOURCE: "Una fuente presente puede perder margen en el recorrido o la carga."
+    DEC-03-REMOVE-BURDEN: "Desconectar la carga elimina el síntoma sin demostrar qué elemento lo introducía."
+    DEC-03-REPLACE-TRANSMITTER: "La respuesta local y la caída bajo carga no justifican sustituir el dispositivo."
+    DEC-04-EDIT-SCALING: "El escalado no recupera tensión ni corriente y escondería el problema."
+    DEC-04-CYCLE-POWER: "Ciclar la alimentación no corrige una carga excesiva ni una conexión incorrecta."
+    DEC-04-FORCE-INPUT: "Forzar la entrada sustituye una medición por una suposición y rompe la trazabilidad."
+    DEC-05-REPLACE-TRANSMITTER: "La evidencia concentra la causa en el recorrido eléctrico y no en el transmisor."
+    DEC-05-BYPASS-BURDEN: "Puentear la carga deja una instalación distinta y elimina una barrera de diagnóstico."
+    DEC-05-SET-OVERRANGE: "Cambiar el rango no puede resolver una caída de tensión bajo carga."
+    DEC-06-CHECK-ONE-POINT: "Un único punto estable no demuestra margen durante toda la escala."
+    DEC-06-CLEAR-ALARM: "Borrar la alarma no demuestra que la cadena responda bajo carga."
+    DEC-06-INCREASE-FILTER: "Más filtrado puede ocultar la caída y no verifica la fuente ni la carga."
+  visual:
+    educational_purpose: "Distinguir una pérdida de margen eléctrico bajo carga de un fallo de proceso, transmisor o escalado."
+  assets:
+    ART-001:
+      alt: "Instalación de transmisor de dos hilos, fuente de 24 VDC, bornes, cableado y entrada analógica sin personas."
+      caption: "Portada: el margen del lazo depende de la fuente, el recorrido y la carga."
+    ART-002:
+      alt: "Gráfica donde la corriente del lazo cae cuando se conecta la carga mientras la referencia permanece estable."
+      caption: "Incidente: la carga cambia la condición eléctrica aunque el proceso siga estable."
+    ART-003:
+      alt: "Dos polímetros conectados a puntos de prueba de un transmisor de dos hilos sin personas."
+      caption: "La medición separa corriente del lazo y tensión disponible en el dispositivo."
+    ART-004:
+      alt: "Diagrama de fuente de 24 VDC, cableado, transmisor de dos hilos y entrada analógica con puntos de medición."
+      caption: "La frontera donde cae la tensión es más útil que otra lectura de HMI."
+    ART-005:
+      alt: "Interfaz ilustrativa de software externo de puesta en marcha que muestra estado del dispositivo, corriente y margen de tensión."
+      caption: "El software aporta contexto de diagnóstico; la medición eléctrica gobierna la decisión."
+    ART-006:
+      alt: "Instalación corregida con transmisor, fuente, bornes y carga del lazo ordenados, sin personas."
+      caption: "La corrección restaura el recorrido sin cambiar el escalado."
+    ART-007:
+      alt: "Gráfica de recuperación en puntos bajo, medio y alto con referencia y corriente del lazo alineadas."
+      caption: "La recuperación se acredita con varios puntos bajo carga."
+  completion:
+    title: "Debrief técnico"
+    summary: "El proceso y el transmisor permanecían operativos, pero la fuente, el recorrido y la carga dejaban un margen insuficiente para sostener el lazo. La corrección autorizada restauró la condición eléctrica y la verificación multipunto confirmó la respuesta completa."
+    process: ["Conservar el síntoma y comparar con la referencia de proceso.","Medir corriente y tensión en las fronteras del lazo bajo carga.","Comparar fuente, caídas del recorrido y tensión disponible en el transmisor.","Inspeccionar carga, cableado, bornes y polaridad con el circuito en condición autorizada.","Restaurar la alimentación y la carga sin cambiar el escalado validado.","Verificar puntos bajo, medio y alto desde el lazo hasta la HMI."]
+    lesson: "Una fuente presente no demuestra que exista margen suficiente en el transmisor; la primera discrepancia eléctrica debe localizarse antes de sustituir el instrumento o editar la escala."
+    avoided_errors: ["Cambiar el transmisor por una caída que aparece solo bajo carga.","Modificar el escalado o el filtrado para ocultar el síntoma.","Puentear la carga sin localizarla.","Añadir una fuente temporal sin revisar polaridad ni procedimiento.","Cerrar después de un único valor estable."]
+    industrial_value: ["Menos sustituciones y cambios de parámetros injustificados.","Mejor trazabilidad de fallos de alimentación y carga.","Verificación repetible del margen del lazo desde campo hasta HMI."]
+    media_ids: ["ART-007"]

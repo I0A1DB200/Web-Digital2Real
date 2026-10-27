@@ -1,0 +1,159 @@
+locale: "en"
+translations:
+  title: "4–20 mA loop collapse under load"
+  summary: "Locate why a 4–20 mA loop loses margin under its connected load by tracing the source, wiring, transmitter, analog input, PLC and HMI."
+  scenario:
+    initial_context: "The process reference and local indication are stable, but current and HMI value fall when the normal load is connected."
+    operational_state: "The first mismatch may be in the 24 VDC source, wiring, terminals, load, transmitter, analog input or representation."
+    initiating_event: "When an additional load or input is connected, loop current falls and the control value separates from the reference."
+    learner_role: "An instrumentation technician must locate the electrical limit without changing scaling or replacing equipment without evidence."
+    safety_context:
+      safe_state: "Keep the circuit in a safe condition and perform measurements or interventions only under the site procedure for the source, loop and input."
+      intervention_constraints: ["Do not bridge, short or open an energized circuit outside the approved procedure.","Measure current in series only at approved test points and by the authorized method.","Do not change transmitter configuration or scaling to hide the drop.","De-energize and verify polarity before modifying wiring, load or terminals."]
+  learning_objectives:
+    OBJ-TRACE-LOOP-POWER:
+      description: "Trace the electrical chain from the 24 VDC source and load through the transmitter, input, PLC and HMI."
+    OBJ-LOCALIZE-LOOP-MARGIN:
+      description: "Distinguish a stable process from a power, path or load margin loss using boundary measurements."
+    OBJ-VERIFY-LOOP-RECOVERY:
+      description: "Restore the electrical path and verify current, voltage and representation at several points without compensating in software."
+  stages:
+    STAGE-01-LOOP-INCIDENT:
+      title: "Incident under load"
+      situation: "The process reference and local indication are stable, but current and HMI value fall when the normal load is connected. Which first check preserves the symptom?"
+    STAGE-02-CHECK-REFERENCE:
+      title: "Measure the loop boundary"
+      situation: "The process has not changed and the transmitter still indicates locally. Which measurement separates the signal from the loop electrical condition?"
+    STAGE-03-MEASURE-BOUNDARIES:
+      title: "Compare available voltage"
+      situation: "Current falls only with the load connected. Which comparison locates whether the loss appears in the source, wiring, load or transmitter?"
+    STAGE-04-TRACE-LOAD:
+      title: "Inspect the load"
+      situation: "Voltage at the transmitter falls under load and the diagnostic software reports no internal fault. Which inspection can find the added resistance or burden?"
+    STAGE-05-RESTORE-LOOP:
+      title: "Restore the margin"
+      situation: "Inspection confirms a load or connection that reduces loop margin. Which intervention corrects the cause without hiding it in the PLC?"
+    STAGE-06-VERIFY-MULTIPOINT:
+      title: "Verify under load"
+      situation: "The loop delivers current again and the local value is coherent. Which test proves that the chain keeps margin in representative conditions?"
+  evidence:
+    EVID-01-INCIDENT:
+      source: "Process reference and HMI trend"
+      content: "The process reference and local indication remain stable; when the normal loop load is connected, current and HMI value fall. The symptom does not yet separate source, load, transmitter or input."
+    EVID-02-REFERENCE-CORRELATION:
+      source: "Independent reference and local indication"
+      content: "The independent reference and local indication remain coherent. The mismatch appears in the electrical chain when the load is connected."
+    EVID-03-VOLTAGE-BOUNDARY:
+      source: "Current and voltage measurements"
+      content: "Loop current and transmitter terminal voltage are compared with the load connected. The source remains present, but device margin decreases under load."
+    EVID-04-LOAD-DIAGNOSIS:
+      source: "Wiring, load and diagnostic software"
+      content: "Inspection finds added resistance or load in the loop path. The external software shows the device connected without an internal fault that would explain the drop alone."
+    EVID-05-DIAGNOSIS:
+      source: "Voltage-budget synthesis"
+      content: "Process, transmitter and scaling remain operational; insufficient margin appears in the source and total loop load. There is no basis for compensating in the PLC."
+    EVID-06-INTERVENTION:
+      source: "Restored electrical path"
+      content: "The load and connections have been corrected under the site procedure. Current follows the reference again, but recovery still needs several test points."
+    EVID-07-RECOVERY:
+      source: "Multipoint test under load"
+      content: "At low, mid and high points, the reference, current, transmitter, input, PLC and HMI follow the same transition with electrical margin preserved. Recovery is verified."
+  decisions:
+    DEC-01-RESET-HMI:
+      action: "Restart the HMI so the value appears current."
+    DEC-01-PRESERVE-REFERENCE:
+      action: "Compare process reference and local indication."
+    DEC-01-CHANGE-SCALE:
+      action: "Change scaling to compensate for the variable drop."
+    DEC-01-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter before measuring the loaded loop."
+    DEC-02-READ-HMI:
+      action: "Read the HMI again without measuring loop current or voltage."
+    DEC-02-MEASURE-BOUNDARIES:
+      action: "Measure current and transmitter voltage with the load connected."
+    DEC-02-RESTART-PLC:
+      action: "Restart the PLC to see if the drop disappears."
+    DEC-02-ADD-SUPPLY:
+      action: "Add a temporary supply without documenting load or polarity."
+    DEC-03-MEASURE-SOURCE:
+      action: "Measure only the source and declare the whole chain correct."
+    DEC-03-REMOVE-BURDEN:
+      action: "Disconnect the load and declare the transmitter correct because current returns."
+    DEC-03-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter because current falls with the load."
+    DEC-03-COMPARE-VOLTAGES:
+      action: "Compare source, path and transmitter voltage under load."
+    DEC-04-EDIT-SCALING:
+      action: "Edit scaling so the HMI value approaches the expected value."
+    DEC-04-CYCLE-POWER:
+      action: "Cycle power to try to recover margin."
+    DEC-04-INSPECT-LOAD:
+      action: "Inspect terminals, wiring and load."
+    DEC-04-FORCE-INPUT:
+      action: "Force the analog input while the load remains unchecked."
+    DEC-05-REPLACE-TRANSMITTER:
+      action: "Replace the transmitter even though the local indication is coherent."
+    DEC-05-RESTORE-LOOP:
+      action: "Restore supply, wiring and load under the approved procedure."
+    DEC-05-BYPASS-BURDEN:
+      action: "Bypass the load to hold a value while the cause remains."
+    DEC-05-SET-OVERRANGE:
+      action: "Configure a different range to hide the current drop."
+    DEC-06-CHECK-ONE-POINT:
+      action: "Close after observing one stable point."
+    DEC-06-CLEAR-ALARM:
+      action: "Clear the alarm and document the repair without repeating the load."
+    DEC-06-INCREASE-FILTER:
+      action: "Increase filtering to hide any residual drop."
+    DEC-06-VERIFY-MULTIPOINT:
+      action: "Verify low, mid and high points through the chain."
+  retry_feedback:
+    DEC-01-RESET-HMI: "Restarting the display changes presentation and does not separate the electrical symptom."
+    DEC-01-CHANGE-SCALE: "Scaling does not create electrical margin and would hide a loop drop."
+    DEC-01-REPLACE-TRANSMITTER: "The drop appears under load and does not yet prove an internal fault."
+    DEC-02-READ-HMI: "Another HMI reading repeats the effect and does not identify the voltage boundary."
+    DEC-02-RESTART-PLC: "A restart does not change the loop voltage budget and breaks observation continuity."
+    DEC-02-ADD-SUPPLY: "Adding a supply without checking polarity and load introduces risk and does not locate the cause."
+    DEC-03-MEASURE-SOURCE: "A source can be present while margin is lost in the path or load."
+    DEC-03-REMOVE-BURDEN: "Disconnecting the load removes the symptom without showing which element introduced it."
+    DEC-03-REPLACE-TRANSMITTER: "Local response and a load-dependent drop do not justify replacement."
+    DEC-04-EDIT-SCALING: "Scaling cannot restore voltage or current and would hide the issue."
+    DEC-04-CYCLE-POWER: "Cycling power does not correct excessive load or an incorrect connection."
+    DEC-04-FORCE-INPUT: "Forcing the input replaces measurement with an assumption and breaks traceability."
+    DEC-05-REPLACE-TRANSMITTER: "Evidence concentrates the cause in the electrical path, not the transmitter."
+    DEC-05-BYPASS-BURDEN: "Bypassing leaves a different installation and removes a diagnostic barrier."
+    DEC-05-SET-OVERRANGE: "Changing range cannot resolve a load-dependent voltage drop."
+    DEC-06-CHECK-ONE-POINT: "One stable point does not prove margin across the scale."
+    DEC-06-CLEAR-ALARM: "Clearing the alarm does not prove the chain responds under load."
+    DEC-06-INCREASE-FILTER: "More filtering can hide the drop and does not verify source or load."
+  visual:
+    educational_purpose: "Distinguish a load-dependent electrical margin loss from a process, transmitter or scaling fault."
+  assets:
+    ART-001:
+      alt: "Two-wire transmitter installation with 24 VDC supply, terminals, wiring and analog input, with no people."
+      caption: "Cover: loop margin depends on source, path and load."
+    ART-002:
+      alt: "Chart where loop current falls when the load is connected while the reference remains stable."
+      caption: "Incident: the load changes the electrical condition while the process remains stable."
+    ART-003:
+      alt: "Two multimeters connected to approved test points on a two-wire transmitter, with no people."
+      caption: "Measurement separates loop current from voltage available at the device."
+    ART-004:
+      alt: "Diagram of 24 VDC source, wiring, two-wire transmitter and analog input with measurement points."
+      caption: "The voltage-drop boundary is more useful than another HMI reading."
+    ART-005:
+      alt: "Illustrative external commissioning software showing device status, current and voltage margin."
+      caption: "Software adds diagnostic context; electrical measurement governs the decision."
+    ART-006:
+      alt: "Corrected installation with transmitter, supply, terminals and loop load organized, with no people."
+      caption: "The correction restores the path without changing scaling."
+    ART-007:
+      alt: "Recovery chart at low, mid and high points with aligned reference and loop current."
+      caption: "Recovery is demonstrated with several loaded points."
+  completion:
+    title: "Technical debrief"
+    summary: "Process and transmitter remained operational, but source, path and load left insufficient margin to sustain the loop. The authorized correction restored the electrical condition and the multipoint test confirmed the complete response."
+    process: ["Preserve the symptom and compare the process reference.","Measure current and voltage at loop boundaries under load.","Compare source, path drops, load and transmitter voltage.","Inspect load, wiring, terminals and polarity in an approved condition.","Restore supply and load without changing validated scaling.","Verify low, mid and high points from loop to HMI."]
+    lesson: "A present source does not prove sufficient margin at the transmitter; locate the first electrical mismatch before replacing the device or editing scale."
+    avoided_errors: ["Replacing the transmitter for a drop that appears only under load.","Changing scaling or filtering to hide the symptom.","Bypassing the load without locating it.","Adding a temporary supply without checking polarity or procedure.","Closing after one stable value."]
+    industrial_value: ["Fewer unjustified replacements and parameter changes.","Better traceability for power and load faults.","Repeatable verification of loop margin from field to HMI."]

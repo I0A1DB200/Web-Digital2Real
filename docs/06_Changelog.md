@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-27 — ENV-002 / EE-0017 intermittent flow loop diagnosis
+
+- Added bilingual EE-0017 for a stable flow process whose PLC/HMI signal drops intermittently because of a field-terminal integrity fault in a generic 4–20 mA loop.
+- Added six staged decisions with mixed correct-option positions, boundary measurements, safe retermination, reciprocal evidence and seven governed 1672×941 PNG assets. The case is deliberately separate from EE-0012: EE-0012 covers stable current with wrong scaling; EE-0017 covers physical loop continuity.
+- Registered EE-0017 at the ENV-002 hotspot and extended packaging, localization, asset, retry and option-length tests without changing shared Engine behavior or the existing six ENV-002 Experiences.
+
 ## 2026-10-27 — ENV-003 / EE-0021 sequence state after restart
 
 - Added bilingual EE-0021 in technical review for a guarded automated cell whose sequence context is lost or disagrees with the physical process after a controlled restart.

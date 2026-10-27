@@ -1,0 +1,159 @@
+locale: en
+translations:
+  title: Intermittent flow signal in the 4–20 mA loop
+  summary: Locate why stable flow appears intermittently in PLC and HMI by tracing process, transmitter, loop current, wiring, analog input and verification.
+  scenario:
+    initial_context: The line maintains stable flow according to the local reference, but PLC and HMI show intermittent drops.
+    operational_state: The first discrepancy may be in the process, transmitter, loop supply, terminal, analog input or control representation.
+    initiating_event: Flow supervision raises an intermittent alarm and stops a control decision.
+    learner_role: An instrumentation technician must locate the first electrical boundary without changing scaling or replacing equipment without evidence.
+    safety_context:
+      safe_state: Keep the process safe and take readings or intervene only under the authorized loop and installation procedure.
+      intervention_constraints: ["Do not force values or bypass alarms.", "Do not change scaling before locating the discrepancy.", "Do not open or interrupt the energized loop outside the approved method.", "Use authorized test points and isolation; do not bypass the input to maintain production."]
+  learning_objectives:
+    OBJ-TRACE-FLOW-CHAIN:
+      description: Trace the chain from flow process and transmitter to loop current, analog input, PLC and HMI.
+    OBJ-LOCALIZE-LOOP-BOUNDARY:
+      description: Distinguish process change, stable transmitter and loop interruption using measurements at authorized boundaries.
+    OBJ-VERIFY-FLOW-RECOVERY:
+      description: Restore physical continuity and verify representative flow points without compensating the fault in PLC or HMI.
+  stages:
+    STAGE-01-FLOW-INCIDENT:
+      title: Flow incident
+      situation: The line flow is stable according to the local reference, but PLC and HMI drop intermittently. Which first check preserves the symptom without changing the process?
+    STAGE-02-SEPARATE-PROCESS:
+      title: Separate process and representation
+      situation: The independent reference and local indicator remain stable while the HMI fluctuates. Which comparison bounds the next boundary?
+    STAGE-03-MEASURE-BOUNDARIES:
+      title: Measure loop boundaries
+      situation: The transmitter shows a stable value, but the analog input drops during the same event. Which measurement separates transmitter output from the control input?
+    STAGE-04-TRACE-INTERMITTENCE:
+      title: Locate the intermittent section
+      situation: Current is coherent at the transmitter side and lost before the analog input. Which inspection provides the physical cause without changing scaling?
+    STAGE-05-RESTORE-LOOP:
+      title: Restore the connection
+      situation: The inspection identifies an intermittent field contact. Which intervention repairs the loop without compensating in PLC or HMI?
+    STAGE-06-VERIFY-FLOW-CHAIN:
+      title: Verify stability
+      situation: The connection is restored and current remains stable. Which test demonstrates that flow, loop, PLC and HMI remain coherent?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Flow process and HMI
+      content: The local reference indicates stable flow, but PLC and HMI show intermittent drops. The symptom does not yet identify whether the process, transmitter, loop or input changes.
+    EVID-02-LOCAL-CORRELATION:
+      source: Independent reference and local indicator
+      content: The independent reference and transmitter indicator remain stable during the HMI drop. The physical variable and local representation do not share the PLC symptom.
+    EVID-03-LOOP-MEASUREMENT:
+      source: Loop test points and analog input
+      content: At the transmitter test point current remains coherent during the event, while the analog-input boundary shows the drop. Engineering scaling is unchanged.
+    EVID-04-TERMINAL-FAULT:
+      source: Field terminal and authorized continuity check
+      content: With the circuit isolated under the procedure, inspection identifies a terminal contact that does not maintain a stable connection and produces intermittent resistance between loop boundaries.
+    EVID-05-DIAGNOSIS:
+      source: Analog-chain synthesis
+      content: Process and transmitter remain stable, output and input diverge during the event and the field terminal explains the discontinuity. There is no evidence to change transmitter, module or scaling.
+    EVID-06-INTERVENTION:
+      source: Corrected field terminal
+      content: The terminal has been reterminated and secured under the authorized procedure. Current remains stable at the test points, but functional recovery still needs representative process points.
+    EVID-07-RECOVERY:
+      source: Representative flow test
+      content: At low, mid and high operating points, process reference, loop current, analog input, PLC and HMI remain coherent without new intermittent drops. The chain is verified.
+  decisions:
+    DEC-01-RESET-HMI:
+      action: Restart the screen to see whether the value stabilizes and the alarm disappears.
+    DEC-01-CHECK-REFERENCE:
+      action: Compare the reading with an independent reference.
+    DEC-01-REPLACE-TRANSMITTER:
+      action: Replace the transmitter before comparing process, output and analog input.
+    DEC-01-RAISE-FLOW:
+      action: Change process flow to reproduce or remove the fluctuation.
+    DEC-02-CHECK-LOCAL:
+      action: Compare reference, local indicator and HMI during the event.
+    DEC-02-CHANGE-SCALE:
+      action: Change the engineering range and observe whether the fluctuation appears to disappear from the screen.
+    DEC-02-RESTART-PLC:
+      action: Restart the PLC to check whether the alarm and intermittent reading temporarily disappear.
+    DEC-02-ACK-ALARM:
+      action: Acknowledge the alarm and keep watching the screen without comparing signal boundaries.
+    DEC-03-REPLACE-AI:
+      action: Replace the analog module because the HMI drops, before comparing current at both sides.
+    DEC-03-CHECK-VOLTAGE:
+      action: Measure only transmitter supply and close the boundary without checking current at the input.
+    DEC-03-READ-HMI:
+      action: Read the HMI again to confirm the low value and record the same symptom.
+    DEC-03-MEASURE-LOOP-BOUNDARIES:
+      action: Measure current at both loop boundaries.
+    DEC-04-CHECK-PARAMETER:
+      action: Edit transmitter parameters before reviewing connection and cable continuity.
+    DEC-04-CYCLE-SUPPLY:
+      action: Cycle power to reproduce the symptom without preserving the intermittent condition.
+    DEC-04-TRACE-TERMINAL:
+      action: Isolate the loop and check terminal continuity.
+    DEC-04-FORCE-PV:
+      action: Force the process value to keep supervision running while the field connection remains unverified.
+    DEC-05-REPLACE-TRANSMITTER:
+      action: Replace the transmitter even though its local indication and measured output remain stable.
+    DEC-05-RETERMINATE-LOOP:
+      action: Reterminate the terminal and secure the contact under the authorized procedure.
+    DEC-05-RESCALE-PLC:
+      action: Change PLC scaling to compensate for the drops instead of restoring the physical path.
+    DEC-05-BYPASS-INPUT:
+      action: Bypass the analog input and keep production running while the loop remains unresolved.
+    DEC-06-CLOSE-ONE-POINT:
+      action: Close after one stable value without checking recurrence across operating points.
+    DEC-06-CLEAR-ALARM:
+      action: Clear the alarm and document recovery without confirming current at each boundary.
+    DEC-06-CHANGE-AVERAGING:
+      action: Increase filtering so the HMI looks stable even if the field connection keeps dropping.
+    DEC-06-VERIFY-MULTIPOINT:
+      action: Verify low, mid and high points through the complete chain.
+  retry_feedback:
+    DEC-01-RESET-HMI: Reiniciar la pantalla puede ocultar la intermitencia y elimina una observación útil.
+    DEC-01-REPLACE-TRANSMITTER: El síntoma no demuestra que el transmisor esté averiado; todavía no se ha comparado su salida.
+    DEC-01-RAISE-FLOW: Cambiar el proceso modifica la condición de prueba y no localiza la caída de señal.
+    DEC-02-CHANGE-SCALE: La fluctuación no se corrige cambiando una escala que aún no se ha demostrado incorrecta.
+    DEC-02-RESTART-PLC: Un reinicio puede repetir el síntoma y destruye la continuidad de la observación.
+    DEC-02-ACK-ALARM: Reconocer una alarma cambia su presentación, pero no separa proceso, transmisor y lazo.
+    DEC-03-REPLACE-AI: Una entrada que registra el síntoma todavía no está demostrada como averiada.
+    DEC-03-CHECK-VOLTAGE: La alimentación puede ser correcta mientras una conexión de señal interrumpe la corriente.
+    DEC-03-READ-HMI: Otra lectura HMI repite el efecto y no compara las fronteras eléctricas.
+    DEC-04-CHECK-PARAMETER: Los parámetros no explican una pérdida física entre dos puntos que dejan de coincidir.
+    DEC-04-CYCLE-SUPPLY: Ciclar la alimentación puede repetir el fallo sin conservar ni localizar la condición de campo.
+    DEC-04-FORCE-PV: Forzar el valor sustituye la señal real por una suposición y rompe la trazabilidad.
+    DEC-05-REPLACE-TRANSMITTER: La salida estable y la divergencia posterior no justifican sustituir el transmisor.
+    DEC-05-RESCALE-PLC: Modificar el escalado ocultaría una interrupción y dejaría la causa física sin resolver.
+    DEC-05-BYPASS-INPUT: Puentear la entrada elimina una barrera de diagnóstico y puede presentar un valor no medido.
+    DEC-06-CLOSE-ONE-POINT: Un único valor estable no demuestra que el lazo permanezca coherente en operación.
+    DEC-06-CLEAR-ALARM: Borrar la alarma no comprueba la continuidad ni la propagación de la medida.
+    DEC-06-CHANGE-AVERAGING: Filtrar más puede ocultar una intermitencia y no verifica la señal de campo.
+  visual:
+    educational_purpose: Distinguish a physical flow variation from an intermittent interruption in the 4–20 mA loop and verify the complete chain.
+  assets:
+    ART-001:
+      alt: Process station with pipe, flow transmitter and control cabinet.
+      caption: 'Cover: flow measurement connects process, instrument and control.'
+    ART-002:
+      alt: Flow transmitter and HMI during an intermittent reading drop.
+      caption: 'Initial incident: the process appears stable while representation fluctuates.'
+    ART-003:
+      alt: Diagram comparing process, transmitter, 4–20 mA loop and PLC/HMI input.
+      caption: Boundary comparison separates stable process from intermittent signal.
+    ART-004:
+      alt: Technician measuring a 4–20 mA loop at approved test points.
+      caption: Measure current at both sides before changing parameters.
+    ART-005:
+      alt: Diagram of a field terminal introducing intermittent resistance.
+      caption: Inspection locates the section separating stable output from unstable input.
+    ART-006:
+      alt: Technician performing an authorized retermination in a junction box.
+      caption: Repair restores continuity without compensating the fault in software.
+    ART-007:
+      alt: Diagram verifying low, mid and high flow points across the complete chain.
+      caption: Recovery is established with multiple points and no new drops.
+  completion:
+    title: Technical debrief
+    summary: The process and transmitter remained stable, but an intermittent field contact separated transmitter output from the analog input. Retermination restored continuity and multipoint verification aligned current, input, PLC and HMI.
+    process: ["Preserve the symptom and compare it with an independent reference.", "Separate process, local indicator and HMI.", "Measure current at both loop boundaries.", "Inspect terminals and continuity under the authorized procedure.", "Restore the connection without changing validated scaling.", "Verify low, mid and high points across the complete chain."]
+    lesson: A stable local reading does not prove that current reaches the input continuously; locate the first mismatch between boundaries before changing parameters.
+    avoided_errors: ["Changing the transmitter because of an HMI symptom.", "Changing scaling to hide a signal drop.", "Opening or bypassing the loop outside the procedure.", "Closing after one stable value.", "Confusing filtering with recovery of an intermittent connection."]
+    industrial_value: ["Fewer unjustified replacements and scaling changes.", "Better traceability for intermittent instrumentation faults.", "Repeatable verification from process to HMI."]

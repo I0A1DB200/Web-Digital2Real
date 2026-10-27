@@ -1,0 +1,555 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-FLOW-LOOP-017
+  editorial_id: EE-0017
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales: ["es", "en"]
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Generic flow transmitter / 4–20 mA / analog input
+  domain: Intermittent analog-loop integrity diagnosis
+  industry: Process instrumentation
+  machine_type: Flow measurement skid
+  difficulty: foundation
+capability_references:
+  - capability_id: ICF-02
+    competency_ids: ["COMP-IIO-SIGNAL-TRACEABILITY", "COMP-IIO-STATE-INTERPRETATION", "COMP-IIO-CONTROLLED-RECOVERY"]
+public:
+  slug: flow-loop-intermittent
+  title: Señal de caudal intermitente en el lazo 4–20 mA
+  summary: Localiza por qué un caudal estable aparece intermitente en PLC y HMI siguiendo proceso, transmisor, corriente de lazo, cableado, entrada analógica y verificación.
+  estimated_duration: 18
+  scenario:
+    initial_context: La línea mantiene un caudal estable según la referencia local, pero el PLC y la HMI presentan caídas intermitentes.
+    operational_state: La primera discrepancia puede estar en el proceso, el transmisor, la alimentación del lazo, un terminal, la entrada analógica o la representación de control.
+    initiating_event: La supervisión del caudal genera una alarma intermitente y detiene una decisión de control.
+    learner_role: Técnico de instrumentación responsable de localizar la primera frontera eléctrica sin cambiar el escalado ni sustituir equipos sin evidencia.
+    safety_context:
+      safe_state: Mantén el proceso en una condición segura y realiza lecturas e intervenciones únicamente conforme al procedimiento autorizado para el lazo y la instalación.
+      intervention_constraints: ["No forzar valores ni puentear alarmas.", "No cambiar el escalado antes de localizar la discrepancia.", "No abrir ni interrumpir el lazo energizado fuera del método aprobado.", "Usar puntos de prueba y aislamiento autorizados; no puentear la entrada para mantener producción."]
+  learning_objectives:
+    - id: OBJ-TRACE-FLOW-CHAIN
+      description: Seguir la cadena desde el proceso de caudal y el transmisor hasta la corriente de lazo, la entrada analógica, el PLC y la HMI.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-LOCALIZE-LOOP-BOUNDARY
+      description: Distinguir un cambio de proceso, un transmisor estable y una interrupción de lazo mediante mediciones en fronteras autorizadas.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-VERIFY-FLOW-RECOVERY
+      description: Restaurar la continuidad física y verificar varios puntos de caudal sin compensar el fallo en PLC o HMI.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-FLOW-INCIDENT
+      phase: incident
+      title: Incidente de caudal
+      situation: La línea mantiene un caudal estable según la referencia local, pero el PLC y la HMI caen de forma intermitente. ¿Qué primera comprobación conserva el síntoma sin alterar el proceso?
+      evidence_ids: ["EVID-01-INCIDENT"]
+      decision_ids: ["DEC-01-RESET-HMI", "DEC-01-CHECK-REFERENCE", "DEC-01-REPLACE-TRANSMITTER", "DEC-01-RAISE-FLOW"]
+      media_ids: ["ART-002"]
+    - id: STAGE-02-SEPARATE-PROCESS
+      phase: investigation
+      title: Separar proceso y representación
+      situation: La referencia independiente y el indicador local permanecen estables mientras la HMI fluctúa. ¿Qué comparación delimita la siguiente frontera?
+      evidence_ids: ["EVID-02-LOCAL-CORRELATION"]
+      decision_ids: ["DEC-02-CHECK-LOCAL", "DEC-02-CHANGE-SCALE", "DEC-02-RESTART-PLC", "DEC-02-ACK-ALARM"]
+      media_ids: ["ART-003"]
+    - id: STAGE-03-MEASURE-BOUNDARIES
+      phase: investigation
+      title: Medir corriente en las fronteras
+      situation: El transmisor muestra un valor estable, pero la entrada analógica registra caídas durante el mismo evento. ¿Qué medición separa la salida del transmisor de la entrada de control?
+      evidence_ids: ["EVID-03-LOOP-MEASUREMENT"]
+      decision_ids: ["DEC-03-REPLACE-AI", "DEC-03-CHECK-VOLTAGE", "DEC-03-READ-HMI", "DEC-03-MEASURE-LOOP-BOUNDARIES"]
+      media_ids: ["ART-004"]
+    - id: STAGE-04-TRACE-INTERMITTENCE
+      phase: investigation
+      title: Localizar el tramo intermitente
+      situation: La corriente es coherente en el lado del transmisor y se pierde antes de la entrada analógica. ¿Qué inspección aporta la causa física sin cambiar el escalado?
+      evidence_ids: ["EVID-04-TERMINAL-FAULT"]
+      decision_ids: ["DEC-04-CHECK-PARAMETER", "DEC-04-CYCLE-SUPPLY", "DEC-04-TRACE-TERMINAL", "DEC-04-FORCE-PV"]
+      media_ids: ["ART-005"]
+    - id: STAGE-05-RESTORE-LOOP
+      phase: solution
+      title: Restaurar la conexión
+      situation: La inspección identifica un contacto de campo intermitente. ¿Qué intervención corrige el lazo sin compensar el defecto en PLC o HMI?
+      evidence_ids: []
+      decision_ids: ["DEC-05-REPLACE-TRANSMITTER", "DEC-05-RETERMINATE-LOOP", "DEC-05-RESCALE-PLC", "DEC-05-BYPASS-INPUT"]
+      media_ids: []
+    - id: STAGE-06-VERIFY-FLOW-CHAIN
+      phase: solution
+      title: Verificar la estabilidad
+      situation: La conexión se ha restaurado y la corriente permanece estable. ¿Qué prueba demuestra que el caudal, el lazo, el PLC y la HMI siguen siendo coherentes?
+      evidence_ids: ["EVID-06-INTERVENTION"]
+      decision_ids: ["DEC-06-CLOSE-ONE-POINT", "DEC-06-CLEAR-ALARM", "DEC-06-CHANGE-AVERAGING", "DEC-06-VERIFY-MULTIPOINT"]
+      media_ids: ["ART-006"]
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: Proceso de caudal y HMI
+      content: La referencia local indica un caudal estable, pero el PLC y la HMI presentan caídas intermitentes. El síntoma todavía no identifica si cambia el proceso, el transmisor, el lazo o la entrada.
+      reliability: high
+      revealed_by: []
+      media_ids: ["ART-002"]
+    - id: EVID-02-LOCAL-CORRELATION
+      type: measurement
+      source: Referencia independiente e indicador local
+      content: La referencia independiente y el indicador del transmisor permanecen estables durante la caída HMI. La magnitud física y la representación local no siguen el mismo fallo que el PLC.
+      reliability: confirmed
+      revealed_by: ["DEC-01-CHECK-REFERENCE"]
+      media_ids: ["ART-003"]
+    - id: EVID-03-LOOP-MEASUREMENT
+      type: diagnostic
+      source: Puntos de prueba del lazo y entrada analógica
+      content: En el punto de prueba del transmisor la corriente se mantiene coherente durante el evento, mientras que en la frontera de entrada analógica aparece la caída. El escalado de ingeniería permanece sin cambios.
+      reliability: confirmed
+      revealed_by: ["DEC-02-CHECK-LOCAL"]
+      media_ids: ["ART-004"]
+    - id: EVID-04-TERMINAL-FAULT
+      type: inspection
+      source: Terminal de campo y continuidad autorizada
+      content: Con el circuito aislado según el procedimiento, la inspección identifica un contacto de terminal que no mantiene una conexión estable y produce resistencia intermitente entre ambos puntos del lazo.
+      reliability: confirmed
+      revealed_by: ["DEC-03-MEASURE-LOOP-BOUNDARIES"]
+      media_ids: ["ART-005"]
+    - id: EVID-05-DIAGNOSIS
+      type: diagnostic
+      source: Síntesis de la cadena analógica
+      content: El proceso y el transmisor permanecen estables, la salida y la entrada divergen durante el evento y el terminal de campo explica la discontinuidad. No hay evidencia para cambiar transmisor, módulo ni escalado.
+      reliability: confirmed
+      revealed_by: ["DEC-04-TRACE-TERMINAL"]
+      media_ids: []
+    - id: EVID-06-INTERVENTION
+      type: inspection
+      source: Terminal de campo corregido
+      content: El terminal ha sido reterminado y asegurado según el procedimiento autorizado. La corriente se mantiene estable en los puntos de prueba y la recuperación funcional todavía debe verificarse con varios puntos de proceso.
+      reliability: confirmed
+      revealed_by: ["DEC-05-RETERMINATE-LOOP"]
+      media_ids: ["ART-006"]
+    - id: EVID-07-RECOVERY
+      type: functional_test
+      source: Prueba representativa de caudal
+      content: En puntos bajo, medio y alto de operación, la referencia de proceso, la corriente de lazo, la entrada analógica, el PLC y la HMI permanecen coherentes sin nuevas caídas intermitentes. La cadena queda verificada.
+      reliability: confirmed
+      revealed_by: ["DEC-06-VERIFY-MULTIPOINT"]
+      media_ids: ["ART-007"]
+  decisions:
+    - id: DEC-01-RESET-HMI
+      stage_id: STAGE-01-FLOW-INCIDENT
+      action: Reiniciar la pantalla para ver si el valor se estabiliza y desaparece la alarma.
+    - id: DEC-01-CHECK-REFERENCE
+      stage_id: STAGE-01-FLOW-INCIDENT
+      action: Comparar la lectura con una referencia independiente.
+    - id: DEC-01-REPLACE-TRANSMITTER
+      stage_id: STAGE-01-FLOW-INCIDENT
+      action: Sustituir el transmisor antes de comparar el proceso, la salida y la entrada analógica.
+    - id: DEC-01-RAISE-FLOW
+      stage_id: STAGE-01-FLOW-INCIDENT
+      action: Cambiar el caudal del proceso para intentar reproducir o eliminar la fluctuación.
+    - id: DEC-02-CHECK-LOCAL
+      stage_id: STAGE-02-SEPARATE-PROCESS
+      action: Comparar referencia, indicador local y HMI durante el evento.
+    - id: DEC-02-CHANGE-SCALE
+      stage_id: STAGE-02-SEPARATE-PROCESS
+      action: Cambiar el rango de ingeniería y observar si la fluctuación parece desaparecer de la pantalla.
+    - id: DEC-02-RESTART-PLC
+      stage_id: STAGE-02-SEPARATE-PROCESS
+      action: Reiniciar el PLC para comprobar si desaparece la alarma.
+    - id: DEC-02-ACK-ALARM
+      stage_id: STAGE-02-SEPARATE-PROCESS
+      action: Reconocer la alarma y continuar observando la pantalla.
+    - id: DEC-03-REPLACE-AI
+      stage_id: STAGE-03-MEASURE-BOUNDARIES
+      action: Cambiar el módulo analógico porque la HMI cae, antes de comparar la corriente en ambos lados.
+    - id: DEC-03-CHECK-VOLTAGE
+      stage_id: STAGE-03-MEASURE-BOUNDARIES
+      action: Medir solo la alimentación del transmisor y cerrar la frontera sin comprobar la corriente que llega a la entrada.
+    - id: DEC-03-READ-HMI
+      stage_id: STAGE-03-MEASURE-BOUNDARIES
+      action: Leer de nuevo la HMI para confirmar el valor bajo y registrar el mismo síntoma.
+    - id: DEC-03-MEASURE-LOOP-BOUNDARIES
+      stage_id: STAGE-03-MEASURE-BOUNDARIES
+      action: Medir la corriente en ambos lados del lazo.
+    - id: DEC-04-CHECK-PARAMETER
+      stage_id: STAGE-04-TRACE-INTERMITTENCE
+      action: Editar los parámetros del transmisor antes de revisar la conexión y la continuidad del cableado.
+    - id: DEC-04-CYCLE-SUPPLY
+      stage_id: STAGE-04-TRACE-INTERMITTENCE
+      action: Ciclar la alimentación para intentar reproducir el síntoma sin conservar la condición intermitente.
+    - id: DEC-04-TRACE-TERMINAL
+      stage_id: STAGE-04-TRACE-INTERMITTENCE
+      action: Aislar el lazo y comprobar continuidad en los terminales.
+    - id: DEC-04-FORCE-PV
+      stage_id: STAGE-04-TRACE-INTERMITTENCE
+      action: Forzar el valor de proceso para mantener la supervisión mientras la conexión de campo sigue sin verificarse.
+    - id: DEC-05-REPLACE-TRANSMITTER
+      stage_id: STAGE-05-RESTORE-LOOP
+      action: Cambiar el transmisor aunque su indicación local y su salida medida permanezcan estables.
+    - id: DEC-05-RETERMINATE-LOOP
+      stage_id: STAGE-05-RESTORE-LOOP
+      action: Reterminar el terminal y asegurar el contacto bajo el procedimiento autorizado.
+    - id: DEC-05-RESCALE-PLC
+      stage_id: STAGE-05-RESTORE-LOOP
+      action: Modificar el escalado PLC para compensar las caídas en lugar de restaurar el camino físico.
+    - id: DEC-05-BYPASS-INPUT
+      stage_id: STAGE-05-RESTORE-LOOP
+      action: Puentear la entrada analógica y mantener la producción mientras el lazo sigue sin resolverse.
+    - id: DEC-06-CLOSE-ONE-POINT
+      stage_id: STAGE-06-VERIFY-FLOW-CHAIN
+      action: Cerrar después de un valor estable sin comprobar que el comportamiento se repite en varios puntos.
+    - id: DEC-06-CLEAR-ALARM
+      stage_id: STAGE-06-VERIFY-FLOW-CHAIN
+      action: Borrar la alarma y documentar la recuperación sin confirmar la corriente en cada frontera.
+    - id: DEC-06-CHANGE-AVERAGING
+      stage_id: STAGE-06-VERIFY-FLOW-CHAIN
+      action: Aumentar el filtrado para que la HMI parezca estable aunque la conexión de campo siga cayendo.
+    - id: DEC-06-VERIFY-MULTIPOINT
+      stage_id: STAGE-06-VERIFY-FLOW-CHAIN
+      action: Verificar puntos bajo, medio y alto siguiendo toda la cadena.
+  visual:
+    educational_purpose: Distinguir una variación física de caudal de una interrupción intermitente en el lazo 4–20 mA y verificar la cadena completa.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-001-flow-skid.png
+        alt: Estación de proceso con tubería, transmisor de caudal y armario de control.
+        caption: 'Portada: la medida de caudal conecta proceso, instrumento y control.'
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-002-flow-incident.png
+        alt: Transmisor de caudal y HMI durante una caída intermitente de la lectura.
+        caption: 'Incidente inicial: el proceso parece estable mientras la representación fluctúa.'
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-003-boundary-comparison.png
+        alt: Diagrama que compara proceso, transmisor, lazo 4–20 mA y entrada PLC/HMI.
+        caption: La comparación de fronteras separa proceso estable de señal intermitente.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-004-loop-measurement.png
+        alt: Técnico midiendo un lazo 4–20 mA en puntos de prueba autorizados.
+        caption: La corriente se mide en ambos lados antes de cambiar parámetros.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-005-terminal-fault.png
+        alt: Diagrama de un terminal de campo que introduce una resistencia intermitente.
+        caption: La inspección localiza el tramo que separa salida estable e input inestable.
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-006-authorized-repair.png
+        alt: Técnico realizando una reterminación autorizada en una caja de conexiones.
+        caption: La reparación restaura continuidad sin compensar el fallo en software.
+        purpose: evidence
+      - id: ART-007
+        type: image
+        src: assets/EXP-FLOW-LOOP-017/ART-007-multipoint-verification.png
+        alt: Diagrama de verificación de caudal bajo, medio y alto en toda la cadena.
+        caption: La recuperación se acredita con varios puntos y sin nuevas caídas.
+        purpose: completion
+  completion:
+    title: Debrief técnico
+    summary: El proceso y el transmisor permanecían estables, pero un contacto de campo intermitente separaba la salida del transmisor de la entrada analógica. La reterminación restauró la continuidad y la verificación multipunto hizo coherentes corriente, entrada, PLC y HMI.
+    process: ["Conservar el síntoma y comparar con una referencia independiente.", "Separar proceso, indicador local y HMI.", "Medir la corriente en las dos fronteras del lazo.", "Inspeccionar terminales y continuidad bajo el procedimiento autorizado.", "Restaurar la conexión sin modificar el escalado validado.", "Verificar puntos bajo, medio y alto en toda la cadena."]
+    lesson: Una lectura local estable no demuestra que la corriente llegue de forma continua a la entrada; la primera discrepancia debe localizarse entre fronteras antes de cambiar parámetros.
+    avoided_errors: ["Cambiar el transmisor por un síntoma de HMI.", "Modificar el escalado para ocultar una caída de señal.", "Abrir o puentear el lazo fuera del procedimiento.", "Cerrar después de un único valor estable.", "Confundir filtrado con recuperación de una conexión intermitente."]
+    industrial_value: ["Menos sustituciones y cambios de escala injustificados.", "Mejor trazabilidad de fallos intermitentes de instrumentación.", "Verificación repetible desde proceso hasta HMI."]
+    media_ids: ["ART-007"]
+private:
+  fault_model:
+    root_cause: Un contacto de terminal de campo introduce una resistencia intermitente en el lazo 4–20 mA; el proceso, el transmisor y el escalado de la entrada permanecen correctos.
+    recovery_conditions: ["La referencia de proceso y el indicador local permanecen estables durante el síntoma.", "La corriente se compara en el transmisor y en la entrada mediante puntos de prueba autorizados.", "El terminal se retermina y asegura con aislamiento y procedimiento aprobado.", "Puntos bajo, medio y alto confirman coherencia entre proceso, lazo, entrada analógica, PLC y HMI sin nuevas caídas."]
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-PROCESS-CHANGE
+        statement: El caudal real cambia y la referencia independiente confirmará la variación.
+        initial_status: possible
+      - id: HYP-TRANSMITTER-OUTPUT
+        statement: El transmisor o su configuración producen una salida inestable.
+        initial_status: possible
+      - id: HYP-LOOP-INTEGRITY
+        statement: Una conexión o terminal intermitente interrumpe la corriente entre el transmisor y la entrada.
+        initial_status: possible
+      - id: HYP-ANALOG-INPUT
+        statement: La entrada analógica interpreta de forma inestable una corriente que llega correctamente.
+        initial_status: possible
+      - id: HYP-SCALING-REPRESENTATION
+        statement: El escalado o la representación cambian un valor estable después de la entrada.
+        initial_status: possible
+    confirmed_root_cause: HYP-LOOP-INTEGRITY
+    critical_path: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-LOCAL", "DEC-03-MEASURE-LOOP-BOUNDARIES", "DEC-04-TRACE-TERMINAL", "DEC-05-RETERMINATE-LOOP", "DEC-06-VERIFY-MULTIPOINT"]
+  decision_logic:
+    - decision_id: DEC-01-RESET-HMI
+      is_correct: false
+      rationale: Reiniciar la pantalla puede ocultar la intermitencia y elimina una observación útil.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-PROCESS
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Reiniciar la pantalla puede ocultar la intermitencia y elimina una observación útil.
+    - decision_id: DEC-01-CHECK-REFERENCE
+      is_correct: true
+      rationale: La referencia independiente permite separar un cambio real de caudal de una discrepancia de instrumentación.
+      classification: strong
+      consequence: Revela la comparación local.
+      evidence_revealed: ["EVID-02-LOCAL-CORRELATION"]
+      next_stage: STAGE-02-SEPARATE-PROCESS
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: DEC-01-REPLACE-TRANSMITTER
+      is_correct: false
+      rationale: El síntoma no demuestra que el transmisor esté averiado; todavía no se ha comparado su salida.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-PROCESS
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: El síntoma no demuestra que el transmisor esté averiado; todavía no se ha comparado su salida.
+    - decision_id: DEC-01-RAISE-FLOW
+      is_correct: false
+      rationale: Cambiar el proceso modifica la condición de prueba y no localiza la caída de señal.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-PROCESS
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Cambiar el proceso modifica la condición de prueba y no localiza la caída de señal.
+    - decision_id: DEC-02-CHECK-LOCAL
+      is_correct: true
+      rationale: Comparar proceso, indicador local y HMI identifica si la discrepancia aparece antes o después del transmisor.
+      classification: strong
+      consequence: Revela la separación entre proceso y representación.
+      evidence_revealed: ["EVID-03-LOOP-MEASUREMENT"]
+      next_stage: STAGE-03-MEASURE-BOUNDARIES
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: DEC-02-CHANGE-SCALE
+      is_correct: false
+      rationale: La fluctuación no se corrige cambiando una escala que aún no se ha demostrado incorrecta.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-03-MEASURE-BOUNDARIES
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: La fluctuación no se corrige cambiando una escala que aún no se ha demostrado incorrecta.
+    - decision_id: DEC-02-RESTART-PLC
+      is_correct: false
+      rationale: Un reinicio puede repetir el síntoma y destruye la continuidad de la observación.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-03-MEASURE-BOUNDARIES
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Un reinicio puede repetir el síntoma y destruye la continuidad de la observación.
+    - decision_id: DEC-02-ACK-ALARM
+      is_correct: false
+      rationale: Reconocer una alarma cambia su presentación, pero no separa proceso, transmisor y lazo.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-03-MEASURE-BOUNDARIES
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Reconocer una alarma cambia su presentación, pero no separa proceso, transmisor y lazo.
+    - decision_id: DEC-03-REPLACE-AI
+      is_correct: false
+      rationale: Una entrada que registra el síntoma todavía no está demostrada como averiada.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-04-TRACE-INTERMITTENCE
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Una entrada que registra el síntoma todavía no está demostrada como averiada.
+    - decision_id: DEC-03-CHECK-VOLTAGE
+      is_correct: false
+      rationale: La alimentación puede ser correcta mientras una conexión de señal interrumpe la corriente.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-04-TRACE-INTERMITTENCE
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: La alimentación puede ser correcta mientras una conexión de señal interrumpe la corriente.
+    - decision_id: DEC-03-READ-HMI
+      is_correct: false
+      rationale: Otra lectura HMI repite el efecto y no compara las fronteras eléctricas.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-04-TRACE-INTERMITTENCE
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Otra lectura HMI repite el efecto y no compara las fronteras eléctricas.
+    - decision_id: DEC-03-MEASURE-LOOP-BOUNDARIES
+      is_correct: true
+      rationale: Medir ambos lados del lazo muestra dónde la salida estable se convierte en una entrada intermitente.
+      classification: strong
+      consequence: Revela la divergencia entre transmisor y entrada.
+      evidence_revealed: ["EVID-04-TERMINAL-FAULT"]
+      next_stage: STAGE-04-TRACE-INTERMITTENCE
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: DEC-04-CHECK-PARAMETER
+      is_correct: false
+      rationale: Los parámetros no explican una pérdida física entre dos puntos que dejan de coincidir.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-05-RESTORE-LOOP
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Los parámetros no explican una pérdida física entre dos puntos que dejan de coincidir.
+    - decision_id: DEC-04-CYCLE-SUPPLY
+      is_correct: false
+      rationale: Ciclar la alimentación puede repetir el fallo sin conservar ni localizar la condición de campo.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-05-RESTORE-LOOP
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Ciclar la alimentación puede repetir el fallo sin conservar ni localizar la condición de campo.
+    - decision_id: DEC-04-TRACE-TERMINAL
+      is_correct: true
+      rationale: La continuidad autorizada y la inspección de terminales llevan la evidencia hasta el tramo intermitente.
+      classification: strong
+      consequence: Revela la causa de integridad del lazo.
+      evidence_revealed: ["EVID-05-DIAGNOSIS"]
+      next_stage: STAGE-05-RESTORE-LOOP
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: DEC-04-FORCE-PV
+      is_correct: false
+      rationale: Forzar el valor sustituye la señal real por una suposición y rompe la trazabilidad.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-05-RESTORE-LOOP
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Forzar el valor sustituye la señal real por una suposición y rompe la trazabilidad.
+    - decision_id: DEC-05-REPLACE-TRANSMITTER
+      is_correct: false
+      rationale: La salida estable y la divergencia posterior no justifican sustituir el transmisor.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-06-VERIFY-FLOW-CHAIN
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: La salida estable y la divergencia posterior no justifican sustituir el transmisor.
+    - decision_id: DEC-05-RETERMINATE-LOOP
+      is_correct: true
+      rationale: La reparación debe restaurar la continuidad física y conservar el escalado que ya está validado.
+      classification: strong
+      consequence: Registra una conexión corregida pendiente de verificación.
+      evidence_revealed: ["EVID-06-INTERVENTION"]
+      next_stage: STAGE-06-VERIFY-FLOW-CHAIN
+      score_effect: 0
+      safety_effect: 0
+    - decision_id: DEC-05-RESCALE-PLC
+      is_correct: false
+      rationale: Modificar el escalado ocultaría una interrupción y dejaría la causa física sin resolver.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-06-VERIFY-FLOW-CHAIN
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Modificar el escalado ocultaría una interrupción y dejaría la causa física sin resolver.
+    - decision_id: DEC-05-BYPASS-INPUT
+      is_correct: false
+      rationale: Puentear la entrada elimina una barrera de diagnóstico y puede presentar un valor no medido.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: STAGE-06-VERIFY-FLOW-CHAIN
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Puentear la entrada elimina una barrera de diagnóstico y puede presentar un valor no medido.
+    - decision_id: DEC-06-CLOSE-ONE-POINT
+      is_correct: false
+      rationale: Un único valor estable no demuestra que el lazo permanezca coherente en operación.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Un único valor estable no demuestra que el lazo permanezca coherente en operación.
+    - decision_id: DEC-06-CLEAR-ALARM
+      is_correct: false
+      rationale: Borrar la alarma no comprueba la continuidad ni la propagación de la medida.
+      classification: weak
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Borrar la alarma no comprueba la continuidad ni la propagación de la medida.
+    - decision_id: DEC-06-CHANGE-AVERAGING
+      is_correct: false
+      rationale: Filtrar más puede ocultar una intermitencia y no verifica la señal de campo.
+      classification: unsafe
+      consequence: Reintenta sin avanzar.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: 0
+      safety_effect: -1
+      retry_feedback: Filtrar más puede ocultar una intermitencia y no verifica la señal de campo.
+    - decision_id: DEC-06-VERIFY-MULTIPOINT
+      is_correct: true
+      rationale: Varios puntos representativos prueban la coherencia de proceso, corriente, entrada, PLC y HMI.
+      classification: strong
+      consequence: Establece la recuperación funcional.
+      evidence_revealed: ["EVID-07-RECOVERY"]
+      next_stage: COMPLETE
+      score_effect: 0
+      safety_effect: 0
+  scoring:
+    purpose: session_feedback
+    initial_score: 0
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes: ["PASS"]
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: El caudal y la salida del transmisor eran estables; el contacto de terminal introducía una resistencia intermitente antes de la entrada analógica. La reterminación y la prueba multipunto restauraron la cadena.
+    correct_reasoning: ["Conservar el síntoma y comparar con referencia independiente.", "Separar proceso, indicador local y representación HMI.", "Medir corriente en las dos fronteras del lazo.", "Localizar el terminal sin alterar el escalado.", "Reterminar la conexión y asegurarla según procedimiento.", "Verificar varios puntos de caudal a través de toda la cadena."]
+    recovery: ["Terminal de campo reterminado y asegurado.", "Escalado y equipos sustituidos solo si la evidencia posterior lo justificase; en este caso permanecen sin cambios.", "Puntos bajo, medio y alto coherentes sin nueva intermitencia."]
+  technical_validation:
+    status: pass_with_warnings
+    evidence: ["Caso genérico de lazo 4–20 mA; no se atribuyen terminales, alimentación, módulo o procedimiento a una marca concreta.", "La cadena proceso → transmisor → corriente → terminal → entrada → PLC → HMI queda separada por fronteras.", "La intervención requiere el método de aislamiento y los puntos de prueba definidos por la instalación real.", "Las fotografías son ilustrativas; los diagramas y la evidencia authored gobiernan el diagnóstico."]

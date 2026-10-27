@@ -1,0 +1,159 @@
+locale: es
+translations:
+  title: Señal de caudal intermitente en el lazo 4–20 mA
+  summary: Localiza por qué un caudal estable aparece intermitente en PLC y HMI siguiendo proceso, transmisor, corriente de lazo, cableado, entrada analógica y verificación.
+  scenario:
+    initial_context: La línea mantiene un caudal estable según la referencia local, pero el PLC y la HMI presentan caídas intermitentes.
+    operational_state: La primera discrepancia puede estar en el proceso, el transmisor, la alimentación del lazo, un terminal, la entrada analógica o la representación de control.
+    initiating_event: La supervisión del caudal genera una alarma intermitente y detiene una decisión de control.
+    learner_role: Técnico de instrumentación responsable de localizar la primera frontera eléctrica sin cambiar el escalado ni sustituir equipos sin evidencia.
+    safety_context:
+      safe_state: Mantén el proceso en una condición segura y realiza lecturas e intervenciones únicamente conforme al procedimiento autorizado para el lazo y la instalación.
+      intervention_constraints: ["No forzar valores ni puentear alarmas.", "No cambiar el escalado antes de localizar la discrepancia.", "No abrir ni interrumpir el lazo energizado fuera del método aprobado.", "Usar puntos de prueba y aislamiento autorizados; no puentear la entrada para mantener producción."]
+  learning_objectives:
+    OBJ-TRACE-FLOW-CHAIN:
+      description: Seguir la cadena desde el proceso de caudal y el transmisor hasta la corriente de lazo, la entrada analógica, el PLC y la HMI.
+    OBJ-LOCALIZE-LOOP-BOUNDARY:
+      description: Distinguir un cambio de proceso, un transmisor estable y una interrupción de lazo mediante mediciones en fronteras autorizadas.
+    OBJ-VERIFY-FLOW-RECOVERY:
+      description: Restaurar la continuidad física y verificar varios puntos de caudal sin compensar el fallo en PLC o HMI.
+  stages:
+    STAGE-01-FLOW-INCIDENT:
+      title: Incidente de caudal
+      situation: La línea mantiene un caudal estable según la referencia local, pero el PLC y la HMI caen de forma intermitente. ¿Qué primera comprobación conserva el síntoma sin alterar el proceso?
+    STAGE-02-SEPARATE-PROCESS:
+      title: Separar proceso y representación
+      situation: La referencia independiente y el indicador local permanecen estables mientras la HMI fluctúa. ¿Qué comparación delimita la siguiente frontera?
+    STAGE-03-MEASURE-BOUNDARIES:
+      title: Medir corriente en las fronteras
+      situation: El transmisor muestra un valor estable, pero la entrada analógica registra caídas durante el mismo evento. ¿Qué medición separa la salida del transmisor de la entrada de control?
+    STAGE-04-TRACE-INTERMITTENCE:
+      title: Localizar el tramo intermitente
+      situation: La corriente es coherente en el lado del transmisor y se pierde antes de la entrada analógica. ¿Qué inspección aporta la causa física sin cambiar el escalado?
+    STAGE-05-RESTORE-LOOP:
+      title: Restaurar la conexión
+      situation: La inspección identifica un contacto de campo intermitente. ¿Qué intervención corrige el lazo sin compensar el defecto en PLC o HMI?
+    STAGE-06-VERIFY-FLOW-CHAIN:
+      title: Verificar la estabilidad
+      situation: La conexión se ha restaurado y la corriente permanece estable. ¿Qué prueba demuestra que el caudal, el lazo, el PLC y la HMI siguen siendo coherentes?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Proceso de caudal y HMI
+      content: La referencia local indica un caudal estable, pero el PLC y la HMI presentan caídas intermitentes. El síntoma todavía no identifica si cambia el proceso, el transmisor, el lazo o la entrada.
+    EVID-02-LOCAL-CORRELATION:
+      source: Referencia independiente e indicador local
+      content: La referencia independiente y el indicador del transmisor permanecen estables durante la caída HMI. La magnitud física y la representación local no siguen el mismo fallo que el PLC.
+    EVID-03-LOOP-MEASUREMENT:
+      source: Puntos de prueba del lazo y entrada analógica
+      content: En el punto de prueba del transmisor la corriente se mantiene coherente durante el evento, mientras que en la frontera de entrada analógica aparece la caída. El escalado de ingeniería permanece sin cambios.
+    EVID-04-TERMINAL-FAULT:
+      source: Terminal de campo y continuidad autorizada
+      content: Con el circuito aislado según el procedimiento, la inspección identifica un contacto de terminal que no mantiene una conexión estable y produce resistencia intermitente entre ambos puntos del lazo.
+    EVID-05-DIAGNOSIS:
+      source: Síntesis de la cadena analógica
+      content: El proceso y el transmisor permanecen estables, la salida y la entrada divergen durante el evento y el terminal de campo explica la discontinuidad. No hay evidencia para cambiar transmisor, módulo ni escalado.
+    EVID-06-INTERVENTION:
+      source: Terminal de campo corregido
+      content: El terminal ha sido reterminado y asegurado según el procedimiento autorizado. La corriente se mantiene estable en los puntos de prueba y la recuperación funcional todavía debe verificarse con varios puntos de proceso.
+    EVID-07-RECOVERY:
+      source: Prueba representativa de caudal
+      content: En puntos bajo, medio y alto de operación, la referencia de proceso, la corriente de lazo, la entrada analógica, el PLC y la HMI permanecen coherentes sin nuevas caídas intermitentes. La cadena queda verificada.
+  decisions:
+    DEC-01-RESET-HMI:
+      action: Reiniciar la pantalla para ver si el valor se estabiliza y desaparece la alarma.
+    DEC-01-CHECK-REFERENCE:
+      action: Comparar la lectura con una referencia independiente.
+    DEC-01-REPLACE-TRANSMITTER:
+      action: Sustituir el transmisor antes de comparar el proceso, la salida y la entrada analógica.
+    DEC-01-RAISE-FLOW:
+      action: Cambiar el caudal del proceso para intentar reproducir o eliminar la fluctuación.
+    DEC-02-CHECK-LOCAL:
+      action: Comparar referencia, indicador local y HMI durante el evento.
+    DEC-02-CHANGE-SCALE:
+      action: Cambiar el rango de ingeniería y observar si la fluctuación parece desaparecer de la pantalla.
+    DEC-02-RESTART-PLC:
+      action: Reiniciar el PLC para comprobar si desaparece la alarma.
+    DEC-02-ACK-ALARM:
+      action: Reconocer la alarma y continuar observando la pantalla.
+    DEC-03-REPLACE-AI:
+      action: Cambiar el módulo analógico porque la HMI cae, antes de comparar la corriente en ambos lados.
+    DEC-03-CHECK-VOLTAGE:
+      action: Medir solo la alimentación del transmisor y cerrar la frontera sin comprobar la corriente que llega a la entrada.
+    DEC-03-READ-HMI:
+      action: Leer de nuevo la HMI para confirmar el valor bajo y registrar el mismo síntoma.
+    DEC-03-MEASURE-LOOP-BOUNDARIES:
+      action: Medir la corriente en ambos lados del lazo.
+    DEC-04-CHECK-PARAMETER:
+      action: Editar los parámetros del transmisor antes de revisar la conexión y la continuidad del cableado.
+    DEC-04-CYCLE-SUPPLY:
+      action: Ciclar la alimentación para intentar reproducir el síntoma sin conservar la condición intermitente.
+    DEC-04-TRACE-TERMINAL:
+      action: Aislar el lazo y comprobar continuidad en los terminales.
+    DEC-04-FORCE-PV:
+      action: Forzar el valor de proceso para mantener la supervisión mientras la conexión de campo sigue sin verificarse.
+    DEC-05-REPLACE-TRANSMITTER:
+      action: Cambiar el transmisor aunque su indicación local y su salida medida permanezcan estables.
+    DEC-05-RETERMINATE-LOOP:
+      action: Reterminar el terminal y asegurar el contacto bajo el procedimiento autorizado.
+    DEC-05-RESCALE-PLC:
+      action: Modificar el escalado PLC para compensar las caídas en lugar de restaurar el camino físico.
+    DEC-05-BYPASS-INPUT:
+      action: Puentear la entrada analógica y mantener la producción mientras el lazo sigue sin resolverse.
+    DEC-06-CLOSE-ONE-POINT:
+      action: Cerrar después de un valor estable sin comprobar que el comportamiento se repite en varios puntos.
+    DEC-06-CLEAR-ALARM:
+      action: Borrar la alarma y documentar la recuperación sin confirmar la corriente en cada frontera.
+    DEC-06-CHANGE-AVERAGING:
+      action: Aumentar el filtrado para que la HMI parezca estable aunque la conexión de campo siga cayendo.
+    DEC-06-VERIFY-MULTIPOINT:
+      action: Verificar puntos bajo, medio y alto siguiendo toda la cadena.
+  retry_feedback:
+    DEC-01-RESET-HMI: Reiniciar la pantalla puede ocultar la intermitencia y elimina una observación útil.
+    DEC-01-REPLACE-TRANSMITTER: El síntoma no demuestra que el transmisor esté averiado; todavía no se ha comparado su salida.
+    DEC-01-RAISE-FLOW: Cambiar el proceso modifica la condición de prueba y no localiza la caída de señal.
+    DEC-02-CHANGE-SCALE: La fluctuación no se corrige cambiando una escala que aún no se ha demostrado incorrecta.
+    DEC-02-RESTART-PLC: Un reinicio puede repetir el síntoma y destruye la continuidad de la observación.
+    DEC-02-ACK-ALARM: Reconocer una alarma cambia su presentación, pero no separa proceso, transmisor y lazo.
+    DEC-03-REPLACE-AI: Una entrada que registra el síntoma todavía no está demostrada como averiada.
+    DEC-03-CHECK-VOLTAGE: La alimentación puede ser correcta mientras una conexión de señal interrumpe la corriente.
+    DEC-03-READ-HMI: Otra lectura HMI repite el efecto y no compara las fronteras eléctricas.
+    DEC-04-CHECK-PARAMETER: Los parámetros no explican una pérdida física entre dos puntos que dejan de coincidir.
+    DEC-04-CYCLE-SUPPLY: Ciclar la alimentación puede repetir el fallo sin conservar ni localizar la condición de campo.
+    DEC-04-FORCE-PV: Forzar el valor sustituye la señal real por una suposición y rompe la trazabilidad.
+    DEC-05-REPLACE-TRANSMITTER: La salida estable y la divergencia posterior no justifican sustituir el transmisor.
+    DEC-05-RESCALE-PLC: Modificar el escalado ocultaría una interrupción y dejaría la causa física sin resolver.
+    DEC-05-BYPASS-INPUT: Puentear la entrada elimina una barrera de diagnóstico y puede presentar un valor no medido.
+    DEC-06-CLOSE-ONE-POINT: Un único valor estable no demuestra que el lazo permanezca coherente en operación.
+    DEC-06-CLEAR-ALARM: Borrar la alarma no comprueba la continuidad ni la propagación de la medida.
+    DEC-06-CHANGE-AVERAGING: Filtrar más puede ocultar una intermitencia y no verifica la señal de campo.
+  visual:
+    educational_purpose: Distinguir una variación física de caudal de una interrupción intermitente en el lazo 4–20 mA y verificar la cadena completa.
+  assets:
+    ART-001:
+      alt: Estación de proceso con tubería, transmisor de caudal y armario de control.
+      caption: 'Portada: la medida de caudal conecta proceso, instrumento y control.'
+    ART-002:
+      alt: Transmisor de caudal y HMI durante una caída intermitente de la lectura.
+      caption: 'Incidente inicial: el proceso parece estable mientras la representación fluctúa.'
+    ART-003:
+      alt: Diagrama que compara proceso, transmisor, lazo 4–20 mA y entrada PLC/HMI.
+      caption: La comparación de fronteras separa proceso estable de señal intermitente.
+    ART-004:
+      alt: Técnico midiendo un lazo 4–20 mA en puntos de prueba autorizados.
+      caption: La corriente se mide en ambos lados antes de cambiar parámetros.
+    ART-005:
+      alt: Diagrama de un terminal de campo que introduce una resistencia intermitente.
+      caption: La inspección localiza el tramo que separa salida estable e input inestable.
+    ART-006:
+      alt: Técnico realizando una reterminación autorizada en una caja de conexiones.
+      caption: La reparación restaura continuidad sin compensar el fallo en software.
+    ART-007:
+      alt: Diagrama de verificación de caudal bajo, medio y alto en toda la cadena.
+      caption: La recuperación se acredita con varios puntos y sin nuevas caídas.
+  completion:
+    title: Debrief técnico
+    summary: El proceso y el transmisor permanecían estables, pero un contacto de campo intermitente separaba la salida del transmisor de la entrada analógica. La reterminación restauró la continuidad y la verificación multipunto hizo coherentes corriente, entrada, PLC y HMI.
+    process: ["Conservar el síntoma y comparar con una referencia independiente.", "Separar proceso, indicador local y HMI.", "Medir la corriente en las dos fronteras del lazo.", "Inspeccionar terminales y continuidad bajo el procedimiento autorizado.", "Restaurar la conexión sin modificar el escalado validado.", "Verificar puntos bajo, medio y alto en toda la cadena."]
+    lesson: Una lectura local estable no demuestra que la corriente llegue de forma continua a la entrada; la primera discrepancia debe localizarse entre fronteras antes de cambiar parámetros.
+    avoided_errors: ["Cambiar el transmisor por un síntoma de HMI.", "Modificar el escalado para ocultar una caída de señal.", "Abrir o puentear el lazo fuera del procedimiento.", "Cerrar después de un único valor estable.", "Confundir filtrado con recuperación de una conexión intermitente."]
+    industrial_value: ["Menos sustituciones y cambios de escala injustificados.", "Mejor trazabilidad de fallos intermitentes de instrumentación.", "Verificación repetible desde proceso hasta HMI."]

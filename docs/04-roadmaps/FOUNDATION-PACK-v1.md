@@ -37,8 +37,9 @@ The initial portfolio assigns one principal Capability to each Experience. Title
 | EE-0014 | ICF-07 — Pneumatic Systems | Cylinder Fails to Extend | Planned |
 | EE-0015 | ICF-08 — Hydraulic Systems | Axis Drifts Under Load | Planned |
 | EE-0016 | ICF-09 — HMI & SCADA Diagnostics | HMI Value Frozen During Production | Planned |
-| EE-0017 | ICF-10 — PLC Architecture | Sequence State Lost After Restart | Planned |
+| EE-0017 | ICF-02 — Industrial I/O | Intermittent 4–20 mA Flow Signal | Technical review in ENV-002 |
 | EE-0018 | ICF-11 — Advanced Industrial Troubleshooting | Intermittent Multi-System Production Stop | Planned |
+| EE-0021 | ICF-10 — PLC Architecture | Sequence State Lost After Restart | Technical review in ENV-003 |
 
 # 4. Deliverables
 

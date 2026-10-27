@@ -73,6 +73,11 @@ const experiences = [
     id: "EE-0021",
     path: "../../../content/experiences/siemens/EE-0021-sequence-state-lost-after-restart/",
     correctIds: ["DEC-01-CHECK-SAFE-HOLD", "DEC-02-VERIFY-PERMISSIVES", "DEC-03-TRACE-STATE-OWNER", "DEC-04-CONFIRM-RETENTION", "DEC-05-RECOVER-KNOWN-STATE", "DEC-06-VERIFY-DRY-CYCLE"]
+  },
+  {
+    id: "EE-0017",
+    path: "../../../content/experiences/instrumentation/EE-0017-flow-loop-intermittent/",
+    correctIds: ["DEC-01-CHECK-REFERENCE", "DEC-02-CHECK-LOCAL", "DEC-03-MEASURE-LOOP-BOUNDARIES", "DEC-04-TRACE-TERMINAL", "DEC-05-RETERMINATE-LOOP", "DEC-06-VERIFY-MULTIPOINT"]
   }
 ];
 

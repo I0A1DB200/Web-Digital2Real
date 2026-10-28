@@ -25,4 +25,7 @@ visual:
 
 theory: "theory.yaml"
 
-hotspots: []
+hotspots:
+  - experience_editorial_id: "EE-0021"
+    x: 52
+    y: 33

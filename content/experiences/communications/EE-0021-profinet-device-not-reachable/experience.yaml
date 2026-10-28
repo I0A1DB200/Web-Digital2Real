@@ -1,0 +1,543 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-PROFINET-DEVICE-021
+  editorial_id: EE-0021
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Siemens S7-1500 / PROFINET remote I/O
+  domain: PROFINET physical-link diagnostics
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: profinet-device-not-reachable
+  title: Dispositivo PROFINET no alcanzable
+  summary: Localiza por capas por qué una estación de I/O remota deja de intercambiar datos con el PLC y verifica la recuperación sin sustituir equipos por intuición.
+  estimated_duration: 18
+  scenario:
+    initial_context: Una estación de I/O remota de una célula automatizada deja de actualizar sus señales de proceso en el PLC.
+    operational_state: El PLC y el resto de la red siguen operativos. Todavía no se sabe si la causa está en la alimentación, el enlace físico, la configuración PROFINET o la estación remota.
+    initiating_event: La HMI muestra que una parte de las señales de la estación remota no está disponible.
+    learner_role: Técnico de automatización responsable de delimitar la primera frontera anormal y demostrar la recuperación completa.
+    safety_context:
+      safe_state: Realiza observaciones y diagnósticos desde una condición segura. Cualquier intervención sobre conectores o cableado debe seguir el procedimiento autorizado de mantenimiento.
+      intervention_constraints:
+        - No sustituir la estación remota antes de separar alimentación, enlace y configuración.
+        - No cambiar nombres PROFINET o direcciones sin evidencia.
+        - No forzar señales del PLC ni suprimir diagnósticos.
+        - Verificar comunicación cíclica, I/O y función de máquina después de la reparación.
+  learning_objectives:
+    - id: OBJ-LAYERED-SCOPE
+      description: Distinguir el estado del PLC, la alimentación de la estación, el enlace Ethernet y la comunicación cíclica PROFINET.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-PHYSICAL-BOUNDARY
+      description: Localizar la primera frontera anormal usando diagnóstico del controlador, estado del switch y una inspección física autorizada.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-VERIFIED-RECOVERY
+      description: Aplicar una corrección justificada y verificar enlace, datos de proceso y función de máquina.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-SCOPE
+      phase: incident
+      title: Confirmar el alcance
+      situation: El PLC permanece operativo, pero una estación de I/O remota ha dejado de actualizar sus señales. ¿Qué acción establece primero el alcance sin alterar el sistema?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-COMPARE-STATUS
+        - DEC-01-RESTART-PLC
+        - DEC-01-REPLACE-STATION
+        - DEC-01-CHANGE-NAME
+    - id: STAGE-02-CHECK-DEVICE-STATE
+      phase: investigation
+      title: Separar alimentación y comunicación
+      situation: El diagnóstico confirma que el resto de la red sigue operativo y que la estación no intercambia I/O cíclica. ¿Qué comprobación aporta la siguiente evidencia?
+      evidence_ids:
+        - EVID-02-SCOPE
+      decision_ids:
+        - DEC-02-CHECK-POWER-LINK
+        - DEC-02-ASSIGN-NAME
+        - DEC-02-SWAP-STATION
+        - DEC-02-FORCE-OUTPUTS
+    - id: STAGE-03-LOCALIZE-LINK
+      phase: investigation
+      title: Localizar la frontera física
+      situation: La estación tiene 24 VDC, pero su enlace no aparece activo. El PLC, el switch y los demás puertos siguen comunicando. ¿Dónde debe concentrarse el diagnóstico?
+      evidence_ids:
+        - EVID-03-DEVICE-STATE
+      decision_ids:
+        - DEC-03-INSPECT-PORT-CONNECTOR
+        - DEC-03-DOWNLOAD-HW
+        - DEC-03-REPLACE-PLC
+        - DEC-03-CHANGE-IP
+    - id: STAGE-04-RESTORE-CONNECTION
+      phase: investigation
+      title: Restaurar la conexión autorizada
+      situation: La inspección encuentra un conector Ethernet industrial dañado en la estación remota. ¿Qué intervención corresponde a la causa confirmada?
+      evidence_ids:
+        - EVID-04-SWITCH-PORT
+        - EVID-05-CONNECTOR
+      decision_ids:
+        - DEC-04-CHANGE-NAME
+        - DEC-04-RESTORE-CONNECTOR
+        - DEC-04-ADD-SWITCH
+        - DEC-04-BYPASS-PORT
+    - id: STAGE-05-VERIFY-RECOVERY
+      phase: solution
+      title: Verificar la recuperación
+      situation: La conexión ha sido restaurada mediante mantenimiento autorizado. ¿Qué comprobación demuestra que la estación vuelve a cumplir su función?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CHECK-LINK-ONLY
+        - DEC-05-VERIFY-FULL-CHAIN
+        - DEC-05-CLEAR-DIAGNOSTICS
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: HMI y operador
+      content: Una estación de I/O remota deja de actualizar varias señales de proceso mientras el PLC continúa en servicio.
+      reliability: high
+      revealed_by: []
+    - id: EVID-02-SCOPE
+      type: diagnostic
+      source: Diagnóstico del controlador
+      content: El PLC y las demás estaciones siguen disponibles. La estación afectada no presenta intercambio cíclico válido.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-COMPARE-STATUS
+      media_ids:
+        - ART-002
+    - id: EVID-03-DEVICE-STATE
+      type: inspection
+      source: Estación remota y alimentación
+      content: La estación recibe 24 VDC. El indicador de enlace Ethernet permanece inactivo y el indicador de diagnóstico de comunicación está activo.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-CHECK-POWER-LINK
+      media_ids:
+        - ART-003
+    - id: EVID-04-SWITCH-PORT
+      type: diagnostic
+      source: Switch industrial
+      content: El puerto asignado a la estación no muestra enlace; los puertos vecinos permanecen activos y no hay evidencia de una caída común del switch.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-INSPECT-PORT-CONNECTOR
+      media_ids:
+        - ART-004
+    - id: EVID-05-CONNECTOR
+      type: inspection
+      source: Inspección física autorizada
+      content: El conector Ethernet industrial de la estación presenta daño mecánico y no mantiene una conexión estable en el receptáculo.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-INSPECT-PORT-CONNECTOR
+      media_ids:
+        - ART-005
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Prueba posterior al mantenimiento
+      content: El enlace permanece activo, la estación entra en intercambio cíclico, las señales de I/O son coherentes y la función de máquina se verifica en condiciones representativas.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-VERIFY-FULL-CHAIN
+      media_ids:
+        - ART-006
+  decisions:
+    - id: DEC-01-COMPARE-STATUS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Comparar PLC, estación afectada y referencia.
+    - id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Reiniciar el PLC para ver si desaparece el síntoma.
+    - id: DEC-01-REPLACE-STATION
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Sustituir de inmediato la estación remota.
+    - id: DEC-01-CHANGE-NAME
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Asignar otro nombre PROFINET a la estación.
+    - id: DEC-02-CHECK-POWER-LINK
+      stage_id: STAGE-02-CHECK-DEVICE-STATE
+      action: Comprobar alimentación, enlace y diagnóstico.
+    - id: DEC-02-ASSIGN-NAME
+      stage_id: STAGE-02-CHECK-DEVICE-STATE
+      action: Asignar el nombre PROFINET esperado antes de comprobar el enlace.
+    - id: DEC-02-SWAP-STATION
+      stage_id: STAGE-02-CHECK-DEVICE-STATE
+      action: Cambiar la estación por otra sin conservar la evidencia.
+    - id: DEC-02-FORCE-OUTPUTS
+      stage_id: STAGE-02-CHECK-DEVICE-STATE
+      action: Forzar las salidas para comprobar si la estación responde.
+    - id: DEC-03-INSPECT-PORT-CONNECTOR
+      stage_id: STAGE-03-LOCALIZE-LINK
+      action: Inspeccionar el puerto y el conector de la estación.
+    - id: DEC-03-DOWNLOAD-HW
+      stage_id: STAGE-03-LOCALIZE-LINK
+      action: Descargar de nuevo la configuración hardware del PLC.
+    - id: DEC-03-REPLACE-PLC
+      stage_id: STAGE-03-LOCALIZE-LINK
+      action: Sustituir el PLC porque la estación no responde.
+    - id: DEC-03-CHANGE-IP
+      stage_id: STAGE-03-LOCALIZE-LINK
+      action: Cambiar la dirección IP de la estación.
+    - id: DEC-04-CHANGE-NAME
+      stage_id: STAGE-04-RESTORE-CONNECTION
+      action: Cambiar el nombre PROFINET para intentar recuperar la estación.
+    - id: DEC-04-RESTORE-CONNECTOR
+      stage_id: STAGE-04-RESTORE-CONNECTION
+      action: Restaurar el conector con el procedimiento autorizado.
+    - id: DEC-04-ADD-SWITCH
+      stage_id: STAGE-04-RESTORE-CONNECTION
+      action: Añadir un switch intermedio para evitar el conector dañado.
+    - id: DEC-04-BYPASS-PORT
+      stage_id: STAGE-04-RESTORE-CONNECTION
+      action: Puenteo temporal del puerto sin control de energías ni verificación.
+    - id: DEC-05-CHECK-LINK-ONLY
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Cerrar cuando el indicador de enlace vuelva a estar activo.
+    - id: DEC-05-VERIFY-FULL-CHAIN
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Verificar enlace, I/O cíclica y función.
+    - id: DEC-05-CLEAR-DIAGNOSTICS
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Borrar el diagnóstico y cerrar la intervención.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance, el estado de alimentación y enlace, la frontera del puerto, el conector y la recuperación funcional.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/01-cover.png
+        alt: Diagrama editorial de un PLC, switch industrial y estación de I/O remota conectados por PROFINET.
+        caption: Estación remota sin datos de proceso.
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/02-controller-diagnostics.png
+        alt: Vista simulada de diagnóstico del controlador con una estación remota sin intercambio cíclico y otras estaciones operativas.
+        caption: El alcance separa una estación de una caída global.
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/03-power-link-state.png
+        alt: Vista técnica de una estación remota con 24 VDC presente, enlace inactivo y diagnóstico de comunicación activo.
+        caption: Alimentación presente no demuestra enlace Ethernet.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/04-switch-port.png
+        alt: Panel simulado de puertos de switch donde un puerto de estación está sin enlace y los puertos vecinos están activos.
+        caption: La frontera se concentra en el puerto y su conexión.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/05-connector-inspection.png
+        alt: Ilustración técnica de un conector Ethernet industrial dañado en la estación remota.
+        caption: La inspección física confirma la causa del enlace.
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-PROFINET-DEVICE-021/06-recovery-verification.png
+        alt: Gráfica de recuperación con enlace activo, intercambio cíclico y señales de I/O coherentes.
+        caption: La recuperación se verifica por capas.
+        purpose: completion
+  completion:
+    title: Debrief técnico
+    summary: La estación estaba alimentada, pero el conector Ethernet industrial no mantenía un enlace estable. La reparación autorizada restauró el enlace y la verificación confirmó comunicación cíclica, I/O y función.
+    process:
+      - Confirmar el alcance.
+      - Separar alimentación y comunicación.
+      - Localizar el puerto sin enlace.
+      - Inspeccionar el conector.
+      - Restaurar la conexión.
+      - Verificar la cadena completa.
+    lesson: Una estación alimentada puede estar aislada de la red. La primera frontera útil aparece al comparar el estado de la estación, el puerto del switch y el conector físico.
+    avoided_errors:
+      - Reiniciar el PLC sin evidencia.
+      - Cambiar nombre, IP o proyecto para ocultar el síntoma.
+      - Sustituir la estación antes de separar alimentación y enlace.
+      - Cerrar al ver un solo indicador verde.
+    industrial_value:
+      - Diagnóstico por capas.
+      - Menos sustituciones injustificadas.
+      - Recuperación trazable desde el enlace hasta el proceso.
+    media_ids:
+      - ART-006
+private:
+  fault_model:
+    root_cause: El conector Ethernet industrial de la estación de I/O remota está dañado y no mantiene un enlace físico estable, por lo que se pierde la comunicación PROFINET cíclica.
+    recovery_conditions:
+      - Conector o conexión restaurada mediante mantenimiento autorizado.
+      - Enlace Ethernet estable.
+      - Estación integrada en intercambio cíclico PROFINET.
+      - Señales de I/O y función de máquina verificadas.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-POWER
+        statement: La estación ha perdido la alimentación de 24 VDC.
+        initial_status: possible
+      - id: HYP-CONFIG
+        statement: El nombre o la configuración PROFINET no coinciden.
+        initial_status: possible
+      - id: HYP-CONNECTOR
+        statement: La conexión Ethernet física de la estación está dañada.
+        initial_status: likely
+    confirmed_root_cause: HYP-CONNECTOR
+    critical_path:
+      - DEC-01-COMPARE-STATUS
+      - DEC-02-CHECK-POWER-LINK
+      - DEC-03-INSPECT-PORT-CONNECTOR
+      - DEC-04-RESTORE-CONNECTOR
+      - DEC-05-VERIFY-FULL-CHAIN
+  decision_logic:
+    - decision_id: DEC-01-COMPARE-STATUS
+      is_correct: true
+      rationale: Comparar estados delimita el alcance sin cambiar el sistema.
+      classification: strong
+      consequence: Se confirma una anomalía selectiva y se obtiene una referencia operativa.
+      evidence_revealed:
+        - EVID-02-SCOPE
+      next_stage: STAGE-02-CHECK-DEVICE-STATE
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-01-RESTART-PLC
+      is_correct: false
+      rationale: No hay evidencia de una caída global del controlador.
+      classification: weak
+      consequence: Se pierde contexto sin explicar el alcance.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-DEVICE-STATE
+      score_effect: -4
+      safety_effect: 0
+      retry_feedback: El PLC sigue operativo y la anomalía es selectiva. Compara estados antes de reiniciar.
+    - decision_id: DEC-01-REPLACE-STATION
+      is_correct: false
+      rationale: La estación aún no está separada entre alimentación, enlace y configuración.
+      classification: weak
+      consequence: Se interviene sin localizar la frontera.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-DEVICE-STATE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Una estación no alcanzable no está necesariamente averiada. Delimita primero las capas.
+    - decision_id: DEC-01-CHANGE-NAME
+      is_correct: false
+      rationale: El nombre PROFINET es solo una hipótesis y no explica todavía el alcance.
+      classification: weak
+      consequence: Se introduce una variable nueva.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-DEVICE-STATE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Conserva la configuración hasta obtener evidencia del nombre o de la identidad.
+    - decision_id: DEC-02-CHECK-POWER-LINK
+      is_correct: true
+      rationale: Alimentación, enlace e intercambio cíclico son estados distintos y deben observarse por separado.
+      classification: strong
+      consequence: La estación resulta alimentada, pero su comunicación física sigue sin estar demostrada.
+      evidence_revealed:
+        - EVID-03-DEVICE-STATE
+      next_stage: STAGE-03-LOCALIZE-LINK
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-02-ASSIGN-NAME
+      is_correct: false
+      rationale: No hay evidencia de un conflicto de identidad.
+      classification: weak
+      consequence: Se cambia configuración antes de comprobar el enlace.
+      evidence_revealed: []
+      next_stage: STAGE-03-LOCALIZE-LINK
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Un nombre correcto no puede compensar la ausencia de enlace. Comprueba primero alimentación y estado de puerto.
+    - decision_id: DEC-02-SWAP-STATION
+      is_correct: false
+      rationale: La sustitución no aporta una frontera diagnóstica.
+      classification: weak
+      consequence: Se pierde la oportunidad de comparar el equipo original.
+      evidence_revealed: []
+      next_stage: STAGE-03-LOCALIZE-LINK
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: Conserva el equipo y adquiere evidencia de las capas física y de comunicación.
+    - decision_id: DEC-02-FORCE-OUTPUTS
+      is_correct: false
+      rationale: Forzar señales no diagnostica el enlace y puede alterar el proceso.
+      classification: unsafe
+      consequence: Se introduce una condición de operación no representativa.
+      evidence_revealed: []
+      next_stage: STAGE-03-LOCALIZE-LINK
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No fuerces I/O para probar una red. Usa diagnóstico y observaciones seguras.
+    - decision_id: DEC-03-INSPECT-PORT-CONNECTOR
+      is_correct: true
+      rationale: Un puerto sin enlace con vecinos activos concentra la investigación en la conexión de la estación.
+      classification: strong
+      consequence: La inspección física se dirige a una frontera verificable.
+      evidence_revealed:
+        - EVID-04-SWITCH-PORT
+        - EVID-05-CONNECTOR
+      next_stage: STAGE-04-RESTORE-CONNECTION
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-03-DOWNLOAD-HW
+      is_correct: false
+      rationale: No hay evidencia de pérdida de proyecto o configuración.
+      classification: weak
+      consequence: Se altera el sistema sin explicar la ausencia de enlace.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONNECTION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La ausencia de enlace físico debe comprobarse antes de descargar configuración.
+    - decision_id: DEC-03-REPLACE-PLC
+      is_correct: false
+      rationale: El resto del controlador y de la red permanece operativo.
+      classification: weak
+      consequence: La sustitución no está justificada por el alcance.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONNECTION
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: La operación del PLC y de otros puertos reduce la probabilidad de una avería del controlador.
+    - decision_id: DEC-03-CHANGE-IP
+      is_correct: false
+      rationale: El problema observado es de enlace, no de direccionamiento demostrado.
+      classification: weak
+      consequence: Se introduce una segunda variable.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONNECTION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No cambies IP sin evidencia; primero confirma el estado físico del puerto y del conector.
+    - decision_id: DEC-04-CHANGE-NAME
+      is_correct: false
+      rationale: La inspección ya apunta a una causa física.
+      classification: weak
+      consequence: Se modifica configuración sin reparar el enlace.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Un nombre PROFINET no repara un conector que no mantiene enlace.
+    - decision_id: DEC-04-RESTORE-CONNECTOR
+      is_correct: true
+      rationale: La causa física está confirmada y la intervención autorizada debe restaurar la conexión.
+      classification: strong
+      consequence: La conexión queda reparada; la recuperación aún requiere verificación.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-04-ADD-SWITCH
+      is_correct: false
+      rationale: Añadir infraestructura no corrige el punto físico defectuoso.
+      classification: weak
+      consequence: Se complica la topología sin eliminar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: Restaura la conexión dañada en lugar de rodearla con infraestructura no justificada.
+    - decision_id: DEC-04-BYPASS-PORT
+      is_correct: false
+      rationale: Un puenteo sin procedimiento deja la instalación sin una condición verificable.
+      classification: unsafe
+      consequence: Se crea una condición insegura y no trazable.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No puentes una conexión industrial sin control de energías, autorización y verificación.
+    - decision_id: DEC-05-CHECK-LINK-ONLY
+      is_correct: false
+      rationale: El enlace es necesario, pero no demuestra I/O ni función recuperadas.
+      classification: weak
+      consequence: La intervención se cierra con evidencia parcial.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -4
+      safety_effect: 0
+      retry_feedback: El indicador de enlace solo cubre una capa. Comprueba también comunicación cíclica, I/O y función.
+    - decision_id: DEC-05-VERIFY-FULL-CHAIN
+      is_correct: true
+      rationale: La recuperación debe cubrir desde el enlace físico hasta una función de máquina representativa.
+      classification: strong
+      consequence: La reparación queda verificada y se desbloquea la finalización.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-DIAGNOSTICS
+      is_correct: false
+      rationale: Borrar un diagnóstico no demuestra que la condición se haya recuperado.
+      classification: weak
+      consequence: Se oculta el síntoma sin validar el proceso.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -4
+      safety_effect: 0
+      retry_feedback: El registro puede desaparecer mientras la comunicación sigue fallando. Verifica la cadena completa.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: El conector Ethernet de la estación remota no mantenía el enlace físico. La alimentación presente no garantizaba comunicación PROFINET.
+    correct_reasoning:
+      - Delimitar el alcance antes de intervenir.
+      - Separar alimentación, enlace y configuración.
+      - Usar el puerto del switch como frontera.
+      - Confirmar la causa con una inspección autorizada.
+      - Verificar la recuperación completa.
+    recovery:
+      - Restaurar la conexión.
+      - Confirmar enlace estable.
+      - Confirmar I/O cíclica.
+      - Verificar la función de máquina.
+  technical_validation:
+    status: pass
+    evidence:
+      - La estación remota conserva alimentación mientras el enlace permanece inactivo.
+      - El puerto afectado se separa de los puertos vecinos operativos.
+      - La causa solo se revela después de la inspección física autorizada.

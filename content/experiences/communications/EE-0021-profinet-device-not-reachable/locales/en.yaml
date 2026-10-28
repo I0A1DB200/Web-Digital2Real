@@ -1,0 +1,153 @@
+locale: en
+translations:
+  title: PROFINET Device Not Reachable
+  summary: Locate why a remote I/O station stops exchanging data with the PLC and verify recovery without replacing equipment by intuition.
+  scenario:
+    initial_context: A remote I/O station in an automated cell stops updating its process signals in the PLC.
+    operational_state: The PLC and the rest of the network remain operational. It is not yet known whether the cause is power, physical link, PROFINET configuration or the remote station.
+    initiating_event: The HMI reports that part of the remote station signals is unavailable.
+    learner_role: Automation technician responsible for locating the first abnormal boundary and demonstrating complete recovery.
+    safety_context:
+      safe_state: Perform observations and diagnostics from a safe condition. Any connector or cabling intervention must follow the authorized maintenance procedure.
+      intervention_constraints:
+        - Do not replace the remote station before separating power, link and configuration.
+        - Do not change PROFINET names or addresses without evidence.
+        - Do not force PLC signals or suppress diagnostics.
+        - Verify cyclic communication, I/O and machine function after repair.
+  learning_objectives:
+    OBJ-LAYERED-SCOPE:
+      description: Distinguish PLC state, station power, Ethernet link and cyclic PROFINET communication.
+    OBJ-PHYSICAL-BOUNDARY:
+      description: Locate the first abnormal boundary using controller diagnostics, switch status and an authorized physical inspection.
+    OBJ-VERIFIED-RECOVERY:
+      description: Apply a justified correction and verify link, process data and machine function.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirm the scope
+      situation: The PLC remains operational, but a remote I/O station has stopped updating its signals. Which action establishes the scope first without changing the system?
+    STAGE-02-CHECK-DEVICE-STATE:
+      title: Separate power and communication
+      situation: Diagnostics confirm that the rest of the network remains operational and that the station has no valid cyclic I/O exchange. Which check provides the next evidence?
+    STAGE-03-LOCALIZE-LINK:
+      title: Locate the physical boundary
+      situation: The station has 24 VDC, but its link is not active. The PLC, switch and other ports continue communicating. Where should diagnosis focus?
+    STAGE-04-RESTORE-CONNECTION:
+      title: Restore the authorized connection
+      situation: Inspection finds a damaged industrial Ethernet connector at the remote station. Which intervention matches the confirmed cause?
+    STAGE-05-VERIFY-RECOVERY:
+      title: Verify recovery
+      situation: The connection has been restored through authorized maintenance. Which check demonstrates that the station performs its function again?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: A remote I/O station stops updating several process signals while the PLC remains in service.
+    EVID-02-SCOPE:
+      source: Controller diagnostics
+      content: The PLC and other stations remain available. The affected station has no valid cyclic exchange.
+    EVID-03-DEVICE-STATE:
+      source: Remote station and power supply
+      content: The station receives 24 VDC. Its Ethernet link indicator remains inactive and its communication diagnostic indicator is active.
+    EVID-04-SWITCH-PORT:
+      source: Industrial switch
+      content: The port assigned to the station has no link; neighboring ports remain active and there is no evidence of a common switch outage.
+    EVID-05-CONNECTOR:
+      source: Authorized physical inspection
+      content: The station industrial Ethernet connector has mechanical damage and does not maintain a stable connection in the receptacle.
+    EVID-06-RECOVERY:
+      source: Post-maintenance test
+      content: The link remains active, the station enters cyclic exchange, I/O signals are coherent and machine function is verified under representative conditions.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Compare PLC, affected station and reference station.
+    DEC-01-RESTART-PLC:
+      action: Restart the PLC to see whether the symptom disappears.
+    DEC-01-REPLACE-STATION:
+      action: Replace the remote station immediately.
+    DEC-01-CHANGE-NAME:
+      action: Assign another PROFINET name to the station.
+    DEC-02-CHECK-POWER-LINK:
+      action: Check power, link and diagnostics.
+    DEC-02-ASSIGN-NAME:
+      action: Assign the expected PROFINET name before checking the link.
+    DEC-02-SWAP-STATION:
+      action: Swap the station without preserving the evidence.
+    DEC-02-FORCE-OUTPUTS:
+      action: Force outputs to check whether the station responds.
+    DEC-03-INSPECT-PORT-CONNECTOR:
+      action: Inspect the station port and connector.
+    DEC-03-DOWNLOAD-HW:
+      action: Download the PLC hardware configuration again.
+    DEC-03-REPLACE-PLC:
+      action: Replace the PLC because the station does not respond.
+    DEC-03-CHANGE-IP:
+      action: Change the station IP address.
+    DEC-04-CHANGE-NAME:
+      action: Change the PROFINET name to try to recover the station.
+    DEC-04-RESTORE-CONNECTOR:
+      action: Restore the connector under the authorized procedure.
+    DEC-04-ADD-SWITCH:
+      action: Add an intermediate switch to avoid the damaged connector.
+    DEC-04-BYPASS-PORT:
+      action: Temporarily bypass the port without energy control or verification.
+    DEC-05-CHECK-LINK-ONLY:
+      action: Close when the link indicator becomes active again.
+    DEC-05-VERIFY-FULL-CHAIN:
+      action: Verify link, cyclic I/O and function.
+    DEC-05-CLEAR-DIAGNOSTICS:
+      action: Clear the diagnostic and close the intervention.
+  retry_feedback:
+    DEC-01-RESTART-PLC: The PLC remains operational and the anomaly is selective. Compare states before restarting.
+    DEC-01-REPLACE-STATION: An unreachable station is not necessarily failed. Delimit the layers first.
+    DEC-01-CHANGE-NAME: Preserve configuration until evidence points to identity or naming.
+    DEC-02-ASSIGN-NAME: A correct name cannot compensate for a missing link. Check power and port state first.
+    DEC-02-SWAP-STATION: Keep the original equipment and acquire physical and communication evidence.
+    DEC-02-FORCE-OUTPUTS: Do not force I/O to test a network. Use diagnostics and safe observations.
+    DEC-03-DOWNLOAD-HW: Check the physical link before downloading configuration.
+    DEC-03-REPLACE-PLC: The PLC and other ports remain operational, reducing the likelihood of a controller failure.
+    DEC-03-CHANGE-IP: Do not change IP without evidence; confirm the physical port and connector first.
+    DEC-04-CHANGE-NAME: A PROFINET name does not repair a connector that cannot maintain link.
+    DEC-04-ADD-SWITCH: Restore the damaged connection instead of adding unjustified infrastructure.
+    DEC-04-BYPASS-PORT: Do not bypass an industrial connection without energy control, authorization and verification.
+    DEC-05-CHECK-LINK-ONLY: A link indicator covers one layer. Also verify cyclic communication, I/O and function.
+    DEC-05-CLEAR-DIAGNOSTICS: A cleared record does not prove recovery. Verify the complete chain.
+  visual:
+    educational_purpose: Progressively reveal scope, power and link state, port boundary, connector cause and functional recovery.
+  assets:
+    ART-001:
+      alt: Diagrama editorial de un PLC, switch industrial y estación de I/O remota conectados por PROFINET.
+      caption: Estación remota sin datos de proceso.
+    ART-002:
+      alt: Vista simulada de diagnóstico del controlador con una estación remota sin intercambio cíclico y otras estaciones operativas.
+      caption: El alcance separa una estación de una caída global.
+    ART-003:
+      alt: Vista técnica de una estación remota con 24 VDC presente, enlace inactivo y diagnóstico de comunicación activo.
+      caption: Alimentación presente no demuestra enlace Ethernet.
+    ART-004:
+      alt: Panel simulado de puertos de switch donde un puerto de estación está sin enlace y los puertos vecinos están activos.
+      caption: La frontera se concentra en el puerto y su conexión.
+    ART-005:
+      alt: Ilustración técnica de un conector Ethernet industrial dañado en la estación remota.
+      caption: La inspección física confirma la causa del enlace.
+    ART-006:
+      alt: Gráfica de recuperación con enlace activo, intercambio cíclico y señales de I/O coherentes.
+      caption: La recuperación se verifica por capas.
+  completion:
+    title: Technical debrief
+    summary: The station had power, but its industrial Ethernet connector could not maintain a stable link. Authorized repair restored the link and verification confirmed cyclic communication, I/O and function.
+    process:
+      - Confirm the scope.
+      - Separate power and communication.
+      - Locate the link-down port.
+      - Inspect the connector.
+      - Restore the connection.
+      - Verify the complete chain.
+    lesson: A powered station can still be isolated from the network. The useful boundary appears by comparing station state, switch port and physical connector.
+    avoided_errors:
+      - Restarting the PLC without evidence.
+      - Changing name, IP or project to hide the symptom.
+      - Replacing the station before separating power and link.
+      - Closing after one green indicator.
+    industrial_value:
+      - Layered diagnosis.
+      - Fewer unjustified replacements.
+      - Traceable recovery from link to process.

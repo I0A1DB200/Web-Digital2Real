@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 — ENV-003 / EE-0021 PROFINET device not reachable
+
+- Added the first ENV-003 unit as a bilingual V2 Experience with a layered diagnosis from controller scope to physical connector and verified recovery.
+- Added six human-free synthetic diagnostic graphics covering controller status, power/link separation, switch-port evidence, connector inspection and recovery verification.
+- Registered one hotspot at the approved ENV-003 cover position and updated preview packaging and focused regression checks. Remaining hotspots stay paired with their Experiences.
+
 ## 2026-10-28 — ENV-003 Phase 02: communications Theory
 
 - Added exactly five bilingual Theory blocks covering communication fundamentals, control networks, device data exchange, building and infrastructure communications, and network troubleshooting with OT security.

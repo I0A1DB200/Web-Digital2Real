@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — ENV-003 / EE-0021 retired for redesign
+
+- Removed the ENV-003 environment, its catalog background image and the EE-0021 Experience package and assets so the environment can be redesigned from the next approved prompt and reference pack.
+- Updated preview packaging and regression expectations to publish the remaining ENV-001 and ENV-002 content only. Earlier implementation history remains recorded in this changelog.
+
 ## 2026-10-28 — Experience navigation and mobile workspace polish
 
 - Returned the viewport to the top when opening an Environment and after successful Theory or Experience advances, while preserving the current position on incorrect retries and preventing result-heading focus from overriding the scroll position.

@@ -39,7 +39,6 @@ The initial portfolio assigns one principal Capability to each Experience. Title
 | EE-0016 | ICF-09 — HMI & SCADA Diagnostics | HMI Value Frozen During Production | Planned |
 | EE-0017 | ICF-02 — Industrial I/O | Intermittent 4–20 mA Flow Signal | Technical review in ENV-002 |
 | EE-0018 | ICF-02 — Industrial I/O | Unstable Level from 0–10 V Reference Noise | Technical review in ENV-002 |
-| EE-0021 | ICF-10 — PLC Architecture | Sequence State Lost After Restart | Technical review in ENV-003 |
 
 # 4. Deliverables
 

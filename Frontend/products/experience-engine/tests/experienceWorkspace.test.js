@@ -503,8 +503,8 @@ test("a generated artifact opens and completes through Experience Lab without co
       background: "environments/ENV-002-field-instrumentation.png",
       width: 1672, height: 941, hotspots: []
     }, {
-      id: "ENV-003", slug: "diagnostic-cell", title: "Diagnostic Cell", lifecycle: "preview", capacity: 10,
-      background: "environments/ENV-003-sequence-safety-hmi-diagnostic-cell.png",
+      id: "ENV-TEST-DIAGNOSTIC", slug: "diagnostic-cell", title: "Diagnostic Cell", lifecycle: "preview", capacity: 10,
+      background: "environments/test-diagnostic-cell.png",
       width: 1672, height: 941, hotspots: []
     }]
   };
@@ -1111,8 +1111,7 @@ test("Environment catalog provides complete Spanish presentation copy", async ()
   const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
   const expected = new Map([
     ["ENV-001", "Fábrica Automatizada"],
-    ["ENV-002", "Instrumentación de Campo"],
-    ["ENV-003", "Célula de Diagnóstico de Secuencia, Seguridad y HMI"]
+    ["ENV-002", "Instrumentación de Campo"]
   ]);
   for (const environment of catalog.environments) {
     assert.equal(environment.presentation.title.es, expected.get(environment.id));

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 — ENV-003 Phase 01: communications environment foundation
+
+- Reintroduced ENV-003 as `Industrial Communications & Networks` / `Comunicaciones y Redes Industriales` with a concise bilingual engineering description and capacity for ten Experiences.
+- Added the approved front-facing industrial communications cabinet cover at its original 1670×942 dimensions.
+- Preserved the existing Environment catalog, Engine and ENV-001/ENV-002 content; Theory, hotspots and Experiences remain pending their separate contract phases.
+
 ## 2026-10-28 — ENV-003 / EE-0021 retired for redesign
 
 - Removed the ENV-003 environment, its catalog background image and the EE-0021 Experience package and assets so the environment can be redesigned from the next approved prompt and reference pack.

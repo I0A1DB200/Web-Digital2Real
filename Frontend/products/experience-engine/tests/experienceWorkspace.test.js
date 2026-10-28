@@ -1111,7 +1111,8 @@ test("Environment catalog provides complete Spanish presentation copy", async ()
   const catalog = JSON.parse(await readFile(new URL("../../../generated/experience-engine/catalog.json", import.meta.url), "utf8"));
   const expected = new Map([
     ["ENV-001", "Fábrica Automatizada"],
-    ["ENV-002", "Instrumentación de Campo"]
+    ["ENV-002", "Instrumentación de Campo"],
+    ["ENV-003", "Comunicaciones y Redes Industriales"]
   ]);
   for (const environment of catalog.environments) {
     assert.equal(environment.presentation.title.es, expected.get(environment.id));

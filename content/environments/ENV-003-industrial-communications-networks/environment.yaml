@@ -1,0 +1,24 @@
+environment:
+  id: "ENV-003"
+  slug: "industrial-communications-networks"
+  title: "Industrial Communications & Networks"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+  presentation:
+    title:
+      es: "Comunicaciones y Redes Industriales"
+      en: "Industrial Communications & Networks"
+    description:
+      es: "Diagnóstico de conectividad física, redes de control e intercambio de datos entre controladores, dispositivos de campo y sistemas de supervisión."
+      en: "Diagnosis of physical connectivity, control networks and data exchange between controllers, field devices and supervisory systems."
+    skills:
+      es: ["Conectividad física", "Redes de control", "Intercambio de datos", "Diagnóstico de comunicaciones", "Seguridad OT"]
+      en: ["Physical connectivity", "Control networks", "Data exchange", "Communication diagnostics", "OT security"]
+
+visual:
+  background: "media/ENV-003-industrial-communications-networks.png"
+  width: 1670
+  height: 942
+
+hotspots: []

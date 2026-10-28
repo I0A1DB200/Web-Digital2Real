@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 — ENV-002 Theory fundamentals expansion
+
+- Reworked the four bilingual ENV-002 Theory blocks around reusable fundamentals: measurement chain and evidence, source/load/interface behavior, installation and measurement quality, and decision/actuation/verification.
+- Added broad coverage for loop compliance, 0–10 V references, scaling versus calibration, thermocouple polarity, signal dynamics, actuator feedback and first-discrepancy diagnosis while reducing case-specific terminology and numeric examples.
+- Preserved the four canonical section IDs, empty Theory media contract, existing Experiences and shared Engine behavior; updated the focused regression assertions for the new editorial structure.
+
 ## 2026-10-27 — ENV-002 / EE-0020 4–20 mA loop margin under load
 
 - Added bilingual EE-0020 for a two-wire 4–20 mA loop whose current drops when its connected burden reduces the available voltage margin; the process, transmitter and scaling remain correct.

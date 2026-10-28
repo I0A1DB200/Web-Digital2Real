@@ -151,10 +151,10 @@ test("ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/E
     legacyTheoryIds.forEach(id => assert.equal(serialized.includes(id), false, id));
     assert.equal(document.sections.every(section => Array.isArray(section.media_ids)), true);
   }
-  assert.match(theory.sections[0].title, /Bloque 01.*Fundamentos/);
-  assert.match(theory.sections[1].title, /Bloque 02.*proximidad inductivos/);
-  assert.match(theory.sections[2].body, /700 mm.*260 mm.*440 mm/);
-  assert.match(english.sections[2].body, /700 mm.*260 mm.*440 mm/);
+  assert.match(theory.sections[0].title, /Bloque 01.*Cadena de medida/);
+  assert.match(theory.sections[1].title, /Bloque 02.*Interfaces.*detección inductiva/);
+  assert.match(theory.sections[2].body, /altura.*distancia sensor[–-]base.*distancia sensor[–-]objeto/i);
+  assert.match(english.sections[2].body, /height.*sensor-to-base distance.*sensor-to-object distance/i);
   assert.match(theory.sections[3].body, /No es universal/);
   assert.match(english.sections[3].body, /not universal/);
 });

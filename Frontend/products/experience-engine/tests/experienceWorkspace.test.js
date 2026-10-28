@@ -534,11 +534,11 @@ test("a generated artifact opens and completes through Experience Lab without co
   await workspace.initialise();
   assert.equal(workspace.element.findAll(element => element.className === "environment-card").length, 3);
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Field Instrumentation").click();
-  assert.match(workspace.element.text, /being prepared/);
+  assert.doesNotMatch(workspace.element.text, /being prepared|se está preparando/u);
   assert.match(workspace.element.text, /0 \/ 0/);
   findButton(workspace.element, "All environments").click();
   workspace.element.find(element => element.attributes["aria-label"] === "Open environment: Diagnostic Cell").click();
-  assert.match(workspace.element.text, /being prepared/);
+  assert.doesNotMatch(workspace.element.text, /being prepared|se está preparando/u);
   assert.match(workspace.element.text, /0 \/ 0/);
   findButton(workspace.element, "All environments").click();
   const environment = workspace.element.find(
@@ -970,6 +970,7 @@ test("environment progress counts unique active assignments and updates without 
   check(10, 10);
   navigator.renderEnvironment("ENV-EMPTY");
   check(0, 0);
+  assert.doesNotMatch(navigator.element.text, /being prepared|se está preparando/u);
   navigator.destroy();
   progressStore.complete("unassigned");
   assert.equal(navigator.element.children.length, 0);

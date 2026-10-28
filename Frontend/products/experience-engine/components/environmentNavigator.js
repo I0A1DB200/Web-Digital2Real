@@ -158,15 +158,6 @@ export function createEnvironmentNavigator({
     });
     shell.appendChild(stage);
 
-    if (!environment.hotspots.length) {
-      appendText(
-        documentRef,
-        shell,
-        "p",
-        "environment-view__pending",
-        ui.environmentPending
-      );
-    }
     element.replaceChildren(shell);
     documentRef.addEventListener?.("click", handleOutsideClick);
     documentRef.addEventListener?.("keydown", handleKeydown);

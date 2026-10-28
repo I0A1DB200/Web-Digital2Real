@@ -1006,12 +1006,16 @@ test("Environment Selector cards navigate, expose accessible metadata and derive
     }))
   };
   const progressStore = createEnvironmentProgressStore({ storage: null });
+  const scrolls = [];
   progressStore.registerEnvironment({
     environmentId: environment.id, contractVersion: "2.0.0", experienceIds, theorySectionIds: []
   });
   const navigator = createEnvironmentNavigator({
     documentRef, baseUrl: ".", environments: [environment], experiences,
-    progressStore, onOpenExperience() {}, windowRef: new FakeEventTarget()
+    progressStore, onOpenExperience() {}, windowRef: {
+      matchMedia: () => ({ matches: false }),
+      scrollTo: options => scrolls.push(options)
+    }
   });
 
   assert.match(navigator.element.text, /Technical description/);
@@ -1049,7 +1053,9 @@ test("Environment Selector cards navigate, expose accessible metadata and derive
   assert.match(navigator.element.text, /Completed/);
   assert.equal(navigator.element.findAll(item => item.className === "environment-card__segment").every(item => item.dataset.complete === "true"), true);
 
+  scrolls.length = 0;
   navigator.element.find(item => item.attributes["aria-label"] === "Open environment: Automated Factory").click();
+  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
   assert.ok(navigator.element.find(item => item.className === "environment-stage"));
   findButton(navigator.element, "All environments").click();
   assert.ok(navigator.element.find(item => item.className === "environment-catalog"));

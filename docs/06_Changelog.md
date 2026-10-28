@@ -2,7 +2,7 @@
 
 ## 2026-10-28 — Experience navigation and mobile workspace polish
 
-- Returned the viewport to the top after successful Theory and Experience advances, while preserving the current position on incorrect retries and preventing result-heading focus from overriding the scroll position.
+- Returned the viewport to the top when opening an Environment and after successful Theory or Experience advances, while preserving the current position on incorrect retries and preventing result-heading focus from overriding the scroll position.
 - Covered the document and application roots with the dark surface color and dynamic viewport height so mobile overscroll does not expose a white strip at the end of the page.
 - Reduced the stacked top spacing for Experience Lab, Theory and the mobile workspace without changing Notebook presentation, Experience content, progress state or diagnostic logic.
 

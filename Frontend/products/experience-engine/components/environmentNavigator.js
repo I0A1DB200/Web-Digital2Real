@@ -84,7 +84,10 @@ export function createEnvironmentNavigator({
       appendText(documentRef, content, "span", "environment-card__description", localizeEnvironmentPresentation(environment, locale).description);
       appendText(documentRef, content, "span", "environment-card__count", ui.experienceCount(environment.capacity));
       main.appendChild(content);
-      main.addEventListener("click", () => renderEnvironment(environment.id));
+      main.addEventListener("click", () => {
+        renderEnvironment(environment.id);
+        scrollWorkspaceToTop(windowRef);
+      });
       card.appendChild(main);
       const progress = createElement(documentRef, "div", "environment-card__progress");
       card.appendChild(progress);

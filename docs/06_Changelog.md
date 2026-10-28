@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-28 — ENV-003 Phase 02: communications Theory
+
+- Added exactly five bilingual Theory blocks covering communication fundamentals, control networks, device data exchange, building and infrastructure communications, and network troubleshooting with OT security.
+- Added five coherent 1672×941 principal technical illustrations and wired their ES/EN media metadata through the existing Environment Theory contract.
+- Refined the illustrations to use English section titles only; explanatory descriptions remain in the bilingual Theory text.
+- Upgraded ENV-003 to contract V2 while preserving the existing Theory renderer, navigation and empty hotspot state; no Experiences or Engine changes were introduced.
+
 ## 2026-10-28 — ENV-003 Phase 01: communications environment foundation
 
 - Reintroduced ENV-003 as `Industrial Communications & Networks` / `Comunicaciones y Redes Industriales` with a concise bilingual engineering description and capacity for ten Experiences.

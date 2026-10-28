@@ -1,0 +1,93 @@
+version: "1.0.0"
+default_locale: es
+supported_locales:
+  - es
+  - en
+
+media:
+  - id: TH-MEDIA-01-PHYSICAL-TOPOLOGIES
+    type: image
+    src: media/ENV-003-theory-01-media-topologies.png
+    alt: "Comparación de medios físicos y topologías de comunicación industrial"
+  - id: TH-MEDIA-02-CONTROL-NETWORKS
+    type: image
+    src: media/ENV-003-theory-02-control-networks.png
+    alt: "Arquitecturas PROFINET, PROFIBUS DP, EtherCAT, EtherNet/IP y CAN"
+  - id: TH-MEDIA-03-DATA-EXCHANGE
+    type: image
+    src: media/ENV-003-theory-03-data-exchange.png
+    alt: "Intercambio de datos entre dispositivos de campo, controlador, gateway y SCADA"
+  - id: TH-MEDIA-04-BMS-TELECONTROL
+    type: image
+    src: media/ENV-003-theory-04-bms-telecontrol.png
+    alt: "Arquitecturas separadas de automatización de edificios y telecontrol de infraestructuras"
+  - id: TH-MEDIA-05-TROUBLESHOOTING-OT
+    type: image
+    src: media/ENV-003-theory-05-troubleshooting-ot.png
+    alt: "Flujo de diagnóstico de redes industriales y zonas OT"
+
+sections:
+  - id: TH-01-INDUSTRIAL-COMMUNICATION-FUNDAMENTALS
+    title: "Bloque 01 — Fundamentos de comunicaciones industriales"
+    body: |-
+      Una comunicación industrial conecta equipos para intercambiar estados, medidas, órdenes y diagnósticos con un comportamiento que el proceso pueda utilizar. La cadena tiene varias fronteras: medio físico, interfaz eléctrica, enlace, direccionamiento, transporte, protocolo de aplicación e interpretación del dato. Ethernet sobre cobre y fibra, RS-485 y la capa física de CAN resuelven problemas distintos. Los conectores, apantallamientos, retornos, terminaciones y límites de cada interfaz forman parte de la instalación y no son detalles intercambiables.
+
+      La topología cambia cómo se propaga una avería. Un bus necesita una línea común y terminación en sus extremos; una línea conecta los nodos de forma encadenada; una estrella concentra los enlaces en un switch; un anillo añade un camino cerrado y una estrategia de redundancia. MAC identifica una interfaz dentro del enlace, IP identifica una red lógica y la máscara, la subred, la puerta de enlace y el encaminamiento determinan hasta dónde puede llegar el tráfico. Un switch industrial aporta conmutación, diagnóstico de puertos y, cuando está configurado, segmentación o redundancia.
+
+      La comunicación cíclica transporta datos de proceso a intervalos previstos; la acíclica solicita parámetros, estados o diagnósticos cuando son necesarios. Latencia es el tiempo de entrega, jitter es su variación y determinismo es la capacidad de mantener un comportamiento acotado. El ruido electromagnético, una referencia de tierra inadecuada, un blindaje mal terminado o una terminación ausente pueden degradar una señal aunque el equipo muestre alimentación.
+
+      Un enlace Ethernet activo solo demuestra que existe una condición física de enlace. No demuestra que el PLC tenga la identidad correcta, que la sesión de aplicación esté establecida ni que el valor intercambiado sea válido. El primer diagnóstico debe separar conectividad física, comunicación lógica y significado del dato, midiendo en la frontera que pueda confirmar o descartar cada hipótesis.
+    media_ids:
+      - TH-MEDIA-01-PHYSICAL-TOPOLOGIES
+
+  - id: TH-02-INDUSTRIAL-CONTROL-NETWORKS
+    title: "Bloque 02 — Redes de control industrial"
+    body: |-
+      PROFINET utiliza un controlador y dispositivos IO para intercambiar datos cíclicos y diagnósticos sobre una infraestructura Ethernet. La identidad de un dispositivo incluye su nombre de estación y su configuración IP; DCP permite asignar o localizar esa identidad durante la puesta en marcha. Un dispositivo puede tener enlace y dirección IP y, aun así, no entrar en intercambio cíclico si el nombre, la configuración de módulos o la relación con el controlador no coincide.
+
+      PROFIBUS DP se apoya en un bus RS-485 con maestro, estaciones y terminación en los extremos del segmento. La dirección de estación, la calidad física del cable y la terminación condicionan la comunicación y sus diagnósticos. EtherCAT mantiene una relación maestro-esclavos y un flujo de datos de proceso que recorre la topología; el estado de cada esclavo y el mapeo de PDO forman parte de la evidencia. No debe confundirse una topología de línea de EtherCAT con una red Ethernet conmutada genérica.
+
+      EtherNet/IP emplea CIP sobre Ethernet y distingue, según el servicio, mensajes explícitos para configuración, lectura o diagnóstico y mensajes implícitos para datos de E/S cíclicos. En CAN, CANopen y DeviceNet la capa física, la arbitraje del bus, la identificación de nodos y los estados de gestión son diferentes; CANopen añade NMT y heartbeat para supervisar nodos. Estos protocolos no son implementaciones intercambiables de una misma red: sus estados, herramientas y límites de diagnóstico cambian.
+
+      La arquitectura debe leerse antes de medir. Primero se identifica quién controla, quién es el dispositivo, qué medio los conecta, qué estado de protocolo se espera y dónde aparece el primer diagnóstico. La misma luz de enlace puede coexistir con un nombre PROFINET incorrecto, un esclavo PROFIBUS ausente, un PDO sin mapear o un nodo CANopen fuera de estado operativo.
+    media_ids:
+      - TH-MEDIA-02-CONTROL-NETWORKS
+
+  - id: TH-03-DEVICE-COMMUNICATION-DATA-EXCHANGE
+    title: "Bloque 03 — Comunicación de dispositivos e intercambio de datos"
+    body: |-
+      Modbus RTU utiliza un enlace serie, normalmente RS-485, con parámetros compartidos y un modelo cliente/servidor; la terminología histórica maestro/esclavo todavía aparece en documentación antigua. La dirección del dispositivo, los códigos de función, las bobinas, los registros y las respuestas de excepción delimitan qué se ha solicitado y cómo responde el servidor. Modbus TCP conserva el modelo de datos sobre Ethernet. Un registro de 16 bits, dos registros que forman un valor de 32 bits, el offset documental y el orden de bytes o palabras deben comprobarse antes de interpretar una magnitud.
+
+      IO-Link conecta un maestro con un dispositivo punto a punto. Además de datos de proceso, puede transportar parámetros, identificación y diagnósticos; por ello una medida visible exige comprobar alimentación, puerto, configuración y significado del dato. HART añade información digital sobre una instrumentación de lazo de corriente, de modo que la variable analógica y la comunicación digital deben verificarse como evidencias relacionadas pero distintas.
+
+      OPC UA organiza la información mediante nodos, atributos, sesiones, suscripciones y elementos monitorizados. La calidad del dato y las marcas de tiempo ayudan a distinguir un valor válido, incierto o antiguo, pero no sustituyen la verificación de la fuente, la seguridad de la sesión ni la lógica de aplicación. Un gateway puede convertir protocolos y mapear etiquetas, pero no puede garantizar que unidades, escalado, estados o semántica sean equivalentes.
+
+      Cuando la comunicación responde correctamente, el diagnóstico continúa hasta el dato que consume la aplicación. Hay que separar fallo de transporte, excepción del protocolo, error de direccionamiento, formato de bytes, mapeo de etiquetas y uso incorrecto en PLC, SCADA o historiador. Comunicación correcta no equivale a interpretación correcta.
+    media_ids:
+      - TH-MEDIA-03-DATA-EXCHANGE
+
+  - id: TH-04-BUILDING-INFRASTRUCTURE-COMMUNICATIONS
+    title: "Bloque 04 — Comunicaciones de edificios e infraestructuras"
+    body: |-
+      BACnet está orientado a la interoperabilidad de automatización de edificios. BACnet/IP utiliza redes IP y BACnet MS/TP utiliza un bus RS-485; los routers pueden unir ambos dominios. Los dispositivos exponen instancias, objetos y propiedades que un BMS lee o escribe. Who-Is e I-Am ayudan a descubrir dispositivos, pero la visibilidad depende de la segmentación, el encaminamiento y la configuración de difusión. La existencia de un objeto no demuestra que su valor tenga la unidad, prioridad o calidad esperada.
+
+      DNP3 se usa en monitorización y control remoto mediante puntos binarios, analógicos y contadores, además de eventos y marcas temporales. IEC 60870-5-104 proporciona telecontrol sobre TCP/IP con estaciones remotas, información de proceso y eventos para una arquitectura supervisora. En ambos casos importan la identidad de la estación, la sincronización temporal, la calidad del dato y el comportamiento ante pérdida o recuperación del enlace.
+
+      La automatización de máquina suele concentrar PLC, E/S y seguridad en una celda con tiempos y estados de ciclo acotados. La automatización de edificios coordina instalaciones distribuidas como climatización, iluminación y energía, con modelos de objetos y prioridades. El telecontrol de infraestructuras conecta activos geográficamente dispersos y necesita eventos, histórico, disponibilidad de comunicaciones y control remoto autorizado. Compartir Ethernet o IP no elimina estas diferencias de propósito y de diagnóstico.
+
+      Para investigar una integración, se debe identificar el dominio, la estación que inicia la comunicación, el objeto o punto solicitado, el camino de red y la evidencia temporal. El problema puede estar en el descubrimiento, en una subred sin ruta, en una instancia duplicada, en un punto mal mapeado o en una calidad de dato que la pantalla no está mostrando.
+    media_ids:
+      - TH-MEDIA-04-BMS-TELECONTROL
+
+  - id: TH-05-NETWORK-TROUBLESHOOTING-OT-SECURITY
+    title: "Bloque 05 — Diagnóstico de redes y seguridad OT"
+    body: |-
+      Un diagnóstico seguro empieza confirmando el síntoma, identificando el equipo afectado y registrando qué cambió. Después comprueba alimentación, conectores, cableado y LEDs en ambos extremos; revisa la topología, los puertos, las VLAN o rutas previstas; y contrasta direccionamiento, máscara, puerta de enlace, nombre o identidad del dispositivo. El buffer de diagnóstico del controlador y el estado del protocolo ayudan a localizar la primera frontera que dejó de cumplir.
+
+      La evidencia se amplía con contadores de errores del switch, pérdida de paquetes, CRC, descartes, duplicidad de dirección, estados de sesión, timeouts y respuestas de excepción. Un analizador como Wireshark puede observar tramas y tiempos; un puerto espejo o SPAN debe habilitarse de forma autorizada y controlada. Las herramientas específicas de PROFINET, PROFIBUS u otros protocolos permiten leer diagnósticos que un ping no puede mostrar.
+
+      El proceso debe formular una hipótesis pequeña y reversible, medir un resultado esperado y evitar cambios simultáneos. Tras una corrección se verifica la recuperación con condiciones representativas, ciclos repetidos, calidad del dato y persistencia de la configuración. Un ping solo confirma conectividad IP básica: un equipo puede responder y tener el protocolo industrial bloqueado, mal configurado o en un estado de error.
+
+      La seguridad OT aporta límites al diagnóstico. Las zonas separan activos con funciones y niveles de confianza; los conduits controlan los flujos entre zonas mediante reglas, acceso autorizado y registro. La segmentación, el acceso de ingeniería, las copias de configuración y la recuperación deben coordinarse con operación y seguridad. IEC 62443 ofrece un marco para razonar sobre zonas y conduits, pero no sustituye el diseño, las políticas ni la autorización concreta de la instalación.
+    media_ids:
+      - TH-MEDIA-05-TROUBLESHOOTING-OT

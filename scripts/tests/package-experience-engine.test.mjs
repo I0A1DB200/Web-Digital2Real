@@ -260,11 +260,22 @@ test("preview packages every eligible canonical Experience", async t => {
   ]);
   const env003 = catalog.environments[2];
   assert.equal(env003.id, "ENV-003");
-  assert.equal(env003.contractVersion, "1.0.0");
+  assert.equal(env003.contractVersion, "2.0.0");
   assert.equal(env003.title, "Industrial Communications & Networks");
   assert.equal(env003.presentation.title.es, "Comunicaciones y Redes Industriales");
   assert.match(env003.presentation.description.en, /physical connectivity.*control networks.*data exchange/iu);
   assert.deepEqual(env003.hotspots, []);
+  assert.deepEqual(env003.theory.sectionIds, [
+    "TH-01-INDUSTRIAL-COMMUNICATION-FUNDAMENTALS",
+    "TH-02-INDUSTRIAL-CONTROL-NETWORKS",
+    "TH-03-DEVICE-COMMUNICATION-DATA-EXCHANGE",
+    "TH-04-BUILDING-INFRASTRUCTURE-COMMUNICATIONS",
+    "TH-05-NETWORK-TROUBLESHOOTING-OT-SECURITY"
+  ]);
+  assert.deepEqual(env003.theory.locales, {
+    es: "environments/ENV-003/theory.es.json",
+    en: "environments/ENV-003/theory.en.json"
+  });
   for (const environment of catalog.environments) {
     assert.equal(environment.capacity, 10);
     const expectedDimensions = environment.id === "ENV-003"
@@ -286,6 +297,12 @@ test("preview packages every eligible canonical Experience", async t => {
     );
     assert.equal(await sha256(generatedImage), await sha256(sourceImage));
   }
+  const env003TheoryEs = await readJson(path.join(generatedRoot, "environments/ENV-003/theory.es.json"));
+  const env003TheoryEn = await readJson(path.join(generatedRoot, "environments/ENV-003/theory.en.json"));
+  assert.equal(env003TheoryEs.sections.length, 5);
+  assert.equal(env003TheoryEs.media.length, 5);
+  assert.deepEqual(env003TheoryEs.sections.map(item => item.id), env003TheoryEn.sections.map(item => item.id));
+  await Promise.all(env003TheoryEs.media.map(item => access(path.join(generatedRoot, item.src))));
   assert.equal(catalog.experiences.some(item => item.editorialId === "EE-0909"), false);
   await access(path.join(
     root,

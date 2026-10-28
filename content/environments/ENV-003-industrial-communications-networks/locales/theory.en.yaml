@@ -1,0 +1,78 @@
+locale: en
+media:
+  - id: TH-MEDIA-01-PHYSICAL-TOPOLOGIES
+    alt: "Comparison of industrial communication physical media and topologies"
+  - id: TH-MEDIA-02-CONTROL-NETWORKS
+    alt: "PROFINET, PROFIBUS DP, EtherCAT, EtherNet/IP and CAN architectures"
+  - id: TH-MEDIA-03-DATA-EXCHANGE
+    alt: "Data exchange between field devices, controller, gateway and SCADA"
+  - id: TH-MEDIA-04-BMS-TELECONTROL
+    alt: "Separate building automation and utility telecontrol architectures"
+  - id: TH-MEDIA-05-TROUBLESHOOTING-OT
+    alt: "Industrial network troubleshooting workflow and OT zones"
+
+sections:
+  - id: TH-01-INDUSTRIAL-COMMUNICATION-FUNDAMENTALS
+    title: "Block 01 — Industrial communication fundamentals"
+    body: |-
+      Industrial communication connects equipment so it can exchange states, measurements, commands and diagnostics with behavior that the process can use. The chain has several boundaries: physical medium, electrical interface, link, addressing, transport, application protocol and data interpretation. Ethernet over copper and fiber, RS-485 and the CAN physical layer solve different problems. Connectors, shielding, returns, termination and interface limits are part of the installation, not interchangeable details.
+
+      Topology changes how a fault propagates. A bus needs a shared line and termination at its ends; a line connects nodes in sequence; a star concentrates links in a switch; a ring adds a closed path and a redundancy strategy. MAC identifies an interface on the link, IP identifies a logical network, and mask, subnet, gateway and routing determine how far traffic can travel. An industrial switch provides forwarding, port diagnostics and, when configured, segmentation or redundancy.
+
+      Cyclic communication carries process data at expected intervals; acyclic communication requests parameters, states or diagnostics when needed. Latency is delivery time, jitter is its variation and determinism is the ability to keep behavior bounded. Electromagnetic noise, a poor ground reference, an incorrectly terminated shield or missing termination can degrade a signal even when equipment shows power.
+
+      An active Ethernet link proves only a physical link condition. It does not prove that the PLC has the correct identity, that the application session is established or that the exchanged value is valid. Initial diagnosis should separate physical connectivity, logical communication and data meaning, measuring at the boundary that can confirm or reject each hypothesis.
+    media_ids:
+      - TH-MEDIA-01-PHYSICAL-TOPOLOGIES
+
+  - id: TH-02-INDUSTRIAL-CONTROL-NETWORKS
+    title: "Block 02 — Industrial control networks"
+    body: |-
+      PROFINET uses a controller and IO devices to exchange cyclic data and diagnostics over Ethernet infrastructure. A device identity includes its station name and IP configuration; DCP can assign or locate that identity during commissioning. A device may have link and an IP address and still fail to enter cyclic exchange if its name, module configuration or controller relationship does not match.
+
+      PROFIBUS DP relies on an RS-485 bus with a master, stations and termination at the segment ends. Station address, physical cable quality and termination shape communication and diagnostics. EtherCAT maintains a master-slave relationship and a process-data flow through its topology; each slave state and PDO mapping form part of the evidence. An EtherCAT line topology must not be confused with a generic switched Ethernet network.
+
+      EtherNet/IP uses CIP over Ethernet and distinguishes, depending on the service, explicit messages for configuration, reading or diagnosis from implicit messages for cyclic I/O data. In CAN, CANopen and DeviceNet, the physical layer, bus arbitration, node identification and management states are different; CANopen adds NMT and heartbeat for node supervision. These protocols are not interchangeable implementations of one network: their states, tools and diagnostic boundaries change.
+
+      Read the architecture before measuring. Identify who controls, who is the device, which medium connects them, what protocol state is expected and where the first diagnostic appears. The same link light can coexist with a wrong PROFINET name, a missing PROFIBUS slave, an unmapped PDO or a CANopen node outside its operational state.
+    media_ids:
+      - TH-MEDIA-02-CONTROL-NETWORKS
+
+  - id: TH-03-DEVICE-COMMUNICATION-DATA-EXCHANGE
+    title: "Block 03 — Device communication and data exchange"
+    body: |-
+      Modbus RTU uses a serial link, commonly RS-485, with shared parameters and a client/server model; historical master/slave terminology still appears in older documentation. Device address, function codes, coils, registers and exception responses define what was requested and how the server responds. Modbus TCP keeps the data model over Ethernet. A 16-bit register, two registers forming a 32-bit value, a documentation offset and byte or word order must be checked before interpreting a quantity.
+
+      IO-Link connects a master to a point-to-point device. In addition to process data it can carry parameters, identification and diagnostics; therefore a visible measurement still requires checks of supply, port, configuration and data meaning. HART adds digital information to current-loop instrumentation, so the analog variable and digital communication must be verified as related but distinct evidence.
+
+      OPC UA organizes information through nodes, attributes, sessions, subscriptions and monitored items. Data quality and timestamps help distinguish a valid, uncertain or stale value, but do not replace verification of the source, session security or application logic. A gateway can convert protocols and map tags, but cannot guarantee that units, scaling, states or semantics are equivalent.
+
+      When communication responds correctly, diagnosis continues to the data consumed by the application. Separate transport failure, protocol exception, addressing error, byte format, tag mapping and incorrect use in PLC, SCADA or historian. Correct communication does not equal correct interpretation.
+    media_ids:
+      - TH-MEDIA-03-DATA-EXCHANGE
+
+  - id: TH-04-BUILDING-INFRASTRUCTURE-COMMUNICATIONS
+    title: "Block 04 — Building and infrastructure communications"
+    body: |-
+      BACnet is oriented toward interoperability in building automation. BACnet/IP uses IP networks and BACnet MS/TP uses an RS-485 bus; routers can join both domains. Devices expose instances, objects and properties that a BMS reads or writes. Who-Is and I-Am help discover devices, but visibility depends on segmentation, routing and broadcast configuration. An object being visible does not prove that its value has the expected unit, priority or quality.
+
+      DNP3 is used for remote monitoring and control through binary, analog and counter points, as well as events and timestamps. IEC 60870-5-104 provides telecontrol over TCP/IP with remote stations, process information and events for a supervisory architecture. In both cases station identity, time synchronization, data quality and behavior during link loss or recovery matter.
+
+      Machine automation usually concentrates PLC, I/O and safety in a cell with bounded cycle times and states. Building automation coordinates distributed facilities such as HVAC, lighting and energy with object models and priorities. Infrastructure telecontrol connects geographically dispersed assets and needs events, history, communication availability and authorized remote control. Sharing Ethernet or IP does not remove these differences in purpose and diagnosis.
+
+      To investigate an integration, identify the domain, the station initiating communication, the requested object or point, the network path and the time-related evidence. The fault may be in discovery, an unrouted subnet, a duplicate instance, a mis-mapped point or data quality that the screen does not show.
+    media_ids:
+      - TH-MEDIA-04-BMS-TELECONTROL
+
+  - id: TH-05-NETWORK-TROUBLESHOOTING-OT-SECURITY
+    title: "Block 05 — Network troubleshooting and OT security"
+    body: |-
+      Safe diagnosis starts by confirming the symptom, identifying the affected equipment and recording what changed. Then check power, connectors, cabling and LEDs at both ends; review topology, ports, VLANs or expected routes; and compare addressing, mask, gateway, device name or identity. The controller diagnostic buffer and protocol state help locate the first boundary that stopped meeting its contract.
+
+      Extend the evidence with switch error counters, packet loss, CRC, discards, duplicate addresses, session states, timeouts and exception responses. An analyzer such as Wireshark can observe frames and timing; a mirror or SPAN port must be enabled in an authorized and controlled way. Protocol-specific tools for PROFINET, PROFIBUS or other networks expose diagnostics that ping cannot show.
+
+      The process should state a small reversible hypothesis, measure an expected result and avoid simultaneous changes. After correction, verify recovery under representative conditions, repeated cycles, data quality and configuration persistence. A ping confirms only basic IP connectivity: a device can respond while the industrial protocol is blocked, misconfigured or in an error state.
+
+      OT security adds diagnostic boundaries. Zones separate assets with different functions and trust levels; conduits control flows between zones through rules, authorized access and logging. Segmentation, engineering access, configuration backups and recovery must be coordinated with operations and security. IEC 62443 provides a framework for reasoning about zones and conduits, but does not replace the installation's design, policies or concrete authorization.
+    media_ids:
+      - TH-MEDIA-05-TROUBLESHOOTING-OT

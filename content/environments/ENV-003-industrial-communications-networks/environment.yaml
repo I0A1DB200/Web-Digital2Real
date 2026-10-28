@@ -1,3 +1,5 @@
+contract_version: "2.0.0"
+
 environment:
   id: "ENV-003"
   slug: "industrial-communications-networks"
@@ -20,5 +22,7 @@ visual:
   background: "media/ENV-003-industrial-communications-networks.png"
   width: 1670
   height: 942
+
+theory: "theory.yaml"
 
 hotspots: []

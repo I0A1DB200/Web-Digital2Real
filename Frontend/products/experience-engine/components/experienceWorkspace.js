@@ -1,6 +1,7 @@
 import { experienceUiCopy, supportedLocale, localeStorage, readLocale, saveLocale } from "./experienceLocale.js";
 import { createEnvironmentNavigator } from "./environmentNavigator.js";
 import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
+import { scrollWorkspaceToTop } from "./scrollWorkspace.js";
 
 const defaultBaseUrl = "./generated/experience-engine";
 
@@ -11,7 +12,8 @@ export function createExperienceWorkspace({
   documentRef = globalThis.document,
   progressStore = createEnvironmentProgressStore(),
   preferenceStorage = localeStorage(),
-  localePreference = null
+  localePreference = null,
+  windowRef = globalThis.window
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -156,6 +158,7 @@ export function createExperienceWorkspace({
       activeEnvironmentId = environmentId;
       completionRecorded = false;
       renderPlayer();
+      scrollWorkspaceToTop(windowRef);
       return player.getState();
     } catch (error) {
       loadingExperience = false;
@@ -169,6 +172,7 @@ export function createExperienceWorkspace({
     player.start();
     commands.push(["start"]);
     renderPlayer();
+    scrollWorkspaceToTop(windowRef);
   }
 
   function continueExperience() {
@@ -177,13 +181,20 @@ export function createExperienceWorkspace({
     player.continue();
     commands.push(["continue"]);
     renderPlayer(leavingResult);
+    scrollWorkspaceToTop(windowRef);
   }
 
   function selectDecision(decisionId) {
     requirePlayer();
+    const before = player.getState();
     player.selectDecision(decisionId);
     commands.push(["selectDecision", decisionId]);
     renderPlayer();
+    const after = player.getState();
+    const advanced = before.currentStage?.id !== after.currentStage?.id
+      || before.interaction !== after.interaction
+      || before.completionStatus !== after.completionStatus;
+    if (advanced) scrollWorkspaceToTop(windowRef);
   }
 
   function restartExperience() {
@@ -192,6 +203,7 @@ export function createExperienceWorkspace({
     commands = [];
     completionRecorded = false;
     renderPlayer();
+    scrollWorkspaceToTop(windowRef);
   }
 
   function closeExperience() {
@@ -232,7 +244,7 @@ export function createExperienceWorkspace({
     if (state.interaction === "result" || focusContent) {
       const heading = element.querySelector?.("h2");
       heading?.setAttribute("tabindex", "-1");
-      heading?.focus();
+      heading?.focus({ preventScroll: true });
     }
   }
 
@@ -279,7 +291,8 @@ export function createExperienceWorkspace({
         return theory;
       },
       onTheorySectionCompleted: (environmentId, sectionId) => progressStore.markTheorySectionCompleted(environmentId, sectionId),
-      progressStore
+      progressStore,
+      windowRef
     });
   }
 

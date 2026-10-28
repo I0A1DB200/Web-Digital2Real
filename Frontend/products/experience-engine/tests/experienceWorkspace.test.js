@@ -44,7 +44,7 @@ test("catalog recovery retries failed and malformed loads before returning to a 
   }
 });
 
-async function resultWorkspace(language = "en", storage = null, localePreference = null) {
+async function resultWorkspace(language = "en", storage = null, localePreference = null, windowRef = null) {
   const artifact = evidenceMediaArtifact(language);
   const documentRef = new FakeDocument();
   documentRef.documentElement = { lang: language };
@@ -59,7 +59,7 @@ async function resultWorkspace(language = "en", storage = null, localePreference
     id: "ENV-TEST", contractVersion: "2.0.0", title: "Fixture", background: "fixture.svg", width: 16, height: 9,
     hotspots: [{ experienceEditorialId: "EE-TEST", x: 50, y: 50 }]
   }] };
-  const workspace = createExperienceWorkspace({ documentRef, progressStore, localePreference,
+  const workspace = createExperienceWorkspace({ documentRef, progressStore, localePreference, windowRef,
     fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : evidenceMediaArtifact(location.endsWith(".es.json") ? "es" : "en")) }),
     importPlayer: async () => ({ ExperiencePlayer })
   });
@@ -71,6 +71,21 @@ async function resultWorkspace(language = "en", storage = null, localePreference
   };
   return { workspace, documentRef, store, begin, click, registrations: () => registrations };
 }
+
+test("workspace scrolls to the top only when an Experience advances", async () => {
+  const scrolls = [];
+  const fixture = await resultWorkspace("en", null, null, {
+    matchMedia: () => ({ matches: false }),
+    scrollTo: options => scrolls.push(options)
+  });
+  fixture.begin();
+  scrolls.length = 0;
+  fixture.click("Replace without checking");
+  assert.equal(scrolls.length, 0);
+  fixture.click("Inspect connector");
+  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
+  fixture.workspace.destroy();
+});
 
 test("the shared global preference switches Experience session without a local selector", async () => {
   const preference = createLocalePreference({ storage: null, initialLocale: "en" });
@@ -764,6 +779,7 @@ test("localizes Theory actions and keeps content and actions as 32px-gap sibling
   const documentRef = new FakeDocument();
   documentRef.documentElement = { lang: "es" };
   const progressStore = createEnvironmentProgressStore({ storage: null });
+  const scrolls = [];
   progressStore.registerEnvironment({
     environmentId: "ENV-TEST", contractVersion: "2.0.0",
     experienceIds: [], theorySectionIds: ["TH-01", "TH-02"]
@@ -777,6 +793,10 @@ test("localizes Theory actions and keeps content and actions as 32px-gap sibling
     }],
     experiences: [],
     onOpenExperience() {},
+    windowRef: {
+      matchMedia: () => ({ matches: false }),
+      scrollTo: options => scrolls.push(options)
+    },
     progressStore,
     onOpenTheory: async () => ({
       locale: "es",
@@ -794,7 +814,9 @@ test("localizes Theory actions and keeps content and actions as 32px-gap sibling
   assert.equal(section.children[0].className, "environment-theory__content");
   assert.equal(section.children[1].className, "environment-theory__actions");
   assert.equal(section.children[1].children[0].textContent, "Continuar teoría");
+  scrolls.length = 0;
   findButton(navigator.element, "Continuar teoría").click();
+  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
   assert.ok(findButton(navigator.element, "Completar teoría"));
 
   const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
@@ -1132,6 +1154,7 @@ test("workspace and application use generated JSON without ID-specific handling"
   const app = await readFile(new URL("../../../app.js", import.meta.url), "utf8");
   const site = await readFile(new URL("../../../data/site.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
+  const base = await readFile(new URL("../../../styles/base.css", import.meta.url), "utf8");
 
   assert.match(workspaceSource, /generated\/experience-engine/);
   assert.match(workspaceSource, /new playerModule\.ExperiencePlayer\(\{ experience: artifact \}\)/);
@@ -1152,7 +1175,10 @@ test("workspace and application use generated JSON without ID-specific handling"
   assert.match(styles, /\.experience-introduction__layout--with-media\s*\{[^}]*grid-template-columns:/s);
   assert.match(styles, /\.experience-media__zoom\s*\{[^}]*border:\s*0/s);
   assert.match(styles, /\.experience-workspace__shell--interactive\s*\{[^}]*max-width:\s*1180px/s);
-  assert.match(styles, /\.experience-workspace:has\(\.experience-workspace__shell--interactive\)\s*\{[^}]*padding-block:\s*clamp\(1\.5rem/s);
+  assert.match(styles, /\.experience-workspace:has\(\.experience-workspace__shell--interactive\)\s*\{[^}]*padding-block:\s*clamp\(1rem/s);
+  assert.match(styles, /\.app-main:has\(\.experience-workspace\)\s*\{[^}]*padding-top:\s*calc\(var\(--topbar-h\)/s);
+  assert.match(base, /html\s*\{[^}]*background-color:\s*var\(--color-bg\)/s);
+  assert.match(base, /#app\s*\{[^}]*min-height:\s*100dvh/si);
   assert.match(styles, /\.experience-workspace__shell--interactive \.experience-panel h2[\s\S]*?font-size:\s*clamp\(1\.35rem/s);
   assert.match(styles, /\.experience-workspace__shell--interactive \.experience-stage__situation[\s\S]*?line-height:\s*1\.5/s);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);

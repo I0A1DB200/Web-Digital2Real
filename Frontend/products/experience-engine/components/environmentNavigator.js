@@ -1,6 +1,7 @@
 import { environmentUiCopy } from "./experienceLocale.js";
 import { chooseEnvironmentPopoverPlacement } from "./environmentPopoverPosition.js";
 import { createEnvironmentProgressStore } from "./environmentProgressStore.js";
+import { scrollWorkspaceToTop } from "./scrollWorkspace.js";
 
 export function createEnvironmentNavigator({
   documentRef,
@@ -208,6 +209,7 @@ export function createEnvironmentNavigator({
         onTheorySectionCompleted?.(environment.id, section.id);
         if (sectionIndex === theory.sections.length - 1) renderEnvironment(environment.id);
         else { sectionIndex += 1; renderSection(); }
+        scrollWorkspaceToTop(windowRef);
       });
       actions.appendChild(next);
       panel.appendChild(actions);

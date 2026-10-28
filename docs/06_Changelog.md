@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 — Experience navigation and mobile workspace polish
+
+- Returned the viewport to the top after successful Theory and Experience advances, while preserving the current position on incorrect retries and preventing result-heading focus from overriding the scroll position.
+- Covered the document and application roots with the dark surface color and dynamic viewport height so mobile overscroll does not expose a white strip at the end of the page.
+- Reduced the stacked top spacing for Experience Lab, Theory and the mobile workspace without changing Notebook presentation, Experience content, progress state or diagnostic logic.
+
 ## 2026-10-28 — ENV-002 Theory fundamentals expansion
 
 - Reworked the four bilingual ENV-002 Theory blocks around reusable fundamentals: measurement chain and evidence, source/load/interface behavior, installation and measurement quality, and decision/actuation/verification.

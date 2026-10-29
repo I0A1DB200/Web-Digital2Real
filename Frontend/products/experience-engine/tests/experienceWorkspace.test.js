@@ -556,6 +556,7 @@ test("a generated artifact opens and completes through Experience Lab without co
   findButton(workspace.element, "Complete Theory").click();
   assert.match(workspace.element.text, /Theory 2 \/ 2/);
   const hotspot = workspace.element.find(element => element.className === "environment-hotspot");
+  assert.equal(workspace.element.find(element => element.className === "environment-stage").dataset.environmentId, "ENV-001");
   assert.equal(hotspot.tagName, "BUTTON");
   assert.equal(hotspot.attributes["aria-label"], "Inspect Sensor ON, PLC Input OFF");
   assert.equal(hotspot.style.properties["--hotspot-x"], "8.6%");
@@ -1176,6 +1177,10 @@ test("workspace and application use generated JSON without ID-specific handling"
   );
   assert.match(styles, /@media \(max-width: 760px\)/);
   assert.match(styles, /aspect-ratio:\s*var\(--environment-ratio\)/);
+  assert.match(styles, /\.environment-stage\[data-environment-id="ENV-003"\][\s\S]*?--hotspot-signal:\s*#ffe08a/);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*?\.environment-popover\s*\{[\s\S]*?max-height:\s*min\(32rem,\s*calc\(100dvh - 8rem\)\)/);
+  assert.match(styles, /@media \(max-width: 760px\)[\s\S]*?\.environment-stage\s*\{[\s\S]*?overflow:\s*visible/);
+  assert.match(styles, /\.environment-popover__actions\s*\{[\s\S]*?display:\s*grid/);
   assert.match(styles, /\.experience-media__asset\s*\{[^}]*max-height:\s*min\(42vh,\s*30rem\)/s);
   assert.match(styles, /\.experience-media__item\[data-expanded="true"\]\s+\.experience-media__asset\s*\{[^}]*max-height:\s*none/s);
   assert.match(styles, /\.experience-stage-layout--with-media\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*0\.86fr\)/s);

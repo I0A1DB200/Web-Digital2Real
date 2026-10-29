@@ -133,6 +133,7 @@ export function createEnvironmentNavigator({
     renderProgress();
 
     stage = createElement(documentRef, "div", "environment-stage");
+    stage.dataset.environmentId = environment.id;
     stage.style.setProperty("--environment-ratio", `${environment.width} / ${environment.height}`);
     const image = createElement(documentRef, "img", "environment-stage__image");
     image.src = `${baseUrl}/${environment.background}`;

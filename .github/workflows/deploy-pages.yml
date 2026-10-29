@@ -65,10 +65,20 @@ jobs:
               core.warning(`Could not verify or change the Pages source automatically: ${error.message}`);
             }
 
+      - name: Prepare Pages publication root
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp -a Frontend/. _site/
+          touch _site/.nojekyll
+          test -f _site/index.html
+          test -f _site/app.js
+          test -f _site/generated/experience-engine/catalog.json
+
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Frontend
+          path: _site
 
   deploy:
     needs: build

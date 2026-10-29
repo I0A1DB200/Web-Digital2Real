@@ -114,23 +114,23 @@ translations:
     educational_purpose: Revelar progresivamente el alcance, el estado de alimentación y enlace, la frontera del puerto, el conector y la recuperación funcional.
   assets:
     ART-001:
-      alt: Diagrama editorial de un PLC, switch industrial y estación de I/O remota conectados por PROFINET.
-      caption: Estación remota sin datos de proceso.
+      alt: Fotografía de un armario de automatización con PLC Siemens, switch SCALANCE, cableado PROFINET verde y módulos de I/O remota.
+      caption: Armario de comunicaciones y estación remota.
     ART-002:
-      alt: Vista simulada de diagnóstico del controlador con una estación remota sin intercambio cíclico y otras estaciones operativas.
-      caption: El alcance separa una estación de una caída global.
+      alt: Vista simulada de topología online tipo TIA Portal con PLC, SCALANCE, HMI y una estación ET 200SP en rojo.
+      caption: Diagnóstico online: una estación no alcanzable.
     ART-003:
-      alt: Vista técnica de una estación remota con 24 VDC presente, enlace inactivo y diagnóstico de comunicación activo.
-      caption: Alimentación presente no demuestra enlace Ethernet.
+      alt: Primer plano de una estación Siemens ET 200SP con PWR verde, BF rojo y L/A LINK apagado.
+      caption: Alimentación presente, enlace ausente.
     ART-004:
-      alt: Panel simulado de puertos de switch donde un puerto de estación está sin enlace y los puertos vecinos están activos.
-      caption: La frontera se concentra en el puerto y su conexión.
+      alt: Fotografía de un switch Siemens SCALANCE con puertos enlazados en verde y un puerto sin cable ni enlace.
+      caption: Un puerto sin enlace entre vecinos operativos.
     ART-005:
-      alt: Ilustración técnica de un conector Ethernet industrial dañado en la estación remota.
-      caption: La inspección física confirma la causa del enlace.
+      alt: Primer plano de un conector PROFINET con la pestaña rota y el enlace L/A apagado en la estación ET 200SP.
+      caption: Conector dañado en la frontera física.
     ART-006:
-      alt: Gráfica de recuperación con enlace activo, intercambio cíclico y señales de I/O coherentes.
-      caption: La recuperación se verifica por capas.
+      alt: Vista simulada de diagnóstico online con PLC, switch y dos I/O remotas en verde y tendencia estable de señales de proceso.
+      caption: Recuperación verificada desde el enlace hasta el proceso.
   completion:
     title: Debrief técnico
     summary: La estación estaba alimentada, pero el conector Ethernet industrial no mantenía un enlace estable. La reparación autorizada restauró el enlace y la verificación confirmó comunicación cíclica, I/O y función.

@@ -114,23 +114,23 @@ translations:
     educational_purpose: Progressively reveal scope, power and link state, port boundary, connector cause and functional recovery.
   assets:
     ART-001:
-      alt: Diagrama editorial de un PLC, switch industrial y estación de I/O remota conectados por PROFINET.
-      caption: Estación remota sin datos de proceso.
+      alt: Photograph of an automation cabinet with Siemens PLC, SCALANCE switch, green PROFINET cabling and remote I/O modules.
+      caption: Communications cabinet and remote station.
     ART-002:
-      alt: Vista simulada de diagnóstico del controlador con una estación remota sin intercambio cíclico y otras estaciones operativas.
-      caption: El alcance separa una estación de una caída global.
+      alt: Simulated TIA Portal style online topology with PLC, SCALANCE, HMI and one ET 200SP station red.
+      caption: Online diagnosis: one unreachable station.
     ART-003:
-      alt: Vista técnica de una estación remota con 24 VDC presente, enlace inactivo y diagnóstico de comunicación activo.
-      caption: Alimentación presente no demuestra enlace Ethernet.
+      alt: Close-up of a Siemens ET 200SP station with green PWR, red BF and dark L/A LINK indicators.
+      caption: Power present, link absent.
     ART-004:
-      alt: Panel simulado de puertos de switch donde un puerto de estación está sin enlace y los puertos vecinos están activos.
-      caption: La frontera se concentra en el puerto y su conexión.
+      alt: Photograph of a Siemens SCALANCE switch with green linked ports and one port without cable or link.
+      caption: One link-down port among operational neighbors.
     ART-005:
-      alt: Ilustración técnica de un conector Ethernet industrial dañado en la estación remota.
-      caption: La inspección física confirma la causa del enlace.
+      alt: Close-up of a PROFINET connector with a broken latch and dark L/A link indicator at the ET 200SP station.
+      caption: Damaged connector at the physical boundary.
     ART-006:
-      alt: Gráfica de recuperación con enlace activo, intercambio cíclico y señales de I/O coherentes.
-      caption: La recuperación se verifica por capas.
+      alt: Simulated online diagnostic view with PLC, switch and two remote I/O devices green and stable process-signal trends.
+      caption: Recovery verified from link to process.
   completion:
     title: Technical debrief
     summary: The station had power, but its industrial Ethernet connector could not maintain a stable link. Authorized repair restored the link and verification confirmed cyclic communication, I/O and function.

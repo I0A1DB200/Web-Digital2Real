@@ -3,7 +3,8 @@
 ## 2026-10-28 — ENV-003 / EE-0021 PROFINET device not reachable
 
 - Added the first ENV-003 unit as a bilingual V2 Experience with a layered diagnosis from controller scope to physical connector and verified recovery.
-- Added six human-free synthetic diagnostic graphics covering controller status, power/link separation, switch-port evidence, connector inspection and recovery verification.
+- Replaced the initial flat graphics with six coherent human-free visuals: a real field-style cabinet, ET 200SP LED state, SCALANCE port state, connector damage, and two clearly marked simulated online-diagnostic views.
+- Made the failure evidence visually distinct from the recovery evidence: the failure now uses a light TIA/PRONETA-style topology with a red branch, while recovery keeps the dark status-and-trend panel.
 - Registered one hotspot at the approved ENV-003 cover position and updated preview packaging and focused regression checks. Remaining hotspots stay paired with their Experiences.
 
 ## 2026-10-28 — ENV-003 Phase 02: communications Theory

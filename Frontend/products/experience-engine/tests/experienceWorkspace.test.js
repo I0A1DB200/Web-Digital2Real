@@ -1177,7 +1177,8 @@ test("workspace and application use generated JSON without ID-specific handling"
   );
   assert.match(styles, /@media \(max-width: 760px\)/);
   assert.match(styles, /aspect-ratio:\s*var\(--environment-ratio\)/);
-  assert.match(styles, /\.environment-stage\[data-environment-id="ENV-003"\][\s\S]*?--hotspot-signal:\s*#ffe08a/);
+  assert.match(styles, /\.environment-card__media\[data-environment-id="ENV-003"\]::after,[\s\S]*?\.environment-stage\[data-environment-id="ENV-003"\]::after[\s\S]*?background:\s*linear-gradient\(180deg,\s*rgba\(5,\s*5,\s*5,\s*0\.16\),\s*rgba\(5,\s*5,\s*5,\s*0\.3\)\)/);
+  assert.doesNotMatch(styles, /\.environment-stage\[data-environment-id="ENV-003"\]\s*\{[\s\S]*?--hotspot-signal:/);
   assert.match(styles, /@media \(max-width: 760px\)[\s\S]*?\.environment-popover\s*\{[\s\S]*?max-height:\s*min\(32rem,\s*calc\(100dvh - 8rem\)\)/);
   assert.match(styles, /@media \(max-width: 760px\)[\s\S]*?\.environment-stage\s*\{[\s\S]*?overflow:\s*visible/);
   assert.match(styles, /\.environment-popover__actions\s*\{[\s\S]*?display:\s*grid/);

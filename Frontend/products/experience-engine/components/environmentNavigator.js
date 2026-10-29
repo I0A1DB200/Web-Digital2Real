@@ -68,6 +68,7 @@ export function createEnvironmentNavigator({
       main.type = "button";
       main.setAttribute("aria-label", `${ui.openEnvironment}: ${environmentTitle(environment)}`);
       const media = createElement(documentRef, "span", "environment-card__media");
+      media.dataset.environmentId = environment.id;
       const imageTreatment = environment.presentation?.catalog_image_treatment;
       if (typeof imageTreatment === "string" && imageTreatment.trim()) {
         media.dataset.imageTreatment = imageTreatment;

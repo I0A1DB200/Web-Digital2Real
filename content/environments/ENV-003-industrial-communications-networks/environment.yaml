@@ -27,5 +27,5 @@ theory: "theory.yaml"
 
 hotspots:
   - experience_editorial_id: "EE-0021"
-    x: 52
-    y: 33
+    x: 55
+    y: 21

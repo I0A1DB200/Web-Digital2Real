@@ -269,7 +269,7 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.equal(env003.presentation.title.es, "Comunicaciones y Redes Industriales");
   assert.match(env003.presentation.description.en, /physical connectivity.*control networks.*data exchange/iu);
   assert.deepEqual(env003.hotspots, [
-    { experienceEditorialId: "EE-0021", x: 52, y: 33 }
+    { experienceEditorialId: "EE-0021", x: 55, y: 21 }
   ]);
   assert.deepEqual(env003.theory.sectionIds, [
     "TH-01-INDUSTRIAL-COMMUNICATION-FUNDAMENTALS",

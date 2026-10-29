@@ -1,0 +1,156 @@
+locale: en
+translations:
+  title: PROFINET Device Name Mismatch
+  summary: Diagnose a remote station with an active link but an incorrect PROFINET identity, then recover the line through the authorized hardware configuration.
+  scenario:
+    initial_context: A replaced remote I/O station has power and physical link, but the PLC does not update its process signals.
+    operational_state: The PLC and the other PROFINET lines remain operational. The discovered station does not match the name expected by the project.
+    initiating_event: Online diagnostics show a physically reachable device outside cyclic exchange because its identity does not match.
+    learner_role: Automation technician responsible for separating link, identity, topology and configuration before authorized commissioning.
+    safety_context:
+      safe_state: Perform discovery and downloads from a safe condition. Any identity or cabling change must follow the authorized commissioning procedure.
+      intervention_constraints:
+        - Do not assign improvised names or IPs.
+        - Do not download hardware before confirming the line and device.
+        - Do not force I/O or bypass the controller.
+        - Verify identity, cyclic communication, I/O and function after correction.
+  learning_objectives:
+    OBJ-IDENTITY-BOUNDARY:
+      description: Distinguish active physical link, discovered identity, expected name and configured IP.
+    OBJ-TOPOLOGY-COMMISSIONING:
+      description: Use a discovery view and the TIA Portal topology to confirm that the device belongs to the correct line.
+    OBJ-VERIFIED-RECOVERY:
+      description: Apply the expected identity through the authorized procedure and verify complete line recovery.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirm the scope
+      situation: A replaced remote I/O station has power, but the PLC is not updating its signals. Which action establishes the scope first without changing the installation?
+    STAGE-02-CHECK-IDENTITY:
+      title: Compare the device identity
+      situation: The rest of the network remains operational and the station shows power and link. Which comparison provides the next evidence?
+    STAGE-03-VALIDATE-TOPOLOGY:
+      title: Validate the configured topology
+      situation: PRONETA discovers a station with a different name than expected. The physical link is active. Which check prevents assigning an identity to the wrong line?
+    STAGE-04-ASSIGN-IDENTITY:
+      title: Assign the authorized identity
+      situation: The topology and physical device match the project. Which intervention applies the expected identity without introducing another variable?
+    STAGE-05-VERIFY-RECOVERY:
+      title: Verify recovery
+      situation: The expected identity has been applied and the hardware configuration downloaded. Which check demonstrates that the line performs its function again?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: A replaced remote station does not update its signals while the PLC and other lines remain operational.
+    EVID-02-SCOPE:
+      source: Controller diagnostics
+      content: The PLC and reference lines are available. The affected station has power and link but no valid cyclic exchange.
+    EVID-03-DEVICE-IDENTITY:
+      source: PRONETA and remote station
+      content: The station responds on the network and shows a discovered identity different from the identity expected by the project.
+    EVID-04-CONFIGURED-IDENTITY:
+      source: TIA Portal and PROFINET topology
+      content: The position, neighbors and port match the configured line; the project contains the name and IP the station must receive.
+    EVID-05-IDENTITY-APPLIED:
+      source: Authorized commissioning
+      content: The expected identity is assigned and the hardware configuration is downloaded from TIA Portal without changing the physical topology.
+    EVID-06-RECOVERY:
+      source: Online diagnostics and process test
+      content: All six lines are available, the station enters cyclic exchange, I/O signals are coherent and the process trend remains stable.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Compare the PLC, affected station and one operational reference.
+    DEC-01-RESTART-PLC:
+      action: Restart the PLC to see whether the symptom disappears.
+    DEC-01-REPLACE-STATION:
+      action: Replace the remote station immediately.
+    DEC-01-CHANGE-IP:
+      action: Change the IP address before comparing the state.
+    DEC-02-COMPARE-IDENTITY:
+      action: Compare the expected name, discovered name and IP address.
+    DEC-02-RESEAT-CABLE:
+      action: Disconnect and reconnect the cable to test a physical hypothesis.
+    DEC-02-SWAP-STATION:
+      action: Swap the station without preserving the evidence.
+    DEC-02-CLEAR-DIAGNOSTIC:
+      action: Clear diagnostics to see whether the alarm returns.
+    DEC-03-CHANGE-IP-RANDOM:
+      action: Assign any free IP to the device without validating the line.
+    DEC-03-REPLACE-SWITCH:
+      action: Replace the switch because one station has a different name.
+    DEC-03-VERIFY-TOPOLOGY:
+      action: Verify the configured topology, neighbors and line port.
+    DEC-03-FORCE-IO:
+      action: Force I/O to check whether the device accepts the identity.
+    DEC-04-ASSIGN-EXPECTED-ID:
+      action: Assign the expected identity and download the hardware configuration from TIA Portal.
+    DEC-04-ASSIGN-ARBITRARY-NAME:
+      action: Assign a short name chosen during the intervention.
+    DEC-04-CHANGE-IP-ONLY:
+      action: Change only the IP and leave the name unchecked.
+    DEC-04-BYPASS-CONTROLLER:
+      action: Put the station into service outside the project to bypass the diagnostic.
+    DEC-05-CHECK-LINK-ONLY:
+      action: Close when the link indicators turn green again.
+    DEC-05-VERIFY-FULL-CHAIN:
+      action: Verify identity, topology, cyclic communication, I/O and function.
+    DEC-05-CLEAR-DIAGNOSTICS:
+      action: Clear diagnostics and close without testing the process.
+  retry_feedback:
+    DEC-01-RESTART-PLC: The PLC and the rest of the network remain operational. Compare states before restarting.
+    DEC-01-REPLACE-STATION: A station not integrated by the PLC is not necessarily failed. Delimit the layers first.
+    DEC-01-CHANGE-IP: Do not change addressing before you know which device is affected.
+    DEC-02-RESEAT-CABLE: The link is present. Compare discovered and expected identity before touching the cabling.
+    DEC-02-SWAP-STATION: Keep the device and record its identity before replacing it.
+    DEC-02-CLEAR-DIAGNOSTIC: Keep the diagnostic until names, IP and topology have been compared.
+    DEC-03-CHANGE-IP-RANDOM: First confirm the line, its neighbors and the configured port.
+    DEC-03-REPLACE-SWITCH: The switch is communicating. Validate the device, port and project relationship.
+    DEC-03-FORCE-IO: Do not force I/O to validate names. Use diagnostics and a safe condition.
+    DEC-04-ASSIGN-ARBITRARY-NAME: Use the identity expected by the project; do not invent names during the intervention.
+    DEC-04-CHANGE-IP-ONLY: The IP does not replace the expected PROFINET name. Check both values.
+    DEC-04-BYPASS-CONTROLLER: Do not bypass the project to hide a mismatch. Correct identity through the authorized procedure.
+    DEC-05-CHECK-LINK-ONLY: Check accepted identity, cyclic I/O and function, not only LEDs.
+    DEC-05-CLEAR-DIAGNOSTICS: Clearing diagnostics does not verify recovery. Follow the complete chain.
+  visual:
+    educational_purpose: Progressively reveal scope, discovered identity, topology, authorized assignment and functional recovery.
+  completion:
+    title: Technical debrief
+    summary: The station had power and link, but its PROFINET identity did not match the project. Topology was confirmed before assigning the expected name and downloading the hardware configuration.
+    process:
+      - Confirm the scope.
+      - Compare discovered and expected identity.
+      - Validate line neighbors and port.
+      - Assign the authorized identity.
+      - Download the hardware configuration.
+      - Verify communication, I/O and function.
+    lesson: A green PROFINET link does not prove that the PLC accepted the device identity. Topology and project must match before configuration is downloaded.
+    avoided_errors:
+      - Changing the IP as a first reaction.
+      - Assigning improvised names.
+      - Downloading hardware before validating the line.
+      - Closing after only green LEDs.
+    industrial_value:
+      - Traceable commissioning.
+      - Fewer arbitrary replacements and changes.
+      - Repeatable diagnostics for lines with many devices.
+  assets:
+    ART-001:
+      alt: Photograph of a cabinet with Siemens PLC, SCALANCE switch and several PROFINET I/O lines.
+      caption: PROFINET cabinet and line overview.
+    ART-002:
+      alt: Simulated PROFINET topology with one line marked by an identity mismatch.
+      caption: One line has different physical and project identities.
+    ART-003:
+      alt: Close-up of an ET 200SP head with power and link active and red BF diagnostic LED.
+      caption: Link is present, identity is not accepted.
+    ART-004:
+      alt: Simulated online diagnostic view comparing expected and discovered device names.
+      caption: Online identity comparison.
+    ART-005:
+      alt: Simulated PRONETA commissioning view for assigning identity to a PROFINET line head.
+      caption: Line-head commissioning.
+    ART-006:
+      alt: Simulated TIA Portal hardware configuration download to a PROFINET network.
+      caption: Authorized hardware configuration download.
+    ART-007:
+      alt: Simulated online view with six available PROFINET lines and a stable process trend.
+      caption: Recovery verified across the line.

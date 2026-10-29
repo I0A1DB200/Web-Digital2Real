@@ -1,0 +1,158 @@
+locale: es
+translations:
+  title: Nombre de dispositivo PROFINET no coincide
+  summary: Diagnostica una estación remota con enlace activo pero identidad PROFINET incorrecta y recupera la línea usando la configuración de hardware autorizada.
+  scenario:
+    initial_context: Una estación remota de I/O sustituida tiene alimentación y enlace físico, pero el PLC no actualiza sus señales de proceso.
+    operational_state: El PLC y las demás líneas PROFINET siguen operativos. La estación descubierta no coincide con el nombre que espera el proyecto.
+    initiating_event: El diagnóstico online muestra un dispositivo accesible físicamente, pero fuera del intercambio cíclico por una discrepancia de identidad.
+    learner_role: Técnico de automatización responsable de separar enlace, identidad, topología y configuración antes de aplicar la puesta en marcha autorizada.
+    safety_context:
+      safe_state: Realiza descubrimiento y descargas desde una condición segura. Cualquier cambio de identidad o cableado debe seguir el procedimiento autorizado de puesta en marcha.
+      intervention_constraints:
+        - No asignar nombres o IP improvisados.
+        - No descargar hardware antes de confirmar la línea y el dispositivo.
+        - No forzar I/O ni puentear el controlador.
+        - Verificar identidad, comunicación cíclica, I/O y función después de la corrección.
+  learning_objectives:
+    OBJ-IDENTITY-BOUNDARY:
+      description: Distinguir enlace físico activo, identidad descubierta, nombre esperado e IP configurada.
+    OBJ-TOPOLOGY-COMMISSIONING:
+      description: Usar una vista de descubrimiento y la topología de TIA Portal para confirmar que el dispositivo pertenece a la línea correcta.
+    OBJ-VERIFIED-RECOVERY:
+      description: Aplicar la identidad esperada mediante procedimiento autorizado y verificar la recuperación completa de la línea.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirmar el alcance
+      situation: Una estación remota sustituida tiene alimentación, pero el PLC no actualiza sus señales. ¿Qué acción establece primero el alcance sin alterar la instalación?
+    STAGE-02-CHECK-IDENTITY:
+      title: Comparar la identidad del dispositivo
+      situation: El resto de la red sigue operativo y la estación muestra alimentación y enlace. ¿Qué comparación aporta la siguiente evidencia?
+    STAGE-03-VALIDATE-TOPOLOGY:
+      title: Validar la topología configurada
+      situation: PRONETA descubre una estación con un nombre distinto al esperado. El enlace físico está activo. ¿Qué comprobación evita asignar una identidad a la línea equivocada?
+    STAGE-04-ASSIGN-IDENTITY:
+      title: Asignar la identidad autorizada
+      situation: La topología y el dispositivo físico coinciden con el proyecto. ¿Qué intervención aplica la identidad esperada sin introducir otra variable?
+    STAGE-05-VERIFY-RECOVERY:
+      title: Verificar la recuperación
+      situation: La identidad esperada se ha aplicado y la configuración de hardware se ha descargado. ¿Qué comprobación demuestra que la línea vuelve a cumplir su función?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI y operador
+      content: Una estación remota sustituida no actualiza sus señales mientras el PLC y las demás líneas siguen operativos.
+    EVID-02-SCOPE:
+      source: Diagnóstico del controlador
+      content: El PLC y las líneas de referencia están disponibles. La estación afectada tiene alimentación y enlace, pero no entra en intercambio cíclico válido.
+    EVID-03-DEVICE-IDENTITY:
+      source: PRONETA y estación remota
+      content: La estación responde en la red y muestra una identidad descubierta distinta de la identidad esperada por el proyecto.
+    EVID-04-CONFIGURED-IDENTITY:
+      source: TIA Portal y topología PROFINET
+      content: La posición, los vecinos y el puerto corresponden a la línea configurada; el proyecto contiene el nombre e IP que debe recibir la estación.
+    EVID-05-IDENTITY-APPLIED:
+      source: Puesta en marcha autorizada
+      content: La identidad esperada se asigna a la estación y la configuración de hardware se descarga desde TIA Portal sin cambiar la topología física.
+    EVID-06-RECOVERY:
+      source: Diagnóstico online y prueba de proceso
+      content: Las seis líneas aparecen disponibles, la estación entra en intercambio cíclico, las señales de I/O son coherentes y la tendencia de proceso permanece estable.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Comparar PLC, estación afectada y una referencia operativa.
+    DEC-01-RESTART-PLC:
+      action: Reiniciar el PLC para ver si desaparece el síntoma.
+    DEC-01-REPLACE-STATION:
+      action: Sustituir de inmediato la estación remota.
+    DEC-01-CHANGE-IP:
+      action: Cambiar la dirección IP antes de comparar el estado.
+    DEC-02-COMPARE-IDENTITY:
+      action: Comparar nombre esperado, nombre descubierto y dirección IP.
+    DEC-02-RESEAT-CABLE:
+      action: Desconectar y volver a conectar el cable para probar una hipótesis física.
+    DEC-02-SWAP-STATION:
+      action: Cambiar la estación por otra sin conservar la evidencia.
+    DEC-02-CLEAR-DIAGNOSTIC:
+      action: Borrar el diagnóstico para ver si la alarma reaparece.
+    DEC-03-CHANGE-IP-RANDOM:
+      action: Asignar una IP libre al dispositivo sin validar la línea.
+    DEC-03-REPLACE-SWITCH:
+      action: Sustituir el switch porque una estación tiene un nombre diferente.
+    DEC-03-VERIFY-TOPOLOGY:
+      action: Verificar la topología configurada, los vecinos y el puerto de la línea.
+    DEC-03-FORCE-IO:
+      action: Forzar I/O para comprobar si el dispositivo acepta la identidad.
+    DEC-04-ASSIGN-EXPECTED-ID:
+      action: Asignar la identidad esperada y descargar HW desde TIA Portal.
+    DEC-04-ASSIGN-ARBITRARY-NAME:
+      action: Asignar un nombre corto elegido en el momento.
+    DEC-04-CHANGE-IP-ONLY:
+      action: Cambiar solo la IP y dejar el nombre sin comprobar.
+    DEC-04-BYPASS-CONTROLLER:
+      action: Poner la estación en servicio fuera del proyecto para evitar el diagnóstico.
+    DEC-05-CHECK-LINK-ONLY:
+      action: Cerrar cuando los indicadores de enlace vuelvan a estar verdes.
+    DEC-05-VERIFY-FULL-CHAIN:
+      action: Verificar identidad, topología, comunicación cíclica, I/O y función.
+    DEC-05-CLEAR-DIAGNOSTICS:
+      action: Borrar el diagnóstico y cerrar sin probar el proceso.
+  retry_feedback:
+    DEC-01-RESTART-PLC: El PLC y el resto de la red siguen operativos. Compara estados antes de reiniciar.
+    DEC-01-REPLACE-STATION: Una estación no incorporada al PLC no está necesariamente averiada. Delimita primero las capas.
+    DEC-01-CHANGE-IP: No cambies direccionamiento antes de saber qué dispositivo está afectado.
+    DEC-02-RESEAT-CABLE: El enlace está presente. Compara la identidad descubierta con la esperada antes de tocar el cableado.
+    DEC-02-SWAP-STATION: Conserva el equipo y registra su identidad antes de sustituirlo.
+    DEC-02-CLEAR-DIAGNOSTIC: Conserva el diagnóstico hasta comparar nombres, IP y topología.
+    DEC-03-CHANGE-IP-RANDOM: Primero confirma la línea, los vecinos y el puerto configurado.
+    DEC-03-REPLACE-SWITCH: El switch está comunicando. Valida la relación entre dispositivo, puerto y proyecto.
+    DEC-03-FORCE-IO: No fuerces I/O para validar nombres. Usa diagnóstico y una condición segura.
+    DEC-04-ASSIGN-ARBITRARY-NAME: Usa la identidad esperada por el proyecto; no inventes nombres durante la intervención.
+    DEC-04-CHANGE-IP-ONLY: La IP no sustituye al nombre PROFINET esperado. Comprueba ambos datos.
+    DEC-04-BYPASS-CONTROLLER: No evites el proyecto para ocultar un mismatch. Corrige la identidad mediante el procedimiento autorizado.
+    DEC-05-CHECK-LINK-ONLY: Comprueba identidad aceptada, I/O cíclica y función, no solo LEDs.
+    DEC-05-CLEAR-DIAGNOSTICS: Borrar el diagnóstico no verifica la recuperación. Sigue la cadena completa.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance, la identidad descubierta, la topología, la asignación autorizada y la recuperación funcional.
+  completion:
+    title: Debrief técnico
+    summary: La estación tenía alimentación y enlace, pero su identidad PROFINET no coincidía con la del proyecto. La topología se confirmó antes de asignar el nombre esperado y descargar la configuración de hardware.
+    process:
+      - Confirmar el alcance.
+      - Comparar identidad descubierta y esperada.
+      - Validar vecinos y puerto de la línea.
+      - Asignar la identidad autorizada.
+      - Descargar la configuración de hardware.
+      - Verificar comunicación, I/O y función.
+    lesson: En una red PROFINET, un enlace verde no demuestra que el PLC haya aceptado la identidad del dispositivo. La topología y el proyecto deben coincidir antes de descargar la configuración.
+    avoided_errors:
+      - Cambiar la IP como primera reacción.
+      - Asignar nombres improvisados.
+      - Descargar hardware sin validar la línea.
+      - Cerrar al ver solo los LEDs verdes.
+    industrial_value:
+      - Puesta en marcha trazable.
+      - Menos sustituciones y cambios arbitrarios.
+      - Diagnóstico repetible en líneas con muchos dispositivos.
+    media_ids:
+      - ART-007
+  assets:
+    ART-001:
+      alt: Fotografía de un armario con PLC Siemens, switch SCALANCE y varias líneas de I/O PROFINET.
+      caption: Armario y líneas PROFINET de la célula.
+    ART-002:
+      alt: Vista simulada de una topología PROFINET con una línea marcada por una discrepancia de identidad.
+      caption: Una línea tiene identidad física y proyecto diferentes.
+    ART-003:
+      alt: Primer plano de una cabeza ET 200SP con alimentación y enlace activos y diagnóstico BF rojo.
+      caption: El enlace está presente, pero la identidad no coincide.
+    ART-004:
+      alt: Vista simulada de diagnóstico online que compara el nombre esperado con el nombre descubierto.
+      caption: Comparación de identidad en línea.
+    ART-005:
+      alt: Vista simulada de puesta en marcha PRONETA para asignar identidad a una cabeza de línea PROFINET.
+      caption: Puesta en marcha de la cabeza de línea.
+    ART-006:
+      alt: Vista simulada de descarga de configuración de hardware desde TIA Portal a una red PROFINET.
+      caption: Descarga autorizada de la configuración de hardware.
+    ART-007:
+      alt: Vista simulada online con seis líneas PROFINET disponibles y una tendencia estable de proceso.
+      caption: Recuperación verificada en toda la línea.

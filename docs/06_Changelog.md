@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-29 — ENV-003 / EE-0022 PROFINET device name mismatch
+
+- Added bilingual EE-0022 for a remote PROFINET station with power and physical link but a discovered device name different from the TIA Portal project identity.
+- Added a five-stage diagnostic path that separates scope, identity, topology, authorized name/IP assignment and full recovery verification; correct options use mixed positions and do not rely on answer length.
+- Added seven coherent human-free 1672×941 assets using S7-1500, SCALANCE and ET 200SP visual references plus original simulated TIA/PRONETA-style panels.
+- Registered EE-0022 at the ENV-003 hotspot and extended preview packaging, localization, asset and regression checks to 22 Experiences. The final PRONETA/TIA topology-assignment pill remains reserved for the ENV-003 closeout.
+
 ## 2026-10-28 — ENV-003 / EE-0021 PROFINET device not reachable
 
 - Added the first ENV-003 unit as a bilingual V2 Experience with a layered diagnosis from controller scope to physical connector and verified recovery.

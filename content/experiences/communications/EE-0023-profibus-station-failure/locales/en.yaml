@@ -1,0 +1,157 @@
+locale: en
+translations:
+  title: PROFIBUS Station Failure
+  summary: Locate a PROFIBUS DP station that has left cyclic exchange, separate station and segment faults, and recover communication by verifying the configured address.
+  scenario:
+    initial_context: A remote PROFIBUS DP station stops updating process data while the master and neighboring stations remain available.
+    operational_state: The PLC remains in RUN and other stations exchange cyclic data. The affected station retains power and the master diagnostic records a station failure.
+    initiating_event: The diagnostic buffer identifies one PROFIBUS station outside cyclic exchange. The cause must still be separated between station, connection, segment and parameters.
+    learner_role: Automation technician responsible for delimiting scope, comparing the configured and actual station address, and applying an authorized correction.
+    safety_context:
+      safe_state: Perform checks and address assignment from a safe condition. Any station or segment change must follow the authorized commissioning procedure.
+      intervention_constraints:
+        - Do not change termination or cabling as a first reaction.
+        - Do not modify the master address to hide the fault.
+        - Do not force I/O or replace the station before preserving evidence.
+        - Verify diagnostics, cyclic exchange, I/O and function after correction.
+  learning_objectives:
+    OBJ-DP-SCOPE:
+      description: Distinguish a selective station fault from a common PROFIBUS segment loss.
+    OBJ-ADDRESS-ID:
+      description: Compare the address expected by the master with the actual station address before intervening.
+    OBJ-DP-RECOVERY:
+      description: Apply the address correction through the authorized procedure and verify cyclic exchange returns.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirm the scope
+      situation: A PROFIBUS station stops delivering data, but the master and other stations remain operational. Which action delimits the scope first without changing the installation?
+    STAGE-02-SEPARATE-SEGMENT:
+      title: Separate station and segment
+      situation: The buffer points to one station and neighboring stations continue cycling. Which check separates a selective station fault from a common segment failure?
+    STAGE-03-COMPARE-ADDRESS:
+      title: Compare the station address
+      situation: The station has power and the segment is active. Which comparison confirms that the PROFIBUS master and device use the same station address?
+    STAGE-04-CORRECT-ADDRESS:
+      title: Correct the authorized address
+      situation: The actual address does not match the address expected by the project. Which intervention corrects the identity without changing the master configuration?
+    STAGE-05-VERIFY-RECOVERY:
+      title: Verify recovery
+      situation: The configured address has been applied from a safe condition. Which check demonstrates that the station performs its function again?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: A remote PROFIBUS station does not update its signals while the PLC and neighboring stations remain operational.
+    EVID-02-MASTER-DIAGNOSTIC:
+      source: Master diagnostic buffer
+      content: The master records a PROFIBUS station failure for DP_Station_03. The event locates the symptom but does not yet prove a physical or addressing cause.
+    EVID-03-SEGMENT-STATUS:
+      source: Online diagnostics and network view
+      content: The PLC and neighboring stations remain online; DP_Station_03 has power and bus link but does not participate in cyclic exchange.
+    EVID-04-ADDRESS-MISMATCH:
+      source: Master project and physical station
+      content: The address expected by the project does not match the address configured in the station. The mismatch explains why the master does not include it in cyclic exchange.
+    EVID-05-ADDRESS-APPLIED:
+      source: Authorized commissioning
+      content: The expected address is applied to DP_Station_03 from a safe condition; the master configuration remains unchanged.
+    EVID-06-RECOVERY:
+      source: Online diagnostics and process test
+      content: All PROFIBUS stations are available, DP_Station_03 resumes cyclic exchange, I/O signals are coherent and the process trend remains stable.
+  decisions:
+    DEC-01-COMPARE-DIAGNOSTICS:
+      action: Compare the master buffer, affected station and one neighboring station.
+    DEC-01-RESTART-PLC:
+      action: Restart the PLC to see whether the symptom disappears.
+    DEC-01-REPLACE-STATION:
+      action: Replace the remote station immediately.
+    DEC-01-CHANGE-TERMINATION:
+      action: Change the bus termination to see whether the fault disappears.
+    DEC-02-COMPARE-NEIGHBORS:
+      action: Compare the affected station with neighbors on the same segment.
+    DEC-02-REPLACE-SEGMENT:
+      action: Replace the complete bus section before measuring station status.
+    DEC-02-CHANGE-ADDRESS:
+      action: Change the station address before comparing the project.
+    DEC-02-FORCE-IO:
+      action: Force I/O to check whether the station responds.
+    DEC-03-COMPARE-ADDRESS:
+      action: Compare the project address expected by the master with the station actual address.
+    DEC-03-CHANGE-TERMINATION:
+      action: Change the bus termination to correct an address mismatch.
+    DEC-03-REPLACE-MASTER:
+      action: Replace the PROFIBUS master because one station is out of cycle.
+    DEC-03-CLEAR-BUFFER:
+      action: Clear the buffer before comparing the configured address.
+    DEC-04-ASSIGN-CONFIGURED-ADDRESS:
+      action: Assign the expected address through the authorized procedure while leaving the master unchanged.
+    DEC-04-CHANGE-MASTER-CONFIG:
+      action: Change the master configuration to accept the found address.
+    DEC-04-USE-FREE-ADDRESS:
+      action: Assign any free address so the station appears again.
+    DEC-04-BYPASS-STATION:
+      action: Put the station into service outside the project to bypass the diagnostic.
+    DEC-05-VERIFY-CYCLIC-DATA:
+      action: Verify a clean diagnostic state, cyclic exchange, coherent I/O and process function.
+    DEC-05-CHECK-LED-ONLY:
+      action: Close when the station indicators turn green without checking diagnostics, cyclic data, I/O or function.
+    DEC-05-CLEAR-DIAGNOSTICS:
+      action: Clear diagnostics and close without testing the process.
+  retry_feedback:
+    DEC-01-RESTART-PLC: The master and neighboring stations remain operational. Delimit the scope before restarting.
+    DEC-01-REPLACE-STATION: A station outside the cycle is not necessarily failed. Preserve evidence and separate the layers.
+    DEC-01-CHANGE-TERMINATION: Do not change termination first; confirm which stations and links remain operational.
+    DEC-02-REPLACE-SEGMENT: Neighbors remain online. Do not replace the segment without demonstrating a common failure.
+    DEC-02-CHANGE-ADDRESS: First correlate the master, neighbors and physical station; then compare addresses.
+    DEC-02-FORCE-IO: Do not force I/O to locate a PROFIBUS station. Use diagnostics and a safe condition.
+    DEC-03-CHANGE-TERMINATION: The mismatch is in the station address. Investigate termination as a separate hypothesis.
+    DEC-03-REPLACE-MASTER: The master still exchanges with neighbors. Compare the address before replacing it.
+    DEC-03-CLEAR-BUFFER: Keep the buffer until the address comparison and recovery are complete.
+    DEC-04-CHANGE-MASTER-CONFIG: Keep the master configuration; apply the expected station address through the authorized procedure.
+    DEC-04-USE-FREE-ADDRESS: Use the project address, not a free address chosen during the intervention.
+    DEC-04-BYPASS-STATION: Do not bypass the project to hide a station fault; correct the address through the authorized procedure.
+    DEC-05-CHECK-LED-ONLY: Check cyclic exchange, I/O and function; LEDs alone do not demonstrate recovery.
+    DEC-05-CLEAR-DIAGNOSTICS: Clearing the buffer does not verify recovery. Follow the complete chain to the process.
+  visual:
+    educational_purpose: Progressively reveal the fault scope, segment status, address comparison, authorized correction and functional recovery.
+  completion:
+    title: Technical debrief
+    summary: The PROFIBUS station retained power and neighboring stations continued communicating, but its actual address did not match the master address. The authorized address was applied without changing the master and cyclic exchange was verified.
+    process:
+      - Confirm the affected station in the buffer.
+      - Compare the station with segment neighbors.
+      - Compare expected and actual address.
+      - Apply the authorized address from a safe condition.
+      - Verify diagnostics, cyclic exchange, I/O and function.
+    lesson: A PROFIBUS station failure does not by itself identify whether the cause is the device, segment or parametrization. The first verifiable discrepancy appears when diagnostics, neighbors and configured address are correlated.
+    avoided_errors:
+      - Changing termination as a first reaction.
+      - Replacing the station without preserving evidence.
+      - Changing the master configuration to accept an unexpected address.
+      - Closing when only the LEDs turn green.
+    industrial_value:
+      - More traceable bus diagnostics.
+      - Fewer arbitrary replacements and changes.
+      - Repeatable recovery in cabinets with several DP stations.
+    media_ids:
+      - ART-007
+  assets:
+    ART-001:
+      alt: Photograph of a cabinet with Siemens PLC, DP interface and remote stations connected by purple PROFIBUS cabling.
+      caption: PROFIBUS cabinet and cell overview.
+    ART-002:
+      alt: Simulated diagnostic buffer showing DP_Station_03 with a PROFIBUS station failure.
+      caption: The buffer locates the affected station without yet asserting the cause.
+    ART-003:
+      alt: Close-up of a Siemens ET 200S station with PROFIBUS connector, power LEDs and station-failure indication.
+      caption: The station retains power while diagnostics indicate a failure.
+    ART-004:
+      alt: Simulated PROFIBUS network view with a master and green neighboring stations while DP_Station_03 is red.
+      caption: Operational neighbors separate station and segment.
+    ART-005:
+      alt: Simulated view comparing the master expected address with the actual address of DP_Station_03.
+      caption: The comparison confirms the address mismatch.
+    ART-006:
+      alt: Simulated authorized address-assignment view for a PROFIBUS station in a safe condition.
+      caption: The project address is applied without changing the master.
+    ART-007:
+      alt: Simulated online view with all PROFIBUS stations available, cyclic data active and a stable trend.
+      caption: Recovery verified from diagnostics to process.

@@ -1,0 +1,157 @@
+locale: es
+translations:
+  title: Fallo de estación PROFIBUS
+  summary: Localiza una estación PROFIBUS DP que ha dejado el intercambio cíclico, separa fallo de estación y fallo de segmento, y recupera la comunicación verificando la dirección configurada.
+  scenario:
+    initial_context: Una estación remota PROFIBUS DP deja de actualizar sus datos de proceso mientras el maestro y las estaciones vecinas siguen disponibles.
+    operational_state: El PLC permanece en RUN y otras estaciones intercambian datos cíclicos. La estación afectada conserva alimentación y el diagnóstico del maestro registra un fallo de estación.
+    initiating_event: El buffer de diagnóstico identifica una estación PROFIBUS fuera del intercambio cíclico. La causa aún debe separarse entre estación, conexión, segmento y parámetros.
+    learner_role: Técnico de automatización responsable de delimitar el alcance, comparar la dirección configurada con la real y aplicar una corrección autorizada.
+    safety_context:
+      safe_state: Realiza las comprobaciones y la asignación de dirección desde una condición segura. Cualquier cambio en una estación o en el segmento debe seguir el procedimiento de puesta en marcha autorizado.
+      intervention_constraints:
+        - No cambiar terminaciones ni cableado como primera reacción.
+        - No modificar la dirección del maestro para ocultar el fallo.
+        - No forzar I/O ni sustituir la estación sin conservar la evidencia.
+        - Verificar diagnóstico, intercambio cíclico, I/O y función después de la corrección.
+  learning_objectives:
+    OBJ-DP-SCOPE:
+      description: Distinguir un fallo selectivo de estación de una pérdida común del segmento PROFIBUS.
+    OBJ-ADDRESS-ID:
+      description: Comparar la dirección de estación esperada por el maestro con la dirección real antes de intervenir.
+    OBJ-DP-RECOVERY:
+      description: Aplicar la corrección de dirección mediante el procedimiento autorizado y verificar el retorno del intercambio cíclico.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirmar el alcance
+      situation: Una estación PROFIBUS deja de entregar datos, pero el maestro y otras estaciones siguen operativos. ¿Qué acción delimita primero el alcance sin alterar la instalación?
+    STAGE-02-SEPARATE-SEGMENT:
+      title: Separar estación y segmento
+      situation: El buffer señala una estación concreta y las estaciones vecinas continúan en intercambio. ¿Qué comprobación separa una avería selectiva de una caída común del segmento?
+    STAGE-03-COMPARE-ADDRESS:
+      title: Comparar la dirección de estación
+      situation: La estación está alimentada y el segmento tiene actividad. ¿Qué comparación confirma si el maestro y el equipo usan la misma dirección PROFIBUS?
+    STAGE-04-CORRECT-ADDRESS:
+      title: Corregir la dirección autorizada
+      situation: La dirección real no coincide con la que espera el proyecto. ¿Qué intervención corrige la identidad sin cambiar la configuración del maestro?
+    STAGE-05-VERIFY-RECOVERY:
+      title: Verificar la recuperación
+      situation: La dirección configurada se ha aplicado desde una condición segura. ¿Qué comprobación demuestra que la estación vuelve a cumplir su función?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI y operador
+      content: Una estación remota PROFIBUS no actualiza sus señales mientras el PLC y las estaciones vecinas continúan operativos.
+    EVID-02-MASTER-DIAGNOSTIC:
+      source: Buffer de diagnóstico del maestro
+      content: El maestro registra un fallo de estación PROFIBUS para DP_Station_03. El evento localiza el síntoma, pero todavía no demuestra la causa física o de direccionamiento.
+    EVID-03-SEGMENT-STATUS:
+      source: Diagnóstico online y vista de red
+      content: El PLC y las estaciones vecinas permanecen online; DP_Station_03 tiene alimentación y enlace de bus, pero no participa en el intercambio cíclico.
+    EVID-04-ADDRESS-MISMATCH:
+      source: Proyecto del maestro y estación física
+      content: La dirección esperada por el proyecto no coincide con la dirección configurada en la estación. La discrepancia explica que el maestro no la incorpore al intercambio cíclico.
+    EVID-05-ADDRESS-APPLIED:
+      source: Puesta en marcha autorizada
+      content: La dirección esperada se aplica a DP_Station_03 con la instalación en condición segura; la configuración del maestro se mantiene sin cambios.
+    EVID-06-RECOVERY:
+      source: Diagnóstico online y prueba de proceso
+      content: Todas las estaciones PROFIBUS aparecen disponibles, DP_Station_03 retoma el intercambio cíclico, las señales de I/O son coherentes y la tendencia de proceso permanece estable.
+  decisions:
+    DEC-01-COMPARE-DIAGNOSTICS:
+      action: Comparar el buffer del maestro, la estación afectada y una estación vecina.
+    DEC-01-RESTART-PLC:
+      action: Reiniciar el PLC para comprobar si desaparece el síntoma.
+    DEC-01-REPLACE-STATION:
+      action: Sustituir de inmediato la estación remota.
+    DEC-01-CHANGE-TERMINATION:
+      action: Cambiar la terminación del bus para ver si desaparece el fallo.
+    DEC-02-COMPARE-NEIGHBORS:
+      action: Comparar la estación afectada con los vecinos del mismo segmento.
+    DEC-02-REPLACE-SEGMENT:
+      action: Sustituir el tramo de bus completo antes de medir el estado de las estaciones.
+    DEC-02-CHANGE-ADDRESS:
+      action: Cambiar la dirección de la estación antes de comparar el proyecto.
+    DEC-02-FORCE-IO:
+      action: Forzar I/O para comprobar si la estación responde.
+    DEC-03-COMPARE-ADDRESS:
+      action: Comparar la dirección esperada del proyecto con la dirección real de la estación.
+    DEC-03-CHANGE-TERMINATION:
+      action: Cambiar la terminación del bus para corregir una discrepancia de dirección.
+    DEC-03-REPLACE-MASTER:
+      action: Sustituir el maestro PROFIBUS porque una estación no entra en ciclo.
+    DEC-03-CLEAR-BUFFER:
+      action: Borrar el buffer antes de comparar la dirección configurada.
+    DEC-04-ASSIGN-CONFIGURED-ADDRESS:
+      action: Asignar la dirección esperada mediante el procedimiento autorizado y mantener el maestro sin cambios.
+    DEC-04-CHANGE-MASTER-CONFIG:
+      action: Cambiar la configuración del maestro para aceptar la dirección encontrada.
+    DEC-04-USE-FREE-ADDRESS:
+      action: Asignar cualquier dirección libre para que la estación vuelva a aparecer.
+    DEC-04-BYPASS-STATION:
+      action: Poner la estación en servicio fuera del proyecto para evitar el diagnóstico.
+    DEC-05-VERIFY-CYCLIC-DATA:
+      action: Verificar diagnóstico limpio, intercambio cíclico, I/O coherente y función del proceso.
+    DEC-05-CHECK-LED-ONLY:
+      action: Cerrar cuando los indicadores vuelvan a verde sin comprobar diagnóstico, datos cíclicos, I/O ni función.
+    DEC-05-CLEAR-DIAGNOSTICS:
+      action: Borrar el diagnóstico y cerrar sin probar el proceso.
+  retry_feedback:
+    DEC-01-RESTART-PLC: El maestro y las estaciones vecinas siguen operativos. Delimita el alcance antes de reiniciar.
+    DEC-01-REPLACE-STATION: Una estación fuera del ciclo no está necesariamente averiada. Conserva la evidencia y separa las capas.
+    DEC-01-CHANGE-TERMINATION: No cambies terminaciones como primera reacción; primero confirma qué estaciones y enlaces permanecen operativos.
+    DEC-02-REPLACE-SEGMENT: Los vecinos continúan online. No reemplaces el segmento sin demostrar una avería común.
+    DEC-02-CHANGE-ADDRESS: Primero correlaciona maestro, vecinos y estación física; después compara las direcciones.
+    DEC-02-FORCE-IO: No fuerces I/O para localizar una estación PROFIBUS. Usa diagnóstico y una condición segura.
+    DEC-03-CHANGE-TERMINATION: La discrepancia está en la dirección de estación. La terminación se investiga como otra hipótesis.
+    DEC-03-REPLACE-MASTER: El maestro mantiene el intercambio con los vecinos. Compara la dirección antes de sustituirlo.
+    DEC-03-CLEAR-BUFFER: Conserva el buffer hasta completar la comparación de dirección y recuperación.
+    DEC-04-CHANGE-MASTER-CONFIG: Mantén la configuración del maestro; aplica la dirección esperada a la estación mediante el procedimiento autorizado.
+    DEC-04-USE-FREE-ADDRESS: Usa la dirección que espera el proyecto, no una dirección libre elegida durante la intervención.
+    DEC-04-BYPASS-STATION: No evites el proyecto para ocultar un fallo de estación; corrige la dirección de forma autorizada.
+    DEC-05-CHECK-LED-ONLY: Comprueba intercambio cíclico, I/O y función; los LEDs por sí solos no demuestran recuperación.
+    DEC-05-CLEAR-DIAGNOSTICS: Borrar el buffer no verifica la recuperación. Sigue la cadena completa hasta el proceso.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance del fallo, el estado del segmento, la comparación de dirección, la corrección autorizada y la recuperación funcional.
+  completion:
+    title: Debrief técnico
+    summary: La estación PROFIBUS conservaba alimentación y el segmento seguía comunicando con los vecinos, pero su dirección real no coincidía con la que esperaba el maestro. La dirección autorizada se aplicó sin cambiar el maestro y se verificó el intercambio cíclico.
+    process:
+      - Confirmar la estación afectada en el buffer.
+      - Comparar la estación con los vecinos del segmento.
+      - Comparar dirección esperada y dirección real.
+      - Aplicar la dirección autorizada en condición segura.
+      - Verificar diagnóstico, intercambio cíclico, I/O y función.
+    lesson: Un fallo de estación PROFIBUS no identifica por sí solo si la causa está en el equipo, el segmento o la parametrización. La primera discrepancia verificable aparece al correlacionar diagnóstico, vecinos y dirección configurada.
+    avoided_errors:
+      - Cambiar terminaciones como primera reacción.
+      - Sustituir la estación sin conservar la evidencia.
+      - Modificar la configuración del maestro para aceptar una dirección inesperada.
+      - Cerrar al ver solo los LEDs verdes.
+    industrial_value:
+      - Diagnóstico de bus más trazable.
+      - Menos sustituciones y cambios arbitrarios.
+      - Recuperación repetible en armarios con varias estaciones DP.
+    media_ids:
+      - ART-007
+  assets:
+    ART-001:
+      alt: Fotografía de un armario con PLC Siemens, interfaz DP y estaciones remotas con cableado PROFIBUS morado.
+      caption: Armario PROFIBUS de la célula.
+    ART-002:
+      alt: Vista simulada de un buffer de diagnóstico donde DP_Station_03 registra un fallo de estación PROFIBUS.
+      caption: El buffer localiza la estación afectada sin afirmar todavía la causa.
+    ART-003:
+      alt: Primer plano de una estación Siemens ET 200S con conector PROFIBUS, LEDs de alimentación y fallo de estación.
+      caption: La estación conserva alimentación mientras el diagnóstico indica fallo.
+    ART-004:
+      alt: Vista simulada de una red PROFIBUS con un maestro y estaciones vecinas verdes mientras DP_Station_03 aparece roja.
+      caption: Los vecinos operativos separan estación y segmento.
+    ART-005:
+      alt: Vista simulada que compara la dirección esperada por el maestro con la dirección real de DP_Station_03.
+      caption: La comparación confirma la discrepancia de dirección.
+    ART-006:
+      alt: Vista simulada de asignación autorizada de la dirección de una estación PROFIBUS en condición segura.
+      caption: La dirección de proyecto se aplica sin cambiar el maestro.
+    ART-007:
+      alt: Vista simulada online con todas las estaciones PROFIBUS disponibles, datos cíclicos activos y tendencia estable.
+      caption: Recuperación verificada desde el diagnóstico hasta el proceso.

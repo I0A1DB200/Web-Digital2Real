@@ -1,0 +1,571 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-PROFIBUS-STATION-023
+  editorial_id: EE-0023
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Siemens S7-1500 / PROFIBUS DP
+  domain: PROFIBUS station diagnostics and recovery
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: profibus-station-failure
+  title: Fallo de estación PROFIBUS
+  summary: Localiza una estación PROFIBUS DP que ha dejado el intercambio cíclico, separa fallo de estación y fallo de segmento, y recupera la comunicación verificando la dirección configurada.
+  estimated_duration: 20
+  scenario:
+    initial_context: Una estación remota PROFIBUS DP deja de actualizar sus datos de proceso mientras el maestro y las estaciones vecinas siguen disponibles.
+    operational_state: El PLC permanece en RUN y otras estaciones intercambian datos cíclicos. La estación afectada conserva alimentación y el diagnóstico del maestro registra un fallo de estación.
+    initiating_event: El buffer de diagnóstico identifica una estación PROFIBUS fuera del intercambio cíclico. La causa aún debe separarse entre estación, conexión, segmento y parámetros.
+    learner_role: Técnico de automatización responsable de delimitar el alcance, comparar la dirección configurada con la real y aplicar una corrección autorizada.
+    safety_context:
+      safe_state: Realiza las comprobaciones y la asignación de dirección desde una condición segura. Cualquier cambio en una estación o en el segmento debe seguir el procedimiento de puesta en marcha autorizado.
+      intervention_constraints:
+        - No cambiar terminaciones ni cableado como primera reacción.
+        - No modificar la dirección del maestro para ocultar el fallo.
+        - No forzar I/O ni sustituir la estación sin conservar la evidencia.
+        - Verificar diagnóstico, intercambio cíclico, I/O y función después de la corrección.
+  learning_objectives:
+    - id: OBJ-DP-SCOPE
+      description: Distinguir un fallo selectivo de estación de una pérdida común del segmento PROFIBUS.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-ADDRESS-ID
+      description: Comparar la dirección de estación esperada por el maestro con la dirección real antes de intervenir.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-DP-RECOVERY
+      description: Aplicar la corrección de dirección mediante el procedimiento autorizado y verificar el retorno del intercambio cíclico.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-SCOPE
+      phase: incident
+      title: Confirmar el alcance
+      situation: Una estación PROFIBUS deja de entregar datos, pero el maestro y otras estaciones siguen operativos. ¿Qué acción delimita primero el alcance sin alterar la instalación?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-COMPARE-DIAGNOSTICS
+        - DEC-01-RESTART-PLC
+        - DEC-01-REPLACE-STATION
+        - DEC-01-CHANGE-TERMINATION
+    - id: STAGE-02-SEPARATE-SEGMENT
+      phase: investigation
+      title: Separar estación y segmento
+      situation: El buffer señala una estación concreta y las estaciones vecinas continúan en intercambio. ¿Qué comprobación separa una avería selectiva de una caída común del segmento?
+      evidence_ids:
+        - EVID-02-MASTER-DIAGNOSTIC
+      decision_ids:
+        - DEC-02-REPLACE-SEGMENT
+        - DEC-02-COMPARE-NEIGHBORS
+        - DEC-02-CHANGE-ADDRESS
+        - DEC-02-FORCE-IO
+    - id: STAGE-03-COMPARE-ADDRESS
+      phase: investigation
+      title: Comparar la dirección de estación
+      situation: La estación está alimentada y el segmento tiene actividad. ¿Qué comparación confirma si el maestro y el equipo usan la misma dirección PROFIBUS?
+      evidence_ids:
+        - EVID-03-SEGMENT-STATUS
+      decision_ids:
+        - DEC-03-CHANGE-TERMINATION
+        - DEC-03-REPLACE-MASTER
+        - DEC-03-COMPARE-ADDRESS
+        - DEC-03-CLEAR-BUFFER
+    - id: STAGE-04-CORRECT-ADDRESS
+      phase: investigation
+      title: Corregir la dirección autorizada
+      situation: La dirección real no coincide con la que espera el proyecto. ¿Qué intervención corrige la identidad sin cambiar la configuración del maestro?
+      evidence_ids:
+        - EVID-04-ADDRESS-MISMATCH
+      decision_ids:
+        - DEC-04-ASSIGN-CONFIGURED-ADDRESS
+        - DEC-04-CHANGE-MASTER-CONFIG
+        - DEC-04-USE-FREE-ADDRESS
+        - DEC-04-BYPASS-STATION
+    - id: STAGE-05-VERIFY-RECOVERY
+      phase: solution
+      title: Verificar la recuperación
+      situation: La dirección configurada se ha aplicado desde una condición segura. ¿Qué comprobación demuestra que la estación vuelve a cumplir su función?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CHECK-LED-ONLY
+        - DEC-05-VERIFY-CYCLIC-DATA
+        - DEC-05-CLEAR-DIAGNOSTICS
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: HMI y operador
+      content: Una estación remota PROFIBUS no actualiza sus señales mientras el PLC y las estaciones vecinas continúan operativos.
+      reliability: high
+      revealed_by: []
+    - id: EVID-02-MASTER-DIAGNOSTIC
+      type: diagnostic
+      source: Buffer de diagnóstico del maestro
+      content: El maestro registra un fallo de estación PROFIBUS para DP_Station_03. El evento localiza el síntoma, pero todavía no demuestra la causa física o de direccionamiento.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-COMPARE-DIAGNOSTICS
+      media_ids:
+        - ART-002
+    - id: EVID-03-SEGMENT-STATUS
+      type: diagnostic
+      source: Diagnóstico online y vista de red
+      content: El PLC y las estaciones vecinas permanecen online; DP_Station_03 tiene alimentación y enlace de bus, pero no participa en el intercambio cíclico.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-COMPARE-NEIGHBORS
+      media_ids:
+        - ART-003
+        - ART-004
+    - id: EVID-04-ADDRESS-MISMATCH
+      type: diagnostic
+      source: Proyecto del maestro y estación física
+      content: La dirección esperada por el proyecto no coincide con la dirección configurada en la estación. La discrepancia explica que el maestro no la incorpore al intercambio cíclico.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-ADDRESS
+      media_ids:
+        - ART-005
+    - id: EVID-05-ADDRESS-APPLIED
+      type: documentation
+      source: Puesta en marcha autorizada
+      content: La dirección esperada se aplica a DP_Station_03 con la instalación en condición segura; la configuración del maestro se mantiene sin cambios.
+      reliability: confirmed
+      revealed_by:
+        - DEC-04-ASSIGN-CONFIGURED-ADDRESS
+      media_ids:
+        - ART-006
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Diagnóstico online y prueba de proceso
+      content: Todas las estaciones PROFIBUS aparecen disponibles, DP_Station_03 retoma el intercambio cíclico, las señales de I/O son coherentes y la tendencia de proceso permanece estable.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-VERIFY-CYCLIC-DATA
+      media_ids:
+        - ART-007
+  decisions:
+    - id: DEC-01-COMPARE-DIAGNOSTICS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Comparar el buffer del maestro, la estación afectada y una estación vecina.
+    - id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Reiniciar el PLC para comprobar si desaparece el síntoma.
+    - id: DEC-01-REPLACE-STATION
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Sustituir de inmediato la estación remota.
+    - id: DEC-01-CHANGE-TERMINATION
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Cambiar la terminación del bus para ver si desaparece el fallo.
+    - id: DEC-02-COMPARE-NEIGHBORS
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      action: Comparar la estación afectada con los vecinos del mismo segmento.
+    - id: DEC-02-REPLACE-SEGMENT
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      action: Sustituir el tramo de bus completo antes de medir el estado de las estaciones.
+    - id: DEC-02-CHANGE-ADDRESS
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      action: Cambiar la dirección de la estación antes de comparar el proyecto.
+    - id: DEC-02-FORCE-IO
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      action: Forzar I/O para comprobar si la estación responde.
+    - id: DEC-03-COMPARE-ADDRESS
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      action: Comparar la dirección esperada del proyecto con la dirección real de la estación.
+    - id: DEC-03-CHANGE-TERMINATION
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      action: Cambiar la terminación del bus para corregir una discrepancia de dirección.
+    - id: DEC-03-REPLACE-MASTER
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      action: Sustituir el maestro PROFIBUS porque una estación no entra en ciclo.
+    - id: DEC-03-CLEAR-BUFFER
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      action: Borrar el buffer antes de comparar la dirección configurada.
+    - id: DEC-04-ASSIGN-CONFIGURED-ADDRESS
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      action: Asignar la dirección esperada mediante el procedimiento autorizado y mantener el maestro sin cambios.
+    - id: DEC-04-CHANGE-MASTER-CONFIG
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      action: Cambiar la configuración del maestro para aceptar la dirección encontrada.
+    - id: DEC-04-USE-FREE-ADDRESS
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      action: Asignar cualquier dirección libre para que la estación vuelva a aparecer.
+    - id: DEC-04-BYPASS-STATION
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      action: Poner la estación en servicio fuera del proyecto para evitar el diagnóstico.
+    - id: DEC-05-VERIFY-CYCLIC-DATA
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Verificar diagnóstico limpio, intercambio cíclico, I/O coherente y función del proceso.
+    - id: DEC-05-CHECK-LED-ONLY
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Cerrar cuando los indicadores vuelvan a verde sin comprobar diagnóstico, datos cíclicos, I/O ni función.
+    - id: DEC-05-CLEAR-DIAGNOSTICS
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      action: Borrar el diagnóstico y cerrar sin probar el proceso.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance del fallo, el estado del segmento, la comparación de dirección, la corrección autorizada y la recuperación funcional.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/01-cover.png
+        alt: Fotografía de un armario con PLC Siemens, interfaz DP y estaciones remotas con cableado PROFIBUS morado.
+        caption: Armario PROFIBUS de la célula.
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/02-diagnostic-buffer.png
+        alt: Vista simulada de un buffer de diagnóstico donde DP_Station_03 registra un fallo de estación PROFIBUS.
+        caption: El buffer localiza la estación afectada sin afirmar todavía la causa.
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/03-station-closeup.png
+        alt: Primer plano de una estación Siemens ET 200S con conector PROFIBUS, LEDs de alimentación y fallo de estación.
+        caption: La estación conserva alimentación mientras el diagnóstico indica fallo.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/04-online-profibus-topology.png
+        alt: Vista simulada de una red PROFIBUS con un maestro y estaciones vecinas verdes mientras DP_Station_03 aparece roja.
+        caption: Los vecinos operativos separan estación y segmento.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/05-address-comparison.png
+        alt: Vista simulada que compara la dirección esperada por el maestro con la dirección real de DP_Station_03.
+        caption: La comparación confirma la discrepancia de dirección.
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/06-address-assignment.png
+        alt: Vista simulada de asignación autorizada de la dirección de una estación PROFIBUS en condición segura.
+        caption: La dirección de proyecto se aplica sin cambiar el maestro.
+        purpose: evidence
+      - id: ART-007
+        type: image
+        src: assets/EXP-PROFIBUS-STATION-023/07-recovery-verification.png
+        alt: Vista simulada online con todas las estaciones PROFIBUS disponibles, datos cíclicos activos y tendencia estable.
+        caption: Recuperación verificada desde el diagnóstico hasta el proceso.
+        purpose: completion
+  completion:
+    title: Debrief técnico
+    summary: La estación PROFIBUS conservaba alimentación y el segmento seguía comunicando con los vecinos, pero su dirección real no coincidía con la que esperaba el maestro. La dirección autorizada se aplicó sin cambiar el maestro y se verificó el intercambio cíclico.
+    process:
+      - Confirmar la estación afectada en el buffer.
+      - Comparar la estación con los vecinos del segmento.
+      - Comparar dirección esperada y dirección real.
+      - Aplicar la dirección autorizada en condición segura.
+      - Verificar diagnóstico, intercambio cíclico, I/O y función.
+    lesson: Un fallo de estación PROFIBUS no identifica por sí solo si la causa está en el equipo, el segmento o la parametrización. La primera discrepancia verificable aparece al correlacionar diagnóstico, vecinos y dirección configurada.
+    avoided_errors:
+      - Cambiar terminaciones como primera reacción.
+      - Sustituir la estación sin conservar la evidencia.
+      - Modificar la configuración del maestro para aceptar una dirección inesperada.
+      - Cerrar al ver solo los LEDs verdes.
+    industrial_value:
+      - Diagnóstico de bus más trazable.
+      - Menos sustituciones y cambios arbitrarios.
+      - Recuperación repetible en armarios con varias estaciones DP.
+    media_ids:
+      - ART-007
+private:
+  fault_model:
+    root_cause: La dirección de DP_Station_03 no coincide con la dirección configurada en el maestro PROFIBUS DP; el segmento y las estaciones vecinas permanecen operativos, pero el maestro no incorpora la estación al intercambio cíclico.
+    recovery_conditions:
+      - Segmento PROFIBUS estable y estaciones vecinas operativas.
+      - Dirección esperada aplicada a la estación mediante procedimiento autorizado.
+      - Maestro y configuración de hardware mantenidos sin cambios improvisados.
+      - Diagnóstico, intercambio cíclico, I/O y función de la estación verificados.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-ADDRESS
+        statement: La dirección real de la estación no coincide con la dirección configurada en el maestro.
+        initial_status: likely
+      - id: HYP-STATION
+        statement: La estación o su conector presenta un fallo local.
+        initial_status: possible
+      - id: HYP-SEGMENT
+        statement: El segmento PROFIBUS tiene una interrupción o terminación incorrecta.
+        initial_status: possible
+      - id: HYP-MASTER
+        statement: El maestro o su interfaz DP ha dejado de operar.
+        initial_status: possible
+    confirmed_root_cause: HYP-ADDRESS
+    critical_path:
+      - DEC-01-COMPARE-DIAGNOSTICS
+      - DEC-02-COMPARE-NEIGHBORS
+      - DEC-03-COMPARE-ADDRESS
+      - DEC-04-ASSIGN-CONFIGURED-ADDRESS
+      - DEC-05-VERIFY-CYCLIC-DATA
+  decision_logic:
+    - decision_id: DEC-01-COMPARE-DIAGNOSTICS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: true
+      rationale: La comparación delimita una anomalía selectiva y conserva el estado original para investigar.
+      classification: strong
+      consequence: Se confirma que el fallo está acotado a una estación.
+      evidence_revealed:
+        - EVID-02-MASTER-DIAGNOSTIC
+      next_stage: STAGE-02-SEPARATE-SEGMENT
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: No hay evidencia de una caída global del controlador.
+      classification: weak
+      consequence: Se pierde contexto sin explicar el fallo selectivo.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-SEGMENT
+      score_effect: -4
+      safety_effect: 0
+      retry_feedback: El maestro y las estaciones vecinas siguen operativos. Delimita el alcance antes de reiniciar.
+    - decision_id: DEC-01-REPLACE-STATION
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: Todavía no se ha separado un fallo de equipo de un problema de dirección o segmento.
+      classification: weak
+      consequence: Se interviene sin conservar la evidencia de la estación.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-SEGMENT
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Una estación fuera del ciclo no está necesariamente averiada. Conserva la evidencia y separa las capas.
+    - decision_id: DEC-01-CHANGE-TERMINATION
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: Una terminación común no explica por sí sola que el diagnóstico identifique una única estación mientras los vecinos siguen disponibles.
+      classification: weak
+      consequence: Se introduce una variable física antes de confirmar el alcance.
+      evidence_revealed: []
+      next_stage: STAGE-02-SEPARATE-SEGMENT
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No cambies terminaciones como primera reacción; primero confirma qué estaciones y enlaces permanecen operativos.
+    - decision_id: DEC-02-COMPARE-NEIGHBORS
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      is_correct: true
+      rationale: Los vecinos operativos ayudan a distinguir una pérdida común del bus de un fallo selectivo de estación.
+      classification: strong
+      consequence: Se confirma que el segmento sigue activo alrededor de la estación afectada.
+      evidence_revealed:
+        - EVID-03-SEGMENT-STATUS
+      next_stage: STAGE-03-COMPARE-ADDRESS
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-02-REPLACE-SEGMENT
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      is_correct: false
+      rationale: La evidencia disponible apunta a una sola estación y no a una caída común del segmento.
+      classification: weak
+      consequence: Se reemplaza infraestructura sin una frontera de fallo demostrada.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-ADDRESS
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: Los vecinos continúan online. No reemplaces el segmento sin demostrar una avería común.
+    - decision_id: DEC-02-CHANGE-ADDRESS
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      is_correct: false
+      rationale: La dirección es una hipótesis; aún falta saber qué espera el maestro y qué estación física se ha identificado.
+      classification: weak
+      consequence: Se cambia un parámetro sin conservar una referencia.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-ADDRESS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Primero correlaciona maestro, vecinos y estación física; después compara las direcciones.
+    - decision_id: DEC-02-FORCE-IO
+      stage_id: STAGE-02-SEPARATE-SEGMENT
+      is_correct: false
+      rationale: Forzar I/O no separa una avería de bus y puede alterar la condición de proceso.
+      classification: unsafe
+      consequence: Se introduce una condición no representativa durante el diagnóstico.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-ADDRESS
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No fuerces I/O para localizar una estación PROFIBUS. Usa diagnóstico y una condición segura.
+    - decision_id: DEC-03-COMPARE-ADDRESS
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      is_correct: true
+      rationale: La comparación entre maestro y equipo es la evidencia necesaria para confirmar un fallo de direccionamiento.
+      classification: strong
+      consequence: Se confirma la discrepancia de dirección sin cambiar el maestro.
+      evidence_revealed:
+        - EVID-04-ADDRESS-MISMATCH
+      next_stage: STAGE-04-CORRECT-ADDRESS
+      score_effect: 10
+      safety_effect: 1
+    - decision_id: DEC-03-CHANGE-TERMINATION
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      is_correct: false
+      rationale: La terminación afecta a la capa física, no corrige una identidad de estación diferente.
+      classification: weak
+      consequence: Se modifica el segmento sin resolver el parámetro que explica el fallo.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-ADDRESS
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: La discrepancia está en la dirección de estación. La terminación se investiga como otra hipótesis.
+    - decision_id: DEC-03-REPLACE-MASTER
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      is_correct: false
+      rationale: El maestro y los vecinos están operativos; sustituirlo elimina evidencia y no confirma la dirección.
+      classification: weak
+      consequence: Se interviene en el controlador sin una causa demostrada.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-ADDRESS
+      score_effect: -7
+      safety_effect: 0
+      retry_feedback: El maestro mantiene el intercambio con los vecinos. Compara la dirección antes de sustituirlo.
+    - decision_id: DEC-03-CLEAR-BUFFER
+      stage_id: STAGE-03-COMPARE-ADDRESS
+      is_correct: false
+      rationale: Borrar el registro elimina la relación temporal entre el fallo y la estación.
+      classification: weak
+      consequence: Se pierde evidencia útil sin probar la hipótesis.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-ADDRESS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Conserva el buffer hasta completar la comparación de dirección y recuperación.
+    - decision_id: DEC-04-ASSIGN-CONFIGURED-ADDRESS
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      is_correct: true
+      rationale: La estación debe adoptar la identidad prevista por el proyecto una vez confirmada la correlación física.
+      classification: strong
+      consequence: La estación puede volver a incorporarse al intercambio cíclico con la configuración prevista.
+      evidence_revealed:
+        - EVID-05-ADDRESS-APPLIED
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-04-CHANGE-MASTER-CONFIG
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      is_correct: false
+      rationale: Cambiar el maestro oculta la discrepancia y modifica la referencia de toda la instalación.
+      classification: weak
+      consequence: Se altera el proyecto en lugar de corregir la estación identificada.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -7
+      safety_effect: 0
+      retry_feedback: Mantén la configuración del maestro; aplica la dirección esperada a la estación mediante el procedimiento autorizado.
+    - decision_id: DEC-04-USE-FREE-ADDRESS
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      is_correct: false
+      rationale: Una dirección libre no necesariamente coincide con la identidad de la estación en el proyecto.
+      classification: weak
+      consequence: La estación puede quedar accesible con una configuración que el maestro no espera.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -6
+      safety_effect: 0
+      retry_feedback: Usa la dirección que espera el proyecto, no una dirección libre elegida durante la intervención.
+    - decision_id: DEC-04-BYPASS-STATION
+      stage_id: STAGE-04-CORRECT-ADDRESS
+      is_correct: false
+      rationale: El bypass elimina la trazabilidad y deja la comunicación fuera de la configuración gobernada.
+      classification: unsafe
+      consequence: La red queda sin una identidad validada por el proyecto.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RECOVERY
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No evites el proyecto para ocultar un fallo de estación; corrige la dirección de forma autorizada.
+    - decision_id: DEC-05-VERIFY-CYCLIC-DATA
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      is_correct: true
+      rationale: La recuperación completa conecta la dirección corregida con el comportamiento observable de la línea.
+      classification: strong
+      consequence: La estación queda validada desde la identidad hasta la función.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CHECK-LED-ONLY
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      is_correct: false
+      rationale: Los LEDs son una señal parcial y no demuestran intercambio cíclico ni función.
+      classification: weak
+      consequence: La intervención se cierra con evidencia incompleta.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -4
+      safety_effect: 0
+      retry_feedback: Comprueba intercambio cíclico, I/O y función; los LEDs por sí solos no demuestran recuperación.
+    - decision_id: DEC-05-CLEAR-DIAGNOSTICS
+      stage_id: STAGE-05-VERIFY-RECOVERY
+      is_correct: false
+      rationale: Borrar eventos no demuestra que la estación vuelva a intercambiar datos.
+      classification: weak
+      consequence: Se elimina el registro sin verificar la causa ni la función.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Borrar el buffer no verifica la recuperación. Sigue la cadena completa hasta el proceso.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: La estación PROFIBUS conservaba alimentación y los vecinos seguían comunicando, pero la dirección real no coincidía con la dirección del maestro. Se corrigió la estación mediante el procedimiento autorizado y se verificó la cadena completa.
+    correct_reasoning:
+      - Delimitar la estación afectada con el buffer.
+      - Comparar la estación con los vecinos.
+      - Comparar dirección esperada y real.
+      - Aplicar la dirección autorizada sin cambiar el maestro.
+      - Verificar intercambio cíclico, I/O y función.
+    recovery:
+      - Segmento estable.
+      - Dirección esperada aplicada.
+      - Intercambio cíclico confirmado.
+      - I/O y función verificadas.
+  technical_validation:
+    status: pass
+    evidence:
+      - El buffer identifica DP_Station_03 sin afirmar por sí solo la causa.
+      - La comparación con estaciones vecinas separa fallo selectivo y caída común del segmento.
+      - La dirección esperada y la real se comparan antes de intervenir.
+      - La recuperación se demuestra con intercambio cíclico, I/O y función.

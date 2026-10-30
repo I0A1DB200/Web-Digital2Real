@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-30 — ENV-003 / EE-0023 PROFIBUS station failure
+
+- Added bilingual EE-0023 for a PROFIBUS DP station that leaves cyclic exchange while the master and neighboring stations remain available; the diagnostic path separates station, segment and parameter hypotheses before confirming a station-address mismatch.
+- Added five mixed-position decisions, six evidence items and seven coherent human-free assets: field-style cabinet and ET 200S references plus original simulated diagnostic, topology, address-comparison, address-assignment and recovery panels.
+- Registered EE-0023 at the ENV-003 hotspot and extended preview packaging, localization, asset and focused regression checks to 23 Experiences. The PRONETA/TIA topology-assignment pill remains reserved for the ENV-003 closeout.
+
 ## 2026-10-29 — ENV-003 / EE-0022 PROFINET device name mismatch
 
 - Added bilingual EE-0022 for a remote PROFINET station with power and physical link but a discovered device name different from the TIA Portal project identity.

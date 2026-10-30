@@ -32,3 +32,6 @@ hotspots:
   - experience_editorial_id: "EE-0022"
     x: 42
     y: 22
+  - experience_editorial_id: "EE-0023"
+    x: 20
+    y: 74

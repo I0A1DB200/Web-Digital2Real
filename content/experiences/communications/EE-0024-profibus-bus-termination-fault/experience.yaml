@@ -1,0 +1,571 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-PROFIBUS-TERMINATION-024
+  editorial_id: EE-0024
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Siemens S7-1500 / PROFIBUS DP
+  domain: PROFIBUS physical-layer and termination diagnostics
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: profibus-bus-termination-fault
+  title: Fallo de terminación del bus PROFIBUS
+  summary: Localiza una terminación incorrecta en los extremos de un segmento PROFIBUS DP, restaura el estado autorizado y verifica la estabilidad del intercambio cíclico.
+  estimated_duration: 20
+  scenario:
+    initial_context: Varias estaciones PROFIBUS comienzan a perder el intercambio cíclico de forma intermitente mientras el maestro permanece en RUN.
+    operational_state: 'La red no presenta una caída total: algunas estaciones responden y otras muestran calidad de bus inestable. La instalación tiene dos extremos físicos definidos.'
+    initiating_event: El diagnóstico online registra errores de bus y estados inestables en un segmento PROFIBUS. La causa aún debe separarse entre cableado, conectores, terminación y estación.
+    learner_role: Técnico de automatización responsable de correlacionar topología, extremos físicos, estado de los conectores y calidad de comunicación antes de intervenir.
+    safety_context:
+      safe_state: Realiza inspecciones y cambios de terminación desde una condición segura y con el procedimiento de mantenimiento autorizado.
+      intervention_constraints:
+        - No cambiar la dirección del maestro para ocultar una perturbación física.
+        - No sustituir el segmento completo sin localizar los extremos y conservar la evidencia.
+        - No mover interruptores de terminación con el bus energizado si el procedimiento no lo permite.
+        - Verificar calidad de bus, intercambio cíclico, I/O y función después de la corrección.
+  learning_objectives:
+    - id: OBJ-TERM-SCOPE
+      description: Distinguir una degradación de segmento PROFIBUS de un fallo aislado de estación o dirección.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-TERM-ENDPOINTS
+      description: Identificar los dos extremos físicos del segmento y comparar el estado real de sus terminaciones con el diseño.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-TERM-RECOVERY
+      description: Restaurar la terminación autorizada en condición segura y verificar estabilidad de bus y proceso.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-SCOPE
+      phase: incident
+      title: Confirmar el alcance
+      situation: Varias estaciones pierden datos de forma intermitente, pero el maestro sigue en RUN. ¿Qué acción delimita primero la capa afectada sin cambiar la instalación?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-COMPARE-STATUS
+        - DEC-01-RESTART-PLC
+        - DEC-01-CHANGE-ADDRESS
+        - DEC-01-REPLACE-SEGMENT
+    - id: STAGE-02-LOCALIZE-SEGMENT
+      phase: investigation
+      title: Localizar el segmento
+      situation: El diagnóstico muestra estaciones inestables en una misma rama mientras otras siguen comunicando. ¿Qué comparación aporta la frontera de la perturbación?
+      evidence_ids:
+        - EVID-02-BUS-DIAGNOSTIC
+      decision_ids:
+        - DEC-02-REPLACE-MASTER
+        - DEC-02-COMPARE-NEIGHBORS
+        - DEC-02-CLEAR-BUFFER
+        - DEC-02-FORCE-IO
+    - id: STAGE-03-INSPECT-ENDPOINTS
+      phase: investigation
+      title: Inspeccionar los extremos
+      situation: La topología y el cableado apuntan a un segmento concreto. ¿Qué inspección confirma si las terminaciones de los extremos están realmente activas?
+      evidence_ids:
+        - EVID-03-SEGMENT-STATUS
+      decision_ids:
+        - DEC-03-SWAP-CABLE
+        - DEC-03-CHANGE-ADDRESS
+        - DEC-03-INSPECT-ENDPOINTS
+        - DEC-03-RESTART-BUS
+    - id: STAGE-04-RESTORE-TERMINATION
+      phase: investigation
+      title: Restaurar la terminación
+      situation: Uno de los extremos tiene el interruptor de terminación en OFF. ¿Qué intervención corrige la capa física sin introducir una nueva configuración de red?
+      evidence_ids:
+        - EVID-04-TERMINATION-MISMATCH
+      decision_ids:
+        - DEC-04-ENABLE-TERMINATION
+        - DEC-04-CHANGE-MASTER
+        - DEC-04-ADD-THIRD-TERMINATION
+        - DEC-04-BYPASS-STATION
+    - id: STAGE-05-VERIFY-STABILITY
+      phase: solution
+      title: Verificar la estabilidad
+      situation: La terminación autorizada se ha restaurado desde una condición segura. ¿Qué prueba demuestra que el bus y el proceso han recuperado estabilidad?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CHECK-LED-ONLY
+        - DEC-05-VERIFY-STABLE-BUS
+        - DEC-05-CLEAR-BUFFER
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: HMI y operador
+      content: Varias estaciones PROFIBUS pierden datos de forma intermitente mientras el PLC y las estaciones de referencia continúan operativos.
+      reliability: high
+      revealed_by: []
+    - id: EVID-02-BUS-DIAGNOSTIC
+      type: diagnostic
+      source: Buffer de diagnóstico del maestro
+      content: El buffer del maestro muestra el mensaje "PROFINET IO or PROFIBUS DP station failure" asociado a eventos de fallo o retorno de estación DP (16#39CB / 16#38CB) y un acceso a I/O descentralizada (16#35A1). Los códigos delimitan el síntoma, pero todavía no demuestran si la causa está en el cable, el conector o la terminación.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-COMPARE-STATUS
+      media_ids:
+        - ART-002
+    - id: EVID-03-SEGMENT-STATUS
+      type: diagnostic
+      source: Diagnóstico online y topología
+      content: El maestro y las estaciones de referencia permanecen disponibles; la inestabilidad se concentra entre las estaciones del segmento identificado.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-COMPARE-NEIGHBORS
+      media_ids:
+        - ART-004
+    - id: EVID-04-TERMINATION-MISMATCH
+      type: inspection
+      source: Conectores PROFIBUS y extremo físico
+      content: La terminación del extremo final está en OFF aunque el diseño exige terminación activa en ambos extremos del segmento.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-INSPECT-ENDPOINTS
+      media_ids:
+        - ART-003
+        - ART-005
+    - id: EVID-05-TERMINATION-APPLIED
+      type: documentation
+      source: Mantenimiento autorizado
+      content: La terminación del extremo final se activa desde una condición segura y se documenta la posición corregida sin modificar el maestro.
+      reliability: confirmed
+      revealed_by:
+        - DEC-04-ENABLE-TERMINATION
+      media_ids:
+        - ART-006
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Diagnóstico online y prueba de proceso
+      content: Las estaciones permanecen disponibles, la calidad de bus es estable, el intercambio cíclico no presenta nuevos errores y la I/O mantiene su función durante una prueba repetida.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-VERIFY-STABLE-BUS
+      media_ids:
+        - ART-007
+  decisions:
+    - id: DEC-01-COMPARE-STATUS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Comparar el buffer del maestro, las estaciones afectadas y una estación de referencia.
+    - id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Reiniciar el PLC para comprobar si la intermitencia desaparece antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-01-CHANGE-ADDRESS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Cambiar direcciones de estación para intentar estabilizar el bus antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-01-REPLACE-SEGMENT
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Sustituir todo el segmento PROFIBUS de inmediato antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-02-REPLACE-MASTER
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      action: Sustituir el maestro porque varias estaciones son inestables antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-02-COMPARE-NEIGHBORS
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      action: Comparar estaciones vecinas, topología y calidad de comunicación de la misma rama.
+    - id: DEC-02-CLEAR-BUFFER
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      action: Borrar el buffer para ver si los errores vuelven a aparecer antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-02-FORCE-IO
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      action: Forzar I/O para comprobar si la comunicación se estabiliza sin verificar la capa física ni conservar la evidencia.
+    - id: DEC-03-SWAP-CABLE
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      action: Cambiar el cable de bus antes de revisar las terminaciones o confirmar la capa física.
+    - id: DEC-03-CHANGE-ADDRESS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      action: Cambiar la dirección de la estación que aparece inestable antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-03-INSPECT-ENDPOINTS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      action: Inspeccionar los dos extremos físicos y comparar la posición de sus terminaciones con el diseño.
+    - id: DEC-03-RESTART-BUS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      action: Desenergizar y energizar el segmento para ver si la terminación se corrige sola antes de confirmar la capa física o conservar la evidencia.
+    - id: DEC-04-ENABLE-TERMINATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      action: Activar la terminación del extremo final siguiendo el procedimiento autorizado.
+    - id: DEC-04-CHANGE-MASTER
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      action: Cambiar parámetros del maestro para tolerar la terminación ausente dejando sin verificar la capa física.
+    - id: DEC-04-ADD-THIRD-TERMINATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      action: Activar una tercera terminación intermedia para aumentar la estabilidad dejando sin verificar el diseño del segmento.
+    - id: DEC-04-BYPASS-STATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      action: Aislar la estación inestable y cerrar el diagnóstico sin corregir el extremo ni confirmar la capa física.
+    - id: DEC-05-CHECK-LED-ONLY
+      stage_id: STAGE-05-VERIFY-STABILITY
+      action: Cerrar cuando los LEDs vuelvan a verde sin comprobar estabilidad, datos cíclicos ni calidad de bus repetida.
+    - id: DEC-05-VERIFY-STABLE-BUS
+      stage_id: STAGE-05-VERIFY-STABILITY
+      action: Verificar calidad de bus, estaciones, intercambio cíclico, I/O y función durante una prueba repetida.
+    - id: DEC-05-CLEAR-BUFFER
+      stage_id: STAGE-05-VERIFY-STABILITY
+      action: Borrar el buffer y cerrar sin observar una prueba repetida, revisar la calidad de bus ni conservar la evidencia.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance del fallo, el segmento, los extremos físicos, la comparación de terminación, la corrección autorizada y la estabilidad recuperada.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/01-cover.png
+        alt: Fotografía de un armario Siemens con maestro PROFIBUS, estaciones ET 200S y terminación visible en el extremo del bus.
+        caption: Armario PROFIBUS y extremos del segmento.
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/02-diagnostic-buffer.png
+        alt: Vista simulada del buffer TIA online con los eventos 16#39CB, 16#38CB y 16#35A1, colores de error y panel de detalle del fallo de estación DP.
+        caption: Los códigos delimitan fallo o retorno de estación y acceso a I/O; la causa física aún debe confirmarse.
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/03-termination-closeup.png
+        alt: Primer plano de una estación ET 200S y un conector PROFIBUS con interruptor de terminación rojo y LED de estado.
+        caption: El conector permite inspeccionar la terminación del extremo.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/04-online-profibus-topology.png
+        alt: Vista simulada de una red PROFIBUS con un segmento inestable y estaciones de referencia online.
+        caption: La topología acota el segmento afectado.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/05-termination-comparison.png
+        alt: Vista simulada que compara la terminación esperada ON en los extremos con una terminación real OFF.
+        caption: La comparación confirma el defecto de terminación.
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/06-termination-assignment.png
+        alt: Vista simulada de corrección autorizada de la terminación de un extremo desde una condición segura.
+        caption: La terminación se restaura sin cambiar el maestro.
+        purpose: evidence
+      - id: ART-007
+        type: image
+        src: assets/EXP-PROFIBUS-TERMINATION-024/07-recovery-verification.png
+        alt: Vista simulada con todas las estaciones online, bus estable, datos cíclicos activos y tendencia de proceso estable.
+        caption: Recuperación verificada en comunicación y proceso.
+        purpose: completion
+  completion:
+    title: Debrief técnico
+    summary: La inestabilidad estaba causada por una terminación desactivada en el extremo final del segmento PROFIBUS. Se compararon topología y extremos, se activó la terminación autorizada en condición segura y se verificó la estabilidad del bus y del proceso.
+    process:
+      - Confirmar el alcance en el buffer.
+      - Localizar el segmento y sus dos extremos.
+      - Inspeccionar conectores y terminaciones.
+      - Activar la terminación autorizada.
+      - Verificar estabilidad, intercambio cíclico, I/O y función.
+    lesson: En PROFIBUS, la terminación pertenece a la capa física y debe existir en los dos extremos del segmento. Un bus que vuelve momentáneamente no está recuperado hasta superar una prueba repetida sin nuevos errores.
+    avoided_errors:
+      - Cambiar direcciones o parámetros del maestro.
+      - Sustituir todo el segmento sin localizar la frontera.
+      - Activar una tercera terminación intermedia.
+      - Cerrar cuando solo vuelven los LEDs.
+    industrial_value:
+      - Diagnóstico físico trazable.
+      - Menos sustituciones de cableado y equipos.
+      - Recuperación repetible en segmentos DP con varias estaciones.
+    media_ids:
+      - ART-007
+private:
+  fault_model:
+    root_cause: La terminación del extremo final de un segmento PROFIBUS DP está desactivada aunque el diseño exige terminación activa en ambos extremos; la reflexión y degradación de la señal provocan errores de bus e inestabilidad del intercambio cíclico.
+    recovery_conditions:
+      - Segmento y extremos físicos identificados.
+      - Terminación activa en ambos extremos, sin terminación intermedia.
+      - Corrección aplicada desde una condición segura mediante procedimiento autorizado.
+      - Calidad de bus, intercambio cíclico, I/O y función verificadas con una prueba repetida.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-TERMINATION
+        statement: Una terminación de extremo está ausente o desactivada.
+        initial_status: likely
+      - id: HYP-CABLE
+        statement: El cable o un conector del segmento tiene una discontinuidad o mal contacto.
+        initial_status: possible
+      - id: HYP-STATION
+        statement: Una estación concreta tiene un fallo local.
+        initial_status: possible
+      - id: HYP-ADDRESS
+        statement: Una dirección de estación o parámetro lógico es incorrecto.
+        initial_status: possible
+    confirmed_root_cause: HYP-TERMINATION
+    critical_path:
+      - DEC-01-COMPARE-STATUS
+      - DEC-02-COMPARE-NEIGHBORS
+      - DEC-03-INSPECT-ENDPOINTS
+      - DEC-04-ENABLE-TERMINATION
+      - DEC-05-VERIFY-STABLE-BUS
+  decision_logic:
+    - decision_id: DEC-01-COMPARE-STATUS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: true
+      rationale: La acción delimita la capa correcta y conserva evidencia.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-02-BUS-DIAGNOSTIC
+      next_stage: STAGE-02-LOCALIZE-SEGMENT
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-LOCALIZE-SEGMENT
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El maestro sigue en RUN. Delimita la perturbación antes de reiniciar.
+    - decision_id: DEC-01-CHANGE-ADDRESS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-LOCALIZE-SEGMENT
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No cambies direcciones para resolver una anomalía física todavía no localizada.
+    - decision_id: DEC-01-REPLACE-SEGMENT
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-LOCALIZE-SEGMENT
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Localiza el segmento antes de sustituir todo el cableado.
+    - decision_id: DEC-02-REPLACE-MASTER
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-INSPECT-ENDPOINTS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El maestro sigue operativo. Correlaciona vecinos y segmento antes de sustituirlo.
+    - decision_id: DEC-02-COMPARE-NEIGHBORS
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      is_correct: true
+      rationale: La acción delimita la capa correcta y conserva evidencia.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-03-SEGMENT-STATUS
+      next_stage: STAGE-03-INSPECT-ENDPOINTS
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-02-CLEAR-BUFFER
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-INSPECT-ENDPOINTS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Conserva el buffer hasta completar la localización y la inspección.
+    - decision_id: DEC-02-FORCE-IO
+      stage_id: STAGE-02-LOCALIZE-SEGMENT
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-INSPECT-ENDPOINTS
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No fuerces I/O para diagnosticar cableado físico. Trabaja desde una condición segura.
+    - decision_id: DEC-03-SWAP-CABLE
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-TERMINATION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Inspecciona primero ambos extremos y sus terminaciones antes de cambiar el cable.
+    - decision_id: DEC-03-CHANGE-ADDRESS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-TERMINATION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La hipótesis es física. No cambies la dirección mientras la terminación no esté verificada.
+    - decision_id: DEC-03-INSPECT-ENDPOINTS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      is_correct: true
+      rationale: La acción delimita la capa correcta y conserva evidencia.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-04-TERMINATION-MISMATCH
+      next_stage: STAGE-04-RESTORE-TERMINATION
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-03-RESTART-BUS
+      stage_id: STAGE-03-INSPECT-ENDPOINTS
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-TERMINATION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Un reinicio no sustituye la inspección física de los extremos.
+    - decision_id: DEC-04-ENABLE-TERMINATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      is_correct: true
+      rationale: La acción delimita la capa correcta y conserva evidencia.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-05-TERMINATION-APPLIED
+      next_stage: STAGE-05-VERIFY-STABILITY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-04-CHANGE-MASTER
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-STABILITY
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Restaura la terminación física; no cambies el maestro para tolerar el defecto.
+    - decision_id: DEC-04-ADD-THIRD-TERMINATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-STABILITY
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: La terminación se activa en los dos extremos, no en un punto intermedio.
+    - decision_id: DEC-04-BYPASS-STATION
+      stage_id: STAGE-04-RESTORE-TERMINATION
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-STABILITY
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Corrige la terminación y verifica el segmento completo en lugar de cerrar con el síntoma aislado.
+    - decision_id: DEC-05-CHECK-LED-ONLY
+      stage_id: STAGE-05-VERIFY-STABILITY
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Repite la prueba y verifica calidad de bus, datos cíclicos e I/O, no solo LEDs.
+    - decision_id: DEC-05-VERIFY-STABLE-BUS
+      stage_id: STAGE-05-VERIFY-STABILITY
+      is_correct: true
+      rationale: La acción delimita la capa correcta y conserva evidencia.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-BUFFER
+      stage_id: STAGE-05-VERIFY-STABILITY
+      is_correct: false
+      rationale: La acción cambia una variable o elimina evidencia antes de confirmar la capa física.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Conserva el registro y confirma estabilidad durante una prueba repetida.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: Una terminación estaba desactivada en el extremo final del segmento PROFIBUS, provocando errores de bus e inestabilidad cíclica. La terminación se restauró desde una condición segura y la estabilidad se verificó con una prueba repetida.
+    correct_reasoning:
+      - Delimitar el alcance con diagnóstico y referencias.
+      - Localizar el segmento afectado.
+      - Inspeccionar los dos extremos.
+      - Restaurar la terminación autorizada.
+      - Verificar bus, I/O y función.
+    recovery:
+      - Terminación activa en ambos extremos.
+      - Calidad de bus estable.
+      - Intercambio cíclico confirmado.
+      - I/O y función verificadas.
+  technical_validation:
+    status: pass
+    evidence:
+      - El buffer localiza una perturbación sin convertirla en causa única.
+      - La comparación de vecinos acota el segmento.
+      - La inspección confirma una terminación OFF en un extremo.
+      - La recuperación se demuestra con estabilidad repetida y función de proceso.

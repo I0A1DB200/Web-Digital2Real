@@ -1,0 +1,157 @@
+locale: es
+translations:
+  title: Fallo de terminación del bus PROFIBUS
+  summary: Localiza una terminación incorrecta en los extremos de un segmento PROFIBUS DP, restaura el estado autorizado y verifica la estabilidad del intercambio cíclico.
+  scenario:
+    initial_context: Varias estaciones PROFIBUS comienzan a perder el intercambio cíclico de forma intermitente mientras el maestro permanece en RUN.
+    operational_state: 'La red no presenta una caída total: algunas estaciones responden y otras muestran calidad de bus inestable. La instalación tiene dos extremos físicos definidos.'
+    initiating_event: El diagnóstico online registra errores de bus y estados inestables en un segmento PROFIBUS. La causa aún debe separarse entre cableado, conectores, terminación y estación.
+    learner_role: Técnico de automatización responsable de correlacionar topología, extremos físicos, estado de los conectores y calidad de comunicación antes de intervenir.
+    safety_context:
+      safe_state: Realiza inspecciones y cambios de terminación desde una condición segura y con el procedimiento de mantenimiento autorizado.
+      intervention_constraints:
+        - No cambiar la dirección del maestro para ocultar una perturbación física.
+        - No sustituir el segmento completo sin localizar los extremos y conservar la evidencia.
+        - No mover interruptores de terminación con el bus energizado si el procedimiento no lo permite.
+        - Verificar calidad de bus, intercambio cíclico, I/O y función después de la corrección.
+  learning_objectives:
+    OBJ-TERM-SCOPE:
+      description: Distinguir una degradación de segmento PROFIBUS de un fallo aislado de estación o dirección.
+    OBJ-TERM-ENDPOINTS:
+      description: Identificar los dos extremos físicos del segmento y comparar el estado real de sus terminaciones con el diseño.
+    OBJ-TERM-RECOVERY:
+      description: Restaurar la terminación autorizada en condición segura y verificar estabilidad de bus y proceso.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirmar el alcance
+      situation: Varias estaciones pierden datos de forma intermitente, pero el maestro sigue en RUN. ¿Qué acción delimita primero la capa afectada sin cambiar la instalación?
+    STAGE-02-LOCALIZE-SEGMENT:
+      title: Localizar el segmento
+      situation: El diagnóstico muestra estaciones inestables en una misma rama mientras otras siguen comunicando. ¿Qué comparación aporta la frontera de la perturbación?
+    STAGE-03-INSPECT-ENDPOINTS:
+      title: Inspeccionar los extremos
+      situation: La topología y el cableado apuntan a un segmento concreto. ¿Qué inspección confirma si las terminaciones de los extremos están realmente activas?
+    STAGE-04-RESTORE-TERMINATION:
+      title: Restaurar la terminación
+      situation: Uno de los extremos tiene el interruptor de terminación en OFF. ¿Qué intervención corrige la capa física sin introducir una nueva configuración de red?
+    STAGE-05-VERIFY-STABILITY:
+      title: Verificar la estabilidad
+      situation: La terminación autorizada se ha restaurado desde una condición segura. ¿Qué prueba demuestra que el bus y el proceso han recuperado estabilidad?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI y operador
+      content: Varias estaciones PROFIBUS pierden datos de forma intermitente mientras el PLC y las estaciones de referencia continúan operativos.
+    EVID-02-BUS-DIAGNOSTIC:
+      source: Buffer de diagnóstico del maestro
+      content: El buffer del maestro muestra el mensaje "PROFINET IO or PROFIBUS DP station failure" asociado a eventos de fallo o retorno de estación DP (16#39CB / 16#38CB) y un acceso a I/O descentralizada (16#35A1). Los códigos delimitan el síntoma, pero todavía no demuestran si la causa está en el cable, el conector o la terminación.
+    EVID-03-SEGMENT-STATUS:
+      source: Diagnóstico online y topología
+      content: El maestro y las estaciones de referencia permanecen disponibles; la inestabilidad se concentra entre las estaciones del segmento identificado.
+    EVID-04-TERMINATION-MISMATCH:
+      source: Conectores PROFIBUS y extremo físico
+      content: La terminación del extremo final está en OFF aunque el diseño exige terminación activa en ambos extremos del segmento.
+    EVID-05-TERMINATION-APPLIED:
+      source: Mantenimiento autorizado
+      content: La terminación del extremo final se activa desde una condición segura y se documenta la posición corregida sin modificar el maestro.
+    EVID-06-RECOVERY:
+      source: Diagnóstico online y prueba de proceso
+      content: Las estaciones permanecen disponibles, la calidad de bus es estable, el intercambio cíclico no presenta nuevos errores y la I/O mantiene su función durante una prueba repetida.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Comparar el buffer del maestro, las estaciones afectadas y una estación de referencia.
+    DEC-01-RESTART-PLC:
+      action: Reiniciar el PLC para comprobar si la intermitencia desaparece antes de confirmar la capa física o conservar la evidencia.
+    DEC-01-CHANGE-ADDRESS:
+      action: Cambiar direcciones de estación para intentar estabilizar el bus antes de confirmar la capa física o conservar la evidencia.
+    DEC-01-REPLACE-SEGMENT:
+      action: Sustituir todo el segmento PROFIBUS de inmediato antes de confirmar la capa física o conservar la evidencia.
+    DEC-02-COMPARE-NEIGHBORS:
+      action: Comparar estaciones vecinas, topología y calidad de comunicación de la misma rama.
+    DEC-02-REPLACE-MASTER:
+      action: Sustituir el maestro porque varias estaciones son inestables antes de confirmar la capa física o conservar la evidencia.
+    DEC-02-CLEAR-BUFFER:
+      action: Borrar el buffer para ver si los errores vuelven a aparecer antes de confirmar la capa física o conservar la evidencia.
+    DEC-02-FORCE-IO:
+      action: Forzar I/O para comprobar si la comunicación se estabiliza sin verificar la capa física ni conservar la evidencia.
+    DEC-03-INSPECT-ENDPOINTS:
+      action: Inspeccionar los dos extremos físicos y comparar la posición de sus terminaciones con el diseño.
+    DEC-03-SWAP-CABLE:
+      action: Cambiar el cable de bus antes de revisar las terminaciones o confirmar la capa física.
+    DEC-03-CHANGE-ADDRESS:
+      action: Cambiar la dirección de la estación que aparece inestable antes de confirmar la capa física o conservar la evidencia.
+    DEC-03-RESTART-BUS:
+      action: Desenergizar y energizar el segmento para ver si la terminación se corrige sola antes de confirmar la capa física o conservar la evidencia.
+    DEC-04-ENABLE-TERMINATION:
+      action: Activar la terminación del extremo final siguiendo el procedimiento autorizado.
+    DEC-04-CHANGE-MASTER:
+      action: Cambiar parámetros del maestro para tolerar la terminación ausente dejando sin verificar la capa física.
+    DEC-04-ADD-THIRD-TERMINATION:
+      action: Activar una tercera terminación intermedia para aumentar la estabilidad dejando sin verificar el diseño del segmento.
+    DEC-04-BYPASS-STATION:
+      action: Aislar la estación inestable y cerrar el diagnóstico sin corregir el extremo ni confirmar la capa física.
+    DEC-05-VERIFY-STABLE-BUS:
+      action: Verificar calidad de bus, estaciones, intercambio cíclico, I/O y función durante una prueba repetida.
+    DEC-05-CHECK-LED-ONLY:
+      action: Cerrar cuando los LEDs vuelvan a verde sin comprobar estabilidad, datos cíclicos ni calidad de bus repetida.
+    DEC-05-CLEAR-BUFFER:
+      action: Borrar el buffer y cerrar sin observar una prueba repetida, revisar la calidad de bus ni conservar la evidencia.
+  retry_feedback:
+    DEC-01-RESTART-PLC: El maestro sigue en RUN. Delimita la perturbación antes de reiniciar.
+    DEC-01-CHANGE-ADDRESS: No cambies direcciones para resolver una anomalía física todavía no localizada.
+    DEC-01-REPLACE-SEGMENT: Localiza el segmento antes de sustituir todo el cableado.
+    DEC-02-REPLACE-MASTER: El maestro sigue operativo. Correlaciona vecinos y segmento antes de sustituirlo.
+    DEC-02-CLEAR-BUFFER: Conserva el buffer hasta completar la localización y la inspección.
+    DEC-02-FORCE-IO: No fuerces I/O para diagnosticar cableado físico. Trabaja desde una condición segura.
+    DEC-03-SWAP-CABLE: Inspecciona primero ambos extremos y sus terminaciones antes de cambiar el cable.
+    DEC-03-CHANGE-ADDRESS: La hipótesis es física. No cambies la dirección mientras la terminación no esté verificada.
+    DEC-03-RESTART-BUS: Un reinicio no sustituye la inspección física de los extremos.
+    DEC-04-CHANGE-MASTER: Restaura la terminación física; no cambies el maestro para tolerar el defecto.
+    DEC-04-ADD-THIRD-TERMINATION: La terminación se activa en los dos extremos, no en un punto intermedio.
+    DEC-04-BYPASS-STATION: Corrige la terminación y verifica el segmento completo en lugar de cerrar con el síntoma aislado.
+    DEC-05-CHECK-LED-ONLY: Repite la prueba y verifica calidad de bus, datos cíclicos e I/O, no solo LEDs.
+    DEC-05-CLEAR-BUFFER: Conserva el registro y confirma estabilidad durante una prueba repetida.
+  visual:
+    educational_purpose: Revelar progresivamente el alcance del fallo, el segmento, los extremos físicos, la comparación de terminación, la corrección autorizada y la estabilidad recuperada.
+  completion:
+    title: Debrief técnico
+    summary: La inestabilidad estaba causada por una terminación desactivada en el extremo final del segmento PROFIBUS. Se compararon topología y extremos, se activó la terminación autorizada en condición segura y se verificó la estabilidad del bus y del proceso.
+    process:
+      - Confirmar el alcance en el buffer.
+      - Localizar el segmento y sus dos extremos.
+      - Inspeccionar conectores y terminaciones.
+      - Activar la terminación autorizada.
+      - Verificar estabilidad, intercambio cíclico, I/O y función.
+    lesson: En PROFIBUS, la terminación pertenece a la capa física y debe existir en los dos extremos del segmento. Un bus que vuelve momentáneamente no está recuperado hasta superar una prueba repetida sin nuevos errores.
+    avoided_errors:
+      - Cambiar direcciones o parámetros del maestro.
+      - Sustituir todo el segmento sin localizar la frontera.
+      - Activar una tercera terminación intermedia.
+      - Cerrar cuando solo vuelven los LEDs.
+    industrial_value:
+      - Diagnóstico físico trazable.
+      - Menos sustituciones de cableado y equipos.
+      - Recuperación repetible en segmentos DP con varias estaciones.
+    media_ids:
+      - ART-007
+  assets:
+    ART-001:
+      alt: Fotografía de un armario Siemens con maestro PROFIBUS, estaciones ET 200S y terminación visible en el extremo del bus.
+      caption: Armario PROFIBUS y extremos del segmento.
+    ART-002:
+      alt: Vista simulada del buffer TIA online con los eventos 16#39CB, 16#38CB y 16#35A1, colores de error y panel de detalle del fallo de estación DP.
+      caption: Los códigos delimitan fallo o retorno de estación y acceso a I/O; la causa física aún debe confirmarse.
+    ART-003:
+      alt: Primer plano de una estación ET 200S y un conector PROFIBUS con interruptor de terminación rojo y LED de estado.
+      caption: El conector permite inspeccionar la terminación del extremo.
+    ART-004:
+      alt: Vista simulada de una red PROFIBUS con un segmento inestable y estaciones de referencia online.
+      caption: La topología acota el segmento afectado.
+    ART-005:
+      alt: Vista simulada que compara la terminación esperada ON en los extremos con una terminación real OFF.
+      caption: La comparación confirma el defecto de terminación.
+    ART-006:
+      alt: Vista simulada de corrección autorizada de la terminación de un extremo desde una condición segura.
+      caption: La terminación se restaura sin cambiar el maestro.
+    ART-007:
+      alt: Vista simulada con todas las estaciones online, bus estable, datos cíclicos activos y tendencia de proceso estable.
+      caption: Recuperación verificada en comunicación y proceso.

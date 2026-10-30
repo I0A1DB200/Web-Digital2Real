@@ -1,0 +1,157 @@
+locale: en
+translations:
+  title: PROFIBUS Bus Termination Fault
+  summary: Locate incorrect termination at the ends of a PROFIBUS DP segment, restore the authorized state and verify stable cyclic exchange.
+  scenario:
+    initial_context: Several PROFIBUS stations begin losing process data intermittently while the master remains in RUN.
+    operational_state: 'The network is not completely down: some stations respond while others show unstable bus quality. The installation has two defined physical endpoints.'
+    initiating_event: Online diagnostics record bus errors and unstable states on one PROFIBUS segment. The cause must still be separated between cable, connectors, termination and station.
+    learner_role: Automation technician responsible for correlating topology, physical endpoints, connector state and communication quality before intervening.
+    safety_context:
+      safe_state: Perform inspection and termination changes from a safe condition under the authorized maintenance procedure.
+      intervention_constraints:
+        - Do not change the master address to hide a physical disturbance.
+        - Do not replace the complete segment before locating endpoints and preserving evidence.
+        - Do not move termination switches while the bus is energized unless the procedure permits it.
+        - Verify bus quality, cyclic exchange, I/O and function after correction.
+  learning_objectives:
+    OBJ-TERM-SCOPE:
+      description: Distinguish PROFIBUS segment degradation from an isolated station or address fault.
+    OBJ-TERM-ENDPOINTS:
+      description: Identify both physical segment endpoints and compare actual termination state with the design.
+    OBJ-TERM-RECOVERY:
+      description: Restore authorized termination under safe conditions and verify bus and process stability.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirm the scope
+      situation: Several stations lose data intermittently, but the master remains in RUN. Which action delimits the affected layer without changing the installation?
+    STAGE-02-LOCALIZE-SEGMENT:
+      title: Localize the segment
+      situation: Diagnostics show unstable stations on one branch while others still communicate. Which comparison provides the disturbance boundary?
+    STAGE-03-INSPECT-ENDPOINTS:
+      title: Inspect the endpoints
+      situation: Topology and cabling point to one segment. Which inspection confirms whether both endpoint terminations are actually active?
+    STAGE-04-RESTORE-TERMINATION:
+      title: Restore termination
+      situation: One endpoint has its termination switch OFF. Which intervention corrects the physical layer without introducing a new network configuration?
+    STAGE-05-VERIFY-STABILITY:
+      title: Verify stability
+      situation: The authorized termination has been restored from a safe condition. Which test demonstrates that bus and process stability have returned?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: Varias estaciones PROFIBUS pierden datos de forma intermitente mientras el PLC y las estaciones de referencia continúan operativos.
+    EVID-02-BUS-DIAGNOSTIC:
+      source: Master diagnostic buffer
+      content: The master buffer shows the message "PROFINET IO or PROFIBUS DP station failure" with DP station failure or return events (16#39CB / 16#38CB) plus a decentralized I/O access event (16#35A1). These codes delimit the symptom but do not yet prove whether the cause is the cable, connector or termination.
+    EVID-03-SEGMENT-STATUS:
+      source: Online diagnostics and topology
+      content: El maestro y las estaciones de referencia permanecen disponibles; la inestabilidad se concentra entre las estaciones del segmento identificado.
+    EVID-04-TERMINATION-MISMATCH:
+      source: PROFIBUS connectors and physical endpoint
+      content: La terminación del extremo final está en OFF aunque el diseño exige terminación activa en ambos extremos del segmento.
+    EVID-05-TERMINATION-APPLIED:
+      source: Authorized maintenance
+      content: La terminación del extremo final se activa desde una condición segura y se documenta la posición corregida sin modificar el maestro.
+    EVID-06-RECOVERY:
+      source: Online diagnostics and process test
+      content: Las estaciones permanecen disponibles, la calidad de bus es estable, el intercambio cíclico no presenta nuevos errores y la I/O mantiene su función durante una prueba repetida.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Compare the master buffer, affected stations and one reference station.
+    DEC-01-RESTART-PLC:
+      action: Restart the PLC to see whether the intermittent state disappears before confirming the physical layer or preserving evidence.
+    DEC-01-CHANGE-ADDRESS:
+      action: Change station addresses to try to stabilize the bus before confirming the physical layer or preserving evidence.
+    DEC-01-REPLACE-SEGMENT:
+      action: Replace the entire PROFIBUS segment immediately before confirming the physical layer or preserving evidence.
+    DEC-02-COMPARE-NEIGHBORS:
+      action: Compare neighboring stations, topology and communication quality on the same branch.
+    DEC-02-REPLACE-MASTER:
+      action: Replace the master because several stations are unstable before proving a common controller fault or confirming the physical layer.
+    DEC-02-CLEAR-BUFFER:
+      action: Clear the buffer to see whether errors return, without preserving the segment evidence or confirming the physical layer.
+    DEC-02-FORCE-IO:
+      action: Force I/O to check whether communication stabilizes while the physical layer remains unverified and evidence is not preserved.
+    DEC-03-INSPECT-ENDPOINTS:
+      action: Inspect both physical endpoints and compare their termination positions with the design.
+    DEC-03-SWAP-CABLE:
+      action: Change the bus cable before checking the terminations or confirming the physical layer.
+    DEC-03-CHANGE-ADDRESS:
+      action: Change the address of the unstable station before confirming the physical layer or preserving evidence.
+    DEC-03-RESTART-BUS:
+      action: Power-cycle the segment to see whether termination corrects itself before confirming the physical layer or preserving evidence.
+    DEC-04-ENABLE-TERMINATION:
+      action: Enable the final endpoint termination under the authorized procedure.
+    DEC-04-CHANGE-MASTER:
+      action: Change master parameters to tolerate the missing termination while leaving the physical layer unverified.
+    DEC-04-ADD-THIRD-TERMINATION:
+      action: Enable a third intermediate termination to increase stability while leaving the segment design unverified.
+    DEC-04-BYPASS-STATION:
+      action: Isolate the unstable station and close without correcting the endpoint or confirming the physical layer.
+    DEC-05-VERIFY-STABLE-BUS:
+      action: Verify bus quality, station status, cyclic exchange, I/O and process function during a repeated test.
+    DEC-05-CHECK-LED-ONLY:
+      action: Close when the LEDs turn green without checking stability, cyclic data, repeated bus quality or preserved evidence.
+    DEC-05-CLEAR-BUFFER:
+      action: Clear the buffer and close without observing a repeated test, reviewing bus quality or preserving evidence.
+  retry_feedback:
+    DEC-01-RESTART-PLC: The master remains in RUN. Delimit the disturbance before restarting.
+    DEC-01-CHANGE-ADDRESS: Do not change addresses to solve a physical anomaly that is not localized.
+    DEC-01-REPLACE-SEGMENT: Localize the segment before replacing complete bus cabling.
+    DEC-02-REPLACE-MASTER: The master remains operational. Correlate neighbors and segment before replacing it.
+    DEC-02-CLEAR-BUFFER: Keep the buffer until localization and inspection are complete.
+    DEC-02-FORCE-IO: Do not force I/O to diagnose physical wiring. Work from a safe condition.
+    DEC-03-SWAP-CABLE: Inspect both endpoints and their termination before changing the cable.
+    DEC-03-CHANGE-ADDRESS: The hypothesis is physical. Do not change the address while termination is unverified.
+    DEC-03-RESTART-BUS: A restart does not replace physical endpoint inspection.
+    DEC-04-CHANGE-MASTER: Restore physical termination; do not change the master to tolerate the defect.
+    DEC-04-ADD-THIRD-TERMINATION: Termination belongs at both segment ends, not at an intermediate point.
+    DEC-04-BYPASS-STATION: Correct termination and verify the complete segment instead of closing on an isolated symptom.
+    DEC-05-CHECK-LED-ONLY: Repeat the test and verify bus quality, cyclic data and I/O, not only LEDs.
+    DEC-05-CLEAR-BUFFER: Keep the record and confirm stability during a repeated test.
+  visual:
+    educational_purpose: Progressively reveal fault scope, segment, physical endpoints, termination comparison, authorized correction and recovered stability.
+  completion:
+    title: Technical debrief
+    summary: The instability was caused by a disabled termination at the final endpoint of the PROFIBUS segment. Topology and endpoints were compared, authorized termination was enabled from a safe condition, and bus and process stability were verified.
+    process:
+      - Confirm scope in the buffer.
+      - Localize the segment and its two endpoints.
+      - Inspect connectors and terminations.
+      - Enable authorized termination.
+      - Verify stability, cyclic exchange, I/O and function.
+    lesson: In PROFIBUS, termination belongs to the physical layer and must be active at both segment ends. A bus that returns momentarily is not recovered until it passes a repeated test without new errors.
+    avoided_errors:
+      - Changing master addresses or parameters.
+      - Replacing the complete segment before locating the boundary.
+      - Enabling a third intermediate termination.
+      - Closing when only the LEDs return.
+    industrial_value:
+      - Traceable physical diagnostics.
+      - Fewer cable and equipment replacements.
+      - Repeatable recovery in DP segments with several stations.
+    media_ids:
+      - ART-007
+  assets:
+    ART-001:
+      alt: Photograph of a Siemens cabinet with PROFIBUS master, ET 200S stations and visible termination at the bus endpoint.
+      caption: PROFIBUS cabinet and segment endpoints.
+    ART-002:
+      alt: Simulated TIA online buffer with events 16#39CB, 16#38CB and 16#35A1, error colours and a DP station-failure detail panel.
+      caption: The codes delimit station failure or return and I/O access; the physical cause still requires confirmation.
+    ART-003:
+      alt: Close-up of an ET 200S station and PROFIBUS connector with a red termination switch and status LED.
+      caption: The connector exposes the endpoint termination state.
+    ART-004:
+      alt: Simulated PROFIBUS network view with one unstable segment and reference stations online.
+      caption: Topology narrows the affected segment.
+    ART-005:
+      alt: Simulated view comparing expected ON termination at both endpoints with an actual OFF termination.
+      caption: The comparison confirms the termination fault.
+    ART-006:
+      alt: Simulated authorized correction of endpoint termination from a safe condition.
+      caption: Termination is restored without changing the master.
+    ART-007:
+      alt: Simulated online view with all stations available, stable bus, active cyclic data and a stable process trend.
+      caption: Recovery verified in communication and process.

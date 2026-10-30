@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-30 — ENV-003 / EE-0024 PROFIBUS bus termination fault
+
+- Added bilingual EE-0024 for a PROFIBUS DP segment with an endpoint termination disabled, separating bus-layer evidence from station, cable and address hypotheses before restoring the authorized termination.
+- Added the diagnostic-buffer evidence used in the field case: DP station failure/return events `16#39CB / 16#38CB` and decentralized I/O access event `16#35A1`, rendered in a TIA-style table and detail panel.
+- Added five mixed-position decisions, six evidence items and seven coherent human-free assets: cabinet and termination-connector references plus original simulated diagnostic, topology, termination-comparison, correction and recovery panels.
+- Registered EE-0024 at the ENV-003 hotspot and extended preview packaging, localization, asset and focused regression checks to 24 Experiences. The PRONETA/TIA topology-assignment pill remains reserved for the ENV-003 closeout.
+
 ## 2026-10-30 — ENV-003 / EE-0023 PROFIBUS station failure
 
 - Added bilingual EE-0023 for a PROFIBUS DP station that leaves cyclic exchange while the master and neighboring stations remain available; the diagnostic path separates station, segment and parameter hypotheses before confirming a station-address mismatch.

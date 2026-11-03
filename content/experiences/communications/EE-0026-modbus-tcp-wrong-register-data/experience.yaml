@@ -1,0 +1,558 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-MODBUS-TCP-026
+  editorial_id: EE-0026
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Siemens S7-1500 / Modbus TCP
+  domain: Modbus TCP register interpretation diagnostics
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: modbus-tcp-wrong-register-data
+  title: Dato incorrecto en registros Modbus TCP
+  summary: Diagnostica un valor Modbus TCP incorrecto separando transporte, mapa de registros, orden de palabra y conversión REAL32 antes de verificar una referencia conocida.
+  estimated_duration: 20
+  scenario:
+    initial_context: Un PLC recibe respuestas Modbus TCP normales, pero la HMI muestra una magnitud imposible para el proceso.
+    operational_state: El PLC permanece en RUN y la conexión TCP está establecida. La petición FC03 devuelve dos registros consecutivos, pero el valor REAL32 mostrado no coincide con la referencia del proceso.
+    initiating_event: La HMI muestra 2.35e-41 bar mientras el operador dispone de una referencia de aproximadamente 25.0 bar. No se debe cambiar la escala ni el dispositivo hasta separar comunicación, mapa y reconstrucción.
+    learner_role: Técnico de automatización responsable de demostrar si el dato está mal recibido, mal direccionado o mal interpretado antes de modificar el bloque PLC.
+    safety_context:
+      safe_state: Realiza cambios en el bloque de conversión desde una condición segura y siguiendo el procedimiento de mantenimiento o puesta en marcha autorizado.
+      intervention_constraints:
+        - No cambiar la escala para ocultar una conversión incorrecta.
+        - No desplazar el offset ni sustituir el sensor antes de verificar el mapa.
+        - No aceptar una conexión TCP como prueba de que el valor tiene significado.
+        - Verificar lecturas repetidas contra una referencia conocida después de corregir el orden de palabra.
+  learning_objectives:
+    - id: OBJ-MODBUS-TCP-SCOPE
+      description: Distinguir una respuesta Modbus TCP válida de una interpretación incorrecta del dato.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-MODBUS-TCP-MAP
+      description: Comparar offset, registros consecutivos, tipo REAL32 y orden de palabra con el mapa del dispositivo.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-MODBUS-TCP-RECOVERY
+      description: Corregir el orden de palabra y verificar el valor reconstruido contra una referencia conocida.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-VALUE
+      phase: incident
+      title: Confirmar el valor
+      situation: El PLC está en RUN y la conexión Modbus TCP responde, pero la HMI muestra un valor de proceso imposible. ¿Qué comprobación delimita primero el problema sin tocar la escala ni el mapa?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-COMPARE-STATUS
+        - DEC-01-CHANGE-SCALE
+        - DEC-01-CHANGE-REGISTER
+        - DEC-01-REPLACE-SENSOR
+    - id: STAGE-02-VERIFY-MAP
+      phase: investigation
+      title: Verificar el mapa
+      situation: La respuesta llega sin excepción. La documentación define dos holding registers consecutivos para un REAL32. ¿Qué comparación debe hacerse antes de cambiar el programa?
+      evidence_ids:
+        - EVID-02-VALID-RESPONSE
+      decision_ids:
+        - DEC-02-CHANGE-ENDIAN
+        - DEC-02-COMPARE-MAP
+        - DEC-02-ADJUST-OFFSET
+        - DEC-02-REPLACE-PLC
+    - id: STAGE-03-DECODE-WORDS
+      phase: investigation
+      title: Decodificar las palabras
+      situation: El mapa confirma que 40001 es la palabra alta y 40002 la palabra baja. La respuesta contiene 0x41C8 y 0x0000. ¿Qué análisis demuestra por qué el PLC no muestra 25.0 bar?
+      evidence_ids:
+        - EVID-03-REGISTER-MAP
+      decision_ids:
+        - DEC-03-CHECK-SCALING
+        - DEC-03-READ-ONE-REG
+        - DEC-03-DECODE-WORDS
+        - DEC-03-RESTART-DEVICE
+    - id: STAGE-04-CORRECT-WORD-ORDER
+      phase: investigation
+      title: Corregir el orden de palabra
+      situation: El bloque de conversión reconstruye 0x000041C8 porque tiene activado el intercambio de palabras. ¿Qué intervención corrige la interpretación sin alterar el offset ni la escala?
+      evidence_ids:
+        - EVID-04-RAW-WORDS
+      decision_ids:
+        - DEC-04-SWAP-BYTES
+        - DEC-04-CHANGE-SCALE
+        - DEC-04-SET-LOW-FIRST
+        - DEC-04-SET-HIGH-FIRST
+    - id: STAGE-05-VERIFY-REFERENCE
+      phase: solution
+      title: Verificar la referencia
+      situation: El PLC ya reconstruye 0x41C80000. ¿Qué prueba demuestra que el dato Modbus TCP y la magnitud de proceso han quedado alineados?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CHECK-REFERENCE
+        - DEC-05-CLEAR-RAW
+        - DEC-05-ACCEPT-VALUE
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: HMI y operador
+      content: El PLC permanece en RUN y el estado Modbus TCP es conectado, pero la HMI muestra 2.35e-41 bar cuando la referencia local del proceso es aproximadamente 25.0 bar.
+      reliability: high
+      revealed_by: []
+      media_ids:
+        - ART-001
+        - ART-002
+    - id: EVID-02-VALID-RESPONSE
+      type: diagnostic
+      source: Cliente Modbus TCP y diagnóstico PLC
+      content: La petición FC03 recibe una respuesta normal, con byte count 04 y sin excepción Modbus. La comunicación y el transporte están activos; el problema está después de recibir los registros.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-COMPARE-STATUS
+      media_ids:
+        - ART-003
+    - id: EVID-03-REGISTER-MAP
+      type: documentation
+      source: Mapa de registros del dispositivo
+      content: Holding registers 40001 y 40002 forman un REAL32 en orden de palabra alto-bajo. 40001 contiene la palabra alta, 40002 la palabra baja y la escala es 1.0 bar por unidad.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-COMPARE-MAP
+    - id: EVID-04-RAW-WORDS
+      type: measurement
+      source: Respuesta Modbus TCP y tabla de observación PLC
+      content: La respuesta devuelve 0x41C8 en 40001 y 0x0000 en 40002. El bloque PLC los coloca como 0x0000 0x41C8 y genera 0x000041C8, una interpretación distinta de 0x41C80000 = 25.0.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-DECODE-WORDS
+      media_ids:
+        - ART-004
+    - id: EVID-05-CONVERSION-BLOCK
+      type: inspection
+      source: Bloque de conversión PLC
+      content: El bloque conserva el byte order documentado, pero tiene WORD_SWAP habilitado; la escala y el offset no están modificados.
+      reliability: confirmed
+      revealed_by:
+        - DEC-04-SET-HIGH-FIRST
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Lecturas repetidas y referencia calibrada
+      content: Cinco lecturas FC03 consecutivas reconstruyen 0x41C80000 y muestran 25.0 bar dentro de la tolerancia acordada, con respuesta normal y sin excepción.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-CHECK-REFERENCE
+      media_ids:
+        - ART-005
+  decisions:
+    - id: DEC-01-COMPARE-STATUS
+      stage_id: STAGE-01-CONFIRM-VALUE
+      action: Comparar estado, función, byte count y valor antes de intervenir.
+    - id: DEC-01-CHANGE-SCALE
+      stage_id: STAGE-01-CONFIRM-VALUE
+      action: Cambiar la escala hasta que la HMI parezca mostrar 25.0 bar.
+    - id: DEC-01-CHANGE-REGISTER
+      stage_id: STAGE-01-CONFIRM-VALUE
+      action: Cambiar el registro inicial porque el valor mostrado es imposible.
+    - id: DEC-01-REPLACE-SENSOR
+      stage_id: STAGE-01-CONFIRM-VALUE
+      action: Sustituir el sensor porque la magnitud no coincide con la referencia.
+    - id: DEC-02-CHANGE-ENDIAN
+      stage_id: STAGE-02-VERIFY-MAP
+      action: Cambiar el endianness del bloque sin leer el mapa del dispositivo.
+    - id: DEC-02-COMPARE-MAP
+      stage_id: STAGE-02-VERIFY-MAP
+      action: Comparar mapa, REAL32 y orden de palabra.
+    - id: DEC-02-ADJUST-OFFSET
+      stage_id: STAGE-02-VERIFY-MAP
+      action: Desplazar el offset un registro para buscar otro valor.
+    - id: DEC-02-REPLACE-PLC
+      stage_id: STAGE-02-VERIFY-MAP
+      action: Reemplazar la CPU porque la respuesta numérica parece incorrecta.
+    - id: DEC-03-CHECK-SCALING
+      stage_id: STAGE-03-DECODE-WORDS
+      action: Multiplicar o dividir el valor hasta aproximarlo a 25.0.
+    - id: DEC-03-READ-ONE-REG
+      stage_id: STAGE-03-DECODE-WORDS
+      action: Leer solo 40001 y descartar la segunda palabra.
+    - id: DEC-03-DECODE-WORDS
+      stage_id: STAGE-03-DECODE-WORDS
+      action: Decodificar ambas palabras en el orden documentado.
+    - id: DEC-03-RESTART-DEVICE
+      stage_id: STAGE-03-DECODE-WORDS
+      action: Reiniciar el servidor Modbus TCP para repetir la misma lectura.
+    - id: DEC-04-SWAP-BYTES
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      action: Intercambiar bytes dentro de cada registro aunque el mapa no lo indique.
+    - id: DEC-04-CHANGE-SCALE
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      action: Cambiar la escala y mantener el intercambio de palabras.
+    - id: DEC-04-SET-LOW-FIRST
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      action: Configurar la palabra baja como primera palabra porque así aparece en el bloque actual.
+    - id: DEC-04-SET-HIGH-FIRST
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      action: Desactivar WORD_SWAP y conservar 40001 como palabra alta.
+    - id: DEC-05-CHECK-REFERENCE
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      action: Repetir FC03 y comparar el valor con la referencia de 25.0 bar.
+    - id: DEC-05-CLEAR-RAW
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      action: Borrar la tabla de observación sin verificar el valor reconstruido.
+    - id: DEC-05-ACCEPT-VALUE
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      action: Aceptar el valor porque la comunicación TCP aparece conectada.
+  visual:
+    educational_purpose: Revelar progresivamente la respuesta Modbus TCP, el mapa de registros, las dos palabras de 16 bits, la conversión REAL32 y la verificación contra una referencia conocida.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-MODBUS-TCP-026/01-installation-context.png
+        alt: Fotografía de una instalación industrial con un PLC Siemens S7-1500 y cableado de comunicación conectado.
+        caption: La instalación aporta el contexto físico del caso antes de analizar la respuesta Modbus TCP.
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-MODBUS-TCP-026/02-wrong-pressure.png
+        alt: Captura de TIA Portal con MB_CLIENT conectado, registros 0x41C8 y 0x0000 y Pressure igual a 2.36E-41.
+        caption: El transporte está activo, pero la magnitud REAL32 mostrada no coincide con la referencia de 25.0 bar.
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-MODBUS-TCP-026/03-wireshark-fc03.png
+        alt: Captura de Wireshark con una respuesta Modbus TCP FC03, byte count 4 y datos 41 C8 00 00.
+        caption: La respuesta FC03 contiene cuatro bytes y no muestra una excepción Modbus.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-MODBUS-TCP-026/04-modscan-registers.png
+        alt: Captura de ModScan64 con los registros 40001 igual a 0x41C8 y 40002 igual a 0x0000.
+        caption: Los dos registros consecutivos recibidos conservan la palabra alta en 40001 y la baja en 40002.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-MODBUS-TCP-026/05-recovery-value.png
+        alt: Captura de TIA Portal con los registros 0x41C8 y 0x0000 y Pressure igual a 25.0.
+        caption: Tras corregir WORD_SWAP, el valor reconstruido coincide con la referencia conocida.
+        purpose: evidence
+  completion:
+    title: Debrief técnico
+    summary: El transporte Modbus TCP era válido; el valor era incorrecto porque el PLC intercambiaba las palabras alta y baja al reconstruir el REAL32. Se conservó el mapa, se desactivó WORD_SWAP y cinco lecturas consecutivas coincidieron con la referencia de 25.0 bar.
+    process:
+      - Confirmar respuesta normal y valor imposible.
+      - Comparar el mapa de registros y el tipo REAL32.
+      - Separar palabra alta, palabra baja, byte order y escala.
+      - Corregir WORD_SWAP según la documentación.
+      - Repetir lecturas y comparar con la referencia conocida.
+    lesson: Una respuesta Modbus TCP sin excepción demuestra transporte y función, no que el PLC haya interpretado correctamente los registros. Un valor de 32 bits exige conservar el orden de palabras definido por el dispositivo.
+    avoided_errors:
+      - Cambiar la escala para que el número parezca correcto.
+      - Desplazar el offset sin comprobar el mapa.
+      - Leer una sola palabra de un REAL32.
+      - Dar por válida la magnitud solo porque TCP está conectado.
+    industrial_value:
+      - Diagnóstico trazable de registros Modbus TCP.
+      - Menos correcciones de escala y sustituciones innecesarias.
+      - Conversión reproducible de valores de 32 bits entre equipos heterogéneos.
+    media_ids:
+      - ART-005
+private:
+  fault_model:
+    root_cause: El bloque PLC reconstruye en orden bajo-alto un REAL32 que el dispositivo entrega en orden alto-bajo. La respuesta Modbus TCP es válida, pero 0x41C8 0x0000 termina como 0x000041C8 en lugar de 0x41C80000 = 25.0.
+    recovery_conditions:
+      - 40001 y 40002 se conservan como palabra alta y palabra baja según el mapa.
+      - WORD_SWAP queda desactivado y la escala permanece en 1.0.
+      - Cinco lecturas FC03 consecutivas reconstruyen 25.0 bar dentro de la tolerancia acordada.
+      - Las respuestas siguen siendo normales y sin excepciones Modbus.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-TRANSPORT
+        statement: La conexión TCP o la respuesta FC03 no son válidas.
+        initial_status: possible
+      - id: HYP-MAP
+        statement: El offset o el registro inicial no coincide con la documentación.
+        initial_status: possible
+      - id: HYP-SCALING
+        statement: La escala o la unidad aplicada en el PLC son incorrectas.
+        initial_status: possible
+      - id: HYP-WORD-ORDER
+        statement: Las palabras alta y baja están intercambiadas al reconstruir el REAL32.
+        initial_status: likely
+      - id: HYP-SENSOR
+        statement: La medición del sensor es incorrecta aunque los registros sean válidos.
+        initial_status: possible
+    confirmed_root_cause: HYP-WORD-ORDER
+    critical_path:
+      - DEC-01-COMPARE-STATUS
+      - DEC-02-COMPARE-MAP
+      - DEC-03-DECODE-WORDS
+      - DEC-04-SET-HIGH-FIRST
+      - DEC-05-CHECK-REFERENCE
+  decision_logic:
+    - decision_id: DEC-01-COMPARE-STATUS
+      stage_id: STAGE-01-CONFIRM-VALUE
+      is_correct: true
+      rationale: La comparación o intervención conserva la evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-02-VALID-RESPONSE
+      next_stage: STAGE-02-VERIFY-MAP
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-01-CHANGE-SCALE
+      stage_id: STAGE-01-CONFIRM-VALUE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-MAP
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No ajustes la escala para ocultar un problema de interpretación. Primero confirma que la respuesta y el byte count son válidos.
+    - decision_id: DEC-01-CHANGE-REGISTER
+      stage_id: STAGE-01-CONFIRM-VALUE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-MAP
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Un valor imposible no demuestra un offset incorrecto. Conserva la petición y confirma el estado de la respuesta.
+    - decision_id: DEC-01-REPLACE-SENSOR
+      stage_id: STAGE-01-CONFIRM-VALUE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-MAP
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La comunicación está activa y el valor aún no prueba un fallo del sensor. Separa transporte e interpretación.
+    - decision_id: DEC-02-CHANGE-ENDIAN
+      stage_id: STAGE-02-VERIFY-MAP
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-03-DECODE-WORDS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El endianness debe salir del mapa del fabricante, no de una prueba al azar.
+    - decision_id: DEC-02-COMPARE-MAP
+      stage_id: STAGE-02-VERIFY-MAP
+      is_correct: true
+      rationale: La comparación o intervención conserva la evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-03-REGISTER-MAP
+      next_stage: STAGE-03-DECODE-WORDS
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-02-ADJUST-OFFSET
+      stage_id: STAGE-02-VERIFY-MAP
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-03-DECODE-WORDS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Cambiar el offset introduce otra variable. Confirma primero los dos registros definidos para el REAL32.
+    - decision_id: DEC-02-REPLACE-PLC
+      stage_id: STAGE-02-VERIFY-MAP
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-03-DECODE-WORDS
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: La respuesta normal no justifica cambiar la CPU. Inspecciona el mapa y la conversión.
+    - decision_id: DEC-03-CHECK-SCALING
+      stage_id: STAGE-03-DECODE-WORDS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-WORD-ORDER
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La escala no corrige una palabra alta y baja invertidas. Decodifica primero el par de registros.
+    - decision_id: DEC-03-READ-ONE-REG
+      stage_id: STAGE-03-DECODE-WORDS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-WORD-ORDER
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Un REAL32 necesita las dos palabras. Leer solo una elimina parte del dato.
+    - decision_id: DEC-03-DECODE-WORDS
+      stage_id: STAGE-03-DECODE-WORDS
+      is_correct: true
+      rationale: La comparación o intervención conserva la evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-04-RAW-WORDS
+      next_stage: STAGE-04-CORRECT-WORD-ORDER
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-03-RESTART-DEVICE
+      stage_id: STAGE-03-DECODE-WORDS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-04-CORRECT-WORD-ORDER
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Reiniciar no cambia cómo el PLC reconstruye los registros. Conserva la evidencia de la respuesta.
+    - decision_id: DEC-04-SWAP-BYTES
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-REFERENCE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El problema descrito es el orden de palabras, no el orden de bytes dentro de cada registro.
+    - decision_id: DEC-04-CHANGE-SCALE
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-REFERENCE
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: La escala documentada es 1.0. Cambiarla ocultaría el error de reconstrucción.
+    - decision_id: DEC-04-SET-LOW-FIRST
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-REFERENCE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La documentación define 40001 como palabra alta. Mantener LOW_FIRST conserva la causa.
+    - decision_id: DEC-04-SET-HIGH-FIRST
+      stage_id: STAGE-04-CORRECT-WORD-ORDER
+      is_correct: true
+      rationale: La comparación o intervención conserva la evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-05-CONVERSION-BLOCK
+      next_stage: STAGE-05-VERIFY-REFERENCE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CHECK-REFERENCE
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      is_correct: true
+      rationale: La comparación o intervención conserva la evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-RAW
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Borrar la observación no demuestra que la magnitud sea correcta ni que se repita.
+    - decision_id: DEC-05-ACCEPT-VALUE
+      stage_id: STAGE-05-VERIFY-REFERENCE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta el dato antes de separar comunicación, mapa y conversión.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar el orden de palabra.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Una conexión TCP activa no valida el significado del dato. Repite la lectura y compara con la referencia.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: La respuesta Modbus TCP era normal, pero el PLC intercambiaba las palabras de 16 bits al formar el REAL32. El mapa definía 0x41C80000 = 25.0 y el bloque producía 0x000041C8. Se corrigió WORD_SWAP y se verificaron lecturas repetidas.
+    correct_reasoning:
+      - Confirmar transporte y respuesta antes de culpar al sensor.
+      - Verificar el mapa y el tipo REAL32.
+      - Reconstruir el valor con palabra alta y baja documentadas.
+      - Corregir WORD_SWAP sin cambiar escala ni offset.
+      - Comparar lecturas repetidas con la referencia conocida.
+    recovery:
+      - Cinco lecturas FC03 normales.
+      - Valor 25.0 bar dentro de la tolerancia.
+      - Orden de palabra alto-bajo conservado.
+      - Sin excepción Modbus ni cambios de escala.
+  technical_validation:
+    status: pending
+    evidence:
+      - 'Caso simulado definido por el contrato ENV-003: dos registros Modbus TCP forman un REAL32 y el error es el orden de palabra.'
+      - Valores de ejemplo 0x41C8, 0x0000 y 25.0 bar quedan explicitados como datos del caso, pendientes de validación visual y de fuente del dispositivo.

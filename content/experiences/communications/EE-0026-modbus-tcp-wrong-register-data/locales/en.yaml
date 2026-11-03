@@ -1,0 +1,149 @@
+locale: en
+translations:
+  title: Modbus TCP Wrong Register Data
+  summary: Diagnose an incorrect Modbus TCP value by separating transport, register map, word order and REAL32 conversion before verifying a known reference.
+  scenario:
+    initial_context: A PLC receives normal Modbus TCP responses, but the HMI shows an impossible process magnitude.
+    operational_state: The PLC remains in RUN and the TCP connection is established. The FC03 request returns two consecutive registers, but the displayed REAL32 does not match the process reference.
+    initiating_event: The HMI shows 2.35e-41 bar while the operator has a reference of approximately 25.0 bar. Do not change scaling or the device until communication, map and reconstruction are separated.
+    learner_role: Automation technician responsible for proving whether the data is received, addressed or interpreted incorrectly before changing the PLC block.
+    safety_context:
+      safe_state: Make conversion-block changes from a safe condition and under the authorized maintenance or commissioning procedure.
+      intervention_constraints:
+        - Do not change scaling to hide an incorrect conversion.
+        - Do not shift the offset or replace the sensor before verifying the map.
+        - Do not treat a connected TCP session as proof that the value has meaning.
+        - Verify repeated reads against a known reference after correcting word order.
+  learning_objectives:
+    OBJ-MODBUS-TCP-SCOPE:
+      description: Distinguish a valid Modbus TCP response from an incorrect interpretation of the data.
+    OBJ-MODBUS-TCP-MAP:
+      description: Compare offset, consecutive registers, REAL32 type and word order with the device map.
+    OBJ-MODBUS-TCP-RECOVERY:
+      description: Correct word order and verify the reconstructed value against a known reference.
+  stages:
+    STAGE-01-CONFIRM-VALUE:
+      title: Confirm the value
+      situation: The PLC is in RUN and the Modbus TCP connection responds, but the HMI shows an impossible process value. Which check delimits the problem first without touching scaling or the map?
+    STAGE-02-VERIFY-MAP:
+      title: Verify the map
+      situation: The response arrives without an exception. Documentation defines two consecutive holding registers for a REAL32. Which comparison must happen before changing the program?
+    STAGE-03-DECODE-WORDS:
+      title: Decode the words
+      situation: The map confirms that 40001 is the high word and 40002 the low word. The response contains 0x41C8 and 0x0000. Which analysis proves why the PLC does not show 25.0 bar?
+    STAGE-04-CORRECT-WORD-ORDER:
+      title: Correct the word order
+      situation: The conversion block reconstructs 0x000041C8 because word swapping is enabled. Which intervention corrects interpretation without changing offset or scale?
+    STAGE-05-VERIFY-REFERENCE:
+      title: Verify the reference
+      situation: The PLC now reconstructs 0x41C80000. Which test demonstrates that the Modbus TCP data and process magnitude are aligned?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: The PLC remains in RUN and Modbus TCP is connected, but the HMI shows 2.35e-41 bar while the local process reference is approximately 25.0 bar.
+    EVID-02-VALID-RESPONSE:
+      source: Modbus TCP client and PLC diagnostics
+      content: The FC03 request receives a normal response with byte count 04 and no Modbus exception. Transport is active; the problem is after the registers are received.
+    EVID-03-REGISTER-MAP:
+      source: Device register map
+      content: Holding registers 40001 and 40002 form a REAL32 in high-word-first order. 40001 is the high word, 40002 the low word and the scale is 1.0 bar per unit.
+    EVID-04-RAW-WORDS:
+      source: Modbus TCP response and PLC observation table
+      content: The response returns 0x41C8 in 40001 and 0x0000 in 40002. The PLC places them as 0x0000 0x41C8 and generates 0x000041C8 instead of 0x41C80000 = 25.0.
+    EVID-05-CONVERSION-BLOCK:
+      source: PLC conversion block
+      content: The block keeps the documented byte order but has WORD_SWAP enabled; scale and offset are unchanged.
+    EVID-06-RECOVERY:
+      source: Repeated reads and calibrated reference
+      content: Five consecutive FC03 reads reconstruct 0x41C80000 and show 25.0 bar within the agreed tolerance, with a normal response and no exception.
+  decisions:
+    DEC-01-COMPARE-STATUS:
+      action: Compare status, function, byte count and value first.
+    DEC-01-CHANGE-SCALE:
+      action: Change scaling until the HMI appears to show 25.0 bar.
+    DEC-01-CHANGE-REGISTER:
+      action: Change the starting register because the displayed value is impossible.
+    DEC-01-REPLACE-SENSOR:
+      action: Replace the sensor because the magnitude does not match the reference.
+    DEC-02-CHANGE-ENDIAN:
+      action: Change block endianness without reading the device map.
+    DEC-02-COMPARE-MAP:
+      action: Compare the map, REAL32 type and word order.
+    DEC-02-ADJUST-OFFSET:
+      action: Shift the offset by one register to search for another value.
+    DEC-02-REPLACE-PLC:
+      action: Replace the CPU because the numeric response looks wrong.
+    DEC-03-CHECK-SCALING:
+      action: Multiply or divide the value until it approaches 25.0.
+    DEC-03-READ-ONE-REG:
+      action: Read only 40001 and discard the second word.
+    DEC-03-DECODE-WORDS:
+      action: Decode both 16-bit words in the documented order.
+    DEC-03-RESTART-DEVICE:
+      action: Restart the Modbus TCP server to repeat the same read.
+    DEC-04-SWAP-BYTES:
+      action: Swap bytes inside each register even though the map does not require it.
+    DEC-04-CHANGE-SCALE:
+      action: Change scaling and keep word swapping enabled.
+    DEC-04-SET-LOW-FIRST:
+      action: Set the low word first because that is how the current block displays it.
+    DEC-04-SET-HIGH-FIRST:
+      action: Disable WORD_SWAP; keep 40001 as the high word.
+    DEC-05-CHECK-REFERENCE:
+      action: Repeat FC03 and compare the value with the 25.0 bar reference.
+    DEC-05-CLEAR-RAW:
+      action: Clear the observation table without checking the reconstructed value.
+    DEC-05-ACCEPT-VALUE:
+      action: Accept the value because the TCP connection appears connected.
+  retry_feedback:
+    DEC-01-CHANGE-SCALE: Do not adjust scaling to hide an interpretation problem. Confirm that the response and byte count are valid first.
+    DEC-01-CHANGE-REGISTER: An impossible value does not prove a wrong offset. Preserve the request and confirm response status.
+    DEC-01-REPLACE-SENSOR: Communication is active and the value does not yet prove a sensor fault. Separate transport from interpretation.
+    DEC-02-CHANGE-ENDIAN: Endianness must come from the manufacturer map, not from a random trial.
+    DEC-02-ADJUST-OFFSET: Changing the offset introduces another variable. Confirm the two registers defined for the REAL32 first.
+    DEC-02-REPLACE-PLC: A normal response does not justify replacing the CPU. Inspect the map and conversion.
+    DEC-03-CHECK-SCALING: Scaling cannot correct swapped high and low words. Decode the register pair first.
+    DEC-03-READ-ONE-REG: A REAL32 needs both words. Reading one discards part of the value.
+    DEC-03-RESTART-DEVICE: Restarting does not change how the PLC reconstructs the registers. Preserve response evidence.
+    DEC-04-SWAP-BYTES: The described problem is word order, not byte order inside each register.
+    DEC-04-CHANGE-SCALE: The documented scale is 1.0. Changing it would hide the reconstruction error.
+    DEC-04-SET-LOW-FIRST: The documentation defines 40001 as the high word. Keeping LOW_FIRST preserves the fault.
+    DEC-05-CLEAR-RAW: Clearing the observation does not prove the magnitude is correct or repeatable.
+    DEC-05-ACCEPT-VALUE: An active TCP connection does not validate data meaning. Repeat the read and compare it with the reference.
+  visual:
+    educational_purpose: Progressively reveal the Modbus TCP response, register map, two 16-bit words, REAL32 conversion and verification against a known reference.
+  completion:
+    title: Technical debrief
+    summary: Modbus TCP transport was valid; the value was wrong because the PLC swapped the high and low words while reconstructing the REAL32. WORD_SWAP was disabled and five consecutive reads matched the 25.0 bar reference.
+    process:
+      - Confirm a normal response and impossible value.
+      - Compare the register map and REAL32 type.
+      - Separate high word, low word, byte order and scale.
+      - Correct WORD_SWAP according to the documentation.
+      - Repeat reads and compare them with the known reference.
+    lesson: A Modbus TCP response without an exception proves transport and function, not that the PLC interpreted the registers correctly. A 32-bit value requires preserving the device-defined word order.
+    avoided_errors:
+      - Changing scaling to make the number look correct.
+      - Shifting the offset without checking the map.
+      - Reading one word from a REAL32.
+      - Accepting the magnitude only because TCP is connected.
+    industrial_value:
+      - Traceable Modbus TCP register diagnostics.
+      - Fewer unnecessary scaling changes and replacements.
+      - Repeatable 32-bit value conversion across mixed equipment.
+  assets:
+    ART-001:
+      alt: Photograph of an industrial installation with a Siemens S7-1500 PLC and connected communication wiring.
+      caption: The installation provides the physical context before the Modbus TCP response is analysed.
+    ART-002:
+      alt: TIA Portal capture with MB_CLIENT connected, registers 0x41C8 and 0x0000, and Pressure equal to 2.36E-41.
+      caption: Transport is active, but the displayed REAL32 magnitude does not match the 25.0 bar reference.
+    ART-003:
+      alt: Wireshark capture showing a Modbus TCP FC03 response with byte count 4 and data 41 C8 00 00.
+      caption: The FC03 response contains four bytes and shows no Modbus exception.
+    ART-004:
+      alt: ModScan64 capture with register 40001 equal to 0x41C8 and register 40002 equal to 0x0000.
+      caption: The two consecutive registers preserve the high word in 40001 and the low word in 40002.
+    ART-005:
+      alt: TIA Portal capture with registers 0x41C8 and 0x0000 and Pressure equal to 25.0.
+      caption: After correcting WORD_SWAP, the reconstructed value matches the known reference.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-03 — ENV-003 / EE-0026 Modbus TCP wrong register data
+
+- Added the bilingual EE-0026 diagnostic flow: five stages, 19 decision options and six evidence items for separating valid Modbus TCP transport from incorrect REAL32 word-order interpretation.
+- Integrated the five user-approved original PNG assets for context, wrong value, valid FC03 response, raw registers and recovery; EE-0026 remains in technical review while the ENV-003 hotspot is pending.
+
 ## 2026-11-03 — ENV-003 / EE-0025 Modbus RTU communication timeout
 
 - Added bilingual EE-0025 for a Modbus RTU client that times out because the client expects Even parity while the server uses Odd, separating serial parameters from wiring, address and device hypotheses before correction.

@@ -3,7 +3,7 @@
 - Contract: Master Contract V1 (`docs/implementation/ENV-003-contract.md`)
 - Phase: 08 — EE-0025 with its ENV-003 hotspot
 - Status: implemented, awaiting user approval
-- Scope: EE-0025 Modbus RTU Communication Timeout, bilingual content, six supplied draft assets rasterized for the runtime, and five validated ENV-003 hotspots
+- Scope: EE-0025 Modbus RTU Communication Timeout, bilingual content, six supplied original PNG assets copied into the runtime, and five validated ENV-003 hotspots
 - Validation: authoring V2, ES/EN localization, runtime normalization, preview package, six asset references, balanced decision lengths and focused regression tests passed
 - User approval: pending
 - Next unit: EE-0026 with its ENV-003 hotspot

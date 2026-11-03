@@ -3,7 +3,7 @@
 ## 2026-11-03 — ENV-003 / EE-0025 Modbus RTU communication timeout
 
 - Added bilingual EE-0025 for a Modbus RTU client that times out because the client expects Even parity while the server uses Odd, separating serial parameters from wiring, address and device hypotheses before correction.
-- Added five mixed-position decisions, six evidence items and six supplied draft assets: installation context, PLC diagnostic symptom, RS-485 topology, client/server serial templates and recovery checklist. The source SVGs are retained and the learner package uses rasterized PNG derivatives; the templates remain marked `TO BE VERIFIED`.
+- Added five mixed-position decisions, six evidence items and six supplied original PNG assets: S7-1500 installation, TIA Portal diagnostics, RS-485 schematic, client/server settings and a Modbus RTU trace. The originals replace the previous draft visuals and their visible values are documented as technical-review evidence.
 - Registered EE-0025 at the ENV-003 Modbus gateway hotspot and extended preview packaging, localization, asset and regression checks to 25 Experiences.
 
 ## 2026-10-30 — ENV-003 / EE-0024 PROFIBUS bus termination fault

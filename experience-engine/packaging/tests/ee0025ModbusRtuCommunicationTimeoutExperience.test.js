@@ -21,7 +21,7 @@ async function artifact(locale) {
   return packageExperience(resolveExperienceLocalization(authoring, localized));
 }
 
-test("EE-0025 contains only the six supplied rasterized runtime assets", async () => {
+test("EE-0025 contains only the six supplied runtime assets", async () => {
   const names = (await readdir(`${directory}/assets`)).sort();
   assert.deepEqual(names, [
     "01-installation-context.png",
@@ -33,18 +33,32 @@ test("EE-0025 contains only the six supplied rasterized runtime assets", async (
   ]);
   for (const name of names) {
     const bytes = await readFile(`${directory}/assets/${name}`);
-    assert.ok(bytes.length > 1000, `${name} should contain a rasterized asset`);
+    assert.ok(bytes.length > 1000, `${name} should contain a runtime asset`);
   }
   const sourceNames = (await readdir(`${directory}/media-source/EE-0025_assets`)).sort();
   assert.deepEqual(sourceNames, [
-    "ASSET-01-installation-context.svg",
-    "ASSET-02-plc-diagnostic.svg",
-    "ASSET-03-rs485-topology.svg",
-    "ASSET-04-client-serial-settings.svg",
-    "ASSET-05-server-serial-settings.svg",
-    "ASSET-06-recovery-verification.svg",
-    "README.md",
+    "01_S7-1500_instalacion.png",
+    "02_TIA_Portal_diagnostico.png",
+    "03_RS485_esquema.png",
+    "04_Modbus_cliente_configuracion.png",
+    "05_Modbus_servidor_configuracion.png",
+    "06_Modbus_traza_comunicacion.png",
   ]);
+  const sourcePairs = [
+    ["01-installation-context.png", "01_S7-1500_instalacion.png"],
+    ["02-plc-diagnostic.png", "02_TIA_Portal_diagnostico.png"],
+    ["03-rs485-topology.png", "03_RS485_esquema.png"],
+    ["04-client-serial-settings.png", "04_Modbus_cliente_configuracion.png"],
+    ["05-server-serial-settings.png", "05_Modbus_servidor_configuracion.png"],
+    ["06-recovery-verification.png", "06_Modbus_traza_comunicacion.png"],
+  ];
+  for (const [runtimeName, sourceName] of sourcePairs) {
+    assert.deepEqual(
+      await readFile(`${directory}/assets/${runtimeName}`),
+      await readFile(`${directory}/media-source/EE-0025_assets/${sourceName}`),
+      `${runtimeName} must be an exact copy of ${sourceName}`,
+    );
+  }
 });
 
 test("EE-0025 validates as a bilingual V2 Modbus RTU timeout unit", async () => {
@@ -66,7 +80,8 @@ test("EE-0025 validates as a bilingual V2 Modbus RTU timeout unit", async () => 
     "assets/EXP-MODBUS-RTU-025/06-recovery-verification.png",
   ]);
   assert.match(authoring.public.evidence.find(item => item.id === "EVID-04-PARITY-MISMATCH").content, /Even.*Odd/);
-  assert.match(authoring.public.visual.assets.find(item => item.id === "ART-004").alt, /pendientes de verificación/i);
+  assert.match(authoring.public.visual.assets.find(item => item.id === "ART-004").alt, /19200.*Even/i);
+  assert.match(authoring.public.visual.assets.find(item => item.id === "ART-005").alt, /9600.*Odd/i);
 
   const truth = new Map(authoring.private.decision_logic.map(item => [item.decision_id, item.is_correct]));
   const correctPositions = authoring.public.stages.map(stage =>

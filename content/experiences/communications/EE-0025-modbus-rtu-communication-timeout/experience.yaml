@@ -221,45 +221,45 @@ public:
       stage_id: STAGE-05-VERIFY-RESPONSES
       action: Borrar contadores y cerrar sin observar respuestas repetidas ni el valor de proceso.
   visual:
-    educational_purpose: Revelar progresivamente el timeout, la frontera RS-485, la topología, las plantillas de parámetros serie pendientes de verificación y la recuperación comprobable.
+    educational_purpose: Revelar progresivamente la instalación S7-1500, el buffer de diagnóstico, la topología RS-485, las configuraciones serie de cliente y servidor y una traza de comunicación observable.
     representation: available
     cover_asset_id: ART-001
     assets:
       - id: ART-001
         type: image
         src: assets/EXP-MODBUS-RTU-025/01-installation-context.png
-        alt: Ilustración conceptual del armario de control y del dispositivo Modbus RTU con interfaz RS-485, alimentación activa y respuesta aún no confirmada.
-        caption: Contexto de instalación y frontera RS-485.
+        alt: Fotografía de una instalación con PLC Siemens S7-1500, módulos de E/S y cableado industrial conectado.
+        caption: La fotografía aporta el contexto físico de la instalación, pero no demuestra por sí sola el mapeo Modbus RTU.
         purpose: catalog_cover
       - id: ART-002
         type: image
         src: assets/EXP-MODBUS-RTU-025/02-plc-diagnostic.png
-        alt: Vista sintética de diagnóstico con el PLC en RUN, una petición serie transmitida y un timeout sin respuesta válida.
-        caption: El timeout localiza el síntoma, pero no demuestra por sí solo la causa.
+        alt: Captura de TIA Portal con el árbol de diagnóstico y un buffer de eventos de la CPU en línea.
+        caption: El buffer aporta una frontera de diagnóstico; el evento visible debe correlacionarse con la petición Modbus del caso.
         purpose: evidence
       - id: ART-003
         type: image
         src: assets/EXP-MODBUS-RTU-025/03-rs485-topology.png
-        alt: Topología conceptual de un cliente PLC, un bus RS-485 y un servidor Modbus RTU con la dirección y la terminación pendientes de verificación.
-        caption: La frontera RS-485 y la topología deben comprobarse en la instalación.
+        alt: Esquema RS-485 con maestro, esclavos, pareja A/B, común C, red de polarización y terminaciones.
+        caption: El esquema identifica la topología y los elementos de terminación que deben contrastarse en campo.
         purpose: evidence
       - id: ART-004
         type: image
         src: assets/EXP-MODBUS-RTU-025/04-client-serial-settings.png
-        alt: Plantilla de configuración serie del cliente con baud rate, bits, paridad, parada y dirección pendientes de verificación.
-        caption: La configuración del cliente se muestra como plantilla pendiente de completar con valores verificados.
+        alt: Ventana de configuración Modbus RTU del cliente con 19200 baud, 8 bits, paridad Even y 1 bit de parada.
+        caption: Configuración serie visible del cliente; debe correlacionarse con la configuración del servidor.
         purpose: evidence
       - id: ART-005
         type: image
         src: assets/EXP-MODBUS-RTU-025/05-server-serial-settings.png
-        alt: Plantilla de configuración serie del servidor con baud rate, bits, paridad, parada y dirección pendientes de verificación.
-        caption: La configuración del servidor se muestra como plantilla pendiente de completar con valores verificados.
+        alt: Panel de configuración Modbus RTU del servidor con 9600 baud, 8 bits, paridad Odd y 1 bit de parada.
+        caption: Configuración serie visible del servidor; sus valores deben compararse con el proyecto y el cliente.
         purpose: evidence
       - id: ART-006
         type: image
         src: assets/EXP-MODBUS-RTU-025/06-recovery-verification.png
-        alt: Lista de comprobación para verificar paridad autorizada, respuestas RTU repetidas, contadores, latencia y dato de proceso estable.
-        caption: La recuperación se cierra solo después de recoger cada evidencia.
+        alt: Traza de IO Ninja con peticiones y respuestas Modbus RTU repetidas y los parámetros serie visibles.
+        caption: La traza muestra intercambios observables; la configuración visible debe correlacionarse antes de usarla como recuperación del caso.
         purpose: evidence
   completion:
     title: Debrief técnico

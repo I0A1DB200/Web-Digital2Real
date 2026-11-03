@@ -111,7 +111,7 @@ translations:
     DEC-05-CHECK-LED: La actividad del LED no demuestra una respuesta Modbus válida ni un dato estable.
     DEC-05-CLEAR-COUNTERS: Borrar contadores no confirma recuperación. Repite una petición conocida y observa el proceso.
   visual:
-    educational_purpose: Revelar progresivamente el timeout, la frontera RS-485, la topología, las plantillas de parámetros serie pendientes de verificación y la recuperación comprobable.
+    educational_purpose: Revelar progresivamente la instalación S7-1500, el buffer de diagnóstico, la topología RS-485, las configuraciones serie de cliente y servidor y una traza de comunicación observable.
   completion:
     title: Debrief técnico
     summary: 'El timeout estaba causado por una discrepancia de paridad: el cliente esperaba Even y el servidor estaba en Odd. Se conservaron las evidencias, se compararon los parámetros, se alineó la paridad desde una condición autorizada y se verificaron respuestas Modbus RTU válidas y dato de proceso estable.'
@@ -135,20 +135,20 @@ translations:
       - ART-006
   assets:
     ART-001:
-      alt: Ilustración conceptual de un armario de control y un dispositivo Modbus RTU con interfaz RS-485, alimentación activa y respuesta aún no confirmada.
-      caption: Contexto de instalación y frontera RS-485.
+      alt: Fotografía de una instalación con PLC Siemens S7-1500, módulos de E/S y cableado industrial conectado.
+      caption: La fotografía aporta el contexto físico de la instalación, pero no demuestra por sí sola el mapeo Modbus RTU.
     ART-002:
-      alt: Vista sintética de diagnóstico con el PLC en RUN, una petición serie transmitida y un timeout sin respuesta válida.
-      caption: El timeout localiza el síntoma, pero no demuestra por sí solo la causa.
+      alt: Captura de TIA Portal con el árbol de diagnóstico online y un buffer de eventos de la CPU.
+      caption: El buffer aporta una frontera de diagnóstico; el evento visible debe correlacionarse con la petición Modbus del caso.
     ART-003:
-      alt: Topología conceptual de un cliente PLC, un bus RS-485 y un servidor Modbus RTU con dirección y terminación pendientes de verificación.
-      caption: La frontera RS-485 y la topología deben comprobarse en la instalación.
+      alt: Esquema RS-485 con maestro, esclavos, pareja A/B, común C, red de polarización y terminaciones.
+      caption: El esquema identifica la topología y los elementos de terminación que deben contrastarse en campo.
     ART-004:
-      alt: Plantilla de configuración serie del cliente con baud rate, bits de datos, paridad, parada y dirección pendientes de verificación.
-      caption: La configuración del cliente se muestra como plantilla pendiente de completar con valores verificados.
+      alt: Configuración Modbus RTU del cliente con 19200 baud, 8 bits de datos, paridad Even y 1 bit de parada.
+      caption: Configuración serie visible del cliente; debe correlacionarse con la configuración del servidor.
     ART-005:
-      alt: Plantilla de configuración serie del servidor con baud rate, bits de datos, paridad, parada y dirección pendientes de verificación.
-      caption: La configuración del servidor se muestra como plantilla pendiente de completar con valores verificados.
+      alt: Configuración Modbus RTU del servidor con 9600 baud, 8 bits de datos, paridad Odd y 1 bit de parada.
+      caption: Configuración serie visible del servidor; sus valores deben compararse con el proyecto y el cliente.
     ART-006:
-      alt: Lista de comprobación para verificar paridad autorizada, respuestas RTU repetidas, contadores, latencia y dato de proceso estable.
-      caption: La recuperación se cierra solo después de recoger cada evidencia.
+      alt: Traza de IO Ninja con peticiones y respuestas Modbus RTU repetidas y parámetros serie visibles.
+      caption: La traza muestra intercambios observables; la configuración visible debe correlacionarse antes de usarla como recuperación del caso.

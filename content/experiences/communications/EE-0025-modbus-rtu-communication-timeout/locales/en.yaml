@@ -1,0 +1,154 @@
+locale: en
+translations:
+  title: Modbus RTU Communication Timeout
+  summary: Diagnose a Modbus RTU timeout by separating serial parameters, wiring, address and device before aligning authorized parity and verifying valid responses.
+  scenario:
+    initial_context: A PLC cannot obtain valid responses from a Modbus RTU device and the process value stops updating.
+    operational_state: The PLC remains in RUN and the gateway has power. The request leaves over RS-485, but the client expires without a valid response.
+    initiating_event: Online diagnostics record response timeouts and an I/O access without valid data. The cause must still be separated between wiring, address, baud rate, serial format and device.
+    learner_role: Automation technician responsible for correlating request, client parameters, server configuration and Modbus RTU responses before intervening.
+    safety_context:
+      safe_state: Perform parameter changes from a safe condition and under the authorized maintenance or commissioning procedure.
+      intervention_constraints:
+        - Do not increase timeout to hide an incompatibility.
+        - Do not change address or swap A/B as a first reaction.
+        - Do not replace gateway or device without preserving evidence.
+        - Verify valid responses, counters, latency and process data after correction.
+  learning_objectives:
+    OBJ-MODBUS-SCOPE:
+      description: Distinguish a communication timeout from a power, wiring, address or device fault.
+    OBJ-MODBUS-PARAMETERS:
+      description: Compare baud rate, bits, parity, stop bits, address and timeout between client and server.
+    OBJ-MODBUS-RECOVERY:
+      description: Align authorized parity and verify repeated Modbus RTU responses with stable process data.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirm the scope
+      situation: The PLC remains in RUN, but a Modbus RTU request ends in timeout. Which action delimits the boundary first without changing parameters or hardware?
+    STAGE-02-VERIFY-BASELINE:
+      title: Verify the serial baseline
+      situation: The installation has power and the device is identified. Which comparison establishes the parameters that must match before intervention?
+    STAGE-03-COMPARE-PARAMETERS:
+      title: Compare the parameters
+      situation: The client transmits a request but receives no valid response. Which comparison confirms the incompatibility that explains the timeout?
+    STAGE-04-ALIGN-SERIAL:
+      title: Align the communication
+      situation: The server parity is Odd and the project requires Even. Which intervention corrects compatibility from an authorized condition?
+    STAGE-05-VERIFY-RESPONSES:
+      title: Verify the responses
+      situation: Parity has been aligned. Which test demonstrates that Modbus RTU communication and process data have recovered stability?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI and operator
+      content: The PLC remains in RUN, but the Modbus RTU device value stops updating and the client reports a response timeout.
+    EVID-02-TIMEOUT-DIAGNOSTIC:
+      source: Diagnostic buffer and MB_CLIENT
+      content: The buffer records an I/O access without a valid response and the client block shows an expired Modbus RTU request. The event locates the symptom but does not yet prove cable, address, baud or parity.
+    EVID-03-EXPECTED-PARAMETERS:
+      source: PLC project and device documentation
+      content: Expected settings are 19200 baud, 8 data bits, Even parity, 1 stop bit, address 17 and a 1000 ms response timeout.
+    EVID-04-PARITY-MISMATCH:
+      source: Online client-server comparison
+      content: The client uses Even parity and the server is configured for Odd; baud, data bits, stop bit, address and timeout match.
+    EVID-05-PARITY-APPLIED:
+      source: Authorized maintenance
+      content: 'The server parity is aligned with the project: Even. Address 17, baud rate, effective 8N1 format and timeout remain unchanged.'
+    EVID-06-RECOVERY:
+      source: Online diagnostics and process test
+      content: Known FC03 requests receive repeated valid responses, latency remains stable, timeout and error counters are zero and the process value updates coherently.
+  decisions:
+    DEC-01-COMPARE-DIAGNOSTICS:
+      action: Compare client diagnostics, the transmitted request and the PLC operating state.
+    DEC-01-RESTART-PLC:
+      action: Restart the PLC to see whether the timeout disappears.
+    DEC-01-INCREASE-TIMEOUT:
+      action: Increase the timeout until any late response is accepted.
+    DEC-01-REPLACE-GATEWAY:
+      action: Replace the serial gateway because the first timeout points to hardware.
+    DEC-02-COMPARE-BASELINE:
+      action: Compare project, device documentation and online parameters before changing the installation.
+    DEC-02-CHANGE-ADDRESS:
+      action: Change the server address to test another identity.
+    DEC-02-SWAP-PAIR:
+      action: Swap A and B before confirming serial parameters and preserving the current connection.
+    DEC-02-REPLACE-DEVICE:
+      action: Replace the field device without checking its configuration.
+    DEC-03-CHECK-WIRING:
+      action: Change the wiring before comparing the client and server configuration.
+    DEC-03-CHANGE-BAUD:
+      action: Change the client baud rate until a response appears.
+    DEC-03-COMPARE-PARITY:
+      action: Compare parity, bits, address, baud rate, stop bits and timeout between client and server.
+    DEC-03-DISABLE-CHECKING:
+      action: Disable error checking to accept any received frame.
+    DEC-04-SET-EVEN:
+      action: Align server parity to Even through the authorized procedure.
+    DEC-04-CHANGE-ADDRESS:
+      action: Change the server address to 1 although the project expects 17.
+    DEC-04-SET-NONE:
+      action: Set parity to None to avoid the mismatch without following the design.
+    DEC-04-INCREASE-TIMEOUT:
+      action: Increase the timeout and leave parity incompatible.
+    DEC-05-CHECK-LED:
+      action: Close the diagnostic when the communication LED flashes.
+    DEC-05-REPEAT-FC03:
+      action: Repeat a known FC03 request and verify valid responses, latency, counters and process value.
+    DEC-05-CLEAR-COUNTERS:
+      action: Clear counters and close without observing repeated responses or the process value.
+  retry_feedback:
+    DEC-01-RESTART-PLC: The PLC remains in RUN. Preserve the timeout and delimit the diagnostic before restarting.
+    DEC-01-INCREASE-TIMEOUT: Increasing timeout can hide the incompatibility and does not identify the incorrect parameter.
+    DEC-01-REPLACE-GATEWAY: The timeout does not prove a gateway failure. Compare the request and parameters first.
+    DEC-02-CHANGE-ADDRESS: Compare the expected address before changing the server identity.
+    DEC-02-SWAP-PAIR: Do not swap A/B without evidence; compare serial format first and preserve the current connection.
+    DEC-02-REPLACE-DEVICE: Do not replace the device before checking parameters, address and wiring.
+    DEC-03-CHECK-WIRING: The configuration is not yet compared. Do not change wiring as the first reaction.
+    DEC-03-CHANGE-BAUD: Do not search for a response by changing baud rate without checking documentation.
+    DEC-03-DISABLE-CHECKING: Disabling checks hides invalid frames and removes a diagnostic boundary.
+    DEC-04-CHANGE-ADDRESS: Address 17 already matches. Changing it introduces a new variable.
+    DEC-04-SET-NONE: The design requires Even. None does not correct the documented incompatibility.
+    DEC-04-INCREASE-TIMEOUT: The timeout is coherent; stop hiding the problem and align parity.
+    DEC-05-CHECK-LED: LED activity does not prove a valid Modbus response or stable data.
+    DEC-05-CLEAR-COUNTERS: Clearing counters does not confirm recovery. Repeat a known request and observe the process.
+  visual:
+    educational_purpose: Progressively reveal the timeout, RS-485 boundary, topology, serial-parameter templates pending verification and observable recovery.
+  completion:
+    title: Technical debrief
+    summary: 'The timeout was caused by a parity mismatch: the client expected Even and the server used Odd. Evidence was preserved, parameters were compared, parity was aligned from an authorized condition and valid Modbus RTU responses plus stable process data were verified.'
+    process:
+      - Confirm the timeout with diagnostics and the transmitted request.
+      - Compare documentation and client/server parameters.
+      - Separate parity from baud rate, address, wiring and device.
+      - Align authorized parity without changing other parameters.
+      - Repeat known requests and verify response, latency, counters and process.
+    lesson: In Modbus RTU, a transmitted request does not prove valid communication. Parity is part of the frame format; a mismatch can prevent the server or client from accepting the response and end in a timeout.
+    avoided_errors:
+      - Increasing timeout to hide incompatibility.
+      - Changing address or swapping A/B without evidence.
+      - Replacing hardware before comparing parameters.
+      - Closing on LED activity without validating frames and process.
+    industrial_value:
+      - Traceable serial diagnostics.
+      - Fewer gateway and device replacements.
+      - Repeatable recovery of RS-485 links with mixed equipment.
+    media_ids:
+      - ART-006
+  assets:
+    ART-001:
+      alt: Conceptual illustration of a control cabinet and Modbus RTU device with an RS-485 interface, power active and response not yet confirmed.
+      caption: Installation context and RS-485 boundary.
+    ART-002:
+      alt: Synthetic diagnostic view with the PLC in RUN, a transmitted serial request and a timeout without a valid response.
+      caption: The timeout locates the symptom but does not prove the cause by itself.
+    ART-003:
+      alt: Conceptual topology of a PLC client, an RS-485 bus and a Modbus RTU server with address and termination pending verification.
+      caption: The RS-485 boundary and topology must be checked against the installation.
+    ART-004:
+      alt: Client serial-configuration template with baud rate, data bits, parity, stop bits and address pending verification.
+      caption: The client configuration is shown as a template pending verified values.
+    ART-005:
+      alt: Server serial-configuration template with baud rate, data bits, parity, stop bits and address pending verification.
+      caption: The server configuration is shown as a template pending verified values.
+    ART-006:
+      alt: Checklist for verifying authorized parity, repeated RTU responses, counters, latency and stable process data.
+      caption: Recovery closes only after each item has evidence.

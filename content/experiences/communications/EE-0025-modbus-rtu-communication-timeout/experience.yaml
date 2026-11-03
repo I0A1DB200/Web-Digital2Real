@@ -1,0 +1,566 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-MODBUS-RTU-025
+  editorial_id: EE-0025
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: Siemens S7-1500 / Modbus RTU RS-485
+  domain: Modbus RTU serial communication diagnostics
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: modbus-rtu-communication-timeout
+  title: Timeout de comunicación Modbus RTU
+  summary: Diagnostica un timeout Modbus RTU separando parámetros serie, cableado, dirección y dispositivo antes de alinear la paridad autorizada y verificar respuestas válidas.
+  estimated_duration: 20
+  scenario:
+    initial_context: Un PLC no obtiene respuestas válidas de un dispositivo Modbus RTU y el valor de proceso deja de actualizarse.
+    operational_state: El PLC permanece en RUN y el gateway tiene alimentación. La petición sale por RS-485, pero el cliente termina la espera sin una respuesta válida.
+    initiating_event: El diagnóstico online registra timeouts de respuesta y un acceso a I/O sin dato válido. La causa aún debe separarse entre cableado, dirección, baud rate, formato serie y dispositivo.
+    learner_role: Técnico de automatización responsable de correlacionar petición, parámetros del cliente, configuración del servidor y respuestas Modbus RTU antes de intervenir.
+    safety_context:
+      safe_state: Realiza cambios de parámetros desde una condición segura y con el procedimiento de mantenimiento o puesta en marcha autorizado.
+      intervention_constraints:
+        - No aumentar el timeout para ocultar una incompatibilidad.
+        - No cambiar la dirección ni invertir A/B como primera reacción.
+        - No sustituir el gateway o el dispositivo sin conservar la evidencia.
+        - Verificar respuestas válidas, contadores, latencia y dato de proceso después de la corrección.
+  learning_objectives:
+    - id: OBJ-MODBUS-SCOPE
+      description: Distinguir un timeout de comunicación de un fallo de alimentación, cableado, dirección o dispositivo.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-MODBUS-PARAMETERS
+      description: Comparar baud rate, bits, paridad, parada, dirección y timeout entre cliente y servidor.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-MODBUS-RECOVERY
+      description: Alinear la paridad autorizada y verificar respuestas Modbus RTU repetidas con dato de proceso estable.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-SCOPE
+      phase: incident
+      title: Confirmar el alcance
+      situation: El PLC permanece en RUN, pero una petición Modbus RTU termina en timeout. ¿Qué acción delimita primero la frontera sin cambiar parámetros ni hardware?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-COMPARE-DIAGNOSTICS
+        - DEC-01-RESTART-PLC
+        - DEC-01-INCREASE-TIMEOUT
+        - DEC-01-REPLACE-GATEWAY
+    - id: STAGE-02-VERIFY-BASELINE
+      phase: investigation
+      title: Verificar la base serie
+      situation: La instalación tiene alimentación y el dispositivo está identificado. ¿Qué comparación establece los parámetros que deben coincidir antes de intervenir?
+      evidence_ids:
+        - EVID-02-TIMEOUT-DIAGNOSTIC
+      decision_ids:
+        - DEC-02-CHANGE-ADDRESS
+        - DEC-02-COMPARE-BASELINE
+        - DEC-02-SWAP-PAIR
+        - DEC-02-REPLACE-DEVICE
+    - id: STAGE-03-COMPARE-PARAMETERS
+      phase: investigation
+      title: Comparar los parámetros
+      situation: El cliente transmite una petición, pero no recibe una respuesta válida. ¿Qué comparación confirma la incompatibilidad que explica el timeout?
+      evidence_ids:
+        - EVID-03-EXPECTED-PARAMETERS
+      decision_ids:
+        - DEC-03-CHECK-WIRING
+        - DEC-03-CHANGE-BAUD
+        - DEC-03-COMPARE-PARITY
+        - DEC-03-DISABLE-CHECKING
+    - id: STAGE-04-ALIGN-SERIAL
+      phase: investigation
+      title: Alinear la comunicación
+      situation: La paridad del servidor es Odd y el proyecto exige Even. ¿Qué intervención corrige la compatibilidad desde una condición autorizada?
+      evidence_ids:
+        - EVID-04-PARITY-MISMATCH
+      decision_ids:
+        - DEC-04-SET-EVEN
+        - DEC-04-CHANGE-ADDRESS
+        - DEC-04-SET-NONE
+        - DEC-04-INCREASE-TIMEOUT
+    - id: STAGE-05-VERIFY-RESPONSES
+      phase: solution
+      title: Verificar las respuestas
+      situation: La paridad se ha alineado. ¿Qué prueba demuestra que la comunicación Modbus RTU y el dato de proceso han recuperado estabilidad?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CHECK-LED
+        - DEC-05-REPEAT-FC03
+        - DEC-05-CLEAR-COUNTERS
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: HMI y operador
+      content: El PLC mantiene su programa en RUN, pero el valor del dispositivo Modbus RTU deja de actualizarse y el cliente informa de un timeout de respuesta.
+      reliability: high
+      revealed_by: []
+    - id: EVID-02-TIMEOUT-DIAGNOSTIC
+      type: diagnostic
+      source: Buffer de diagnóstico y MB_CLIENT
+      content: El buffer registra un acceso a I/O sin respuesta válida y el bloque cliente muestra una petición Modbus RTU agotada. El evento localiza el síntoma, pero no demuestra todavía si la causa es cableado, dirección, baud rate o paridad.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-COMPARE-DIAGNOSTICS
+      media_ids:
+        - ART-002
+    - id: EVID-03-EXPECTED-PARAMETERS
+      type: documentation
+      source: Proyecto PLC y documentación del dispositivo
+      content: La configuración esperada es 19200 baud, 8 bits de datos, paridad Even, 1 bit de parada, dirección 17 y timeout de respuesta de 1000 ms.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-COMPARE-BASELINE
+      media_ids:
+        - ART-003
+    - id: EVID-04-PARITY-MISMATCH
+      type: inspection
+      source: Comparación online cliente-servidor
+      content: El cliente usa paridad Even y el servidor está configurado con paridad Odd; baud rate, bits de datos, bit de parada, dirección y timeout coinciden.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-PARITY
+      media_ids:
+        - ART-004
+        - ART-005
+    - id: EVID-05-PARITY-APPLIED
+      type: documentation
+      source: Mantenimiento autorizado
+      content: 'La paridad del servidor se alinea con el proyecto: Even. La dirección 17, el baud rate, el formato 8N1 efectivo y el timeout se mantienen sin cambios.'
+      reliability: confirmed
+      revealed_by:
+        - DEC-04-SET-EVEN
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Diagnóstico online y prueba de proceso
+      content: Las peticiones FC03 reciben respuestas válidas repetidas, la latencia permanece estable, los contadores de timeout y error quedan a cero y el valor de proceso se actualiza de forma coherente.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-REPEAT-FC03
+      media_ids:
+        - ART-006
+  decisions:
+    - id: DEC-01-COMPARE-DIAGNOSTICS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Comparar el diagnóstico del cliente, la petición emitida y el estado operativo del PLC.
+    - id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Reiniciar el PLC para comprobar si el timeout desaparece.
+    - id: DEC-01-INCREASE-TIMEOUT
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Aumentar el timeout hasta que cualquier respuesta tardía sea aceptada.
+    - id: DEC-01-REPLACE-GATEWAY
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      action: Sustituir el gateway serie porque el primer timeout apunta a hardware.
+    - id: DEC-02-COMPARE-BASELINE
+      stage_id: STAGE-02-VERIFY-BASELINE
+      action: Comparar proyecto, documentación del dispositivo y parámetros online antes de cambiar la instalación.
+    - id: DEC-02-CHANGE-ADDRESS
+      stage_id: STAGE-02-VERIFY-BASELINE
+      action: Cambiar la dirección del servidor para probar otra identidad.
+    - id: DEC-02-SWAP-PAIR
+      stage_id: STAGE-02-VERIFY-BASELINE
+      action: Invertir A y B antes de confirmar los parámetros serie y conservar la conexión actual.
+    - id: DEC-02-REPLACE-DEVICE
+      stage_id: STAGE-02-VERIFY-BASELINE
+      action: Sustituir el dispositivo de campo sin comprobar su configuración.
+    - id: DEC-03-CHECK-WIRING
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      action: Cambiar el cableado antes de comparar la configuración cliente-servidor.
+    - id: DEC-03-CHANGE-BAUD
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      action: Cambiar el baud rate del cliente hasta que aparezca alguna respuesta.
+    - id: DEC-03-COMPARE-PARITY
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      action: Comparar paridad, bits, dirección, baud rate, parada y timeout entre cliente y servidor.
+    - id: DEC-03-DISABLE-CHECKING
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      action: Desactivar la comprobación de errores para aceptar cualquier trama recibida.
+    - id: DEC-04-SET-EVEN
+      stage_id: STAGE-04-ALIGN-SERIAL
+      action: Alinear la paridad del servidor a Even mediante el procedimiento autorizado.
+    - id: DEC-04-CHANGE-ADDRESS
+      stage_id: STAGE-04-ALIGN-SERIAL
+      action: Cambiar la dirección del servidor a 1 aunque el proyecto espera 17.
+    - id: DEC-04-SET-NONE
+      stage_id: STAGE-04-ALIGN-SERIAL
+      action: Configurar paridad None para evitar la discrepancia sin seguir el diseño.
+    - id: DEC-04-INCREASE-TIMEOUT
+      stage_id: STAGE-04-ALIGN-SERIAL
+      action: Aumentar el timeout y dejar la paridad incompatible.
+    - id: DEC-05-CHECK-LED
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      action: Cerrar el diagnóstico cuando el LED de comunicación parpadee.
+    - id: DEC-05-REPEAT-FC03
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      action: Repetir una petición FC03 conocida y verificar respuestas válidas, latencia, contadores y dato de proceso.
+    - id: DEC-05-CLEAR-COUNTERS
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      action: Borrar contadores y cerrar sin observar respuestas repetidas ni el valor de proceso.
+  visual:
+    educational_purpose: Revelar progresivamente el timeout, la frontera RS-485, la topología, las plantillas de parámetros serie pendientes de verificación y la recuperación comprobable.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/01-installation-context.png
+        alt: Ilustración conceptual del armario de control y del dispositivo Modbus RTU con interfaz RS-485, alimentación activa y respuesta aún no confirmada.
+        caption: Contexto de instalación y frontera RS-485.
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/02-plc-diagnostic.png
+        alt: Vista sintética de diagnóstico con el PLC en RUN, una petición serie transmitida y un timeout sin respuesta válida.
+        caption: El timeout localiza el síntoma, pero no demuestra por sí solo la causa.
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/03-rs485-topology.png
+        alt: Topología conceptual de un cliente PLC, un bus RS-485 y un servidor Modbus RTU con la dirección y la terminación pendientes de verificación.
+        caption: La frontera RS-485 y la topología deben comprobarse en la instalación.
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/04-client-serial-settings.png
+        alt: Plantilla de configuración serie del cliente con baud rate, bits, paridad, parada y dirección pendientes de verificación.
+        caption: La configuración del cliente se muestra como plantilla pendiente de completar con valores verificados.
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/05-server-serial-settings.png
+        alt: Plantilla de configuración serie del servidor con baud rate, bits, paridad, parada y dirección pendientes de verificación.
+        caption: La configuración del servidor se muestra como plantilla pendiente de completar con valores verificados.
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-MODBUS-RTU-025/06-recovery-verification.png
+        alt: Lista de comprobación para verificar paridad autorizada, respuestas RTU repetidas, contadores, latencia y dato de proceso estable.
+        caption: La recuperación se cierra solo después de recoger cada evidencia.
+        purpose: evidence
+  completion:
+    title: Debrief técnico
+    summary: 'El timeout estaba causado por una discrepancia de paridad: el cliente esperaba Even y el servidor estaba en Odd. Se conservaron las evidencias, se compararon los parámetros, se alineó la paridad desde una condición autorizada y se verificaron respuestas Modbus RTU válidas y dato de proceso estable.'
+    process:
+      - Confirmar el timeout con el diagnóstico y la petición emitida.
+      - Comparar documentación y parámetros del cliente y servidor.
+      - Separar paridad de baud rate, dirección, cableado y dispositivo.
+      - Alinear la paridad autorizada sin cambiar otros parámetros.
+      - Repetir peticiones conocidas y verificar respuesta, latencia, contadores y proceso.
+    lesson: En Modbus RTU, una petición transmitida no demuestra que exista comunicación válida. La paridad forma parte del formato de trama; una discrepancia puede impedir que el servidor o el cliente acepten la respuesta y terminar en timeout.
+    avoided_errors:
+      - Aumentar el timeout para ocultar la incompatibilidad.
+      - Cambiar dirección o invertir A/B sin evidencia.
+      - Sustituir hardware antes de comparar parámetros.
+      - Cerrar al ver actividad LED sin validar tramas y proceso.
+    industrial_value:
+      - Diagnóstico serial trazable.
+      - Menos sustituciones de gateways y dispositivos.
+      - Recuperación repetible de enlaces RS-485 con equipos heterogéneos.
+    media_ids:
+      - ART-006
+private:
+  fault_model:
+    root_cause: El cliente Modbus RTU espera paridad Even y el servidor está configurado con paridad Odd. La incompatibilidad de trama impide obtener una respuesta válida y el bloque cliente termina en timeout.
+    recovery_conditions:
+      - Paridad cliente y servidor alineada a Even según el diseño autorizado.
+      - Baud rate, bits, parada, dirección y timeout conservan los valores verificados.
+      - Respuestas válidas repetidas para una petición FC03 conocida.
+      - Latencia, contadores de error y dato de proceso verificados en una prueba repetida.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-PARITY
+        statement: La paridad del cliente y del servidor es incompatible.
+        initial_status: likely
+      - id: HYP-BAUD
+        statement: El baud rate o el formato de bits no coincide.
+        initial_status: possible
+      - id: HYP-ADDRESS
+        statement: La dirección del servidor no coincide con la petición.
+        initial_status: possible
+      - id: HYP-WIRING
+        statement: La pareja diferencial A/B o el blindaje tienen un problema físico.
+        initial_status: possible
+      - id: HYP-DEVICE
+        statement: El gateway o el dispositivo de campo tiene un fallo local.
+        initial_status: possible
+    confirmed_root_cause: HYP-PARITY
+    critical_path:
+      - DEC-01-COMPARE-DIAGNOSTICS
+      - DEC-02-COMPARE-BASELINE
+      - DEC-03-COMPARE-PARITY
+      - DEC-04-SET-EVEN
+      - DEC-05-REPEAT-FC03
+  decision_logic:
+    - decision_id: DEC-01-COMPARE-DIAGNOSTICS
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: true
+      rationale: La comparación o intervención conserva evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-02-TIMEOUT-DIAGNOSTIC
+      next_stage: STAGE-02-VERIFY-BASELINE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-01-RESTART-PLC
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-BASELINE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El PLC sigue en RUN. Conserva el timeout y delimita el diagnóstico antes de reiniciar.
+    - decision_id: DEC-01-INCREASE-TIMEOUT
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-BASELINE
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Aumentar el timeout puede ocultar la incompatibilidad y no identifica el parámetro incorrecto.
+    - decision_id: DEC-01-REPLACE-GATEWAY
+      stage_id: STAGE-01-CONFIRM-SCOPE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-BASELINE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El timeout no demuestra un fallo del gateway. Compara la petición y los parámetros primero.
+    - decision_id: DEC-02-COMPARE-BASELINE
+      stage_id: STAGE-02-VERIFY-BASELINE
+      is_correct: true
+      rationale: La comparación o intervención conserva evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-03-EXPECTED-PARAMETERS
+      next_stage: STAGE-03-COMPARE-PARAMETERS
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-02-CHANGE-ADDRESS
+      stage_id: STAGE-02-VERIFY-BASELINE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PARAMETERS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La dirección esperada debe compararse antes de cambiar la identidad del servidor.
+    - decision_id: DEC-02-SWAP-PAIR
+      stage_id: STAGE-02-VERIFY-BASELINE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PARAMETERS
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: No inviertas A/B sin evidencia; primero compara el formato serie y conserva la conexión actual.
+    - decision_id: DEC-02-REPLACE-DEVICE
+      stage_id: STAGE-02-VERIFY-BASELINE
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PARAMETERS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No sustituyas el dispositivo antes de verificar parámetros, dirección y cableado.
+    - decision_id: DEC-03-CHECK-WIRING
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-ALIGN-SERIAL
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La configuración todavía no está comparada. No cambies el cableado como primera reacción.
+    - decision_id: DEC-03-CHANGE-BAUD
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-ALIGN-SERIAL
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: No busques respuestas cambiando baud rate sin contrastar la documentación.
+    - decision_id: DEC-03-COMPARE-PARITY
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      is_correct: true
+      rationale: La comparación o intervención conserva evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-04-PARITY-MISMATCH
+      next_stage: STAGE-04-ALIGN-SERIAL
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-03-DISABLE-CHECKING
+      stage_id: STAGE-03-COMPARE-PARAMETERS
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-04-ALIGN-SERIAL
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Desactivar comprobaciones oculta tramas inválidas y elimina una frontera diagnóstica.
+    - decision_id: DEC-04-SET-EVEN
+      stage_id: STAGE-04-ALIGN-SERIAL
+      is_correct: true
+      rationale: La comparación o intervención conserva evidencia y actúa sobre la capa correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-05-PARITY-APPLIED
+      next_stage: STAGE-05-VERIFY-RESPONSES
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-04-CHANGE-ADDRESS
+      stage_id: STAGE-04-ALIGN-SERIAL
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RESPONSES
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La dirección 17 ya coincide. Cambiarla introduce una nueva variable.
+    - decision_id: DEC-04-SET-NONE
+      stage_id: STAGE-04-ALIGN-SERIAL
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RESPONSES
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: El diseño exige Even. None no corrige la incompatibilidad documentada.
+    - decision_id: DEC-04-INCREASE-TIMEOUT
+      stage_id: STAGE-04-ALIGN-SERIAL
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-RESPONSES
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El timeout es coherente; deja de ocultar el problema y alinea la paridad.
+    - decision_id: DEC-05-CHECK-LED
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La actividad del LED no demuestra una respuesta Modbus válida ni un dato estable.
+    - decision_id: DEC-05-REPEAT-FC03
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      is_correct: true
+      rationale: La prueba repetida confirma respuesta válida, estabilidad de comunicación y función de proceso.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-COUNTERS
+      stage_id: STAGE-05-VERIFY-RESPONSES
+      is_correct: false
+      rationale: La acción cambia una variable, elimina evidencia o sustituye hardware antes de demostrar la incompatibilidad.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Borrar contadores no confirma recuperación. Repite una petición conocida y observa el proceso.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: El servidor Modbus RTU tenía paridad Odd mientras el cliente esperaba Even; las peticiones salían, pero no se aceptaban respuestas válidas y aparecía un timeout. La paridad se alineó y se confirmó la recuperación con respuestas repetidas.
+    correct_reasoning:
+      - Delimitar el timeout con el diagnóstico y la petición.
+      - Comparar el baseline documentado con los parámetros online.
+      - Aislar la paridad frente a baud rate, dirección y cableado.
+      - Alinear la paridad sin modificar la dirección ni el timeout.
+      - Verificar respuestas, latencia, contadores y proceso.
+    recovery:
+      - Paridad cliente-servidor en Even.
+      - Respuestas FC03 válidas repetidas.
+      - Contadores de timeout y error a cero.
+      - Dato de proceso actualizado y estable.
+  technical_validation:
+    status: pass
+    evidence:
+      - El buffer confirma timeout y ausencia de respuesta válida.
+      - La comparación documenta la paridad Even esperada y Odd real.
+      - La corrección alinea la paridad sin alterar otros parámetros.
+      - La recuperación se demuestra con respuestas válidas y datos estables.

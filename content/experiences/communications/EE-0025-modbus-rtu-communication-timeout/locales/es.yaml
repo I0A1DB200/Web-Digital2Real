@@ -1,0 +1,154 @@
+locale: es
+translations:
+  title: Timeout de comunicación Modbus RTU
+  summary: Diagnostica un timeout Modbus RTU separando parámetros serie, cableado, dirección y dispositivo antes de alinear la paridad autorizada y verificar respuestas válidas.
+  scenario:
+    initial_context: Un PLC no obtiene respuestas válidas de un dispositivo Modbus RTU y el valor de proceso deja de actualizarse.
+    operational_state: El PLC permanece en RUN y el gateway tiene alimentación. La petición sale por RS-485, pero el cliente termina la espera sin una respuesta válida.
+    initiating_event: El diagnóstico online registra timeouts de respuesta y un acceso a I/O sin dato válido. La causa aún debe separarse entre cableado, dirección, baud rate, formato serie y dispositivo.
+    learner_role: Técnico de automatización responsable de correlacionar petición, parámetros del cliente, configuración del servidor y respuestas Modbus RTU antes de intervenir.
+    safety_context:
+      safe_state: Realiza cambios de parámetros desde una condición segura y con el procedimiento de mantenimiento o puesta en marcha autorizado.
+      intervention_constraints:
+        - No aumentar el timeout para ocultar una incompatibilidad.
+        - No cambiar la dirección ni invertir A/B como primera reacción.
+        - No sustituir el gateway o el dispositivo sin conservar la evidencia.
+        - Verificar respuestas válidas, contadores, latencia y dato de proceso después de la corrección.
+  learning_objectives:
+    OBJ-MODBUS-SCOPE:
+      description: Distinguir un timeout de comunicación de un fallo de alimentación, cableado, dirección o dispositivo.
+    OBJ-MODBUS-PARAMETERS:
+      description: Comparar baud rate, bits, paridad, parada, dirección y timeout entre cliente y servidor.
+    OBJ-MODBUS-RECOVERY:
+      description: Alinear la paridad autorizada y verificar respuestas Modbus RTU repetidas con dato de proceso estable.
+  stages:
+    STAGE-01-CONFIRM-SCOPE:
+      title: Confirmar el alcance
+      situation: El PLC permanece en RUN, pero una petición Modbus RTU termina en timeout. ¿Qué acción delimita primero la frontera sin cambiar parámetros ni hardware?
+    STAGE-02-VERIFY-BASELINE:
+      title: Verificar la base serie
+      situation: La instalación tiene alimentación y el dispositivo está identificado. ¿Qué comparación establece los parámetros que deben coincidir antes de intervenir?
+    STAGE-03-COMPARE-PARAMETERS:
+      title: Comparar los parámetros
+      situation: El cliente transmite una petición, pero no recibe una respuesta válida. ¿Qué comparación confirma la incompatibilidad que explica el timeout?
+    STAGE-04-ALIGN-SERIAL:
+      title: Alinear la comunicación
+      situation: La paridad del servidor es Odd y el proyecto exige Even. ¿Qué intervención corrige la compatibilidad desde una condición autorizada?
+    STAGE-05-VERIFY-RESPONSES:
+      title: Verificar las respuestas
+      situation: La paridad se ha alineado. ¿Qué prueba demuestra que la comunicación Modbus RTU y el dato de proceso han recuperado estabilidad?
+  evidence:
+    EVID-01-INCIDENT:
+      source: HMI y operador
+      content: El PLC mantiene su programa en RUN, pero el valor del dispositivo Modbus RTU deja de actualizarse y el cliente informa de un timeout de respuesta.
+    EVID-02-TIMEOUT-DIAGNOSTIC:
+      source: Buffer de diagnóstico y MB_CLIENT
+      content: El buffer registra un acceso a I/O sin respuesta válida y el bloque cliente muestra una petición Modbus RTU agotada. El evento localiza el síntoma, pero no demuestra todavía si la causa es cableado, dirección, baud rate o paridad.
+    EVID-03-EXPECTED-PARAMETERS:
+      source: Proyecto PLC y documentación del dispositivo
+      content: La configuración esperada es 19200 baud, 8 bits de datos, paridad Even, 1 bit de parada, dirección 17 y timeout de respuesta de 1000 ms.
+    EVID-04-PARITY-MISMATCH:
+      source: Comparación online cliente-servidor
+      content: El cliente usa paridad Even y el servidor está configurado con paridad Odd; baud rate, bits de datos, bit de parada, dirección y timeout coinciden.
+    EVID-05-PARITY-APPLIED:
+      source: Mantenimiento autorizado
+      content: 'La paridad del servidor se alinea con el proyecto: Even. La dirección 17, el baud rate, el formato 8N1 efectivo y el timeout se mantienen sin cambios.'
+    EVID-06-RECOVERY:
+      source: Diagnóstico online y prueba de proceso
+      content: Las peticiones FC03 reciben respuestas válidas repetidas, la latencia permanece estable, los contadores de timeout y error quedan a cero y el valor de proceso se actualiza de forma coherente.
+  decisions:
+    DEC-01-COMPARE-DIAGNOSTICS:
+      action: Comparar el diagnóstico del cliente, la petición emitida y el estado operativo del PLC.
+    DEC-01-RESTART-PLC:
+      action: Reiniciar el PLC para comprobar si el timeout desaparece.
+    DEC-01-INCREASE-TIMEOUT:
+      action: Aumentar el timeout hasta que cualquier respuesta tardía sea aceptada.
+    DEC-01-REPLACE-GATEWAY:
+      action: Sustituir el gateway serie porque el primer timeout apunta a hardware.
+    DEC-02-COMPARE-BASELINE:
+      action: Comparar proyecto, documentación del dispositivo y parámetros online antes de cambiar la instalación.
+    DEC-02-CHANGE-ADDRESS:
+      action: Cambiar la dirección del servidor para probar otra identidad.
+    DEC-02-SWAP-PAIR:
+      action: Invertir A y B antes de confirmar los parámetros serie y conservar la conexión actual.
+    DEC-02-REPLACE-DEVICE:
+      action: Sustituir el dispositivo de campo sin comprobar su configuración.
+    DEC-03-CHECK-WIRING:
+      action: Cambiar el cableado antes de comparar la configuración cliente-servidor.
+    DEC-03-CHANGE-BAUD:
+      action: Cambiar el baud rate del cliente hasta que aparezca alguna respuesta.
+    DEC-03-COMPARE-PARITY:
+      action: Comparar paridad, bits, dirección, baud rate, parada y timeout entre cliente y servidor.
+    DEC-03-DISABLE-CHECKING:
+      action: Desactivar la comprobación de errores para aceptar cualquier trama recibida.
+    DEC-04-SET-EVEN:
+      action: Alinear la paridad del servidor a Even mediante el procedimiento autorizado.
+    DEC-04-CHANGE-ADDRESS:
+      action: Cambiar la dirección del servidor a 1 aunque el proyecto espera 17.
+    DEC-04-SET-NONE:
+      action: Configurar paridad None para evitar la discrepancia sin seguir el diseño.
+    DEC-04-INCREASE-TIMEOUT:
+      action: Aumentar el timeout y dejar la paridad incompatible.
+    DEC-05-CHECK-LED:
+      action: Cerrar el diagnóstico cuando el LED de comunicación parpadee.
+    DEC-05-REPEAT-FC03:
+      action: Repetir una petición FC03 conocida y verificar respuestas válidas, latencia, contadores y dato de proceso.
+    DEC-05-CLEAR-COUNTERS:
+      action: Borrar contadores y cerrar sin observar respuestas repetidas ni el valor de proceso.
+  retry_feedback:
+    DEC-01-RESTART-PLC: El PLC sigue en RUN. Conserva el timeout y delimita el diagnóstico antes de reiniciar.
+    DEC-01-INCREASE-TIMEOUT: Aumentar el timeout puede ocultar la incompatibilidad y no identifica el parámetro incorrecto.
+    DEC-01-REPLACE-GATEWAY: El timeout no demuestra un fallo del gateway. Compara la petición y los parámetros primero.
+    DEC-02-CHANGE-ADDRESS: La dirección esperada debe compararse antes de cambiar la identidad del servidor.
+    DEC-02-SWAP-PAIR: No inviertas A/B sin evidencia; primero compara el formato serie y conserva la conexión actual.
+    DEC-02-REPLACE-DEVICE: No sustituyas el dispositivo antes de verificar parámetros, dirección y cableado.
+    DEC-03-CHECK-WIRING: La configuración todavía no está comparada. No cambies el cableado como primera reacción.
+    DEC-03-CHANGE-BAUD: No busques respuestas cambiando baud rate sin contrastar la documentación.
+    DEC-03-DISABLE-CHECKING: Desactivar comprobaciones oculta tramas inválidas y elimina una frontera diagnóstica.
+    DEC-04-CHANGE-ADDRESS: La dirección 17 ya coincide. Cambiarla introduce una nueva variable.
+    DEC-04-SET-NONE: El diseño exige Even. None no corrige la incompatibilidad documentada.
+    DEC-04-INCREASE-TIMEOUT: El timeout es coherente; deja de ocultar el problema y alinea la paridad.
+    DEC-05-CHECK-LED: La actividad del LED no demuestra una respuesta Modbus válida ni un dato estable.
+    DEC-05-CLEAR-COUNTERS: Borrar contadores no confirma recuperación. Repite una petición conocida y observa el proceso.
+  visual:
+    educational_purpose: Revelar progresivamente el timeout, la frontera RS-485, la topología, las plantillas de parámetros serie pendientes de verificación y la recuperación comprobable.
+  completion:
+    title: Debrief técnico
+    summary: 'El timeout estaba causado por una discrepancia de paridad: el cliente esperaba Even y el servidor estaba en Odd. Se conservaron las evidencias, se compararon los parámetros, se alineó la paridad desde una condición autorizada y se verificaron respuestas Modbus RTU válidas y dato de proceso estable.'
+    process:
+      - Confirmar el timeout con el diagnóstico y la petición emitida.
+      - Comparar documentación y parámetros del cliente y servidor.
+      - Separar paridad de baud rate, dirección, cableado y dispositivo.
+      - Alinear la paridad autorizada sin cambiar otros parámetros.
+      - Repetir peticiones conocidas y verificar respuesta, latencia, contadores y proceso.
+    lesson: En Modbus RTU, una petición transmitida no demuestra que exista comunicación válida. La paridad forma parte del formato de trama; una discrepancia puede impedir que el servidor o el cliente acepten la respuesta y terminar en timeout.
+    avoided_errors:
+      - Aumentar el timeout para ocultar la incompatibilidad.
+      - Cambiar dirección o invertir A/B sin evidencia.
+      - Sustituir hardware antes de comparar parámetros.
+      - Cerrar al ver actividad LED sin validar tramas y proceso.
+    industrial_value:
+      - Diagnóstico serial trazable.
+      - Menos sustituciones de gateways y dispositivos.
+      - Recuperación repetible de enlaces RS-485 con equipos heterogéneos.
+    media_ids:
+      - ART-006
+  assets:
+    ART-001:
+      alt: Ilustración conceptual de un armario de control y un dispositivo Modbus RTU con interfaz RS-485, alimentación activa y respuesta aún no confirmada.
+      caption: Contexto de instalación y frontera RS-485.
+    ART-002:
+      alt: Vista sintética de diagnóstico con el PLC en RUN, una petición serie transmitida y un timeout sin respuesta válida.
+      caption: El timeout localiza el síntoma, pero no demuestra por sí solo la causa.
+    ART-003:
+      alt: Topología conceptual de un cliente PLC, un bus RS-485 y un servidor Modbus RTU con dirección y terminación pendientes de verificación.
+      caption: La frontera RS-485 y la topología deben comprobarse en la instalación.
+    ART-004:
+      alt: Plantilla de configuración serie del cliente con baud rate, bits de datos, paridad, parada y dirección pendientes de verificación.
+      caption: La configuración del cliente se muestra como plantilla pendiente de completar con valores verificados.
+    ART-005:
+      alt: Plantilla de configuración serie del servidor con baud rate, bits de datos, paridad, parada y dirección pendientes de verificación.
+      caption: La configuración del servidor se muestra como plantilla pendiente de completar con valores verificados.
+    ART-006:
+      alt: Lista de comprobación para verificar paridad autorizada, respuestas RTU repetidas, contadores, latencia y dato de proceso estable.
+      caption: La recuperación se cierra solo después de recoger cada evidencia.

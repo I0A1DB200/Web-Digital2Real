@@ -2,10 +2,10 @@
 
 - Contract: Master Contract V1 (`docs/implementation/ENV-003-contract.md`)
 - Phase: 10 — EE-0027 EtherCAT Slave Not Operational
-- Status: questions, answers, media and ENV-003 hotspot implemented, awaiting technical and visual review
+- Status: questions, answers, media and ENV-003 hotspot implemented; user validated
 - Scope: EE-0027 EtherCAT Slave Not Operational, bilingual five-stage diagnostic flow, 19 questions/options and six evidence items; six illustrative assets integrated and linked at the EtherCAT device hotspot
 - Validation: authoring V2, ES/EN localization, runtime normalization, preview package, balanced decision lengths, exact asset copies and focused regression tests passed
-- User approval: pending
+- User approval: validated on 2026-11-05
 - Next unit: EE-0028 with its ENV-003 hotspot
 - Blockers: original Phase 03 hotspot-first order superseded by the approved unit-by-unit Experience + hotspot workflow
 

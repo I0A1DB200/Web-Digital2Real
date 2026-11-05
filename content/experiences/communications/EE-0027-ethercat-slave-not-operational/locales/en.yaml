@@ -1,0 +1,159 @@
+locale: en
+translations:
+  title: EtherCAT Slave Not Operational
+  summary: Diagnose a detected EtherCAT slave that remains outside OP by separating link health, AL state, master diagnostics and PDO mapping compatibility before restoring cyclic exchange.
+  scenario:
+    initial_context: An EtherCAT slave appears on the network but does not reach OP, and the controller receives no valid cyclic process data.
+    operational_state: The master detects the device and the physical link is available. The PREOP → SAFEOP transition is rejected because the process-data configuration is incompatible, leaving the slave in PREOP + Error.
+    initiating_event: Online diagnostics show a visible but non-operational slave. Before changing wiring, cycle time or hardware, compare the AL state and the expected and configured PDO mapping.
+    learner_role: Automation technician responsible for locating the boundary between communication, EtherCAT state and process-data configuration before correcting the slave.
+    safety_context:
+      safe_state: Make configuration changes from a safe condition and under the authorised maintenance or commissioning procedure.
+      intervention_constraints:
+        - Do not force OP to hide a failed transition.
+        - Do not replace wiring or hardware before reading master diagnostics.
+        - Do not ignore RxPDO/TxPDO indexes or lengths.
+        - Verify OP and repeated valid cyclic data after restoring the configuration.
+  learning_objectives:
+    OBJ-ETHERCAT-SCOPE:
+      description: Distinguish a detected slave outside OP from a physical communication loss.
+    OBJ-ETHERCAT-PDO:
+      description: Compare AL state, master diagnostics and the indexes and lengths of expected and configured PDO mappings.
+    OBJ-ETHERCAT-RECOVERY:
+      description: Restore a compatible assignment and verify OP with valid cyclic data.
+  stages:
+    STAGE-01-CONFIRM-STATE:
+      title: Confirm the state
+      situation: The EtherCAT slave appears in the scan but exchanges no cyclic data. Which check first bounds the problem without forcing OP?
+    STAGE-02-VERIFY-DIAGNOSTICS:
+      title: Verify diagnostics
+      situation: Power and the physical link are available. Which EtherCAT master reading separates a physical fault from a configuration problem?
+    STAGE-03-COMPARE-PDO:
+      title: Compare the PDO mapping
+      situation: Diagnostics indicate a configuration incompatibility. Which comparison proves whether the expected PDO mapping matches the slave configuration?
+    STAGE-04-RESTORE-CONFIGURATION:
+      title: Restore the configuration
+      situation: The project expects a different RxPDO/TxPDO assignment from the slave. Which intervention restores compatibility without hiding the diagnostic?
+    STAGE-05-VERIFY-OP:
+      title: Verify OP state
+      situation: The compatible mapping has been downloaded. Which test confirms OP and valid cyclic process data?
+  evidence:
+    EVID-01-INCIDENT:
+      source: EtherCAT master diagnostics and operator
+      content: The slave is identified and has power and physical link, but remains outside OP and provides no cyclic process data.
+      media_ids: ["ART-001"]
+    EVID-02-AL-DIAGNOSTIC:
+      source: AL state and EtherCAT master diagnostics
+      content: The master reaches the slave, but the PREOP → SAFEOP transition is rejected and the slave remains in PREOP + Error because of a configuration incompatibility; there is no initial evidence of physical link loss.
+      media_ids: ["ART-002"]
+    EVID-03-EXPECTED-PDO:
+      source: Master project and device description
+      content: The expected configuration defines a concrete RxPDO and TxPDO assignment with its indexes, order and process-data length.
+      media_ids: ["ART-003"]
+    EVID-04-ACTUAL-PDO:
+      source: Slave EtherCAT object and master diagnostics
+      content: 'The active slave assignment does not match the expected mapping: at least one PDO entry and its length differ, so the slave rejects cyclic configuration.'
+      media_ids: ["ART-004"]
+    EVID-05-MASTER-DIAGNOSTIC:
+      source: EtherCAT configuration record
+      content: The master identifies a PDO/Sync Manager incompatibility during the state transition while the physical link remains available.
+      media_ids: ["ART-005"]
+    EVID-06-RECOVERY:
+      source: Online state and process data
+      content: After restoring the compatible mapping, the slave reaches OP and maintains valid cyclic exchange in repeated reads without a new configuration error.
+      media_ids: ["ART-006"]
+  decisions:
+    DEC-01-CHECK-AL-STATE:
+      action: Read the AL state, slave diagnostics and data availability before forcing a transition.
+    DEC-01-RESTART-SLAVE:
+      action: Restart the slave without preserving or analysing the state that stops the transition.
+    DEC-01-REPLACE-CABLE:
+      action: Replace the cable because the slave is not in OP even though the link is detected.
+    DEC-01-FORCE-OP:
+      action: Force OP manually and continue the cycle without preserving or analysing the failed transition diagnostic.
+    DEC-02-REPLACE-SLAVE:
+      action: Replace the slave before checking master diagnostics.
+    DEC-02-READ-MASTER-DIAGNOSTIC:
+      action: Read master diagnostics and AL state to separate physical link and configuration.
+    DEC-02-DISABLE-DIAGNOSTICS:
+      action: Disable diagnostics so the slave state appears normal.
+    DEC-02-CHANGE-CYCLE:
+      action: Repeatedly change the cycle time until the slave attempts to reach OP without confirming the cause of the state.
+    DEC-03-CHANGE-DEVICE:
+      action: Change the slave model in the project to accept the current configuration.
+    DEC-03-IGNORE-LENGTH:
+      action: Ignore PDO length because the main indexes match.
+    DEC-03-COMPARE-PDO:
+      action: Compare expected and configured RxPDO/TxPDO indexes, order and length.
+    DEC-03-SWAP-WIRING:
+      action: Swap EtherCAT conductors before comparing process configuration.
+    DEC-04-CHANGE-CYCLE:
+      action: Change the task cycle to compensate for an incompatible mapping.
+    DEC-04-RESTART-MASTER:
+      action: Restart the master without correcting the process assignment.
+    DEC-04-USE-DEFAULT-PDO:
+      action: Apply the default PDO without checking that its indexes, order and length match the project.
+    DEC-04-RESTORE-PDO:
+      action: Restore the compatible RxPDO/TxPDO assignment defined by the project and device.
+    DEC-05-VERIFY-OP:
+      action: Confirm OP, absence of configuration error and repeated valid cyclic data.
+    DEC-05-CLEAR-ALARM:
+      action: Clear the alarm and close the case without checking OP or data.
+    DEC-05-ACCEPT-SAFEOP:
+      action: Accept SAFEOP as recovery because the slave remains visible and responds to the master although cyclic data is not exchanged.
+  retry_feedback:
+    DEC-01-RESTART-SLAVE: Restarting removes an observable condition. Preserve AL state and master diagnostics first.
+    DEC-01-REPLACE-CABLE: The link is detected. Do not replace the cable without checking state transition and diagnostics.
+    DEC-01-FORCE-OP: Forcing OP hides the cause and can leave cyclic data unvalidated.
+    DEC-02-REPLACE-SLAVE: Detection and link do not justify replacing hardware. Read diagnostics before intervening.
+    DEC-02-DISABLE-DIAGNOSTICS: Disabling diagnostics removes the evidence that separates configuration from physical communication.
+    DEC-02-CHANGE-CYCLE: Cycle time does not correct a PDO incompatibility. Preserve parameters and compare configuration.
+    DEC-03-CHANGE-DEVICE: Changing the model can hide the mismatch. Compare actual and expected mapping.
+    DEC-03-IGNORE-LENGTH: Length is part of the PDO mapping. Ignoring it leaves the configuration rejection unexplained.
+    DEC-03-SWAP-WIRING: The link is already visible. Do not alter wiring before checking indexes and lengths.
+    DEC-04-CHANGE-CYCLE: A different cycle does not make process data compatible. Restore the documented mapping.
+    DEC-04-RESTART-MASTER: Restarting does not change the RxPDO/TxPDO assignment rejected by the slave.
+    DEC-04-USE-DEFAULT-PDO: The default PDO may not match the project. Apply the verified compatible assignment.
+    DEC-05-CLEAR-ALARM: Clearing an alarm does not prove OP or valid process data.
+    DEC-05-ACCEPT-SAFEOP: SAFEOP confirms visibility, not operational cyclic exchange.
+  visual:
+    educational_purpose: Progressively reveal the slave AL state, master diagnostics, expected and configured PDO mappings and recovery to OP.
+  assets:
+    ART-001:
+      alt: TwinCAT-style view of an EtherCAT slave detected but outside operational data exchange.
+      caption: 'Incident context: the slave is visible but does not yet provide valid cyclic data.'
+    ART-002:
+      alt: TwinCAT-style view of the EtherCAT slave AL state and diagnostic panel.
+      caption: 'State diagnosis: use the visual to locate the transition and correlate it with the master evidence.'
+    ART-003:
+      alt: TwinCAT-style view of the expected RxPDO and TxPDO assignment in the master project.
+      caption: 'Expected assignment: compare indexes, order and length with the device description before intervening.'
+    ART-004:
+      alt: TwinCAT-style view of the active PDO assignment in the EtherCAT slave.
+      caption: 'Configured assignment: compare it with the project to locate the process-data incompatibility.'
+    ART-005:
+      alt: TwinCAT-style view of EtherCAT master diagnostics during the slave transition.
+      caption: 'Master diagnostic context: preserve the event while the physical link remains available.'
+    ART-006:
+      alt: TwinCAT-style view of an EtherCAT slave recovered in OP with cyclic exchange.
+      caption: 'Recovery: acceptance requires OP and repeated valid cyclic data.'
+  completion:
+    title: Technical debrief
+    summary: The EtherCAT slave was detected and its physical link was valid, but it did not reach OP because its PDO mapping did not match the expected configuration. The compatible RxPDO/TxPDO assignment was restored and cyclic exchange was verified.
+    process:
+      - Confirm AL state and the absence of valid cyclic data.
+      - Separate physical link, master diagnostics and process configuration.
+      - Compare PDO indexes, order and length.
+      - Restore the compatible assignment under an authorised procedure.
+      - Verify OP and repeated cyclic data.
+    lesson: A visible EtherCAT slave is not necessarily operational. Reaching OP depends on compatible state, diagnostics and PDO mapping between the master project and the device.
+    avoided_errors:
+      - Forcing OP to hide a configuration error.
+      - Replacing cable or slave without reading diagnostics.
+      - Ignoring PDO length.
+      - Closing the case in SAFEOP without validating cyclic data.
+    industrial_value:
+      - Traceable EtherCAT state diagnostics.
+      - Fewer unnecessary slave and wiring replacements.
+      - Repeatable cyclic-data configuration across master and devices.
+    media_ids: ["ART-006"]

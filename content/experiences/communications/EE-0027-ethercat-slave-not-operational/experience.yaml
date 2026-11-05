@@ -1,0 +1,556 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-ETHERCAT-SLAVE-027
+  editorial_id: EE-0027
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: EtherCAT master / industrial Ethernet slave
+  domain: EtherCAT state and PDO mapping diagnostics
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: advanced
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: ethercat-slave-not-operational
+  title: Esclavo EtherCAT no operativo
+  summary: Diagnostica un esclavo EtherCAT detectado pero fuera de OP separando enlace, estado AL, diagnóstico del maestro y compatibilidad del PDO mapping antes de restaurar el intercambio cíclico.
+  estimated_duration: 25
+  scenario:
+    initial_context: Un esclavo EtherCAT aparece en la red, pero no alcanza el estado OP y el controlador no recibe datos cíclicos válidos.
+    operational_state: El maestro detecta el dispositivo y el enlace físico está disponible. La transición PREOP → SAFEOP es rechazada por una incompatibilidad de configuración de proceso y el esclavo queda en PREOP + Error.
+    initiating_event: El diagnóstico online muestra un esclavo visible pero no operativo. Antes de cambiar cableado, ciclo o hardware hay que comparar el estado AL y el PDO mapping esperado y configurado.
+    learner_role: Técnico de automatización responsable de localizar la frontera entre comunicación, estado EtherCAT y configuración de datos de proceso antes de corregir el esclavo.
+    safety_context:
+      safe_state: Realiza cambios de configuración desde una condición segura y con el procedimiento de mantenimiento o puesta en marcha autorizado.
+      intervention_constraints:
+        - No forzar el estado OP para ocultar una transición fallida.
+        - No sustituir cableado o hardware antes de leer el diagnóstico del maestro.
+        - No ignorar índices ni longitudes del RxPDO/TxPDO.
+        - Verificar OP y datos cíclicos repetidos después de restaurar la configuración.
+  learning_objectives:
+    - id: OBJ-ETHERCAT-SCOPE
+      description: Distinguir un esclavo detectado fuera de OP de una pérdida de comunicación física.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-ETHERCAT-PDO
+      description: Comparar estado AL, diagnóstico del maestro e índices y longitudes del PDO mapping esperado y configurado.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-ETHERCAT-RECOVERY
+      description: Restaurar una asignación compatible y verificar estado OP con datos cíclicos válidos.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-STATE
+      phase: incident
+      title: Confirmar el estado
+      situation: El esclavo EtherCAT aparece en el escaneo, pero no intercambia datos cíclicos. ¿Qué comprobación delimita primero el problema sin forzar el estado OP?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-CHECK-AL-STATE
+        - DEC-01-RESTART-SLAVE
+        - DEC-01-REPLACE-CABLE
+        - DEC-01-FORCE-OP
+    - id: STAGE-02-VERIFY-DIAGNOSTICS
+      phase: investigation
+      title: Verificar el diagnóstico
+      situation: La alimentación y el enlace físico están disponibles. ¿Qué lectura del maestro EtherCAT separa un fallo físico de un problema de configuración?
+      evidence_ids:
+        - EVID-02-AL-DIAGNOSTIC
+      decision_ids:
+        - DEC-02-REPLACE-SLAVE
+        - DEC-02-READ-MASTER-DIAGNOSTIC
+        - DEC-02-DISABLE-DIAGNOSTICS
+        - DEC-02-CHANGE-CYCLE
+    - id: STAGE-03-COMPARE-PDO
+      phase: investigation
+      title: Comparar el PDO mapping
+      situation: El diagnóstico indica una incompatibilidad de configuración. ¿Qué comparación demuestra si el PDO mapping esperado coincide con el que el esclavo tiene configurado?
+      evidence_ids:
+        - EVID-03-EXPECTED-PDO
+      decision_ids:
+        - DEC-03-CHANGE-DEVICE
+        - DEC-03-IGNORE-LENGTH
+        - DEC-03-COMPARE-PDO
+        - DEC-03-SWAP-WIRING
+    - id: STAGE-04-RESTORE-CONFIGURATION
+      phase: investigation
+      title: Restaurar la configuración
+      situation: El proyecto espera una asignación RxPDO/TxPDO distinta de la configurada en el esclavo. ¿Qué intervención restablece compatibilidad sin ocultar el diagnóstico?
+      evidence_ids:
+        - EVID-04-ACTUAL-PDO
+      decision_ids:
+        - DEC-04-CHANGE-CYCLE
+        - DEC-04-RESTART-MASTER
+        - DEC-04-USE-DEFAULT-PDO
+        - DEC-04-RESTORE-PDO
+    - id: STAGE-05-VERIFY-OP
+      phase: solution
+      title: Verificar el estado OP
+      situation: El mapping compatible se ha descargado. ¿Qué prueba confirma que el esclavo ha llegado a OP y que los datos cíclicos son válidos?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-VERIFY-OP
+        - DEC-05-CLEAR-ALARM
+        - DEC-05-ACCEPT-SAFEOP
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: Diagnóstico del maestro EtherCAT y operador
+      content: El esclavo aparece identificado y tiene alimentación y enlace físico, pero permanece fuera de OP y no entrega datos de proceso cíclicos al controlador.
+      reliability: high
+      revealed_by: []
+      media_ids: ["ART-001"]
+    - id: EVID-02-AL-DIAGNOSTIC
+      type: diagnostic
+      source: Estado AL y diagnóstico del maestro EtherCAT
+      content: El maestro alcanza al esclavo, pero la transición PREOP → SAFEOP es rechazada y el esclavo queda en PREOP + Error por una incompatibilidad de configuración; no hay evidencia inicial de pérdida física del enlace.
+      reliability: confirmed
+      revealed_by:
+        - DEC-01-CHECK-AL-STATE
+      media_ids: ["ART-002"]
+    - id: EVID-03-EXPECTED-PDO
+      type: documentation
+      source: Proyecto del maestro y descripción del dispositivo
+      content: La configuración esperada define una asignación RxPDO y TxPDO concreta, con sus índices, orden y longitud de datos de proceso.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-READ-MASTER-DIAGNOSTIC
+      media_ids: ["ART-003"]
+    - id: EVID-04-ACTUAL-PDO
+      type: inspection
+      source: Objeto EtherCAT del esclavo y diagnóstico del maestro
+      content: 'La asignación activa del esclavo no coincide con la esperada: al menos una entrada PDO y su longitud difieren, por lo que el esclavo rechaza la configuración cíclica.'
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-PDO
+      media_ids: ["ART-004"]
+    - id: EVID-05-MASTER-DIAGNOSTIC
+      type: diagnostic
+      source: Registro de configuración EtherCAT
+      content: El maestro identifica la incompatibilidad de PDO/Sync Manager durante la transición de estado; el evento se mantiene aunque el enlace físico siga disponible.
+      reliability: confirmed
+      revealed_by:
+        - DEC-04-RESTORE-PDO
+      media_ids: ["ART-005"]
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Estado online y datos de proceso
+      content: Tras restaurar el mapping compatible, el esclavo alcanza OP y mantiene intercambio cíclico válido en lecturas repetidas, sin nuevo error de configuración.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-VERIFY-OP
+      media_ids: ["ART-006"]
+  decisions:
+    - id: DEC-01-CHECK-AL-STATE
+      stage_id: STAGE-01-CONFIRM-STATE
+      action: Leer el estado AL, el diagnóstico del esclavo y la disponibilidad de datos antes de forzar una transición.
+    - id: DEC-01-RESTART-SLAVE
+      stage_id: STAGE-01-CONFIRM-STATE
+      action: Reiniciar el esclavo sin conservar ni analizar el estado que provoca la parada.
+    - id: DEC-01-REPLACE-CABLE
+      stage_id: STAGE-01-CONFIRM-STATE
+      action: Sustituir el cable porque el esclavo no está en OP aunque el enlace esté detectado.
+    - id: DEC-01-FORCE-OP
+      stage_id: STAGE-01-CONFIRM-STATE
+      action: Forzar manualmente el estado OP y continuar el ciclo sin conservar ni analizar el diagnóstico de la transición fallida.
+    - id: DEC-02-REPLACE-SLAVE
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      action: Sustituir el esclavo antes de comprobar el diagnóstico del maestro.
+    - id: DEC-02-READ-MASTER-DIAGNOSTIC
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      action: Consultar el diagnóstico del maestro y el estado AL para separar enlace físico y configuración.
+    - id: DEC-02-DISABLE-DIAGNOSTICS
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      action: Desactivar los diagnósticos para que el estado del esclavo parezca normal.
+    - id: DEC-02-CHANGE-CYCLE
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      action: Cambiar repetidamente el tiempo de ciclo hasta que el esclavo intente llegar a OP, sin confirmar la causa del estado.
+    - id: DEC-03-CHANGE-DEVICE
+      stage_id: STAGE-03-COMPARE-PDO
+      action: Cambiar el modelo del esclavo en el proyecto para aceptar la configuración actual.
+    - id: DEC-03-IGNORE-LENGTH
+      stage_id: STAGE-03-COMPARE-PDO
+      action: Ignorar la longitud de los PDO porque los índices principales coinciden.
+    - id: DEC-03-COMPARE-PDO
+      stage_id: STAGE-03-COMPARE-PDO
+      action: Comparar índices, orden y longitud de RxPDO/TxPDO esperados y configurados.
+    - id: DEC-03-SWAP-WIRING
+      stage_id: STAGE-03-COMPARE-PDO
+      action: Intercambiar los conductores EtherCAT antes de comparar la configuración de proceso.
+    - id: DEC-04-CHANGE-CYCLE
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      action: Cambiar el ciclo de tarea para compensar un mapping incompatible.
+    - id: DEC-04-RESTART-MASTER
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      action: Reiniciar el maestro sin corregir la asignación de proceso.
+    - id: DEC-04-USE-DEFAULT-PDO
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      action: Aplicar el PDO por defecto sin comprobar que índices, orden y longitud sean compatibles con el proyecto.
+    - id: DEC-04-RESTORE-PDO
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      action: Restaurar la asignación RxPDO/TxPDO compatible definida por el proyecto y el dispositivo.
+    - id: DEC-05-VERIFY-OP
+      stage_id: STAGE-05-VERIFY-OP
+      action: Confirmar estado OP, ausencia del error de configuración y datos cíclicos válidos repetidos.
+    - id: DEC-05-CLEAR-ALARM
+      stage_id: STAGE-05-VERIFY-OP
+      action: Borrar la alarma y cerrar el diagnóstico sin verificar el estado OP ni los datos.
+    - id: DEC-05-ACCEPT-SAFEOP
+      stage_id: STAGE-05-VERIFY-OP
+      action: Aceptar SAFEOP como recuperación porque el esclavo sigue visible y responde al maestro aunque no intercambie datos cíclicos.
+  visual:
+    educational_purpose: Revelar progresivamente el estado AL del esclavo, el diagnóstico del maestro, el PDO mapping esperado y configurado y la recuperación hasta OP.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/01-incident.png
+        alt: Vista estilo TwinCAT de un esclavo EtherCAT detectado pero fuera del intercambio de datos operativo.
+        caption: 'Contexto del incidente: el esclavo es visible, pero todavía no entrega datos cíclicos válidos.'
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/02-al-diagnostic.png
+        alt: Vista estilo TwinCAT del estado AL y del diagnóstico del esclavo EtherCAT.
+        caption: 'Diagnóstico del estado: la imagen ayuda a localizar la transición que debe correlacionarse con la evidencia del maestro.'
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/03-expected-pdo.png
+        alt: Vista estilo TwinCAT del RxPDO y TxPDO esperados en el proyecto del maestro.
+        caption: 'Asignación esperada: compara índices, orden y longitud con la descripción del dispositivo antes de intervenir.'
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/04-actual-pdo.png
+        alt: Vista estilo TwinCAT de la asignación PDO activa en el esclavo EtherCAT.
+        caption: 'Asignación configurada: la comparación con el proyecto permite localizar la incompatibilidad de proceso.'
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/05-master-diagnostic.png
+        alt: Vista estilo TwinCAT del diagnóstico del maestro EtherCAT durante la transición del esclavo.
+        caption: 'Diagnóstico del maestro: conserva el contexto del evento mientras el enlace físico permanece disponible.'
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-ETHERCAT-SLAVE-027/06-recovery.png
+        alt: Vista estilo TwinCAT de un esclavo EtherCAT recuperado en OP con intercambio cíclico.
+        caption: 'Recuperación: la aceptación exige OP y datos cíclicos válidos repetidos.'
+        purpose: evidence
+  completion:
+    title: Debrief técnico
+    summary: El esclavo EtherCAT estaba detectado y el enlace físico era válido, pero no alcanzaba OP porque su PDO mapping no coincidía con la configuración esperada. Se restauró la asignación RxPDO/TxPDO compatible y se verificó el intercambio cíclico.
+    process:
+      - Confirmar el estado AL y la ausencia de datos cíclicos válidos.
+      - Separar enlace físico, diagnóstico del maestro y configuración de proceso.
+      - Comparar índices, orden y longitud del RxPDO/TxPDO.
+      - Restaurar la asignación compatible desde una condición autorizada.
+      - Verificar OP y datos cíclicos repetidos.
+    lesson: Un esclavo visible en EtherCAT no implica que esté operativo. La transición hasta OP depende de que el estado, el diagnóstico y el PDO mapping sean compatibles con el proyecto del maestro.
+    avoided_errors:
+      - Forzar OP para ocultar el error de configuración.
+      - Sustituir el cable o el esclavo sin leer el diagnóstico.
+      - Ignorar la longitud de los PDO.
+      - Cerrar el caso en SAFEOP sin validar datos cíclicos.
+    industrial_value:
+      - Diagnóstico trazable de estados EtherCAT.
+      - Menos sustituciones innecesarias de esclavos y cableado.
+      - Configuración reproducible de datos cíclicos entre maestro y dispositivos.
+    media_ids: ["ART-006"]
+private:
+  fault_model:
+    root_cause: El PDO mapping activo del esclavo EtherCAT no coincide con el mapping esperado por el maestro. El enlace y la detección son válidos, pero la incompatibilidad de índices o longitud provoca el rechazo de la transición PREOP → SAFEOP y deja el esclavo en PREOP + Error.
+    recovery_conditions:
+      - RxPDO y TxPDO conservan los índices, orden y longitudes compatibles con el proyecto.
+      - El maestro y el esclavo completan la transición hasta OP.
+      - Los datos cíclicos se actualizan de forma válida en lecturas repetidas.
+      - No reaparece el diagnóstico de incompatibilidad PDO/Sync Manager.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-PHYSICAL
+        statement: El enlace EtherCAT o la alimentación del esclavo tienen un fallo físico.
+        initial_status: possible
+      - id: HYP-PDO
+        statement: El PDO mapping esperado y configurado no coincide.
+        initial_status: likely
+      - id: HYP-SLAVE-CONFIG
+        statement: La identidad o configuración del esclavo no coincide con el proyecto.
+        initial_status: possible
+      - id: HYP-SYNC
+        statement: La sincronización o el ciclo impiden completar la transición de estado.
+        initial_status: possible
+    confirmed_root_cause: HYP-PDO
+    critical_path:
+      - DEC-01-CHECK-AL-STATE
+      - DEC-02-READ-MASTER-DIAGNOSTIC
+      - DEC-03-COMPARE-PDO
+      - DEC-04-RESTORE-PDO
+      - DEC-05-VERIFY-OP
+  decision_logic:
+    - decision_id: DEC-01-CHECK-AL-STATE
+      stage_id: STAGE-01-CONFIRM-STATE
+      is_correct: true
+      rationale: La comprobación conserva la evidencia y actúa sobre la capa EtherCAT correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-02-AL-DIAGNOSTIC
+      next_stage: STAGE-02-VERIFY-DIAGNOSTICS
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-01-RESTART-SLAVE
+      stage_id: STAGE-01-CONFIRM-STATE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-DIAGNOSTICS
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Reiniciar elimina una condición observable. Conserva primero el estado AL y el diagnóstico del maestro.
+    - decision_id: DEC-01-REPLACE-CABLE
+      stage_id: STAGE-01-CONFIRM-STATE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-DIAGNOSTICS
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: El enlace está detectado. No sustituyas el cable sin comprobar la transición de estado y el diagnóstico.
+    - decision_id: DEC-01-FORCE-OP
+      stage_id: STAGE-01-CONFIRM-STATE
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-02-VERIFY-DIAGNOSTICS
+      score_effect: -5
+      safety_effect: -5
+      retry_feedback: Forzar OP oculta la causa y puede dejar datos cíclicos no validados.
+    - decision_id: DEC-02-REPLACE-SLAVE
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PDO
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: La detección y el enlace no justifican sustituir hardware. Lee el diagnóstico antes de intervenir.
+    - decision_id: DEC-02-READ-MASTER-DIAGNOSTIC
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      is_correct: true
+      rationale: La comprobación conserva la evidencia y actúa sobre la capa EtherCAT correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-03-EXPECTED-PDO
+      next_stage: STAGE-03-COMPARE-PDO
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-02-DISABLE-DIAGNOSTICS
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PDO
+      score_effect: -5
+      safety_effect: -5
+      retry_feedback: Desactivar diagnósticos elimina la evidencia que distingue configuración de comunicación física.
+    - decision_id: DEC-02-CHANGE-CYCLE
+      stage_id: STAGE-02-VERIFY-DIAGNOSTICS
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-03-COMPARE-PDO
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El ciclo no corrige una incompatibilidad de PDO. Conserva los parámetros y compara la configuración.
+    - decision_id: DEC-03-CHANGE-DEVICE
+      stage_id: STAGE-03-COMPARE-PDO
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONFIGURATION
+      score_effect: -10
+      safety_effect: 0
+      retry_feedback: Cambiar el modelo puede ocultar el mismatch. Compara el mapping real con el esperado.
+    - decision_id: DEC-03-IGNORE-LENGTH
+      stage_id: STAGE-03-COMPARE-PDO
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONFIGURATION
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: La longitud forma parte del PDO mapping. Ignorarla deja sin explicar el rechazo de la configuración.
+    - decision_id: DEC-03-COMPARE-PDO
+      stage_id: STAGE-03-COMPARE-PDO
+      is_correct: true
+      rationale: La comprobación conserva la evidencia y actúa sobre la capa EtherCAT correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-04-ACTUAL-PDO
+      next_stage: STAGE-04-RESTORE-CONFIGURATION
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-03-SWAP-WIRING
+      stage_id: STAGE-03-COMPARE-PDO
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-CONFIGURATION
+      score_effect: -5
+      safety_effect: -5
+      retry_feedback: El enlace ya es visible. No alteres el cableado antes de verificar índices y longitudes.
+    - decision_id: DEC-04-CHANGE-CYCLE
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-OP
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Un ciclo distinto no hace compatibles los datos de proceso. Restaura el mapping documentado.
+    - decision_id: DEC-04-RESTART-MASTER
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-OP
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Reiniciar no cambia la asignación RxPDO/TxPDO que el esclavo rechaza.
+    - decision_id: DEC-04-USE-DEFAULT-PDO
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-OP
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: El PDO por defecto puede no coincidir con el proyecto. Aplica la asignación compatible verificada.
+    - decision_id: DEC-04-RESTORE-PDO
+      stage_id: STAGE-04-RESTORE-CONFIGURATION
+      is_correct: true
+      rationale: La comprobación conserva la evidencia y actúa sobre la capa EtherCAT correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-05-MASTER-DIAGNOSTIC
+      next_stage: STAGE-05-VERIFY-OP
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-VERIFY-OP
+      stage_id: STAGE-05-VERIFY-OP
+      is_correct: true
+      rationale: La comprobación conserva la evidencia y actúa sobre la capa EtherCAT correcta.
+      classification: strong
+      consequence: Se obtiene la siguiente evidencia verificable.
+      evidence_revealed:
+        - EVID-06-RECOVERY
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-ALARM
+      stage_id: STAGE-05-VERIFY-OP
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: weak
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Borrar una alarma no demuestra que el esclavo esté en OP ni que el proceso sea válido.
+    - decision_id: DEC-05-ACCEPT-SAFEOP
+      stage_id: STAGE-05-VERIFY-OP
+      is_correct: false
+      rationale: La acción cambia una variable o acepta un estado antes de separar enlace, diagnóstico y configuración PDO.
+      classification: unsafe
+      consequence: Se introduce una variable sin demostrar la causa del estado no operativo.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: SAFEOP confirma que el esclavo sigue visible, pero no que exista intercambio cíclico operativo.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: El esclavo estaba visible y enlazado, pero el maestro no podía llevarlo a OP porque la asignación PDO configurada no coincidía con la esperada. Tras restaurar RxPDO/TxPDO se verificaron OP y datos cíclicos válidos.
+    correct_reasoning:
+      - Confirmar estado AL y datos cíclicos antes de intervenir.
+      - Leer el diagnóstico del maestro para separar enlace y configuración.
+      - Comparar índices, orden y longitud de PDO.
+      - Restaurar la asignación compatible sin ocultar el diagnóstico.
+      - Verificar OP y proceso en lecturas repetidas.
+    recovery:
+      - Esclavo en OP.
+      - Datos cíclicos válidos y estables.
+      - Sin nuevo error de configuración PDO/Sync Manager.
+  technical_validation:
+    status: pending
+    evidence:
+      - 'Caso definido por el contrato ENV-003: un esclavo EtherCAT detectado no alcanza OP por un desajuste de PDO mapping.'
+      - La unidad textual queda pendiente de revisión técnica y de assets visuales aprobados.

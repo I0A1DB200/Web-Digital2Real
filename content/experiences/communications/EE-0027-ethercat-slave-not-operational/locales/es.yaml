@@ -1,0 +1,159 @@
+locale: es
+translations:
+  title: Esclavo EtherCAT no operativo
+  summary: Diagnostica un esclavo EtherCAT detectado pero fuera de OP separando enlace, estado AL, diagnóstico del maestro y compatibilidad del PDO mapping antes de restaurar el intercambio cíclico.
+  scenario:
+    initial_context: Un esclavo EtherCAT aparece en la red, pero no alcanza el estado OP y el controlador no recibe datos cíclicos válidos.
+    operational_state: El maestro detecta el dispositivo y el enlace físico está disponible. La transición PREOP → SAFEOP es rechazada por una incompatibilidad de configuración de proceso y el esclavo queda en PREOP + Error.
+    initiating_event: El diagnóstico online muestra un esclavo visible pero no operativo. Antes de cambiar cableado, ciclo o hardware hay que comparar el estado AL y el PDO mapping esperado y configurado.
+    learner_role: Técnico de automatización responsable de localizar la frontera entre comunicación, estado EtherCAT y configuración de datos de proceso antes de corregir el esclavo.
+    safety_context:
+      safe_state: Realiza cambios de configuración desde una condición segura y con el procedimiento de mantenimiento o puesta en marcha autorizado.
+      intervention_constraints:
+        - No forzar el estado OP para ocultar una transición fallida.
+        - No sustituir cableado o hardware antes de leer el diagnóstico del maestro.
+        - No ignorar índices ni longitudes del RxPDO/TxPDO.
+        - Verificar OP y datos cíclicos repetidos después de restaurar la configuración.
+  learning_objectives:
+    OBJ-ETHERCAT-SCOPE:
+      description: Distinguir un esclavo detectado fuera de OP de una pérdida de comunicación física.
+    OBJ-ETHERCAT-PDO:
+      description: Comparar estado AL, diagnóstico del maestro e índices y longitudes del PDO mapping esperado y configurado.
+    OBJ-ETHERCAT-RECOVERY:
+      description: Restaurar una asignación compatible y verificar estado OP con datos cíclicos válidos.
+  stages:
+    STAGE-01-CONFIRM-STATE:
+      title: Confirmar el estado
+      situation: El esclavo EtherCAT aparece en el escaneo, pero no intercambia datos cíclicos. ¿Qué comprobación delimita primero el problema sin forzar el estado OP?
+    STAGE-02-VERIFY-DIAGNOSTICS:
+      title: Verificar el diagnóstico
+      situation: La alimentación y el enlace físico están disponibles. ¿Qué lectura del maestro EtherCAT separa un fallo físico de un problema de configuración?
+    STAGE-03-COMPARE-PDO:
+      title: Comparar el PDO mapping
+      situation: El diagnóstico indica una incompatibilidad de configuración. ¿Qué comparación demuestra si el PDO mapping esperado coincide con el que el esclavo tiene configurado?
+    STAGE-04-RESTORE-CONFIGURATION:
+      title: Restaurar la configuración
+      situation: El proyecto espera una asignación RxPDO/TxPDO distinta de la configurada en el esclavo. ¿Qué intervención restablece compatibilidad sin ocultar el diagnóstico?
+    STAGE-05-VERIFY-OP:
+      title: Verificar el estado OP
+      situation: El mapping compatible se ha descargado. ¿Qué prueba confirma que el esclavo ha llegado a OP y que los datos cíclicos son válidos?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Diagnóstico del maestro EtherCAT y operador
+      content: El esclavo aparece identificado y tiene alimentación y enlace físico, pero permanece fuera de OP y no entrega datos de proceso cíclicos al controlador.
+      media_ids: ["ART-001"]
+    EVID-02-AL-DIAGNOSTIC:
+      source: Estado AL y diagnóstico del maestro EtherCAT
+      content: El maestro alcanza al esclavo, pero la transición PREOP → SAFEOP es rechazada y el esclavo queda en PREOP + Error por una incompatibilidad de configuración; no hay evidencia inicial de pérdida física del enlace.
+      media_ids: ["ART-002"]
+    EVID-03-EXPECTED-PDO:
+      source: Proyecto del maestro y descripción del dispositivo
+      content: La configuración esperada define una asignación RxPDO y TxPDO concreta, con sus índices, orden y longitud de datos de proceso.
+      media_ids: ["ART-003"]
+    EVID-04-ACTUAL-PDO:
+      source: Objeto EtherCAT del esclavo y diagnóstico del maestro
+      content: 'La asignación activa del esclavo no coincide con la esperada: al menos una entrada PDO y su longitud difieren, por lo que el esclavo rechaza la configuración cíclica.'
+      media_ids: ["ART-004"]
+    EVID-05-MASTER-DIAGNOSTIC:
+      source: Registro de configuración EtherCAT
+      content: El maestro identifica la incompatibilidad de PDO/Sync Manager durante la transición de estado; el evento se mantiene aunque el enlace físico siga disponible.
+      media_ids: ["ART-005"]
+    EVID-06-RECOVERY:
+      source: Estado online y datos de proceso
+      content: Tras restaurar el mapping compatible, el esclavo alcanza OP y mantiene intercambio cíclico válido en lecturas repetidas, sin nuevo error de configuración.
+      media_ids: ["ART-006"]
+  decisions:
+    DEC-01-CHECK-AL-STATE:
+      action: Leer el estado AL, el diagnóstico del esclavo y la disponibilidad de datos antes de forzar una transición.
+    DEC-01-RESTART-SLAVE:
+      action: Reiniciar el esclavo sin conservar ni analizar el estado que provoca la parada.
+    DEC-01-REPLACE-CABLE:
+      action: Sustituir el cable porque el esclavo no está en OP aunque el enlace esté detectado.
+    DEC-01-FORCE-OP:
+      action: Forzar manualmente el estado OP y continuar el ciclo sin conservar ni analizar el diagnóstico de la transición fallida.
+    DEC-02-REPLACE-SLAVE:
+      action: Sustituir el esclavo antes de comprobar el diagnóstico del maestro.
+    DEC-02-READ-MASTER-DIAGNOSTIC:
+      action: Consultar el diagnóstico del maestro y el estado AL para separar enlace físico y configuración.
+    DEC-02-DISABLE-DIAGNOSTICS:
+      action: Desactivar los diagnósticos para que el estado del esclavo parezca normal.
+    DEC-02-CHANGE-CYCLE:
+      action: Cambiar repetidamente el tiempo de ciclo hasta que el esclavo intente llegar a OP, sin confirmar la causa del estado.
+    DEC-03-CHANGE-DEVICE:
+      action: Cambiar el modelo del esclavo en el proyecto para aceptar la configuración actual.
+    DEC-03-IGNORE-LENGTH:
+      action: Ignorar la longitud de los PDO porque los índices principales coinciden.
+    DEC-03-COMPARE-PDO:
+      action: Comparar índices, orden y longitud de RxPDO/TxPDO esperados y configurados.
+    DEC-03-SWAP-WIRING:
+      action: Intercambiar los conductores EtherCAT antes de comparar la configuración de proceso.
+    DEC-04-CHANGE-CYCLE:
+      action: Cambiar el ciclo de tarea para compensar un mapping incompatible.
+    DEC-04-RESTART-MASTER:
+      action: Reiniciar el maestro sin corregir la asignación de proceso.
+    DEC-04-USE-DEFAULT-PDO:
+      action: Aplicar el PDO por defecto sin comprobar que índices, orden y longitud sean compatibles con el proyecto.
+    DEC-04-RESTORE-PDO:
+      action: Restaurar la asignación RxPDO/TxPDO compatible definida por el proyecto y el dispositivo.
+    DEC-05-VERIFY-OP:
+      action: Confirmar estado OP, ausencia del error de configuración y datos cíclicos válidos repetidos.
+    DEC-05-CLEAR-ALARM:
+      action: Borrar la alarma y cerrar el diagnóstico sin verificar el estado OP ni los datos.
+    DEC-05-ACCEPT-SAFEOP:
+      action: Aceptar SAFEOP como recuperación porque el esclavo sigue visible y responde al maestro aunque no intercambie datos cíclicos.
+  retry_feedback:
+    DEC-01-RESTART-SLAVE: Reiniciar elimina una condición observable. Conserva primero el estado AL y el diagnóstico del maestro.
+    DEC-01-REPLACE-CABLE: El enlace está detectado. No sustituyas el cable sin comprobar la transición de estado y el diagnóstico.
+    DEC-01-FORCE-OP: Forzar OP oculta la causa y puede dejar datos cíclicos no validados.
+    DEC-02-REPLACE-SLAVE: La detección y el enlace no justifican sustituir hardware. Lee el diagnóstico antes de intervenir.
+    DEC-02-DISABLE-DIAGNOSTICS: Desactivar diagnósticos elimina la evidencia que distingue configuración de comunicación física.
+    DEC-02-CHANGE-CYCLE: El ciclo no corrige una incompatibilidad de PDO. Conserva los parámetros y compara la configuración.
+    DEC-03-CHANGE-DEVICE: Cambiar el modelo puede ocultar el mismatch. Compara el mapping real con el esperado.
+    DEC-03-IGNORE-LENGTH: La longitud forma parte del PDO mapping. Ignorarla deja sin explicar el rechazo de la configuración.
+    DEC-03-SWAP-WIRING: El enlace ya es visible. No alteres el cableado antes de verificar índices y longitudes.
+    DEC-04-CHANGE-CYCLE: Un ciclo distinto no hace compatibles los datos de proceso. Restaura el mapping documentado.
+    DEC-04-RESTART-MASTER: Reiniciar no cambia la asignación RxPDO/TxPDO que el esclavo rechaza.
+    DEC-04-USE-DEFAULT-PDO: El PDO por defecto puede no coincidir con el proyecto. Aplica la asignación compatible verificada.
+    DEC-05-CLEAR-ALARM: Borrar una alarma no demuestra que el esclavo esté en OP ni que el proceso sea válido.
+    DEC-05-ACCEPT-SAFEOP: SAFEOP confirma que el esclavo sigue visible, pero no que exista intercambio cíclico operativo.
+  visual:
+    educational_purpose: Revelar progresivamente el estado AL del esclavo, el diagnóstico del maestro, el PDO mapping esperado y configurado y la recuperación hasta OP.
+  assets:
+    ART-001:
+      alt: Vista estilo TwinCAT de un esclavo EtherCAT detectado pero fuera del intercambio de datos operativo.
+      caption: 'Contexto del incidente: el esclavo es visible, pero todavía no entrega datos cíclicos válidos.'
+    ART-002:
+      alt: Vista estilo TwinCAT del estado AL y del diagnóstico del esclavo EtherCAT.
+      caption: 'Diagnóstico del estado: la imagen ayuda a localizar la transición que debe correlacionarse con la evidencia del maestro.'
+    ART-003:
+      alt: Vista estilo TwinCAT del RxPDO y TxPDO esperados en el proyecto del maestro.
+      caption: 'Asignación esperada: compara índices, orden y longitud con la descripción del dispositivo antes de intervenir.'
+    ART-004:
+      alt: Vista estilo TwinCAT de la asignación PDO activa en el esclavo EtherCAT.
+      caption: 'Asignación configurada: la comparación con el proyecto permite localizar la incompatibilidad de proceso.'
+    ART-005:
+      alt: Vista estilo TwinCAT del diagnóstico del maestro EtherCAT durante la transición del esclavo.
+      caption: 'Diagnóstico del maestro: conserva el contexto del evento mientras el enlace físico permanece disponible.'
+    ART-006:
+      alt: Vista estilo TwinCAT de un esclavo EtherCAT recuperado en OP con intercambio cíclico.
+      caption: 'Recuperación: la aceptación exige OP y datos cíclicos válidos repetidos.'
+  completion:
+    title: Debrief técnico
+    summary: El esclavo EtherCAT estaba detectado y el enlace físico era válido, pero no alcanzaba OP porque su PDO mapping no coincidía con la configuración esperada. Se restauró la asignación RxPDO/TxPDO compatible y se verificó el intercambio cíclico.
+    process:
+      - Confirmar el estado AL y la ausencia de datos cíclicos válidos.
+      - Separar enlace físico, diagnóstico del maestro y configuración de proceso.
+      - Comparar índices, orden y longitud del RxPDO/TxPDO.
+      - Restaurar la asignación compatible desde una condición autorizada.
+      - Verificar OP y datos cíclicos repetidos.
+    lesson: Un esclavo visible en EtherCAT no implica que esté operativo. La transición hasta OP depende de que el estado, el diagnóstico y el PDO mapping sean compatibles con el proyecto del maestro.
+    avoided_errors:
+      - Forzar OP para ocultar el error de configuración.
+      - Sustituir el cable o el esclavo sin leer el diagnóstico.
+      - Ignorar la longitud de los PDO.
+      - Cerrar el caso en SAFEOP sin validar datos cíclicos.
+    industrial_value:
+      - Diagnóstico trazable de estados EtherCAT.
+      - Menos sustituciones innecesarias de esclavos y cableado.
+      - Configuración reproducible de datos cíclicos entre maestro y dispositivos.
+    media_ids: ["ART-006"]

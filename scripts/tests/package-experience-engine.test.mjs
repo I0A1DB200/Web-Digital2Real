@@ -298,7 +298,8 @@ test("preview packages every eligible canonical Experience", async t => {
     { experienceEditorialId: "EE-0023", x: 20, y: 74 },
     { experienceEditorialId: "EE-0024", x: 7, y: 92 },
     { experienceEditorialId: "EE-0025", x: 68, y: 80 },
-    { experienceEditorialId: "EE-0026", x: 52, y: 24 }
+    { experienceEditorialId: "EE-0026", x: 52, y: 24 },
+    { experienceEditorialId: "EE-0027", x: 76, y: 35 }
   ]);
   assert.deepEqual(env003.theory.sectionIds, [
     "TH-01-INDUSTRIAL-COMMUNICATION-FUNDAMENTALS",

@@ -3,7 +3,7 @@
 ## 2026-11-03 — ENV-003 / EE-0027 EtherCAT slave not operational
 
 - Added the bilingual EE-0027 diagnostic flow: five stages, 19 decision options and six evidence items for separating EtherCAT link state, AL diagnostics and PDO mapping compatibility before restoring OP.
-- Integrated six approved illustrative assets, mapped one to each evidence item and registered `ART-001` as the catalog cover; the ENV-003 hotspot remains pending position review.
+- Integrated six approved illustrative assets, mapped one to each evidence item and registered `ART-001` as the catalog cover; added the ENV-003 hotspot over the EtherCAT device.
 
 ## 2026-11-03 — ENV-003 / EE-0026 Modbus TCP wrong register data
 

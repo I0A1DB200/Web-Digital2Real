@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-05 — ENV-003 / EE-0028 CANopen node communication lost
+
+- Added the bilingual EE-0028 diagnostic flow: five stages, 19 decision options and six evidence items for separating missing heartbeat supervision from complete CAN-bus communication loss.
+- Added six supplied illustrative CANopen assets, mapped one to each evidence item, and completed the ENV-003 CANopen hotspot at a neutral network position. The source README records the simulation caveats.
+
 ## 2026-11-03 — ENV-003 / EE-0027 EtherCAT slave not operational
 
 - Added the bilingual EE-0027 diagnostic flow: five stages, 19 decision options and six evidence items for separating EtherCAT link state, AL diagnostics and PDO mapping compatibility before restoring OP.

@@ -1,0 +1,160 @@
+locale: es
+translations:
+  title: Nodo CANopen sin comunicación
+  summary: Diagnostica una alarma de supervisión heartbeat en un nodo CANopen separando la ausencia de heartbeat de una pérdida total del bus CAN antes de restaurar la configuración del productor.
+  scenario:
+    initial_context: El controlador informa de una alarma de supervisión CANopen y los valores del nodo dejan de actualizarse de forma fiable.
+    operational_state: El bus CAN sigue presente y se observan tramas de otros participantes, pero el nodo supervisado no produce su heartbeat mientras el consumidor mantiene activa la vigilancia; el controlador genera un timeout de supervisión.
+    initiating_event: El diagnóstico online muestra un fallo de heartbeat. Antes de cambiar terminación, cableado o dirección hay que comparar la configuración productor/consumidor, las tramas observadas y el estado NMT.
+    learner_role: Técnico de automatización responsable de distinguir una pérdida de supervisión CANopen de una pérdida completa de comunicación antes de restaurar el nodo.
+    safety_context:
+      safe_state: Realiza cambios de configuración desde una condición segura y bajo el procedimiento autorizado de mantenimiento o puesta en marcha.
+      intervention_constraints:
+        - No desactivar la vigilancia del consumidor para ocultar el timeout.
+        - No cambiar terminación, velocidad o cableado sin conservar el diagnóstico y las tramas observadas.
+        - No enviar comandos NMT repetidos para forzar un estado sin confirmar la causa.
+        - Verificar heartbeat estable, estado NMT esperado y actualización de datos después de restaurar la configuración.
+  learning_objectives:
+    OBJ-CANOPEN-SUPERVISION:
+      description: Distinguir un heartbeat ausente de una pérdida completa de comunicación CAN.
+    OBJ-CANOPEN-CONFIGURATION:
+      description: Comparar la configuración del productor y consumidor con las tramas CAN y el estado NMT observado.
+    OBJ-CANOPEN-RECOVERY:
+      description: Restaurar la producción de heartbeat y verificar supervisión estable y datos válidos.
+  stages:
+    STAGE-01-CONFIRM-SUPERVISION:
+      title: Confirmar la supervisión
+      situation: El controlador anuncia un timeout de heartbeat. ¿Qué comprobación delimita primero la supervisión sin declarar que todo el bus CAN está perdido?
+    STAGE-02-READ-PRODUCER:
+      title: Leer el productor
+      situation: Hay otras tramas CAN visibles y el diagnóstico apunta al nodo supervisado. ¿Qué lectura comprueba si el nodo tiene habilitada la producción de heartbeat?
+    STAGE-03-CORRELATE-BUS:
+      title: Correlacionar el bus
+      situation: La configuración del productor no explica por sí sola la alarma. ¿Qué comparación relaciona la expectativa del consumidor, las tramas observadas y el estado del nodo?
+    STAGE-04-RESTORE-PRODUCER:
+      title: Restaurar el productor
+      situation: El consumidor vigila el heartbeat, el nodo no lo produce y el estado NMT se puede consultar. ¿Qué intervención corrige la causa sin desactivar la supervisión?
+    STAGE-05-VERIFY-HEARTBEAT:
+      title: Verificar la recuperación
+      situation: La configuración del nodo se ha restaurado bajo el procedimiento autorizado. ¿Qué prueba demuestra que la supervisión y el intercambio de datos han vuelto?
+  evidence:
+    EVID-01-INCIDENT:
+      source: Diagnóstico del controlador CANopen y operador
+      content: El controlador informa de un timeout de supervisión heartbeat para un nodo CANopen; el nodo no actualiza sus valores de forma fiable, pero todavía se observan otras tramas del bus.
+      media_ids: ["ART-001"]
+    EVID-02-PRODUCER-CONFIG:
+      source: Configuración del nodo CANopen
+      content: La configuración del productor del nodo no tiene habilitada la producción de heartbeat que espera la supervisión del sistema.
+      media_ids: ["ART-002"]
+    EVID-03-CONSUMER-CONFIG:
+      source: Configuración del consumidor CANopen
+      content: El consumidor mantiene activa la vigilancia del heartbeat del nodo y conserva una expectativa de supervisión que no debe desactivarse como corrección.
+      media_ids: ["ART-003"]
+    EVID-04-CAN-FRAMES:
+      source: Captura de tramas CAN
+      content: La captura contiene tráfico de otros participantes, pero no muestra el heartbeat periódico del nodo supervisado durante la observación; esto no demuestra por sí solo una pérdida completa del bus.
+      media_ids: ["ART-004"]
+    EVID-05-NMT-STATE:
+      source: Consulta NMT y diagnóstico del controlador
+      content: El estado NMT del nodo puede consultarse y se conserva como evidencia separada de la supervisión heartbeat; el estado NMT por sí solo no sustituye la verificación de producción periódica.
+      media_ids: ["ART-005"]
+    EVID-06-RECOVERY:
+      source: Monitor CANopen y datos de proceso
+      content: Tras restaurar la producción de heartbeat, aparecen pulsos periódicos del nodo, desaparece el timeout, el estado NMT permanece operativo según la configuración y los datos se actualizan en lecturas repetidas.
+      media_ids: ["ART-006"]
+  decisions:
+    DEC-01-READ-DIAGNOSTIC:
+      action: Leer el diagnóstico del controlador, la supervisión del nodo y la actividad del bus.
+    DEC-01-POWER-CYCLE-NODE:
+      action: Apagar y encender el nodo sin conservar el timeout ni comprobar la actividad del bus.
+    DEC-01-REPLACE-CABLE:
+      action: Sustituir el cable CAN porque un nodo no responde a la supervisión.
+    DEC-01-DISABLE-CONSUMER:
+      action: Desactivar el consumidor heartbeat para que desaparezca la alarma.
+    DEC-02-READ-PRODUCER-CONFIG:
+      action: Leer la configuración heartbeat del productor y compararla con la expectativa.
+    DEC-02-CHANGE-NODE-ID:
+      action: Cambiar y descargar una nueva dirección del nodo antes de confirmar su configuración de producción.
+    DEC-02-INCREASE-TIMEOUT:
+      action: Aumentar el timeout del consumidor para ocultar la ausencia de heartbeat.
+    DEC-02-REPLACE-NODE:
+      action: Sustituir el nodo antes de comprobar si su productor heartbeat está habilitado.
+    DEC-03-COMPARE-HEARTBEAT:
+      action: Comparar productor, consumidor, tramas CAN y estado NMT.
+    DEC-03-ADD-TERMINATION:
+      action: Añadir otra terminación sin comprobar la topología ni conservar la captura del bus.
+    DEC-03-STOP-NODES:
+      action: Detener todos los nodos para eliminar el tráfico que dificulta la lectura.
+    DEC-03-SEND-NMT-RESET:
+      action: Enviar repetidamente un reset NMT antes de comparar la supervisión y las tramas.
+    DEC-04-RESTORE-PRODUCER:
+      action: Restaurar el productor heartbeat con la configuración autorizada.
+    DEC-04-CHANGE-BAUDRATE:
+      action: Cambiar la velocidad del bus para compensar una producción heartbeat deshabilitada.
+    DEC-04-BYPASS-MONITORING:
+      action: Bypassear la supervisión del consumidor y aceptar el nodo sin heartbeat.
+    DEC-04-REPLACE-CABLE:
+      action: Sustituir el cable después de localizar una configuración de productor incompatible.
+    DEC-05-VERIFY-HEARTBEAT:
+      action: Verificar heartbeat, timeout, estado NMT y datos repetidos.
+    DEC-05-CLEAR-ALARM:
+      action: Borrar la alarma y cerrar el caso sin observar heartbeat ni datos repetidos.
+    DEC-05-ACCEPT-NMT:
+      action: Aceptar el estado NMT consultable como recuperación aunque el heartbeat siga ausente.
+  retry_feedback:
+    DEC-01-POWER-CYCLE-NODE: Reiniciar elimina una condición observable. Conserva el diagnóstico y la actividad del bus antes de intervenir.
+    DEC-01-REPLACE-CABLE: La actividad de otros participantes no justifica sustituir el cable. Lee la configuración y conserva las tramas.
+    DEC-01-DISABLE-CONSUMER: No desactives la vigilancia para ocultar la ausencia de heartbeat.
+    DEC-02-CHANGE-NODE-ID: Conserva la identidad del nodo y lee primero la configuración productor/consumidor.
+    DEC-02-INCREASE-TIMEOUT: No amplíes el timeout para ocultar una configuración de productor ausente.
+    DEC-02-REPLACE-NODE: Lee el productor antes de sustituir el nodo.
+    DEC-03-ADD-TERMINATION: No añadas terminación sin evidencia de topología; compara primero heartbeat, tramas y NMT.
+    DEC-03-STOP-NODES: Conserva el tráfico existente y separa el heartbeat del nodo de las demás tramas.
+    DEC-03-SEND-NMT-RESET: Conserva el estado NMT y no envíes resets repetidos antes de localizar la causa de supervisión.
+    DEC-04-CHANGE-BAUDRATE: Restaura el productor heartbeat; no cambies la velocidad sin evidencia de incompatibilidad del bus.
+    DEC-04-BYPASS-MONITORING: Mantén el consumidor habilitado y corrige la producción del nodo.
+    DEC-04-REPLACE-CABLE: El cableado no corrige una producción heartbeat deshabilitada.
+    DEC-05-CLEAR-ALARM: Verifica heartbeat, estado NMT y datos repetidos antes de borrar o cerrar la alarma.
+    DEC-05-ACCEPT-NMT: El estado NMT no sustituye la comprobación de heartbeat periódico y datos válidos.
+  visual:
+    educational_purpose: Revelar progresivamente el timeout del consumidor, la configuración productor/consumidor, las tramas CAN, el estado NMT y la recuperación del heartbeat.
+  assets:
+    ART-001:
+      alt: Vista CODESYS estilo CANopen con timeout de heartbeat del nodo supervisado y actividad de otros participantes.
+      caption: 'Incidente: el consumidor informa de un timeout mientras el bus conserva actividad visible.'
+    ART-002:
+      alt: Configuración CANopen donde la producción de heartbeat del nodo está deshabilitada.
+      caption: 'Productor: la función de heartbeat aparece deshabilitada en la configuración del nodo.'
+    ART-003:
+      alt: Configuración del consumidor CANopen con la supervisión heartbeat habilitada para el nodo.
+      caption: 'Consumidor: la vigilancia permanece activa y conserva la expectativa que debe compararse.'
+    ART-004:
+      alt: Traza CAN con tráfico de otros nodos y ausencia del heartbeat del nodo supervisado en la observación.
+      caption: 'Tramas: la ausencia de un heartbeat concreto no demuestra que todo el bus esté desconectado.'
+    ART-005:
+      alt: Panel CANopen con consulta SDO y estado NMT del nodo supervisado.
+      caption: 'NMT y SDO: la interfaz es ilustrativa y sirve para separar estado consultable de supervisión periódica.'
+    ART-006:
+      alt: Monitor CANopen con heartbeat recuperado, estado NMT operativo y actividad de datos.
+      caption: 'Recuperación: el heartbeat vuelve y la aceptación exige comprobar también el estado y los datos.'
+  completion:
+    title: Debrief técnico
+    summary: El controlador vigilaba el heartbeat del nodo, pero el productor estaba deshabilitado. El bus seguía mostrando actividad de otros participantes, por lo que no había evidencia suficiente para declarar una pérdida completa de comunicación CAN. Tras restaurar el productor se verificaron heartbeat, estado NMT y datos válidos.
+    process:
+      - Conservar el diagnóstico del consumidor y comprobar que existe actividad de otros participantes.
+      - Leer la configuración del productor heartbeat del nodo.
+      - Comparar la expectativa del consumidor con las tramas observadas y consultar el estado NMT.
+      - Restaurar la producción heartbeat sin desactivar la supervisión.
+      - Verificar pulsos periódicos, estado NMT y datos de proceso repetidos.
+    lesson: Un timeout de heartbeat identifica una pérdida de supervisión del nodo; no demuestra por sí solo que todo el bus CAN esté desconectado. La configuración productor/consumidor y las tramas observadas deben correlacionarse antes de intervenir.
+    avoided_errors:
+      - Declarar pérdida total del bus al ver un heartbeat ausente.
+      - Cambiar cableado, terminación o velocidad sin conservar evidencia.
+      - Aumentar el timeout o desactivar el consumidor para ocultar la causa.
+      - Confundir un estado NMT consultable con heartbeat estable.
+      - Cerrar el caso sin verificar tramas y datos repetidos.
+    industrial_value:
+      - Diagnóstico trazable de supervisión CANopen.
+      - Menos sustituciones innecesarias de cableado y nodos.
+      - Recuperación reproducible de la vigilancia heartbeat.
+    media_ids: ["ART-006"]

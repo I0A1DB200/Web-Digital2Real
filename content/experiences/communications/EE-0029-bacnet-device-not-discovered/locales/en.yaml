@@ -1,0 +1,160 @@
+locale: en
+translations:
+  title: BACnet Device Not Discovered
+  summary: Diagnose a BACnet/IP discovery alarm across subnets by separating controller availability, addressing and broadcast distribution before restoring a supported mechanism.
+  scenario:
+    initial_context: The BMS cannot discover a BACnet/IP controller located on another IP subnet.
+    operational_state: The controller has power and local IP link, and the BMS and controller are on distinct routed subnets; however, BACnet broadcast discovery is not distributed between them, so the remote controller is absent from the local list.
+    initiating_event: A BMS Who-Is scan receives no I-Am from the remote controller. Before changing the IP address, device instance, cable or controller, compare IP, mask, routing, Who-Is/I-Am traffic and BBMD or Foreign Device configuration where applicable.
+    learner_role: Automation technician responsible for distinguishing controller availability, addressing and cross-subnet BACnet discovery.
+    safety_context:
+      safe_state: Make network changes from a safe condition and under the authorised maintenance or commissioning procedure.
+      intervention_constraints:
+        - Do not change the IP address or device instance merely because the controller is absent from discovery.
+        - Do not globally disable the firewall or network protections to make a device visible.
+        - Do not claim that the controller is out of service without checking power, link, addressing and traffic.
+        - Apply only the cross-subnet BACnet mechanism supported by the architecture and then verify a known property.
+  learning_objectives:
+    OBJ-BACNET-DISCOVERY:
+      description: Distinguish an offline or incorrectly addressed controller from a cross-subnet BACnet discovery issue.
+    OBJ-BACNET-EVIDENCE:
+      description: Compare IP, mask, routing, Who-Is requests, I-Am responses and BBMD or Foreign Device configuration.
+    OBJ-BACNET-RECOVERY:
+      description: Restore a supported BACnet discovery mechanism and verify the device and a known property.
+  stages:
+    STAGE-01-CONFIRM-DISCOVERY:
+      title: Confirm discovery
+      situation: The BMS does not list the remote controller. Which check first bounds the incident without declaring the controller out of service?
+    STAGE-02-CHECK-ADDRESSING:
+      title: Check addressing
+      situation: The initial diagnosis does not prove that the controller is offline. Which reading should be made before changing its identity?
+    STAGE-03-CORRELATE-DISCOVERY:
+      title: Correlate discovery
+      situation: Local addresses are valid, but the BMS and controller are on different subnets. Which comparison identifies the actual discovery boundary?
+    STAGE-04-RESTORE-DISCOVERY:
+      title: Restore discovery
+      situation: The controller has local link, the BMS sends Who-Is and no remote I-Am appears because BACnet broadcast is not distributed. Which intervention corrects the cause?
+    STAGE-05-VERIFY-PROPERTY:
+      title: Verify device and property
+      situation: The discovery mechanism has been restored under the authorised procedure. Which test confirms recovery?
+  evidence:
+    EVID-01-INCIDENT:
+      source: BMS discovery diagnostics and operator
+      content: The BMS scan does not list the BACnet/IP controller on another subnet; the BMS remains operational and local BACnet activity is visible, but this result is not enough to declare the controller out of service.
+      media_ids: []
+    EVID-02-IP-ADDRESSING:
+      source: BMS and controller network configuration
+      content: The BMS and controller have valid IP addresses and masks for their respective subnets, with no indication of duplicate identity; values must be inspected before replacing them because of a discovery symptom.
+      media_ids: []
+    EVID-03-SUBNET-ROUTING:
+      source: IP topology and routing configuration
+      content: The BMS and controller are on distinct IP subnets with a route between them; IP routing alone does not automatically distribute BACnet discovery broadcast.
+      media_ids: []
+    EVID-04-WHOIS-TRAFFIC:
+      source: BACnet/IP traffic capture
+      content: The BMS emits Who-Is requests within its discovery scope, but no I-Am from the remote controller appears in the capture; this absence does not prove that the controller is offline.
+      media_ids: []
+    EVID-05-BBMD-CONFIG:
+      source: BACnet/IP discovery configuration
+      content: No supported BBMD distribution or Foreign Device registration is configured for cross-subnet discovery; the exact mechanism depends on the approved architecture.
+      media_ids: []
+    EVID-06-RECOVERY:
+      source: BMS discovery and known-property read
+      content: After the supported mechanism is restored, the BMS discovers the remote controller and successfully reads a known property; the read and its quality are repeated according to procedure.
+      media_ids: []
+  decisions:
+    DEC-01-RESTART-BMS:
+      action: Restart the BMS to repeat the scan without preserving the incident context.
+    DEC-01-READ-DISCOVERY:
+      action: Read discovery diagnostics and local BACnet activity before intervening.
+    DEC-01-CHANGE-INSTANCE:
+      action: Change the device instance because it is absent from the list.
+    DEC-01-REPLACE-CONTROLLER:
+      action: Replace the controller without checking its link and addressing.
+    DEC-02-CHANGE-IP:
+      action: Change the controller IP before reading the configuration of both subnets.
+    DEC-02-REPLACE-CABLE:
+      action: Replace the cable because remote discovery does not show the controller.
+    DEC-02-READ-IP-SUBNET:
+      action: Read and compare the BMS and controller IP address, mask and local subnet.
+    DEC-02-DISABLE-FIREWALL:
+      action: Globally disable the firewall so the scan can reach the controller.
+    DEC-03-COMPARE-DISCOVERY:
+      action: Compare subnets, Who-Is/I-Am traffic and discovery configuration.
+    DEC-03-ADD-STATIC-ROUTE:
+      action: Add a static route without checking BACnet broadcast distribution.
+    DEC-03-CHANGE-INSTANCE:
+      action: Change the BACnet instance before explaining the missing remote I-Am.
+    DEC-03-STOP-CONTROLLER:
+      action: Stop the controller to simplify the capture and lose evidence of its local link.
+    DEC-04-CHANGE-CONTROLLER-IP:
+      action: Move the controller to the BMS subnet without validating the authorised network architecture.
+    DEC-04-BYPASS-SECURITY:
+      action: Bypass network protections to force device visibility.
+    DEC-04-POLL-REPEATEDLY:
+      action: Repeat the scan without changing BACnet distribution between subnets.
+    DEC-04-RESTORE-BACNET-DISCOVERY:
+      action: Restore the authorised BBMD or Foreign Device mechanism between subnets.
+    DEC-05-CLEAR-ALARM:
+      action: Clear the alarm and close the case without checking the remote device or its data.
+    DEC-05-VERIFY-DISCOVERY:
+      action: Confirm controller discovery and read a known property with valid quality in repeated reads.
+    DEC-05-ACCEPT-CACHED-DEVICE:
+      action: Accept a cached entry as recovery while current discovery still has no response.
+  retry_feedback:
+    DEC-01-RESTART-BMS: Preserve diagnostics and local activity before repeating the scan.
+    DEC-01-CHANGE-INSTANCE: Preserve identity and check the discovery path first.
+    DEC-01-REPLACE-CONTROLLER: Check power, link and addressing before replacing the controller.
+    DEC-02-CHANGE-IP: Read and document both addresses and masks before changing them.
+    DEC-02-REPLACE-CABLE: Preserve the wiring and read IP, mask and subnet first.
+    DEC-02-DISABLE-FIREWALL: Do not disable the firewall; compare addressing and the supported BACnet mechanism.
+    DEC-03-ADD-STATIC-ROUTE: Compare Who-Is/I-Am and BBMD or Foreign Device before changing routes.
+    DEC-03-CHANGE-INSTANCE: Preserve the instance and verify cross-subnet discovery distribution.
+    DEC-03-STOP-CONTROLLER: Keep the controller available and correlate observed traffic.
+    DEC-04-CHANGE-CONTROLLER-IP: Keep approved addressing and restore the intended BACnet distribution.
+    DEC-04-BYPASS-SECURITY: Apply authorised BACnet configuration; do not globally disable protections.
+    DEC-04-POLL-REPEATEDLY: Restore the cross-subnet mechanism before repeating discovery.
+    DEC-05-CLEAR-ALARM: Verify current discovery and a known property before closing the alarm.
+    DEC-05-ACCEPT-CACHED-DEVICE: Check current discovery and read a property with valid quality.
+  visual:
+    educational_purpose: Progressively reveal the BMS incident, addressing, subnet boundary, missing I-Am, discovery configuration and verifiable recovery.
+  assets:
+    ART-001:
+      alt: BMS BACnet/IP discovery view where the remote controller is absent while local activity remains visible.
+      caption: 'Incident: the BMS lists local devices but does not discover the remote controller at instance 3001.'
+    ART-002:
+      alt: Controller BACnet/IP configuration with IP address, mask, gateway and device instance.
+      caption: 'Addressing: the view separates the controller subnet from the BMS subnet.'
+    ART-003:
+      alt: Didactic diagram with two IP subnets, an L3 router, two BBMDs and a BACnet/IP controller.
+      caption: 'Topology: an IP route exists between subnets, but BACnet discovery needs supported distribution.'
+    ART-004:
+      alt: BACnet/IP capture with BMS Who-Is requests and local I-Am responses but no response from the remote controller.
+      caption: 'Traffic: Who-Is is present, and the missing remote I-Am bounds the observed scope.'
+    ART-005:
+      alt: BBMD configuration with the service enabled and the distribution table missing the remote entry.
+      caption: 'BBMD: distribution is enabled, but the table does not contain the other subnet BBMD.'
+    ART-006:
+      alt: Recovery capture with an I-Am from device 3001 and a ReadProperty read of Object_Name.
+      caption: 'Recovery: the remote I-Am appears and a ReadProperty/ComplexACK confirms the known property.'
+  completion:
+    title: Technical debrief
+    summary: The BACnet/IP controller was available on its subnet, but broadcast discovery did not cross the IP boundary because no supported BBMD or Foreign Device mechanism was configured. After it was restored, the BMS discovered the controller and read a known property.
+    process:
+      - Preserve discovery diagnostics and check local activity before declaring the controller out of service.
+      - Read and compare the BMS and controller IP address, mask and subnet.
+      - Correlate IP routing with Who-Is, I-Am and BBMD or Foreign Device configuration.
+      - Restore the approved cross-subnet BACnet mechanism for the architecture.
+      - Verify current discovery and a known-property read with valid quality.
+    lesson: An IP route between subnets does not by itself distribute BACnet discovery broadcast. Controller availability and address validity must be separated from BBMD or Foreign Device configuration before changing identity.
+    avoided_errors:
+      - Declaring the controller offline only because it is absent from a remote list.
+      - Changing IP or instance without comparing subnets and observed traffic.
+      - Confusing IP routing with automatic BACnet broadcast distribution.
+      - Disabling network protections to hide incomplete configuration.
+      - Closing the case without rediscovering the controller and reading a property.
+    industrial_value:
+      - Traceable BACnet/IP discovery diagnostics.
+      - Fewer unnecessary controller and cable replacements.
+      - Repeatable recovery of cross-subnet visibility.
+    media_ids: []

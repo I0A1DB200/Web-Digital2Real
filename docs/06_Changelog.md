@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-08 — ENV-003 / EE-0029 BACnet device not discovered
+
+- Added bilingual EE-0029 in technical review: a five-stage, 19-option diagnostic flow that separates controller availability and IP addressing from BACnet broadcast discovery across routed subnets.
+- Added six evidence assets covering the BMS incident, addressing, subnet/routing boundary, Who-Is/I-Am traffic, BBMD or Foreign Device configuration and functional recovery. The supplied PNGs are preserved as exact source/runtime copies and mapped 1:1 to `ART-001` through `ART-006`.
+- Registered EE-0029 at a neutral ENV-003 hotspot and extended focused, option-balance, localization and global packaging expectations to 29 Experiences. The PRONETA/TIA topology-assignment pill remains reserved for the ENV-003 closeout.
+
 ## 2026-11-05 — ENV-003 / EE-0028 CANopen node communication lost
 
 - Added the bilingual EE-0028 diagnostic flow: five stages, 19 decision options and six evidence items for separating missing heartbeat supervision from complete CAN-bus communication loss.

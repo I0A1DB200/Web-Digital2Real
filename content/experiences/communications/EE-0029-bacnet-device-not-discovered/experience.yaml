@@ -1,0 +1,554 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-BACNET-DEVICE-029
+  editorial_id: EE-0029
+  content_version: '1.0'
+  class: practice
+  access: free
+  status: technical_review
+  language: es
+localization:
+  default_locale: es
+  supported_locales:
+    - es
+    - en
+  locale_files:
+    es: locales/es.yaml
+    en: locales/en.yaml
+classification:
+  platform: BACnet/IP BMS / field controller
+  domain: BACnet discovery and inter-subnet routing
+  industry: Manufacturing
+  machine_type: Automated diagnostic cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-02
+    competency_ids:
+      - COMP-IIO-SIGNAL-TRACEABILITY
+      - COMP-IIO-STATE-INTERPRETATION
+      - COMP-IIO-CONTROLLED-RECOVERY
+public:
+  slug: bacnet-device-not-discovered
+  title: Dispositivo BACnet no descubierto
+  summary: Diagnostica una alarma de descubrimiento BACnet/IP entre subredes separando disponibilidad del controlador, direccionamiento y distribución de broadcast antes de restaurar el mecanismo compatible.
+  estimated_duration: 25
+  scenario:
+    initial_context: El BMS no descubre un controlador BACnet/IP situado en otra subred IP.
+    operational_state: El controlador tiene alimentación y enlace IP local, y el BMS y el controlador están en subredes enrutadas distintas; sin embargo, el descubrimiento BACnet por broadcast no se distribuye entre ellas y el controlador remoto no aparece en la lista local.
+    initiating_event: Un escaneo Who-Is del BMS no recibe un I-Am del controlador remoto. Antes de cambiar la IP, la instancia del dispositivo, el cable o el controlador hay que comparar IP, máscara, enrutamiento, tráfico Who-Is/I-Am y la configuración BBMD o Foreign Device cuando corresponda.
+    learner_role: Técnico de automatización responsable de distinguir disponibilidad del controlador, direccionamiento y descubrimiento BACnet entre subredes.
+    safety_context:
+      safe_state: Realiza cambios de red desde una condición segura y bajo el procedimiento autorizado de mantenimiento o puesta en marcha.
+      intervention_constraints:
+        - No cambiar la IP o la instancia del dispositivo por el mero hecho de que no aparezca en el descubrimiento.
+        - No desactivar globalmente el firewall ni las protecciones de red para hacer visible un dispositivo.
+        - No afirmar que el controlador está fuera de servicio sin comprobar alimentación, enlace, direccionamiento y tráfico.
+        - Aplicar solo el mecanismo BACnet entre subredes compatible con la arquitectura y verificar después una propiedad conocida.
+  learning_objectives:
+    - id: OBJ-BACNET-DISCOVERY
+      description: Distinguir un controlador apagado o mal direccionado de un problema de descubrimiento BACnet entre subredes.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-STATE-INTERPRETATION
+    - id: OBJ-BACNET-EVIDENCE
+      description: Comparar IP, máscara, enrutamiento, solicitudes Who-Is, respuestas I-Am y configuración BBMD o Foreign Device.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-SIGNAL-TRACEABILITY
+    - id: OBJ-BACNET-RECOVERY
+      description: Restaurar un mecanismo de descubrimiento BACnet compatible y verificar el dispositivo y una propiedad conocida.
+      capability_id: ICF-02
+      competency_id: COMP-IIO-CONTROLLED-RECOVERY
+  stages:
+    - id: STAGE-01-CONFIRM-DISCOVERY
+      phase: incident
+      title: Confirmar el descubrimiento
+      situation: El BMS no lista el controlador remoto. ¿Qué comprobación delimita primero el incidente sin declarar que el controlador está fuera de servicio?
+      evidence_ids:
+        - EVID-01-INCIDENT
+      decision_ids:
+        - DEC-01-RESTART-BMS
+        - DEC-01-READ-DISCOVERY
+        - DEC-01-CHANGE-INSTANCE
+        - DEC-01-REPLACE-CONTROLLER
+    - id: STAGE-02-CHECK-ADDRESSING
+      phase: investigation
+      title: Comprobar el direccionamiento
+      situation: El diagnóstico inicial no demuestra que el controlador esté apagado. ¿Qué lectura debe hacerse antes de modificar su identidad?
+      evidence_ids:
+        - EVID-02-IP-ADDRESSING
+      decision_ids:
+        - DEC-02-CHANGE-IP
+        - DEC-02-REPLACE-CABLE
+        - DEC-02-READ-IP-SUBNET
+        - DEC-02-DISABLE-FIREWALL
+    - id: STAGE-03-CORRELATE-DISCOVERY
+      phase: investigation
+      title: Correlacionar el descubrimiento
+      situation: Las direcciones locales son válidas, pero el BMS y el controlador están en subredes distintas. ¿Qué comparación identifica el límite real del descubrimiento?
+      evidence_ids:
+        - EVID-03-SUBNET-ROUTING
+        - EVID-04-WHOIS-TRAFFIC
+        - EVID-05-BBMD-CONFIG
+      decision_ids:
+        - DEC-03-COMPARE-DISCOVERY
+        - DEC-03-ADD-STATIC-ROUTE
+        - DEC-03-CHANGE-INSTANCE
+        - DEC-03-STOP-CONTROLLER
+    - id: STAGE-04-RESTORE-DISCOVERY
+      phase: investigation
+      title: Restaurar el descubrimiento
+      situation: El controlador tiene enlace local, el BMS emite Who-Is y no aparece un I-Am remoto porque el broadcast BACnet no se distribuye. ¿Qué intervención corrige la causa?
+      evidence_ids: []
+      decision_ids:
+        - DEC-04-CHANGE-CONTROLLER-IP
+        - DEC-04-BYPASS-SECURITY
+        - DEC-04-POLL-REPEATEDLY
+        - DEC-04-RESTORE-BACNET-DISCOVERY
+    - id: STAGE-05-VERIFY-PROPERTY
+      phase: solution
+      title: Verificar dispositivo y propiedad
+      situation: El mecanismo de descubrimiento se ha restaurado bajo el procedimiento autorizado. ¿Qué prueba confirma la recuperación?
+      evidence_ids: []
+      decision_ids:
+        - DEC-05-CLEAR-ALARM
+        - DEC-05-VERIFY-DISCOVERY
+        - DEC-05-ACCEPT-CACHED-DEVICE
+  evidence:
+    - id: EVID-01-INCIDENT
+      type: initial_observation
+      source: Diagnóstico de descubrimiento del BMS y operador
+      content: El escaneo del BMS no lista el controlador BACnet/IP de otra subred; el BMS sigue operativo y se observa actividad BACnet local, pero este resultado no basta para declarar el controlador fuera de servicio.
+      reliability: high
+      revealed_by: []
+      media_ids: ["ART-001"]
+    - id: EVID-02-IP-ADDRESSING
+      type: inspection
+      source: Configuración de red del BMS y del controlador
+      content: El BMS y el controlador tienen una dirección IP y una máscara válidas para sus respectivas subredes, sin indicio de identidad duplicada; los valores deben inspeccionarse antes de reemplazarlos por el síntoma de no descubrimiento.
+      reliability: confirmed
+      revealed_by:
+        - DEC-02-READ-IP-SUBNET
+      media_ids: ["ART-002"]
+    - id: EVID-03-SUBNET-ROUTING
+      type: diagnostic
+      source: Topología IP y configuración de enrutamiento
+      content: El BMS y el controlador están en subredes IP distintas con una ruta entre ellas; el enrutamiento IP por sí solo no distribuye automáticamente el broadcast de descubrimiento BACnet.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-DISCOVERY
+      media_ids: ["ART-003"]
+    - id: EVID-04-WHOIS-TRAFFIC
+      type: diagnostic
+      source: Captura de tráfico BACnet/IP
+      content: El BMS emite solicitudes Who-Is dentro de su ámbito de descubrimiento, pero en la captura no aparece un I-Am del controlador remoto; esta ausencia no demuestra que el controlador esté apagado.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-DISCOVERY
+      media_ids: ["ART-004"]
+    - id: EVID-05-BBMD-CONFIG
+      type: inspection
+      source: Configuración de descubrimiento BACnet/IP
+      content: No hay una distribución BBMD compatible ni un registro Foreign Device configurado para el descubrimiento entre subredes; el mecanismo exacto depende de la arquitectura aprobada.
+      reliability: confirmed
+      revealed_by:
+        - DEC-03-COMPARE-DISCOVERY
+      media_ids: ["ART-005"]
+    - id: EVID-06-RECOVERY
+      type: functional_test
+      source: Descubrimiento del BMS y lectura de una propiedad conocida
+      content: Después de restaurar el mecanismo compatible, el BMS descubre el controlador remoto y lee correctamente una propiedad conocida; la lectura y su calidad se repiten según el procedimiento.
+      reliability: confirmed
+      revealed_by:
+        - DEC-05-VERIFY-DISCOVERY
+      media_ids: ["ART-006"]
+  decisions:
+    - id: DEC-01-RESTART-BMS
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      action: Reiniciar el BMS para repetir el escaneo sin conservar el contexto del incidente.
+    - id: DEC-01-READ-DISCOVERY
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      action: Leer el diagnóstico y la actividad BACnet local antes de intervenir.
+    - id: DEC-01-CHANGE-INSTANCE
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      action: Cambiar la instancia del dispositivo porque no aparece en la lista.
+    - id: DEC-01-REPLACE-CONTROLLER
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      action: Sustituir el controlador sin comprobar su enlace y su direccionamiento.
+    - id: DEC-02-CHANGE-IP
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      action: Cambiar la IP del controlador antes de leer la configuración de ambas subredes.
+    - id: DEC-02-REPLACE-CABLE
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      action: Sustituir el cable porque el descubrimiento remoto no muestra el controlador.
+    - id: DEC-02-READ-IP-SUBNET
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      action: Leer y comparar la IP, la máscara y la subred local del BMS y del controlador.
+    - id: DEC-02-DISABLE-FIREWALL
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      action: Desactivar globalmente el firewall para que el escaneo pueda alcanzar el controlador.
+    - id: DEC-03-COMPARE-DISCOVERY
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      action: Comparar subredes, tráfico Who-Is/I-Am y configuración de descubrimiento.
+    - id: DEC-03-ADD-STATIC-ROUTE
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      action: Añadir una ruta estática sin comprobar el mecanismo BACnet de distribución de broadcast.
+    - id: DEC-03-CHANGE-INSTANCE
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      action: Cambiar la instancia BACnet antes de explicar la ausencia de I-Am remoto.
+    - id: DEC-03-STOP-CONTROLLER
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      action: Detener el controlador para simplificar la captura y perder la evidencia de su enlace local.
+    - id: DEC-04-CHANGE-CONTROLLER-IP
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      action: Cambiar el controlador a la subred del BMS sin validar la arquitectura de red autorizada.
+    - id: DEC-04-BYPASS-SECURITY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      action: Bypassear las protecciones de red para forzar la visibilidad del dispositivo.
+    - id: DEC-04-POLL-REPEATEDLY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      action: Repetir el escaneo sin cambiar la distribución BACnet entre subredes.
+    - id: DEC-04-RESTORE-BACNET-DISCOVERY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      action: Restaurar el BBMD o Foreign Device autorizado entre subredes.
+    - id: DEC-05-CLEAR-ALARM
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      action: Borrar la alarma y cerrar el caso sin comprobar el dispositivo remoto ni sus datos.
+    - id: DEC-05-VERIFY-DISCOVERY
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      action: Confirmar el descubrimiento del controlador y leer una propiedad conocida con calidad válida en lecturas repetidas.
+    - id: DEC-05-ACCEPT-CACHED-DEVICE
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      action: Aceptar una entrada en caché como recuperación aunque el descubrimiento actual siga sin respuesta.
+  visual:
+    educational_purpose: Revelar progresivamente el incidente del BMS, el direccionamiento, el límite de subred, la ausencia de I-Am, la configuración de descubrimiento y la recuperación verificable.
+    representation: available
+    cover_asset_id: ART-001
+    assets:
+      - id: ART-001
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/01-incident.png
+        alt: Exploración BACnet/IP del BMS donde el controlador remoto no aparece y se conserva actividad local.
+        caption: 'Incidente: el BMS muestra dispositivos locales, pero no descubre el controlador remoto de instancia 3001.'
+        purpose: catalog_cover
+      - id: ART-002
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/02-ip-addressing.png
+        alt: Configuración BACnet/IP del controlador con dirección IP, máscara, gateway e instancia del dispositivo.
+        caption: 'Direccionamiento: la vista separa la subred del controlador de la subred del BMS.'
+        purpose: evidence
+      - id: ART-003
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/03-subnet-routing.png
+        alt: Diagrama didáctico con dos subredes IP, router L3, dos BBMD y un controlador BACnet/IP.
+        caption: 'Topología: existe una ruta IP entre subredes, pero el descubrimiento BACnet necesita distribución compatible.'
+        purpose: evidence
+      - id: ART-004
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/04-whois-traffic.png
+        alt: Captura BACnet/IP con solicitudes Who-Is del BMS y respuestas I-Am locales sin respuesta del controlador remoto.
+        caption: 'Tráfico: el Who-Is está presente y la ausencia del I-Am remoto delimita el ámbito observado.'
+        purpose: evidence
+      - id: ART-005
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/05-bbmd-config.png
+        alt: Configuración BBMD con el servicio habilitado y la tabla de distribución sin la entrada remota.
+        caption: 'BBMD: la distribución está habilitada, pero la tabla no contiene el BBMD de la otra subred.'
+        purpose: evidence
+      - id: ART-006
+        type: image
+        src: assets/EXP-BACNET-DEVICE-029/06-recovery.png
+        alt: Captura de recuperación con I-Am del dispositivo 3001 y lectura ReadProperty de Object_Name.
+        caption: 'Recuperación: aparece el I-Am remoto y una lectura ReadProperty/ComplexACK confirma la propiedad conocida.'
+        purpose: evidence
+  completion:
+    title: Debrief técnico
+    summary: El controlador BACnet/IP estaba disponible en su subred, pero el descubrimiento por broadcast no cruzaba la frontera IP porque no había un mecanismo BBMD o Foreign Device compatible configurado. Tras restaurarlo, el BMS descubrió el controlador y leyó una propiedad conocida.
+    process:
+      - Conservar el diagnóstico de descubrimiento y comprobar la actividad local antes de declarar el controlador fuera de servicio.
+      - Leer y comparar IP, máscara y subred del BMS y del controlador.
+      - Correlacionar la ruta IP con Who-Is, I-Am y la configuración BBMD o Foreign Device.
+      - Restaurar el mecanismo BACnet entre subredes aprobado para la arquitectura.
+      - Verificar el descubrimiento actual y una lectura de propiedad conocida con calidad válida.
+    lesson: Una ruta IP entre subredes no distribuye por sí sola el broadcast de descubrimiento BACnet. La disponibilidad del controlador y la validez de sus direcciones deben separarse de la configuración BBMD o Foreign Device antes de cambiar su identidad.
+    avoided_errors:
+      - Declarar el controlador apagado solo porque no aparece en una lista remota.
+      - Cambiar IP o instancia sin comparar las subredes y el tráfico observado.
+      - Confundir enrutamiento IP con distribución automática de broadcast BACnet.
+      - Desactivar protecciones de red para ocultar una configuración incompleta.
+      - Cerrar el caso sin descubrir de nuevo el controlador y leer una propiedad.
+    industrial_value:
+      - Diagnóstico trazable de descubrimiento BACnet/IP.
+      - Menos sustituciones innecesarias de controladores y cableado.
+      - Recuperación reproducible de la visibilidad entre subredes.
+    media_ids: ["ART-006"]
+private:
+  fault_model:
+    root_cause: El mecanismo requerido para distribuir el broadcast de descubrimiento BACnet entre subredes no está configurado, aunque el controlador conserva alimentación, enlace y direccionamiento local válidos.
+    recovery_conditions:
+      - El BMS y el controlador conservan el direccionamiento aprobado para sus respectivas subredes.
+      - La arquitectura dispone de un mecanismo BACnet entre subredes compatible y autorizado.
+      - El BMS recibe una respuesta I-Am del controlador remoto en el ámbito esperado.
+      - Una propiedad conocida del controlador se lee con calidad válida en lecturas repetidas.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-CONTROLLER-OFFLINE
+        statement: El controlador está apagado o su enlace local no está disponible.
+        initial_status: possible
+      - id: HYP-WRONG-IP
+        statement: La IP o la máscara del controlador no coinciden con la configuración aprobada.
+        initial_status: possible
+      - id: HYP-WRONG-INSTANCE
+        statement: La instancia BACnet usada por el BMS no corresponde al controlador esperado.
+        initial_status: possible
+      - id: HYP-DISCOVERY-BOUNDARY
+        statement: El descubrimiento por broadcast BACnet no se distribuye entre las subredes enrutadas.
+        initial_status: likely
+    confirmed_root_cause: HYP-DISCOVERY-BOUNDARY
+    critical_path:
+      - DEC-01-READ-DISCOVERY
+      - DEC-02-READ-IP-SUBNET
+      - DEC-03-COMPARE-DISCOVERY
+      - DEC-04-RESTORE-BACNET-DISCOVERY
+      - DEC-05-VERIFY-DISCOVERY
+  decision_logic:
+    - decision_id: DEC-01-READ-DISCOVERY
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      is_correct: true
+      rationale: Conserva el incidente y separa la actividad local del BMS de la ausencia de descubrimiento remoto antes de modificar el controlador.
+      classification: strong
+      consequence: Se mantiene el contexto y se pasa a revisar el direccionamiento.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-ADDRESSING
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-01-RESTART-BMS
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      is_correct: false
+      rationale: Reiniciar elimina contexto y no distingue un límite de broadcast de un controlador no disponible.
+      classification: weak
+      consequence: Se repite el síntoma sin adquirir evidencia nueva.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-ADDRESSING
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Conserva el diagnóstico y la actividad local antes de repetir el escaneo.
+    - decision_id: DEC-01-CHANGE-INSTANCE
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      is_correct: false
+      rationale: Cambiar la instancia puede crear otra identidad y no demuestra que el descubrimiento pueda cruzar la subred.
+      classification: weak
+      consequence: Se altera la identidad lógica antes de comprobar la red.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-ADDRESSING
+      score_effect: -5
+      safety_effect: -2
+      retry_feedback: Conserva la identidad y comprueba primero la ruta de descubrimiento.
+    - decision_id: DEC-01-REPLACE-CONTROLLER
+      stage_id: STAGE-01-CONFIRM-DISCOVERY
+      is_correct: false
+      rationale: La ausencia en una lista remota no prueba un fallo del controlador ni de su enlace local.
+      classification: weak
+      consequence: Se sustituye hardware sin delimitar el alcance del síntoma.
+      evidence_revealed: []
+      next_stage: STAGE-02-CHECK-ADDRESSING
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Comprueba alimentación, enlace y direccionamiento antes de sustituir el controlador.
+    - decision_id: DEC-02-READ-IP-SUBNET
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      is_correct: true
+      rationale: La comparación de IP, máscara y subred confirma la frontera de red sin cambiar una identidad todavía no explicada.
+      classification: strong
+      consequence: Se obtiene la evidencia de direccionamiento y se pasa a correlacionar el descubrimiento.
+      evidence_revealed: ["EVID-02-IP-ADDRESSING"]
+      next_stage: STAGE-03-CORRELATE-DISCOVERY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-02-CHANGE-IP
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      is_correct: false
+      rationale: Cambiar la IP antes de leerla puede ocultar una configuración válida y romper el acceso local.
+      classification: weak
+      consequence: Se cambia la identidad de red sin conservar el estado original.
+      evidence_revealed: []
+      next_stage: STAGE-03-CORRELATE-DISCOVERY
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Lee y documenta ambas direcciones y máscaras antes de modificarlas.
+    - decision_id: DEC-02-REPLACE-CABLE
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      is_correct: false
+      rationale: El síntoma es remoto y todavía no hay evidencia de una pérdida de enlace local.
+      classification: weak
+      consequence: Se interviene físicamente sin comprobar la frontera IP.
+      evidence_revealed: []
+      next_stage: STAGE-03-CORRELATE-DISCOVERY
+      score_effect: -5
+      safety_effect: -3
+      retry_feedback: Conserva el cableado y lee primero IP, máscara y subred.
+    - decision_id: DEC-02-DISABLE-FIREWALL
+      stage_id: STAGE-02-CHECK-ADDRESSING
+      is_correct: false
+      rationale: Desactivar protecciones globalmente no identifica el límite BACnet y aumenta la exposición de la red.
+      classification: unsafe
+      consequence: Se pierde una barrera sin una prueba dirigida.
+      evidence_revealed: []
+      next_stage: STAGE-03-CORRELATE-DISCOVERY
+      score_effect: -10
+      safety_effect: -10
+      retry_feedback: No desactives el firewall; compara el direccionamiento y el mecanismo BACnet autorizado.
+    - decision_id: DEC-03-COMPARE-DISCOVERY
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      is_correct: true
+      rationale: Correlacionar subredes, tráfico Who-Is/I-Am y configuración de distribución distingue una ruta IP válida de un descubrimiento BACnet incompleto.
+      classification: strong
+      consequence: Se confirma la frontera de descubrimiento y se puede restaurar el mecanismo compatible.
+      evidence_revealed: ["EVID-03-SUBNET-ROUTING", "EVID-04-WHOIS-TRAFFIC", "EVID-05-BBMD-CONFIG"]
+      next_stage: STAGE-04-RESTORE-DISCOVERY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-03-ADD-STATIC-ROUTE
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      is_correct: false
+      rationale: Una ruta IP adicional no sustituye la distribución del broadcast BACnet y puede modificar la topología sin justificarla.
+      classification: weak
+      consequence: Se altera el enrutamiento sin explicar la ausencia de I-Am.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-DISCOVERY
+      score_effect: -5
+      safety_effect: -3
+      retry_feedback: Compara Who-Is/I-Am y BBMD o Foreign Device antes de cambiar rutas.
+    - decision_id: DEC-03-CHANGE-INSTANCE
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      is_correct: false
+      rationale: La ausencia de una respuesta remota puede ocurrir antes de evaluar la instancia; cambiarla no cruza el límite de broadcast.
+      classification: weak
+      consequence: Se mezcla identidad de dispositivo con transporte de descubrimiento.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-DISCOVERY
+      score_effect: -5
+      safety_effect: -2
+      retry_feedback: Conserva la instancia y verifica la distribución de descubrimiento entre subredes.
+    - decision_id: DEC-03-STOP-CONTROLLER
+      stage_id: STAGE-03-CORRELATE-DISCOVERY
+      is_correct: false
+      rationale: Detener el controlador elimina la evidencia de enlace local y hace imposible distinguir disponibilidad de descubrimiento.
+      classification: unsafe
+      consequence: Se pierde una condición necesaria para la comparación.
+      evidence_revealed: []
+      next_stage: STAGE-04-RESTORE-DISCOVERY
+      score_effect: -10
+      safety_effect: -8
+      retry_feedback: Mantén el controlador disponible y correlaciona el tráfico observado.
+    - decision_id: DEC-04-RESTORE-BACNET-DISCOVERY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      is_correct: true
+      rationale: Restaura el mecanismo diseñado para transportar el descubrimiento BACnet entre subredes sin cambiar la identidad del controlador.
+      classification: strong
+      consequence: La configuración queda preparada para una verificación funcional.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-PROPERTY
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-04-CHANGE-CONTROLLER-IP
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      is_correct: false
+      rationale: Mover el controlador a otra subred evita el diseño aprobado y no prueba que el mecanismo BACnet esté configurado.
+      classification: weak
+      consequence: Se altera la arquitectura para ocultar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-PROPERTY
+      score_effect: -10
+      safety_effect: -5
+      retry_feedback: Mantén el direccionamiento aprobado y restaura la distribución BACnet prevista.
+    - decision_id: DEC-04-BYPASS-SECURITY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      is_correct: false
+      rationale: Bypassear la seguridad no es una corrección de descubrimiento y expone la red sin una prueba acotada.
+      classification: unsafe
+      consequence: Se pierde una protección de red sin recuperar la causa.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-PROPERTY
+      score_effect: -10
+      safety_effect: -10
+      retry_feedback: Aplica una configuración BACnet autorizada; no desactives protecciones globales.
+    - decision_id: DEC-04-POLL-REPEATEDLY
+      stage_id: STAGE-04-RESTORE-DISCOVERY
+      is_correct: false
+      rationale: Repetir el mismo escaneo no cambia la distribución de broadcast ni aporta una condición nueva.
+      classification: weak
+      consequence: Se consume tiempo sin corregir el límite de descubrimiento.
+      evidence_revealed: []
+      next_stage: STAGE-05-VERIFY-PROPERTY
+      score_effect: -3
+      safety_effect: 0
+      retry_feedback: Restaura primero el mecanismo entre subredes y después repite el descubrimiento.
+    - decision_id: DEC-05-VERIFY-DISCOVERY
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      is_correct: true
+      rationale: Descubrir de nuevo y leer una propiedad conocida comprueba transporte, identidad y acceso de datos en la condición recuperada.
+      classification: strong
+      consequence: Se obtiene evidencia funcional de recuperación.
+      evidence_revealed: ["EVID-06-RECOVERY"]
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 2
+    - decision_id: DEC-05-CLEAR-ALARM
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      is_correct: false
+      rationale: Borrar la alarma no demuestra que el dispositivo vuelva a ser descubierto ni que sus datos sean legibles.
+      classification: weak
+      consequence: Se cierra el síntoma sin una prueba funcional.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Verifica el descubrimiento actual y una propiedad conocida antes de cerrar la alarma.
+    - decision_id: DEC-05-ACCEPT-CACHED-DEVICE
+      stage_id: STAGE-05-VERIFY-PROPERTY
+      is_correct: false
+      rationale: Una entrada en caché no demuestra una respuesta I-Am actual ni una lectura válida del controlador.
+      classification: weak
+      consequence: Se acepta una referencia histórica como recuperación.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: Comprueba el descubrimiento actual y lee una propiedad con calidad válida.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: El controlador BACnet/IP estaba disponible en su subred, pero el descubrimiento por broadcast no cruzaba la frontera IP porque no había un mecanismo BBMD o Foreign Device compatible configurado. Tras restaurarlo, el BMS descubrió el controlador y leyó una propiedad conocida.
+    correct_reasoning:
+      - Conservar el incidente y separar disponibilidad local de descubrimiento remoto.
+      - Comparar IP, máscara y subred sin cambiar la identidad.
+      - Correlacionar ruta IP, Who-Is, I-Am y configuración de descubrimiento.
+      - Restaurar el mecanismo BACnet entre subredes aprobado para la arquitectura.
+      - Verificar el descubrimiento actual y una propiedad conocida.
+    recovery:
+      - Controlador remoto visible en el descubrimiento actual.
+      - Respuesta I-Am observable dentro del ámbito esperado.
+      - Propiedad conocida leída con calidad válida.
+      - Lectura repetida conforme al procedimiento.
+  technical_validation:
+    status: pending
+    evidence:
+      - 'Caso definido por el contrato ENV-003: un controlador BACnet/IP disponible en otra subred no aparece porque el mecanismo de distribución de broadcast de descubrimiento no está configurado.'
+      - La unidad textual queda pendiente de revisión técnica y de assets visuales aprobados.

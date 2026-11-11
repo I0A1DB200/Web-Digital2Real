@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-11 — EE-0030 OPC UA monitoring technical correction
+
+- Concreted EE-0030's root cause: the monitored item is in `MonitoringMode=Sampling` instead of `Reporting` while the session and subscription remain active.
+- Aligned ES/EN evidence, decisions, feedback and debrief with `SetMonitoringMode`, `DataChangeNotification`, `Publish`, server-revised sampling/publication parameters, DataValue quality and distinct source/server timestamps. Stage, decision and evidence identifiers remain unchanged.
+- Added the seven supplied OPC UA evidence images, linked `ART-001` through `ART-007` to the existing evidence IDs, and preserved the seven-evidence, 19-option and five-stage invariants. EVID-05 is documented as limited to visible `StatusCode=Good` and configuration because its image does not show the value beside the status.
+- Added regression assertions for the concrete mode transition, asset references, exact source/runtime copies and bilingual projection.
+
 ## 2026-11-10 — ENV-003 / EE-0030 OPC UA data not updating
 
 - Added bilingual EE-0030 in technical review: a five-stage, 19-option advanced diagnostic flow that separates OPC UA session connectivity from subscription, monitored-item, sampling/publication, quality and timestamp behaviour.

@@ -1,11 +1,11 @@
 locale: es
 translations:
   title: Datos OPC UA sin actualizar
-  summary: Diagnostica un cliente OPC UA conectado cuyo valor monitorizado no cambia separando sesión, suscripción, monitored item, configuración de muestreo/publicación, calidad y timestamps antes de corregir la monitorización.
+  summary: Diagnostica un cliente OPC UA conectado cuyo valor monitorizado no cambia porque el monitored item está en MonitoringMode=Sampling cuando debe estar en Reporting, separando sesión, suscripción, calidad y timestamps antes de corregirlo.
   scenario:
     initial_context: Un cliente OPC UA mantiene la conexión con el servidor, pero una variable de proceso monitorizada no se actualiza como espera el operador.
-    operational_state: La sesión OPC UA aparece conectada y el cliente conserva el nodo monitorizado, pero las notificaciones de cambio no llegan con el comportamiento esperado; la causa puede estar en la suscripción o en el monitored item aunque el servidor siga accesible.
-    initiating_event: La pantalla del cliente conserva un valor antiguo mientras la operación espera datos actuales. Antes de reiniciar la sesión, cambiar el endpoint o forzar la variable hay que comprobar el estado de sesión, suscripción, monitored item, muestreo/publicación, calidad y timestamps.
+    operational_state: La sesión OPC UA aparece conectada, la suscripción tiene PublishingEnabled=true y el cliente conserva el nodo y el atributo Value correctos, pero el monitored item está en MonitoringMode=Sampling. El servidor puede muestrear y poner valores en cola sin enviar las notificaciones normales de cambio mientras el item no pase a Reporting.
+    initiating_event: La pantalla del cliente conserva un valor antiguo mientras la operación espera datos actuales. Antes de reiniciar la sesión, cambiar el endpoint o forzar la variable hay que comprobar sesión, suscripción, NodeId, atributo Value, MonitoringMode, parámetros efectivos de muestreo/publicación, calidad y timestamps.
     learner_role: Técnico de automatización responsable de separar conectividad OPC UA, comportamiento de suscripción y calidad de datos antes de intervenir en el servidor o en la variable.
     safety_context:
       safe_state: Realiza cambios de configuración desde una condición segura y bajo el procedimiento autorizado de mantenimiento o puesta en marcha.
@@ -18,9 +18,9 @@ translations:
     OBJ-OPCUA-BOUNDARY:
       description: Diferenciar una sesión OPC UA conectada de una suscripción que no entrega cambios de datos.
     OBJ-OPCUA-TRACEABILITY:
-      description: Correlacionar suscripción, monitored item, muestreo, publicación, calidad y timestamps con el valor de origen.
+      description: Correlacionar suscripción, monitored item, MonitoringMode, muestreo, publicación, calidad y timestamps con el valor de origen.
     OBJ-OPCUA-RECOVERY:
-      description: Corregir la configuración de monitorización y verificar cambios reales con calidad y timestamps coherentes.
+      description: Cambiar el monitored item a Reporting mediante el mecanismo autorizado y verificar DataChangeNotification con calidad y timestamps coherentes.
   stages:
     STAGE-01-CONFIRM-SESSION:
       title: Confirmar la sesión
@@ -30,10 +30,10 @@ translations:
       situation: La sesión está establecida, pero el valor sigue sin actualizarse. ¿Qué lectura separa la suscripción del estado general de conexión?
     STAGE-03-CHECK-MONITORED-ITEM:
       title: Revisar el monitored item
-      situation: La suscripción existe, pero la notificación esperada no llega. ¿Qué comparación comprueba el objeto monitorizado y sus parámetros de muestreo/publicación?
+      situation: La suscripción existe, pero la notificación esperada no llega. ¿Qué comparación comprueba NodeId, atributo Value, MonitoringMode y los parámetros efectivos de muestreo/publicación?
     STAGE-04-CORRELATE-QUALITY:
       title: Correlacionar calidad y tiempo
-      situation: El objeto está creado y los parámetros son visibles. ¿Qué correlación distingue un valor válido actual de un valor antiguo o de mala calidad?
+      situation: El monitored item se muestrea, pero todavía no reporta cambios. ¿Qué correlación distingue un valor válido actual de un valor antiguo o de mala calidad?
     STAGE-05-RESTORE-AND-VERIFY:
       title: Restaurar y verificar
       situation: La causa está localizada en la configuración de monitorización. ¿Qué acción corrige el problema y demuestra que el cliente recibe datos actuales?
@@ -41,31 +41,31 @@ translations:
     EVID-01-SESSION-STATUS:
       source: Estado de sesión del cliente OPC UA
       content: La sesión OPC UA aparece establecida y el endpoint sigue accesible, pero el cliente conserva un valor monitorizado antiguo; el estado de sesión por sí solo no demuestra que la suscripción entregue cambios.
-      media_ids: []
+      media_ids: ["ART-001"]
     EVID-02-SUBSCRIPTION-STATUS:
       source: Panel de suscripciones del cliente OPC UA
-      content: La suscripción existe, pero su estado y sus contadores deben comprobarse por separado de la sesión para saber si puede publicar notificaciones al cliente.
-      media_ids: []
+      content: La suscripción existe y PublishingEnabled=true en la simulación propuesta, pero su estado y sus contadores deben comprobarse por separado de la sesión para saber si puede publicar notificaciones al cliente.
+      media_ids: ["ART-002"]
     EVID-03-MONITORED-ITEM:
       source: Configuración del monitored item
-      content: El monitored item asociado al nodo debe compararse con el nodo esperado, su atributo de valor y su estado de monitorización; una sesión conectada no corrige una selección o configuración incorrecta.
-      media_ids: []
+      content: En la simulación propuesta, el monitored item apunta a ns=2;s=Machine.Conveyor.Speed y al atributo Value, pero su MonitoringMode efectivo es Sampling en lugar de Reporting; estos valores son didácticos y deben leerse del servidor, no asumirse como una instalación real.
+      media_ids: ["ART-003"]
     EVID-04-SAMPLING-PUBLISHING:
       source: Parámetros de suscripción y monitored item
-      content: Los intervalos de muestreo y publicación y la política de notificación deben revisarse juntos; una configuración que no solicita o publica cambios puede dejar el valor visible sin actualizar.
-      media_ids: []
+      content: Para la simulación se solicitan sampling interval de 250 ms, publishing interval de 1000 ms y queue size 10; hay que comprobar los valores revisados por el servidor. Estos intervalos no sustituyen MonitoringMode=Reporting, y una suscripción que publica no reporta este item mientras permanezca en Sampling.
+      media_ids: ["ART-004"]
     EVID-05-DATA-QUALITY:
       source: DataValue del cliente OPC UA
-      content: La calidad del DataValue debe leerse junto al valor; una calidad incierta o mala no puede presentarse como un valor de proceso actual aunque el cliente conserve una sesión válida.
-      media_ids: []
+      content: La calidad del DataValue debe leerse junto al valor; un valor antiguo puede conservar calidad Good y aun así no ser actual. Una calidad incierta o mala tampoco puede presentarse como dato de proceso válido.
+      media_ids: ["ART-005"]
     EVID-06-SOURCE-TIMESTAMPS:
       source: SourceTimestamp y ServerTimestamp del DataValue
-      content: Los timestamps de origen y servidor permiten distinguir un valor antiguo de un cambio actual; deben ser coherentes con la observación y no sustituirse por la hora local de la pantalla.
-      media_ids: []
+      content: SourceTimestamp y ServerTimestamp describen tiempos distintos y no tienen que ser iguales; deben leerse juntos para distinguir un valor antiguo de un cambio actual y no sustituirse por la hora local de la pantalla.
+      media_ids: ["ART-006"]
     EVID-07-SERVER-SOURCE-VALUE:
       source: Valor de origen del servidor y notificaciones del cliente
-      content: Tras corregir la configuración de monitorización, el valor de origen cambia y el cliente recibe notificaciones con el valor actual, calidad adecuada y timestamps coherentes en lecturas repetidas.
-      media_ids: []
+      content: Tras aplicar SetMonitoringMode=Reporting de forma autorizada, el servicio devuelve un resultado satisfactorio para el item y el cliente recibe DataChangeNotification mediante Publish cuando cambia el valor de origen, con calidad adecuada y timestamps coherentes en lecturas repetidas.
+      media_ids: ["ART-007"]
   decisions:
     DEC-01-RESTART-CLIENT:
       action: Reiniciar el cliente para repetir la conexión sin conservar el estado del incidente.
@@ -84,7 +84,7 @@ translations:
     DEC-02-CHANGE-SECURITY:
       action: Cambiar la política de seguridad para compensar una suscripción sin cambios.
     DEC-03-COMPARE-MONITORING:
-      action: Comparar nodo, monitored item y parámetros de muestreo y publicación.
+      action: Comparar NodeId, atributo Value, MonitoringMode y parámetros efectivos.
     DEC-03-INCREASE-POLLING:
       action: Aumentar el sondeo de la pantalla sin revisar la suscripción OPC UA.
     DEC-03-RECREATE-NODE:
@@ -102,7 +102,7 @@ translations:
     DEC-05-CLEAR-ALARM:
       action: Borrar la alarma y cerrar el caso sin observar cambios actuales.
     DEC-05-CORRECT-AND-VERIFY:
-      action: Corregir la monitorización autorizada y verificar cambios, calidad y timestamps coherentes.
+      action: Aplicar SetMonitoringMode=Reporting y verificar DataChangeNotification, calidad y timestamps.
     DEC-05-ACCEPT-CACHED-VALUE:
       action: Aceptar el valor en caché como recuperación aunque no llegue una notificación nueva.
   retry_feedback:
@@ -112,35 +112,56 @@ translations:
     DEC-02-CHANGE-ENDPOINT: Conserva el endpoint y lee el estado de la suscripción.
     DEC-02-CLEAR-SUBSCRIPTION: Conserva la suscripción y revisa su estado antes de modificarla.
     DEC-02-CHANGE-SECURITY: No cambies seguridad; separa sesión, suscripción y monitored item.
-    DEC-03-INCREASE-POLLING: Revisa el monitored item y los parámetros de muestreo/publicación.
+    DEC-03-INCREASE-POLLING: Revisa NodeId, atributo Value, MonitoringMode y los parámetros efectivos de muestreo/publicación.
     DEC-03-RECREATE-NODE: Compara el objeto existente antes de recrearlo.
     DEC-03-FORCE-SOURCE: No fuerces la variable; conserva el valor de origen y revisa la monitorización.
-    DEC-04-IGNORE-QUALITY: Lee calidad y timestamps junto con el valor.
+    DEC-04-IGNORE-QUALITY: Lee calidad y ambos timestamps junto con el valor; no asumas que deben ser iguales.
     DEC-04-ALTER-SOURCE: No alteres la variable; correlaciona su valor de origen con calidad y timestamps.
     DEC-04-ACCEPT-STALE: Compara timestamps y calidad antes de aceptar el valor.
-    DEC-05-CLEAR-ALARM: Corrige la monitorización y comprueba cambios, calidad y timestamps antes de cerrar.
-    DEC-05-ACCEPT-CACHED-VALUE: Verifica un cambio real con calidad y timestamps coherentes.
+    DEC-05-CLEAR-ALARM: Aplica Reporting al monitored item y comprueba DataChangeNotification, calidad y timestamps antes de cerrar.
+    DEC-05-ACCEPT-CACHED-VALUE: Verifica un cambio real tras Reporting con calidad y timestamps coherentes.
   visual:
     educational_purpose: Revelar progresivamente la sesión conectada, la suscripción, el monitored item, los parámetros de muestreo/publicación, la calidad, los timestamps y la recuperación de datos.
-  assets: {}
+  assets:
+    ART-001:
+      alt: Vista didáctica tipo UaExpert con sesión OPC UA conectada, endpoint accesible y un valor monitorizado conservado.
+      caption: 'Sesión: el cliente está conectado y conserva un valor visible mientras se investiga la falta de actualización.'
+    ART-002:
+      alt: Panel didáctico de suscripción OPC UA con PublishingEnabled=True y el monitored item asociado.
+      caption: 'Suscripción: PublishingEnabled está activo y debe separarse del estado general de la sesión.'
+    ART-003:
+      alt: Configuración didáctica del monitored item con NodeId ns=2;s=Machine.Conveyor.Speed, atributo Value y MonitoringMode=Sampling.
+      caption: 'Monitored item: el modo efectivo es Sampling, aunque la recuperación requiere comprobar Reporting.'
+    ART-004:
+      alt: Vista didáctica de parámetros OPC UA con sampling de 250 ms, publishing de 1000 ms, queue size 10 y modo Sampling.
+      caption: 'Parámetros: los intervalos y la cola son valores didácticos que deben verificarse como revisados por el servidor.'
+    ART-005:
+      alt: Panel didáctico que muestra StatusCode Good y la configuración del monitored item; esta captura no muestra el valor junto al estado.
+      caption: 'Calidad: StatusCode Good es visible, pero la imagen por sí sola no demuestra el valor actual.'
+    ART-006:
+      alt: DataValue didáctico con valor 750.0, StatusCode Good y SourceTimestamp y ServerTimestamp diferentes.
+      caption: 'Timestamps: valor, calidad y tiempos de origen y servidor se leen juntos sin exigir que sean iguales.'
+    ART-007:
+      alt: Vista didáctica de recuperación con MonitoringMode=Reporting, valor 780.0 y registro de DataChangeNotification recibida.
+      caption: 'Recuperación: SetMonitoringMode=Reporting es aceptado y Publish entrega una DataChangeNotification.'
   completion:
     title: Debrief técnico
-    summary: La sesión OPC UA estaba conectada, pero la configuración del monitored item o de la suscripción impedía recibir las notificaciones de cambio esperadas. Tras corregir la monitorización autorizada, el cliente recibió cambios reales con calidad adecuada y timestamps coherentes.
+    summary: La sesión OPC UA y la suscripción estaban activas, pero el monitored item permanecía en MonitoringMode=Sampling en lugar de Reporting. Tras aplicar SetMonitoringMode=Reporting y comprobar el resultado satisfactorio del servicio, el cliente recibió DataChangeNotification con calidad adecuada y timestamps coherentes.
     process:
       - Conservar el síntoma y comprobar el estado de sesión sin reiniciar ni escribir en el proceso.
       - Leer el estado de la suscripción por separado de la sesión.
-      - Comparar nodo, monitored item, muestreo y publicación.
-      - Correlacionar valor, calidad y timestamps de origen y servidor.
-      - Corregir la configuración verificada y comprobar cambios actuales en lecturas repetidas.
-    lesson: Una sesión OPC UA conectada no garantiza que un monitored item publique cambios. La configuración de suscripción debe correlacionarse con calidad, timestamps y valor de origen antes de intervenir.
+      - Comparar NodeId, atributo Value, MonitoringMode y parámetros efectivos revisados por el servidor.
+      - Correlacionar valor, calidad y los timestamps de origen y servidor sin exigir que sean iguales.
+      - Aplicar SetMonitoringMode=Reporting y comprobar DataChangeNotification en lecturas repetidas.
+    lesson: Una sesión OPC UA conectada y una suscripción con PublishingEnabled no garantizan que un monitored item reporte cambios. Sampling permite muestrear sin reportar las notificaciones normales; el modo Reporting efectivo debe comprobarse antes de aceptar la recuperación.
     avoided_errors:
       - Confundir sesión establecida con notificaciones de datos funcionando.
       - Reiniciar cliente o servidor sin conservar el diagnóstico.
       - Cambiar el endpoint o la seguridad sin evidencia de fallo de sesión.
-      - Ignorar calidad y timestamps porque el valor numérico parece legible.
+      - Suponer que un valor antiguo tiene calidad Bad o que SourceTimestamp y ServerTimestamp deben coincidir.
       - Cerrar el caso sin demostrar cambios reales en el cliente.
     industrial_value:
       - Diagnóstico trazable de sesiones y suscripciones OPC UA.
       - Menos reinicios y cambios de servidor innecesarios.
       - Recuperación reproducible de datos monitorizados.
-    media_ids: []
+    media_ids: ["ART-007"]

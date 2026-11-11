@@ -1,11 +1,11 @@
 locale: en
 translations:
   title: OPC UA Data Not Updating
-  summary: Diagnose a connected OPC UA client whose monitored value does not change by separating session, subscription, monitored item, sampling and publishing settings, quality and timestamps before correcting monitoring.
+  summary: Diagnose a connected OPC UA client whose monitored value does not change because the monitored item is in MonitoringMode=Sampling when it should be Reporting, separating session, subscription, quality and timestamps before correction.
   scenario:
     initial_context: An OPC UA client maintains its server connection, but a monitored process variable does not update as the operator expects.
-    operational_state: The OPC UA session appears connected and the client keeps the monitored node, but change notifications do not arrive as expected; the cause may be in the subscription or monitored item even while the server remains reachable.
-    initiating_event: The client screen keeps an old value while operation requires current data. Before restarting the session, changing the endpoint or forcing the variable, check session status, subscription, monitored item, sampling and publishing, quality and timestamps.
+    operational_state: The OPC UA session appears connected, the subscription has PublishingEnabled=true and the client keeps the correct node and Value attribute, but the monitored item is in MonitoringMode=Sampling. The server can sample and queue values without sending normal change notifications while the item remains outside Reporting.
+    initiating_event: The client screen keeps an old value while operation requires current data. Before restarting the session, changing the endpoint or forcing the variable, check session, subscription, NodeId, Value attribute, MonitoringMode, effective sampling and publishing parameters, quality and timestamps.
     learner_role: Automation technician responsible for separating OPC UA connectivity, subscription behaviour and data quality before intervening in the server or variable.
     safety_context:
       safe_state: Make configuration changes from a safe condition and under the authorised maintenance or commissioning procedure.
@@ -18,9 +18,9 @@ translations:
     OBJ-OPCUA-BOUNDARY:
       description: Distinguish a connected OPC UA session from a subscription that does not deliver data changes.
     OBJ-OPCUA-TRACEABILITY:
-      description: Correlate subscription, monitored item, sampling, publishing, quality and timestamps with the source value.
+      description: Correlate subscription, monitored item, MonitoringMode, sampling, publishing, quality and timestamps with the source value.
     OBJ-OPCUA-RECOVERY:
-      description: Correct monitoring configuration and verify real changes with coherent quality and timestamps.
+      description: Change the monitored item to Reporting through the authorised mechanism and verify DataChangeNotification with coherent quality and timestamps.
   stages:
     STAGE-01-CONFIRM-SESSION:
       title: Confirm the session
@@ -30,10 +30,10 @@ translations:
       situation: The session is established, but the value still does not update. Which reading separates the subscription from general connection state?
     STAGE-03-CHECK-MONITORED-ITEM:
       title: Review the monitored item
-      situation: The subscription exists, but the expected notification does not arrive. Which comparison checks the monitored object and its sampling and publishing parameters?
+      situation: The subscription exists, but the expected notification does not arrive. Which comparison checks NodeId, Value attribute, MonitoringMode and effective sampling and publishing parameters?
     STAGE-04-CORRELATE-QUALITY:
       title: Correlate quality and time
-      situation: The object exists and its parameters are visible. Which correlation distinguishes a valid current value from an old or poor-quality value?
+      situation: The monitored item is sampled but still does not report changes. Which correlation distinguishes a valid current value from an old or poor-quality value?
     STAGE-05-RESTORE-AND-VERIFY:
       title: Restore and verify
       situation: The cause is located in monitoring configuration. Which action corrects the problem and demonstrates that the client receives current data?
@@ -41,31 +41,31 @@ translations:
     EVID-01-SESSION-STATUS:
       source: OPC UA client session status
       content: The OPC UA session appears established and the endpoint remains reachable, but the client keeps an old monitored value; session state alone does not prove that the subscription delivers changes.
-      media_ids: []
+      media_ids: ["ART-001"]
     EVID-02-SUBSCRIPTION-STATUS:
       source: OPC UA client subscription panel
-      content: The subscription exists, but its state and counters must be checked separately from the session to determine whether it can publish notifications to the client.
-      media_ids: []
+      content: The subscription exists and PublishingEnabled=true in the proposed simulation, but its state and counters must be checked separately from the session to determine whether it can publish notifications to the client.
+      media_ids: ["ART-002"]
     EVID-03-MONITORED-ITEM:
       source: Monitored item configuration
-      content: The monitored item associated with the node must be compared with the expected node, its value attribute and monitoring state; a connected session does not correct an incorrect selection or configuration.
-      media_ids: []
+      content: In the proposed simulation, the monitored item points to ns=2;s=Machine.Conveyor.Speed and the Value attribute, but its effective MonitoringMode is Sampling instead of Reporting; these values are didactic and must be read from the server rather than assumed as a real installation.
+      media_ids: ["ART-003"]
     EVID-04-SAMPLING-PUBLISHING:
       source: Subscription and monitored item parameters
-      content: Sampling and publishing intervals and the notification policy must be reviewed together; a configuration that does not request or publish changes can leave the visible value unchanged.
-      media_ids: []
+      content: The simulation requests a 250 ms sampling interval, 1000 ms publishing interval and queue size 10; the server-revised values must be checked. These intervals do not replace MonitoringMode=Reporting, and a publishing subscription does not report this item while it remains in Sampling.
+      media_ids: ["ART-004"]
     EVID-05-DATA-QUALITY:
       source: OPC UA client DataValue
-      content: DataValue quality must be read with the value; uncertain or bad quality cannot be presented as current process data even when the client keeps a valid session.
-      media_ids: []
+      content: DataValue quality must be read with the value; an old value can retain Good quality and still not be current. Uncertain or bad quality also cannot be presented as valid process data.
+      media_ids: ["ART-005"]
     EVID-06-SOURCE-TIMESTAMPS:
       source: DataValue SourceTimestamp and ServerTimestamp
-      content: Source and server timestamps distinguish an old value from a current change; they must be coherent with the observation and must not be replaced by the screen local time.
-      media_ids: []
+      content: SourceTimestamp and ServerTimestamp describe different times and do not have to be equal; read them together to distinguish an old value from a current change, without replacing them with screen local time.
+      media_ids: ["ART-006"]
     EVID-07-SERVER-SOURCE-VALUE:
       source: Server source value and client notifications
-      content: After monitoring configuration is corrected, the source value changes and the client receives notifications with the current value, suitable quality and coherent timestamps in repeated reads.
-      media_ids: []
+      content: After authorised SetMonitoringMode=Reporting, the service returns a successful result for the item and the client receives DataChangeNotification through Publish when the source value changes, with suitable quality and coherent timestamps in repeated reads.
+      media_ids: ["ART-007"]
   decisions:
     DEC-01-RESTART-CLIENT:
       action: Restart the client to repeat the connection without preserving the incident state.
@@ -84,7 +84,7 @@ translations:
     DEC-02-CHANGE-SECURITY:
       action: Change the security policy to compensate for a subscription without changes.
     DEC-03-COMPARE-MONITORING:
-      action: Compare the node, monitored item and sampling and publishing parameters.
+      action: Compare NodeId, Value attribute, MonitoringMode and effective parameters.
     DEC-03-INCREASE-POLLING:
       action: Increase screen polling without reviewing the OPC UA subscription.
     DEC-03-RECREATE-NODE:
@@ -102,7 +102,7 @@ translations:
     DEC-05-CLEAR-ALARM:
       action: Clear the alarm and close the case without observing current changes.
     DEC-05-CORRECT-AND-VERIFY:
-      action: Correct authorised monitoring and verify coherent changes, quality and timestamps.
+      action: Apply SetMonitoringMode=Reporting and verify DataChangeNotification, quality and timestamps.
     DEC-05-ACCEPT-CACHED-VALUE:
       action: Accept the cached value as recovery although no new notification arrives.
   retry_feedback:
@@ -112,35 +112,56 @@ translations:
     DEC-02-CHANGE-ENDPOINT: Preserve the endpoint and read subscription state.
     DEC-02-CLEAR-SUBSCRIPTION: Preserve the subscription and review its state before changing it.
     DEC-02-CHANGE-SECURITY: Do not change security; separate session, subscription and monitored item.
-    DEC-03-INCREASE-POLLING: Review the monitored item and sampling and publishing parameters.
+    DEC-03-INCREASE-POLLING: Review NodeId, Value attribute, MonitoringMode and effective sampling and publishing parameters.
     DEC-03-RECREATE-NODE: Compare the existing object before recreating it.
     DEC-03-FORCE-SOURCE: Do not force the variable; preserve the source value and review monitoring.
-    DEC-04-IGNORE-QUALITY: Read quality and timestamps with the value.
+    DEC-04-IGNORE-QUALITY: Read quality and both timestamps with the value; do not assume they must match.
     DEC-04-ALTER-SOURCE: Do not alter the variable; correlate its source value with quality and timestamps.
     DEC-04-ACCEPT-STALE: Compare timestamps and quality before accepting the value.
-    DEC-05-CLEAR-ALARM: Correct monitoring and check changes, quality and timestamps before closing.
-    DEC-05-ACCEPT-CACHED-VALUE: Verify a real change with coherent quality and timestamps.
+    DEC-05-CLEAR-ALARM: Apply Reporting to the monitored item and check DataChangeNotification, quality and timestamps before closing.
+    DEC-05-ACCEPT-CACHED-VALUE: Verify a real change after Reporting with coherent quality and timestamps.
   visual:
     educational_purpose: Progressively reveal the connected session, subscription, monitored item, sampling and publishing parameters, quality, timestamps and data recovery.
-  assets: {}
+  assets:
+    ART-001:
+      alt: Didactic UaExpert-style view with an established OPC UA session, reachable endpoint, and a retained monitored value.
+      caption: 'Session: the client is connected and retains a visible value while the missing update is investigated.'
+    ART-002:
+      alt: Didactic OPC UA subscription panel with PublishingEnabled=True and the associated monitored item.
+      caption: 'Subscription: PublishingEnabled is active and must be separated from the general session state.'
+    ART-003:
+      alt: Didactic monitored-item configuration with NodeId ns=2;s=Machine.Conveyor.Speed, Value attribute, and MonitoringMode=Sampling.
+      caption: 'Monitored item: the effective mode is Sampling, while recovery requires Reporting to be verified.'
+    ART-004:
+      alt: Didactic OPC UA parameter view with 250 ms sampling, 1000 ms publishing, queue size 10, and Sampling mode.
+      caption: 'Parameters: intervals and queue size are didactic values that must be checked as revised by the server.'
+    ART-005:
+      alt: Didactic panel showing StatusCode Good and monitored-item configuration; this capture does not show the value beside the status.
+      caption: 'Quality: StatusCode Good is visible, but the image alone does not demonstrate the current value.'
+    ART-006:
+      alt: Didactic DataValue with value 750.0, StatusCode Good, and different SourceTimestamp and ServerTimestamp values.
+      caption: 'Timestamps: value, quality, and source/server times are read together without assuming they are equal.'
+    ART-007:
+      alt: Didactic recovery view with MonitoringMode=Reporting, value 780.0, and a received DataChangeNotification log entry.
+      caption: 'Recovery: SetMonitoringMode=Reporting succeeds and Publish delivers a DataChangeNotification.'
   completion:
     title: Technical debrief
-    summary: The OPC UA session was connected, but monitored item or subscription configuration prevented the expected change notifications. After authorised monitoring correction, the client received real changes with suitable quality and coherent timestamps.
+    summary: The OPC UA session and subscription were active, but the monitored item remained in MonitoringMode=Sampling instead of Reporting. After applying SetMonitoringMode=Reporting and checking the service result, the client received DataChangeNotification with suitable quality and coherent timestamps.
     process:
       - Preserve the symptom and check session state without restarting or writing to the process.
       - Read subscription state separately from the session.
-      - Compare node, monitored item, sampling and publishing.
-      - Correlate value, quality and source and server timestamps.
-      - Correct verified configuration and check current changes in repeated reads.
-    lesson: A connected OPC UA session does not guarantee that a monitored item publishes changes. Subscription configuration must be correlated with quality, timestamps and source value before intervention.
+      - Compare NodeId, Value attribute, MonitoringMode and server-revised effective parameters.
+      - Correlate value, quality and source and server timestamps without requiring them to be equal.
+      - Apply SetMonitoringMode=Reporting and check DataChangeNotification in repeated reads.
+    lesson: A connected OPC UA session and a PublishingEnabled subscription do not guarantee that a monitored item reports changes. Sampling can sample without reporting normal notifications; effective Reporting must be checked before accepting recovery.
     avoided_errors:
       - Confusing an established session with working data notifications.
       - Restarting client or server without preserving diagnostics.
       - Changing endpoint or security without evidence of a session fault.
-      - Ignoring quality and timestamps because the numeric value looks readable.
+      - Assuming an old value has Bad quality or that SourceTimestamp and ServerTimestamp must match.
       - Closing the case without demonstrating real client changes.
     industrial_value:
       - Traceable OPC UA session and subscription diagnostics.
       - Fewer unnecessary server and client restarts.
       - Repeatable recovery of monitored data.
-    media_ids: []
+    media_ids: ["ART-007"]

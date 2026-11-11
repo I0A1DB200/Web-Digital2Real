@@ -2,9 +2,9 @@
 
 - Contract: Master Contract V1 (`docs/implementation/ENV-003-contract.md`)
 - Phase: 13 — EE-0030 OPC UA Data Not Updating
-- Status: questions, answers and ENV-003 hotspot implemented; visual asset requirements documented; user approval pending
-- Scope: EE-0030 OPC UA Data Not Updating, bilingual five-stage diagnostic flow, 19 questions/options and seven evidence items; session connectivity is separated from subscription, monitored item, data quality and timestamps
-- Validation: EE-0030 focused test, authoring V2, ES/EN localization, runtime normalization, global package test, preview package and balanced decision lengths passed; browser QA pending
+- Status: questions, answers and ENV-003 hotspot implemented; technical cause corrected to MonitoringMode=Sampling versus Reporting; seven visual assets integrated with EVID-05 limitation documented; user approval pending
+- Scope: EE-0030 OPC UA Data Not Updating, bilingual five-stage diagnostic flow, 19 questions/options and seven evidence items; session connectivity is separated from subscription, monitored item mode, data quality and timestamps
+- Validation: EE-0030 focused test, authoring V2, ES/EN localization, runtime normalization, global package test, preview package and balanced decision lengths passed after the controlled technical correction and asset integration; browser QA pending
 - User approval: pending
 - Next unit: ENV-003 final integration QA
 - Blockers: original Phase 03 hotspot-first order superseded by the approved unit-by-unit Experience + hotspot workflow

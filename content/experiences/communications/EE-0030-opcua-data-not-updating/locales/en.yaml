@@ -1,0 +1,146 @@
+locale: en
+translations:
+  title: OPC UA Data Not Updating
+  summary: Diagnose a connected OPC UA client whose monitored value does not change by separating session, subscription, monitored item, sampling and publishing settings, quality and timestamps before correcting monitoring.
+  scenario:
+    initial_context: An OPC UA client maintains its server connection, but a monitored process variable does not update as the operator expects.
+    operational_state: The OPC UA session appears connected and the client keeps the monitored node, but change notifications do not arrive as expected; the cause may be in the subscription or monitored item even while the server remains reachable.
+    initiating_event: The client screen keeps an old value while operation requires current data. Before restarting the session, changing the endpoint or forcing the variable, check session status, subscription, monitored item, sampling and publishing, quality and timestamps.
+    learner_role: Automation technician responsible for separating OPC UA connectivity, subscription behaviour and data quality before intervening in the server or variable.
+    safety_context:
+      safe_state: Make configuration changes from a safe condition and under the authorised maintenance or commissioning procedure.
+      intervention_constraints:
+        - Do not repeatedly restart the session to hide incorrect monitoring configuration.
+        - Do not write or force the process value to demonstrate a notification.
+        - Do not accept a value with invalid quality or timestamp as current data.
+        - Correct only verified configuration and confirm real changes with coherent quality and timestamps.
+  learning_objectives:
+    OBJ-OPCUA-BOUNDARY:
+      description: Distinguish a connected OPC UA session from a subscription that does not deliver data changes.
+    OBJ-OPCUA-TRACEABILITY:
+      description: Correlate subscription, monitored item, sampling, publishing, quality and timestamps with the source value.
+    OBJ-OPCUA-RECOVERY:
+      description: Correct monitoring configuration and verify real changes with coherent quality and timestamps.
+  stages:
+    STAGE-01-CONFIRM-SESSION:
+      title: Confirm the session
+      situation: The client keeps an old value. Which check first bounds connectivity without restarting or writing to the process?
+    STAGE-02-CHECK-SUBSCRIPTION:
+      title: Check the subscription
+      situation: The session is established, but the value still does not update. Which reading separates the subscription from general connection state?
+    STAGE-03-CHECK-MONITORED-ITEM:
+      title: Review the monitored item
+      situation: The subscription exists, but the expected notification does not arrive. Which comparison checks the monitored object and its sampling and publishing parameters?
+    STAGE-04-CORRELATE-QUALITY:
+      title: Correlate quality and time
+      situation: The object exists and its parameters are visible. Which correlation distinguishes a valid current value from an old or poor-quality value?
+    STAGE-05-RESTORE-AND-VERIFY:
+      title: Restore and verify
+      situation: The cause is located in monitoring configuration. Which action corrects the problem and demonstrates that the client receives current data?
+  evidence:
+    EVID-01-SESSION-STATUS:
+      source: OPC UA client session status
+      content: The OPC UA session appears established and the endpoint remains reachable, but the client keeps an old monitored value; session state alone does not prove that the subscription delivers changes.
+      media_ids: []
+    EVID-02-SUBSCRIPTION-STATUS:
+      source: OPC UA client subscription panel
+      content: The subscription exists, but its state and counters must be checked separately from the session to determine whether it can publish notifications to the client.
+      media_ids: []
+    EVID-03-MONITORED-ITEM:
+      source: Monitored item configuration
+      content: The monitored item associated with the node must be compared with the expected node, its value attribute and monitoring state; a connected session does not correct an incorrect selection or configuration.
+      media_ids: []
+    EVID-04-SAMPLING-PUBLISHING:
+      source: Subscription and monitored item parameters
+      content: Sampling and publishing intervals and the notification policy must be reviewed together; a configuration that does not request or publish changes can leave the visible value unchanged.
+      media_ids: []
+    EVID-05-DATA-QUALITY:
+      source: OPC UA client DataValue
+      content: DataValue quality must be read with the value; uncertain or bad quality cannot be presented as current process data even when the client keeps a valid session.
+      media_ids: []
+    EVID-06-SOURCE-TIMESTAMPS:
+      source: DataValue SourceTimestamp and ServerTimestamp
+      content: Source and server timestamps distinguish an old value from a current change; they must be coherent with the observation and must not be replaced by the screen local time.
+      media_ids: []
+    EVID-07-SERVER-SOURCE-VALUE:
+      source: Server source value and client notifications
+      content: After monitoring configuration is corrected, the source value changes and the client receives notifications with the current value, suitable quality and coherent timestamps in repeated reads.
+      media_ids: []
+  decisions:
+    DEC-01-RESTART-CLIENT:
+      action: Restart the client to repeat the connection without preserving the incident state.
+    DEC-01-READ-SESSION:
+      action: Read session state and endpoint reachability before intervening.
+    DEC-01-RECREATE-NODE:
+      action: Recreate the monitored node because the visible value does not change.
+    DEC-01-RESTART-SERVER:
+      action: Restart the OPC UA server without checking the client session.
+    DEC-02-CHANGE-ENDPOINT:
+      action: Change the endpoint even though the current session is established.
+    DEC-02-CLEAR-SUBSCRIPTION:
+      action: Delete the subscription so the old value disappears.
+    DEC-02-READ-SUBSCRIPTION:
+      action: Read subscription state and its ability to publish notifications.
+    DEC-02-CHANGE-SECURITY:
+      action: Change the security policy to compensate for a subscription without changes.
+    DEC-03-COMPARE-MONITORING:
+      action: Compare the node, monitored item and sampling and publishing parameters.
+    DEC-03-INCREASE-POLLING:
+      action: Increase screen polling without reviewing the OPC UA subscription.
+    DEC-03-RECREATE-NODE:
+      action: Recreate the node without comparing the existing monitored item.
+    DEC-03-FORCE-SOURCE:
+      action: Force the source value to provoke a notification.
+    DEC-04-IGNORE-QUALITY:
+      action: Ignore quality and accept any numeric value as current.
+    DEC-04-ALTER-SOURCE:
+      action: Alter the source variable so the screen appears dynamic.
+    DEC-04-ACCEPT-STALE:
+      action: Accept the old value while it remains a readable number.
+    DEC-04-CORRELATE-VALUE:
+      action: Correlate value, quality and source and server timestamps.
+    DEC-05-CLEAR-ALARM:
+      action: Clear the alarm and close the case without observing current changes.
+    DEC-05-CORRECT-AND-VERIFY:
+      action: Correct authorised monitoring and verify coherent changes, quality and timestamps.
+    DEC-05-ACCEPT-CACHED-VALUE:
+      action: Accept the cached value as recovery although no new notification arrives.
+  retry_feedback:
+    DEC-01-RESTART-CLIENT: Preserve session state and the old value before restarting.
+    DEC-01-RECREATE-NODE: Read the session first and preserve the existing monitored item.
+    DEC-01-RESTART-SERVER: Do not restart the server; check client session state first.
+    DEC-02-CHANGE-ENDPOINT: Preserve the endpoint and read subscription state.
+    DEC-02-CLEAR-SUBSCRIPTION: Preserve the subscription and review its state before changing it.
+    DEC-02-CHANGE-SECURITY: Do not change security; separate session, subscription and monitored item.
+    DEC-03-INCREASE-POLLING: Review the monitored item and sampling and publishing parameters.
+    DEC-03-RECREATE-NODE: Compare the existing object before recreating it.
+    DEC-03-FORCE-SOURCE: Do not force the variable; preserve the source value and review monitoring.
+    DEC-04-IGNORE-QUALITY: Read quality and timestamps with the value.
+    DEC-04-ALTER-SOURCE: Do not alter the variable; correlate its source value with quality and timestamps.
+    DEC-04-ACCEPT-STALE: Compare timestamps and quality before accepting the value.
+    DEC-05-CLEAR-ALARM: Correct monitoring and check changes, quality and timestamps before closing.
+    DEC-05-ACCEPT-CACHED-VALUE: Verify a real change with coherent quality and timestamps.
+  visual:
+    educational_purpose: Progressively reveal the connected session, subscription, monitored item, sampling and publishing parameters, quality, timestamps and data recovery.
+  assets: {}
+  completion:
+    title: Technical debrief
+    summary: The OPC UA session was connected, but monitored item or subscription configuration prevented the expected change notifications. After authorised monitoring correction, the client received real changes with suitable quality and coherent timestamps.
+    process:
+      - Preserve the symptom and check session state without restarting or writing to the process.
+      - Read subscription state separately from the session.
+      - Compare node, monitored item, sampling and publishing.
+      - Correlate value, quality and source and server timestamps.
+      - Correct verified configuration and check current changes in repeated reads.
+    lesson: A connected OPC UA session does not guarantee that a monitored item publishes changes. Subscription configuration must be correlated with quality, timestamps and source value before intervention.
+    avoided_errors:
+      - Confusing an established session with working data notifications.
+      - Restarting client or server without preserving diagnostics.
+      - Changing endpoint or security without evidence of a session fault.
+      - Ignoring quality and timestamps because the numeric value looks readable.
+      - Closing the case without demonstrating real client changes.
+    industrial_value:
+      - Traceable OPC UA session and subscription diagnostics.
+      - Fewer unnecessary server and client restarts.
+      - Repeatable recovery of monitored data.
+    media_ids: []

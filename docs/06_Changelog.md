@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-10 — ENV-003 / EE-0030 OPC UA data not updating
+
+- Added bilingual EE-0030 in technical review: a five-stage, 19-option advanced diagnostic flow that separates OPC UA session connectivity from subscription, monitored-item, sampling/publication, quality and timestamp behaviour.
+- Added seven evidence requirements covering session status, subscription status, monitored-item configuration, sampling/publication settings, data quality, source timestamps and server-side source value. Visual assets remain planned until approved media are supplied.
+- Registered EE-0030 at a neutral ENV-003 hotspot and extended focused, option-balance, localization and global packaging expectations to 30 Experiences. The PRONETA/TIA topology-assignment pill remains reserved for the ENV-003 closeout.
+
 ## 2026-11-08 — ENV-003 / EE-0029 BACnet device not discovered
 
 - Added bilingual EE-0029 in technical review: a five-stage, 19-option diagnostic flow that separates controller availability and IP addressing from BACnet broadcast discovery across routed subnets.

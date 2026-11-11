@@ -1,0 +1,146 @@
+locale: es
+translations:
+  title: Datos OPC UA sin actualizar
+  summary: Diagnostica un cliente OPC UA conectado cuyo valor monitorizado no cambia separando sesión, suscripción, monitored item, configuración de muestreo/publicación, calidad y timestamps antes de corregir la monitorización.
+  scenario:
+    initial_context: Un cliente OPC UA mantiene la conexión con el servidor, pero una variable de proceso monitorizada no se actualiza como espera el operador.
+    operational_state: La sesión OPC UA aparece conectada y el cliente conserva el nodo monitorizado, pero las notificaciones de cambio no llegan con el comportamiento esperado; la causa puede estar en la suscripción o en el monitored item aunque el servidor siga accesible.
+    initiating_event: La pantalla del cliente conserva un valor antiguo mientras la operación espera datos actuales. Antes de reiniciar la sesión, cambiar el endpoint o forzar la variable hay que comprobar el estado de sesión, suscripción, monitored item, muestreo/publicación, calidad y timestamps.
+    learner_role: Técnico de automatización responsable de separar conectividad OPC UA, comportamiento de suscripción y calidad de datos antes de intervenir en el servidor o en la variable.
+    safety_context:
+      safe_state: Realiza cambios de configuración desde una condición segura y bajo el procedimiento autorizado de mantenimiento o puesta en marcha.
+      intervention_constraints:
+        - No reiniciar repetidamente la sesión para ocultar una configuración de monitorización incorrecta.
+        - No escribir ni forzar el valor de proceso para demostrar una notificación.
+        - No aceptar un valor con calidad o timestamp no válidos como dato actual.
+        - Corregir solo la configuración verificada y confirmar cambios reales con calidad y timestamps coherentes.
+  learning_objectives:
+    OBJ-OPCUA-BOUNDARY:
+      description: Diferenciar una sesión OPC UA conectada de una suscripción que no entrega cambios de datos.
+    OBJ-OPCUA-TRACEABILITY:
+      description: Correlacionar suscripción, monitored item, muestreo, publicación, calidad y timestamps con el valor de origen.
+    OBJ-OPCUA-RECOVERY:
+      description: Corregir la configuración de monitorización y verificar cambios reales con calidad y timestamps coherentes.
+  stages:
+    STAGE-01-CONFIRM-SESSION:
+      title: Confirmar la sesión
+      situation: El cliente conserva un valor antiguo. ¿Qué comprobación delimita primero la conectividad sin reiniciar ni escribir en el proceso?
+    STAGE-02-CHECK-SUBSCRIPTION:
+      title: Comprobar la suscripción
+      situation: La sesión está establecida, pero el valor sigue sin actualizarse. ¿Qué lectura separa la suscripción del estado general de conexión?
+    STAGE-03-CHECK-MONITORED-ITEM:
+      title: Revisar el monitored item
+      situation: La suscripción existe, pero la notificación esperada no llega. ¿Qué comparación comprueba el objeto monitorizado y sus parámetros de muestreo/publicación?
+    STAGE-04-CORRELATE-QUALITY:
+      title: Correlacionar calidad y tiempo
+      situation: El objeto está creado y los parámetros son visibles. ¿Qué correlación distingue un valor válido actual de un valor antiguo o de mala calidad?
+    STAGE-05-RESTORE-AND-VERIFY:
+      title: Restaurar y verificar
+      situation: La causa está localizada en la configuración de monitorización. ¿Qué acción corrige el problema y demuestra que el cliente recibe datos actuales?
+  evidence:
+    EVID-01-SESSION-STATUS:
+      source: Estado de sesión del cliente OPC UA
+      content: La sesión OPC UA aparece establecida y el endpoint sigue accesible, pero el cliente conserva un valor monitorizado antiguo; el estado de sesión por sí solo no demuestra que la suscripción entregue cambios.
+      media_ids: []
+    EVID-02-SUBSCRIPTION-STATUS:
+      source: Panel de suscripciones del cliente OPC UA
+      content: La suscripción existe, pero su estado y sus contadores deben comprobarse por separado de la sesión para saber si puede publicar notificaciones al cliente.
+      media_ids: []
+    EVID-03-MONITORED-ITEM:
+      source: Configuración del monitored item
+      content: El monitored item asociado al nodo debe compararse con el nodo esperado, su atributo de valor y su estado de monitorización; una sesión conectada no corrige una selección o configuración incorrecta.
+      media_ids: []
+    EVID-04-SAMPLING-PUBLISHING:
+      source: Parámetros de suscripción y monitored item
+      content: Los intervalos de muestreo y publicación y la política de notificación deben revisarse juntos; una configuración que no solicita o publica cambios puede dejar el valor visible sin actualizar.
+      media_ids: []
+    EVID-05-DATA-QUALITY:
+      source: DataValue del cliente OPC UA
+      content: La calidad del DataValue debe leerse junto al valor; una calidad incierta o mala no puede presentarse como un valor de proceso actual aunque el cliente conserve una sesión válida.
+      media_ids: []
+    EVID-06-SOURCE-TIMESTAMPS:
+      source: SourceTimestamp y ServerTimestamp del DataValue
+      content: Los timestamps de origen y servidor permiten distinguir un valor antiguo de un cambio actual; deben ser coherentes con la observación y no sustituirse por la hora local de la pantalla.
+      media_ids: []
+    EVID-07-SERVER-SOURCE-VALUE:
+      source: Valor de origen del servidor y notificaciones del cliente
+      content: Tras corregir la configuración de monitorización, el valor de origen cambia y el cliente recibe notificaciones con el valor actual, calidad adecuada y timestamps coherentes en lecturas repetidas.
+      media_ids: []
+  decisions:
+    DEC-01-RESTART-CLIENT:
+      action: Reiniciar el cliente para repetir la conexión sin conservar el estado del incidente.
+    DEC-01-READ-SESSION:
+      action: Leer el estado de sesión y la accesibilidad del endpoint antes de intervenir.
+    DEC-01-RECREATE-NODE:
+      action: Recrear el nodo monitorizado porque el valor visible no cambia.
+    DEC-01-RESTART-SERVER:
+      action: Reiniciar el servidor OPC UA sin comprobar la sesión del cliente.
+    DEC-02-CHANGE-ENDPOINT:
+      action: Cambiar el endpoint aunque la sesión actual esté establecida.
+    DEC-02-CLEAR-SUBSCRIPTION:
+      action: Borrar la suscripción para que desaparezca el valor antiguo.
+    DEC-02-READ-SUBSCRIPTION:
+      action: Leer el estado de la suscripción y su capacidad de publicar notificaciones.
+    DEC-02-CHANGE-SECURITY:
+      action: Cambiar la política de seguridad para compensar una suscripción sin cambios.
+    DEC-03-COMPARE-MONITORING:
+      action: Comparar nodo, monitored item y parámetros de muestreo y publicación.
+    DEC-03-INCREASE-POLLING:
+      action: Aumentar el sondeo de la pantalla sin revisar la suscripción OPC UA.
+    DEC-03-RECREATE-NODE:
+      action: Recrear el nodo sin comparar el monitored item existente.
+    DEC-03-FORCE-SOURCE:
+      action: Forzar el valor de origen para provocar una notificación.
+    DEC-04-IGNORE-QUALITY:
+      action: Ignorar la calidad y aceptar cualquier valor numérico como actual.
+    DEC-04-ALTER-SOURCE:
+      action: Alterar la variable de origen para que la pantalla parezca dinámica.
+    DEC-04-ACCEPT-STALE:
+      action: Aceptar el valor antiguo mientras tenga un número legible.
+    DEC-04-CORRELATE-VALUE:
+      action: Correlacionar valor, calidad y timestamps de origen y servidor.
+    DEC-05-CLEAR-ALARM:
+      action: Borrar la alarma y cerrar el caso sin observar cambios actuales.
+    DEC-05-CORRECT-AND-VERIFY:
+      action: Corregir la monitorización autorizada y verificar cambios, calidad y timestamps coherentes.
+    DEC-05-ACCEPT-CACHED-VALUE:
+      action: Aceptar el valor en caché como recuperación aunque no llegue una notificación nueva.
+  retry_feedback:
+    DEC-01-RESTART-CLIENT: Conserva el estado de sesión y el valor antiguo antes de reiniciar.
+    DEC-01-RECREATE-NODE: Lee primero la sesión y conserva el monitored item existente.
+    DEC-01-RESTART-SERVER: No reinicies el servidor; comprueba primero el estado de la sesión del cliente.
+    DEC-02-CHANGE-ENDPOINT: Conserva el endpoint y lee el estado de la suscripción.
+    DEC-02-CLEAR-SUBSCRIPTION: Conserva la suscripción y revisa su estado antes de modificarla.
+    DEC-02-CHANGE-SECURITY: No cambies seguridad; separa sesión, suscripción y monitored item.
+    DEC-03-INCREASE-POLLING: Revisa el monitored item y los parámetros de muestreo/publicación.
+    DEC-03-RECREATE-NODE: Compara el objeto existente antes de recrearlo.
+    DEC-03-FORCE-SOURCE: No fuerces la variable; conserva el valor de origen y revisa la monitorización.
+    DEC-04-IGNORE-QUALITY: Lee calidad y timestamps junto con el valor.
+    DEC-04-ALTER-SOURCE: No alteres la variable; correlaciona su valor de origen con calidad y timestamps.
+    DEC-04-ACCEPT-STALE: Compara timestamps y calidad antes de aceptar el valor.
+    DEC-05-CLEAR-ALARM: Corrige la monitorización y comprueba cambios, calidad y timestamps antes de cerrar.
+    DEC-05-ACCEPT-CACHED-VALUE: Verifica un cambio real con calidad y timestamps coherentes.
+  visual:
+    educational_purpose: Revelar progresivamente la sesión conectada, la suscripción, el monitored item, los parámetros de muestreo/publicación, la calidad, los timestamps y la recuperación de datos.
+  assets: {}
+  completion:
+    title: Debrief técnico
+    summary: La sesión OPC UA estaba conectada, pero la configuración del monitored item o de la suscripción impedía recibir las notificaciones de cambio esperadas. Tras corregir la monitorización autorizada, el cliente recibió cambios reales con calidad adecuada y timestamps coherentes.
+    process:
+      - Conservar el síntoma y comprobar el estado de sesión sin reiniciar ni escribir en el proceso.
+      - Leer el estado de la suscripción por separado de la sesión.
+      - Comparar nodo, monitored item, muestreo y publicación.
+      - Correlacionar valor, calidad y timestamps de origen y servidor.
+      - Corregir la configuración verificada y comprobar cambios actuales en lecturas repetidas.
+    lesson: Una sesión OPC UA conectada no garantiza que un monitored item publique cambios. La configuración de suscripción debe correlacionarse con calidad, timestamps y valor de origen antes de intervenir.
+    avoided_errors:
+      - Confundir sesión establecida con notificaciones de datos funcionando.
+      - Reiniciar cliente o servidor sin conservar el diagnóstico.
+      - Cambiar el endpoint o la seguridad sin evidencia de fallo de sesión.
+      - Ignorar calidad y timestamps porque el valor numérico parece legible.
+      - Cerrar el caso sin demostrar cambios reales en el cliente.
+    industrial_value:
+      - Diagnóstico trazable de sesiones y suscripciones OPC UA.
+      - Menos reinicios y cambios de servidor innecesarios.
+      - Recuperación reproducible de datos monitorizados.
+    media_ids: []

@@ -71,6 +71,6 @@ test("EE-0030 localizes and projects without leaking answers", async () => {
 });
 
 test("EE-0030 keeps the media contract pending until assets are approved", async () => {
-  assert.deepEqual(await readdir(`${directory}/assets`), []);
+  assert.deepEqual(await readdir(`${directory}/assets`), [".gitkeep"]);
   assert.deepEqual(await readdir(`${directory}/media-source`), ["README.md"]);
 });

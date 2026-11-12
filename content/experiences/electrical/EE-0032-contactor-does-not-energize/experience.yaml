@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-CONTACTOR-032"
+  editorial_id: "EE-0032"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "foundation"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "contactor-does-not-energize"
+  title: "El contactor no se activa"
+  summary: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-019 (NB-EL-11): Mando frente a potencia; article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-027 (NB-EL-19): Lectura de esquemas de mando; article-029 (NB-EL-21): Método de diagnóstico"
+    initiating_event: "El contactor no se activa"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-019 (NB-EL-11): Mando frente a potencia; article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-027 (NB-EL-19): Lectura de esquemas de mando; article-029 (NB-EL-21): Método de diagnóstico"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-A"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-B"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-A"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-B"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Examinar secuencia de permisos en esquema y valores por tramo."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar KM1. Se interpreta la falta de cierre como avería del contactor completo y se prioriza su sustitución frente a comparar permisos, tensión de bobina y retorno."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar motor."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "STOP está abierto porque se llama STOP. Se usa el nombre funcional del pulsador para inferir su estado eléctrico, en lugar de contrastar el contacto NC con las lecturas antes y después de S0."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "+24 V antes y después de S0 indica continuidad funcional en ese estado."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "La fuente está a 0 V."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "F2 ha disparado necesariamente. Se atribuye el bloqueo a la actuación de protección sin contrastar el potencial documentado a su salida ni localizar el siguiente tramo sin alimentación."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "El retorno es la única causa posible."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La interrupción está entre salida de F2 y salida de S1, con START pulsado."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Confirmar con ensayo aislado y documentación el fallo de cierre de S1."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Puentear S1 para dejar producción funcionando. Se presenta un camino alternativo permanente como forma de recuperar marcha, sin restaurar el cierre del contacto instalado ni su función documentada."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Cambiar calibre de F2."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Basta que la bobina haga ruido. Se toma una indicación acústica aislada como demostración de marcha, paro, mantenimiento y protección, sin registrar la secuencia funcional completa."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Tras sustitución autorizada de S1, verificar marcha, paro, auto-mantenimiento y protección."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Desactivar STOP para evitar recurrencia."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal. Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+    process:
+      - "Examinar secuencia de permisos en esquema y valores por tramo."
+      - "+24 V antes y después de S0 indica continuidad funcional en ese estado."
+      - "La interrupción está entre salida de F2 y salida de S1, con START pulsado."
+      - "Confirmar con ensayo aislado y documentación el fallo de cierre de S1."
+      - "Tras sustitución autorizada de S1, verificar marcha, paro, auto-mantenimiento y protección."
+    lesson: "sustituir S1 por componente equivalente aprobado y corregir documentación. Notebook — itinerario en Engineering Notes: article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-019 (NB-EL-11): Mando frente a potencia; article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-027 (NB-EL-19): Lectura de esquemas de mando; article-029 (NB-EL-21): Método de diagnóstico"
+    avoided_errors:
+      - "Cambiar KM1."
+      - "Cambiar motor."
+      - "STOP está abierto porque se llama STOP."
+      - "La fuente está a 0 V."
+      - "F2 ha disparado necesariamente."
+      - "El retorno es la única causa posible."
+      - "Puentear S1 para dejar producción funcionando."
+      - "Cambiar calibre de F2."
+      - "Basta que la bobina haga ruido."
+      - "Desactivar STOP para evitar recurrencia."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal."
+    recovery_conditions:
+      - "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-A"
+      - "DEC-02-B"
+      - "DEC-03-C"
+      - "DEC-04-A"
+      - "DEC-05-B"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "permite localizar interrupción."
+      classification: "strong"
+      consequence: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "no se ha probado alimentación de bobina."
+      classification: "weak"
+      consequence: "no se ha probado alimentación de bobina. Revisa: Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "no se ha probado alimentación de bobina. Revisa: Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "no explica mando."
+      classification: "weak"
+      consequence: "no explica mando. Revisa: Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "no explica mando. Revisa: Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "NC cerrado en reposo."
+      classification: "weak"
+      consequence: "NC cerrado en reposo. Revisa: El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "NC cerrado en reposo. Revisa: El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo."
+      classification: "strong"
+      consequence: "El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo."
+      classification: "weak"
+      consequence: "La propuesta «La fuente está a 0 V.» no está sustentada por este registro.  Revisa: El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «La fuente está a 0 V.» no está sustentada por este registro.  Revisa: El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "hay +24 V aguas abajo."
+      classification: "weak"
+      consequence: "hay +24 V aguas abajo. Revisa: El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "hay +24 V aguas abajo. Revisa: El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "ya se verificó."
+      classification: "weak"
+      consequence: "ya se verificó. Revisa: El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "ya se verificó. Revisa: El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno."
+      classification: "strong"
+      consequence: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado."
+      classification: "strong"
+      consequence: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "no es reparación aceptable."
+      classification: "unsafe"
+      consequence: "no es reparación aceptable. Revisa: La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "no es reparación aceptable. Revisa: La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar calibre de F2.» no está sustentada por este registro.  Revisa: La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar calibre de F2.» no está sustentada por este registro.  Revisa: La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente."
+      classification: "weak"
+      consequence: "La propuesta «Basta que la bobina haga ruido.» no está sustentada por este registro.  Revisa: El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Basta que la bobina haga ruido.» no está sustentada por este registro.  Revisa: El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente."
+      classification: "strong"
+      consequence: "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente."
+      classification: "unsafe"
+      consequence: "La propuesta «Desactivar STOP para evitar recurrencia.» no está sustentada por este registro.  Revisa: El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Desactivar STOP para evitar recurrencia.» no está sustentada por este registro.  Revisa: El ensayo aislado y la documentación confirman apertura mecánica interna: S1 no cierra pese a accionamiento. KM1 no recibe tensión nominal; no se ha probado una bobina defectuosa. Se requiere sustitución equivalente aprobada de S1 y corrección de documentación; recuperación aún pendiente. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal."
+    correct_reasoning:
+      - "Examinar secuencia de permisos en esquema y valores por tramo."
+      - "+24 V antes y después de S0 indica continuidad funcional en ese estado."
+      - "La interrupción está entre salida de F2 y salida de S1, con START pulsado."
+      - "Confirmar con ensayo aislado y documentación el fallo de cierre de S1."
+      - "Tras sustitución autorizada de S1, verificar marcha, paro, auto-mantenimiento y protección."
+    recovery:
+      - "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: al pulsar START, -KM1 no cierra. Circuito de mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Registros de personal autorizado: +24 V en entrada de S0; +24 V en salida de S0; +24 V en salida de F2; 0 V en salida de S1 mientras START está pulsado; retorno A2 verificado. Contacto S1 presenta apertura mecánica interna."

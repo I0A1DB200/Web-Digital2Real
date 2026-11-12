@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "24 VDC supply voltage collapses at startup"
+  summary: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-029 (NB-EL-21): Diagnostic method; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    initiating_event: "24 VDC supply voltage collapses at startup"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-029 (NB-EL-21): Diagnostic method; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located.\n\nWhich data should be requested first?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "The record correlates restarts with simultaneous activation. PS1 records 24.2 V without actuation. This reading describes the idle state only; startup still needs comparison.\n\nWhat does 24.2 V at rest mean?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "During the peak, 17.8 V is recorded at PS1's own terminals; voltage recovers to 24.1 V when the command ends. A drop at the source cannot be explained only by the cable to the module.\n\nThe supply drops to 17.8 V at its own terminals. Which hypothesis takes priority?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "The PLC branch draws 1.2 A; the actuator branch has a usual load of 2.0 A and a documented 5.5 A peak. PS1 records current limiting during simultaneous activation. Total simulated demand at that instant is 6.7 A versus the 5 A rating; compare dynamic capability and specification.\n\nThe record shows a 5.5 A peak plus 1.2 A for the PLC. What follows?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery.\n\nWhich verification closes the case?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "The record correlates restarts with simultaneous activation. PS1 records 24.2 V without actuation. This reading describes the idle state only; startup still needs comparison."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "During the peak, 17.8 V is recorded at PS1's own terminals; voltage recovers to 24.1 V when the command ends. A drop at the source cannot be explained only by the cable to the module."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "The PLC branch draws 1.2 A; the actuator branch has a usual load of 2.0 A and a documented 5.5 A peak. PS1 records current limiting during simultaneous activation. Total simulated demand at that instant is 6.7 A versus the 5 A rating; compare dynamic capability and specification."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "In the simulated scenario, the worst startup is repeated after the approved solution: the PS1 record stays within design limits and there are no restarts. Protection is retained. No supply model is selected without calculation and no overload is induced on a real cabinet."
+  decisions:
+    DEC-01-A:
+      action: "Module restarts correlated with activation and the PS1 voltage trend."
+    DEC-01-B:
+      action: "PLC firmware version. The proposal is to explain restarts through firmware compatibility and prioritize that history over the correlation between valve activation and voltage."
+    DEC-01-C:
+      action: "Replace the remote module."
+    DEC-02-A:
+      action: "The supply is definitely healthy. The idle reading is taken as validation of the entire dynamic response, without distinguishing usual demand, simultaneous peak and current limiting."
+    DEC-02-B:
+      action: "Voltage is correct only for that state; startup still needs observation."
+    DEC-02-C:
+      action: "A permanent short circuit."
+    DEC-03-A:
+      action: "Only the cable between supply and module. The whole anomaly is attributed to distribution wiring and the PS1 output boundary is excluded as the origin of the observed supply problem."
+    DEC-03-B:
+      action: "Supply current limiting or internal fault; compare demand and specification."
+    DEC-03-C:
+      action: "Speed sensor failure."
+    DEC-04-A:
+      action: "The total exceeds the 5 A rating; review transient capability and simultaneity."
+    DEC-04-B:
+      action: "Every 5 A supply supports 10 A indefinitely. That overload capability is assumed to follow generally from rated current, without comparing the dynamic curve, peak duration or simultaneity."
+    DEC-04-C:
+      action: "The PLC draws zero current during startup."
+    DEC-05-A:
+      action: "Restart the PLC once. The proposal is to close the incident after one restart, without repeating the worst startup, recording PS1 voltage or confirming no further restarts."
+    DEC-05-B:
+      action: "Replace the supply with any 24 V unit."
+    DEC-05-C:
+      action: "After an approved engineering solution, record voltage at PS1 during the worst startup and confirm no restarts."
+  retry_feedback:
+    DEC-01-B: "does not distinguish a voltage fault. Review: A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located. Choose again without carrying out the proposed option."
+    DEC-01-C: "replaces without evidence. Review: A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located. Choose again without carrying out the proposed option."
+    DEC-02-A: "does not prove loaded response. Review: The record correlates restarts with simultaneous activation. PS1 records 24.2 V without actuation. This reading describes the idle state only; startup still needs comparison. Choose again without carrying out the proposed option."
+    DEC-02-C: "no evidence supports it. Review: The record correlates restarts with simultaneous activation. PS1 records 24.2 V without actuation. This reading describes the idle state only; startup still needs comparison. Choose again without carrying out the proposed option."
+    DEC-03-A: "does not explain the drop at the source. Review: During the peak, 17.8 V is recorded at PS1's own terminals; voltage recovers to 24.1 V when the command ends. A drop at the source cannot be explained only by the cable to the module. Choose again without carrying out the proposed option."
+    DEC-03-C: "does not explain the supply behaviour. Review: During the peak, 17.8 V is recorded at PS1's own terminals; voltage recovers to 24.1 V when the command ends. A drop at the source cannot be explained only by the cable to the module. Choose again without carrying out the proposed option."
+    DEC-04-B: "The proposal “Every 5 A supply supports 10 A indefinitely.” is not supported by this record.  Review: The PLC branch draws 1.2 A; the actuator branch has a usual load of 2.0 A and a documented 5.5 A peak. PS1 records current limiting during simultaneous activation. Total simulated demand at that instant is 6.7 A versus the 5 A rating; compare dynamic capability and specification. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “The PLC draws zero current during startup.” is not supported by this record.  Review: The PLC branch draws 1.2 A; the actuator branch has a usual load of 2.0 A and a documented 5.5 A peak. PS1 records current limiting during simultaneous activation. Total simulated demand at that instant is 6.7 A versus the 5 A rating; compare dynamic capability and specification. Choose again without carrying out the proposed option."
+    DEC-05-A: "The proposal “Restart the PLC once.” is not supported by this record.  Review: Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery. Choose again without carrying out the proposed option."
+    DEC-05-B: "sizing, protection and approval are required. Review: Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "simultaneous transient demand exceeds PS1's specified dynamic capability; the supply enters current limiting. Do not confuse this with a defective cable because the voltage also drops at PS1's own terminals. In the simulated scenario, the worst startup is repeated after the approved solution: the PS1 record stays within design limits and there are no restarts. Protection is retained. No supply model is selected without calculation and no overload is induced on a real cabinet."
+    process:
+      - "Module restarts correlated with activation and the PS1 voltage trend."
+      - "Voltage is correct only for that state; startup still needs observation."
+      - "Supply current limiting or internal fault; compare demand and specification."
+      - "The total exceeds the 5 A rating; review transient capability and simultaneity."
+      - "After an approved engineering solution, record voltage at PS1 during the worst startup and confirm no restarts."
+    lesson: "redistribute/limit simultaneous demand or size supply and protection according to the manufacturer; do not select a model without calculation. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-029 (NB-EL-21): Diagnostic method; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    avoided_errors:
+      - "PLC firmware version."
+      - "Replace the remote module."
+      - "The supply is definitely healthy."
+      - "A permanent short circuit."
+      - "Only the cable between supply and module."
+      - "Speed sensor failure."
+      - "Every 5 A supply supports 10 A indefinitely."
+      - "The PLC draws zero current during startup."
+      - "Restart the PLC once."
+      - "Replace the supply with any 24 V unit."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

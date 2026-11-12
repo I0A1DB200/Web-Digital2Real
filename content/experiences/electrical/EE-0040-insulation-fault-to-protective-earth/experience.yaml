@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-INSULATION-040"
+  editorial_id: "EE-0040"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "intermediate"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "insulation-fault-to-protective-earth"
+  title: "Defecto de aislamiento a masa"
+  summary: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-030 (NB-EL-22): Consignación y comprobación de ausencia de tensión; article-032 (NB-EL-24): Aislamiento y fugas; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    initiating_event: "Defecto de aislamiento a masa"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-030 (NB-EL-22): Consignación y comprobación de ausencia de tensión; article-032 (NB-EL-24): Aislamiento y fugas; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-A"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-B"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-A"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-B"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras reparación autorizada y secado o recambio apropiado en el caso simulado, se repiten verificaciones eléctricas y de función de protección conforme al protocolo específico. RCD y PE siguen operativos; no se aceptan rearmes indefinidos. La selección final de tensión y criterio de aislamiento sigue pendiente de revisión de equipo y norma para producción."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-A"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Diferenciar disparo diferencial de disparo por sobrecorriente."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Aumentar corriente nominal del magnetotérmico. Se propone resolver el evento cambiando el calibre de sobreintensidad sin distinguir qué dispositivo ha actuado ni qué magnitud supervisa el diferencial RCD1."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Puente de RCD1."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "El diferencial mide únicamente sobrecarga térmica. Se interpreta el diferencial como protección térmica y se omite comparar corrientes residuales con el comportamiento del magnetotérmico asociado al calefactor."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "El disparo es compatible con corriente residual; requiere localizar su origen."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Demuestra fallo PLC."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Correlación con EH1 y humedad prioriza circuito calefactor y aislamiento."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Es seguro que el neutro está desconectado. Se deduce una interrupción de neutro como causa única sin contrastar la correlación de eventos con EH1 ni la humedad observada en su caja de conexiones."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Cambiar motor de cinta."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Medir aislamiento con EH1 energizada. La propuesta ignora consignación, preparación del circuito y desconexión de electrónica, y trata la prueba de aislamiento como una medición compatible con operación energizada."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Interpretar ensayo de aislamiento ya realizado en circuito aislado y preparado, conforme a especificación."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Desconectar PE para impedir fuga."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Tras reparación autorizada y secado/recambio apropiado, repetir verificaciones eléctricas y función de protección."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Rearmar diferencial indefinidamente. Se plantea continuar por rearme repetido sin corregir la degradación por humedad ni repetir verificaciones eléctricas y de protección bajo el protocolo específico del equipo."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Mantener PE desconectado."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. El diferencial actúa; no se anula para mantener producción. Tras reparación autorizada y secado o recambio apropiado en el caso simulado, se repiten verificaciones eléctricas y de función de protección conforme al protocolo específico. RCD y PE siguen operativos; no se aceptan rearmes indefinidos. La selección final de tensión y criterio de aislamiento sigue pendiente de revisión de equipo y norma para producción."
+    process:
+      - "Diferenciar disparo diferencial de disparo por sobrecorriente."
+      - "El disparo es compatible con corriente residual; requiere localizar su origen."
+      - "Correlación con EH1 y humedad prioriza circuito calefactor y aislamiento."
+      - "Interpretar ensayo de aislamiento ya realizado en circuito aislado y preparado, conforme a especificación."
+      - "Tras reparación autorizada y secado/recambio apropiado, repetir verificaciones eléctricas y función de protección."
+    lesson: "localizar y corregir componente/conexión afectado, controlar entrada de humedad, verificar con protocolo autorizado. Notebook — itinerario en Engineering Notes: article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-030 (NB-EL-22): Consignación y comprobación de ausencia de tensión; article-032 (NB-EL-24): Aislamiento y fugas; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    avoided_errors:
+      - "Aumentar corriente nominal del magnetotérmico."
+      - "Puente de RCD1."
+      - "El diferencial mide únicamente sobrecarga térmica."
+      - "Demuestra fallo PLC."
+      - "Es seguro que el neutro está desconectado."
+      - "Cambiar motor de cinta."
+      - "Medir aislamiento con EH1 energizada."
+      - "Desconectar PE para impedir fuga."
+      - "Rearmar diferencial indefinidamente."
+      - "Mantener PE desconectado."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. El diferencial actúa; no se anula para mantener producción."
+    recovery_conditions:
+      - "Tras reparación autorizada y secado o recambio apropiado en el caso simulado, se repiten verificaciones eléctricas y de función de protección conforme al protocolo específico. RCD y PE siguen operativos; no se aceptan rearmes indefinidos. La selección final de tensión y criterio de aislamiento sigue pendiente de revisión de equipo y norma para producción."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. El diferencial actúa; no se anula para mantener producción."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-A"
+      - "DEC-02-B"
+      - "DEC-03-A"
+      - "DEC-04-B"
+      - "DEC-05-A"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado."
+      classification: "strong"
+      consequence: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado."
+      classification: "weak"
+      consequence: "La propuesta «Aumentar corriente nominal del magnetotérmico.» no está sustentada por este registro.  Revisa: Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Aumentar corriente nominal del magnetotérmico.» no está sustentada por este registro.  Revisa: Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado."
+      classification: "unsafe"
+      consequence: "La propuesta «Puente de RCD1.» no está sustentada por este registro.  Revisa: Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Puente de RCD1.» no está sustentada por este registro.  Revisa: Al activarse el calefactor -EH1 actúa -RCD1. No hay evidencia de sobrecorriente en el magnetotérmico asociado. Se interpreta un caso simulado; no se autoriza intervención energizada ni se anula RCD o PE. Los límites y tensión de ensayo dependen de equipo y norma; no hay umbral universal publicado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC."
+      classification: "weak"
+      consequence: "La propuesta «El diferencial mide únicamente sobrecarga térmica.» no está sustentada por este registro.  Revisa: El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «El diferencial mide únicamente sobrecarga térmica.» no está sustentada por este registro.  Revisa: El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC."
+      classification: "strong"
+      consequence: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC."
+      classification: "weak"
+      consequence: "La propuesta «Demuestra fallo PLC.» no está sustentada por este registro.  Revisa: El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Demuestra fallo PLC.» no está sustentada por este registro.  Revisa: El evento registrado corresponde al diferencial RCD1, no al magnetotérmico. Es compatible con corriente residual y requiere localizar el origen; no demuestra por sí solo sobrecarga térmica ni fallo PLC. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado."
+      classification: "strong"
+      consequence: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado."
+      classification: "weak"
+      consequence: "La propuesta «Es seguro que el neutro está desconectado.» no está sustentada por este registro.  Revisa: Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Es seguro que el neutro está desconectado.» no está sustentada por este registro.  Revisa: Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar motor de cinta.» no está sustentada por este registro.  Revisa: Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar motor de cinta.» no está sustentada por este registro.  Revisa: Los eventos se correlacionan con orden EH1 y se observa humedad en su caja de conexiones. La correlación prioriza circuito calefactor y aislamiento, sin confirmar aún el componente causal ni un neutro desconectado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación."
+      classification: "unsafe"
+      consequence: "La propuesta «Medir aislamiento con EH1 energizada.» no está sustentada por este registro.  Revisa: El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Medir aislamiento con EH1 energizada.» no está sustentada por este registro.  Revisa: El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación."
+      classification: "strong"
+      consequence: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación."
+      classification: "unsafe"
+      consequence: "La propuesta «Desconectar PE para impedir fuga.» no está sustentada por este registro.  Revisa: El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Desconectar PE para impedir fuga.» no está sustentada por este registro.  Revisa: El acta de ensayo, realizado por personal autorizado tras consignación, desconexión de electrónica y preparación, registra resistencia anormalmente baja entre circuito EH1 y envolvente conectada a PE frente a límites aplicables al conjunto. No se publica tensión ni umbral universales; fabricante, equipo y norma deben fijarlos antes de publicación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado."
+      classification: "strong"
+      consequence: "Tras reparación autorizada y secado o recambio apropiado en el caso simulado, se repiten verificaciones eléctricas y de función de protección conforme al protocolo específico. RCD y PE siguen operativos; no se aceptan rearmes indefinidos. La selección final de tensión y criterio de aislamiento sigue pendiente de revisión de equipo y norma para producción."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado."
+      classification: "weak"
+      consequence: "La propuesta «Rearmar diferencial indefinidamente.» no está sustentada por este registro.  Revisa: Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Rearmar diferencial indefinidamente.» no está sustentada por este registro.  Revisa: Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado."
+      classification: "unsafe"
+      consequence: "La propuesta «Mantener PE desconectado.» no está sustentada por este registro.  Revisa: Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Mantener PE desconectado.» no está sustentada por este registro.  Revisa: Se confirma degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. Se localiza y corrige el componente o conexión afectado, con secado o recambio apropiado y control de entrada de humedad. La reparación debe verificarse bajo protocolo autorizado. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "degradación de aislamiento en EH1 favorecida por humedad, con fuga a partes conectadas a PE. El diferencial actúa; no se anula para mantener producción."
+    correct_reasoning:
+      - "Diferenciar disparo diferencial de disparo por sobrecorriente."
+      - "El disparo es compatible con corriente residual; requiere localizar su origen."
+      - "Correlación con EH1 y humedad prioriza circuito calefactor y aislamiento."
+      - "Interpretar ensayo de aislamiento ya realizado en circuito aislado y preparado, conforme a especificación."
+      - "Tras reparación autorizada y secado/recambio apropiado, repetir verificaciones eléctricas y función de protección."
+    recovery:
+      - "Tras reparación autorizada y secado o recambio apropiado en el caso simulado, se repiten verificaciones eléctricas y de función de protección conforme al protocolo específico. RCD y PE siguen operativos; no se aceptan rearmes indefinidos. La selección final de tensión y criterio de aislamiento sigue pendiente de revisión de equipo y norma para producción."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: al activarse la resistencia calefactora -EH1 de una máquina, actúa el diferencial -RCD1. No hay evidencia de sobrecorriente en la protección magnetotérmica asociada. Se observa humedad en la caja de conexiones. Tras consignación, desconexión de electrónica y preparación por personal autorizado, un ensayo de aislamiento apropiado registra resistencia anormalmente baja entre el circuito de EH1 y su envolvente conectada a PE, en comparación con límites aplicables al conjunto. La prueba se documenta sin publicar tensión ni umbral universales, pues dependen de equipo y norma."

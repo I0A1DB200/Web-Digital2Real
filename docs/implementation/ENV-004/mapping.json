@@ -1,0 +1,652 @@
+{
+  "classification": [
+    "NOTEBOOK",
+    "EXPERIENCE",
+    "CONTENT"
+  ],
+  "source_sha256": "9922c54ff3e5027c10ab310972f44ff7370a197df97693f3a3201061f3a4014c",
+  "cover_sha256": "9ac44c68d8ea1a77b74fc73209df595c98d6c262ec8400aeda2a8962ea97dd75",
+  "notebooks": [
+    {
+      "editorial_id": "NB-EL-01",
+      "canonical_id": "article-009",
+      "slug": "electrical-notes-01",
+      "block": 1,
+      "title_es": "Tensión, corriente, resistencia y circuito cerrado",
+      "title_en": "Voltage, current, resistance and a closed circuit"
+    },
+    {
+      "editorial_id": "NB-EL-02",
+      "canonical_id": "article-010",
+      "slug": "electrical-notes-02",
+      "block": 1,
+      "title_es": "AC, DC, frecuencia y valores eficaces",
+      "title_en": "AC, DC, frequency and RMS values"
+    },
+    {
+      "editorial_id": "NB-EL-03",
+      "canonical_id": "article-011",
+      "slug": "electrical-notes-03",
+      "block": 1,
+      "title_es": "Potencia, energía y cargas industriales",
+      "title_en": "Power, energy and industrial loads"
+    },
+    {
+      "editorial_id": "NB-EL-04",
+      "canonical_id": "article-012",
+      "slug": "electrical-notes-04",
+      "block": 1,
+      "title_es": "Multímetro, pinza y lectura de medidas",
+      "title_en": "Multimeters, clamps and interpreting measurements"
+    },
+    {
+      "editorial_id": "NB-EL-05",
+      "canonical_id": "article-013",
+      "slug": "electrical-notes-05",
+      "block": 1,
+      "title_es": "Calidad de la medida y diagnóstico diferencial",
+      "title_en": "Measurement quality and differential diagnosis"
+    },
+    {
+      "editorial_id": "NB-EL-06",
+      "canonical_id": "article-014",
+      "slug": "electrical-notes-06",
+      "block": 2,
+      "title_es": "Alimentación monofásica y trifásica",
+      "title_en": "Single-phase and three-phase supplies"
+    },
+    {
+      "editorial_id": "NB-EL-07",
+      "canonical_id": "article-015",
+      "slug": "electrical-notes-07",
+      "block": 2,
+      "title_es": "Fuentes industriales de 24 VDC",
+      "title_en": "Industrial 24 VDC power supplies"
+    },
+    {
+      "editorial_id": "NB-EL-08",
+      "canonical_id": "article-016",
+      "slug": "electrical-notes-08",
+      "block": 2,
+      "title_es": "Fusibles, magnetotérmicos y protección de sobreintensidad",
+      "title_en": "Fuses, circuit breakers and overcurrent protection"
+    },
+    {
+      "editorial_id": "NB-EL-09",
+      "canonical_id": "article-017",
+      "slug": "electrical-notes-09",
+      "block": 2,
+      "title_es": "Diferenciales, aislamiento y PE",
+      "title_en": "RCDs, insulation and PE"
+    },
+    {
+      "editorial_id": "NB-EL-10",
+      "canonical_id": "article-018",
+      "slug": "electrical-notes-10",
+      "block": 2,
+      "title_es": "Selectividad, separación y distribución",
+      "title_en": "Selectivity, segregation and distribution"
+    },
+    {
+      "editorial_id": "NB-EL-11",
+      "canonical_id": "article-019",
+      "slug": "electrical-notes-11",
+      "block": 3,
+      "title_es": "Mando frente a potencia",
+      "title_en": "Control versus power"
+    },
+    {
+      "editorial_id": "NB-EL-12",
+      "canonical_id": "article-020",
+      "slug": "electrical-notes-12",
+      "block": 3,
+      "title_es": "Contactores, bobinas y auxiliares",
+      "title_en": "Contactors, coils and auxiliaries"
+    },
+    {
+      "editorial_id": "NB-EL-13",
+      "canonical_id": "article-021",
+      "slug": "electrical-notes-13",
+      "block": 3,
+      "title_es": "Pulsadores, auto-mantenimiento y enclavamientos",
+      "title_en": "Pushbuttons, seal-in and interlocks"
+    },
+    {
+      "editorial_id": "NB-EL-14",
+      "canonical_id": "article-022",
+      "slug": "electrical-notes-14",
+      "block": 3,
+      "title_es": "Motores trifásicos, placa y relé de sobrecarga",
+      "title_en": "Three-phase motors, nameplates and overload relays"
+    },
+    {
+      "editorial_id": "NB-EL-15",
+      "canonical_id": "article-023",
+      "slug": "electrical-notes-15",
+      "block": 3,
+      "title_es": "Relés, temporizadores y salidas PLC",
+      "title_en": "Relays, timers and PLC outputs"
+    },
+    {
+      "editorial_id": "NB-EL-16",
+      "canonical_id": "article-024",
+      "slug": "electrical-notes-16",
+      "block": 4,
+      "title_es": "Símbolos y convenciones",
+      "title_en": "Symbols and conventions"
+    },
+    {
+      "editorial_id": "NB-EL-17",
+      "canonical_id": "article-025",
+      "slug": "electrical-notes-17",
+      "block": 4,
+      "title_es": "Designación y referencias cruzadas",
+      "title_en": "Designations and cross-references"
+    },
+    {
+      "editorial_id": "NB-EL-18",
+      "canonical_id": "article-026",
+      "slug": "electrical-notes-18",
+      "block": 4,
+      "title_es": "Borneros, potenciales y numeración",
+      "title_en": "Terminals, potentials and numbering"
+    },
+    {
+      "editorial_id": "NB-EL-19",
+      "canonical_id": "article-027",
+      "slug": "electrical-notes-19",
+      "block": 4,
+      "title_es": "Lectura de esquemas de mando",
+      "title_en": "Reading control schematics"
+    },
+    {
+      "editorial_id": "NB-EL-20",
+      "canonical_id": "article-028",
+      "slug": "electrical-notes-20",
+      "block": 4,
+      "title_es": "Trazabilidad y control de revisiones",
+      "title_en": "Traceability and revision control"
+    },
+    {
+      "editorial_id": "NB-EL-21",
+      "canonical_id": "article-029",
+      "slug": "electrical-notes-21",
+      "block": 5,
+      "title_es": "Método de diagnóstico",
+      "title_en": "Diagnostic method"
+    },
+    {
+      "editorial_id": "NB-EL-22",
+      "canonical_id": "article-030",
+      "slug": "electrical-notes-22",
+      "block": 5,
+      "title_es": "Consignación y comprobación de ausencia de tensión",
+      "title_en": "Isolation, lockout and proving absence of voltage"
+    },
+    {
+      "editorial_id": "NB-EL-23",
+      "canonical_id": "article-031",
+      "slug": "electrical-notes-23",
+      "block": 5,
+      "title_es": "Diagnóstico por comparación y bajo carga",
+      "title_en": "Diagnosis by comparison and under load"
+    },
+    {
+      "editorial_id": "NB-EL-24",
+      "canonical_id": "article-032",
+      "slug": "electrical-notes-24",
+      "block": 5,
+      "title_es": "Aislamiento y fugas",
+      "title_en": "Insulation and leakage"
+    },
+    {
+      "editorial_id": "NB-EL-25",
+      "canonical_id": "article-033",
+      "slug": "electrical-notes-25",
+      "block": 5,
+      "title_es": "Verificación, recurrencia y documentación",
+      "title_en": "Verification, recurrence and documentation"
+    }
+  ],
+  "experiences": [
+    {
+      "editorial_id": "EXP-EL-01",
+      "canonical_editorial_id": "EE-0031",
+      "technical_id": "EXP-ELECTRICAL-SUPPLY-031",
+      "slug": "24vdc-supply-voltage-collapse",
+      "path": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "B",
+        "B",
+        "A",
+        "C"
+      ],
+      "notebooks": [
+        "article-009",
+        "article-012",
+        "article-015",
+        "article-029",
+        "article-031"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-02",
+      "canonical_editorial_id": "EE-0032",
+      "technical_id": "EXP-ELECTRICAL-CONTACTOR-032",
+      "slug": "contactor-does-not-energize",
+      "path": "content/experiences/electrical/EE-0032-contactor-does-not-energize",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "B",
+        "C",
+        "A",
+        "B"
+      ],
+      "notebooks": [
+        "article-012",
+        "article-019",
+        "article-020",
+        "article-021",
+        "article-027",
+        "article-029"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-03",
+      "canonical_editorial_id": "EE-0033",
+      "technical_id": "EXP-ELECTRICAL-OVERLOAD-033",
+      "slug": "motor-overload-trip",
+      "path": "content/experiences/electrical/EE-0033-motor-overload-trip",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "B",
+        "A",
+        "C",
+        "A",
+        "B"
+      ],
+      "notebooks": [
+        "article-011",
+        "article-016",
+        "article-022",
+        "article-029",
+        "article-033"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0033-motor-overload-trip/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-04",
+      "canonical_editorial_id": "EE-0034",
+      "technical_id": "EXP-ELECTRICAL-PHASE-034",
+      "slug": "single-phase-loss",
+      "path": "content/experiences/electrical/EE-0034-single-phase-loss",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "A",
+        "A",
+        "B",
+        "C"
+      ],
+      "notebooks": [
+        "article-014",
+        "article-016",
+        "article-022",
+        "article-026",
+        "article-029"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0034-single-phase-loss/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-05",
+      "canonical_editorial_id": "EE-0035",
+      "technical_id": "EXP-ELECTRICAL-PROTECTION-035",
+      "slug": "auxiliary-circuit-protection-trip",
+      "path": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "B",
+        "C",
+        "A",
+        "B"
+      ],
+      "notebooks": [
+        "article-015",
+        "article-016",
+        "article-017",
+        "article-018",
+        "article-026",
+        "article-029",
+        "article-032"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-06",
+      "canonical_editorial_id": "EE-0036",
+      "technical_id": "EXP-ELECTRICAL-RETURN-036",
+      "slug": "open-return-conductor",
+      "path": "content/experiences/electrical/EE-0036-open-return-conductor",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "B",
+        "A",
+        "B",
+        "A"
+      ],
+      "notebooks": [
+        "article-009",
+        "article-012",
+        "article-026",
+        "article-028",
+        "article-029"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0036-open-return-conductor/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-07",
+      "canonical_editorial_id": "EE-0037",
+      "technical_id": "EXP-ELECTRICAL-CONTACT-037",
+      "slug": "incorrect-no-nc-contact",
+      "path": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "A",
+        "A",
+        "B",
+        "A"
+      ],
+      "notebooks": [
+        "article-020",
+        "article-021",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-027",
+        "article-028"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-08",
+      "canonical_editorial_id": "EE-0038",
+      "technical_id": "EXP-ELECTRICAL-ROTATION-038",
+      "slug": "incorrect-motor-rotation",
+      "path": "content/experiences/electrical/EE-0038-incorrect-motor-rotation",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "A",
+        "B",
+        "A",
+        "B"
+      ],
+      "notebooks": [
+        "article-014",
+        "article-022",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-033"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-09",
+      "canonical_editorial_id": "EE-0039",
+      "technical_id": "EXP-ELECTRICAL-DROP-039",
+      "slug": "excessive-voltage-drop-at-terminal",
+      "path": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "A",
+        "A",
+        "B",
+        "A"
+      ],
+      "notebooks": [
+        "article-009",
+        "article-012",
+        "article-015",
+        "article-026",
+        "article-031"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/media-source/evidence-manifest.yaml"
+    },
+    {
+      "editorial_id": "EXP-EL-10",
+      "canonical_editorial_id": "EE-0040",
+      "technical_id": "EXP-ELECTRICAL-INSULATION-040",
+      "slug": "insulation-fault-to-protective-earth",
+      "path": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth",
+      "stages": 5,
+      "schema_decisions": 15,
+      "editorial_decisions": 5,
+      "options": 15,
+      "correct_options": [
+        "A",
+        "B",
+        "A",
+        "B",
+        "A"
+      ],
+      "notebooks": [
+        "article-017",
+        "article-030",
+        "article-032",
+        "article-033"
+      ],
+      "status": "technical_review",
+      "evidence_manifest": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/media-source/evidence-manifest.yaml"
+    }
+  ],
+  "hotspots": [
+    {
+      "id": "H01",
+      "label_es": "Fuente 24 VDC",
+      "label_en": "24 VDC power supply",
+      "x_percent": 65.2,
+      "y_percent": 30.5,
+      "experience_id": "EXP-EL-01",
+      "notebook_ids": [
+        "NB-EL-07",
+        "NB-EL-05"
+      ],
+      "canonical_editorial_id": "EE-0031",
+      "technical_id": "EXP-ELECTRICAL-SUPPLY-031",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H02",
+      "label_es": "Contactor KM1",
+      "label_en": "Contactor KM1",
+      "x_percent": 28.3,
+      "y_percent": 57.3,
+      "experience_id": "EXP-EL-02",
+      "notebook_ids": [
+        "NB-EL-11",
+        "NB-EL-12"
+      ],
+      "canonical_editorial_id": "EE-0032",
+      "technical_id": "EXP-ELECTRICAL-CONTACTOR-032",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H03",
+      "label_es": "Motor trifásico",
+      "label_en": "Three-phase motor",
+      "x_percent": 87.7,
+      "y_percent": 66.3,
+      "experience_id": "EXP-EL-03",
+      "notebook_ids": [
+        "NB-EL-14",
+        "NB-EL-23"
+      ],
+      "canonical_editorial_id": "EE-0033",
+      "technical_id": "EXP-ELECTRICAL-OVERLOAD-033",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H04",
+      "label_es": "Entrada L1/L2/L3",
+      "label_en": "Three-phase incoming supply",
+      "x_percent": 26.8,
+      "y_percent": 19.7,
+      "experience_id": "EXP-EL-04",
+      "notebook_ids": [
+        "NB-EL-06",
+        "NB-EL-21"
+      ],
+      "canonical_editorial_id": "EE-0034",
+      "technical_id": "EXP-ELECTRICAL-PHASE-034",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H05",
+      "label_es": "Magnetotérmicos",
+      "label_en": "Circuit breakers",
+      "x_percent": 40.4,
+      "y_percent": 31.0,
+      "experience_id": "EXP-EL-05",
+      "notebook_ids": [
+        "NB-EL-08",
+        "NB-EL-10"
+      ],
+      "canonical_editorial_id": "EE-0035",
+      "technical_id": "EXP-ELECTRICAL-PROTECTION-035",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H06",
+      "label_es": "Borneros X1",
+      "label_en": "Terminal blocks X1",
+      "x_percent": 39.0,
+      "y_percent": 81.7,
+      "experience_id": "EXP-EL-06",
+      "notebook_ids": [
+        "NB-EL-18",
+        "NB-EL-20"
+      ],
+      "canonical_editorial_id": "EE-0036",
+      "technical_id": "EXP-ELECTRICAL-RETURN-036",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H07",
+      "label_es": "Relés K1/K2",
+      "label_en": "Control relays K1/K2",
+      "x_percent": 55.5,
+      "y_percent": 56.4,
+      "experience_id": "EXP-EL-07",
+      "notebook_ids": [
+        "NB-EL-12",
+        "NB-EL-13"
+      ],
+      "canonical_editorial_id": "EE-0037",
+      "technical_id": "EXP-ELECTRICAL-CONTACT-037",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H08",
+      "label_es": "Conexión del motor",
+      "label_en": "Motor connection",
+      "x_percent": 93.4,
+      "y_percent": 56.0,
+      "experience_id": "EXP-EL-08",
+      "notebook_ids": [
+        "NB-EL-06",
+        "NB-EL-14"
+      ],
+      "canonical_editorial_id": "EE-0038",
+      "technical_id": "EXP-ELECTRICAL-ROTATION-038",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H09",
+      "label_es": "Borneros 24 VDC",
+      "label_en": "24 VDC terminals",
+      "x_percent": 65.0,
+      "y_percent": 80.3,
+      "experience_id": "EXP-EL-09",
+      "notebook_ids": [
+        "NB-EL-05",
+        "NB-EL-23"
+      ],
+      "canonical_editorial_id": "EE-0039",
+      "technical_id": "EXP-ELECTRICAL-DROP-039",
+      "active_in_preview": true,
+      "published": false
+    },
+    {
+      "id": "H10",
+      "label_es": "PE y puesta a tierra",
+      "label_en": "Protective earth terminals",
+      "x_percent": 27.1,
+      "y_percent": 81.8,
+      "experience_id": "EXP-EL-10",
+      "notebook_ids": [
+        "NB-EL-09",
+        "NB-EL-24"
+      ],
+      "canonical_editorial_id": "EE-0040",
+      "technical_id": "EXP-ELECTRICAL-INSULATION-040",
+      "active_in_preview": true,
+      "published": false
+    }
+  ],
+  "source_snapshot_sha256": "d4d96227eb2b6c64b02b90a01274c1919a13a7bd103e8b5c9621dfdb7b6ae544",
+  "source_snapshot_normalization": "Trailing whitespace removed for repository hygiene. source_sha256 identifies the original package source; source_snapshot_sha256 identifies this normalized snapshot."
+}

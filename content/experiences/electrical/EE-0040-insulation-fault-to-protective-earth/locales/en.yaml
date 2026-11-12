@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Insulation fault to exposed conductive parts"
+  summary: "Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-017 (NB-EL-09): RCDs, insulation and PE; article-030 (NB-EL-22): Isolation, lockout and proving absence of voltage; article-032 (NB-EL-24): Insulation and leakage; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    initiating_event: "Insulation fault to exposed conductive parts"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-017 (NB-EL-09): RCDs, insulation and PE; article-030 (NB-EL-22): Isolation, lockout and proving absence of voltage; article-032 (NB-EL-24): Insulation and leakage; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "The recorded event belongs to RCD1, not the circuit breaker. It is consistent with residual current and requires locating the origin; it does not itself prove thermal overload or PLC failure.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "Events correlate with the EH1 command and moisture is observed in its terminal box. Correlation prioritizes the heater circuit and insulation without yet confirming the causal component or a disconnected neutral.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "The test report, produced by authorized personnel after lockout, electronics disconnection and preparation, records abnormally low resistance between EH1's circuit and its PE-connected enclosure against the limits applicable to the assembly. No universal test voltage or threshold is published; manufacturer, equipment and standard must establish them before publication.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "Moisture-assisted insulation degradation in EH1 with leakage to PE-connected parts is confirmed. The affected component or connection is located and corrected, with appropriate drying or replacement and moisture-ingress control. Repair requires verification under an authorized protocol.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "The recorded event belongs to RCD1, not the circuit breaker. It is consistent with residual current and requires locating the origin; it does not itself prove thermal overload or PLC failure."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "Events correlate with the EH1 command and moisture is observed in its terminal box. Correlation prioritizes the heater circuit and insulation without yet confirming the causal component or a disconnected neutral."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "The test report, produced by authorized personnel after lockout, electronics disconnection and preparation, records abnormally low resistance between EH1's circuit and its PE-connected enclosure against the limits applicable to the assembly. No universal test voltage or threshold is published; manufacturer, equipment and standard must establish them before publication."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "Moisture-assisted insulation degradation in EH1 with leakage to PE-connected parts is confirmed. The affected component or connection is located and corrected, with appropriate drying or replacement and moisture-ingress control. Repair requires verification under an authorized protocol."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "After authorized repair and appropriate drying or replacement in the simulated case, electrical and protection-function checks are repeated under the specific protocol. RCD and PE remain operational; indefinite resetting is not accepted. Final insulation-test voltage and criterion selection remain pending equipment and standards review for production."
+  decisions:
+    DEC-01-A:
+      action: "Distinguish an RCD trip from an overcurrent trip."
+    DEC-01-B:
+      action: "Increase the circuit breaker's rated current. The event is proposed to be resolved by changing the overcurrent rating without distinguishing which device operated or what quantity RCD1 monitors."
+    DEC-01-C:
+      action: "Bypass RCD1."
+    DEC-02-A:
+      action: "The RCD measures thermal overload only. The RCD is interpreted as thermal protection, omitting comparison of residual currents with behaviour of the circuit breaker associated with the heater."
+    DEC-02-B:
+      action: "The trip is consistent with residual current; its origin must be located."
+    DEC-02-C:
+      action: "It proves a PLC fault."
+    DEC-03-A:
+      action: "Correlation with EH1 and moisture prioritizes the heater circuit and insulation."
+    DEC-03-B:
+      action: "Neutral is definitely disconnected. An interrupted neutral is inferred as the sole cause without comparing event correlation with EH1 or the moisture observed in its terminal box."
+    DEC-03-C:
+      action: "Replace the conveyor motor."
+    DEC-04-A:
+      action: "Measure insulation with EH1 energized. The proposal ignores lockout, circuit preparation and electronics disconnection, treating insulation testing as a measurement compatible with energized operation."
+    DEC-04-B:
+      action: "Interpret the insulation test already performed on an isolated, prepared circuit according to specification."
+    DEC-04-C:
+      action: "Disconnect PE to prevent leakage."
+    DEC-05-A:
+      action: "After authorized repair and appropriate drying/replacement, repeat electrical checks and protection-function verification."
+    DEC-05-B:
+      action: "Reset the RCD indefinitely. Continuing through repeated resets is proposed without correcting moisture-related degradation or repeating electrical and protection checks under the equipment-specific protocol."
+    DEC-05-C:
+      action: "Leave PE disconnected."
+  retry_feedback:
+    DEC-01-B: "The proposal “Increase the circuit breaker's rated current.” is not supported by this record.  Review: Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Bypass RCD1.” is not supported by this record.  Review: Activating heater -EH1 trips -RCD1. There is no overcurrent evidence at the associated circuit breaker. A simulated case is interpreted; energized intervention is not authorized and RCD or PE must not be bypassed. Test limits and voltage depend on equipment and standard; no universal threshold is published. Choose again without carrying out the proposed option."
+    DEC-02-A: "The proposal “The RCD measures thermal overload only.” is not supported by this record.  Review: The recorded event belongs to RCD1, not the circuit breaker. It is consistent with residual current and requires locating the origin; it does not itself prove thermal overload or PLC failure. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “It proves a PLC fault.” is not supported by this record.  Review: The recorded event belongs to RCD1, not the circuit breaker. It is consistent with residual current and requires locating the origin; it does not itself prove thermal overload or PLC failure. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “Neutral is definitely disconnected.” is not supported by this record.  Review: Events correlate with the EH1 command and moisture is observed in its terminal box. Correlation prioritizes the heater circuit and insulation without yet confirming the causal component or a disconnected neutral. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “Replace the conveyor motor.” is not supported by this record.  Review: Events correlate with the EH1 command and moisture is observed in its terminal box. Correlation prioritizes the heater circuit and insulation without yet confirming the causal component or a disconnected neutral. Choose again without carrying out the proposed option."
+    DEC-04-A: "The proposal “Measure insulation with EH1 energized.” is not supported by this record.  Review: The test report, produced by authorized personnel after lockout, electronics disconnection and preparation, records abnormally low resistance between EH1's circuit and its PE-connected enclosure against the limits applicable to the assembly. No universal test voltage or threshold is published; manufacturer, equipment and standard must establish them before publication. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Disconnect PE to prevent leakage.” is not supported by this record.  Review: The test report, produced by authorized personnel after lockout, electronics disconnection and preparation, records abnormally low resistance between EH1's circuit and its PE-connected enclosure against the limits applicable to the assembly. No universal test voltage or threshold is published; manufacturer, equipment and standard must establish them before publication. Choose again without carrying out the proposed option."
+    DEC-05-B: "The proposal “Reset the RCD indefinitely.” is not supported by this record.  Review: Moisture-assisted insulation degradation in EH1 with leakage to PE-connected parts is confirmed. The affected component or connection is located and corrected, with appropriate drying or replacement and moisture-ingress control. Repair requires verification under an authorized protocol. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Leave PE disconnected.” is not supported by this record.  Review: Moisture-assisted insulation degradation in EH1 with leakage to PE-connected parts is confirmed. The affected component or connection is located and corrected, with appropriate drying or replacement and moisture-ingress control. Repair requires verification under an authorized protocol. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "moisture-assisted insulation degradation in EH1, with leakage to PE-connected parts. The RCD operates; it must not be bypassed to maintain production. After authorized repair and appropriate drying or replacement in the simulated case, electrical and protection-function checks are repeated under the specific protocol. RCD and PE remain operational; indefinite resetting is not accepted. Final insulation-test voltage and criterion selection remain pending equipment and standards review for production."
+    process:
+      - "Distinguish an RCD trip from an overcurrent trip."
+      - "The trip is consistent with residual current; its origin must be located."
+      - "Correlation with EH1 and moisture prioritizes the heater circuit and insulation."
+      - "Interpret the insulation test already performed on an isolated, prepared circuit according to specification."
+      - "After authorized repair and appropriate drying/replacement, repeat electrical checks and protection-function verification."
+    lesson: "locate and correct the affected component/connection, control moisture ingress and verify under an authorized protocol. Notebook — reading path in Engineering Notes: article-017 (NB-EL-09): RCDs, insulation and PE; article-030 (NB-EL-22): Isolation, lockout and proving absence of voltage; article-032 (NB-EL-24): Insulation and leakage; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    avoided_errors:
+      - "Increase the circuit breaker's rated current."
+      - "Bypass RCD1."
+      - "The RCD measures thermal overload only."
+      - "It proves a PLC fault."
+      - "Neutral is definitely disconnected."
+      - "Replace the conveyor motor."
+      - "Measure insulation with EH1 energized."
+      - "Disconnect PE to prevent leakage."
+      - "Reset the RCD indefinitely."
+      - "Leave PE disconnected."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

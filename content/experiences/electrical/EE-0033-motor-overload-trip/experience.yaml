@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-OVERLOAD-033"
+  editorial_id: "EE-0033"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "intermediate"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "motor-overload-trip"
+  title: "El motor dispara por sobrecarga"
+  summary: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-011 (NB-EL-03): Potencia, energía y cargas industriales; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-029 (NB-EL-21): Método de diagnóstico; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    initiating_event: "El motor dispara por sobrecarga"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-011 (NB-EL-03): Potencia, energía y cargas industriales; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-029 (NB-EL-21): Método de diagnóstico; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-B"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-A"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-A"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-B"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Subir ajuste del relé hasta que no dispare. Se trata el disparo como problema de ajuste y se evita investigar por qué las tres corrientes aumentan respecto a placa bajo la nueva condición de producción."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Correlacionar corrientes, placa y carga mecánica."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar PLC."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "4,5 A frente a 3,2 A demuestra corriente superior a nominal."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Es normal porque el motor gira. Se toma el movimiento visible como criterio suficiente para aceptar la corriente registrada, sin comparar el valor nominal ni la condición de carga."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Demuestra cortocircuito franco."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La pérdida de fase está confirmada. Se interpreta el disparo como pérdida de fase sin contrastarlo con tres corrientes similares y tensiones equilibradas en el registro disponible."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La alimentación es necesariamente incorrecta."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Priorizar sobrecarga mecánica o condición de motor; solicitar evidencia mecánica."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "El rodillo con resistencia anómala explica el incremento de carga, sujeto a confirmación tras reparación."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "El relé está mal por disparar. Se atribuye el incidente al dispositivo que interrumpe el circuito, en lugar de relacionar su actuación con la resistencia mecánica anómala del rodillo."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Se puede anular el relé."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Solo borrar alarma. Se considera que eliminar el aviso de interfaz equivale a recuperar la función, sin comparar corrientes tras la reparación ni comprobar protección operativa."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Tras reparar rodillo, verificar corrientes dentro de límites y protección operativa."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Reducir velocidad sin investigar."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "sobrecarga mecánica por rodillo deteriorado; protección térmica actúa correctamente. Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+    process:
+      - "Correlacionar corrientes, placa y carga mecánica."
+      - "4,5 A frente a 3,2 A demuestra corriente superior a nominal."
+      - "Priorizar sobrecarga mecánica o condición de motor; solicitar evidencia mecánica."
+      - "El rodillo con resistencia anómala explica el incremento de carga, sujeto a confirmación tras reparación."
+      - "Tras reparar rodillo, verificar corrientes dentro de límites y protección operativa."
+    lesson: "reparación mecánica y confirmación de ajuste correcto, sin aumentar protección para compensar carga. Notebook — itinerario en Engineering Notes: article-011 (NB-EL-03): Potencia, energía y cargas industriales; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-029 (NB-EL-21): Método de diagnóstico; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    avoided_errors:
+      - "Subir ajuste del relé hasta que no dispare."
+      - "Cambiar PLC."
+      - "Es normal porque el motor gira."
+      - "Demuestra cortocircuito franco."
+      - "La pérdida de fase está confirmada."
+      - "La alimentación es necesariamente incorrecta."
+      - "El relé está mal por disparar."
+      - "Se puede anular el relé."
+      - "Solo borrar alarma."
+      - "Reducir velocidad sin investigar."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "sobrecarga mecánica por rodillo deteriorado; protección térmica actúa correctamente."
+    recovery_conditions:
+      - "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "sobrecarga mecánica por rodillo deteriorado; protección térmica actúa correctamente."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-B"
+      - "DEC-02-A"
+      - "DEC-03-C"
+      - "DEC-04-A"
+      - "DEC-05-B"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "elimina margen sin justificar."
+      classification: "weak"
+      consequence: "elimina margen sin justificar. Revisa: El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "elimina margen sin justificar. Revisa: El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+      classification: "strong"
+      consequence: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar PLC.» no está sustentada por este registro.  Revisa: El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar PLC.» no está sustentada por este registro.  Revisa: El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+      classification: "strong"
+      consequence: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+      classification: "weak"
+      consequence: "La propuesta «Es normal porque el motor gira.» no está sustentada por este registro.  Revisa: Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Es normal porque el motor gira.» no está sustentada por este registro.  Revisa: Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+      classification: "weak"
+      consequence: "La propuesta «Demuestra cortocircuito franco.» no está sustentada por este registro.  Revisa: Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Demuestra cortocircuito franco.» no está sustentada por este registro.  Revisa: Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "tres corrientes similares y tensiones equilibradas no la apoyan."
+      classification: "weak"
+      consequence: "tres corrientes similares y tensiones equilibradas no la apoyan. Revisa: Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "tres corrientes similares y tensiones equilibradas no la apoyan. Revisa: Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor."
+      classification: "weak"
+      consequence: "La propuesta «La alimentación es necesariamente incorrecta.» no está sustentada por este registro.  Revisa: Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «La alimentación es necesariamente incorrecta.» no está sustentada por este registro.  Revisa: Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor."
+      classification: "strong"
+      consequence: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+      classification: "strong"
+      consequence: "El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+      classification: "weak"
+      consequence: "La propuesta «El relé está mal por disparar.» no está sustentada por este registro.  Revisa: El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «El relé está mal por disparar.» no está sustentada por este registro.  Revisa: El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+      classification: "unsafe"
+      consequence: "La propuesta «Se puede anular el relé.» no está sustentada por este registro.  Revisa: El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Se puede anular el relé.» no está sustentada por este registro.  Revisa: El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección."
+      classification: "weak"
+      consequence: "La propuesta «Solo borrar alarma.» no está sustentada por este registro.  Revisa: El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Solo borrar alarma.» no está sustentada por este registro.  Revisa: El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección."
+      classification: "strong"
+      consequence: "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "puede ocultar problema."
+      classification: "weak"
+      consequence: "puede ocultar problema. Revisa: El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "puede ocultar problema. Revisa: El rodillo deteriorado causa sobrecarga mecánica. La protección térmica actúa correctamente; no se aumenta su ajuste ni se anula para compensar carga. La reparación mecánica debe ir seguida de verificación de corrientes y protección. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "sobrecarga mecánica por rodillo deteriorado; protección térmica actúa correctamente."
+    correct_reasoning:
+      - "Correlacionar corrientes, placa y carga mecánica."
+      - "4,5 A frente a 3,2 A demuestra corriente superior a nominal."
+      - "Priorizar sobrecarga mecánica o condición de motor; solicitar evidencia mecánica."
+      - "El rodillo con resistencia anómala explica el incremento de carga, sujeto a confirmación tras reparación."
+      - "Tras reparar rodillo, verificar corrientes dentro de límites y protección operativa."
+    recovery:
+      - "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: motor -M1 de cinta, placa 400 V / 3,2 A nominal, relé de sobrecarga ajustado y documentado a 3,2 A. Tras aumentar producción, las corrientes de línea registradas son 4,5/4,4/4,6 A y el relé dispara con retardo. Tensiones entre fases equilibradas, sin pérdida de fase. Registro mecánico: rodillo de retorno presenta resistencia anómala; al desacoplar y comprobar según procedimiento, la resistencia mecánica supera la referencia histórica."

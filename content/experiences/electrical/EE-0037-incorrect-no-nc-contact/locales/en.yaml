@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Installed contact does not match the schematic"
+  summary: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-027 (NB-EL-19): Reading control schematics; article-028 (NB-EL-20): Traceability and revision control"
+    initiating_event: "Installed contact does not match the schematic"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-027 (NB-EL-19): Reading control schematics; article-028 (NB-EL-20): Traceability and revision control"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "Component documentation identifies 13-14 as NO and 21-22 as NC. Designation, drawing and physical state are compared; NO/NC is not inferred from wire colour or universally assumed without documentation.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "Isolated verification finds NO pair 13-14 accidentally wired instead of NC 21-22. The assembly does not match the approved drawing and gives an inverted permission; it is not evidence of phase loss or a welded contactor.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "Component documentation identifies 13-14 as NO and 21-22 as NC. Designation, drawing and physical state are compared; NO/NC is not inferred from wire colour or universally assumed without documentation."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "Isolated verification finds NO pair 13-14 accidentally wired instead of NC 21-22. The assembly does not match the approved drawing and gives an inverted permission; it is not evidence of phase loss or a welded contactor."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "After authorized correction in the simulated scenario, STOP and START are checked at rest and when actuated, together with seal-in. The control sequence is validated and documented; one start does not replace full verification."
+  decisions:
+    DEC-01-A:
+      action: "Review correspondence between physical state, drawing and terminals."
+    DEC-01-B:
+      action: "Immediately invert PLC bits. Software interpretation is proposed to be adapted to observed behaviour before comparing terminal designations and the component's reference state."
+    DEC-01-C:
+      action: "Replace the motor."
+    DEC-02-A:
+      action: "13-14 is NO on the documented component."
+    DEC-02-B:
+      action: "All 13-14 contacts are NC. NC state is generalized to that numbering, ignoring the component documentation that distinguishes 13-14 from 21-22 for this installation."
+    DEC-02-C:
+      action: "NO/NC depends on wire colour."
+    DEC-03-A:
+      action: "Permission appearing when S3 is pressed is consistent with accidental NO use."
+    DEC-03-B:
+      action: "It proves phase loss. The control permission is attributed to a three-phase anomaly without explaining the documented correspondence between pressing S3 and closure of the NO pair."
+    DEC-03-C:
+      action: "The contactor is welded."
+    DEC-04-A:
+      action: "Leave the behaviour and change the HMI text. Presentation is proposed to be adapted to inverted behaviour without restoring the series NC contact required by the approved control drawing."
+    DEC-04-B:
+      action: "Verify under isolation that 13-14 was used instead of 21-22 and restore the approved drawing's arrangement."
+    DEC-04-C:
+      action: "Bypass S3."
+    DEC-05-A:
+      action: "After authorized correction, check STOP and START at rest/when actuated and seal-in."
+    DEC-05-B:
+      action: "Start only once. A single start is considered sufficient without checking stopping, rest and actuated states or the seal-in function intended in the control circuit."
+    DEC-05-C:
+      action: "Remove the stop contact."
+  retry_feedback:
+    DEC-01-B: "The proposal “Immediately invert PLC bits.” is not supported by this record.  Review: After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Replace the motor.” is not supported by this record.  Review: After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified. Choose again without carrying out the proposed option."
+    DEC-02-B: "The proposal “All 13-14 contacts are NC.” is not supported by this record.  Review: Component documentation identifies 13-14 as NO and 21-22 as NC. Designation, drawing and physical state are compared; NO/NC is not inferred from wire colour or universally assumed without documentation. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “NO/NC depends on wire colour.” is not supported by this record.  Review: Component documentation identifies 13-14 as NO and 21-22 as NC. Designation, drawing and physical state are compared; NO/NC is not inferred from wire colour or universally assumed without documentation. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “It proves phase loss.” is not supported by this record.  Review: The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “The contactor is welded.” is not supported by this record.  Review: The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation. Choose again without carrying out the proposed option."
+    DEC-04-A: "The proposal “Leave the behaviour and change the HMI text.” is not supported by this record.  Review: Isolated verification finds NO pair 13-14 accidentally wired instead of NC 21-22. The assembly does not match the approved drawing and gives an inverted permission; it is not evidence of phase loss or a welded contactor. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Bypass S3.” is not supported by this record.  Review: Isolated verification finds NO pair 13-14 accidentally wired instead of NC 21-22. The assembly does not match the approved drawing and gives an inverted permission; it is not evidence of phase loss or a welded contactor. Choose again without carrying out the proposed option."
+    DEC-05-B: "The proposal “Start only once.” is not supported by this record.  Review: An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Remove the stop contact.” is not supported by this record.  Review: An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "connection to an NO contact in a function requiring NC according to the design. Important: do not confuse a process STOP with a safety emergency-stop function; this scenario does not modify a safety circuit. After authorized correction in the simulated scenario, STOP and START are checked at rest and when actuated, together with seal-in. The control sequence is validated and documented; one start does not replace full verification."
+    process:
+      - "Review correspondence between physical state, drawing and terminals."
+      - "13-14 is NO on the documented component."
+      - "Permission appearing when S3 is pressed is consistent with accidental NO use."
+      - "Verify under isolation that 13-14 was used instead of 21-22 and restore the approved drawing's arrangement."
+      - "After authorized correction, check STOP and START at rest/when actuated and seal-in."
+    lesson: "restore wiring to the drawing and record the maintenance deviation. Notebook — reading path in Engineering Notes: article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-027 (NB-EL-19): Reading control schematics; article-028 (NB-EL-20): Traceability and revision control"
+    avoided_errors:
+      - "Immediately invert PLC bits."
+      - "Replace the motor."
+      - "All 13-14 contacts are NC."
+      - "NO/NC depends on wire colour."
+      - "It proves phase loss."
+      - "The contactor is welded."
+      - "Leave the behaviour and change the HMI text."
+      - "Bypass S3."
+      - "Start only once."
+      - "Remove the stop contact."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

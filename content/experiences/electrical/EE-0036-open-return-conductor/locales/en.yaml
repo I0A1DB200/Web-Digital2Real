@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "An open conductor prevents valve activation"
+  summary: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-026 (NB-EL-18): Terminals, potentials and numbering; article-028 (NB-EL-20): Traceability and revision control; article-029 (NB-EL-21): Diagnostic method"
+    initiating_event: "An open conductor prevents valve activation"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-026 (NB-EL-18): Terminals, potentials and numbering; article-028 (NB-EL-20): Traceability and revision control; article-029 (NB-EL-21): Diagnostic method"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "Watch confirms Q0.3=TRUE. This logical state does not prove electrical-path continuity or voltage between A1 and A2. The load and return are compared using authorized records.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "With the installation isolated and absence of voltage verified, the test records an open circuit between X2:8 and the 0 V bar. The report locates the interrupted return. In this case, 24 V at A2 results from the open return and coupling through the coil.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "Watch confirms Q0.3=TRUE. This logical state does not prove electrical-path continuity or voltage between A1 and A2. The load and return are compared using authorized records."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "With the installation isolated and absence of voltage verified, the test records an open circuit between X2:8 and the 0 V bar. The report locates the interrupted return. In this case, 24 V at A2 results from the open return and coupling through the coil."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "After authorized return repair in the simulated case, effective A1-A2 voltage under command and correct Y3 actuation are verified. Conductor traceability is retained without changing logic or using PE; Q0.3=TRUE alone does not verify recovery."
+  decisions:
+    DEC-01-A:
+      action: "Check effective voltage across Y3 terminals and the return."
+    DEC-01-B:
+      action: "Change the PLC program. Software correction is proposed from absent movement without comparing effective A1-A2 voltage or the continuity of the return path."
+    DEC-01-C:
+      action: "Replace Y3 without measurement."
+    DEC-02-A:
+      action: "Q0.3=TRUE confirms Y3's complete supply. The Watch logical state is equated with applied coil voltage and continuity of both conductors, without reviewing the physical output-to-load boundary."
+    DEC-02-B:
+      action: "Q0.3=TRUE only confirms the logical state; the electrical path must be checked."
+    DEC-02-C:
+      action: "The position sensor must be the cause."
+    DEC-03-A:
+      action: "A1=24 V and A2=24 V relative to cabinet 0 V, with 0 V across A1-A2, suggests an open return or another reference fault."
+    DEC-03-B:
+      action: "The coil receives 24 V. Each reading relative to cabinet 0 V is interpreted as applied voltage, without subtracting A1 and A2 potentials or considering that their recorded difference is zero."
+    DEC-03-C:
+      action: "The supply delivers 48 V."
+    DEC-04-A:
+      action: "Replace the PLC output. The fault is attributed to the output module even though the isolated-continuity report locates an interruption between X2:8 and the 0 V return bar."
+    DEC-04-B:
+      action: "The isolated open-circuit test between X2:8 and the 0 V bar locates the interrupted return."
+    DEC-04-C:
+      action: "Bridge to PE as a return."
+    DEC-05-A:
+      action: "After authorized conductor repair, verify A1-A2 voltage under command and Y3 actuation."
+    DEC-05-B:
+      action: "Use PE as the permanent return. A functional earth return is proposed instead of repairing the documented conductor, without restoring the intended supply architecture."
+    DEC-05-C:
+      action: "Close the incident because Q0.3=TRUE."
+  retry_feedback:
+    DEC-01-B: "The proposal “Change the PLC program.” is not supported by this record.  Review: Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Replace Y3 without measurement.” is not supported by this record.  Review: Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage. Choose again without carrying out the proposed option."
+    DEC-02-A: "The proposal “Q0.3=TRUE confirms Y3's complete supply.” is not supported by this record.  Review: Watch confirms Q0.3=TRUE. This logical state does not prove electrical-path continuity or voltage between A1 and A2. The load and return are compared using authorized records. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “The position sensor must be the cause.” is not supported by this record.  Review: Watch confirms Q0.3=TRUE. This logical state does not prove electrical-path continuity or voltage between A1 and A2. The load and return are compared using authorized records. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “The coil receives 24 V.” is not supported by this record.  Review: Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “The supply delivers 48 V.” is not supported by this record.  Review: Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program. Choose again without carrying out the proposed option."
+    DEC-04-A: "The proposal “Replace the PLC output.” is not supported by this record.  Review: With the installation isolated and absence of voltage verified, the test records an open circuit between X2:8 and the 0 V bar. The report locates the interrupted return. In this case, 24 V at A2 results from the open return and coupling through the coil. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Bridge to PE as a return.” is not supported by this record.  Review: With the installation isolated and absence of voltage verified, the test records an open circuit between X2:8 and the 0 V bar. The report locates the interrupted return. In this case, 24 V at A2 results from the open return and coupling through the coil. Choose again without carrying out the proposed option."
+    DEC-05-B: "The proposal “Use PE as the permanent return.” is not supported by this record.  Review: The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Close the incident because Q0.3=TRUE.” is not supported by this record.  Review: The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "interrupted 0 V return between X2:8 and the 0 V bar. The PLC commands, but there is no closed circuit. After authorized return repair in the simulated case, effective A1-A2 voltage under command and correct Y3 actuation are verified. Conductor traceability is retained without changing logic or using PE; Q0.3=TRUE alone does not verify recovery."
+    process:
+      - "Check effective voltage across Y3 terminals and the return."
+      - "Q0.3=TRUE only confirms the logical state; the electrical path must be checked."
+      - "A1=24 V and A2=24 V relative to cabinet 0 V, with 0 V across A1-A2, suggests an open return or another reference fault."
+      - "The isolated open-circuit test between X2:8 and the 0 V bar locates the interrupted return."
+      - "After authorized conductor repair, verify A1-A2 voltage under command and Y3 actuation."
+    lesson: "repair and trace the return, without changing logic. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-026 (NB-EL-18): Terminals, potentials and numbering; article-028 (NB-EL-20): Traceability and revision control; article-029 (NB-EL-21): Diagnostic method"
+    avoided_errors:
+      - "Change the PLC program."
+      - "Replace Y3 without measurement."
+      - "Q0.3=TRUE confirms Y3's complete supply."
+      - "The position sensor must be the cause."
+      - "The coil receives 24 V."
+      - "The supply delivers 48 V."
+      - "Replace the PLC output."
+      - "Bridge to PE as a return."
+      - "Use PE as the permanent return."
+      - "Close the incident because Q0.3=TRUE."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

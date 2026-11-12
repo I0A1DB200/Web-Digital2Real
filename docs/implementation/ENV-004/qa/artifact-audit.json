@@ -1,0 +1,14 @@
+{
+  "preview_total_experiences": 40,
+  "preview_total_environments": 4,
+  "env004_experiences": 10,
+  "locales_per_experience": 2,
+  "notebooks_per_locale": 25,
+  "theory_sections": 5,
+  "hotspots": 10,
+  "registered_experience_image_paths": 0,
+  "missing_asset_paths": [],
+  "authoring_leaks": [],
+  "cover_sha256": "9ac44c68d8ea1a77b74fc73209df595c98d6c262ec8400aeda2a8962ea97dd75",
+  "publish_excludes_env004": true
+}

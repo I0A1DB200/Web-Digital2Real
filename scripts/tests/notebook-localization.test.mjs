@@ -8,11 +8,11 @@ import { packageNotebook } from "../package-notebook.mjs";
 import { notebook, getNotebook } from "../../content/notebooks/notebook.js";
 import { localizeNotebook } from "../../content/notebooks/localization.js";
 
-test("all eight ES/EN Notes preserve identity, structure and executable code", () => {
+test("all 33 ES/EN Notes preserve identity, structure and executable code", () => {
   const before = JSON.stringify(notebook);
   const es = getNotebook("es");
   const en = getNotebook("en");
-  assert.equal(es.length, 8);
+  assert.equal(es.length, 33);
   es.forEach((entry, index) => {
     const original = en[index];
     assert.notEqual(entry.title, original.title);

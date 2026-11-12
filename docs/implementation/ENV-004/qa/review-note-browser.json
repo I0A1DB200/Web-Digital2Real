@@ -1,0 +1,22 @@
+[
+  {
+    "width": 1440,
+    "locale": "es",
+    "visible_review_note": true
+  },
+  {
+    "width": 1440,
+    "locale": "en",
+    "visible_review_note": true
+  },
+  {
+    "width": 390,
+    "locale": "es",
+    "visible_review_note": true
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "visible_review_note": true
+  }
+]

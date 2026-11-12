@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Contactor does not energize"
+  summary: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-019 (NB-EL-11): Control versus power; article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-027 (NB-EL-19): Reading control schematics; article-029 (NB-EL-21): Diagnostic method"
+    initiating_event: "Contactor does not energize"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-019 (NB-EL-11): Control versus power; article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-027 (NB-EL-19): Reading control schematics; article-029 (NB-EL-21): Diagnostic method"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "The drawing and authorized record show +24 V at S0 input and output. In the documented state, STOP NC is closed. The STOP designation does not mean an open contact at rest.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "The record shows +24 V at F2 output and 0 V at S1 output while START is pressed. The A2 return has already been verified. The interruption is between F2 output and S1 output; the internal defect is not yet confirmed.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "The drawing and authorized record show +24 V at S0 input and output. In the documented state, STOP NC is closed. The STOP designation does not mean an open contact at rest."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "The record shows +24 V at F2 output and 0 V at S1 output while START is pressed. The A2 return has already been verified. The interruption is between F2 output and S1 output; the internal defect is not yet confirmed."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "After authorized S1 replacement, the simulated record verifies start, stop, seal-in and protection. Control is restored without bypassing STOP or protection; coil noise is not used as the closure criterion."
+  decisions:
+    DEC-01-A:
+      action: "Examine the permission sequence in the schematic and readings along the path."
+    DEC-01-B:
+      action: "Replace KM1. Failure to close is interpreted as a fault of the complete contactor, prioritizing its replacement over comparison of permissions, coil voltage and return."
+    DEC-01-C:
+      action: "Replace the motor."
+    DEC-02-A:
+      action: "STOP is open because it is called STOP. The pushbutton's functional name is used to infer electrical state, instead of comparing its NC contact with readings before and after S0."
+    DEC-02-B:
+      action: "+24 V before and after S0 indicates functional continuity in that state."
+    DEC-02-C:
+      action: "The supply is at 0 V."
+    DEC-03-A:
+      action: "F2 must have tripped. The block is attributed to protection operation without comparing the documented potential at its output or locating the next unpowered section."
+    DEC-03-B:
+      action: "The return is the only possible cause."
+    DEC-03-C:
+      action: "The interruption is between F2 output and S1 output with START pressed."
+    DEC-04-A:
+      action: "Confirm S1's failure to close using an isolated test and documentation."
+    DEC-04-B:
+      action: "Bridge S1 to leave production running. A permanent alternative path is proposed to recover starting, without restoring the installed contact's closure or its documented function."
+    DEC-04-C:
+      action: "Change F2's rating."
+    DEC-05-A:
+      action: "Coil noise is sufficient. An isolated sound is taken as proof of starting, stopping, seal-in and protection without recording the complete functional sequence."
+    DEC-05-B:
+      action: "After authorized S1 replacement, verify start, stop, seal-in and protection."
+    DEC-05-C:
+      action: "Disable STOP to prevent recurrence."
+  retry_feedback:
+    DEC-01-B: "coil supply has not been tested. Review: Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated. Choose again without carrying out the proposed option."
+    DEC-01-C: "does not explain the control fault. Review: Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated. Choose again without carrying out the proposed option."
+    DEC-02-A: "NC is closed at rest. Review: The drawing and authorized record show +24 V at S0 input and output. In the documented state, STOP NC is closed. The STOP designation does not mean an open contact at rest. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “The supply is at 0 V.” is not supported by this record.  Review: The drawing and authorized record show +24 V at S0 input and output. In the documented state, STOP NC is closed. The STOP designation does not mean an open contact at rest. Choose again without carrying out the proposed option."
+    DEC-03-A: "+24 V is present downstream. Review: The record shows +24 V at F2 output and 0 V at S1 output while START is pressed. The A2 return has already been verified. The interruption is between F2 output and S1 output; the internal defect is not yet confirmed. Choose again without carrying out the proposed option."
+    DEC-03-B: "it has already been verified. Review: The record shows +24 V at F2 output and 0 V at S1 output while START is pressed. The A2 return has already been verified. The interruption is between F2 output and S1 output; the internal defect is not yet confirmed. Choose again without carrying out the proposed option."
+    DEC-04-B: "not an acceptable repair. Review: Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Change F2's rating.” is not supported by this record.  Review: Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel. Choose again without carrying out the proposed option."
+    DEC-05-A: "The proposal “Coil noise is sufficient.” is not supported by this record.  Review: The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Disable STOP to prevent recurrence.” is not supported by this record.  Review: The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "start contact -S1 fails to close despite mechanical actuation. Do not confuse it with a defective coil: the coil does not receive rated voltage. After authorized S1 replacement, the simulated record verifies start, stop, seal-in and protection. Control is restored without bypassing STOP or protection; coil noise is not used as the closure criterion."
+    process:
+      - "Examine the permission sequence in the schematic and readings along the path."
+      - "+24 V before and after S0 indicates functional continuity in that state."
+      - "The interruption is between F2 output and S1 output with START pressed."
+      - "Confirm S1's failure to close using an isolated test and documentation."
+      - "After authorized S1 replacement, verify start, stop, seal-in and protection."
+    lesson: "replace S1 with an approved equivalent and correct documentation. Notebook — reading path in Engineering Notes: article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-019 (NB-EL-11): Control versus power; article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-027 (NB-EL-19): Reading control schematics; article-029 (NB-EL-21): Diagnostic method"
+    avoided_errors:
+      - "Replace KM1."
+      - "Replace the motor."
+      - "STOP is open because it is called STOP."
+      - "The supply is at 0 V."
+      - "F2 must have tripped."
+      - "The return is the only possible cause."
+      - "Bridge S1 to leave production running."
+      - "Change F2's rating."
+      - "Coil noise is sufficient."
+      - "Disable STOP to prevent recurrence."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

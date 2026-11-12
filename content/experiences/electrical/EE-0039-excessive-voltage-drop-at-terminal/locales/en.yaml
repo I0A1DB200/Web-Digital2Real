@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Voltage drop due to a defective connection"
+  summary: "24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-026 (NB-EL-18): Terminals, potentials and numbering; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    initiating_event: "Voltage drop due to a defective connection"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-026 (NB-EL-18): Terminals, potentials and numbering; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "During the command PS2 maintains 24.1 V. Y4 records 23.9 V without load and 16.9 V under a 1.4 A load. A stable source and a drop at the load direct diagnosis towards distribution, not a source collapse.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "The authorized record locates a 6.8 V drop across X4:12 under load. This is abnormal for a connection intended to have low resistance and does not prove a program error. At 1.4 A it corresponds to approximately 4.9 Ω in that state; resistance is not assumed constant with temperature.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "Inspection with the circuit isolated identifies tightening outside specification and thermal damage at X4:12. Localized drop and the report confirm high contact resistance. Repair must follow specification without removing the fuse or increasing the supply to 31 V.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "The deteriorated connection requires repair and investigation of its deterioration cause. A no-load reading or replacement of Y4 without evidence does not verify recovery. Protection is retained and a loaded comparison is prepared.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "During the command PS2 maintains 24.1 V. Y4 records 23.9 V without load and 16.9 V under a 1.4 A load. A stable source and a drop at the load direct diagnosis towards distribution, not a source collapse."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "The authorized record locates a 6.8 V drop across X4:12 under load. This is abnormal for a connection intended to have low resistance and does not prove a program error. At 1.4 A it corresponds to approximately 4.9 Ω in that state; resistance is not assumed constant with temperature."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "Inspection with the circuit isolated identifies tightening outside specification and thermal damage at X4:12. Localized drop and the report confirm high contact resistance. Repair must follow specification without removing the fuse or increasing the supply to 31 V."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "The deteriorated connection requires repair and investigation of its deterioration cause. A no-load reading or replacement of Y4 without evidence does not verify recovery. Protection is retained and a loaded comparison is prepared."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "After repairing the connection and reviewing its cause in the simulated case, voltage drop under load, a stable-voltage record, heating and terminal condition are verified to specification. No numerical tolerance is invented and the case is not closed based only on 24 V without load."
+  decisions:
+    DEC-01-A:
+      action: "Compare supply and load voltage in the same operating state."
+    DEC-01-B:
+      action: "Measure only without load. The idle reading is proposed as the main criterion without comparing PS2 and Y4 during the same command or investigating the change occurring when current flows."
+    DEC-01-C:
+      action: "Replace the PLC."
+    DEC-02-A:
+      action: "PS2=24.1 V and Y4=16.9 V under load indicate a distribution voltage drop."
+    DEC-02-B:
+      action: "The supply drops to 16.9 V. The load-end reading is attributed to the supply itself, without distinguishing recorded measurement points or comparing the same operating state."
+    DEC-02-C:
+      action: "Y4 receives 24.1 V."
+    DEC-03-A:
+      action: "6.8 V across X4:12 under load is abnormal for a connection intended to have low resistance."
+    DEC-03-B:
+      action: "It is the normal drop of any terminal. That drop is treated as normal for any terminal without comparing the function of a low-resistance connection and heating at the localized point."
+    DEC-03-C:
+      action: "It proves a program error."
+    DEC-04-A:
+      action: "Remove the fuse to reduce resistance. Impedance reduction by removing protection is proposed instead of correcting out-of-specification tightening and thermal damage documented by isolated inspection."
+    DEC-04-B:
+      action: "Isolated inspection confirms terminal deterioration; repair to specification."
+    DEC-04-C:
+      action: "Increase the supply output to 31 V to compensate."
+    DEC-05-A:
+      action: "Verify voltage drop under load after repair and review heating and terminal condition."
+    DEC-05-B:
+      action: "Close the case when 24 V is seen without load. No-load voltage is taken as proof of recovery without recording loaded voltage drop or reviewing heating and the repaired connection's condition."
+    DEC-05-C:
+      action: "Replace Y4 without evidence."
+  retry_feedback:
+    DEC-01-B: "The proposal “Measure only without load.” is not supported by this record.  Review: 24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Replace the PLC.” is not supported by this record.  Review: 24 VDC actuator -Y4 works without load but fails on actuation. PS2, distribution X4 and load Y4 are compared in the same state; supplied readings do not authorize live measurements. Choose again without carrying out the proposed option."
+    DEC-02-B: "The proposal “The supply drops to 16.9 V.” is not supported by this record.  Review: During the command PS2 maintains 24.1 V. Y4 records 23.9 V without load and 16.9 V under a 1.4 A load. A stable source and a drop at the load direct diagnosis towards distribution, not a source collapse. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “Y4 receives 24.1 V.” is not supported by this record.  Review: During the command PS2 maintains 24.1 V. Y4 records 23.9 V without load and 16.9 V under a 1.4 A load. A stable source and a drop at the load direct diagnosis towards distribution, not a source collapse. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “It is the normal drop of any terminal.” is not supported by this record.  Review: The authorized record locates a 6.8 V drop across X4:12 under load. This is abnormal for a connection intended to have low resistance and does not prove a program error. At 1.4 A it corresponds to approximately 4.9 Ω in that state; resistance is not assumed constant with temperature. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “It proves a program error.” is not supported by this record.  Review: The authorized record locates a 6.8 V drop across X4:12 under load. This is abnormal for a connection intended to have low resistance and does not prove a program error. At 1.4 A it corresponds to approximately 4.9 Ω in that state; resistance is not assumed constant with temperature. Choose again without carrying out the proposed option."
+    DEC-04-A: "The proposal “Remove the fuse to reduce resistance.” is not supported by this record.  Review: Inspection with the circuit isolated identifies tightening outside specification and thermal damage at X4:12. Localized drop and the report confirm high contact resistance. Repair must follow specification without removing the fuse or increasing the supply to 31 V. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Increase the supply output to 31 V to compensate.” is not supported by this record.  Review: Inspection with the circuit isolated identifies tightening outside specification and thermal damage at X4:12. Localized drop and the report confirm high contact resistance. Repair must follow specification without removing the fuse or increasing the supply to 31 V. Choose again without carrying out the proposed option."
+    DEC-05-B: "The proposal “Close the case when 24 V is seen without load.” is not supported by this record.  Review: The deteriorated connection requires repair and investigation of its deterioration cause. A no-load reading or replacement of Y4 without evidence does not verify recovery. Protection is retained and a loaded comparison is prepared. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Replace Y4 without evidence.” is not supported by this record.  Review: The deteriorated connection requires repair and investigation of its deterioration cause. A no-load reading or replacement of Y4 without evidence does not verify recovery. Protection is retained and a loaded comparison is prepared. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "high contact resistance at X4:12; at 1.4 A, a 6.8 V drop corresponds to an approximate equivalent resistance of 4.9 Ω in that state. Constant resistance with temperature is not assumed. After repairing the connection and reviewing its cause in the simulated case, voltage drop under load, a stable-voltage record, heating and terminal condition are verified to specification. No numerical tolerance is invented and the case is not closed based only on 24 V without load."
+    process:
+      - "Compare supply and load voltage in the same operating state."
+      - "PS2=24.1 V and Y4=16.9 V under load indicate a distribution voltage drop."
+      - "6.8 V across X4:12 under load is abnormal for a connection intended to have low resistance."
+      - "Isolated inspection confirms terminal deterioration; repair to specification."
+      - "Verify voltage drop under load after repair and review heating and terminal condition."
+    lesson: "repair the connection and investigate the deterioration cause. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-026 (NB-EL-18): Terminals, potentials and numbering; article-031 (NB-EL-23): Diagnosis by comparison and under load"
+    avoided_errors:
+      - "Measure only without load."
+      - "Replace the PLC."
+      - "The supply drops to 16.9 V."
+      - "Y4 receives 24.1 V."
+      - "It is the normal drop of any terminal."
+      - "It proves a program error."
+      - "Remove the fuse to reduce resistance."
+      - "Increase the supply output to 31 V to compensate."
+      - "Close the case when 24 V is seen without load."
+      - "Replace Y4 without evidence."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

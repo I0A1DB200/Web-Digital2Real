@@ -1,0 +1,750 @@
+✔ open Note changes complete body in place, keeps selector focus and restores one global control (16.88486ms)
+✔ splits words into staggered characters while preserving accessible text and spaces (1.089612ms)
+✔ supports an overlapping paragraph start and deterministic total duration (0.347083ms)
+✔ rejects targets that cannot preserve semantic content (4.148002ms)
+✔ global selector exposes ES/EN, selected state, persistence and native buttons (1.423737ms)
+✔ failed or pending Experience transition cannot commit a different global language (0.319722ms)
+✔ renders data-driven navigation and accessible collapsed menu state (3.228206ms)
+✔ toggles, closes on navigation and preserves the selected data view (0.514145ms)
+✔ closes on outside pointer, Escape and desktop resize (0.476618ms)
+✔ destroy removes document and viewport listeners (0.323067ms)
+✔ Lab 001 definition is complete, isolated and immutable (1.196183ms)
+✔ signals register with one authoritative owner and enforce writes (1.801805ms)
+✔ PLC mappings connect Signals only to supported process-image addresses (0.741287ms)
+✔ session initializes Ready with a stopped Conveyor and safe process images (7.578092ms)
+✔ Start activates the Conveyor and release preserves the seal-in state (13.934624ms)
+✔ Stop deactivates the Conveyor and overrides simultaneous Start (9.523375ms)
+✔ Emergency has priority while running and over an active Start command (6.42868ms)
+✔ process Reset clears Emergency and never restarts without a new Start (10.582942ms)
+✔ Machine feedback is published and sampled by the PLC on the next scan (3.53645ms)
+✔ Validation completes only after the full ordered learning sequence (25.067179ms)
+✔ aggregate snapshots are immutable and contain no runtime instances (1.397276ms)
+✔ full Lab reset coordinates every runtime deterministically (5.228711ms)
+✔ invalid learner commands and integration transitions fail explicitly (1.591479ms)
+✔ repeated complete executions produce identical deterministic snapshots (41.303987ms)
+✔ presentation derives the initial stopped state from an immutable runtime snapshot (10.26273ms)
+✔ Start, release, Stop and Stop priority are reflected from the real session (22.531211ms)
+✔ Emergency and Reset presentation follow runtime command semantics (16.242262ms)
+✔ validation progress and completion are projections of runtime validation (22.710392ms)
+✔ full laboratory reset restores the canonical UI projection (19.719683ms)
+✔ Academy UI source uses public session operations and no browser timing authority (5.870869ms)
+✔ Academy stylesheet is scoped and consumes brand variables (1.040418ms)
+✔ initializes a generic immutable component contract (1.076102ms)
+✔ supports deterministic Motor transitions and recoverable faults (0.692323ms)
+✔ Sensors derive values from committed Machine state only (0.335436ms)
+✔ initializes the Conveyor Machine in deterministic stopped state (1.765861ms)
+✔ executes deterministic Conveyor start and stop transitions (2.106275ms)
+✔ Emergency has priority and Reset never restarts the Conveyor (1.750348ms)
+✔ handles Motor and Internal faults without confusing command with feedback (1.743628ms)
+✔ full Reset restores a fresh initial execution state on the same object (5.693393ms)
+✔ rejects invalid transitions, commands, faults and duplicate updates (1.290926ms)
+✔ emits immutable ordered events and isolates subscriber failures (1.684609ms)
+✔ snapshots cannot mutate runtime state (0.844613ms)
+✔ identical command and fault sequences produce identical results (2.075038ms)
+✔ initializes separated immutable memory areas and lifecycle (2.364734ms)
+✔ validates lifecycle transitions and Reset returns to Ready (1.994436ms)
+✔ samples a stable Input image then commits Internal and Output images (1.116162ms)
+✔ supports AND, OR, NOT, normally-open and normally-closed expressions (0.575287ms)
+✔ Internal Memory enables seal-in behavior across scans (0.521866ms)
+✔ deterministic instruction order controls later writes (0.412081ms)
+✔ Boolean expressions can represent Stop and Emergency priority generically (0.461385ms)
+✔ rejects invalid Programs, Instructions and Memory references (0.580955ms)
+✔ validates mappings and respects Signal Registry ownership (1.663798ms)
+✔ reads mapped Inputs through the approved Registry API (1.049341ms)
+✔ Signal read and write failures fault execution predictably (0.765163ms)
+✔ publishes Outputs only after execution and emits ordered immutable events (0.566484ms)
+✔ snapshots and diagnostics are immutable and Reset preserves configuration (0.455847ms)
+✔ identical PLC executions produce identical Results, Events and Diagnostics (1.133519ms)
+✔ registers a valid signal and returns isolated immutable snapshots (1.24713ms)
+✔ rejects duplicates and malformed definitions (0.647436ms)
+✔ bulk registration validates atomically (0.262816ms)
+✔ enforces ownership, types, values and deterministic state transitions (0.987919ms)
+✔ updates quality and continues after subscriber failure (0.448536ms)
+✔ resets signals without deleting definitions (0.583479ms)
+✔ repeated sequences are identical and diagnostics are immutable (1.363916ms)
+✔ initializes with deterministic zero time and immutable snapshots (1.697489ms)
+✔ advances by exactly one fixed step per running tick (0.692053ms)
+✔ pause blocks ticks and resume preserves fixed-step progression (0.771363ms)
+✔ single step advances once and remains paused (0.196165ms)
+✔ speed multiplier never changes logical results (0.459213ms)
+✔ reset restores initial execution state and clears attempt diagnostics (0.466353ms)
+✔ rejects invalid configuration, transitions and execution limits (0.502327ms)
+✔ identical clock sequences produce identical snapshots (1.170575ms)
+✔ supports the approved controller lifecycle (1.852072ms)
+✔ executes canonical phase placeholders in exact order (1.775936ms)
+✔ single step performs one complete tick and returns to paused (0.37117ms)
+✔ applies completion and learner-failure outcomes at the tick boundary (0.528116ms)
+✔ phase errors fault the controller without hiding the error (0.677281ms)
+✔ rejects invalid transitions without changing state (0.249696ms)
+✔ reset restores the controller and invokes the reset extension point (0.489969ms)
+✔ events and snapshots are immutable and subscriber errors are isolated (0.383698ms)
+✔ identical inputs produce identical controller snapshots and events (1.921406ms)
+✔ rejects asynchronous and unknown phase handlers (0.864062ms)
+✔ registers immutable rule definitions with separate runtime state (1.206348ms)
+✔ evaluates Signal True and Signal False rules (1.413361ms)
+✔ evaluates Equals and Not Equals without coercion (1.198596ms)
+✔ reports failed and pending rules deterministically (0.321184ms)
+✔ evaluates All and Any composite rules independently of declaration order (0.507815ms)
+✔ rejects duplicate, malformed and circular rule definitions (0.482347ms)
+✔ maintains Validation Session lifecycle and progress (0.307533ms)
+✔ reads Signal Registry values without modifying Registry state (0.86228ms)
+✔ emits immutable lifecycle and rule events while isolating subscriber failures (0.512001ms)
+✔ returns immutable Results and diagnostics (0.395997ms)
+✔ Reset clears runtime state while preserving definitions (0.437039ms)
+✔ identical evaluations produce identical Results, Events and diagnostics (0.61045ms)
+✔ preserves the exact V1 progress API and storage (1.349074ms)
+✔ persists idempotent Theory progress without mastery (1.096813ms)
+✔ keeps Experience completion and mastery distinct and monotonic (0.632283ms)
+✔ derives Environment completion and mastery without a combined score (6.115778ms)
+✔ derives Preview totals and ignores removed canonical IDs (0.289386ms)
+✔ rejects unknown IDs and isolates ENV reset (0.26542ms)
+✔ ignores corrupt, unsupported, duplicate and impossible persisted V2 input (0.369047ms)
+✔ catalog recovery retries failed and malformed loads before returning to a usable catalog (2.564896ms)
+✔ workspace scrolls to the top only when an Experience advances (5.517125ms)
+✔ the shared global preference switches Experience session without a local selector (2.824367ms)
+✔ language changes preserve retries, pending Results, completion and one progress registration (6.654951ms)
+✔ failed language loading preserves the active session and permits a later retry (1.947926ms)
+✔ language switches retain the ENV, title-only hotspot and current Theory section (1.984141ms)
+✔ language preference persists independently and unsupported Italian requests fall back to English (0.458872ms)
+✔ legacy V1 selection survives language switching even when preference storage is blocked (9.497095ms)
+✔ result workspace es: earned text/media only, accessible Continue and visible load failures (2.153366ms)
+✔ result workspace en: earned text/media only, accessible Continue and visible load failures (1.219188ms)
+✔ final result records completion before Continue exactly once, and closing preserves earned progress (2.259065ms)
+✔ restarting allows one completion registration for the new run without duplicating ENV completion (2.172725ms)
+✔ reload does not restore active or pending-result sessions; only completion/mastery persists (6.963125ms)
+✔ Incident Brief resolves a semantic cover without changing Player state or stage media (1.808506ms)
+✔ optional cover presentation leaves Begin Diagnosis usable and preserves all diagnostic fields (0.521255ms)
+✔ projects only the public Player state (0.127582ms)
+✔ projects a selected decision and public completion (0.087461ms)
+✔ a generated artifact opens and completes through Experience Lab without console access (3.440456ms)
+✔ renders safe errors for missing experiences and unsupported contracts (0.459152ms)
+✔ selects the document locale and falls back through generated catalog metadata (0.971945ms)
+✔ maps completed Player V2 outcomes to the minimal progress boundary (0.227493ms)
+✔ presents Player V2 feedback and completion evaluation without evaluating or persisting it (0.719264ms)
+✔ renders complete English and Spanish learner-facing debrief copy without hybrid headings (0.487204ms)
+✔ localizes the active Experience decision UI from the artifact language (0.22564ms)
+✔ localizes Theory actions and keeps content and actions as 32px-gap siblings (1.351677ms)
+✔ keeps one accessible anchored popover and closes it through every supported interaction (1.075992ms)
+✔ positions popovers inside the viewer, avoids hotspots and uses a deterministic docked fallback (0.259121ms)
+✔ persists idempotent completion without storing Player content (0.213812ms)
+✔ environment progress counts unique active assignments and updates without navigation (0.598812ms)
+✔ progress subscriptions notify once and can unsubscribe (0.118379ms)
+✔ Environment Selector cards navigate, expose accessible metadata and derive ten-segment progress (1.145166ms)
+✔ ENV-002 localizes catalog, accessible labels, environment and Theory titles without changing canonical data (3.175487ms)
+✖ Environment catalog provides complete Spanish presentation copy (1.28027ms)
+✔ Environment Selector CSS provides three, two and one-column layouts without intrinsic overflow (1.938051ms)
+✔ the canonical archived EE-0909 stays outside the generated catalog (1.86451ms)
+✔ workspace and application use generated JSON without ID-specific handling (2.863155ms)
+✔ renders one full-image editorial card with shared branding and footer (2.691878ms)
+✔ keeps missing-image cards inside the same canonical component (0.230077ms)
+✔ language switch preserves active Note and category while updating accessible text (2.970397ms)
+✔ derives categories dynamically in canonical first-seen order without mutation (0.61666ms)
+✔ has deterministic All state and renders a circular five-card window without mutation (0.396568ms)
+✔ filters from canonical categories and resets the active index (0.496038ms)
+✔ responsive filters share canonical categories and active state with desktop pills (0.455978ms)
+✔ responsive filter menu toggles and closes on Escape (0.368606ms)
+✔ Previous and Next wrap circularly while preserving canonical order (1.301742ms)
+✔ a neighboring card centers while the active card opens exactly once with its opener (0.949891ms)
+✔ Left and Right navigation is scoped to events dispatched inside the carousel (1.431798ms)
+✔ horizontal touch swipe moves one article and ignores short or vertical gestures (0.90223ms)
+✔ exposes accessible carousel, filter, active-card and position semantics (0.409707ms)
+✔ handles empty and one-article collections without navigation or visual clones (0.2185ms)
+✔ small collections render each article once and wrap deterministically (0.5834ms)
+✔ contains no autoplay, timer or wheel interception (6.113846ms)
+✔ uses one reversible image harmonization system for every carousel position (1.469315ms)
+✔ uses one full-image landscape card contract with overlaid typography (0.802129ms)
+✔ defines restrained deterministic depth for active, adjacent, and outer cards (0.959115ms)
+✔ renders minimal accessible arrows and thin segmented progress (1.003243ms)
+✔ renders four energy routes, three pulses, and one canonical motor asset (2.562843ms)
+✔ mounts a full-section Industrial Signal Map with configured routes, nodes, descents, and pulses (0.496698ms)
+✔ advances once through the unified scene timeline (0.584621ms)
+✔ uses the shorter centralized timeline on mobile (0.306742ms)
+✔ applies layered parallax and clears listeners and pending work on destroy (0.313653ms)
+✔ settles immediately without animated work for reduced motion (0.893186ms)
+✔ mounts one motor image in a unified scene with staged cards and filters (5.051173ms)
+✔ parses a canonical Authoring Definition v1 (8.5584ms)
+✔ supports mappings, sequences, quoted values and block scalars (0.858024ms)
+✔ loads through an injected text boundary (0.24501ms)
+✔ rejects empty sources, tabs, duplicate keys and malformed indentation (0.53716ms)
+✔ rejects invalid adapter contracts and locations (0.267514ms)
+✔ evaluates one decision (1.481714ms)
+✔ evaluates five-decision outcomes (0.812404ms)
+✔ uses supplied thresholds and mastery mapping (0.161433ms)
+✔ handles exact 49, 50, 79 and 80 boundaries (0.642339ms)
+✔ classifies fractional exact ratios without rounding into a higher outcome (0.587796ms)
+✔ derives additional attempts without restoring first-attempt success (0.117997ms)
+✔ is deterministic and rejects zero or unresolved decisions (0.544681ms)
+✔ localizes V2 retry feedback without changing decision authority (1.212888ms)
+✔ rejects incomplete V2 retry feedback translations (1.28041ms)
+✔ preserves V1 localization when no V2 retry authority exists (0.288545ms)
+✔ normalizes a valid Authoring Definition v1 into an exact Runtime v1 value (10.411553ms)
+✔ validates the generated Runtime Contract without warnings or errors (1.424557ms)
+✔ returns structured Authoring validation incidents and no value (1.20072ms)
+✔ rejects an unsupported Authoring contract version (0.972907ms)
+✔ rejects legacy content without adapting it (0.896732ms)
+✔ rejects Runtime, Generated Artifact, Player state and unknown inputs (0.81611ms)
+✔ rejects contradictory authoring evidence reveal relationships (1.016822ms)
+✔ normalizes each public decision to one authoritative private relation (1.112246ms)
+✔ normalizes Capability references without resolving or duplicating metadata (1.174059ms)
+✔ prepares private scoring without calculating session results (1.934597ms)
+✔ normalizes only the approved minimum visual boundary (1.01524ms)
+✔ does not leak private or discarded editorial content into runtime public (2.045614ms)
+✔ preserves semantic array order (1.089752ms)
+✔ is independent from non-semantic object property order (0.996582ms)
+✔ is deterministic, non-mutating and returns deeply immutable results (1.156433ms)
+✔ canonical Experiences keep one correct action independent of presentation position (40.446534ms)
+✔ Spanish and English preserve identical option identity and ordering (54.237261ms)
+✔ projected advance and retry behavior follows identity while correctness stays private (96.244248ms)
+✔ EE-0001 is the single canonical Authoring V2 pilot with explicit decision points (9.80644ms)
+✔ EE-0001 localization includes learner-safe V2 retry feedback in ES and EN (8.735618ms)
+✔ EE-0001 validates through Authoring, Runtime, projection and public security (17.719097ms)
+✔ EE-0001 happy path unlocks evidence sequentially and completes with PASS mastery (9.877128ms)
+✔ EE-0001 media roles and recovery authority remain explicit in authoring and both locales (18.641788ms)
+✔ EE-0001 retries stay in stage, increment once and drive guided/retry outcomes (8.180241ms)
+✔ EE-0001 integrates with ENV Progress V2 and mastery upgrades monotonically (9.503715ms)
+✔ EE-0001 has eight byte-identical approved assets and no obsolete variant (24.861052ms)
+✔ EE-0001 introduces no ID-specific Engine, packaging, Player or Frontend logic (0.997474ms)
+✔ EE-0002 is a published Authoring V2 Experience using only frozen contracts (9.30812ms)
+✔ EE-0002 localizes every learner-facing V2 field in Spanish and English (22.005428ms)
+✔ EE-0002 validates through Authoring, Runtime and learner-safe projection (7.207904ms)
+✔ EE-0002 retries cannot progress and repeated validation is required for completion (12.745051ms)
+✔ EE-0002 keeps marginal alignment private until correlation and inspection (2.440127ms)
+✔ EE-0002 ES/EN preserve three Results, all fourteen retries and bounded evidence claims (14.537913ms)
+✔ EE-0003 ES/EN preserve all twelve retries, safe acquisition and neutral introductions (37.322396ms)
+✔ EE-0003 is a technically validated technical-review Authoring V2 Experience with one authority per stage (3.693808ms)
+✔ EE-0003 resolves all seven assets and localizes ES and EN without hybrid paragraphs (16.919703ms)
+✔ EE-0003 validates Runtime and projection without private authority leakage (8.513903ms)
+✔ EE-0003 retries stay in stage and explicit transitions unlock evidence in order (12.037654ms)
+✔ EE-0003 integrates with ENV Progress V2 and mastery remains monotonic (11.292772ms)
+✔ EE-0004 is valid Authoring V2 with one private authority per stage (8.719242ms)
+✔ EE-0004 localizes completely and resolves the seven approved assets (23.308653ms)
+✔ EE-0004 projection validates without private diagnostic leakage (6.68095ms)
+✔ EE-0004 retries do not progress and assets 06 and 07 unlock only at their boundaries (11.618453ms)
+✔ EE-0004 uses generic monotonic ENV progress and mastery (10.173904ms)
+✔ EE-0004 preserves context evidence and acquires recovery only through verification in ES/EN (13.627831ms)
+✔ EE-0005 is valid Authoring V2 with one private authority per stage (8.879894ms)
+✔ EE-0005 localizes and preserves all seven frozen assets (39.96618ms)
+ℹ Approved external source unavailable for 01.png; canonical asset still validated.
+ℹ Approved external source unavailable for 02.png; canonical asset still validated.
+ℹ Approved external source unavailable for 03.png; canonical asset still validated.
+ℹ Approved external source unavailable for 04.png; canonical asset still validated.
+ℹ Approved external source unavailable for 05.png; canonical asset still validated.
+ℹ Approved external source unavailable for 06.png; canonical asset still validated.
+ℹ Approved external source unavailable for 07.png; canonical asset still validated.
+✔ EE-0005 projection validates without private truth leakage (6.751246ms)
+✔ EE-0005 retry and evidence boundaries follow explicit relations (11.553015ms)
+✔ EE-0005 exact authority, hidden media, safe acquisition and all fifteen retries in ES/EN (16.904179ms)
+✔ EE-0006 validates as V2 with canonical topology truth and mixed correct positions (9.251034ms)
+✔ EE-0006 localizes completely and preserves seven frozen assets (26.674036ms)
+ℹ Approved external source unavailable for 01.png; canonical asset still validated.
+ℹ Approved external source unavailable for 02.png; canonical asset still validated.
+ℹ Approved external source unavailable for 03.png; canonical asset still validated.
+ℹ Approved external source unavailable for 04.png; canonical asset still validated.
+ℹ Approved external source unavailable for 05.png; canonical asset still validated.
+ℹ Approved external source unavailable for 06.png; canonical asset still validated.
+ℹ Approved external source unavailable for 07.png; canonical asset still validated.
+✔ EE-0006 projection hides private truth and preserves explicit retry/advance boundaries (15.912355ms)
+✔ EE-0006 keeps TIA, PRONETA, switch and IO-Link roles technically distinct (2.656394ms)
+✔ EE-0006 exact acquisition maps, hidden topology visual and all retries in ES/EN (17.11703ms)
+✔ EE-0007 validates its canonical GRAPH diagnosis and mixed positions (9.466839ms)
+✔ EE-0007 preserves the seven approved frozen assets and full localization (35.151609ms)
+✔ EE-0007 projection remains private and player preserves retries and media progression (15.127491ms)
+✔ EE-0007 exact authority, initial context, media timing and ES/EN wrong paths (20.083993ms)
+✔ EE-0008 validates its layered IO-Link diagnosis and mixed correct positions (9.504106ms)
+✔ EE-0008 preserves six approved assets and complete ES/EN localization (32.853701ms)
+✔ EE-0008 projection hides private truth and retries cannot advance (14.764063ms)
+✔ EE-0008 keeps PROFINET and downstream IO-Link boundaries distinct (1.926894ms)
+✔ EE-0008 exact authority, recovery timing, hidden assets and ES/EN traversal (18.253524ms)
+✔ EE-0009 validates HMI mapping truth and six mixed-position decisions (8.91664ms)
+✔ EE-0009 retains six frozen assets and complete ES/EN option identity (33.347334ms)
+✔ EE-0009 normalizes, projects privately, retries and advances without premature media (13.854473ms)
+✔ archived photoelectric regression identity no longer collides with HMI EE-0009 (3.17755ms)
+✔ canonical acquisition maps, ES/EN and all wrong options (20.98571ms)
+✔ ICF-02 owns exactly the three approved canonical competencies (5.370084ms)
+✔ EE-0009 is valid Authoring v1 with governed ICF-02 competencies (5.073948ms)
+✔ EE-0009 localization is complete in ES and EN with Spanish fallback (11.785725ms)
+✔ EE-0009 normalizes and packages deterministically without private data (11.345271ms)
+✔ EE-0009 reveals ART-006 and ART-007 only in their governed stages (6.710484ms)
+✔ EE-0009 has seven resolved byte-identical approved assets and no orphan (17.996977ms)
+✔ EE-0009 introduces no ID-specific runtime, packaging, Player, or Frontend logic (1.313059ms)
+✔ EE-0010 validates its system-level causal diagnosis and mixed positions (12.412188ms)
+✔ EE-0010 preserves nine frozen assets and complete ES/EN localization (46.107037ms)
+✔ EE-0010 projection hides private truth and retries cannot advance (21.507057ms)
+✔ ENV-001 registers EE-0010 tenth and Theory adds one reusable causal section (3.790524ms)
+✔ EE-0010 introduces no ID-specific Engine or Frontend logic (1.388012ms)
+✔ canonical acquisition maps, ES/EN and all wrong options (24.416292ms)
+✔ physical cause follows inspection and recovery follows safe intervention plus verification (16.362704ms)
+✔ EE-0011 validates, normalizes and projects both languages using the unchanged V2 pipeline (49.651399ms)
+✔ EE-0011 has one correct option per decision and a non-cyclic mixed distribution (10.801632ms)
+✔ EE-0011 retries do not progress; completion requires independent verification (27.148331ms)
+✔ EE-0011 preserves staged evidence and never claims Sn is an exact threshold (6.064351ms)
+✔ EE-0011 keeps seven frozen PNGs byte-identical to the approved ZIP (24.039685ms)
+✔ ENV-002 registers EE-0011 once and adds reusable Theory with matching ES/EN IDs (3.780348ms)
+✔ canonical acquisition maps, ES/EN and all wrong options (27.503896ms)
+✔ correction does not reveal successful recovery and final verification owns recovery media (18.933569ms)
+✔ EE-0012 scaling and intervention references resolve to distinct PNG assets (8.426471ms)
+✔ EE-0012 validates and projects ES/EN through the existing V2 pipeline (25.140765ms)
+✔ EE-0012 preserves diagnosis, intervention and independent verification (1.976279ms)
+✔ EE-0012 media disclosure follows cover, stage, result and completion semantics (2.159224ms)
+✔ EE-0013 validates and packages equivalently in ES and EN (29.577763ms)
+✔ EE-0013 preserves boundary diagnosis and independent verification (1.949258ms)
+✔ EE-0013 reveals the disconnected line only after physical inspection (2.464454ms)
+✔ EE-0013 resolves seven distinct PNG asset references (21.821401ms)
+✔ EE-0013 es clean path preserves Results, Continue and verification (11.599655ms)
+✔ EE-0013 es all wrong options preserves Results, Continue and verification (8.489175ms)
+✔ EE-0013 en clean path preserves Results, Continue and verification (7.296398ms)
+✔ EE-0013 en all wrong options preserves Results, Continue and verification (13.599408ms)
+✔ EE-0015 validates and packages equivalent ES and EN artifacts (31.376774ms)
+✔ EE-0015 has six staged decisions, one correct option each and reciprocal evidence authority (2.737096ms)
+✔ EE-0015 preserves the six approved PNGs byte-for-byte (36.918107ms)
+✔ EE-0015 es clean path preserves retries and verification (12.069031ms)
+✔ EE-0015 es all wrong options preserves retries and verification (9.284764ms)
+✔ EE-0015 en clean path preserves retries and verification (8.872834ms)
+✔ EE-0015 en all wrong options preserves retries and verification (8.044264ms)
+✔ EE-0016 validates, normalizes, projects and packages both languages (35.419146ms)
+✔ EE-0016 follows the thermal chain with mixed correct-option positions and reciprocal evidence (2.483714ms)
+✔ EE-0016 keeps seven governed PNG assets at the approved dimensions (17.397994ms)
+✔ EE-0016 es clean path preserves retry and controlled-ramp completion (10.264331ms)
+✔ EE-0016 es all wrong options preserves retry and controlled-ramp completion (8.479391ms)
+✔ EE-0016 en clean path preserves retry and controlled-ramp completion (7.296307ms)
+✔ EE-0016 en all wrong options preserves retry and controlled-ramp completion (9.132696ms)
+✔ EE-0017 validates, normalizes, projects and packages both languages (39.694041ms)
+✔ EE-0017 follows the flow chain with mixed correct-option positions and reciprocal evidence (2.91221ms)
+✔ EE-0017 keeps seven governed PNG assets at the approved dimensions (16.120038ms)
+✔ EE-0017 es clean path preserves retry and multipoint completion (13.409092ms)
+✔ EE-0017 es all wrong options preserves retry and multipoint completion (13.007846ms)
+✔ EE-0017 en clean path preserves retry and multipoint completion (7.823141ms)
+✔ EE-0017 en all wrong options preserves retry and multipoint completion (9.783777ms)
+✔ EE-0018 validates, normalizes, projects and packages both languages (37.396818ms)
+✔ EE-0018 follows the level chain with mixed correct-option positions and reciprocal evidence (2.840401ms)
+✔ EE-0018 keeps seven governed PNG assets at the approved dimensions (20.442573ms)
+✔ EE-0018 es clean path preserves retry and multipoint level completion (11.078059ms)
+✔ EE-0018 es all wrong options preserves retry and multipoint level completion (8.969389ms)
+✔ EE-0018 en clean path preserves retry and multipoint level completion (7.067703ms)
+✔ EE-0018 en all wrong options preserves retry and multipoint level completion (8.56446ms)
+✔ EE-0019 validates, normalizes, projects and packages both languages (46.349402ms)
+✔ EE-0019 follows the pressure path with mixed correct-option positions and reciprocal evidence (2.55404ms)
+✔ EE-0019 keeps seven governed PNG assets at the approved dimensions (19.434773ms)
+✔ EE-0019 es clean path preserves retry and multipoint completion (11.869752ms)
+✔ EE-0019 es all wrong options preserves retry and multipoint completion (9.188709ms)
+✔ EE-0019 en clean path preserves retry and multipoint completion (8.302605ms)
+✔ EE-0019 en all wrong options preserves retry and multipoint completion (10.186704ms)
+✔ EE-0020 validates, normalizes, projects and packages both languages (38.059226ms)
+✔ EE-0020 follows the source-load boundary with mixed correct-option positions and reciprocal evidence (2.26895ms)
+✔ EE-0020 keeps seven human-free governed PNG assets at the approved dimensions (19.251597ms)
+✔ EE-0020 es clean path preserves retry and multipoint completion (14.780689ms)
+✔ EE-0020 es all wrong options preserves retry and multipoint completion (10.024579ms)
+✔ EE-0020 en clean path preserves retry and multipoint completion (9.052074ms)
+✔ EE-0020 en all wrong options preserves retry and multipoint completion (9.305215ms)
+✔ EE-0021 validates as a bilingual V2 unit with a mixed decision path (9.053827ms)
+✔ EE-0021 localizes and projects without leaking diagnostic truth (23.770949ms)
+✔ EE-0022 validates as a bilingual V2 unit with a layered identity path (10.724936ms)
+✔ EE-0022 localizes and projects without leaking diagnostic truth (28.512046ms)
+✔ EE-0023 validates as a bilingual V2 PROFIBUS station-failure unit (9.531116ms)
+✔ EE-0023 localizes and projects without leaking diagnostic truth (24.987905ms)
+✔ EE-0024 validates as a bilingual V2 PROFIBUS termination unit (9.420119ms)
+✔ EE-0024 localizes and projects without leaking diagnostic truth (23.878041ms)
+✔ EE-0025 contains only the six supplied runtime assets (15.76996ms)
+✔ EE-0025 validates as a bilingual V2 Modbus RTU timeout unit (7.404972ms)
+✔ EE-0025 localizes and projects without leaking diagnostic truth (45.258227ms)
+✔ EE-0026 validates the Modbus TCP wrong-register-data diagnostic (10.534968ms)
+✔ EE-0026 localizes and projects questions without leaking answers (27.580843ms)
+✔ EE-0026 keeps the five supplied originals as exact runtime copies (28.608982ms)
+✔ EE-0027 validates the EtherCAT slave not operational diagnostic (10.91371ms)
+✔ EE-0027 localizes and projects without leaking answers (31.754153ms)
+✔ EE-0027 keeps the six supplied originals as exact runtime copies (39.816194ms)
+✔ EE-0028 validates the CANopen heartbeat supervision diagnostic (9.810827ms)
+✔ EE-0028 localizes and projects without leaking answers (26.887557ms)
+✔ EE-0028 keeps the six supplied originals as exact runtime copies (41.136884ms)
+✔ EE-0029 validates the BACnet cross-subnet discovery diagnostic (9.680891ms)
+✔ EE-0029 localizes and projects without leaking answers (24.773331ms)
+✔ EE-0029 keeps the six supplied originals as exact runtime copies (41.449566ms)
+✔ EE-0030 validates the OPC UA monitoring diagnostic (10.779258ms)
+✔ EE-0030 localizes and projects without leaking answers (30.340953ms)
+✔ EE-0030 keeps the media contract pending until assets are approved (1.21371ms)
+✔ packages a valid Authoring Definition through the complete pipeline (9.602523ms)
+✔ returns the exact approved Generated Web Artifact (2.360027ms)
+✔ stops immediately when Authoring validation fails (1.401072ms)
+✔ stops immediately when normalization fails (0.339421ms)
+✔ stops immediately when Runtime validation fails (0.208184ms)
+✔ propagates a projector failure without reinterpretation (0.228975ms)
+✔ stops immediately when final Web Artifact validation fails (0.198238ms)
+✔ executes every successful stage exactly once and in contract order (0.209766ms)
+✔ is deterministic and repeatable for equivalent inputs (3.777715ms)
+✔ never mutates or freezes the Authoring input (1.396345ms)
+✔ returns a deeply frozen artifact (4.446432ms)
+✔ rejects an incomplete operations boundary (0.204709ms)
+✔ active experience options keep correctness from being signalled by length (155.909237ms)
+✔ Retry preserves knowledge; one ordered result pauses presentation without adding progress or attempts (4.382305ms)
+✔ final result earns completion and evaluation before Continue, with baseline-equivalent diagnostic outcome (2.334739ms)
+✔ result ordering supports shared assets and excludes previously unlocked evidence (0.648998ms)
+✔ previous evidence alone never retriggers a result and empty media retains direct flow (0.499873ms)
+✔ reset during intermediate or final result removes all transient diagnostic state (0.847808ms)
+✔ Player rejects invalid evidence media null (0.212029ms)
+✔ Player rejects invalid evidence media "CONNECTOR" (0.161203ms)
+✔ Player rejects invalid evidence media [false] (0.208634ms)
+✔ Player rejects invalid evidence media [""] (0.228665ms)
+✔ Player rejects invalid evidence media [" "] (0.215475ms)
+✔ Player rejects invalid evidence media ["CONNECTOR","CONNECTOR"] (0.159951ms)
+✔ Player rejects invalid evidence media ["missing"] (0.174373ms)
+✔ semantic completion media preserves requested order without changing diagnostic results (10.692507ms)
+✔ starts a local session from Generated Web Artifact v1 (2.32887ms)
+✔ records a valid public decision and advances in public stage order (0.635918ms)
+✔ completes every stage and restarts without persistence (0.74303ms)
+✔ rejects unavailable actions and decisions without changing state (0.903372ms)
+✔ rejects unsupported, incorrect and structurally invalid artifacts (1.327561ms)
+✔ supports future Generated Web Artifact v1 experiences without ID-specific logic (1.20089ms)
+✔ is deterministic, non-mutating and returns deeply immutable state (0.72317ms)
+✔ the browser Player source contains no reserved runtime implementation (0.596409ms)
+✔ dispatches Player V2 and retries without progression or evidence (0.642188ms)
+✔ Player V2 advances only through explicit transition and unlocks declared evidence (0.76948ms)
+✔ resolved V2 decision points cannot create additional attempts (0.633104ms)
+✔ Player V2 evaluates PASS, PASS_WITH_GUIDANCE and RETRY_RECOMMENDED at COMPLETE (2.178474ms)
+✔ Player V2 reset clears transient session evaluation state (0.604491ms)
+✔ Player V2 imports only the public evaluator boundary and contains no thresholds (1.214651ms)
+✔ projects a valid Runtime v1 into a valid Web Artifact v1 (8.201482ms)
+✔ produces the exact approved Web Artifact fixture (1.907966ms)
+✔ copies every Web Artifact field from one explicit Runtime source (0.850613ms)
+✔ is deterministic for equivalent Runtime inputs (1.158166ms)
+✔ never mutates or freezes the Runtime input (1.095621ms)
+✔ returns a deeply frozen Web Artifact (0.719505ms)
+✔ never projects the Runtime private boundary (0.898565ms)
+✔ never projects scoring or internal decision effects (1.37949ms)
+✔ never projects answers, diagnostic logic or reserved feedback (1.642776ms)
+✔ does not publish Runtime evidence without explicit distributability (0.818264ms)
+✔ does not project unknown or internal metadata (4.008822ms)
+✔ produces JSON-serializable output (0.879556ms)
+✔ rejects an invalid Runtime with a typed projection error (1.097574ms)
+✔ rejects Authoring and legacy contracts as incorrect Runtime inputs (0.901078ms)
+✔ rejects null, partial and already generated objects (0.642008ms)
+✔ accepts a draft Environment with no approved coordinates (1.279168ms)
+✔ accepts a complete published Environment when every Experience resolves (0.424079ms)
+✔ accepts a preview Environment with a partial resolved hotspot catalogue (0.187653ms)
+✔ rejects unresolved Preview hotspot references (0.235105ms)
+✔ enforces published count and reference resolution (8.48533ms)
+✔ rejects duplicate references, unsafe paths, unknown hotspot fields and invalid coordinates (0.244449ms)
+✔ rejects invalid identity and visual dimensions (0.209166ms)
+✔ governs capacity independently from the currently available hotspots (0.237858ms)
+✔ is deterministic, immutable and does not mutate input (0.991334ms)
+✔ dispatches ENV V1 and a valid localized ENV V2 explicitly (0.667556ms)
+✔ rejects unsupported ENV versions and ENV V2 without Theory (0.184869ms)
+✔ rejects duplicate Theory sections, unknown media and unsafe media paths (1.017474ms)
+✔ rejects invalid Theory localization identity and section order (0.206962ms)
+✔ preserves published and preview Experience-count rules for ENV V2 (3.590852ms)
+✔ accepts a valid Experience Authoring Definition v1 (7.156847ms)
+✔ rejects a missing independent contract version (1.086928ms)
+✔ rejects an unsupported contract version (0.920838ms)
+✔ rejects an invalid Experience identifier (1.01493ms)
+✔ requires governed editorial identity and access classification (0.692694ms)
+✔ accepts only the three approved Experience classes (0.915419ms)
+✔ rejects duplicate governed Capability references (0.740256ms)
+✔ rejects known private content under public and known public content under private (0.688838ms)
+✔ rejects missing required fields with a structured field path (0.961229ms)
+✔ preserves unknown properties without error, warning, removal, normalization or defaults (0.839014ms)
+✔ rejects scoring fields outside the approved authoring scope (0.784702ms)
+✔ requires the minimum educational visual boundary (0.677802ms)
+✔ returns a deeply immutable structured Validation Result (1.149552ms)
+✔ classifies legacy content explicitly without adapting it (0.556018ms)
+✔ validation is deterministic (0.628307ms)
+✔ validation never mutates or freezes the input document (0.872135ms)
+✔ evidence media survives normalization and projection in declared order without mutation or private leakage (15.937943ms)
+✔ evidence media contract across authoring/runtime/web: absent (3.819677ms)
+✔ evidence media contract across authoring/runtime/web: empty (2.885749ms)
+✔ evidence media contract across authoring/runtime/web: single (3.089347ms)
+✔ evidence media contract across authoring/runtime/web: ordered (1.99747ms)
+✔ evidence media contract across authoring/runtime/web: non-array (2.173145ms)
+✔ evidence media contract across authoring/runtime/web: null (1.881145ms)
+✔ evidence media contract across authoring/runtime/web: invalid item (1.617939ms)
+✔ evidence media contract across authoring/runtime/web: empty ID (2.21583ms)
+✔ evidence media contract across authoring/runtime/web: duplicate (1.962729ms)
+✔ evidence media contract across authoring/runtime/web: unknown (2.054016ms)
+✔ dispatches valid V1 and V2 authoring contracts explicitly (1.364747ms)
+✔ requires exactly one explicit correct option per V2 decision point (0.94209ms)
+✔ validates phase semantics and retry feedback (1.384266ms)
+✔ validates complete, non-overlapping provisional evaluation thresholds (2.65431ms)
+✔ normalizes and validates the private Runtime V2 boundary (1.133929ms)
+✔ rejects invalid Runtime V2 transition, evidence and authority boundaries (1.759733ms)
+✔ rejects an evaluable V2 Experience with zero decision points (0.670681ms)
+✔ projects a V2 public boundary without correctness or private feedback (3.244851ms)
+✔ projects separated deterministic retry and advance interactions (1.347471ms)
+✔ publishes only evidence required by projected advance interactions (1.183975ms)
+✔ does not leak private Runtime authority through Web Artifact V2 (1.49322ms)
+✔ rejects malformed projected decision authority (2.326676ms)
+✔ accepts a valid Generated Web Artifact v1 (7.556009ms)
+✔ requires an independent Web Artifact version (1.050513ms)
+✔ rejects unsupported Web Artifact versions explicitly (0.969922ms)
+✔ rejects invalid Experience identifiers and classes (0.697341ms)
+✔ accepts only the three approved Experience classes (1.079227ms)
+✔ rejects duplicate stages and duplicate decisions (0.846786ms)
+✔ rejects unresolved public feedback references (0.797783ms)
+✔ preserves didactic order without sorting input (1.22741ms)
+✔ requires the minimum visual boundary (0.898054ms)
+✔ rejects Runtime and Authoring contracts as incompatible profiles (1.126248ms)
+✔ rejects legacy content without adaptation (0.858294ms)
+✔ rejects Player State, User Progress and unknown profiles (0.325831ms)
+✔ rejects the deliberate private-leak fixture (1.655405ms)
+✔ rejects a private Runtime block anywhere in the artifact (0.66291ms)
+✔ rejects answer, scoring and private feedback leakage (0.720566ms)
+✔ rejects evidence that is not explicitly public (0.5112ms)
+✔ allows unknown safe properties without warning, removal, normalization or defaults (0.664641ms)
+✔ returns a deeply immutable structured Validation Result (0.883172ms)
+✔ validation is deterministic and never mutates or freezes input (0.872184ms)
+✔ accepts JSON serialization without functions or cycles (0.927598ms)
+✔ rejects functions, non-finite values and circular references (0.661778ms)
+✔ accepts a valid Normalized Runtime Contract v1 (6.791697ms)
+✔ requires the independent runtime contract version (0.984023ms)
+✔ accepts only approved Experience classes (1.411778ms)
+✔ validates governed Capability references (0.70933ms)
+✔ enforces the public and private structural boundary (1.070594ms)
+✔ uses private relations as the sole decision relationship authority (0.818674ms)
+✔ requires exactly one relation for every public decision (0.857032ms)
+✔ rejects contradictory stage ownership and unresolved destinations (0.594025ms)
+✔ validates evidence and feedback references owned by a relation (0.917943ms)
+✔ requires the minimum runtime visual boundary without selecting a renderer (0.850873ms)
+✔ classifies Authoring Definition v1 as requiring normalization (0.952155ms)
+✔ classifies legacy content explicitly without adapting it (0.508877ms)
+✔ classifies generated artifacts and Player progress as incompatible (0.213321ms)
+✔ returns a deeply immutable structured validation result (0.691352ms)
+✔ validation is deterministic and never mutates or freezes input (1.759472ms)
+✔ ENV-004 preserves the original cover, all ten approved coordinates and real destinations (13.762089ms)
+✔ Notebook keeps every source paragraph, example, question, answer and five block groupings (2.18276ms)
+✔ source trace accounts for exactly 50 moments and 150 unchanged option meanings (13.650295ms)
+✔ EE-0031 es: complete schema, retry, evidence order and verified completion (25.607948ms)
+✔ EE-0031 en: complete schema, retry, evidence order and verified completion (11.42463ms)
+✔ EE-0032 es: complete schema, retry, evidence order and verified completion (12.534483ms)
+✔ EE-0032 en: complete schema, retry, evidence order and verified completion (8.955349ms)
+✔ EE-0033 es: complete schema, retry, evidence order and verified completion (8.742467ms)
+✔ EE-0033 en: complete schema, retry, evidence order and verified completion (8.010965ms)
+✔ EE-0034 es: complete schema, retry, evidence order and verified completion (8.223106ms)
+✔ EE-0034 en: complete schema, retry, evidence order and verified completion (7.263928ms)
+✔ EE-0035 es: complete schema, retry, evidence order and verified completion (8.326681ms)
+✔ EE-0035 en: complete schema, retry, evidence order and verified completion (7.284219ms)
+✔ EE-0036 es: complete schema, retry, evidence order and verified completion (12.526126ms)
+✔ EE-0036 en: complete schema, retry, evidence order and verified completion (11.31506ms)
+✔ EE-0037 es: complete schema, retry, evidence order and verified completion (10.76133ms)
+✔ EE-0037 en: complete schema, retry, evidence order and verified completion (11.073682ms)
+✔ EE-0038 es: complete schema, retry, evidence order and verified completion (10.260525ms)
+✔ EE-0038 en: complete schema, retry, evidence order and verified completion (8.058125ms)
+✔ EE-0039 es: complete schema, retry, evidence order and verified completion (18.103638ms)
+✔ EE-0039 en: complete schema, retry, evidence order and verified completion (9.153156ms)
+✔ EE-0040 es: complete schema, retry, evidence order and verified completion (10.430813ms)
+✔ EE-0040 en: complete schema, retry, evidence order and verified completion (9.8127ms)
+✖ all eight ES/EN Notes preserve identity, structure and executable code (5.713382ms)
+✔ missing entry, missing section, and executable-code translations fail closed (0.786445ms)
+✔ generated bilingual Notebook matches canonical publication (45.97728ms)
+✔ evidence-only media packages in both locales and missing physical files fail without replacing the package (1894.632084ms)
+✔ ENV-002 is authored as a V2 field instrumentation environment (900.221947ms)
+✖ preview packages every eligible canonical Experience (1680.964102ms)
+✔ published browser files contain no reserved runtime data or authoring document (1382.605379ms)
+✔ packaging is deterministic and removes obsolete browser artifacts (3124.609942ms)
+✔ a validation failure preserves the previous generated package (783.44581ms)
+✖ publish excludes technical-review experiences while preview includes them (1088.032864ms)
+✔ Theory packaging copies only media referenced by canonical sections (1636.403888ms)
+✔ catalog modes enforce the complete approved publication-state boundary (7247.374206ms)
+✔ duplicate identifiers fail and no legacy fallback is used (737.659283ms)
+✔ packages Notebook content deterministically (17.662333ms)
+✔ removes obsolete generated Notebook artifacts (4.228524ms)
+✔ validation failure preserves the previous generated package (4.568826ms)
+✔ rejects duplicate Notebook identifiers and slugs (2.071162ms)
+✔ the repository Source Library foundation is valid (40.885638ms)
+✔ rejects malformed source IDs and stale master references (49.356366ms)
+✔ rejects malformed URLs (49.507363ms)
+✔ rejects vocabulary values outside the governed taxonomy (37.117238ms)
+✔ rejects local or production permission without an explicit license (42.44222ms)
+✔ rejects unresolved source relationships (49.73701ms)
+✔ rejects approved records without explicit review evidence (45.613204ms)
+✔ rejects local files outside the governed storage boundary (54.077883ms)
+✔ rejects asset records that reference missing source IDs (35.496645ms)
+✔ rejects duplicate canonical source identities (36.003654ms)
+ℹ tests 544
+ℹ suites 0
+ℹ pass 540
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28372.709635
+
+✖ failing tests:
+
+test at Frontend/products/experience-engine/tests/experienceWorkspace.test.js:1112:1
+✖ Environment catalog provides complete Spanish presentation copy (1.28027ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'Sistemas eléctricos industriales'
+  - undefined
+
+      at TestContext.<anonymous> (file:///workspace/Web-Digital2Real/Frontend/products/experience-engine/tests/experienceWorkspace.test.js:1120:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Sistemas eléctricos industriales',
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/notebook-localization.test.mjs:11:1
+✖ all eight ES/EN Notes preserve identity, structure and executable code (5.713382ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  33 !== 8
+
+      at TestContext.<anonymous> (file:///workspace/Web-Digital2Real/scripts/tests/notebook-localization.test.mjs:15:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 33,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/package-experience-engine.test.mjs:110:1
+✖ preview packages every eligible canonical Experience (1680.964102ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      'EXP-BACNET-DEVICE-029',
+      'EXP-CANOPEN-NODE-028',
+  +   'EXP-ELECTRICAL-CONTACT-037',
+  +   'EXP-ELECTRICAL-CONTACTOR-032',
+  +   'EXP-ELECTRICAL-DROP-039',
+  +   'EXP-ELECTRICAL-INSULATION-040',
+  +   'EXP-ELECTRICAL-OVERLOAD-033',
+  +   'EXP-ELECTRICAL-PHASE-034',
+  +   'EXP-ELECTRICAL-PROTECTION-035',
+  +   'EXP-ELECTRICAL-RETURN-036',
+  +   'EXP-ELECTRICAL-ROTATION-038',
+  +   'EXP-ELECTRICAL-SUPPLY-031',
+      'EXP-ETHERCAT-SLAVE-027',
+      'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',
+      'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',
+
+      at TestContext.<anonymous> (file:///workspace/Web-Digital2Real/scripts/tests/package-experience-engine.test.mjs:118:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'EXP-BACNET-DEVICE-029',         'EXP-CANOPEN-NODE-028',
+      'EXP-ELECTRICAL-CONTACT-037',    'EXP-ELECTRICAL-CONTACTOR-032',
+      'EXP-ELECTRICAL-DROP-039',       'EXP-ELECTRICAL-INSULATION-040',
+      'EXP-ELECTRICAL-OVERLOAD-033',   'EXP-ELECTRICAL-PHASE-034',
+      'EXP-ELECTRICAL-PROTECTION-035', 'EXP-ELECTRICAL-RETURN-036',
+      'EXP-ELECTRICAL-ROTATION-038',   'EXP-ELECTRICAL-SUPPLY-031',
+      'EXP-ETHERCAT-SLAVE-027',        'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',        'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',           'EXP-INDUCTIVE-GAP-011',
+      'EXP-IOLINK-DEVICE-008',         'EXP-LEVEL-REFERENCE-018',
+      'EXP-LOOP-COMPLIANCE-020',       'EXP-MODBUS-RTU-025',
+      'EXP-MODBUS-TCP-026',            'EXP-MULTISYSTEM-JAM-010',
+      'EXP-OPCUA-DATA-030',            'EXP-PNEUMATIC-CYLINDER-004',
+      'EXP-PNEUMATIC-CYLINDER-014',    'EXP-PNEUMATIC-LINE-013',
+      'EXP-PRESSURE-SCALING-012',      'EXP-PROFIBUS-STATION-023',
+      'EXP-PROFIBUS-TERMINATION-024',  'EXP-PROFINET-DEVICE-021',
+      'EXP-PROFINET-DEVICE-022',       'EXP-PROFINET-LINK-006',
+      'EXP-SAFETY-GATE-005',           'EXP-SENSOR-INTERMITTENT-002',
+      'EXP-SENSOR-SIGNAL-001',         'EXP-SICK-DISTANCE-015',
+      'EXP-THERMOCOUPLE-POLARITY-016', 'EXP-VFD-AUTHORITY-003'
+    ],
+    expected: [
+      'EXP-BACNET-DEVICE-029',         'EXP-CANOPEN-NODE-028',
+      'EXP-ETHERCAT-SLAVE-027',        'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',        'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',           'EXP-INDUCTIVE-GAP-011',
+      'EXP-IOLINK-DEVICE-008',         'EXP-LEVEL-REFERENCE-018',
+      'EXP-LOOP-COMPLIANCE-020',       'EXP-MODBUS-RTU-025',
+      'EXP-MODBUS-TCP-026',            'EXP-MULTISYSTEM-JAM-010',
+      'EXP-OPCUA-DATA-030',            'EXP-PNEUMATIC-CYLINDER-004',
+      'EXP-PNEUMATIC-CYLINDER-014',    'EXP-PNEUMATIC-LINE-013',
+      'EXP-PRESSURE-SCALING-012',      'EXP-PROFIBUS-STATION-023',
+      'EXP-PROFIBUS-TERMINATION-024',  'EXP-PROFINET-DEVICE-021',
+      'EXP-PROFINET-DEVICE-022',       'EXP-PROFINET-LINK-006',
+      'EXP-SAFETY-GATE-005',           'EXP-SENSOR-INTERMITTENT-002',
+      'EXP-SENSOR-SIGNAL-001',         'EXP-SICK-DISTANCE-015',
+      'EXP-THERMOCOUPLE-POLARITY-016', 'EXP-VFD-AUTHORITY-003'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/package-experience-engine.test.mjs:454:1
+✖ publish excludes technical-review experiences while preview includes them (1088.032864ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      'EXP-BACNET-DEVICE-029',
+      'EXP-CANOPEN-NODE-028',
+  +   'EXP-ELECTRICAL-CONTACT-037',
+  +   'EXP-ELECTRICAL-CONTACTOR-032',
+  +   'EXP-ELECTRICAL-DROP-039',
+  +   'EXP-ELECTRICAL-INSULATION-040',
+  +   'EXP-ELECTRICAL-OVERLOAD-033',
+  +   'EXP-ELECTRICAL-PHASE-034',
+  +   'EXP-ELECTRICAL-PROTECTION-035',
+  +   'EXP-ELECTRICAL-RETURN-036',
+  +   'EXP-ELECTRICAL-ROTATION-038',
+  +   'EXP-ELECTRICAL-SUPPLY-031',
+      'EXP-ETHERCAT-SLAVE-027',
+      'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',
+      'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',
+
+      at TestContext.<anonymous> (file:///workspace/Web-Digital2Real/scripts/tests/package-experience-engine.test.mjs:475:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'EXP-BACNET-DEVICE-029',         'EXP-CANOPEN-NODE-028',
+      'EXP-ELECTRICAL-CONTACT-037',    'EXP-ELECTRICAL-CONTACTOR-032',
+      'EXP-ELECTRICAL-DROP-039',       'EXP-ELECTRICAL-INSULATION-040',
+      'EXP-ELECTRICAL-OVERLOAD-033',   'EXP-ELECTRICAL-PHASE-034',
+      'EXP-ELECTRICAL-PROTECTION-035', 'EXP-ELECTRICAL-RETURN-036',
+      'EXP-ELECTRICAL-ROTATION-038',   'EXP-ELECTRICAL-SUPPLY-031',
+      'EXP-ETHERCAT-SLAVE-027',        'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',        'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',           'EXP-INDUCTIVE-GAP-011',
+      'EXP-IOLINK-DEVICE-008',         'EXP-LEVEL-REFERENCE-018',
+      'EXP-LOOP-COMPLIANCE-020',       'EXP-MODBUS-RTU-025',
+      'EXP-MODBUS-TCP-026',            'EXP-MULTISYSTEM-JAM-010',
+      'EXP-OPCUA-DATA-030',            'EXP-PNEUMATIC-CYLINDER-004',
+      'EXP-PNEUMATIC-CYLINDER-014',    'EXP-PNEUMATIC-LINE-013',
+      'EXP-PRESSURE-SCALING-012',      'EXP-PROFIBUS-STATION-023',
+      'EXP-PROFIBUS-TERMINATION-024',  'EXP-PROFINET-DEVICE-021',
+      'EXP-PROFINET-DEVICE-022',       'EXP-PROFINET-LINK-006',
+      'EXP-SAFETY-GATE-005',           'EXP-SENSOR-INTERMITTENT-002',
+      'EXP-SENSOR-SIGNAL-001',         'EXP-SICK-DISTANCE-015',
+      'EXP-THERMOCOUPLE-POLARITY-016', 'EXP-VFD-AUTHORITY-003'
+    ],
+    expected: [
+      'EXP-BACNET-DEVICE-029',         'EXP-CANOPEN-NODE-028',
+      'EXP-ETHERCAT-SLAVE-027',        'EXP-FLOW-LOOP-017',
+      'EXP-GRAPH-SEQUENCE-007',        'EXP-HMI-STATE-009',
+      'EXP-IMPULSE-LAG-019',           'EXP-INDUCTIVE-GAP-011',
+      'EXP-IOLINK-DEVICE-008',         'EXP-LEVEL-REFERENCE-018',
+      'EXP-LOOP-COMPLIANCE-020',       'EXP-MODBUS-RTU-025',
+      'EXP-MODBUS-TCP-026',            'EXP-MULTISYSTEM-JAM-010',
+      'EXP-OPCUA-DATA-030',            'EXP-PNEUMATIC-CYLINDER-004',
+      'EXP-PNEUMATIC-CYLINDER-014',    'EXP-PNEUMATIC-LINE-013',
+      'EXP-PRESSURE-SCALING-012',      'EXP-PROFIBUS-STATION-023',
+      'EXP-PROFIBUS-TERMINATION-024',  'EXP-PROFINET-DEVICE-021',
+      'EXP-PROFINET-DEVICE-022',       'EXP-PROFINET-LINK-006',
+      'EXP-SAFETY-GATE-005',           'EXP-SENSOR-INTERMITTENT-002',
+      'EXP-SENSOR-SIGNAL-001',         'EXP-SICK-DISTANCE-015',
+      'EXP-THERMOCOUPLE-POLARITY-016', 'EXP-VFD-AUTHORITY-003'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

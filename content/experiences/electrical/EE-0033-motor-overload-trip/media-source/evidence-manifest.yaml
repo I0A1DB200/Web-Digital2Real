@@ -1,0 +1,119 @@
+editorial_id: "EXP-EL-03"
+canonical_id: "EXP-ELECTRICAL-OVERLOAD-033"
+status: "pending_user_assets_and_technical_review"
+expected_asset_range:
+  - 6
+  - 7
+supplied_evidence_images: 0
+required_missing_minimum: 6
+optional_additional: 1
+notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+notebooks:
+  -
+    editorial_id: "NB-EL-03"
+    canonical_id: "article-011"
+  -
+    editorial_id: "NB-EL-08"
+    canonical_id: "article-016"
+  -
+    editorial_id: "NB-EL-14"
+    canonical_id: "article-022"
+  -
+    editorial_id: "NB-EL-21"
+    canonical_id: "article-029"
+  -
+    editorial_id: "NB-EL-25"
+    canonical_id: "article-033"
+families:
+  -
+    editorial_id: "E1"
+    purpose_es: "placa M1 y esquema de arranque"
+    purpose_en: "M1 nameplate and starter schematic"
+    data_values_expected_es: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+    earliest_disclosure: "incident"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E2"
+    purpose_es: "trend I_L1/I_L2/I_L3 y disparo"
+    purpose_en: "I_L1/I_L2/I_L3 trend and trip"
+    data_values_expected_es: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+    earliest_disclosure: "after D1 / before D2"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E3"
+    purpose_es: "registro de rodillo"
+    purpose_en: "roller record"
+    data_values_expected_es: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor. El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+    earliest_disclosure: "split by acquisition: after D2 and D3; never show later findings early"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E4"
+    purpose_es: "corrientes tras reparación y prueba de protección según procedimiento"
+    purpose_en: "post-repair currents and protection test under the procedure"
+    data_values_expected_es: "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+    earliest_disclosure: "after D5 verification"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+slots:
+  -
+    proposed_id: "01-CONTEXT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/01-context.png"
+    stage_or_decision: "incident"
+    acceptance: "Context only; no electrical claims or root-cause clues."
+    status: "pending_not_registered"
+    expected_text_es: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+  -
+    proposed_id: "02-CIRCUIT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/02-circuit.png"
+    stage_or_decision: "D1"
+    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
+    status: "pending_not_registered"
+    expected_text_es: "El motor -M1 de una cinta dispara con retardo tras aumentar producción. Placa 400 V / 3,2 A; relé de sobrecarga ajustado y documentado a 3,2 A. Se deben comparar registros eléctricos y carga antes de cambiar ajustes o componentes."
+  -
+    proposed_id: "03-RECORD"
+    family: "E2"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/03-record.png"
+    stage_or_decision: "after D1"
+    acceptance: "Records supporting the next question, with no future findings."
+    status: "pending_not_registered"
+    expected_text_es: "Las corrientes de línea registradas son 4,5/4,4/4,6 A frente a 3,2 A nominales. El disparo tiene retardo. La comparación confirma corriente superior a nominal; el hecho de girar no establece operación normal ni prueba cortocircuito franco."
+  -
+    proposed_id: "04-COMPARISON"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/04-comparison.png"
+    stage_or_decision: "after D2"
+    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
+    status: "pending_not_registered"
+    expected_text_es: "Las tensiones entre fases están equilibradas, sin pérdida de fase. Las tres corrientes son similares y elevadas. Esos datos no apoyan pérdida de fase y requieren investigar carga mecánica o condición del motor."
+  -
+    proposed_id: "05-INSPECTION"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/05-inspection.png"
+    stage_or_decision: "after D3"
+    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
+    status: "pending_not_registered"
+    expected_text_es: "El registro mecánico autorizado identifica resistencia anómala en un rodillo de retorno; tras desacoplar y comprobar según procedimiento, supera la referencia histórica. La carga mecánica anormal es una explicación que debe contrastarse tras reparación."
+  -
+    proposed_id: "06-VERIFICATION"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/06-verification.png"
+    stage_or_decision: "after D5"
+    acceptance: "Approved post-repair verification record; no invented thresholds or values."
+    status: "pending_not_registered"
+    expected_text_es: "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+  -
+    proposed_id: "07-SYNTHESIS"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-OVERLOAD-033/07-synthesis.png"
+    stage_or_decision: "completion"
+    acceptance: "Optional final synthesis; does not establish recovery on its own."
+    status: "pending_not_registered"
+    expected_text_es: "Tras reparar el rodillo en el caso simulado, se verifican corrientes dentro de los límites aplicables y protección operativa según procedimiento. Se confirma el ajuste documentado correcto; borrar la alarma o reducir velocidad sin investigar no acredita recuperación."
+risk_notes:
+  - "All energized readings are simulated or previously obtained by authorized personnel."
+  - "Confirm diagram against a verified netlist and source topology before registering any visual."

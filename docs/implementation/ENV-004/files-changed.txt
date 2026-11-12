@@ -1,0 +1,6 @@
+Frontend/products/experience-engine/tests/experienceWorkspace.test.js
+content/notebooks/locales/es.js
+content/notebooks/notebook.js
+docs/06_Changelog.md
+scripts/tests/notebook-localization.test.mjs
+scripts/tests/package-experience-engine.test.mjs

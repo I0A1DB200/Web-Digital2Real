@@ -1,0 +1,171 @@
+{
+  "mode": "publish",
+  "output": "Frontend/generated/experience-engine",
+  "packaged": [
+    "EXP-SENSOR-INTERMITTENT-002",
+    "EXP-SENSOR-SIGNAL-001"
+  ],
+  "environments": [],
+  "skipped": [
+    {
+      "file": "content/experiences/communications/EE-0006-profinet-line-topology-link-failure/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0008-io-link-device-offline/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0021-profinet-device-not-reachable/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0022-profinet-device-name-mismatch/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0023-profibus-station-failure/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0024-profibus-bus-termination-fault/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0025-modbus-rtu-communication-timeout/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0026-modbus-tcp-wrong-register-data/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0027-ethercat-slave-not-operational/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0028-canopen-node-communication-lost/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0029-bacnet-device-not-discovered/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/communications/EE-0030-opcua-data-not-updating/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/drives/EE-0003-vfd-command-authority-mismatch/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0032-contactor-does-not-energize/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0033-motor-overload-trip/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0034-single-phase-loss/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0036-open-return-conductor/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/hmi/EE-0009-hmi-incorrect-machine-state/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0012-pressure-transmitter-scaling-mismatch/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0015-sick-distance-window-misclassification/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0016-thermocouple-polarity-inversion/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0017-flow-loop-intermittent/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0018-level-reference-noise/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0019-impulse-line-response/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/instrumentation/EE-0020-loop-compliance-under-load/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/pneumatics/EE-0004-pneumatic-cylinder-extension-timeout/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/pneumatics/EE-0013-pneumatic-cylinder-does-not-extend/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/pneumatics/EE-0014-pneumatic-cylinder-extended-confirmation/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/safety/EE-0005-safety-gate-channel-discrepancy/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/sensors/EE-0009-photoelectric-sensor-misalignment/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/sensors/EE-0011-inductive-sensor-not-detecting/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/siemens/EE-0007-sequence-stuck-waiting-for-condition/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/troubleshooting/EE-0010-production-line-stops-after-product-jam/experience.yaml",
+      "reason": "publication_state"
+    }
+  ]
+}

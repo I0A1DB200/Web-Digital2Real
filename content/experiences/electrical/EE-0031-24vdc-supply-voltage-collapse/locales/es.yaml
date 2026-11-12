@@ -1,0 +1,128 @@
+locale: "es"
+translations:
+  title: "La alimentación de 24 V cae al arrancar"
+  summary: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Preview textual; evidencias visuales y revisión técnica pendientes."
+  scenario:
+    initial_context: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-029 (NB-EL-21): Método de diagnóstico; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    initiating_event: "La alimentación de 24 V cae al arrancar"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-029 (NB-EL-21): Método de diagnóstico; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Delimitar el síntoma"
+      situation: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio.\n\n¿Qué dato solicitar primero?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpretar el primer registro"
+      situation: "El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque.\n\n¿Qué significa 24,2 V en reposo?"
+    STAGE-03-DIAGNOSIS:
+      title: "Contrastar hipótesis"
+      situation: "Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo.\n\nLa fuente cae a 17,8 V en sus propios bornes. ¿Qué hipótesis priorizas?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación.\n\nEl registro indica pico de 5,5 A más 1,2 A del PLC. ¿Qué conclusión?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verificar la recuperación"
+      situation: "La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación.\n\n¿Qué verificación cierra el caso?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Registro didáctico simulado · contexto"
+      content: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
+    EVID-01-RECORD:
+      source: "Registro didáctico simulado · D1"
+      content: "El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque."
+    EVID-02-RECORD:
+      source: "Registro didáctico simulado · D2"
+      content: "Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo."
+    EVID-03-RECORD:
+      source: "Registro didáctico simulado · D3"
+      content: "La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación."
+    EVID-04-RECORD:
+      source: "Registro didáctico simulado · D4"
+      content: "La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación."
+    EVID-05-RECORD:
+      source: "Registro didáctico simulado · D5"
+      content: "En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
+  decisions:
+    DEC-01-A:
+      action: "Reinicios del módulo correlacionados con la activación y tendencia de tensión en PS1."
+    DEC-01-B:
+      action: "Versión de firmware PLC. Se propone explicar los reinicios por compatibilidad de firmware y priorizar ese historial frente a la correlación entre activación de válvulas y tensión."
+    DEC-01-C:
+      action: "Cambiar módulo remoto."
+    DEC-02-A:
+      action: "Fuente definitivamente sana. Se toma la lectura en reposo como validación de toda la respuesta dinámica, sin distinguir demanda habitual, pico simultáneo y limitación de corriente."
+    DEC-02-B:
+      action: "Tensión correcta solo para ese estado; falta observar arranque."
+    DEC-02-C:
+      action: "Cortocircuito permanente."
+    DEC-03-A:
+      action: "Únicamente cable entre fuente y módulo. Se atribuye toda la anomalía al tramo de distribución y se descarta la frontera de salida de PS1 como origen del problema de suministro observado."
+    DEC-03-B:
+      action: "Fuente en limitación o defecto interno; contrastar demanda y especificación."
+    DEC-03-C:
+      action: "Fallo del sensor de velocidad."
+    DEC-04-A:
+      action: "La suma supera 5 A nominales; revisar capacidad transitoria y simultaneidad."
+    DEC-04-B:
+      action: "Toda fuente de 5 A soporta 10 A indefinidamente. Se presupone esa capacidad de sobrecarga como propiedad general de la corriente nominal, sin comparar curva dinámica, duración del pico ni simultaneidad."
+    DEC-04-C:
+      action: "El PLC consume cero durante arranque."
+    DEC-05-A:
+      action: "Reiniciar PLC una vez. Se propone cerrar el incidente por un único reinicio sin repetir el peor arranque, registrar tensión en PS1 ni confirmar ausencia de nuevos reinicios."
+    DEC-05-B:
+      action: "Sustituir la fuente por cualquiera de 24 V."
+    DEC-05-C:
+      action: "Tras solución de ingeniería aprobada, registrar tensión en PS1 durante el peor arranque y ausencia de reinicios."
+  retry_feedback:
+    DEC-01-B: "no discrimina fallo de tensión. Revisa: Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-01-C: "sustituye sin prueba. Revisa: Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-A: "no demuestra respuesta bajo carga. Revisa: El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-C: "no hay evidencia. Revisa: El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-A: "no explica caída en origen. Revisa: Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-C: "no explica la alimentación. Revisa: Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-B: "La propuesta «Toda fuente de 5 A soporta 10 A indefinidamente.» no está sustentada por este registro.  Revisa: La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-C: "La propuesta «El PLC consume cero durante arranque.» no está sustentada por este registro.  Revisa: La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-A: "La propuesta «Reiniciar PLC una vez.» no está sustentada por este registro.  Revisa: La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-B: "exige dimensionado, protecciones y aprobación. Revisa: La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación. Vuelve a elegir sin ejecutar la opción propuesta."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+  assets: {}
+  completion:
+    title: "Debrief técnico"
+    summary: "demanda transitoria simultánea superior a la capacidad dinámica especificada de PS1; la fuente entra en limitación. No confundir con un cable defectuoso porque la caída aparece también en los bornes de PS1. En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
+    process:
+      - "Reinicios del módulo correlacionados con la activación y tendencia de tensión en PS1."
+      - "Tensión correcta solo para ese estado; falta observar arranque."
+      - "Fuente en limitación o defecto interno; contrastar demanda y especificación."
+      - "La suma supera 5 A nominales; revisar capacidad transitoria y simultaneidad."
+      - "Tras solución de ingeniería aprobada, registrar tensión en PS1 durante el peor arranque y ausencia de reinicios."
+    lesson: "redistribuir/limitar simultaneidad o dimensionar fuente y protección según fabricante; no fijar modelo sin cálculo. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-029 (NB-EL-21): Método de diagnóstico; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    avoided_errors:
+      - "Versión de firmware PLC."
+      - "Cambiar módulo remoto."
+      - "Fuente definitivamente sana."
+      - "Cortocircuito permanente."
+      - "Únicamente cable entre fuente y módulo."
+      - "Fallo del sensor de velocidad."
+      - "Toda fuente de 5 A soporta 10 A indefinidamente."
+      - "El PLC consume cero durante arranque."
+      - "Reiniciar PLC una vez."
+      - "Sustituir la fuente por cualquiera de 24 V."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."

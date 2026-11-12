@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-CONTACT-037"
+  editorial_id: "EE-0037"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "intermediate"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "incorrect-no-nc-contact"
+  title: "El contacto instalado no corresponde al esquema"
+  summary: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-027 (NB-EL-19): Lectura de esquemas de mando; article-028 (NB-EL-20): Trazabilidad y control de revisiones"
+    initiating_event: "El contacto instalado no corresponde al esquema"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-027 (NB-EL-19): Lectura de esquemas de mando; article-028 (NB-EL-20): Trazabilidad y control de revisiones"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-A"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-A"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-A"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-B"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-A"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Revisar correspondencia entre estado físico, plano y terminales."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Invertir bits en PLC inmediatamente. Se propone adaptar la interpretación software al comportamiento observado antes de comparar la designación de terminales y el estado de referencia del componente."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar motor."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "13-14 es NO en el componente documentado."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Todos los contactos 13-14 son NC. Se generaliza el estado NC a esa numeración y se ignora la documentación del componente que distingue 13-14 de 21-22 para esta instalación."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "NO/NC depende del color del cable."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Que el permiso aparezca al pulsar S3 concuerda con uso accidental de NO."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Es prueba de pérdida de fase. Se atribuye el permiso de mando a una anomalía trifásica sin explicar la correspondencia documentada entre pulsación de S3 y cierre del par NO."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "El contactor está soldado."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Dejar el comportamiento y cambiar el texto HMI. Se propone adaptar la presentación al comportamiento invertido sin restituir el contacto NC en serie exigido por el plano de mando aprobado."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Verificar aislado que se usaron 13-14 en lugar de 21-22 y restituir plano."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Puentear S3."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Tras corrección autorizada, comprobar STOP y START en reposo/accionamiento y auto-mantenimiento."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Solo arrancar una vez. Se considera suficiente un arranque puntual sin comprobar la función de paro, el estado en reposo y accionamiento ni el auto-mantenimiento previsto en el mando."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Eliminar el contacto de paro."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "conexión a contacto NO en una función que requiere NC según diseño. Importante: no confundir STOP de proceso con función de parada de emergencia de seguridad; el escenario no modifica un circuito de seguridad. Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+    process:
+      - "Revisar correspondencia entre estado físico, plano y terminales."
+      - "13-14 es NO en el componente documentado."
+      - "Que el permiso aparezca al pulsar S3 concuerda con uso accidental de NO."
+      - "Verificar aislado que se usaron 13-14 en lugar de 21-22 y restituir plano."
+      - "Tras corrección autorizada, comprobar STOP y START en reposo/accionamiento y auto-mantenimiento."
+    lesson: "restaurar cableado según plano, registrar desviación de mantenimiento. Notebook — itinerario en Engineering Notes: article-020 (NB-EL-12): Contactores, bobinas y auxiliares; article-021 (NB-EL-13): Pulsadores, auto-mantenimiento y enclavamientos; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-027 (NB-EL-19): Lectura de esquemas de mando; article-028 (NB-EL-20): Trazabilidad y control de revisiones"
+    avoided_errors:
+      - "Invertir bits en PLC inmediatamente."
+      - "Cambiar motor."
+      - "Todos los contactos 13-14 son NC."
+      - "NO/NC depende del color del cable."
+      - "Es prueba de pérdida de fase."
+      - "El contactor está soldado."
+      - "Dejar el comportamiento y cambiar el texto HMI."
+      - "Puentear S3."
+      - "Solo arrancar una vez."
+      - "Eliminar el contacto de paro."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "conexión a contacto NO en una función que requiere NC según diseño. Importante: no confundir STOP de proceso con función de parada de emergencia de seguridad; el escenario no modifica un circuito de seguridad."
+    recovery_conditions:
+      - "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "conexión a contacto NO en una función que requiere NC según diseño. Importante: no confundir STOP de proceso con función de parada de emergencia de seguridad; el escenario no modifica un circuito de seguridad."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-A"
+      - "DEC-02-A"
+      - "DEC-03-A"
+      - "DEC-04-B"
+      - "DEC-05-A"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+      classification: "strong"
+      consequence: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+      classification: "weak"
+      consequence: "La propuesta «Invertir bits en PLC inmediatamente.» no está sustentada por este registro.  Revisa: Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Invertir bits en PLC inmediatamente.» no está sustentada por este registro.  Revisa: Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar motor.» no está sustentada por este registro.  Revisa: Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar motor.» no está sustentada por este registro.  Revisa: Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+      classification: "strong"
+      consequence: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+      classification: "weak"
+      consequence: "La propuesta «Todos los contactos 13-14 son NC.» no está sustentada por este registro.  Revisa: La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Todos los contactos 13-14 son NC.» no está sustentada por este registro.  Revisa: La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+      classification: "unsafe"
+      consequence: "La propuesta «NO/NC depende del color del cable.» no está sustentada por este registro.  Revisa: La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «NO/NC depende del color del cable.» no está sustentada por este registro.  Revisa: La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+      classification: "strong"
+      consequence: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+      classification: "weak"
+      consequence: "La propuesta «Es prueba de pérdida de fase.» no está sustentada por este registro.  Revisa: El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Es prueba de pérdida de fase.» no está sustentada por este registro.  Revisa: El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+      classification: "weak"
+      consequence: "La propuesta «El contactor está soldado.» no está sustentada por este registro.  Revisa: El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «El contactor está soldado.» no está sustentada por este registro.  Revisa: El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+      classification: "weak"
+      consequence: "La propuesta «Dejar el comportamiento y cambiar el texto HMI.» no está sustentada por este registro.  Revisa: La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Dejar el comportamiento y cambiar el texto HMI.» no está sustentada por este registro.  Revisa: La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+      classification: "strong"
+      consequence: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+      classification: "unsafe"
+      consequence: "La propuesta «Puentear S3.» no está sustentada por este registro.  Revisa: La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Puentear S3.» no está sustentada por este registro.  Revisa: La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3."
+      classification: "strong"
+      consequence: "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3."
+      classification: "weak"
+      consequence: "La propuesta «Solo arrancar una vez.» no está sustentada por este registro.  Revisa: Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Solo arrancar una vez.» no está sustentada por este registro.  Revisa: Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3."
+      classification: "weak"
+      consequence: "La propuesta «Eliminar el contacto de paro.» no está sustentada por este registro.  Revisa: Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Eliminar el contacto de paro.» no está sustentada por este registro.  Revisa: Se confirma conexión a NO en una función que requiere NC. Se restituye el cableado según plano bajo procedimiento autorizado y se registra la desviación de mantenimiento. La corrección no consiste en invertir bits, cambiar texto HMI o puentear S3. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "conexión a contacto NO en una función que requiere NC según diseño. Importante: no confundir STOP de proceso con función de parada de emergencia de seguridad; el escenario no modifica un circuito de seguridad."
+    correct_reasoning:
+      - "Revisar correspondencia entre estado físico, plano y terminales."
+      - "13-14 es NO en el componente documentado."
+      - "Que el permiso aparezca al pulsar S3 concuerda con uso accidental de NO."
+      - "Verificar aislado que se usaron 13-14 en lugar de 21-22 y restituir plano."
+      - "Tras corrección autorizada, comprobar STOP y START en reposo/accionamiento y auto-mantenimiento."
+    recovery:
+      - "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: tras mantenimiento, la orden de marcha de -KM3 solo se habilita cuando se pulsa físicamente el pulsador de PARO -S3. El plano aprobado exige contacto NC en serie con el mando; en el conjunto de contactos instalado se ha cableado accidentalmente el par NO 13-14 en lugar del NC 21-22. Registro de estados: en reposo 13-14 abierto, al pulsar cerrado; el mando interpreta permiso inverso."

@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Motor phase loss"
+  summary: "Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-026 (NB-EL-18): Terminals, potentials and numbering; article-029 (NB-EL-21): Diagnostic method"
+    initiating_event: "Motor phase loss"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-026 (NB-EL-18): Terminals, potentials and numbering; article-029 (NB-EL-21): Diagnostic method"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "Under controlled test conditions with the contactor closed, phase-to-phase readings upstream of KM2 are 400/401/399 V. The recorded supply is approximately balanced; phase-to-neutral values are not inferred.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "Downstream readings are L1-L2 400 V, L2-L3 0 V and L1-L3 400 V. This idealized pattern requires checking measurement, load and each pole; comparison locates the investigation but does not itself establish a physical defect.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "The isolated inspection report identifies an open KM2 pole due to contact failure on L3, cross-checked with continuity and mechanical state according to the manufacturer. The isolated test confirms nonconduction, rather than an inference based only on voltages.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "KM2's L3 pole does not conduct and causes phase loss in the power circuit. Authorized replacement to the design and review of wear, terminals and coordination are required. Diagnosis does not authorize resetting and producing without verification.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "Under controlled test conditions with the contactor closed, phase-to-phase readings upstream of KM2 are 400/401/399 V. The recorded supply is approximately balanced; phase-to-neutral values are not inferred."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "Downstream readings are L1-L2 400 V, L2-L3 0 V and L1-L3 400 V. This idealized pattern requires checking measurement, load and each pole; comparison locates the investigation but does not itself establish a physical defect."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "The isolated inspection report identifies an open KM2 pole due to contact failure on L3, cross-checked with continuity and mechanical state according to the manufacturer. The isolated test confirms nonconduction, rather than an inference based only on voltages."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "KM2's L3 pole does not conduct and causes phase loss in the power circuit. Authorized replacement to the design and review of wear, terminals and coordination are required. Diagnosis does not authorize resetting and producing without verification."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "The simulated record after authorized KM2 replacement establishes three-phase, starting and protection checks under the procedure. The damage cause is reviewed, including wear, terminals and coordination; recovery rests on that verification, not the initial idealized pattern."
+  decisions:
+    DEC-01-A:
+      action: "Review three-phase distribution before and after protection and contactor."
+    DEC-01-B:
+      action: "Change rotation direction. Reversing the sequence is proposed in response to humming, without first bounding the three-phase supply or comparing both sides of protection and KM2."
+    DEC-01-C:
+      action: "Disable the overload relay."
+    DEC-02-A:
+      action: "The upstream three-phase supply is approximately balanced."
+    DEC-02-B:
+      action: "L1 must be absent. A missing upstream phase is inferred despite three phase-to-phase readings near 400 V in the documented controlled test condition."
+    DEC-02-C:
+      action: "There are 230 V between every pair of phases."
+    DEC-03-A:
+      action: "The anomaly is downstream of KM2 or in the measurement/load; investigate each pole."
+    DEC-03-B:
+      action: "The incoming transformer is proven defective. Diagnosis is moved to the incoming supply without explaining the balanced upstream record and the difference observed downstream."
+    DEC-03-C:
+      action: "The before/after difference does not matter."
+    DEC-04-A:
+      action: "Replace fuses without inspection. Replacement by elimination is prioritized, leaving uninterpreted the isolated-test report identifying the conducting state of KM2's L3 pole."
+    DEC-04-B:
+      action: "The isolated test confirms KM2's L3 pole is open."
+    DEC-04-C:
+      action: "The PLC has reversed two phases."
+    DEC-05-A:
+      action: "Reset and produce. Resetting is taken as closure, without reviewing KM2 damage or checking three-phase supply, starting and protection after an authorized intervention."
+    DEC-05-B:
+      action: "Replace the motor directly."
+    DEC-05-C:
+      action: "Authorized KM2 replacement, review of the damage cause and three-phase/start/protection checks."
+  retry_feedback:
+    DEC-01-B: "The proposal “Change rotation direction.” is not supported by this record.  Review: Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Disable the overload relay.” is not supported by this record.  Review: Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are idealized teaching data from an isolated model; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself. Choose again without carrying out the proposed option."
+    DEC-02-B: "The proposal “L1 must be absent.” is not supported by this record.  Review: Under controlled test conditions with the contactor closed, phase-to-phase readings upstream of KM2 are 400/401/399 V. The recorded supply is approximately balanced; phase-to-neutral values are not inferred. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “There are 230 V between every pair of phases.” is not supported by this record.  Review: Under controlled test conditions with the contactor closed, phase-to-phase readings upstream of KM2 are 400/401/399 V. The recorded supply is approximately balanced; phase-to-neutral values are not inferred. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “The incoming transformer is proven defective.” is not supported by this record.  Review: Downstream readings are L1-L2 400 V, L2-L3 0 V and L1-L3 400 V. This idealized pattern requires checking measurement, load and each pole; comparison locates the investigation but does not itself establish a physical defect. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “The before/after difference does not matter.” is not supported by this record.  Review: Downstream readings are L1-L2 400 V, L2-L3 0 V and L1-L3 400 V. This idealized pattern requires checking measurement, load and each pole; comparison locates the investigation but does not itself establish a physical defect. Choose again without carrying out the proposed option."
+    DEC-04-A: "The proposal “Replace fuses without inspection.” is not supported by this record.  Review: The isolated inspection report identifies an open KM2 pole due to contact failure on L3, cross-checked with continuity and mechanical state according to the manufacturer. The isolated test confirms nonconduction, rather than an inference based only on voltages. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “The PLC has reversed two phases.” is not supported by this record.  Review: The isolated inspection report identifies an open KM2 pole due to contact failure on L3, cross-checked with continuity and mechanical state according to the manufacturer. The isolated test confirms nonconduction, rather than an inference based only on voltages. Choose again without carrying out the proposed option."
+    DEC-05-A: "The proposal “Reset and produce.” is not supported by this record.  Review: KM2's L3 pole does not conduct and causes phase loss in the power circuit. Authorized replacement to the design and review of wear, terminals and coordination are required. Diagnosis does not authorize resetting and producing without verification. Choose again without carrying out the proposed option."
+    DEC-05-B: "The proposal “Replace the motor directly.” is not supported by this record.  Review: KM2's L3 pole does not conduct and causes phase loss in the power circuit. Authorized replacement to the design and review of wear, terminals and coordination are required. Diagnosis does not authorize resetting and producing without verification. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "KM2's L3 pole does not conduct, causing phase loss in the power circuit. Warning: with connected motors and induced/backfed voltages, actual readings may differ; this case uses an idealized isolated model and relies on pole inspection and comparison under an authorized procedure, not the voltage pattern alone. The simulated record after authorized KM2 replacement establishes three-phase, starting and protection checks under the procedure. The damage cause is reviewed, including wear, terminals and coordination; recovery rests on that verification, not the initial idealized pattern."
+    process:
+      - "Review three-phase distribution before and after protection and contactor."
+      - "The upstream three-phase supply is approximately balanced."
+      - "The anomaly is downstream of KM2 or in the measurement/load; investigate each pole."
+      - "The isolated test confirms KM2's L3 pole is open."
+      - "Authorized KM2 replacement, review of the damage cause and three-phase/start/protection checks."
+    lesson: "use a contactor compliant with the design; investigate wear/terminals and coordination. Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-026 (NB-EL-18): Terminals, potentials and numbering; article-029 (NB-EL-21): Diagnostic method"
+    avoided_errors:
+      - "Change rotation direction."
+      - "Disable the overload relay."
+      - "L1 must be absent."
+      - "There are 230 V between every pair of phases."
+      - "The incoming transformer is proven defective."
+      - "The before/after difference does not matter."
+      - "Replace fuses without inspection."
+      - "The PLC has reversed two phases."
+      - "Reset and produce."
+      - "Replace the motor directly."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

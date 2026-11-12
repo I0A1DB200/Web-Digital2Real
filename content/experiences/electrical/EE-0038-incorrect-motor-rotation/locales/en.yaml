@@ -1,0 +1,128 @@
+locale: "en"
+translations:
+  title: "Motor rotates in the wrong direction"
+  summary: "After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed. Text preview; visual evidence and technical review pending."
+  scenario:
+    initial_context: "After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed."
+    operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    initiating_event: "Motor rotates in the wrong direction"
+    learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
+    safety_context:
+      safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+      intervention_constraints:
+        - "The learner interprets records; no live work or operations on a real installation are performed."
+        - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
+        - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
+        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Distinguish hypotheses with available records without revealing root cause prematurely."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguish a performed repair from verified recovery using the case criteria."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Bound the symptom"
+      situation: "After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpret the first record"
+      situation: "M4 has direct-on-line starting without a drive. The approved terminal drawing specifies L1→U1, L2→V1, L3→W1. Interchanging two phases can reverse rotation in this system; it is not automatically attributed to PLC or neutral.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-03-DIAGNOSIS:
+      title: "Compare hypotheses"
+      situation: "Isolated inspection records L1→V1, L2→U1, L3→W1 versus drawing L1→U1, L2→V1, L3→W1. L1/L2 are interchanged relative to the validated installation; there is no evidence of a frequency change or a necessary internal motor fault.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirm the cause and intervene safely"
+      situation: "Drawing-to-installation comparison confirms two phases interchanged during replacement. The applied sequence is reversed relative to design. Reconfiguration is planned only after isolation under the authorized procedure; PE is not an interchangeable phase.\n\nWhich interpretation or action is justified by the available evidence?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verify recovery"
+      situation: "Terminals have been restored to the drawing in the scenario's authorized intervention. This correction alone does not establish recovery: direction, load, guards, interlocks and documentation still require an authorized test.\n\nWhich interpretation or action is justified by the available evidence?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Simulated teaching record · context"
+      content: "After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed."
+    EVID-01-RECORD:
+      source: "Simulated teaching record · D1"
+      content: "M4 has direct-on-line starting without a drive. The approved terminal drawing specifies L1→U1, L2→V1, L3→W1. Interchanging two phases can reverse rotation in this system; it is not automatically attributed to PLC or neutral."
+    EVID-02-RECORD:
+      source: "Simulated teaching record · D2"
+      content: "Isolated inspection records L1→V1, L2→U1, L3→W1 versus drawing L1→U1, L2→V1, L3→W1. L1/L2 are interchanged relative to the validated installation; there is no evidence of a frequency change or a necessary internal motor fault."
+    EVID-03-RECORD:
+      source: "Simulated teaching record · D3"
+      content: "Drawing-to-installation comparison confirms two phases interchanged during replacement. The applied sequence is reversed relative to design. Reconfiguration is planned only after isolation under the authorized procedure; PE is not an interchangeable phase."
+    EVID-04-RECORD:
+      source: "Simulated teaching record · D4"
+      content: "Terminals have been restored to the drawing in the scenario's authorized intervention. This correction alone does not establish recovery: direction, load, guards, interlocks and documentation still require an authorized test."
+    EVID-05-RECORD:
+      source: "Simulated teaching record · D5"
+      content: "The simulated case's authorized test confirms intended direction, load, guards, interlocks and documentation. Operation without protection is not allowed, and reverse rotation is not accepted merely because the motor runs."
+  decisions:
+    DEC-01-A:
+      action: "Confirm drive type and connection documentation."
+    DEC-01-B:
+      action: "Change PLC rotation direction without verifying the circuit. Software command correction is proposed before confirming whether M4 uses direct-on-line starting or a drive and comparing connections with the approved drawing."
+    DEC-01-C:
+      action: "Disable thermal protection."
+    DEC-02-A:
+      action: "With three-phase direct-on-line starting, interchanging two phases can reverse rotation."
+    DEC-02-B:
+      action: "Neutral always determines rotation. Rotating-field direction is attributed to the neutral conductor without comparing the phase sequence applied to U1, V1 and W1 in this direct-on-line starter."
+    DEC-02-C:
+      action: "Rotation depends only on the PLC."
+    DEC-03-A:
+      action: "The motor must have an internal fault. Motor failure is concluded from observed direction without explaining the difference between approved wiring and the L1/L2 interchange recorded after replacement."
+    DEC-03-B:
+      action: "The schematic and actual connection show L1/L2 interchanged."
+    DEC-03-C:
+      action: "Frequency must be 60 Hz."
+    DEC-04-A:
+      action: "Reconfigure terminals to the drawing under an authorized procedure after isolation."
+    DEC-04-B:
+      action: "Change phases with the motor energized. The proposal involves direct phase intervention without prior isolation or control of the conveyor's mechanical risk under the procedure."
+    DEC-04-C:
+      action: "Reverse protective earth PE."
+    DEC-05-A:
+      action: "Checking no-load rotation without protection is sufficient. A partial observation is proposed to be accepted without verifying load, guards, interlocks and documentation under the equipment's authorized test conditions."
+    DEC-05-B:
+      action: "Verify direction, load, guards, interlocks and documentation in an authorized test."
+    DEC-05-C:
+      action: "Keep reverse rotation because the motor operates."
+  retry_feedback:
+    DEC-01-B: "The proposal “Change PLC rotation direction without verifying the circuit.” is not supported by this record.  Review: After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Disable thermal protection.” is not supported by this record.  Review: After -M4 is replaced on a conveyor, the three-phase motor rotates opposite to the intended direction. Drive type and documentation must be confirmed. Any actual correction requires lockout, competent personnel and mechanical-risk verification; no energized operation is proposed. Choose again without carrying out the proposed option."
+    DEC-02-B: "The proposal “Neutral always determines rotation.” is not supported by this record.  Review: M4 has direct-on-line starting without a drive. The approved terminal drawing specifies L1→U1, L2→V1, L3→W1. Interchanging two phases can reverse rotation in this system; it is not automatically attributed to PLC or neutral. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “Rotation depends only on the PLC.” is not supported by this record.  Review: M4 has direct-on-line starting without a drive. The approved terminal drawing specifies L1→U1, L2→V1, L3→W1. Interchanging two phases can reverse rotation in this system; it is not automatically attributed to PLC or neutral. Choose again without carrying out the proposed option."
+    DEC-03-A: "The proposal “The motor must have an internal fault.” is not supported by this record.  Review: Isolated inspection records L1→V1, L2→U1, L3→W1 versus drawing L1→U1, L2→V1, L3→W1. L1/L2 are interchanged relative to the validated installation; there is no evidence of a frequency change or a necessary internal motor fault. Choose again without carrying out the proposed option."
+    DEC-03-C: "The proposal “Frequency must be 60 Hz.” is not supported by this record.  Review: Isolated inspection records L1→V1, L2→U1, L3→W1 versus drawing L1→U1, L2→V1, L3→W1. L1/L2 are interchanged relative to the validated installation; there is no evidence of a frequency change or a necessary internal motor fault. Choose again without carrying out the proposed option."
+    DEC-04-B: "The proposal “Change phases with the motor energized.” is not supported by this record.  Review: Drawing-to-installation comparison confirms two phases interchanged during replacement. The applied sequence is reversed relative to design. Reconfiguration is planned only after isolation under the authorized procedure; PE is not an interchangeable phase. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Reverse protective earth PE.” is not supported by this record.  Review: Drawing-to-installation comparison confirms two phases interchanged during replacement. The applied sequence is reversed relative to design. Reconfiguration is planned only after isolation under the authorized procedure; PE is not an interchangeable phase. Choose again without carrying out the proposed option."
+    DEC-05-A: "The proposal “Checking no-load rotation without protection is sufficient.” is not supported by this record.  Review: Terminals have been restored to the drawing in the scenario's authorized intervention. This correction alone does not establish recovery: direction, load, guards, interlocks and documentation still require an authorized test. Choose again without carrying out the proposed option."
+    DEC-05-C: "The proposal “Keep reverse rotation because the motor operates.” is not supported by this record.  Review: Terminals have been restored to the drawing in the scenario's authorized intervention. This correction alone does not establish recovery: direction, load, guards, interlocks and documentation still require an authorized test. Choose again without carrying out the proposed option."
+  visual:
+    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
+  assets: {}
+  completion:
+    title: "Technical debrief"
+    summary: "two phases were interchanged at the motor terminals during replacement. Actual correction requires lockout, competent personnel and verification of mechanical risks; no energized operation is proposed. The simulated case's authorized test confirms intended direction, load, guards, interlocks and documentation. Operation without protection is not allowed, and reverse rotation is not accepted merely because the motor runs."
+    process:
+      - "Confirm drive type and connection documentation."
+      - "With three-phase direct-on-line starting, interchanging two phases can reverse rotation."
+      - "The schematic and actual connection show L1/L2 interchanged."
+      - "Reconfigure terminals to the drawing under an authorized procedure after isolation."
+      - "Verify direction, load, guards, interlocks and documentation in an authorized test."
+    lesson: "restore the sequence according to design. Notebook — reading path in Engineering Notes: article-014 (NB-EL-06): Single-phase and three-phase supplies; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-033 (NB-EL-25): Verification, recurrence and documentation"
+    avoided_errors:
+      - "Change PLC rotation direction without verifying the circuit."
+      - "Disable thermal protection."
+      - "Neutral always determines rotation."
+      - "Rotation depends only on the PLC."
+      - "The motor must have an internal fault."
+      - "Frequency must be 60 Hz."
+      - "Change phases with the motor energized."
+      - "Reverse protective earth PE."
+      - "Checking no-load rotation without protection is sufficient."
+      - "Keep reverse rotation because the motor operates."
+    industrial_value:
+      - "Traceable diagnosis without replacing components by elimination."
+      - "Verified recovery with protection retained."

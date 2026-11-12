@@ -1,0 +1,1234 @@
+{
+  "flows": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0031",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0032",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0033",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0034",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0035",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0036",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0037",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0038",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0039",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "EE-0040",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0031",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0032",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0033",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0034",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0035",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0036",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0037",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0038",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0039",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "EE-0040",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0031",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0032",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0033",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0034",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0035",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0036",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0037",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0038",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0039",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "EE-0040",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0031",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0032",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0033",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0034",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0035",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0036",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0037",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0038",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0039",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "EE-0040",
+      "stages": 5,
+      "wrong_retries": 5,
+      "completed": true,
+      "language_switch_in_session": true
+    }
+  ],
+  "maps": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "markers": 10,
+      "ratio": 1.776871210833475,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "markers": 10,
+      "ratio": 1.776871210833475,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "markers": 10,
+      "ratio": 1.7768803634528016,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "markers": 10,
+      "ratio": 1.7768803634528016,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    },
+    {
+      "width": 1280,
+      "locale": "es",
+      "markers": 10,
+      "ratio": 1.776871210833475,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "markers": 10,
+      "ratio": 1.776871210833475,
+      "circular_overlaps": [],
+      "keyboard": true,
+      "centers_hit_tested": true
+    }
+  ],
+  "theory": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "sections": 5,
+      "switch_preserves_section": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "sections": 5,
+      "switch_preserves_section": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "sections": 5,
+      "switch_preserves_section": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "sections": 5,
+      "switch_preserves_section": true
+    },
+    {
+      "width": 1280,
+      "locale": "es",
+      "sections": 5,
+      "switch_preserves_section": true
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "sections": 5,
+      "switch_preserves_section": true
+    }
+  ],
+  "notebook": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-009",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-010",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-011",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-012",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-013",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-014",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-015",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-016",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-017",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-018",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-019",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-020",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-021",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-022",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-023",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-024",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-025",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-026",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-027",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-028",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-029",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-030",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-031",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-032",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "es",
+      "id": "article-033",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-009",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-010",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-011",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-012",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-013",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-014",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-015",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-016",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-017",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-018",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-019",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-020",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-021",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-022",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-023",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-024",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-025",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-026",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-027",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-028",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-029",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-030",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-031",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-032",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "id": "article-033",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-009",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-010",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-011",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-012",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-013",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-014",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-015",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-016",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-017",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-018",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-019",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-020",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-021",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-022",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-023",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-024",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-025",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-026",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-027",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-028",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-029",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-030",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-031",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-032",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "id": "article-033",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-009",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-010",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-011",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-012",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-013",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-014",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-015",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-016",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-017",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-018",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-019",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-020",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-021",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-022",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-023",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-024",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-025",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-026",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-027",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-028",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-029",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-030",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-031",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-032",
+      "full_text": true,
+      "focus_return": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "id": "article-033",
+      "full_text": true,
+      "focus_return": true
+    }
+  ],
+  "console_errors": [],
+  "network_errors": [],
+  "screenshots": [
+    "map-1440-es.png",
+    "debrief-1440-EE-0031.png",
+    "debrief-1440-EE-0034.png",
+    "debrief-1440-EE-0040.png",
+    "map-1440-en.png",
+    "map-390-es.png",
+    "debrief-390-EE-0031.png",
+    "debrief-390-EE-0034.png",
+    "debrief-390-EE-0040.png",
+    "map-390-en.png",
+    "map-1280-es.png",
+    "map-1280-en.png",
+    "notebook-1440-es.png",
+    "notebook-1440-en.png",
+    "notebook-390-es.png",
+    "notebook-390-en.png"
+  ],
+  "locale_popover_observations": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "preserved": false
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "preserved": false
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "preserved": false
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "preserved": false
+    },
+    {
+      "width": 1280,
+      "locale": "es",
+      "preserved": false
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "preserved": false
+    }
+  ],
+  "persistence": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "progress": "PROGRESO DEL ENTORNO\n\nTeoría 5 / 5 · Experiences completadas 10 / 10 · Experiences dominadas 0 / 10"
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "progress": "ENVIRONMENT PROGRESS\n\nTheory 5 / 5 · Experiences completed 10 / 10 · Experiences mastered 0 / 10"
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "progress": "PROGRESO DEL ENTORNO\n\nTeoría 5 / 5 · Experiences completadas 10 / 10 · Experiences dominadas 0 / 10"
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "progress": "ENVIRONMENT PROGRESS\n\nTheory 5 / 5 · Experiences completed 10 / 10 · Experiences mastered 0 / 10"
+    }
+  ]
+}

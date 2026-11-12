@@ -1,0 +1,28 @@
+locale: "en"
+media: []
+sections:
+  -
+    id: "TH-01-NOTEBOOK-READING-PATH"
+    title: "Block 01 — Electrical fundamentals and measurement"
+    body: "Interpret quantities and select instruments with judgement.\n\nNotebook reading path: open Engineering Notes and select category “Electrical fundamentals and measurement”. Follow this reading order; complete self-checks and answers are in each entry. Preview: content and translation await technical review.\n\nNB-EL-01 → article-009: Voltage, current, resistance and a closed circuit\nNB-EL-02 → article-010: AC, DC, frequency and RMS values\nNB-EL-03 → article-011: Power, energy and industrial loads\nNB-EL-04 → article-012: Multimeters, clamps and interpreting measurements\nNB-EL-05 → article-013: Measurement quality and differential diagnosis"
+    media_ids: []
+  -
+    id: "TH-02-NOTEBOOK-READING-PATH"
+    title: "Block 02 — Electrical distribution and protection"
+    body: "Follow energy from supply to load and understand what each device protects.\n\nNotebook reading path: open Engineering Notes and select category “Electrical distribution and protection”. Follow this reading order; complete self-checks and answers are in each entry. Preview: content and translation await technical review.\n\nNB-EL-06 → article-014: Single-phase and three-phase supplies\nNB-EL-07 → article-015: Industrial 24 VDC power supplies\nNB-EL-08 → article-016: Fuses, circuit breakers and overcurrent protection\nNB-EL-09 → article-017: RCDs, insulation and PE\nNB-EL-10 → article-018: Selectivity, segregation and distribution"
+    media_ids: []
+  -
+    id: "TH-03-NOTEBOOK-READING-PATH"
+    title: "Block 03 — Control and power circuits"
+    body: "Explain how a command controls an actuator without confusing control and power.\n\nNotebook reading path: open Engineering Notes and select category “Control and power circuits”. Follow this reading order; complete self-checks and answers are in each entry. Preview: content and translation await technical review.\n\nNB-EL-11 → article-019: Control versus power\nNB-EL-12 → article-020: Contactors, coils and auxiliaries\nNB-EL-13 → article-021: Pushbuttons, seal-in and interlocks\nNB-EL-14 → article-022: Three-phase motors, nameplates and overload relays\nNB-EL-15 → article-023: Relays, timers and PLC outputs"
+    media_ids: []
+  -
+    id: "TH-04-NOTEBOOK-READING-PATH"
+    title: "Block 04 — Reading schematics and wiring"
+    body: "Locate components and measurement points from documentation.\n\nNotebook reading path: open Engineering Notes and select category “Reading schematics and wiring”. Follow this reading order; complete self-checks and answers are in each entry. Preview: content and translation await technical review.\n\nNB-EL-16 → article-024: Symbols and conventions\nNB-EL-17 → article-025: Designations and cross-references\nNB-EL-18 → article-026: Terminals, potentials and numbering\nNB-EL-19 → article-027: Reading control schematics\nNB-EL-20 → article-028: Traceability and revision control"
+    media_ids: []
+  -
+    id: "TH-05-NOTEBOOK-READING-PATH"
+    title: "Block 05 — Electrical diagnosis and safety"
+    body: "Construct discriminating checks and verify repair without compromising safety.\n\nNotebook reading path: open Engineering Notes and select category “Electrical diagnosis and safety”. Follow this reading order; complete self-checks and answers are in each entry. Preview: content and translation await technical review.\n\nNB-EL-21 → article-029: Diagnostic method\nNB-EL-22 → article-030: Isolation, lockout and proving absence of voltage\nNB-EL-23 → article-031: Diagnosis by comparison and under load\nNB-EL-24 → article-032: Insulation and leakage\nNB-EL-25 → article-033: Verification, recurrence and documentation"
+    media_ids: []

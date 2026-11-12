@@ -1,0 +1,119 @@
+editorial_id: "EXP-EL-01"
+canonical_id: "EXP-ELECTRICAL-SUPPLY-031"
+status: "pending_user_assets_and_technical_review"
+expected_asset_range:
+  - 6
+  - 7
+supplied_evidence_images: 0
+required_missing_minimum: 6
+optional_additional: 1
+notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+notebooks:
+  -
+    editorial_id: "NB-EL-01"
+    canonical_id: "article-009"
+  -
+    editorial_id: "NB-EL-04"
+    canonical_id: "article-012"
+  -
+    editorial_id: "NB-EL-07"
+    canonical_id: "article-015"
+  -
+    editorial_id: "NB-EL-21"
+    canonical_id: "article-029"
+  -
+    editorial_id: "NB-EL-23"
+    canonical_id: "article-031"
+families:
+  -
+    editorial_id: "E1"
+    purpose_es: "esquema PS1→F1 PLC / F2 actuadores"
+    purpose_en: "PS1→F1 PLC / F2 actuator schematic"
+    data_values_expected_es: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
+    earliest_disclosure: "incident"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E2"
+    purpose_es: "log de reinicios sincronizados"
+    purpose_en: "synchronized restart log"
+    data_values_expected_es: "El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque."
+    earliest_disclosure: "after D1 / before D2"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E3"
+    purpose_es: "curva PS1 24,2→17,8 V y pico 6,7 A"
+    purpose_en: "PS1 24.2→17.8 V curve and 6.7 A peak"
+    data_values_expected_es: "Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo. La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación."
+    earliest_disclosure: "split by acquisition: after D2 and D3; never show later findings early"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E4"
+    purpose_es: "curva post-corrección dentro de límites del diseño"
+    purpose_en: "post-correction curve within design limits"
+    data_values_expected_es: "En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
+    earliest_disclosure: "after D5 verification"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+slots:
+  -
+    proposed_id: "01-CONTEXT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/01-context.png"
+    stage_or_decision: "incident"
+    acceptance: "Context only; no electrical claims or root-cause clues."
+    status: "pending_not_registered"
+    expected_text_es: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
+  -
+    proposed_id: "02-CIRCUIT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/02-circuit.png"
+    stage_or_decision: "D1"
+    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
+    status: "pending_not_registered"
+    expected_text_es: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
+  -
+    proposed_id: "03-RECORD"
+    family: "E2"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/03-record.png"
+    stage_or_decision: "after D1"
+    acceptance: "Records supporting the next question, with no future findings."
+    status: "pending_not_registered"
+    expected_text_es: "El registro correlaciona los reinicios con la activación simultánea. PS1 registra 24,2 V sin actuación. Esta lectura solo describe el estado en reposo; aún falta comparar el arranque."
+  -
+    proposed_id: "04-COMPARISON"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/04-comparison.png"
+    stage_or_decision: "after D2"
+    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
+    status: "pending_not_registered"
+    expected_text_es: "Durante el pico se registran 17,8 V en los propios bornes de PS1; la tensión se recupera a 24,1 V al cesar la orden. Una caída medida en origen no se explica únicamente por el cable hasta el módulo."
+  -
+    proposed_id: "05-INSPECTION"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/05-inspection.png"
+    stage_or_decision: "after D3"
+    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
+    status: "pending_not_registered"
+    expected_text_es: "La rama PLC consume 1,2 A y la de actuadores tiene carga habitual de 2,0 A y pico documentado de 5,5 A. PS1 registra limitación de corriente durante la activación simultánea. La demanda total simulada en ese instante es 6,7 A frente a 5 A nominales; debe contrastarse con capacidad dinámica y especificación."
+  -
+    proposed_id: "06-VERIFICATION"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/06-verification.png"
+    stage_or_decision: "after D5"
+    acceptance: "Approved post-repair verification record; no invented thresholds or values."
+    status: "pending_not_registered"
+    expected_text_es: "En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
+  -
+    proposed_id: "07-SYNTHESIS"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-SUPPLY-031/07-synthesis.png"
+    stage_or_decision: "completion"
+    acceptance: "Optional final synthesis; does not establish recovery on its own."
+    status: "pending_not_registered"
+    expected_text_es: "En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
+risk_notes:
+  - "All energized readings are simulated or previously obtained by authorized personnel."
+  - "Confirm diagram against a verified netlist and source topology before registering any visual."

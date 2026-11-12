@@ -1,0 +1,128 @@
+locale: "es"
+translations:
+  title: "Falta una fase en el motor"
+  summary: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto. Preview textual; evidencias visuales y revisión técnica pendientes."
+  scenario:
+    initial_context: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico"
+    initiating_event: "Falta una fase en el motor"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Delimitar el síntoma"
+      situation: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpretar el primer registro"
+      situation: "En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-03-DIAGNOSIS:
+      title: "Contrastar hipótesis"
+      situation: "Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verificar la recuperación"
+      situation: "El polo L3 de KM2 no conduce y provoca pérdida de fase en potencia. Se requiere sustitución autorizada conforme al diseño y revisión de desgaste, terminales y coordinación. El diagnóstico no autoriza rearmar y producir sin verificar.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Registro didáctico simulado · contexto"
+      content: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+    EVID-01-RECORD:
+      source: "Registro didáctico simulado · D1"
+      content: "En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro."
+    EVID-02-RECORD:
+      source: "Registro didáctico simulado · D2"
+      content: "Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico."
+    EVID-03-RECORD:
+      source: "Registro didáctico simulado · D3"
+      content: "El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones."
+    EVID-04-RECORD:
+      source: "Registro didáctico simulado · D4"
+      content: "El polo L3 de KM2 no conduce y provoca pérdida de fase en potencia. Se requiere sustitución autorizada conforme al diseño y revisión de desgaste, terminales y coordinación. El diagnóstico no autoriza rearmar y producir sin verificar."
+    EVID-05-RECORD:
+      source: "Registro didáctico simulado · D5"
+      content: "El registro simulado posterior a sustitución autorizada de KM2 establece comprobación trifásica, arranque y protección conforme al procedimiento. Se revisa la causa del daño, incluidos desgaste, terminales y coordinación; la recuperación se apoya en esa verificación, no en el patrón idealizado inicial."
+  decisions:
+    DEC-01-A:
+      action: "Revisar distribución trifásica antes y después de protección y contactor."
+    DEC-01-B:
+      action: "Cambiar sentido de giro. Se propone invertir la secuencia como respuesta al zumbido, sin delimitar primero la alimentación trifásica ni comparar ambos lados de protección y KM2."
+    DEC-01-C:
+      action: "Desactivar relé térmico."
+    DEC-02-A:
+      action: "Alimentación trifásica aguas arriba es aproximadamente equilibrada."
+    DEC-02-B:
+      action: "L1 está necesariamente ausente. Se deduce una fase ausente en origen pese a disponer de tres lecturas entre fases próximas a 400 V en la condición de prueba controlada documentada."
+    DEC-02-C:
+      action: "Hay 230 V entre cada par de fases."
+    DEC-03-A:
+      action: "La anomalía se localiza aguas abajo de KM2 o en la medida/carga; investigar cada polo."
+    DEC-03-B:
+      action: "El transformador de cabecera está probado defectuoso. Se traslada el diagnóstico a cabecera sin explicar por qué el registro aguas arriba está equilibrado y la diferencia aparece al comparar aguas abajo."
+    DEC-03-C:
+      action: "No importa la diferencia antes/después."
+    DEC-04-A:
+      action: "Cambiar fusibles sin revisar. Se prioriza una sustitución por descarte y se deja sin interpretar el acta de ensayo aislado que identifica el estado de conducción del polo L3 de KM2."
+    DEC-04-B:
+      action: "El ensayo aislado confirma polo L3 abierto de KM2."
+    DEC-04-C:
+      action: "El PLC ha invertido dos fases."
+    DEC-05-A:
+      action: "Rearmar y producir. Se toma el rearme como cierre del caso, sin revisar el daño de KM2 ni comprobar alimentación trifásica, arranque y protección después de una intervención autorizada."
+    DEC-05-B:
+      action: "Cambiar motor directamente."
+    DEC-05-C:
+      action: "Sustitución autorizada KM2, revisión de causa de daño y comprobación trifásica/arranque/protección."
+  retry_feedback:
+    DEC-01-B: "La propuesta «Cambiar sentido de giro.» no está sustentada por este registro.  Revisa: El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-01-C: "La propuesta «Desactivar relé térmico.» no está sustentada por este registro.  Revisa: El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-B: "La propuesta «L1 está necesariamente ausente.» no está sustentada por este registro.  Revisa: En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-C: "La propuesta «Hay 230 V entre cada par de fases.» no está sustentada por este registro.  Revisa: En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-B: "La propuesta «El transformador de cabecera está probado defectuoso.» no está sustentada por este registro.  Revisa: Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-C: "La propuesta «No importa la diferencia antes/después.» no está sustentada por este registro.  Revisa: Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-A: "La propuesta «Cambiar fusibles sin revisar.» no está sustentada por este registro.  Revisa: El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-C: "La propuesta «El PLC ha invertido dos fases.» no está sustentada por este registro.  Revisa: El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-A: "La propuesta «Rearmar y producir.» no está sustentada por este registro.  Revisa: El polo L3 de KM2 no conduce y provoca pérdida de fase en potencia. Se requiere sustitución autorizada conforme al diseño y revisión de desgaste, terminales y coordinación. El diagnóstico no autoriza rearmar y producir sin verificar. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-B: "La propuesta «Cambiar motor directamente.» no está sustentada por este registro.  Revisa: El polo L3 de KM2 no conduce y provoca pérdida de fase en potencia. Se requiere sustitución autorizada conforme al diseño y revisión de desgaste, terminales y coordinación. El diagnóstico no autoriza rearmar y producir sin verificar. Vuelve a elegir sin ejecutar la opción propuesta."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+  assets: {}
+  completion:
+    title: "Debrief técnico"
+    summary: "polo L3 de KM2 no conduce, provocando pérdida de fase en el circuito de potencia. Advertencia: en motores conectados y con tensiones inducidas/retroalimentadas, las lecturas reales pueden diferir; el caso emplea modelo aislado idealizado y se basa en inspección de polo y comparación bajo procedimiento autorizado, no en el patrón de tensión como prueba única. El registro simulado posterior a sustitución autorizada de KM2 establece comprobación trifásica, arranque y protección conforme al procedimiento. Se revisa la causa del daño, incluidos desgaste, terminales y coordinación; la recuperación se apoya en esa verificación, no en el patrón idealizado inicial."
+    process:
+      - "Revisar distribución trifásica antes y después de protección y contactor."
+      - "Alimentación trifásica aguas arriba es aproximadamente equilibrada."
+      - "La anomalía se localiza aguas abajo de KM2 o en la medida/carga; investigar cada polo."
+      - "El ensayo aislado confirma polo L3 abierto de KM2."
+      - "Sustitución autorizada KM2, revisión de causa de daño y comprobación trifásica/arranque/protección."
+    lesson: "contactor conforme a diseño, investigar desgaste/terminales y coordinación. Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico"
+    avoided_errors:
+      - "Cambiar sentido de giro."
+      - "Desactivar relé térmico."
+      - "L1 está necesariamente ausente."
+      - "Hay 230 V entre cada par de fases."
+      - "El transformador de cabecera está probado defectuoso."
+      - "No importa la diferencia antes/después."
+      - "Cambiar fusibles sin revisar."
+      - "El PLC ha invertido dos fases."
+      - "Rearmar y producir."
+      - "Cambiar motor directamente."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."

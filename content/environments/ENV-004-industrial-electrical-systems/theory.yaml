@@ -1,0 +1,32 @@
+version: "1.0.0"
+default_locale: "es"
+supported_locales:
+  - "es"
+  - "en"
+media: []
+sections:
+  -
+    id: "TH-01-NOTEBOOK-READING-PATH"
+    title: "Bloque 01 — Fundamentos eléctricos y medición"
+    body: "Interpretar magnitudes y seleccionar instrumentos con criterio.\n\nItinerario Notebook: abre Engineering Notes y selecciona la categoría «Fundamentos eléctricos y medición». Conserva este orden de lectura; las comprobaciones y respuestas completas están en cada entrada. Preview: contenido y traducción pendientes de revisión técnica.\n\nNB-EL-01 → article-009: Tensión, corriente, resistencia y circuito cerrado\nNB-EL-02 → article-010: AC, DC, frecuencia y valores eficaces\nNB-EL-03 → article-011: Potencia, energía y cargas industriales\nNB-EL-04 → article-012: Multímetro, pinza y lectura de medidas\nNB-EL-05 → article-013: Calidad de la medida y diagnóstico diferencial"
+    media_ids: []
+  -
+    id: "TH-02-NOTEBOOK-READING-PATH"
+    title: "Bloque 02 — Distribución eléctrica y protecciones"
+    body: "Seguir la energía desde la alimentación hasta la carga y comprender qué protege cada dispositivo.\n\nItinerario Notebook: abre Engineering Notes y selecciona la categoría «Distribución eléctrica y protecciones». Conserva este orden de lectura; las comprobaciones y respuestas completas están en cada entrada. Preview: contenido y traducción pendientes de revisión técnica.\n\nNB-EL-06 → article-014: Alimentación monofásica y trifásica\nNB-EL-07 → article-015: Fuentes industriales de 24 VDC\nNB-EL-08 → article-016: Fusibles, magnetotérmicos y protección de sobreintensidad\nNB-EL-09 → article-017: Diferenciales, aislamiento y PE\nNB-EL-10 → article-018: Selectividad, separación y distribución"
+    media_ids: []
+  -
+    id: "TH-03-NOTEBOOK-READING-PATH"
+    title: "Bloque 03 — Circuitos de mando y potencia"
+    body: "Explicar cómo una orden gobierna un actuador sin confundir control y potencia.\n\nItinerario Notebook: abre Engineering Notes y selecciona la categoría «Circuitos de mando y potencia». Conserva este orden de lectura; las comprobaciones y respuestas completas están en cada entrada. Preview: contenido y traducción pendientes de revisión técnica.\n\nNB-EL-11 → article-019: Mando frente a potencia\nNB-EL-12 → article-020: Contactores, bobinas y auxiliares\nNB-EL-13 → article-021: Pulsadores, auto-mantenimiento y enclavamientos\nNB-EL-14 → article-022: Motores trifásicos, placa y relé de sobrecarga\nNB-EL-15 → article-023: Relés, temporizadores y salidas PLC"
+    media_ids: []
+  -
+    id: "TH-04-NOTEBOOK-READING-PATH"
+    title: "Bloque 04 — Interpretación de esquemas y cableado"
+    body: "Localizar componentes y puntos de medida a partir de documentación.\n\nItinerario Notebook: abre Engineering Notes y selecciona la categoría «Interpretación de esquemas y cableado». Conserva este orden de lectura; las comprobaciones y respuestas completas están en cada entrada. Preview: contenido y traducción pendientes de revisión técnica.\n\nNB-EL-16 → article-024: Símbolos y convenciones\nNB-EL-17 → article-025: Designación y referencias cruzadas\nNB-EL-18 → article-026: Borneros, potenciales y numeración\nNB-EL-19 → article-027: Lectura de esquemas de mando\nNB-EL-20 → article-028: Trazabilidad y control de revisiones"
+    media_ids: []
+  -
+    id: "TH-05-NOTEBOOK-READING-PATH"
+    title: "Bloque 05 — Diagnóstico eléctrico y seguridad"
+    body: "Construir pruebas discriminantes y verificar reparación sin comprometer seguridad.\n\nItinerario Notebook: abre Engineering Notes y selecciona la categoría «Diagnóstico eléctrico y seguridad». Conserva este orden de lectura; las comprobaciones y respuestas completas están en cada entrada. Preview: contenido y traducción pendientes de revisión técnica.\n\nNB-EL-21 → article-029: Método de diagnóstico\nNB-EL-22 → article-030: Consignación y comprobación de ausencia de tensión\nNB-EL-23 → article-031: Diagnóstico por comparación y bajo carga\nNB-EL-24 → article-032: Aislamiento y fugas\nNB-EL-25 → article-033: Verificación, recurrencia y documentación"
+    media_ids: []

@@ -1,0 +1,74 @@
+contract_version: "2.0.0"
+environment:
+  id: "ENV-004"
+  slug: "industrial-electrical-systems"
+  title: "Industrial Electrical Systems"
+  lifecycle: "preview"
+  version: "1.0"
+  capacity: 10
+  presentation:
+    title:
+      es: "Sistemas eléctricos industriales"
+      en: "Industrial Electrical Systems"
+    description:
+      es: "Diagnóstico de alimentación, mando, motores, protecciones y cableado mediante casos simulados. Preview textual con imágenes de evidencia y revisión técnica pendientes."
+      en: "Diagnosis of supplies, control, motors, protection and wiring through simulated cases. Text preview with evidence images and technical review pending."
+    skills:
+      es:
+        - "Fundamentos eléctricos y medición"
+        - "Distribución eléctrica y protecciones"
+        - "Circuitos de mando y potencia"
+        - "Interpretación de esquemas y cableado"
+        - "Diagnóstico eléctrico y seguridad"
+      en:
+        - "Electrical fundamentals and measurement"
+        - "Electrical distribution and protection"
+        - "Control and power circuits"
+        - "Reading schematics and wiring"
+        - "Electrical diagnosis and safety"
+visual:
+  background: "media/ENV-004-industrial-electrical-systems.png"
+  width: 1672
+  height: 941
+theory: "theory.yaml"
+hotspots:
+  -
+    experience_editorial_id: "EE-0031"
+    x: 65.2
+    y: 30.5
+  -
+    experience_editorial_id: "EE-0032"
+    x: 28.3
+    y: 57.3
+  -
+    experience_editorial_id: "EE-0033"
+    x: 87.7
+    y: 66.3
+  -
+    experience_editorial_id: "EE-0034"
+    x: 26.8
+    y: 19.7
+  -
+    experience_editorial_id: "EE-0035"
+    x: 40.4
+    y: 31.0
+  -
+    experience_editorial_id: "EE-0036"
+    x: 39.0
+    y: 81.7
+  -
+    experience_editorial_id: "EE-0037"
+    x: 55.5
+    y: 56.4
+  -
+    experience_editorial_id: "EE-0038"
+    x: 93.4
+    y: 56.0
+  -
+    experience_editorial_id: "EE-0039"
+    x: 65.0
+    y: 80.3
+  -
+    experience_editorial_id: "EE-0040"
+    x: 27.1
+    y: 81.8

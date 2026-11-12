@@ -1,0 +1,128 @@
+locale: "es"
+translations:
+  title: "Caída de tensión por conexión defectuosa"
+  summary: "El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo. Preview textual; evidencias visuales y revisión técnica pendientes."
+  scenario:
+    initial_context: "El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    initiating_event: "Caída de tensión por conexión defectuosa"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Delimitar el síntoma"
+      situation: "El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpretar el primer registro"
+      situation: "Durante orden PS2 mantiene 24,1 V. En Y4 se registran 23,9 V sin carga y 16,9 V bajo carga de 1,4 A. Una fuente estable y caída en la carga dirigen el diagnóstico a distribución, no a caída en origen.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-03-DIAGNOSIS:
+      title: "Contrastar hipótesis"
+      situation: "El registro autorizado localiza una caída de 6,8 V a través de X4:12 bajo carga. Es anómala para una conexión prevista de baja resistencia y no prueba error de programa. A 1,4 A equivale aproximadamente a 4,9 Ω en ese estado; no se supone resistencia constante con temperatura.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La inspección con circuito aislado identifica apriete fuera de especificación y daño térmico en X4:12. La caída localizada y el acta confirman resistencia de contacto elevada. Se debe reparar según especificación sin retirar fusible ni subir fuente a 31 V.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verificar la recuperación"
+      situation: "La conexión deteriorada requiere reparación y revisión de la causa de deterioro. Una lectura en vacío o una sustitución de Y4 sin prueba no verifica la recuperación. Se conserva protección y se prepara comparación bajo carga.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Registro didáctico simulado · contexto"
+      content: "El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo."
+    EVID-01-RECORD:
+      source: "Registro didáctico simulado · D1"
+      content: "Durante orden PS2 mantiene 24,1 V. En Y4 se registran 23,9 V sin carga y 16,9 V bajo carga de 1,4 A. Una fuente estable y caída en la carga dirigen el diagnóstico a distribución, no a caída en origen."
+    EVID-02-RECORD:
+      source: "Registro didáctico simulado · D2"
+      content: "El registro autorizado localiza una caída de 6,8 V a través de X4:12 bajo carga. Es anómala para una conexión prevista de baja resistencia y no prueba error de programa. A 1,4 A equivale aproximadamente a 4,9 Ω en ese estado; no se supone resistencia constante con temperatura."
+    EVID-03-RECORD:
+      source: "Registro didáctico simulado · D3"
+      content: "La inspección con circuito aislado identifica apriete fuera de especificación y daño térmico en X4:12. La caída localizada y el acta confirman resistencia de contacto elevada. Se debe reparar según especificación sin retirar fusible ni subir fuente a 31 V."
+    EVID-04-RECORD:
+      source: "Registro didáctico simulado · D4"
+      content: "La conexión deteriorada requiere reparación y revisión de la causa de deterioro. Una lectura en vacío o una sustitución de Y4 sin prueba no verifica la recuperación. Se conserva protección y se prepara comparación bajo carga."
+    EVID-05-RECORD:
+      source: "Registro didáctico simulado · D5"
+      content: "Tras reparar la conexión y revisar su causa en el caso simulado, se verifica caída de tensión bajo carga, registro de tensión estable, calentamiento y estado del borne según especificación. No se inventa una tolerancia numérica ni se cierra con solo 24 V en vacío."
+  decisions:
+    DEC-01-A:
+      action: "Comparar tensión de fuente y carga en el mismo estado de funcionamiento."
+    DEC-01-B:
+      action: "Medir solo en vacío. Se propone usar la lectura de reposo como criterio principal sin contrastar PS2 y Y4 durante la misma orden ni investigar el cambio que aparece al circular corriente."
+    DEC-01-C:
+      action: "Cambiar PLC."
+    DEC-02-A:
+      action: "PS2=24,1 V y Y4=16,9 V bajo carga indican caída en distribución."
+    DEC-02-B:
+      action: "La fuente cae a 16,9 V. Se atribuye a la propia fuente la lectura del extremo de carga, sin distinguir los puntos de registro ni mantener la comparación en el mismo estado de funcionamiento."
+    DEC-02-C:
+      action: "Y4 recibe 24,1 V."
+    DEC-03-A:
+      action: "6,8 V a través de X4:12 bajo carga es anómalo para una conexión prevista de baja resistencia."
+    DEC-03-B:
+      action: "Es la caída normal de cualquier borne. Se considera esa caída una propiedad normal de cualquier terminal sin contrastar la función de una conexión de baja resistencia y el calentamiento del punto localizado."
+    DEC-03-C:
+      action: "Prueba error de programa."
+    DEC-04-A:
+      action: "Eliminar fusible para reducir resistencia. Se propone reducir impedancia retirando protección en lugar de corregir el apriete fuera de especificación y el daño térmico que documenta la inspección aislada."
+    DEC-04-B:
+      action: "Inspección aislada confirma deterioro de terminal; reparar según especificación."
+    DEC-04-C:
+      action: "Subir salida de fuente a 31 V para compensar."
+    DEC-05-A:
+      action: "Verificar caída de tensión bajo carga tras reparar y revisar calentamiento y estado del borne."
+    DEC-05-B:
+      action: "Cerrar caso al ver 24 V en vacío. Se toma la tensión sin carga como demostración de recuperación, sin registrar la caída bajo carga ni revisar calentamiento y estado de la conexión reparada."
+    DEC-05-C:
+      action: "Sustituir Y4 sin prueba."
+  retry_feedback:
+    DEC-01-B: "La propuesta «Medir solo en vacío.» no está sustentada por este registro.  Revisa: El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-01-C: "La propuesta «Cambiar PLC.» no está sustentada por este registro.  Revisa: El actuador 24 VDC -Y4 funciona en vacío pero falla al accionar. Se comparan fuente PS2, distribución X4 y carga Y4 en el mismo estado; las lecturas aportadas no autorizan medidas en vivo. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-B: "La propuesta «La fuente cae a 16,9 V.» no está sustentada por este registro.  Revisa: Durante orden PS2 mantiene 24,1 V. En Y4 se registran 23,9 V sin carga y 16,9 V bajo carga de 1,4 A. Una fuente estable y caída en la carga dirigen el diagnóstico a distribución, no a caída en origen. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-C: "La propuesta «Y4 recibe 24,1 V.» no está sustentada por este registro.  Revisa: Durante orden PS2 mantiene 24,1 V. En Y4 se registran 23,9 V sin carga y 16,9 V bajo carga de 1,4 A. Una fuente estable y caída en la carga dirigen el diagnóstico a distribución, no a caída en origen. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-B: "La propuesta «Es la caída normal de cualquier borne.» no está sustentada por este registro.  Revisa: El registro autorizado localiza una caída de 6,8 V a través de X4:12 bajo carga. Es anómala para una conexión prevista de baja resistencia y no prueba error de programa. A 1,4 A equivale aproximadamente a 4,9 Ω en ese estado; no se supone resistencia constante con temperatura. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-C: "La propuesta «Prueba error de programa.» no está sustentada por este registro.  Revisa: El registro autorizado localiza una caída de 6,8 V a través de X4:12 bajo carga. Es anómala para una conexión prevista de baja resistencia y no prueba error de programa. A 1,4 A equivale aproximadamente a 4,9 Ω en ese estado; no se supone resistencia constante con temperatura. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-A: "La propuesta «Eliminar fusible para reducir resistencia.» no está sustentada por este registro.  Revisa: La inspección con circuito aislado identifica apriete fuera de especificación y daño térmico en X4:12. La caída localizada y el acta confirman resistencia de contacto elevada. Se debe reparar según especificación sin retirar fusible ni subir fuente a 31 V. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-C: "La propuesta «Subir salida de fuente a 31 V para compensar.» no está sustentada por este registro.  Revisa: La inspección con circuito aislado identifica apriete fuera de especificación y daño térmico en X4:12. La caída localizada y el acta confirman resistencia de contacto elevada. Se debe reparar según especificación sin retirar fusible ni subir fuente a 31 V. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-B: "La propuesta «Cerrar caso al ver 24 V en vacío.» no está sustentada por este registro.  Revisa: La conexión deteriorada requiere reparación y revisión de la causa de deterioro. Una lectura en vacío o una sustitución de Y4 sin prueba no verifica la recuperación. Se conserva protección y se prepara comparación bajo carga. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-C: "La propuesta «Sustituir Y4 sin prueba.» no está sustentada por este registro.  Revisa: La conexión deteriorada requiere reparación y revisión de la causa de deterioro. Una lectura en vacío o una sustitución de Y4 sin prueba no verifica la recuperación. Se conserva protección y se prepara comparación bajo carga. Vuelve a elegir sin ejecutar la opción propuesta."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+  assets: {}
+  completion:
+    title: "Debrief técnico"
+    summary: "resistencia de contacto elevada en X4:12; a 1,4 A, una caída de 6,8 V corresponde a resistencia equivalente aproximada de 4,9 Ω en ese estado. No se presume resistencia constante con temperatura. Tras reparar la conexión y revisar su causa en el caso simulado, se verifica caída de tensión bajo carga, registro de tensión estable, calentamiento y estado del borne según especificación. No se inventa una tolerancia numérica ni se cierra con solo 24 V en vacío."
+    process:
+      - "Comparar tensión de fuente y carga en el mismo estado de funcionamiento."
+      - "PS2=24,1 V y Y4=16,9 V bajo carga indican caída en distribución."
+      - "6,8 V a través de X4:12 bajo carga es anómalo para una conexión prevista de baja resistencia."
+      - "Inspección aislada confirma deterioro de terminal; reparar según especificación."
+      - "Verificar caída de tensión bajo carga tras reparar y revisar calentamiento y estado del borne."
+    lesson: "reparar conexión y revisar causa de deterioro. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
+    avoided_errors:
+      - "Medir solo en vacío."
+      - "Cambiar PLC."
+      - "La fuente cae a 16,9 V."
+      - "Y4 recibe 24,1 V."
+      - "Es la caída normal de cualquier borne."
+      - "Prueba error de programa."
+      - "Eliminar fusible para reducir resistencia."
+      - "Subir salida de fuente a 31 V para compensar."
+      - "Cerrar caso al ver 24 V en vacío."
+      - "Sustituir Y4 sin prueba."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."

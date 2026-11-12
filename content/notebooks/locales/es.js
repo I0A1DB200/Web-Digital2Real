@@ -245,3 +245,422 @@ export const translations = {
     }
   }
 };
+
+// ENV-004 presentation; technical model and permanent section IDs remain canonical.
+Object.assign(translations, {
+  "article-009": {
+    "title": "Tensión, corriente, resistencia y circuito cerrado",
+    "kicker": "Sistemas eléctricos · Bloque 01 · Revisión técnica pendiente",
+    "excerpt": "La tensión es la diferencia de potencial entre dos puntos (V); se mide entre dos puntos.",
+    "categories": [
+      "Fundamentos eléctricos y medición"
+    ],
+    "sections": {
+      "s01": "La tensión es la diferencia de potencial entre dos puntos (V); se mide entre dos puntos. La corriente es el flujo de carga eléctrica (A); requiere un camino cerrado y se mide en serie o mediante una pinza compatible. La resistencia representa la oposición al paso de corriente (Ω). La ley de Ohm, para un elemento óhmico y condiciones definidas, es U = R × I. No describe por sí sola cargas no lineales ni el comportamiento transitorio de motores. Una bobina, un convertidor y un motor no deben tratarse como resistencias fijas.",
+      "s02": "En un circuito de mando 24 VDC, tener 24 V respecto a 0 V en un punto no demuestra que una carga esté alimentada: hay que considerar la referencia, el retorno y la tensión entre sus dos bornes. Un conductor de retorno interrumpido puede dejar una lectura aparentemente correcta en un borne y una carga sin funcionar. El multímetro de alta impedancia también puede mostrar tensiones fantasma por acoplamiento; una lectura aislada no confirma capacidad de suministro.",
+      "s03": "Ejemplo resuelto: una resistencia de 240 Ω conectada a 24 VDC ideales consume I=24/240=0,10 A y disipa P=U×I=2,4 W. En diseño real se comprueba potencia nominal, tolerancias, temperatura y protección.",
+      "s04": "Comprobación: ¿Qué mide un voltímetro conectado entre A1 y A2 de una bobina? A) Corriente de bobina; B) diferencia de potencial aplicada a la bobina; C) resistencia interna. Correcta B. A confunde magnitudes; C solo se determina con procedimiento de resistencia, circuito aislado.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-010": {
+    "title": "AC, DC, frecuencia y valores eficaces",
+    "kicker": "Sistemas eléctricos · Bloque 01 · Revisión técnica pendiente",
+    "excerpt": "En DC la polaridad se mantiene en régimen normal; las fuentes industriales de 24 VDC alimentan PLC, sensores y bobinas adecuadas.",
+    "categories": [
+      "Fundamentos eléctricos y medición"
+    ],
+    "sections": {
+      "s01": "En DC la polaridad se mantiene en régimen normal; las fuentes industriales de 24 VDC alimentan PLC, sensores y bobinas adecuadas. En AC la polaridad alterna periódicamente; la red de 50 Hz completa 50 ciclos por segundo. Las tensiones de red indicadas habitualmente son valores eficaces (RMS), no valores de pico. En una onda senoidal ideal U_pico = U_RMS × √2; una red de 230 VAC tiene aproximadamente 325 V de pico respecto a la referencia correspondiente. Los instrumentos deben ser aptos para forma de onda, frecuencia, categoría de medida y entorno.",
+      "s02": "No se debe asumir que cualquier multímetro en modo AC mide correctamente señales distorsionadas o PWM. En un variador, la salida hacia el motor exige procedimientos e instrumentos específicos del fabricante; no extrapolar las mediciones de red.",
+      "s03": "Comprobación: una bobina rotulada 24 VDC puede conectarse a 24 VAC porque ambas cifras son 24. A) Sí; B) No, el tipo de tensión y la especificación importan. Correcta B.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-011": {
+    "title": "Potencia, energía y cargas industriales",
+    "kicker": "Sistemas eléctricos · Bloque 01 · Revisión técnica pendiente",
+    "excerpt": "En DC ideal P=U×I (W).",
+    "categories": [
+      "Fundamentos eléctricos y medición"
+    ],
+    "sections": {
+      "s01": "En DC ideal P=U×I (W). La energía consumida se expresa en Wh o kWh: E=P×t cuando la potencia es constante. En AC monofásica sinusoidal P=U×I×cosφ; en trifásica equilibrada sinusoidal P=√3×U_LL×I_L×cosφ. Estas expresiones no sustituyen un análisis de armónicos o desequilibrio. Un motor absorbe corriente de arranque superior a la nominal según tecnología y método de arranque. El valor de placa, la eficiencia, el factor de potencia, la carga y la protección condicionan el diagnóstico.",
+      "s02": "Ejemplo resuelto: una carga DC de 48 W a 24 V requiere idealmente 2 A. Una fuente de 2 A nominales podría ser insuficiente si hay picos de arranque, derating o cargas adicionales; el cálculo no autoriza su selección sin márgenes.",
+      "s03": "Comprobación: dos motores con igual potencia mecánica pueden tener corrientes diferentes. Verdadero por rendimiento, factor de potencia, tensión y diseño.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-012": {
+    "title": "Multímetro, pinza y lectura de medidas",
+    "kicker": "Sistemas eléctricos · Bloque 01 · Revisión técnica pendiente",
+    "excerpt": "El voltímetro se conecta en paralelo; un amperímetro convencional requiere configuración en serie y protección apropiada, mientras que una pinza compatible permite medir corriente sin abrir el circuito.",
+    "categories": [
+      "Fundamentos eléctricos y medición"
+    ],
+    "sections": {
+      "s01": "El voltímetro se conecta en paralelo; un amperímetro convencional requiere configuración en serie y protección apropiada, mientras que una pinza compatible permite medir corriente sin abrir el circuito. La medición de resistencia y continuidad se realiza con el circuito aislado, sin tensión y verificado; las ramas paralelas pueden alterar el resultado. El zumbador de continuidad solo confirma un umbral del instrumento: no garantiza que una conexión soporte corriente nominal. La medida de caída de tensión bajo carga puede revelar resistencia de contacto que no aparece en una prueba de continuidad.",
+      "s02": "Antes de confiar en una lectura se revisan modo AC/DC, rango, puntas, conectores, categoría CAT, estado del instrumento, referencia de medida y condiciones del circuito. Las mediciones energizadas solo pueden ejecutarlas profesionales autorizados con evaluación de riesgo y método aprobado. En estas prácticas el alumno interpreta lecturas proporcionadas.",
+      "s03": "Ejemplo: un conductor presenta 0,3 Ω con circuito aislado; sin conocer longitud, sección, contactos y exactitud del instrumento, el dato no prueba por sí solo un defecto.",
+      "s04": "Comprobación: ¿puede medirse continuidad con la fuente encendida? No. El modo ohmímetro inyecta su propia señal y una tensión externa puede dañar equipo o causar riesgo.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-013": {
+    "title": "Calidad de la medida y diagnóstico diferencial",
+    "kicker": "Sistemas eléctricos · Bloque 01 · Revisión técnica pendiente",
+    "excerpt": "Una medida útil debe distinguir hipótesis.",
+    "categories": [
+      "Fundamentos eléctricos y medición"
+    ],
+    "sections": {
+      "s01": "Una medida útil debe distinguir hipótesis. Registrar qué puntos, en qué estado, con qué referencia y cuándo evita conclusiones erróneas. Diferenciar medición en vacío y bajo carga, valores instantáneos y tendencias, tensión entre conductores y respecto a tierra. Los diagramas deben mostrar el punto de prueba. La resolución y la exactitud no son sinónimos. Una lectura de 24,0 V puede ser compatible con una caída intermitente no capturada; correlacionar con eventos y registros.",
+      "s02": "Comprobación: una fuente indica 24,1 V sin carga y 18,7 V durante el arranque. ¿Qué dato discrimina mejor el fallo? La caída bajo carga, siempre contrastando demanda, cableado y límites de la fuente.",
+      "s03": "Resumen del bloque: identificar magnitud, referencia, estado de carga y límites de la medida antes de diagnosticar.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-014": {
+    "title": "Alimentación monofásica y trifásica",
+    "kicker": "Sistemas eléctricos · Bloque 02 · Revisión técnica pendiente",
+    "excerpt": "Una distribución trifásica dispone de tres conductores de fase; según sistema puede incluir neutro y conductor de protección PE.",
+    "categories": [
+      "Distribución eléctrica y protecciones"
+    ],
+    "sections": {
+      "s01": "Una distribución trifásica dispone de tres conductores de fase; según sistema puede incluir neutro y conductor de protección PE. En una red típica europea 400/230 V, 400 V es tensión entre fases y 230 V entre fase y neutro, pero los valores concretos deben leerse en el esquema y la placa. PE no es neutro y no debe emplearse como retorno funcional. La continuidad y configuración de PE son cuestiones de seguridad que exigen verificación reglamentaria.",
+      "s02": "Un motor trifásico puede seguir girando con pérdida de fase en determinadas circunstancias, con par reducido, sobrecorriente y riesgo térmico. No debe darse por seguro que siempre se detendrá inmediatamente. La detección requiere protecciones adecuadas y análisis del circuito.",
+      "s03": "Comprobación: ¿400 V entre L1-L2 significa 400 V entre L1-N? No.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-015": {
+    "title": "Fuentes industriales de 24 VDC",
+    "kicker": "Sistemas eléctricos · Bloque 02 · Revisión técnica pendiente",
+    "excerpt": "Una fuente convierte una entrada admisible (por ejemplo, 230 VAC) en una salida DC regulada.",
+    "categories": [
+      "Distribución eléctrica y protecciones"
+    ],
+    "sections": {
+      "s01": "Una fuente convierte una entrada admisible (por ejemplo, 230 VAC) en una salida DC regulada. Se verifican tensión nominal, corriente máxima, curvas de sobrecarga, temperatura, derating, rizado, selectividad y distribución por ramas. Los bornes +24V y 0V no equivalen automáticamente a PE. Algunos sistemas referencian 0 V a tierra por diseño; no debe suponerse sin documentación.",
+      "s02": "Las fuentes pueden limitar corriente, reducir tensión o desconectar ante sobrecarga. Una caída en un ramal también puede deberse a conductor, borne, fusible electrónico o retorno. El diagnóstico compara lectura de salida de fuente con lectura en la carga y condición de consumo.",
+      "s03": "Comprobación: si hay 24 V en la salida de fuente y 18 V en la carga, ¿es necesariamente defectuosa la fuente? No; revisar distribución y caída en conductores/terminales.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-016": {
+    "title": "Fusibles, magnetotérmicos y protección de sobreintensidad",
+    "kicker": "Sistemas eléctricos · Bloque 02 · Revisión técnica pendiente",
+    "excerpt": "El fusible interrumpe al fundirse su elemento; el interruptor automático abre mediante mecanismos de disparo definidos.",
+    "categories": [
+      "Distribución eléctrica y protecciones"
+    ],
+    "sections": {
+      "s01": "El fusible interrumpe al fundirse su elemento; el interruptor automático abre mediante mecanismos de disparo definidos. La selección depende de tensión, corriente, poder de corte, curva, energía pasante, sección de conductor, corriente de cortocircuito y coordinación. Una protección disparada es un síntoma, no la causa raíz. No sustituirla por un calibre superior para «evitar disparos». Antes de rearmar se evalúa por qué actuó y se verifica el estado de la instalación según procedimiento autorizado.",
+      "s02": "Distinguir sobrecarga (corriente excesiva sostenida) de cortocircuito (trayectoria de impedancia muy baja y corriente elevada). El tiempo de disparo y los registros pueden ayudar, pero no siempre identifican inequívocamente la causa.",
+      "s03": "Comprobación: aumentar de 2 A a 10 A un fusible que dispara repetidamente, sin revisar conductores ni carga, es una corrección válida. Falso.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-017": {
+    "title": "Diferenciales, aislamiento y PE",
+    "kicker": "Sistemas eléctricos · Bloque 02 · Revisión técnica pendiente",
+    "excerpt": "Un dispositivo diferencial (RCD) compara las corrientes que atraviesan sus conductores activos y actúa si el desequilibrio supera sus condiciones de disparo.",
+    "categories": [
+      "Distribución eléctrica y protecciones"
+    ],
+    "sections": {
+      "s01": "Un dispositivo diferencial (RCD) compara las corrientes que atraviesan sus conductores activos y actúa si el desequilibrio supera sus condiciones de disparo. No sustituye por sí solo la protección de sobreintensidad salvo equipo combinado. Un fallo de aislamiento puede producir corriente de fuga, pero también hay fugas funcionales y transitorios; la interpretación depende del equipo, tipo de RCD y arquitectura. PE ofrece un camino de protección según el sistema de puesta a tierra; su ausencia no se compensa con un RCD.",
+      "s02": "Una prueba de aislamiento exige circuito desenergizado, electrónica sensible desconectada o protegida según fabricante, tensión de prueba apropiada y personal competente. En las EXP se entregan resultados de ensayos ya realizados por personal autorizado.",
+      "s03": "Comprobación: si dispara un diferencial, ¿es seguro concluir que existe cortocircuito fase-neutro? No.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-018": {
+    "title": "Selectividad, separación y distribución",
+    "kicker": "Sistemas eléctricos · Bloque 02 · Revisión técnica pendiente",
+    "excerpt": "El cuadro debe permitir identificar alimentación principal, protecciones por rama, fuentes, distribución 24 V, borneros y cargas.",
+    "categories": [
+      "Distribución eléctrica y protecciones"
+    ],
+    "sections": {
+      "s01": "El cuadro debe permitir identificar alimentación principal, protecciones por rama, fuentes, distribución 24 V, borneros y cargas. La selectividad busca que ante una falta actúe el dispositivo adecuado sin cortar innecesariamente otros circuitos; no se presume sin estudio y datos de fabricante. La segregación entre potencia, mando, señales y comunicaciones reduce interferencias y facilita mantenimiento. Etiquetas, referencias y documentación actualizada son herramientas de diagnóstico, no decoración.",
+      "s02": "Comprobación: un fallo en un sensor corta todos los 24 V del cuadro. ¿Qué aspecto de diseño revisar? Distribución y coordinación de protecciones, sin inferir la solución exacta sin esquema.",
+      "s03": "Resumen del bloque: localizar origen de energía, ramal afectado, función de cada protección y condición de disparo.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-019": {
+    "title": "Mando frente a potencia",
+    "kicker": "Sistemas eléctricos · Bloque 03 · Revisión técnica pendiente",
+    "excerpt": "El circuito de potencia transporta energía a la carga (motor, resistencia, etc.).",
+    "categories": [
+      "Circuitos de mando y potencia"
+    ],
+    "sections": {
+      "s01": "El circuito de potencia transporta energía a la carga (motor, resistencia, etc.). El circuito de mando procesa condiciones y acciona elementos como bobinas de contactor o entradas de control. La presencia de tensión en potencia no demuestra que exista permiso de marcha. En un arrancador directo clásico, la orden de marcha energiza una bobina que cierra contactos principales; el contacto auxiliar puede mantener la orden, si el diseño lo permite.",
+      "s02": "Comprobación: el motor tiene tensión disponible aguas arriba del contactor y no gira. ¿Es suficiente para culpar al motor? No; hay que conocer estado del contactor y condiciones de mando.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-020": {
+    "title": "Contactores, bobinas y auxiliares",
+    "kicker": "Sistemas eléctricos · Bloque 03 · Revisión técnica pendiente",
+    "excerpt": "Un contactor incorpora bobina (A1/A2), contactos principales y auxiliares.",
+    "categories": [
+      "Circuitos de mando y potencia"
+    ],
+    "sections": {
+      "s01": "Un contactor incorpora bobina (A1/A2), contactos principales y auxiliares. La bobina debe corresponder a su tensión, tipo AC/DC y régimen. Un contacto NO está abierto en el estado de referencia del dispositivo; uno NC está cerrado en ese estado, no necesariamente cuando toda la máquina está apagada. Los contactos se representan según norma y estado de referencia especificado. La designación típica de auxiliares puede incluir 13-14 (NO) y 21-22 (NC), pero se verifica en plano y fabricante.",
+      "s02": "Comprobación: si hay tensión nominal entre A1-A2 durante la orden y no conmuta, ¿se puede concluir que el pulsador de marcha está abierto? No. La tensión medida orienta hacia bobina, especificación, conexión o mecanismo, con validaciones posteriores.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-021": {
+    "title": "Pulsadores, auto-mantenimiento y enclavamientos",
+    "kicker": "Sistemas eléctricos · Bloque 03 · Revisión técnica pendiente",
+    "excerpt": "Un mando clásico de marcha-paro incorpora STOP NC, START NO y un auxiliar NO de auto-mantenimiento en paralelo con START.",
+    "categories": [
+      "Circuitos de mando y potencia"
+    ],
+    "sections": {
+      "s01": "Un mando clásico de marcha-paro incorpora STOP NC, START NO y un auxiliar NO de auto-mantenimiento en paralelo con START. Al soltar START, la bobina sigue energizada si las condiciones de permiso continúan. El enclavamiento eléctrico entre dos contactores de inversión evita órdenes simultáneas, pero para aplicaciones que lo requieren se complementa con enclavamiento mecánico y diseño de seguridad apropiado. Un paro de emergencia no es simplemente un pulsador STOP del proceso: su función se define mediante evaluación de riesgos y arquitectura de seguridad.",
+      "s02": "Comprobación: el motor solo gira mientras se mantiene START. Posibles causas: auxiliar de mantenimiento no cierra, cableado de mantenimiento interrumpido o lógica que no mantiene; no basta cambiar START.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-022": {
+    "title": "Motores trifásicos, placa y relé de sobrecarga",
+    "kicker": "Sistemas eléctricos · Bloque 03 · Revisión técnica pendiente",
+    "excerpt": "La placa informa tensión, conexión, corriente nominal, frecuencia, potencia y otros datos.",
+    "categories": [
+      "Circuitos de mando y potencia"
+    ],
+    "sections": {
+      "s01": "La placa informa tensión, conexión, corriente nominal, frecuencia, potencia y otros datos. En arranque directo, el contactor gobierna potencia y un dispositivo de sobrecarga protege frente a condiciones térmicas dentro de su aplicación. El ajuste debe basarse en placa, esquema, método de arranque y documentación del fabricante. La corriente elevada puede venir de carga mecánica, fallo eléctrico, tensión anómala o conexión incorrecta; el relé disparado no demuestra por sí solo cuál.",
+      "s02": "Comprobación: si la corriente aumenta al atascarse un transportador, ¿qué hipótesis se prioriza? Incremento de carga mecánica, contrastado con datos eléctricos y mecánicos.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-023": {
+    "title": "Relés, temporizadores y salidas PLC",
+    "kicker": "Sistemas eléctricos · Bloque 03 · Revisión técnica pendiente",
+    "excerpt": "Las salidas PLC pueden ser transistor o relé, con límites distintos; no todas pueden alimentar directamente cualquier bobina.",
+    "categories": [
+      "Circuitos de mando y potencia"
+    ],
+    "sections": {
+      "s01": "Las salidas PLC pueden ser transistor o relé, con límites distintos; no todas pueden alimentar directamente cualquier bobina. Se consideran consumo, supresión de transitorios, polaridad, retorno, fusibles y aislamiento. Un relé intermedio puede separar la salida de control de la carga, pero añade puntos de fallo. Los temporizadores pueden ser eléctricos o lógicos; el diagnóstico debe distinguir la orden software del estado físico del elemento.",
+      "s02": "Comprobación: Q0.0=TRUE en Watch Table significa que KM1 necesariamente recibe 24 V. Falso: indica estado lógico de salida, no continuidad del cableado ni tensión efectiva en la bobina.",
+      "s03": "Resumen del bloque: seguir permiso, orden, salida, cableado, bobina, contactos y carga como eslabones diferentes.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-024": {
+    "title": "Símbolos y convenciones",
+    "kicker": "Sistemas eléctricos · Bloque 04 · Revisión técnica pendiente",
+    "excerpt": "Los esquemas emplean símbolos normalizados y convenciones de estado de referencia.",
+    "categories": [
+      "Interpretación de esquemas y cableado"
+    ],
+    "sections": {
+      "s01": "Los esquemas emplean símbolos normalizados y convenciones de estado de referencia. No se deduce una conexión real por la proximidad gráfica de dos símbolos: mandan identificadores de conexión, referencias, potenciales y numeración. Los planos deben incluir leyenda y versión. Los símbolos de interruptor, bobina, fusible, tierra, motor y contacto auxiliar deben dibujarse con semántica eléctrica correcta, no generarse libremente por estética.",
+      "s02": "Comprobación: un contacto KM1 dibujado en otra hoja, ¿puede pertenecer al mismo contactor? Sí, mediante designación y referencia cruzada.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-025": {
+    "title": "Designación y referencias cruzadas",
+    "kicker": "Sistemas eléctricos · Bloque 04 · Revisión técnica pendiente",
+    "excerpt": "Una designación coherente (-QF1, -F1, -KM1, -X1, -M1) facilita localizar protecciones, contactores, borneros y motores.",
+    "categories": [
+      "Interpretación de esquemas y cableado"
+    ],
+    "sections": {
+      "s01": "Una designación coherente (-QF1, -F1, -KM1, -X1, -M1) facilita localizar protecciones, contactores, borneros y motores. Las letras y números deben seguir la convención del proyecto; no hay que asumir universalidad absoluta de cada prefijo. Una referencia cruzada vincula bobina y contactos o continuidad entre páginas. Una revisión obsoleta puede conducir a buscar un borne inexistente.",
+      "s02": "Comprobación: el plano indica -KM1:13-14 en hoja 4. ¿Qué se busca? El contacto auxiliar identificado de KM1, no otro dispositivo con número 13.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-026": {
+    "title": "Borneros, potenciales y numeración",
+    "kicker": "Sistemas eléctricos · Bloque 04 · Revisión técnica pendiente",
+    "excerpt": "Un bornero (-X1) es un punto de conexión y posible desconexión de prueba según modelo.",
+    "categories": [
+      "Interpretación de esquemas y cableado"
+    ],
+    "sections": {
+      "s01": "Un bornero (-X1) es un punto de conexión y posible desconexión de prueba según modelo. X1:5 identifica un terminal; el número de hilo puede ser distinto. Los potenciales +24V, 0V, L1, N, PE representan funciones distintas. En diagnosis se sigue origen → protección → borne → cable → carga → retorno. Un retorno abierto es tan relevante como una alimentación abierta.",
+      "s02": "Comprobación: hay 24 V en X1:5 respecto a 0 V de cuadro, pero el sensor no funciona. ¿Qué falta verificar? Tensión y retorno en bornes del sensor, condiciones de carga y estado del propio sensor.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-027": {
+    "title": "Lectura de esquemas de mando",
+    "kicker": "Sistemas eléctricos · Bloque 04 · Revisión técnica pendiente",
+    "excerpt": "Leer de la fuente de control hacia el retorno, identificando contactos en serie (condiciones simultáneas) y ramas en paralelo (caminos alternativos).",
+    "categories": [
+      "Interpretación de esquemas y cableado"
+    ],
+    "sections": {
+      "s01": "Leer de la fuente de control hacia el retorno, identificando contactos en serie (condiciones simultáneas) y ramas en paralelo (caminos alternativos). Un contacto NC de protección abre cuando actúa su dispositivo; una rama de mantenimiento mantiene energía tras soltar START. En planos complejos se separan seguridad, permisos de proceso, orden PLC y potencia; una condición ausente puede bloquear la secuencia sin avería eléctrica.",
+      "s02": "Comprobación: si STOP NC está abierto, ¿puede START cerrar la bobina en un circuito clásico en serie? No, salvo caminos alternativos no mostrados, que deben investigarse.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-028": {
+    "title": "Trazabilidad y control de revisiones",
+    "kicker": "Sistemas eléctricos · Bloque 04 · Revisión técnica pendiente",
+    "excerpt": "Un diagnóstico reproducible cita plano, revisión, equipo, terminales, estado de máquina, medidas y conclusión.",
+    "categories": [
+      "Interpretación de esquemas y cableado"
+    ],
+    "sections": {
+      "s01": "Un diagnóstico reproducible cita plano, revisión, equipo, terminales, estado de máquina, medidas y conclusión. Nunca modificar físicamente un cable solo porque «el plano lo dice» sin verificar identificación real y procedimiento. Tras una reparación autorizada, actualizar documentación, marcados y registro de intervención. La misma nomenclatura debe emplearse en Notebook, evidencias, Experience y esquemas.",
+      "s02": "Comprobación: ¿qué pesa más para diagnosticar una discrepancia: un esquema sin revisión o una identificación física verificada y documentada? La evidencia trazable y la investigación de la discrepancia; no improvisar modificaciones.",
+      "s03": "Resumen del bloque: cada símbolo debe corresponder a un componente, cada conductor a un potencial y cada conclusión a una evidencia identificable.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-029": {
+    "title": "Método de diagnóstico",
+    "kicker": "Sistemas eléctricos · Bloque 05 · Revisión técnica pendiente",
+    "excerpt": "1) delimitar síntoma y condición de aparición; 2) identificar función afectada y plano vigente; 3) generar hipótesis mutuamente discriminables; 4) revisar alarmas, registros y mediciones existentes; 5) elegir la siguiente comprobación con mayor poder diagnóstico; 6) aislar causa; 7) corregir bajo procedimiento autorizado; 8) verificar función y protecciones; 9) documentar.",
+    "categories": [
+      "Diagnóstico eléctrico y seguridad"
+    ],
+    "sections": {
+      "s01": "1) delimitar síntoma y condición de aparición; 2) identificar función afectada y plano vigente; 3) generar hipótesis mutuamente discriminables; 4) revisar alarmas, registros y mediciones existentes; 5) elegir la siguiente comprobación con mayor poder diagnóstico; 6) aislar causa; 7) corregir bajo procedimiento autorizado; 8) verificar función y protecciones; 9) documentar. Evitar el sesgo de confirmar la primera hipótesis y el cambio de componentes por descarte.",
+      "s02": "Comprobación: tres sensores fallan a la vez. ¿Qué se investiga antes de reemplazarlos individualmente? Elementos comunes: fuente, protección, retorno, módulo, cable compartido.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-030": {
+    "title": "Consignación y comprobación de ausencia de tensión",
+    "kicker": "Sistemas eléctricos · Bloque 05 · Revisión técnica pendiente",
+    "excerpt": "Antes de abrir o intervenir un circuito real se aplica el procedimiento de aislamiento y consignación correspondiente, se identifican todas las fuentes (incluidos UPS, condensadores y retornos), se bloquea el restablecimiento, se verifica ausencia de tensión con método e instrumento apropiados y se controla energía residual.",
+    "categories": [
+      "Diagnóstico eléctrico y seguridad"
+    ],
+    "sections": {
+      "s01": "Antes de abrir o intervenir un circuito real se aplica el procedimiento de aislamiento y consignación correspondiente, se identifican todas las fuentes (incluidos UPS, condensadores y retornos), se bloquea el restablecimiento, se verifica ausencia de tensión con método e instrumento apropiados y se controla energía residual. La secuencia concreta la define el procedimiento de la instalación y personal cualificado. Una HMI en STOP o un PLC en STOP no equivale a aislamiento eléctrico.",
+      "s02": "Comprobación: pulsar STOP permite medir continuidad de una bobina. Falso: STOP de proceso no garantiza ausencia de tensión.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-031": {
+    "title": "Diagnóstico por comparación y bajo carga",
+    "kicker": "Sistemas eléctricos · Bloque 05 · Revisión técnica pendiente",
+    "excerpt": "Comparar un ramal sano con uno defectuoso puede identificar diferencias de tensión, corriente, estado de protección o señales.",
+    "categories": [
+      "Diagnóstico eléctrico y seguridad"
+    ],
+    "sections": {
+      "s01": "Comparar un ramal sano con uno defectuoso puede identificar diferencias de tensión, corriente, estado de protección o señales. La caída de tensión es proporcional a corriente y resistencia en condiciones apropiadas (ΔU≈I×R); un borne deteriorado puede presentar tensión normal sin carga y caída importante al circular corriente. Una termografía o un punto caliente aporta indicios, no sustituye medidas y análisis.",
+      "s02": "Comprobación: 24 V en vacío y 17 V con carga en el extremo de cable. ¿Qué hipótesis gana fuerza? Resistencia serie excesiva o fuente incapaz de sostener demanda, diferenciable midiendo origen y extremo en el mismo estado.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-032": {
+    "title": "Aislamiento y fugas",
+    "kicker": "Sistemas eléctricos · Bloque 05 · Revisión técnica pendiente",
+    "excerpt": "Un defecto de aislamiento es una vía no deseada de corriente entre conductores o hacia partes conductoras.",
+    "categories": [
+      "Diagnóstico eléctrico y seguridad"
+    ],
+    "sections": {
+      "s01": "Un defecto de aislamiento es una vía no deseada de corriente entre conductores o hacia partes conductoras. Los síntomas incluyen disparos diferenciales, alarmas de aislamiento o comportamiento intermitente por humedad. La resistencia de aislamiento se mide con equipos y tensiones de prueba adecuados solo en instalación aislada y preparada, desconectando electrónica sensible según fabricante. Una lectura aislada debe interpretarse frente a norma aplicable, tensión, temperatura, topología y límites del equipo.",
+      "s02": "Comprobación: aplicar 500 VDC de megóhmetro directamente a la salida de un PLC para localizar una fuga es válido. Falso.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  },
+  "article-033": {
+    "title": "Verificación, recurrencia y documentación",
+    "kicker": "Sistemas eléctricos · Bloque 05 · Revisión técnica pendiente",
+    "excerpt": "Una corrección se considera verificada cuando se demuestra que la función se ha restablecido, el síntoma no reaparece en condiciones representativas, los dispositivos de protección conservan su función y los registros son coherentes.",
+    "categories": [
+      "Diagnóstico eléctrico y seguridad"
+    ],
+    "sections": {
+      "s01": "Una corrección se considera verificada cuando se demuestra que la función se ha restablecido, el síntoma no reaparece en condiciones representativas, los dispositivos de protección conservan su función y los registros son coherentes. Una sustitución que «hace arrancar» sin explicar el mecanismo puede dejar el riesgo latente. Documentar causa, evidencia antes/después, intervención autorizada, pruebas y límites de la verificación.",
+      "s02": "Comprobación: después de apretar un borne se recupera el motor; ¿basta con cerrar incidencia? No: documentar y verificar conexiones, funcionamiento y causas de aflojamiento según procedimiento.",
+      "s03": "Resumen del bloque: seguridad, evidencia y verificación son partes del razonamiento, no anexos administrativos.",
+      "s-review": {
+        "title": "Preview textual · revisión técnica pendiente",
+        "content": "Contenido educativo en revisión técnica y editorial. La traducción inglesa requiere revisión técnica humana. Interpreta registros aportados o simulados; este material no autoriza trabajos sobre una instalación real."
+      }
+    }
+  }
+});

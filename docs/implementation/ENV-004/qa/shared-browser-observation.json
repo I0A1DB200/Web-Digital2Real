@@ -1,0 +1,17 @@
+[
+  {
+    "environment": "ENV-001",
+    "popover_after_global_locale_click": 0,
+    "environment_retained": "ENV-001"
+  },
+  {
+    "environment": "ENV-003",
+    "popover_after_global_locale_click": 0,
+    "environment_retained": "ENV-003"
+  },
+  {
+    "environment": "ENV-004",
+    "popover_after_global_locale_click": 0,
+    "environment_retained": "ENV-004"
+  }
+]

@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-RETURN-036"
+  editorial_id: "EE-0036"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "intermediate"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "open-return-conductor"
+  title: "Un conductor interrumpido impide activar la válvula"
+  summary: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-028 (NB-EL-20): Trazabilidad y control de revisiones; article-029 (NB-EL-21): Método de diagnóstico"
+    initiating_event: "Un conductor interrumpido impide activar la válvula"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-028 (NB-EL-20): Trazabilidad y control de revisiones; article-029 (NB-EL-21): Método de diagnóstico"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-A"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-B"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-A"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-B"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-A"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Comprobar tensión efectiva entre bornes de Y3 y retorno."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar programa PLC. Se propone corregir el software a partir de la falta de movimiento sin comparar la tensión efectiva entre A1 y A2 ni la continuidad del camino de retorno."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Sustituir Y3 sin medida."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Q0.3=TRUE confirma alimentación completa de Y3. Se equipara el estado lógico de Watch con tensión aplicada a la bobina y continuidad de ambos conductores, sin revisar la frontera física de salida y carga."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Q0.3=TRUE solo confirma estado lógico; hace falta comprobar camino eléctrico."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "El sensor de posición es causa obligada."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "A1=24 V y A2=24 V respecto a 0 V de cuadro, con 0 V entre A1-A2, apunta a retorno abierto u otro fallo de referencia."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La bobina recibe 24 V. Se interpreta cada lectura respecto a 0 V del cuadro como tensión aplicada, sin restar los potenciales de A1 y A2 ni considerar que la diferencia registrada es cero."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La fuente entrega 48 V."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Cambiar salida PLC. Se atribuye el fallo al módulo de salida aunque el acta de continuidad aislada localiza una interrupción entre X2:8 y la barra de retorno de 0 V."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "El ensayo aislado abierto entre X2:8 y barra 0 V localiza el retorno interrumpido."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Puentear a PE como retorno."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Tras reparación autorizada del conductor, verificar tensión A1-A2 bajo orden y actuación Y3."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Usar PE de retorno permanente. Se plantea un retorno funcional por tierra como sustituto de la reparación del conductor documentado, sin restituir la arquitectura prevista de alimentación."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Cerrar incidencia por Q0.3=TRUE."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado. Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."
+    process:
+      - "Comprobar tensión efectiva entre bornes de Y3 y retorno."
+      - "Q0.3=TRUE solo confirma estado lógico; hace falta comprobar camino eléctrico."
+      - "A1=24 V y A2=24 V respecto a 0 V de cuadro, con 0 V entre A1-A2, apunta a retorno abierto u otro fallo de referencia."
+      - "El ensayo aislado abierto entre X2:8 y barra 0 V localiza el retorno interrumpido."
+      - "Tras reparación autorizada del conductor, verificar tensión A1-A2 bajo orden y actuación Y3."
+    lesson: "reparación y trazabilidad del retorno, no modificación de lógica. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-028 (NB-EL-20): Trazabilidad y control de revisiones; article-029 (NB-EL-21): Método de diagnóstico"
+    avoided_errors:
+      - "Cambiar programa PLC."
+      - "Sustituir Y3 sin medida."
+      - "Q0.3=TRUE confirma alimentación completa de Y3."
+      - "El sensor de posición es causa obligada."
+      - "La bobina recibe 24 V."
+      - "La fuente entrega 48 V."
+      - "Cambiar salida PLC."
+      - "Puentear a PE como retorno."
+      - "Usar PE de retorno permanente."
+      - "Cerrar incidencia por Q0.3=TRUE."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado."
+    recovery_conditions:
+      - "Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-A"
+      - "DEC-02-B"
+      - "DEC-03-A"
+      - "DEC-04-B"
+      - "DEC-05-A"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
+      classification: "strong"
+      consequence: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar programa PLC.» no está sustentada por este registro.  Revisa: Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar programa PLC.» no está sustentada por este registro.  Revisa: Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
+      classification: "weak"
+      consequence: "La propuesta «Sustituir Y3 sin medida.» no está sustentada por este registro.  Revisa: Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Sustituir Y3 sin medida.» no está sustentada por este registro.  Revisa: Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados."
+      classification: "weak"
+      consequence: "La propuesta «Q0.3=TRUE confirma alimentación completa de Y3.» no está sustentada por este registro.  Revisa: Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Q0.3=TRUE confirma alimentación completa de Y3.» no está sustentada por este registro.  Revisa: Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados."
+      classification: "strong"
+      consequence: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados."
+      classification: "weak"
+      consequence: "La propuesta «El sensor de posición es causa obligada.» no está sustentada por este registro.  Revisa: Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «El sensor de posición es causa obligada.» no está sustentada por este registro.  Revisa: Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa."
+      classification: "strong"
+      consequence: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa."
+      classification: "weak"
+      consequence: "La propuesta «La bobina recibe 24 V.» no está sustentada por este registro.  Revisa: Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «La bobina recibe 24 V.» no está sustentada por este registro.  Revisa: Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa."
+      classification: "weak"
+      consequence: "La propuesta «La fuente entrega 48 V.» no está sustentada por este registro.  Revisa: Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «La fuente entrega 48 V.» no está sustentada por este registro.  Revisa: Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar salida PLC.» no está sustentada por este registro.  Revisa: Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar salida PLC.» no está sustentada por este registro.  Revisa: Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina."
+      classification: "strong"
+      consequence: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina."
+      classification: "unsafe"
+      consequence: "La propuesta «Puentear a PE como retorno.» no está sustentada por este registro.  Revisa: Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Puentear a PE como retorno.» no está sustentada por este registro.  Revisa: Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional."
+      classification: "strong"
+      consequence: "Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional."
+      classification: "unsafe"
+      consequence: "La propuesta «Usar PE de retorno permanente.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Usar PE de retorno permanente.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional."
+      classification: "weak"
+      consequence: "La propuesta «Cerrar incidencia por Q0.3=TRUE.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cerrar incidencia por Q0.3=TRUE.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado."
+    correct_reasoning:
+      - "Comprobar tensión efectiva entre bornes de Y3 y retorno."
+      - "Q0.3=TRUE solo confirma estado lógico; hace falta comprobar camino eléctrico."
+      - "A1=24 V y A2=24 V respecto a 0 V de cuadro, con 0 V entre A1-A2, apunta a retorno abierto u otro fallo de referencia."
+      - "El ensayo aislado abierto entre X2:8 y barra 0 V localiza el retorno interrumpido."
+      - "Tras reparación autorizada del conductor, verificar tensión A1-A2 bajo orden y actuación Y3."
+    recovery:
+      - "Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: salida PLC Q0.3 activa, pero electroválvula -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. Registro de prueba: salida Q0.3 24 V respecto a 0 V del cuadro, A1 24 V respecto a 0 V del cuadro, A2 24 V respecto a 0 V del cuadro por retorno abierto y acoplamiento a través de la bobina; A1-A2 = 0 V bajo orden. Con instalación aislada, continuidad entre X2:8 y retorno 0 V abierta."

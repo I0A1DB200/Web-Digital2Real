@@ -1,0 +1,128 @@
+locale: "es"
+translations:
+  title: "El motor gira en sentido contrario"
+  summary: "Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión. Preview textual; evidencias visuales y revisión técnica pendientes."
+  scenario:
+    initial_context: "Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    initiating_event: "El motor gira en sentido contrario"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    OBJ-TRACE-CIRCUIT:
+      description: "Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    OBJ-INTERPRET-EVIDENCE:
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+    OBJ-VERIFY-RECOVERY:
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+  stages:
+    STAGE-01-DIAGNOSIS:
+      title: "Delimitar el síntoma"
+      situation: "Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-02-DIAGNOSIS:
+      title: "Interpretar el primer registro"
+      situation: "M4 tiene arranque directo sin variador. El plano de bornes aprobado indica L1→U1, L2→V1, L3→W1. En este sistema, una permuta de dos fases puede invertir el giro; no se atribuye automáticamente a PLC o neutro.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-03-DIAGNOSIS:
+      title: "Contrastar hipótesis"
+      situation: "La inspección aislada registra L1→V1, L2→U1, L3→W1 frente al plano L1→U1, L2→V1, L3→W1. Se observa permuta L1/L2 respecto al montaje validado, no evidencia de cambio de frecuencia o fallo interno obligatorio del motor.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-04-DIAGNOSIS:
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La comparación de plano y conexión real confirma dos fases intercambiadas durante la sustitución. La secuencia aplicada está invertida respecto a diseño. La reconfiguración se planifica solo tras aislamiento conforme al procedimiento autorizado; PE no es una fase intercambiable.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+    STAGE-05-VERIFY-RECOVERY:
+      title: "Verificar la recuperación"
+      situation: "Los terminales se han restituido según plano en la intervención autorizada del escenario. Esta corrección por sí sola no establece recuperación: queda verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+  evidence:
+    EVID-00-RECORD:
+      source: "Registro didáctico simulado · contexto"
+      content: "Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión."
+    EVID-01-RECORD:
+      source: "Registro didáctico simulado · D1"
+      content: "M4 tiene arranque directo sin variador. El plano de bornes aprobado indica L1→U1, L2→V1, L3→W1. En este sistema, una permuta de dos fases puede invertir el giro; no se atribuye automáticamente a PLC o neutro."
+    EVID-02-RECORD:
+      source: "Registro didáctico simulado · D2"
+      content: "La inspección aislada registra L1→V1, L2→U1, L3→W1 frente al plano L1→U1, L2→V1, L3→W1. Se observa permuta L1/L2 respecto al montaje validado, no evidencia de cambio de frecuencia o fallo interno obligatorio del motor."
+    EVID-03-RECORD:
+      source: "Registro didáctico simulado · D3"
+      content: "La comparación de plano y conexión real confirma dos fases intercambiadas durante la sustitución. La secuencia aplicada está invertida respecto a diseño. La reconfiguración se planifica solo tras aislamiento conforme al procedimiento autorizado; PE no es una fase intercambiable."
+    EVID-04-RECORD:
+      source: "Registro didáctico simulado · D4"
+      content: "Los terminales se han restituido según plano en la intervención autorizada del escenario. Esta corrección por sí sola no establece recuperación: queda verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada."
+    EVID-05-RECORD:
+      source: "Registro didáctico simulado · D5"
+      content: "La prueba autorizada del caso simulado confirma sentido previsto, carga, resguardos, enclavamientos y documentación. No se opera sin protecciones ni se acepta giro inverso solo porque el motor funcione."
+  decisions:
+    DEC-01-A:
+      action: "Confirmar tipo de accionamiento y documentación de conexiones."
+    DEC-01-B:
+      action: "Cambiar sentido de giro del PLC sin verificar circuito. Se propone corregir la orden de software antes de confirmar si M4 usa arranque directo o variador y de comparar las conexiones con el plano aprobado."
+    DEC-01-C:
+      action: "Desactivar protección térmica."
+    DEC-02-A:
+      action: "En arranque directo trifásico, intercambiar dos fases puede invertir sentido de giro."
+    DEC-02-B:
+      action: "El neutro determina siempre el giro. Se atribuye la orientación del campo giratorio al conductor neutro sin contrastar la secuencia de fases aplicada a U1, V1 y W1 en este arranque directo."
+    DEC-02-C:
+      action: "El giro solo depende del PLC."
+    DEC-03-A:
+      action: "El motor debe estar averiado internamente. Se concluye fallo del motor por el sentido observado sin explicar la diferencia entre el conexionado aprobado y la permuta L1/L2 registrada tras sustitución."
+    DEC-03-B:
+      action: "El esquema y la conexión real muestran permuta L1/L2."
+    DEC-03-C:
+      action: "La frecuencia es necesariamente 60 Hz."
+    DEC-04-A:
+      action: "Reconfigurar los terminales según plano y procedimiento autorizado tras aislamiento."
+    DEC-04-B:
+      action: "Cambiar fases con el motor energizado. La propuesta plantea intervenir directamente sobre las fases sin aplicar aislamiento previo ni controlar el riesgo mecánico del transportador según procedimiento."
+    DEC-04-C:
+      action: "Invertir tierra PE."
+    DEC-05-A:
+      action: "Basta comprobar giro en vacío sin protecciones. Se propone aceptar una observación parcial sin verificar carga, resguardos, enclavamientos y documentación en las condiciones de prueba autorizadas del equipo."
+    DEC-05-B:
+      action: "Verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada."
+    DEC-05-C:
+      action: "Mantener giro inverso porque el motor funciona."
+  retry_feedback:
+    DEC-01-B: "La propuesta «Cambiar sentido de giro del PLC sin verificar circuito.» no está sustentada por este registro.  Revisa: Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-01-C: "La propuesta «Desactivar protección térmica.» no está sustentada por este registro.  Revisa: Tras sustituir -M4 en un transportador, el motor trifásico gira en sentido contrario al previsto. Se requiere confirmar accionamiento y documentación. Cualquier corrección real exige consignación, personal competente y verificación de riesgos mecánicos; no se propone maniobra en tensión. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-B: "La propuesta «El neutro determina siempre el giro.» no está sustentada por este registro.  Revisa: M4 tiene arranque directo sin variador. El plano de bornes aprobado indica L1→U1, L2→V1, L3→W1. En este sistema, una permuta de dos fases puede invertir el giro; no se atribuye automáticamente a PLC o neutro. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-02-C: "La propuesta «El giro solo depende del PLC.» no está sustentada por este registro.  Revisa: M4 tiene arranque directo sin variador. El plano de bornes aprobado indica L1→U1, L2→V1, L3→W1. En este sistema, una permuta de dos fases puede invertir el giro; no se atribuye automáticamente a PLC o neutro. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-A: "La propuesta «El motor debe estar averiado internamente.» no está sustentada por este registro.  Revisa: La inspección aislada registra L1→V1, L2→U1, L3→W1 frente al plano L1→U1, L2→V1, L3→W1. Se observa permuta L1/L2 respecto al montaje validado, no evidencia de cambio de frecuencia o fallo interno obligatorio del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-03-C: "La propuesta «La frecuencia es necesariamente 60 Hz.» no está sustentada por este registro.  Revisa: La inspección aislada registra L1→V1, L2→U1, L3→W1 frente al plano L1→U1, L2→V1, L3→W1. Se observa permuta L1/L2 respecto al montaje validado, no evidencia de cambio de frecuencia o fallo interno obligatorio del motor. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-B: "La propuesta «Cambiar fases con el motor energizado.» no está sustentada por este registro.  Revisa: La comparación de plano y conexión real confirma dos fases intercambiadas durante la sustitución. La secuencia aplicada está invertida respecto a diseño. La reconfiguración se planifica solo tras aislamiento conforme al procedimiento autorizado; PE no es una fase intercambiable. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-04-C: "La propuesta «Invertir tierra PE.» no está sustentada por este registro.  Revisa: La comparación de plano y conexión real confirma dos fases intercambiadas durante la sustitución. La secuencia aplicada está invertida respecto a diseño. La reconfiguración se planifica solo tras aislamiento conforme al procedimiento autorizado; PE no es una fase intercambiable. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-A: "La propuesta «Basta comprobar giro en vacío sin protecciones.» no está sustentada por este registro.  Revisa: Los terminales se han restituido según plano en la intervención autorizada del escenario. Esta corrección por sí sola no establece recuperación: queda verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada. Vuelve a elegir sin ejecutar la opción propuesta."
+    DEC-05-C: "La propuesta «Mantener giro inverso porque el motor funciona.» no está sustentada por este registro.  Revisa: Los terminales se han restituido según plano en la intervención autorizada del escenario. Esta corrección por sí sola no establece recuperación: queda verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada. Vuelve a elegir sin ejecutar la opción propuesta."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+  assets: {}
+  completion:
+    title: "Debrief técnico"
+    summary: "intercambio de dos fases en terminales del motor durante la sustitución. La corrección real solo se ejecuta con consignación, personal competente y verificación de riesgos mecánicos; no se propone una maniobra en tensión. La prueba autorizada del caso simulado confirma sentido previsto, carga, resguardos, enclavamientos y documentación. No se opera sin protecciones ni se acepta giro inverso solo porque el motor funcione."
+    process:
+      - "Confirmar tipo de accionamiento y documentación de conexiones."
+      - "En arranque directo trifásico, intercambiar dos fases puede invertir sentido de giro."
+      - "El esquema y la conexión real muestran permuta L1/L2."
+      - "Reconfigurar los terminales según plano y procedimiento autorizado tras aislamiento."
+      - "Verificar sentido, carga, resguardos, enclavamientos y documentación en prueba autorizada."
+    lesson: "restituir secuencia conforme al diseño. Notebook — itinerario en Engineering Notes: article-014 (NB-EL-06): Alimentación monofásica y trifásica; article-022 (NB-EL-14): Motores trifásicos, placa y relé de sobrecarga; article-024 (NB-EL-16): Símbolos y convenciones; article-025 (NB-EL-17): Designación y referencias cruzadas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-033 (NB-EL-25): Verificación, recurrencia y documentación"
+    avoided_errors:
+      - "Cambiar sentido de giro del PLC sin verificar circuito."
+      - "Desactivar protección térmica."
+      - "El neutro determina siempre el giro."
+      - "El giro solo depende del PLC."
+      - "El motor debe estar averiado internamente."
+      - "La frecuencia es necesariamente 60 Hz."
+      - "Cambiar fases con el motor energizado."
+      - "Invertir tierra PE."
+      - "Basta comprobar giro en vacío sin protecciones."
+      - "Mantener giro inverso porque el motor funciona."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."

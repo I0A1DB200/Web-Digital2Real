@@ -1392,7 +1392,982 @@ export const notebook = [
           "Store data according to the responsibility that owns it—not according to whichever DB is easiest to access."
       }
     ]
-  }
+  },
+{
+  "id": "article-009",
+  "slug": "electrical-notes-01",
+  "editorial_id": "NB-EL-01",
+  "title": "Voltage, current, resistance and a closed circuit",
+  "kicker": "Electrical systems · Block 01 · Technical review pending",
+  "excerpt": "Voltage is the potential difference between two points (V); it is measured between two points.",
+  "categories": [
+    "Electrical fundamentals and measurement"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Voltage is the potential difference between two points (V); it is measured between two points. Current is the flow of electric charge (A); it requires a closed path and is measured in series or with a compatible clamp. Resistance represents opposition to current flow (Ω). Ohm's law, for an ohmic element under defined conditions, is U = R × I. It does not by itself describe nonlinear loads or motor transient behaviour. A coil, converter and motor must not be treated as fixed resistors."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "In a 24 VDC control circuit, having 24 V relative to 0 V at one point does not prove that a load is powered: the reference, return path and voltage between its two terminals must be considered. An interrupted return conductor can leave an apparently correct reading at one terminal while the load does not operate. A high-impedance multimeter can also display ghost voltages due to coupling; an isolated reading does not confirm supply capability."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Worked example: a 240 Ω resistor connected to an ideal 24 VDC supply draws I=24/240=0.10 A and dissipates P=U×I=2.4 W. Real design checks rated power, tolerances, temperature and protection."
+    },
+    {
+      "id": "s04",
+      "type": "paragraph",
+      "content": "Self-check: what does a voltmeter connected between A1 and A2 of a coil measure? A) Coil current; B) potential difference applied to the coil; C) internal resistance. Correct: B. A confuses quantities; C requires a resistance-test procedure with the circuit isolated."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-010",
+  "slug": "electrical-notes-02",
+  "editorial_id": "NB-EL-02",
+  "title": "AC, DC, frequency and RMS values",
+  "kicker": "Electrical systems · Block 01 · Technical review pending",
+  "excerpt": "In DC, polarity remains constant during normal steady operation; industrial 24 VDC supplies power PLCs, sensors and suitable coils.",
+  "categories": [
+    "Electrical fundamentals and measurement"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "In DC, polarity remains constant during normal steady operation; industrial 24 VDC supplies power PLCs, sensors and suitable coils. In AC, polarity alternates periodically; a 50 Hz supply completes 50 cycles per second. Stated mains voltages are usually RMS values, not peak values. For an ideal sinusoidal waveform, U_peak = U_RMS × √2; a 230 VAC supply has a peak of approximately 325 V relative to the corresponding reference. Instruments must suit the waveform, frequency, measurement category and environment."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Do not assume that any multimeter in AC mode correctly measures distorted or PWM signals. A drive's motor output requires manufacturer-specific procedures and instruments; do not extrapolate mains measurements."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: can a coil marked 24 VDC be connected to 24 VAC because both numbers are 24? A) Yes; B) No, voltage type and specification matter. Correct: B."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-011",
+  "slug": "electrical-notes-03",
+  "editorial_id": "NB-EL-03",
+  "title": "Power, energy and industrial loads",
+  "kicker": "Electrical systems · Block 01 · Technical review pending",
+  "excerpt": "For ideal DC, P=U×I (W).",
+  "categories": [
+    "Electrical fundamentals and measurement"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "For ideal DC, P=U×I (W). Energy consumption is expressed in Wh or kWh: E=P×t when power is constant. For sinusoidal single-phase AC, P=U×I×cosφ; for balanced sinusoidal three-phase AC, P=√3×U_LL×I_L×cosφ. These expressions do not replace analysis of harmonics or imbalance. A motor draws starting current above its rated current depending on technology and starting method. Nameplate values, efficiency, power factor, load and protection influence diagnosis."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Worked example: a 48 W DC load at 24 V ideally requires 2 A. A supply rated at 2 A could be insufficient if there are starting peaks, derating or additional loads; the calculation does not authorize selection without margins."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: can two motors with equal mechanical power have different currents? True, because of efficiency, power factor, voltage and design."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-012",
+  "slug": "electrical-notes-04",
+  "editorial_id": "NB-EL-04",
+  "title": "Multimeters, clamps and interpreting measurements",
+  "kicker": "Electrical systems · Block 01 · Technical review pending",
+  "excerpt": "A voltmeter is connected in parallel; a conventional ammeter requires a series configuration and suitable protection, whereas a compatible clamp measures current without opening the circuit.",
+  "categories": [
+    "Electrical fundamentals and measurement"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A voltmeter is connected in parallel; a conventional ammeter requires a series configuration and suitable protection, whereas a compatible clamp measures current without opening the circuit. Resistance and continuity are measured with the circuit isolated, de-energized and verified; parallel branches can affect the result. A continuity buzzer only confirms an instrument threshold: it does not guarantee that a connection can carry rated current. Voltage drop under load can reveal contact resistance that is not evident in a continuity test."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Before trusting a reading, check AC/DC mode, range, probes, sockets, CAT category, instrument condition, measurement reference and circuit conditions. Energized measurements may only be performed by authorized professionals using risk assessment and an approved method. In these exercises, the learner interprets supplied readings."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Example: a conductor measures 0.3 Ω with the circuit isolated; without its length, cross-section, contacts and instrument accuracy, that value alone does not prove a defect."
+    },
+    {
+      "id": "s04",
+      "type": "paragraph",
+      "content": "Self-check: can continuity be measured with the supply on? No. An ohmmeter injects its own signal, and external voltage can damage equipment or create a hazard."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-013",
+  "slug": "electrical-notes-05",
+  "editorial_id": "NB-EL-05",
+  "title": "Measurement quality and differential diagnosis",
+  "kicker": "Electrical systems · Block 01 · Technical review pending",
+  "excerpt": "A useful measurement must distinguish hypotheses.",
+  "categories": [
+    "Electrical fundamentals and measurement"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A useful measurement must distinguish hypotheses. Recording which points, in which state, with which reference and when prevents incorrect conclusions. Distinguish no-load and loaded measurements, instantaneous values and trends, voltage between conductors and voltage relative to earth. Diagrams must identify the test point. Resolution and accuracy are not synonyms. A 24.0 V reading can coexist with an uncaptured intermittent dip; correlate events and records."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: a supply reads 24.1 V without load and 18.7 V during startup. Which observation best distinguishes the fault? The dip under load, always checked against demand, wiring and supply limits."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Block summary: identify quantity, reference, load condition and measurement limits before diagnosing."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-014",
+  "slug": "electrical-notes-06",
+  "editorial_id": "NB-EL-06",
+  "title": "Single-phase and three-phase supplies",
+  "kicker": "Electrical systems · Block 02 · Technical review pending",
+  "excerpt": "A three-phase distribution has three phase conductors; depending on the system, it may include a neutral and a protective conductor PE.",
+  "categories": [
+    "Electrical distribution and protection"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A three-phase distribution has three phase conductors; depending on the system, it may include a neutral and a protective conductor PE. In a typical European 400/230 V system, 400 V is the voltage between phases and 230 V between phase and neutral, but the actual values must be read from the schematic and nameplate. PE is not neutral and must not be used as a functional return. PE continuity and configuration are safety matters requiring verification under applicable rules."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "A three-phase motor can keep rotating after phase loss in some circumstances, with reduced torque, overcurrent and thermal risk. Do not assume it always stops immediately. Detection requires suitable protection and circuit analysis."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: does 400 V between L1-L2 mean 400 V between L1-N? No."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-015",
+  "slug": "electrical-notes-07",
+  "editorial_id": "NB-EL-07",
+  "title": "Industrial 24 VDC power supplies",
+  "kicker": "Electrical systems · Block 02 · Technical review pending",
+  "excerpt": "A supply converts an admissible input (for example, 230 VAC) to a regulated DC output.",
+  "categories": [
+    "Electrical distribution and protection"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A supply converts an admissible input (for example, 230 VAC) to a regulated DC output. Check rated voltage, maximum current, overload curves, temperature, derating, ripple, selectivity and branch distribution. Terminals +24V and 0V are not automatically equivalent to PE. Some systems reference 0 V to earth by design; do not assume this without documentation."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Supplies may limit current, reduce voltage or disconnect during overload. A branch voltage dip may also be caused by a conductor, terminal, electronic fuse or return. Diagnosis compares supply-output and load readings with the current-demand condition."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: if there are 24 V at the supply output and 18 V at the load, is the supply necessarily defective? No; examine distribution and voltage drop in conductors/terminals."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-016",
+  "slug": "electrical-notes-08",
+  "editorial_id": "NB-EL-08",
+  "title": "Fuses, circuit breakers and overcurrent protection",
+  "kicker": "Electrical systems · Block 02 · Technical review pending",
+  "excerpt": "A fuse interrupts by melting its element; a circuit breaker opens through defined trip mechanisms.",
+  "categories": [
+    "Electrical distribution and protection"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A fuse interrupts by melting its element; a circuit breaker opens through defined trip mechanisms. Selection depends on voltage, current, breaking capacity, curve, let-through energy, conductor cross-section, short-circuit current and coordination. A tripped protective device is a symptom, not the root cause. Do not replace it with a higher rating to avoid trips. Before resetting, assess why it operated and verify the installation under an authorized procedure."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Distinguish overload (sustained excessive current) from short circuit (a very low-impedance path and high current). Trip timing and records may help but do not always identify the cause unambiguously."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: increasing a repeatedly tripping fuse from 2 A to 10 A without checking conductors or load is a valid correction. False."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-017",
+  "slug": "electrical-notes-09",
+  "editorial_id": "NB-EL-09",
+  "title": "RCDs, insulation and PE",
+  "kicker": "Electrical systems · Block 02 · Technical review pending",
+  "excerpt": "A residual current device (RCD) compares currents through its active conductors and operates if the imbalance meets its tripping conditions.",
+  "categories": [
+    "Electrical distribution and protection"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A residual current device (RCD) compares currents through its active conductors and operates if the imbalance meets its tripping conditions. It does not itself replace overcurrent protection unless it is a combined device. An insulation fault can cause leakage current, but functional leakage and transients also exist; interpretation depends on equipment, RCD type and architecture. PE provides a protective path according to the earthing system; an RCD does not compensate for its absence."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "An insulation test requires a de-energized circuit, sensitive electronics disconnected or protected as specified by the manufacturer, suitable test voltage and competent personnel. Experiences provide results of tests already performed by authorized personnel."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Self-check: if an RCD trips, is it safe to conclude there is a phase-to-neutral short circuit? No."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-018",
+  "slug": "electrical-notes-10",
+  "editorial_id": "NB-EL-10",
+  "title": "Selectivity, segregation and distribution",
+  "kicker": "Electrical systems · Block 02 · Technical review pending",
+  "excerpt": "A cabinet must allow identification of the incoming supply, branch protection, power supplies, 24 V distribution, terminals and loads.",
+  "categories": [
+    "Electrical distribution and protection"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A cabinet must allow identification of the incoming supply, branch protection, power supplies, 24 V distribution, terminals and loads. Selectivity aims to make the appropriate protective device operate for a fault without unnecessarily cutting other circuits; it cannot be assumed without a study and manufacturer data. Segregating power, control, signals and communications reduces interference and facilitates maintenance. Labels, references and current documentation are diagnostic tools, not decoration."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: a sensor fault cuts all 24 V in the cabinet. Which design aspect should be reviewed? Distribution and protection coordination, without inferring the exact solution without a schematic."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Block summary: locate the energy source, affected branch, function of each protective device and trip condition."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-019",
+  "slug": "electrical-notes-11",
+  "editorial_id": "NB-EL-11",
+  "title": "Control versus power",
+  "kicker": "Electrical systems · Block 03 · Technical review pending",
+  "excerpt": "The power circuit carries energy to the load (motor, heater, etc.).",
+  "categories": [
+    "Control and power circuits"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "The power circuit carries energy to the load (motor, heater, etc.). The control circuit processes conditions and operates elements such as contactor coils or control inputs. Voltage present in the power circuit does not prove a run permission exists. In a classic direct-on-line starter, the start command energizes a coil that closes the main contacts; an auxiliary contact can hold the command if the design permits it."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: a motor has voltage available upstream of its contactor and does not rotate. Is that enough to blame the motor? No; the contactor state and control conditions must be known."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-020",
+  "slug": "electrical-notes-12",
+  "editorial_id": "NB-EL-12",
+  "title": "Contactors, coils and auxiliaries",
+  "kicker": "Electrical systems · Block 03 · Technical review pending",
+  "excerpt": "A contactor includes a coil (A1/A2), main contacts and auxiliary contacts.",
+  "categories": [
+    "Control and power circuits"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A contactor includes a coil (A1/A2), main contacts and auxiliary contacts. The coil must match its voltage, AC/DC type and duty. An NO contact is open in the device's reference state; an NC contact is closed in that state, which does not necessarily mean when the whole machine is off. Contacts are represented according to the applicable convention and specified reference state. Typical auxiliary designations may include 13-14 (NO) and 21-22 (NC), but verify the schematic and manufacturer."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: if rated voltage is present between A1-A2 during the command and the contactor does not operate, can you conclude the start pushbutton is open? No. The measured voltage directs investigation towards the coil, specification, connection or mechanism, with subsequent validation."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-021",
+  "slug": "electrical-notes-13",
+  "editorial_id": "NB-EL-13",
+  "title": "Pushbuttons, seal-in and interlocks",
+  "kicker": "Electrical systems · Block 03 · Technical review pending",
+  "excerpt": "A classic start-stop circuit includes STOP NC, START NO and an NO seal-in auxiliary in parallel with START.",
+  "categories": [
+    "Control and power circuits"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A classic start-stop circuit includes STOP NC, START NO and an NO seal-in auxiliary in parallel with START. When START is released, the coil stays energized if permission conditions remain satisfied. Electrical interlocking between reversing contactors prevents simultaneous commands, but applications that require it also use mechanical interlocking and suitable safety design. An emergency stop is not simply a process STOP pushbutton: its function is defined by risk assessment and safety architecture."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: the motor only runs while START is held. Possible causes include a seal-in auxiliary that does not close, interrupted seal-in wiring or logic that does not latch; replacing START alone is not justified."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-022",
+  "slug": "electrical-notes-14",
+  "editorial_id": "NB-EL-14",
+  "title": "Three-phase motors, nameplates and overload relays",
+  "kicker": "Electrical systems · Block 03 · Technical review pending",
+  "excerpt": "The nameplate provides voltage, connection, rated current, frequency, power and other data.",
+  "categories": [
+    "Control and power circuits"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "The nameplate provides voltage, connection, rated current, frequency, power and other data. In direct-on-line starting, the contactor switches power and an overload device protects against thermal conditions within its application. Settings must be based on the nameplate, schematic, starting method and manufacturer documentation. High current may arise from mechanical load, electrical fault, abnormal voltage or incorrect connection; a tripped relay alone does not show which one."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: if current rises when a conveyor jams, which hypothesis takes priority? Increased mechanical load, checked against electrical and mechanical data."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-023",
+  "slug": "electrical-notes-15",
+  "editorial_id": "NB-EL-15",
+  "title": "Relays, timers and PLC outputs",
+  "kicker": "Electrical systems · Block 03 · Technical review pending",
+  "excerpt": "PLC outputs may be transistor or relay types, with different limits; not every output can directly power any coil.",
+  "categories": [
+    "Control and power circuits"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "PLC outputs may be transistor or relay types, with different limits; not every output can directly power any coil. Consider consumption, transient suppression, polarity, return, fuses and isolation. An interposing relay may separate a control output from the load but adds failure points. Timers may be electrical or logical; diagnosis must distinguish the software command from the physical element's state."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: Q0.0=TRUE in a Watch Table means KM1 necessarily receives 24 V. False: it indicates the logical output state, not wiring continuity or effective voltage across the coil."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Block summary: follow permission, command, output, wiring, coil, contacts and load as different links."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-024",
+  "slug": "electrical-notes-16",
+  "editorial_id": "NB-EL-16",
+  "title": "Symbols and conventions",
+  "kicker": "Electrical systems · Block 04 · Technical review pending",
+  "excerpt": "Schematics use standardized symbols and reference-state conventions.",
+  "categories": [
+    "Reading schematics and wiring"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Schematics use standardized symbols and reference-state conventions. A real connection cannot be inferred from the graphical proximity of two symbols: connection identifiers, references, potentials and numbering govern. Drawings must include a legend and revision. Switch, coil, fuse, earth, motor and auxiliary-contact symbols must have correct electrical semantics, not be freely generated for appearance."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: can a KM1 contact drawn on another sheet belong to the same contactor? Yes, through its designation and cross-reference."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-025",
+  "slug": "electrical-notes-17",
+  "editorial_id": "NB-EL-17",
+  "title": "Designations and cross-references",
+  "kicker": "Electrical systems · Block 04 · Technical review pending",
+  "excerpt": "Consistent designations (-QF1, -F1, -KM1, -X1, -M1) help locate protection, contactors, terminal blocks and motors.",
+  "categories": [
+    "Reading schematics and wiring"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Consistent designations (-QF1, -F1, -KM1, -X1, -M1) help locate protection, contactors, terminal blocks and motors. Letters and numbers must follow the project's convention; do not assume every prefix is universally applicable. A cross-reference links coil and contacts or continuity between pages. An obsolete revision may lead to searching for a nonexistent terminal."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: a drawing shows -KM1:13-14 on sheet 4. What should be located? The identified auxiliary contact of KM1, not another device numbered 13."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-026",
+  "slug": "electrical-notes-18",
+  "editorial_id": "NB-EL-18",
+  "title": "Terminals, potentials and numbering",
+  "kicker": "Electrical systems · Block 04 · Technical review pending",
+  "excerpt": "A terminal block (-X1) is a connection point and may permit disconnection for testing depending on its model.",
+  "categories": [
+    "Reading schematics and wiring"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A terminal block (-X1) is a connection point and may permit disconnection for testing depending on its model. X1:5 identifies a terminal; the wire number may differ. Potentials +24V, 0V, L1, N, PE have different functions. Diagnosis follows source → protection → terminal → cable → load → return. An open return is as relevant as an open supply conductor."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: there are 24 V at X1:5 relative to cabinet 0 V, but the sensor does not work. What remains to verify? Voltage and return at the sensor terminals, load conditions and the sensor's own state."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-027",
+  "slug": "electrical-notes-19",
+  "editorial_id": "NB-EL-19",
+  "title": "Reading control schematics",
+  "kicker": "Electrical systems · Block 04 · Technical review pending",
+  "excerpt": "Read from the control supply towards the return, identifying series contacts (simultaneous conditions) and parallel branches (alternative paths).",
+  "categories": [
+    "Reading schematics and wiring"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Read from the control supply towards the return, identifying series contacts (simultaneous conditions) and parallel branches (alternative paths). A protective NC contact opens when its device operates; a seal-in branch maintains energy after START is released. Complex drawings separate safety, process permissions, PLC command and power; an absent condition can block the sequence without an electrical failure."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: if STOP NC is open, can START energize the coil in a classic series circuit? No, unless alternative paths not shown exist, which must be investigated."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-028",
+  "slug": "electrical-notes-20",
+  "editorial_id": "NB-EL-20",
+  "title": "Traceability and revision control",
+  "kicker": "Electrical systems · Block 04 · Technical review pending",
+  "excerpt": "Reproducible diagnosis cites drawing, revision, equipment, terminals, machine state, measurements and conclusion.",
+  "categories": [
+    "Reading schematics and wiring"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Reproducible diagnosis cites drawing, revision, equipment, terminals, machine state, measurements and conclusion. Never physically change a wire just because the drawing says so without verifying actual identification and procedure. After an authorized repair, update documentation, markings and the intervention record. Use the same nomenclature in Notebook, evidence, Experience and schematics."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: which matters more when diagnosing a discrepancy: a drawing without a revision, or verified and documented physical identification? Traceable evidence and investigation of the discrepancy; do not improvise modifications."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Block summary: each symbol must correspond to a component, each conductor to a potential and each conclusion to identifiable evidence."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-029",
+  "slug": "electrical-notes-21",
+  "editorial_id": "NB-EL-21",
+  "title": "Diagnostic method",
+  "kicker": "Electrical systems · Block 05 · Technical review pending",
+  "excerpt": "1) Bound the symptom and conditions of occurrence; 2) identify the affected function and current drawing; 3) generate hypotheses that can be distinguished from one another; 4) review alarms, records and existing measurements; 5) choose the next check with greatest diagnostic value; 6) isolate the cause; 7) correct under an authorized procedure; 8) verify function and protection; 9) document.",
+  "categories": [
+    "Electrical diagnosis and safety"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "1) Bound the symptom and conditions of occurrence; 2) identify the affected function and current drawing; 3) generate hypotheses that can be distinguished from one another; 4) review alarms, records and existing measurements; 5) choose the next check with greatest diagnostic value; 6) isolate the cause; 7) correct under an authorized procedure; 8) verify function and protection; 9) document. Avoid confirmation bias towards the first hypothesis and replacing components by elimination."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: three sensors fail simultaneously. What should be investigated before replacing them individually? Common elements: supply, protection, return, module and shared cable."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-030",
+  "slug": "electrical-notes-22",
+  "editorial_id": "NB-EL-22",
+  "title": "Isolation, lockout and proving absence of voltage",
+  "kicker": "Electrical systems · Block 05 · Technical review pending",
+  "excerpt": "Before opening or intervening in a real circuit, apply the corresponding isolation and lockout procedure, identify all sources (including UPS, capacitors and backfeeds), prevent restoration, prove absence of voltage with an appropriate method and instrument, and control residual energy.",
+  "categories": [
+    "Electrical diagnosis and safety"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Before opening or intervening in a real circuit, apply the corresponding isolation and lockout procedure, identify all sources (including UPS, capacitors and backfeeds), prevent restoration, prove absence of voltage with an appropriate method and instrument, and control residual energy. The specific sequence is defined by the installation procedure and qualified personnel. An HMI in STOP or a PLC in STOP is not electrical isolation."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: pressing STOP permits measuring coil continuity. False: a process STOP does not guarantee absence of voltage."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-031",
+  "slug": "electrical-notes-23",
+  "editorial_id": "NB-EL-23",
+  "title": "Diagnosis by comparison and under load",
+  "kicker": "Electrical systems · Block 05 · Technical review pending",
+  "excerpt": "Comparing a healthy and faulty branch can identify differences in voltage, current, protection state or signals.",
+  "categories": [
+    "Electrical diagnosis and safety"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "Comparing a healthy and faulty branch can identify differences in voltage, current, protection state or signals. Voltage drop is proportional to current and resistance under appropriate conditions (ΔU≈I×R); a deteriorated terminal may show normal voltage without load and a substantial drop when current flows. Thermography or a hot spot provides clues but does not replace measurements and analysis."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: 24 V without load and 17 V with load at the cable end. Which hypothesis gains support? Excessive series resistance or a supply unable to sustain demand, distinguished by measuring source and end in the same state."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-032",
+  "slug": "electrical-notes-24",
+  "editorial_id": "NB-EL-24",
+  "title": "Insulation and leakage",
+  "kicker": "Electrical systems · Block 05 · Technical review pending",
+  "excerpt": "An insulation fault is an unintended current path between conductors or towards conductive parts.",
+  "categories": [
+    "Electrical diagnosis and safety"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "An insulation fault is an unintended current path between conductors or towards conductive parts. Symptoms include RCD trips, insulation alarms or intermittent behaviour due to moisture. Insulation resistance is measured with suitable equipment and test voltages only on an isolated and prepared installation, disconnecting sensitive electronics as specified by the manufacturer. An isolated reading must be interpreted against the applicable standard, voltage, temperature, topology and equipment limits."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: applying 500 VDC from an insulation tester directly to a PLC output to locate leakage is valid. False."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+},
+{
+  "id": "article-033",
+  "slug": "electrical-notes-25",
+  "editorial_id": "NB-EL-25",
+  "title": "Verification, recurrence and documentation",
+  "kicker": "Electrical systems · Block 05 · Technical review pending",
+  "excerpt": "A correction is verified when the function is demonstrated to be restored, the symptom does not recur under representative conditions, protective devices retain their function and records are coherent.",
+  "categories": [
+    "Electrical diagnosis and safety"
+  ],
+  "related": {
+    "labs": [],
+    "notebook": []
+  },
+  "sections": [
+    {
+      "id": "s-review",
+      "type": "engineering-note",
+      "title": "Text preview · technical review pending",
+      "content": "Educational content under technical and editorial review. The English translation requires human technical review. Interpret supplied or simulated records; this material does not authorize work on a real installation."
+    },
+    {
+      "id": "s01",
+      "type": "paragraph",
+      "content": "A correction is verified when the function is demonstrated to be restored, the symptom does not recur under representative conditions, protective devices retain their function and records are coherent. A replacement that makes the machine start without explaining the mechanism may leave a latent risk. Document cause, before/after evidence, authorized intervention, tests and verification limits."
+    },
+    {
+      "id": "s02",
+      "type": "paragraph",
+      "content": "Self-check: after tightening a terminal, the motor recovers; is closing the incident enough? No: document and verify connections, operation and causes of loosening according to procedure."
+    },
+    {
+      "id": "s03",
+      "type": "paragraph",
+      "content": "Block summary: safety, evidence and verification are parts of reasoning, not administrative appendices."
+    }
+  ],
+  "review_status": "technical_review",
+  "translation_review": "human_technical_review_pending",
+  "capability_id": "ICF-06"
+}
 ];
 
 export function getNotebook(locale) { return localizeNotebook(notebook, locale); }

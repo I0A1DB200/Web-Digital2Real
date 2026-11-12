@@ -1,0 +1,509 @@
+contract_version: "2.0.0"
+metadata:
+  id: "EXP-ELECTRICAL-PROTECTION-035"
+  editorial_id: "EE-0035"
+  content_version: "1.0"
+  class: "practice"
+  access: "free"
+  status: "technical_review"
+  language: "es"
+localization:
+  default_locale: "es"
+  supported_locales:
+    - "es"
+    - "en"
+  locale_files:
+    es: "locales/es.yaml"
+    en: "locales/en.yaml"
+classification:
+  platform: "Vendor-neutral low-voltage industrial circuits"
+  domain: "Industrial electrical troubleshooting"
+  industry: "Manufacturing"
+  machine_type: "Simulated industrial electrical installation"
+  difficulty: "intermediate"
+capability_references:
+  -
+    capability_id: "ICF-06"
+    competency_ids:
+      - "COMP-EL-CIRCUIT-TRACEABILITY"
+      - "COMP-EL-EVIDENCE-INTERPRETATION"
+      - "COMP-EL-VERIFIED-RECOVERY"
+public:
+  slug: "auxiliary-circuit-protection-trip"
+  title: "Dispara la protección del circuito auxiliar"
+  summary: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Preview textual; evidencias visuales y revisión técnica pendientes."
+  estimated_duration: 20
+  scenario:
+    initial_context: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+    operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-018 (NB-EL-10): Selectividad, separación y distribución; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico; article-032 (NB-EL-24): Aislamiento y fugas"
+    initiating_event: "Dispara la protección del circuito auxiliar"
+    learner_role: "Técnico que interpreta un caso simulado y justifica diagnóstico, intervención y verificación."
+    safety_context:
+      safe_state: "Caso didáctico simulado. Las lecturas energizadas son registros ya obtenidos por personal autorizado. Antes de inspección invasiva, continuidad, resistencia o aislamiento: desenergización, consignación, ausencia de tensión verificada y control de energía almacenada según procedimiento de la instalación."
+      intervention_constraints:
+        - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
+        - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
+        - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
+        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+  learning_objectives:
+    -
+      id: "OBJ-TRACE-CIRCUIT"
+      description: "Notebook — itinerario en Engineering Notes: article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-018 (NB-EL-10): Selectividad, separación y distribución; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico; article-032 (NB-EL-24): Aislamiento y fugas"
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-CIRCUIT-TRACEABILITY"
+    -
+      id: "OBJ-INTERPRET-EVIDENCE"
+      description: "Discriminar hipótesis con los registros disponibles sin adelantar la causa raíz."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-EVIDENCE-INTERPRETATION"
+    -
+      id: "OBJ-VERIFY-RECOVERY"
+      description: "Distinguir reparación realizada de recuperación verificada con criterios del caso."
+      capability_id: "ICF-06"
+      competency_id: "COMP-EL-VERIFIED-RECOVERY"
+  stages:
+    -
+      id: "STAGE-01-DIAGNOSIS"
+      phase: "incident"
+      title: "Delimitar el síntoma"
+      situation: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-00-RECORD"
+      decision_ids:
+        - "DEC-01-A"
+        - "DEC-01-B"
+        - "DEC-01-C"
+      media_ids: []
+    -
+      id: "STAGE-02-DIAGNOSIS"
+      phase: "investigation"
+      title: "Interpretar el primer registro"
+      situation: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-01-RECORD"
+      decision_ids:
+        - "DEC-02-A"
+        - "DEC-02-B"
+        - "DEC-02-C"
+      media_ids: []
+    -
+      id: "STAGE-03-DIAGNOSIS"
+      phase: "investigation"
+      title: "Contrastar hipótesis"
+      situation: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-02-RECORD"
+      decision_ids:
+        - "DEC-03-A"
+        - "DEC-03-B"
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "STAGE-04-DIAGNOSIS"
+      phase: "investigation"
+      title: "Confirmar la causa e intervenir con seguridad"
+      situation: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-03-RECORD"
+      decision_ids:
+        - "DEC-04-A"
+        - "DEC-04-B"
+        - "DEC-04-C"
+      media_ids: []
+    -
+      id: "STAGE-05-VERIFY-RECOVERY"
+      phase: "solution"
+      title: "Verificar la recuperación"
+      situation: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      evidence_ids:
+        - "EVID-04-RECORD"
+      decision_ids:
+        - "DEC-05-A"
+        - "DEC-05-B"
+        - "DEC-05-C"
+      media_ids: []
+  evidence:
+    -
+      id: "EVID-00-RECORD"
+      type: "initial_observation"
+      source: "Registro didáctico simulado · contexto"
+      content: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+      reliability: "high"
+      revealed_by: []
+      media_ids: []
+    -
+      id: "EVID-01-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D1"
+      content: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-01-A"
+      media_ids: []
+    -
+      id: "EVID-02-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D2"
+      content: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-02-B"
+      media_ids: []
+    -
+      id: "EVID-03-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D3"
+      content: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-03-C"
+      media_ids: []
+    -
+      id: "EVID-04-RECORD"
+      type: "diagnostic"
+      source: "Registro didáctico simulado · D4"
+      content: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-04-A"
+      media_ids: []
+    -
+      id: "EVID-05-RECORD"
+      type: "functional_test"
+      source: "Registro didáctico simulado · D5"
+      content: "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+      reliability: "confirmed"
+      revealed_by:
+        - "DEC-05-B"
+      media_ids: []
+  decisions:
+    -
+      id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Identificar exactamente qué protección y qué rama desconecta."
+    -
+      id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Cambiar fuente principal. Se atribuye la desconexión a PS1 antes de identificar el ramal concreto que dispara y de contrastar la disponibilidad de los otros circuitos de 24 VDC."
+    -
+      id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      action: "Aumentar límite de F24.2."
+    -
+      id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "Todos los 24 V del cuadro han fallado. Se generaliza la desconexión de F24.2 a toda la distribución, sin diferenciar el ramal de Y2 de los demás ramales que permanecen en servicio."
+    -
+      id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "El defecto está asociado al ramal Y2 o a su carga."
+    -
+      id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      action: "El PLC está en STOP."
+    -
+      id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "F24.2 es necesariamente defectuoso. Se interpreta su desconexión como avería propia y se evita investigar el registro de corriente de fallo elevada en el circuito protegido de Y2."
+    -
+      id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "La válvula está bloqueada mecánicamente."
+    -
+      id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      action: "Buscar defecto de aislamiento o carga en corto mediante procedimiento aislado."
+    -
+      id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Cable con +24 V y 0 V en contacto confirma la causa; no se puentea F24.2."
+    -
+      id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Rearmar repetidamente hasta estabilizar. Se propone recuperar servicio por repetición de la orden sin corregir el contacto entre +24 V y 0 V que la inspección aislada documenta dentro de la canaleta."
+    -
+      id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      action: "Sustituir por fusible de mayor calibre."
+    -
+      id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Solo borrar evento. Se considera el borrado de eventos como criterio de cierre, sin reparar el tramo de cable, revisar su ruta ni verificar función y actuación selectiva del ramal."
+    -
+      id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Reparar cableado según especificación, inspeccionar ruta y verificar disparo selectivo/función."
+    -
+      id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      action: "Dejar Y2 desconectada sin documentar."
+  visual:
+    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
+    representation: "planned"
+    assets: []
+  completion:
+    title: "Debrief técnico"
+    summary: "cortocircuito en cable de Y2, aguas abajo de protección F24.2; la protección cumple su función. Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+    process:
+      - "Identificar exactamente qué protección y qué rama desconecta."
+      - "El defecto está asociado al ramal Y2 o a su carga."
+      - "Buscar defecto de aislamiento o carga en corto mediante procedimiento aislado."
+      - "Cable con +24 V y 0 V en contacto confirma la causa; no se puentea F24.2."
+      - "Reparar cableado según especificación, inspeccionar ruta y verificar disparo selectivo/función."
+    lesson: "sustituir tramo y corregir protección mecánica de cable. Notebook — itinerario en Engineering Notes: article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-016 (NB-EL-08): Fusibles, magnetotérmicos y protección de sobreintensidad; article-017 (NB-EL-09): Diferenciales, aislamiento y PE; article-018 (NB-EL-10): Selectividad, separación y distribución; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-029 (NB-EL-21): Método de diagnóstico; article-032 (NB-EL-24): Aislamiento y fugas"
+    avoided_errors:
+      - "Cambiar fuente principal."
+      - "Aumentar límite de F24.2."
+      - "Todos los 24 V del cuadro han fallado."
+      - "El PLC está en STOP."
+      - "F24.2 es necesariamente defectuoso."
+      - "La válvula está bloqueada mecánicamente."
+      - "Rearmar repetidamente hasta estabilizar."
+      - "Sustituir por fusible de mayor calibre."
+      - "Solo borrar evento."
+      - "Dejar Y2 desconectada sin documentar."
+    industrial_value:
+      - "Diagnóstico trazable sin sustituir componentes por descarte."
+      - "Recuperación verificada manteniendo protecciones."
+    media_ids: []
+private:
+  fault_model:
+    root_cause: "cortocircuito en cable de Y2, aguas abajo de protección F24.2; la protección cumple su función."
+    recovery_conditions:
+      - "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+  diagnostic_model:
+    hypotheses:
+      -
+        id: "HYP-CONFIRMED-FAULT"
+        statement: "cortocircuito en cable de Y2, aguas abajo de protección F24.2; la protección cumple su función."
+        initial_status: "possible"
+    confirmed_root_cause: "HYP-CONFIRMED-FAULT"
+    critical_path:
+      - "DEC-01-A"
+      - "DEC-02-B"
+      - "DEC-03-C"
+      - "DEC-04-A"
+      - "DEC-05-B"
+  decision_logic:
+    -
+      decision_id: "DEC-01-A"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: true
+      rationale: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+      classification: "strong"
+      consequence: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+      evidence_revealed:
+        - "EVID-01-RECORD"
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-01-B"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+      classification: "weak"
+      consequence: "La propuesta «Cambiar fuente principal.» no está sustentada por este registro.  Revisa: El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Cambiar fuente principal.» no está sustentada por este registro.  Revisa: El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-01-C"
+      stage_id: "STAGE-01-DIAGNOSIS"
+      is_correct: false
+      rationale: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+      classification: "weak"
+      consequence: "La propuesta «Aumentar límite de F24.2.» no está sustentada por este registro.  Revisa: El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-02-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Aumentar límite de F24.2.» no está sustentada por este registro.  Revisa: El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-A"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "otras ramas funcionan."
+      classification: "weak"
+      consequence: "otras ramas funcionan. Revisa: F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "otras ramas funcionan. Revisa: F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-02-B"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: true
+      rationale: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+      classification: "strong"
+      consequence: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      evidence_revealed:
+        - "EVID-02-RECORD"
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-02-C"
+      stage_id: "STAGE-02-DIAGNOSIS"
+      is_correct: false
+      rationale: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+      classification: "weak"
+      consequence: "La propuesta «El PLC está en STOP.» no está sustentada por este registro.  Revisa: F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-03-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «El PLC está en STOP.» no está sustentada por este registro.  Revisa: F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-A"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      classification: "weak"
+      consequence: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-B"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: false
+      rationale: "no explica corriente de cortocircuito."
+      classification: "weak"
+      consequence: "no explica corriente de cortocircuito. Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "no explica corriente de cortocircuito. Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-03-C"
+      stage_id: "STAGE-03-DIAGNOSIS"
+      is_correct: true
+      rationale: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      classification: "strong"
+      consequence: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      evidence_revealed:
+        - "EVID-03-RECORD"
+      next_stage: "STAGE-04-DIAGNOSIS"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-A"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: true
+      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      classification: "strong"
+      consequence: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
+      evidence_revealed:
+        - "EVID-04-RECORD"
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-04-B"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      classification: "unsafe"
+      consequence: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-04-C"
+      stage_id: "STAGE-04-DIAGNOSIS"
+      is_correct: false
+      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      classification: "weak"
+      consequence: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "STAGE-05-VERIFY-RECOVERY"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-A"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
+      classification: "weak"
+      consequence: "La propuesta «Solo borrar evento.» no está sustentada por este registro.  Revisa: El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Solo borrar evento.» no está sustentada por este registro.  Revisa: El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto. Vuelve a elegir sin ejecutar la opción propuesta."
+    -
+      decision_id: "DEC-05-B"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: true
+      rationale: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
+      classification: "strong"
+      consequence: "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+      evidence_revealed:
+        - "EVID-05-RECORD"
+      next_stage: "COMPLETE"
+      score_effect: 10
+      safety_effect: 0
+    -
+      decision_id: "DEC-05-C"
+      stage_id: "STAGE-05-VERIFY-RECOVERY"
+      is_correct: false
+      rationale: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
+      classification: "weak"
+      consequence: "La propuesta «Dejar Y2 desconectada sin documentar.» no está sustentada por este registro.  Revisa: El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto. Vuelve a elegir sin ejecutar la opción propuesta."
+      evidence_revealed: []
+      next_stage: "COMPLETE"
+      score_effect: -5
+      safety_effect: 0
+      retry_feedback: "La propuesta «Dejar Y2 desconectada sin documentar.» no está sustentada por este registro.  Revisa: El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto. Vuelve a elegir sin ejecutar la opción propuesta."
+  scoring:
+    purpose: "session_feedback"
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 0
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - "PASS"
+    thresholds:
+      -
+        outcome: "RETRY_RECOMMENDED"
+        minimum: 0
+        maximum: 49
+      -
+        outcome: "PASS_WITH_GUIDANCE"
+        minimum: 50
+        maximum: 79
+      -
+        outcome: "PASS"
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: "cortocircuito en cable de Y2, aguas abajo de protección F24.2; la protección cumple su función."
+    correct_reasoning:
+      - "Identificar exactamente qué protección y qué rama desconecta."
+      - "El defecto está asociado al ramal Y2 o a su carga."
+      - "Buscar defecto de aislamiento o carga en corto mediante procedimiento aislado."
+      - "Cable con +24 V y 0 V en contacto confirma la causa; no se puentea F24.2."
+      - "Reparar cableado según especificación, inspeccionar ruta y verificar disparo selectivo/función."
+    recovery:
+      - "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+  technical_validation:
+    status: "pending"
+    evidence:
+      - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
+      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Traducción EN nueva, pendiente de revisión técnica humana."
+      - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
+      - "Escenario fuente completo: el fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar la electroválvula -Y2; otros ramales siguen activos. Fuente PS1 mantiene 24,1 V; registro de F24.2 muestra corriente de fallo muy elevada y desconexión. Inspección aislada revela aislamiento dañado en cable de Y2, con contacto conductor +24 V–0 V dentro de una canaleta; bobina Y2 separada y comprobada sin anomalía."

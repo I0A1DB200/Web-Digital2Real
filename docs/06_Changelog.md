@@ -811,3 +811,11 @@ This changelog entry established the official file architecture workflow for Dig
 - Preserved the existing Notebook carousel structure, content, interactions, assets, and Engineering Notes hero.
 
 ---
+
+
+## 2026-11-12 — ENV-004 text-first content integration
+
+- Added the preview Environment Industrial Electrical Systems with the byte-preserved approved cover and ten approved hotspot coordinates.
+- Added 25 complete ES/EN Notebook entries in five existing category reading paths, plus ten Experience V2 text packages (50 authored moments / 150 options).
+- Evidence manifests specify six to seven pending images per case without registering missing files. Technical, translation and provisional ICF-06 competency review remain pending.
+- No Engine, renderer, stylesheet, existing Experience, workflow or deployment changes.

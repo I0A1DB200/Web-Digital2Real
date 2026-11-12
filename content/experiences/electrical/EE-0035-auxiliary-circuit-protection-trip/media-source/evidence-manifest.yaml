@@ -1,0 +1,125 @@
+editorial_id: "EXP-EL-05"
+canonical_id: "EXP-ELECTRICAL-PROTECTION-035"
+status: "pending_user_assets_and_technical_review"
+expected_asset_range:
+  - 6
+  - 7
+supplied_evidence_images: 0
+required_missing_minimum: 6
+optional_additional: 1
+notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+notebooks:
+  -
+    editorial_id: "NB-EL-07"
+    canonical_id: "article-015"
+  -
+    editorial_id: "NB-EL-08"
+    canonical_id: "article-016"
+  -
+    editorial_id: "NB-EL-09"
+    canonical_id: "article-017"
+  -
+    editorial_id: "NB-EL-10"
+    canonical_id: "article-018"
+  -
+    editorial_id: "NB-EL-18"
+    canonical_id: "article-026"
+  -
+    editorial_id: "NB-EL-21"
+    canonical_id: "article-029"
+  -
+    editorial_id: "NB-EL-24"
+    canonical_id: "article-032"
+families:
+  -
+    editorial_id: "E1"
+    purpose_es: "distribución de 24 V con F24.1/F24.2"
+    purpose_en: "24 V distribution with F24.1/F24.2"
+    data_values_expected_es: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+    earliest_disclosure: "incident"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E2"
+    purpose_es: "log de protección"
+    purpose_en: "protection log"
+    data_values_expected_es: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+    earliest_disclosure: "after D1 / before D2"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E3"
+    purpose_es: "inspección de cable aislado"
+    purpose_en: "isolated cable inspection"
+    data_values_expected_es: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+    earliest_disclosure: "split by acquisition: after D2 and D3; never show later findings early"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E4"
+    purpose_es: "pruebas de ramal y función tras reparación"
+    purpose_en: "branch and function tests after repair"
+    data_values_expected_es: "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+    earliest_disclosure: "after D5 verification"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+slots:
+  -
+    proposed_id: "01-CONTEXT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/01-context.png"
+    stage_or_decision: "incident"
+    acceptance: "Context only; no electrical claims or root-cause clues."
+    status: "pending_not_registered"
+    expected_text_es: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+  -
+    proposed_id: "02-CIRCUIT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/02-circuit.png"
+    stage_or_decision: "D1"
+    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
+    status: "pending_not_registered"
+    expected_text_es: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
+  -
+    proposed_id: "03-RECORD"
+    family: "E2"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/03-record.png"
+    stage_or_decision: "after D1"
+    acceptance: "Records supporting the next question, with no future findings."
+    status: "pending_not_registered"
+    expected_text_es: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
+  -
+    proposed_id: "04-COMPARISON"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/04-comparison.png"
+    stage_or_decision: "after D2"
+    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
+    status: "pending_not_registered"
+    expected_text_es: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+  -
+    proposed_id: "05-INSPECTION"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/05-inspection.png"
+    stage_or_decision: "after D3"
+    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
+    status: "pending_not_registered"
+    expected_text_es: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+  -
+    proposed_id: "06-VERIFICATION"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/06-verification.png"
+    stage_or_decision: "after D5"
+    acceptance: "Approved post-repair verification record; no invented thresholds or values."
+    status: "pending_not_registered"
+    expected_text_es: "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+  -
+    proposed_id: "07-SYNTHESIS"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-PROTECTION-035/07-synthesis.png"
+    stage_or_decision: "completion"
+    acceptance: "Optional final synthesis; does not establish recovery on its own."
+    status: "pending_not_registered"
+    expected_text_es: "Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
+risk_notes:
+  - "All energized readings are simulated or previously obtained by authorized personnel."
+  - "Confirm diagram against a verified netlist and source topology before registering any visual."

@@ -1,0 +1,120 @@
+editorial_id: "EXP-EL-04"
+canonical_id: "EXP-ELECTRICAL-PHASE-034"
+status: "pending_user_assets_and_technical_review"
+expected_asset_range:
+  - 6
+  - 7
+supplied_evidence_images: 0
+required_missing_minimum: 6
+optional_additional: 1
+notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+notebooks:
+  -
+    editorial_id: "NB-EL-06"
+    canonical_id: "article-014"
+  -
+    editorial_id: "NB-EL-08"
+    canonical_id: "article-016"
+  -
+    editorial_id: "NB-EL-14"
+    canonical_id: "article-022"
+  -
+    editorial_id: "NB-EL-18"
+    canonical_id: "article-026"
+  -
+    editorial_id: "NB-EL-21"
+    canonical_id: "article-029"
+families:
+  -
+    editorial_id: "E1"
+    purpose_es: "esquema trifásico L1/L2/L3, KM2 y M2"
+    purpose_en: "L1/L2/L3, KM2 and M2 three-phase schematic"
+    data_values_expected_es: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+    earliest_disclosure: "incident"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E2"
+    purpose_es: "tabla comparativa antes/después"
+    purpose_en: "before/after comparison table"
+    data_values_expected_es: "En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro."
+    earliest_disclosure: "after D1 / before D2"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E3"
+    purpose_es: "registro de inspección aislada de polo L3"
+    purpose_en: "isolated L3 pole inspection record"
+    data_values_expected_es: "Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico. El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones."
+    earliest_disclosure: "split by acquisition: after D2 and D3; never show later findings early"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+  -
+    editorial_id: "E4"
+    purpose_es: "verificación post-reparación"
+    purpose_en: "post-repair verification"
+    data_values_expected_es: "El registro simulado posterior a sustitución autorizada de KM2 establece comprobación trifásica, arranque y protección conforme al procedimiento. Se revisa la causa del daño, incluidos desgaste, terminales y coordinación; la recuperación se apoya en esa verificación, no en el patrón idealizado inicial."
+    earliest_disclosure: "after D5 verification"
+    validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
+    safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
+slots:
+  -
+    proposed_id: "01-CONTEXT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/01-context.png"
+    stage_or_decision: "incident"
+    acceptance: "Context only; no electrical claims or root-cause clues."
+    status: "pending_not_registered"
+    expected_text_es: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+  -
+    proposed_id: "02-CIRCUIT"
+    family: "E1"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/02-circuit.png"
+    stage_or_decision: "D1"
+    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
+    status: "pending_not_registered"
+    expected_text_es: "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son datos didácticos idealizados de un modelo aislado; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+  -
+    proposed_id: "03-RECORD"
+    family: "E2"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/03-record.png"
+    stage_or_decision: "after D1"
+    acceptance: "Records supporting the next question, with no future findings."
+    status: "pending_not_registered"
+    expected_text_es: "En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro."
+  -
+    proposed_id: "04-COMPARISON"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/04-comparison.png"
+    stage_or_decision: "after D2"
+    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
+    status: "pending_not_registered"
+    expected_text_es: "Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico."
+  -
+    proposed_id: "05-INSPECTION"
+    family: "E3"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/05-inspection.png"
+    stage_or_decision: "after D3"
+    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
+    status: "pending_not_registered"
+    expected_text_es: "El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones."
+  -
+    proposed_id: "06-VERIFICATION"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/06-verification.png"
+    stage_or_decision: "after D5"
+    acceptance: "Approved post-repair verification record; no invented thresholds or values."
+    status: "pending_not_registered"
+    expected_text_es: "El registro simulado posterior a sustitución autorizada de KM2 establece comprobación trifásica, arranque y protección conforme al procedimiento. Se revisa la causa del daño, incluidos desgaste, terminales y coordinación; la recuperación se apoya en esa verificación, no en el patrón idealizado inicial."
+  -
+    proposed_id: "07-SYNTHESIS"
+    family: "E4"
+    intended_path: "assets/EXP-ELECTRICAL-PHASE-034/07-synthesis.png"
+    stage_or_decision: "completion"
+    acceptance: "Optional final synthesis; does not establish recovery on its own."
+    status: "pending_not_registered"
+    expected_text_es: "El registro simulado posterior a sustitución autorizada de KM2 establece comprobación trifásica, arranque y protección conforme al procedimiento. Se revisa la causa del daño, incluidos desgaste, terminales y coordinación; la recuperación se apoya en esa verificación, no en el patrón idealizado inicial."
+risk_notes:
+  - "All energized readings are simulated or previously obtained by authorized personnel."
+  - "Confirm diagram against a verified netlist and source topology before registering any visual."
+  - "Idealized phase-to-phase readings cannot establish phase loss without isolated pole confirmation."

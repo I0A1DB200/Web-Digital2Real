@@ -1,0 +1,30 @@
+[
+  {
+    "width": 1440,
+    "diameter_px": 32,
+    "circular_collisions": []
+  },
+  {
+    "width": 1280,
+    "diameter_px": 30.71875,
+    "circular_collisions": []
+  },
+  {
+    "width": 390,
+    "diameter_px": 22.390625,
+    "circular_collisions": []
+  },
+  {
+    "width": 320,
+    "diameter_px": 22.390625,
+    "circular_collisions": [
+      {
+        "points": [
+          3,
+          8
+        ],
+        "overlap_px": 1.486488802676515
+      }
+    ]
+  }
+]

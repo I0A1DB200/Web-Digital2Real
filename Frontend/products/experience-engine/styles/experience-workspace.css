@@ -424,10 +424,11 @@
   50% { box-shadow: 0 0 0 0.18rem var(--hotspot-outline), 0 0 0 0.55rem var(--hotspot-signal-soft); }
 }
 
-/* ENV-003 keeps the shared hotspot treatment. A local image shade improves
-   readability over the bright network hardware without changing the marker. */
+/* Bright environment covers share an image shade; hotspot styling stays above it. */
 .environment-card__media[data-environment-id="ENV-003"]::after,
-.environment-stage[data-environment-id="ENV-003"]::after {
+.environment-stage[data-environment-id="ENV-003"]::after,
+.environment-card__media[data-environment-id="ENV-004"]::after,
+.environment-stage[data-environment-id="ENV-004"]::after {
   position: absolute;
   inset: 0;
   z-index: 1;

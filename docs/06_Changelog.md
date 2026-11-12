@@ -819,3 +819,9 @@ This changelog entry established the official file architecture workflow for Dig
 - Added 25 complete ES/EN Notebook entries in five existing category reading paths, plus ten Experience V2 text packages (50 authored moments / 150 options).
 - Evidence manifests specify six to seven pending images per case without registering missing files. Technical, translation and provisional ICF-06 competency review remain pending.
 - No Engine, renderer, stylesheet, existing Experience, workflow or deployment changes.
+
+
+## 2026-11-12 — ENV-004 cover shade
+
+- Applied the existing ENV-003 dark gradient to the ENV-004 catalog cover and interactive environment image.
+- Preserved the original cover bytes, approved hotspot positions and pointer/keyboard interactions; the shade stays below hotspots and ignores pointer events.

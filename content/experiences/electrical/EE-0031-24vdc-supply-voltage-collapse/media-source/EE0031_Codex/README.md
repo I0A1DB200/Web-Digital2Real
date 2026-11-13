@@ -1,0 +1,1 @@
+EE-0031: six visually approved PNG assets + Codex implementation contract + SHA256 manifest. Technical engineering validation remains open. Give the complete ZIP to Codex and request it to follow CODEX_PROMPT.md. No automatic commit/push/deploy.

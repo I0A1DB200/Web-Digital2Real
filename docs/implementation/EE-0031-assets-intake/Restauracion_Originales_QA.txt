@@ -1,0 +1,13 @@
+EE-0031 — ORIGINALES DEL ZIP INTEGRADOS
+
+Los seis PNG originales de EE0031_Codex.zip están vinculados sin cambios de píxeles. SHA-256 y dimensiones coinciden con el manifiesto del ZIP. Eliminados los seis PNG generados, sus copias de producción, el esquema generado rechazado y las capturas del QA R2.
+
+Mapa: ART-001 portada; ART-002 etapa inicial; ART-003 evidencia D1; ART-004 evidencia D2; ART-005 evidencia D3; ART-006 evidencia de verificación D5 y debrief. La sexta imagen permanece oculta hasta superar la verificación final. Sin cambios de decisiones, diagnóstico, Engine, ENV ni otras Experiences.
+
+QA específico: 30/30. Navegador real: cuatro recorridos ES/EN, escritorio 1440 y móvil 390 px; cuarenta reintentos incorrectos, temporización de imágenes, control de ampliación, diez hotspots y cinco referencias Notebook comprobados. Cero errores JavaScript/HTTP. Los detalles finos en móvil requieren zoom del navegador.
+
+Las discrepancias técnicas previas siguen documentadas en media-source/visual-intake.json; la petición de integrarlas no se convierte en aprobación de ingeniería. Revisión humana pendiente. Los informes previos describen estados ya sustituidos; este es el estado vigente.
+
+Sin commit, push, merge ni deploy.
+
+Suite compartida final: node --test, 551/551, cero fallos. git diff --check correcto.

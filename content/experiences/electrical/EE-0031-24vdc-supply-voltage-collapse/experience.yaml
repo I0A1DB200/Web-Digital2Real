@@ -31,7 +31,7 @@ capability_references:
 public:
   slug: "24vdc-supply-voltage-collapse"
   title: "La alimentación de 24 V cae al arrancar"
-  summary: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Ilustraciones simuladas; revisión técnica humana pendiente."
   estimated_duration: 20
   scenario:
     initial_context: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
@@ -45,7 +45,7 @@ public:
         - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
         - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
         - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
-        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+        - "Ilustraciones del caso simulado; revisión técnica/editorial humana pendiente. No es material aprobado para operación real."
   learning_objectives:
     -
       id: "OBJ-TRACE-CIRCUIT"
@@ -74,7 +74,7 @@ public:
         - "DEC-01-A"
         - "DEC-01-B"
         - "DEC-01-C"
-      media_ids: []
+      media_ids: ["ART-002"]
     -
       id: "STAGE-02-DIAGNOSIS"
       phase: "investigation"
@@ -140,7 +140,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-01-A"
-      media_ids: []
+      media_ids: ["ART-003"]
     -
       id: "EVID-02-RECORD"
       type: "diagnostic"
@@ -149,7 +149,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-B"
-      media_ids: []
+      media_ids: ["ART-004"]
     -
       id: "EVID-03-RECORD"
       type: "diagnostic"
@@ -158,7 +158,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-03-B"
-      media_ids: []
+      media_ids: ["ART-005"]
     -
       id: "EVID-04-RECORD"
       type: "diagnostic"
@@ -176,7 +176,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-05-C"
-      media_ids: []
+      media_ids: ["ART-006"]
   decisions:
     -
       id: "DEC-01-A"
@@ -239,9 +239,46 @@ public:
       stage_id: "STAGE-05-VERIFY-RECOVERY"
       action: "Tras solución de ingeniería aprobada, registrar tensión en PS1 durante el peor arranque y ausencia de reinicios."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-    representation: "planned"
-    assets: []
+    educational_purpose: "Ilustraciones simuladas del caso; cada registro visual se revela tras la acción correspondiente. La portada orienta, no prueba el fallo."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/01-cabinet-layout.png"
+        alt: "Distribución ilustrada de un cuadro con PS1 24 VDC / 5 A, CPU S7-1200 A1, estación ET 200SP A2 y bornero X1."
+        caption: "Solo orientación; no acredita el cableado real ni coordinación de protecciones."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/02-electrical-schematic.png"
+        alt: "Esquema funcional de estilo multifilar con entrada 230 VAC, PS1, F1/F2 y actuadores YV1/YV2; conexiones sin validación técnica."
+        caption: "No utilizar como documento de instalación ni atribuirle una netlist aprobada."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/03-tia-diagnostic-buffer.png"
+        alt: "Simulación de buffer de diagnóstico TIA Portal V17 con pérdida y retorno de estación ET 200SP; Event ID no validado."
+        caption: "No es una captura real de Siemens ni prueba del mecanismo físico del fallo."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/04-voltage-watch-comparison.png"
+        alt: "Comparación simulada: órdenes FALSE/TRUE y voltímetro externo junto a ET 200SP con 24,21 V y 17,82 V."
+        caption: "La Watch Table vigila booleanos; el instrumento externo muestra la tensión. El punto de la imagen no acredita la tensión en PS1."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/05-current-watch-comparison.png"
+        alt: "Comparación simulada de órdenes y pinza de corriente: 0,42 A en reposo y 3,68 A con órdenes activas; no demuestra sobrecarga de 5 A."
+        caption: "3,68 A < 5 A. No se ha medido ni demostrado un pico de 6,7 A en esta imagen."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-SUPPLY-031/06-recovery-verification.png"
+        alt: "Comparación de recuperación simulada con fuentes de 5 A y 10 A, corriente de 3,68 A y voltajes de 17,82 V y 24,21 V."
+        caption: "Comparación simulada de fuentes de 5 A y 10 A; no demuestra por sí sola causa ni recuperación."
+        purpose: "completion"
   completion:
     title: "Debrief técnico"
     summary: "demanda transitoria simultánea superior a la capacidad dinámica especificada de PS1; la fuente entra en limitación. No confundir con un cable defectuoso porque la caída aparece también en los bornes de PS1. En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."
@@ -266,7 +303,7 @@ public:
     industrial_value:
       - "Diagnóstico trazable sin sustituir componentes por descarte."
       - "Recuperación verificada manteniendo protecciones."
-    media_ids: []
+    media_ids: ["ART-006"]
 private:
   fault_model:
     root_cause: "demanda transitoria simultánea superior a la capacidad dinámica especificada de PS1; la fuente entra en limitación. No confundir con un cable defectuoso porque la caída aparece también en los bornes de PS1."
@@ -503,7 +540,7 @@ private:
     status: "pending"
     evidence:
       - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
-      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Seis PNG originales del ZIP vinculados por petición explícita del usuario; discrepancias técnicas documentadas en media-source/visual-intake.json. Revisión humana pendiente."
       - "Traducción EN nueva, pendiente de revisión técnica humana."
       - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
       - "Escenario fuente completo: una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; dos ramas: PLC (1,2 A) y actuadores (carga habitual 2,0 A, pico documentado 5,5 A). La fuente registra limitación de corriente cuando ambas válvulas se activan simultáneamente. Valores de simulación: 24,2 V sin actuación; 17,8 V durante el pico en bornes de PS1; recuperación a 24,1 V al cesar la orden."

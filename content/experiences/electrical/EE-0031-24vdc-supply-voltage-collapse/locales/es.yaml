@@ -1,7 +1,7 @@
 locale: "es"
 translations:
   title: "La alimentación de 24 V cae al arrancar"
-  summary: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio. Ilustraciones simuladas; revisión técnica humana pendiente."
   scenario:
     initial_context: "Una cinta se detiene al intentar activar dos electroválvulas. El PLC permanece energizado, pero un módulo de E/S remoto reinicia. Fuente -PS1 nominal 24 VDC / 5 A; ramas separadas para PLC y actuadores. Aún no se ha localizado el origen del reinicio."
     operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-029 (NB-EL-21): Método de diagnóstico; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
@@ -14,7 +14,7 @@ translations:
         - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
         - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
         - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
-        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+        - "Ilustraciones del caso simulado; revisión técnica/editorial humana pendiente. No es material aprobado para operación real."
   learning_objectives:
     OBJ-TRACE-CIRCUIT:
       description: "Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-015 (NB-EL-07): Fuentes industriales de 24 VDC; article-029 (NB-EL-21): Método de diagnóstico; article-031 (NB-EL-23): Diagnóstico por comparación y bajo carga"
@@ -100,8 +100,26 @@ translations:
     DEC-05-A: "La propuesta «Reiniciar PLC una vez.» no está sustentada por este registro.  Revisa: La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación. Vuelve a elegir sin ejecutar la opción propuesta."
     DEC-05-B: "exige dimensionado, protecciones y aprobación. Revisa: La demanda transitoria simultánea supera la capacidad dinámica especificada de PS1 y activa su limitación. La solución requiere ingeniería aprobada: redistribuir o limitar simultaneidad, o dimensionar fuente y protecciones según fabricante. El diagnóstico y una sustitución por sí solos no verifican recuperación. Vuelve a elegir sin ejecutar la opción propuesta."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-  assets: {}
+    educational_purpose: "Ilustraciones simuladas del caso; cada registro visual se revela tras la acción correspondiente. La portada orienta, no prueba el fallo."
+  assets:
+    ART-001:
+      alt: "Distribución ilustrada de un cuadro con PS1 24 VDC / 5 A, CPU S7-1200 A1, estación ET 200SP A2 y bornero X1."
+      caption: "Solo orientación; no acredita el cableado real ni coordinación de protecciones."
+    ART-002:
+      alt: "Esquema funcional de estilo multifilar con entrada 230 VAC, PS1, F1/F2 y actuadores YV1/YV2; conexiones sin validación técnica."
+      caption: "No utilizar como documento de instalación ni atribuirle una netlist aprobada."
+    ART-003:
+      alt: "Simulación de buffer de diagnóstico TIA Portal V17 con pérdida y retorno de estación ET 200SP; Event ID no validado."
+      caption: "No es una captura real de Siemens ni prueba del mecanismo físico del fallo."
+    ART-004:
+      alt: "Comparación simulada: órdenes FALSE/TRUE y voltímetro externo junto a ET 200SP con 24,21 V y 17,82 V."
+      caption: "La Watch Table vigila booleanos; el instrumento externo muestra la tensión. El punto de la imagen no acredita la tensión en PS1."
+    ART-005:
+      alt: "Comparación simulada de órdenes y pinza de corriente: 0,42 A en reposo y 3,68 A con órdenes activas; no demuestra sobrecarga de 5 A."
+      caption: "3,68 A < 5 A. No se ha medido ni demostrado un pico de 6,7 A en esta imagen."
+    ART-006:
+      alt: "Comparación de recuperación simulada con fuentes de 5 A y 10 A, corriente de 3,68 A y voltajes de 17,82 V y 24,21 V."
+      caption: "Comparación simulada de fuentes de 5 A y 10 A; no demuestra por sí sola causa ni recuperación."
   completion:
     title: "Debrief técnico"
     summary: "demanda transitoria simultánea superior a la capacidad dinámica especificada de PS1; la fuente entra en limitación. No confundir con un cable defectuoso porque la caída aparece también en los bornes de PS1. En el escenario simulado, tras la solución aprobada se repite el peor arranque: el registro de PS1 permanece dentro de los límites del diseño y no aparecen reinicios. Se conservan las protecciones. No se fija un modelo de fuente sin cálculo ni se induce una sobrecarga en un cuadro real."

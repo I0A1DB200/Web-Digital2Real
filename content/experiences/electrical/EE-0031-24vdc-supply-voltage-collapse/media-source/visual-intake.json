@@ -1,0 +1,349 @@
+{
+  "format": "D2R Experience media-source intake audit",
+  "version": 1,
+  "editorial_id": "EE-0031",
+  "source_editorial_id": "EXP-EL-01",
+  "canonical_id": "EXP-ELECTRICAL-SUPPLY-031",
+  "source_archive": "EE0031_Codex.zip",
+  "status": "ORIGINALS_BOUND_USER_REQUEST_TECHNICAL_REVIEW_PENDING",
+  "visual_acceptance": "user-approved images, not technical acceptance",
+  "supplied_assets": 6,
+  "runtime_registered_assets": 6,
+  "runtime_presented_assets": 6,
+  "new_visual_publication_allowed": false,
+  "existing_text_preview_preserved": false,
+  "input_inventory": "EE0031_Codex/ASSET_MANIFEST.json",
+  "assets": [
+    {
+      "source_id": "ASSET-01",
+      "proposed_runtime_id": "ART-001",
+      "source_file": "assets/EE-0031_ASSET-01_Cabinet_Layout.png",
+      "canonical_file": "assets/01-cabinet-layout.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/01-cabinet-layout.png",
+      "sha256": "f0dc9849f701a7641ff957d18a6839ebc9ce11c9635814da4a1a0aa2cfbe11b5",
+      "mime": "image/png",
+      "width": 1024,
+      "height": 1536,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_illustration",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Distribución ilustrada de un cuadro con PS1 24 VDC / 5 A, CPU S7-1200 A1, estación ET 200SP A2 y bornero X1.",
+          "caption": "Solo orientación; no acredita el cableado real ni coordinación de protecciones."
+        },
+        "en": {
+          "alt": "Illustrated cabinet layout with PS1 rated 24 VDC / 5 A, S7-1200 CPU A1, ET 200SP station A2 and terminal block X1.",
+          "caption": "Orientation only; it does not establish actual wiring or protection coordination."
+        }
+      },
+      "blocking_or_open_issues": [
+        "B04",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.visual.cover_asset_id",
+        "asset_id": "ART-001",
+        "earliest": "Incident Brief / orientation",
+        "decision": null,
+        "evidence": null
+      },
+      "runtime_id": "ART-001"
+    },
+    {
+      "source_id": "ASSET-02",
+      "proposed_runtime_id": "ART-002",
+      "source_file": "assets/EE-0031_ASSET-02_Electrical_Schematic.png",
+      "canonical_file": "assets/02-electrical-schematic.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/02-electrical-schematic.png",
+      "sha256": "ac8062ceb7faea580b3d5442b6c9860c55cfa6d06ce3ac72153f6a56a505af12",
+      "mime": "image/png",
+      "width": 1536,
+      "height": 1024,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_illustration",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Esquema funcional de estilo multifilar con entrada 230 VAC, PS1, F1/F2 y actuadores YV1/YV2; conexiones sin validación técnica.",
+          "caption": "No utilizar como documento de instalación ni atribuirle una netlist aprobada."
+        },
+        "en": {
+          "alt": "Multifilar-style functional schematic with 230 VAC input, PS1, F1/F2 and YV1/YV2 actuators; connections are not technically validated.",
+          "caption": "Do not use as an installation drawing or treat it as an approved netlist."
+        }
+      },
+      "blocking_or_open_issues": [
+        "B04",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.stages[STAGE-01-DIAGNOSIS].media_ids",
+        "asset_id": "ART-002",
+        "earliest": "Reference schematic available before D1, only after topology approval",
+        "decision": null,
+        "evidence": null
+      },
+      "runtime_id": "ART-002"
+    },
+    {
+      "source_id": "ASSET-03",
+      "proposed_runtime_id": "ART-003",
+      "source_file": "assets/EE-0031_ASSET-03_TIA_Diagnostic_Buffer.png",
+      "canonical_file": "assets/03-tia-diagnostic-buffer.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/03-tia-diagnostic-buffer.png",
+      "sha256": "b5e4b3f8d177df301cf502fc367992d517b55c185340ec8af07a578c6b716ea3",
+      "mime": "image/png",
+      "width": 1536,
+      "height": 1024,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_simulation",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Simulación de buffer de diagnóstico TIA Portal V17 con pérdida y retorno de estación ET 200SP; Event ID no validado.",
+          "caption": "No es una captura real de Siemens ni prueba del mecanismo físico del fallo."
+        },
+        "en": {
+          "alt": "Simulated TIA Portal V17 diagnostic buffer showing ET 200SP station loss and return; the Event ID is unverified.",
+          "caption": "This is not a real Siemens capture or proof of the physical fault mechanism."
+        }
+      },
+      "blocking_or_open_issues": [
+        "O01",
+        "O02",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.evidence[EVID-01-RECORD].media_ids",
+        "asset_id": "ART-003",
+        "earliest": "After D1 acceptance, never before the inspection choice",
+        "decision": "DEC-01-A",
+        "evidence": "EVID-01-RECORD"
+      },
+      "runtime_id": "ART-003"
+    },
+    {
+      "source_id": "ASSET-04",
+      "proposed_runtime_id": "ART-004",
+      "source_file": "assets/EE-0031_ASSET-04_Voltage_Watch_Comparison.png",
+      "canonical_file": "assets/04-voltage-watch-comparison.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/04-voltage-watch-comparison.png",
+      "sha256": "629b492e9fd448c53d799f7c6c80cf4b5330d14aa5e083a53a89e301ddc356da",
+      "mime": "image/png",
+      "width": 1774,
+      "height": 887,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_simulation",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Comparación simulada: órdenes FALSE/TRUE y voltímetro externo junto a ET 200SP con 24,21 V y 17,82 V.",
+          "caption": "La Watch Table vigila booleanos; el instrumento externo muestra la tensión. El punto de la imagen no acredita la tensión en PS1."
+        },
+        "en": {
+          "alt": "Simulated FALSE/TRUE commands compared with an external voltmeter beside ET 200SP reading 24.21 V and 17.82 V.",
+          "caption": "The Watch Table monitors booleans; an external instrument displays voltage. This image does not establish voltage at PS1."
+        }
+      },
+      "blocking_or_open_issues": [
+        "B02",
+        "O02",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.evidence[EVID-02-RECORD].media_ids",
+        "asset_id": "ART-004",
+        "earliest": "After D2 acceptance; blocked by measurement-point mismatch",
+        "decision": "DEC-02-B",
+        "evidence": "EVID-02-RECORD"
+      },
+      "runtime_id": "ART-004"
+    },
+    {
+      "source_id": "ASSET-05",
+      "proposed_runtime_id": "ART-005",
+      "source_file": "assets/EE-0031_ASSET-05_Current_Watch_Comparison.png",
+      "canonical_file": "assets/05-current-watch-comparison.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/05-current-watch-comparison.png",
+      "sha256": "7bfd8660d8f5b550b5c1297e4a03029fa3c7927b84af0e433db8c6ac303d4ff7",
+      "mime": "image/png",
+      "width": 1774,
+      "height": 887,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_simulation",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Comparación simulada de órdenes y pinza de corriente: 0,42 A en reposo y 3,68 A con órdenes activas; no demuestra sobrecarga de 5 A.",
+          "caption": "3,68 A < 5 A. No se ha medido ni demostrado un pico de 6,7 A en esta imagen."
+        },
+        "en": {
+          "alt": "Simulated command and clamp-current comparison: 0.42 A idle and 3.68 A commanded; this does not demonstrate overload of a 5 A supply.",
+          "caption": "3.68 A < 5 A. This image neither measures nor demonstrates a 6.7 A peak."
+        }
+      },
+      "blocking_or_open_issues": [
+        "B01",
+        "O02",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.evidence[EVID-03-RECORD].media_ids",
+        "asset_id": "ART-005",
+        "earliest": "After D3 acceptance; blocked by current/diagnosis mismatch",
+        "decision": "DEC-03-B",
+        "evidence": "EVID-03-RECORD"
+      },
+      "runtime_id": "ART-005"
+    },
+    {
+      "source_id": "ASSET-06",
+      "proposed_runtime_id": "ART-006",
+      "source_file": "assets/EE-0031_ASSET-06_Recovery_Verification.png",
+      "canonical_file": "assets/06-recovery-verification.png",
+      "proposed_runtime_src": "assets/EXP-ELECTRICAL-SUPPLY-031/06-recovery-verification.png",
+      "sha256": "51ebeb019f0391a007fc004532691c0716df0b0dc8bfbec3ee1e122625959534",
+      "mime": "image/png",
+      "width": 1774,
+      "height": 887,
+      "visual_approval": "user_visual_only",
+      "technical_status": "UNRESOLVED_REVIEW_PENDING",
+      "intake_state": "BOUND_ORIGINAL_USER_REQUEST",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "source_kind": "user_supplied_simulation",
+      "rights": "Not independently established; supplied by the user for this task. No manufacturer endorsement asserted.",
+      "localization_status": "active_ES_EN",
+      "proposed_localization": {
+        "es": {
+          "alt": "Comparación de recuperación simulada con fuentes de 5 A y 10 A, corriente de 3,68 A y voltajes de 17,82 V y 24,21 V.",
+          "caption": "Solo después de verificación autorizada, si se resuelve el bloqueo técnico. Cambiar a 10 A no demuestra causa ni recuperación por sí solo."
+        },
+        "en": {
+          "alt": "Proposed simulated recovery comparing 5 A and 10 A supplies at 3.68 A, with voltages of 17.82 V and 24.21 V.",
+          "caption": "Only after authorized verification if the technical blockers are resolved. Changing to 10 A alone proves neither cause nor recovery."
+        }
+      },
+      "blocking_or_open_issues": [
+        "B03",
+        "O02",
+        "O03"
+      ],
+      "proposed_binding": {
+        "field": "public.evidence[EVID-05-RECORD].media_ids + public.completion.media_ids",
+        "asset_id": "ART-006",
+        "earliest": "After D5 has established recovery; never in an earlier stage",
+        "decision": "DEC-05-C",
+        "evidence": "EVID-05-RECORD"
+      },
+      "runtime_id": "ART-006"
+    }
+  ],
+  "issues": [
+    {
+      "id": "B01",
+      "status": "BLOCKING",
+      "assets": [
+        "ART-005"
+      ],
+      "detail_es": "El guion utiliza 1,2 A PLC + 5,5 A de actuadores y 6,7 A totales. Los nuevos píxeles muestran 0,42 A y 3,68 A. 3,68 A es inferior a 5 A; no prueba sobrecarga ni captura un pico de 6,7 A. El conductor de medida tampoco identifica inequívocamente el consumo total.",
+      "required_signoff": "Decidir una única verdad técnica: corregir assets para el guion conservado, o autorizar otro guion y diagnóstico sustentado por evidencia adicional. No inventar un transitorio."
+    },
+    {
+      "id": "B02",
+      "status": "BLOCKING",
+      "assets": [
+        "ART-004"
+      ],
+      "detail_es": "La caída de 17,8 V del guion se mide en los propios bornes de PS1. En ASSET-04 las puntas aparecen en +24 V/0 V junto a ET 200SP. 17,82 V en la carga no demuestra caída en origen. 24,21→24,2 y 17,82→17,8 son redondeos compatibles; el bloqueo es el punto de medida, no la precisión decimal.",
+      "required_signoff": "Identificar y documentar los dos puntos y su estado de carga; aportar lectura de PS1 o imagen corregida si se conserva el diagnóstico actual."
+    },
+    {
+      "id": "B03",
+      "status": "BLOCKING",
+      "assets": [
+        "ART-006"
+      ],
+      "detail_es": "La imagen sustituye 5 A por 10 A y muestra 3,68 A con 17,82→24,21 V. Es una recuperación simulada propuesta, no evidencia de que 5 A fuese insuficiente. No prueba capacidad dinámica, coordinación de protección, duración ni ausencia de reinicios.",
+      "required_signoff": "Justificar diagnóstico y solución concreta mediante especificación/ensayo y criterios de recuperación; la comparación visual no es prueba causal."
+    },
+    {
+      "id": "B04",
+      "status": "BLOCKING",
+      "assets": [
+        "ART-001",
+        "ART-002"
+      ],
+      "detail_es": "Topología gráfica no validada: X10 representa aparentes enlaces entre terminales L+ y M; los retornos de YV1/YV2 y los bornes X1 no quedan trazados de forma unívoca, aparecen designaciones 3/4 repetidas y ramales con conexiones de F1/F2 ambiguas. Revisar protección F1 4 A/F2 6 A, Q1 16 A/F0 C6 A, PE y alimentación de salidas. Son observaciones de píxeles, no una netlist comprobada ni confirmación de cortocircuito real.",
+      "required_signoff": "Plano/netlist y terminales validados para referencias de equipo concretas. No reinterpretar símbolos ambiguos para hacerlos coincidir con el guion."
+    },
+    {
+      "id": "O01",
+      "status": "OPEN",
+      "assets": [
+        "ART-003"
+      ],
+      "detail_es": "Vista simulada TIA V17. No se ha validado 16# 02:400C ni el literal Supply voltage missing para la combinación CPU/IM/firmware escogida. No se trata como código real, medición de voltaje, prueba de reinicio ni evento de una CPU con número de pedido definido.",
+      "required_signoff": "Referencia oficial y versión concretas, o tratamiento explícito de simulación sin autoridad del Event ID."
+    },
+    {
+      "id": "O02",
+      "status": "OPEN",
+      "assets": [
+        "ART-003",
+        "ART-004",
+        "ART-005",
+        "ART-006"
+      ],
+      "detail_es": "%Q0.0/%Q0.1 y %M10.0 son direcciones ilustrativas; la tabla vigila booleanos, no mide corriente o tensión. No se ha comprobado su asociación física con las salidas ET 200SP representadas.",
+      "required_signoff": "Configurar y verificar la asignación de hardware/tags; las columnas Modify value no autorizan forcing o modificación."
+    },
+    {
+      "id": "O03",
+      "status": "OPEN",
+      "assets": [
+        "ART-001",
+        "ART-002",
+        "ART-003",
+        "ART-004",
+        "ART-005",
+        "ART-006"
+      ],
+      "detail_es": "Aceptación visual aportada por el usuario; revisión técnica, esquema, proveniencia/licencia detallada y validación humana de descripciones EN pendientes. Sin afirmación de autorización de fabricante.",
+      "required_signoff": "Completar expediente técnico y derechos antes de una publicación aprobada."
+    }
+  ],
+  "unblock_policy": "Original images bound at explicit user direction. No image alteration or diagnosis rewrite. Technical discrepancies remain unresolved and documented.",
+  "preserved_authoring_sha256": {
+    "experience.yaml": "f9bce90b481ba446bd90beba60ed748389dd7125a5df28014a2103c40e77cd2a",
+    "locales/es.yaml": "1e57cdbc1c77c05b29040bc07e3618f2accbb706a9bfeedbae08521b03e66fd2",
+    "locales/en.yaml": "37eeff944dfe13b4aef61ee36412c678f326b4cbe30f3a26007b63d0f86be342"
+  },
+  "user_direction": "Restore the six ZIP originals, integrate into EE-0031 and delete generated replacements. Explicitly supersedes staging-only instructions; does not establish engineering correctness."
+}

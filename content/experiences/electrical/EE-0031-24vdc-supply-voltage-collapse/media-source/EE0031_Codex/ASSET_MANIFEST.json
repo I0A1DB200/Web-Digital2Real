@@ -1,0 +1,48 @@
+{
+  "experience": "EE-0031",
+  "assets": [
+    {
+      "id": "ASSET-01",
+      "file": "assets/EE-0031_ASSET-01_Cabinet_Layout.png",
+      "sha256": "f0dc9849f701a7641ff957d18a6839ebc9ce11c9635814da4a1a0aa2cfbe11b5",
+      "role": "Cabinet_Layout",
+      "approval": "visual only"
+    },
+    {
+      "id": "ASSET-02",
+      "file": "assets/EE-0031_ASSET-02_Electrical_Schematic.png",
+      "sha256": "ac8062ceb7faea580b3d5442b6c9860c55cfa6d06ce3ac72153f6a56a505af12",
+      "role": "Electrical_Schematic",
+      "approval": "visual only"
+    },
+    {
+      "id": "ASSET-03",
+      "file": "assets/EE-0031_ASSET-03_TIA_Diagnostic_Buffer.png",
+      "sha256": "b5e4b3f8d177df301cf502fc367992d517b55c185340ec8af07a578c6b716ea3",
+      "role": "TIA_Diagnostic_Buffer",
+      "approval": "visual only"
+    },
+    {
+      "id": "ASSET-04",
+      "file": "assets/EE-0031_ASSET-04_Voltage_Watch_Comparison.png",
+      "sha256": "629b492e9fd448c53d799f7c6c80cf4b5330d14aa5e083a53a89e301ddc356da",
+      "role": "Voltage_Watch_Comparison",
+      "approval": "visual only"
+    },
+    {
+      "id": "ASSET-05",
+      "file": "assets/EE-0031_ASSET-05_Current_Watch_Comparison.png",
+      "sha256": "7bfd8660d8f5b550b5c1297e4a03029fa3c7927b84af0e433db8c6ac303d4ff7",
+      "role": "Current_Watch_Comparison",
+      "approval": "visual only"
+    },
+    {
+      "id": "ASSET-06",
+      "file": "assets/EE-0031_ASSET-06_Recovery_Verification.png",
+      "sha256": "51ebeb019f0391a007fc004532691c0716df0b0dc8bfbec3ee1e122625959534",
+      "role": "Recovery_Verification",
+      "approval": "visual only"
+    }
+  ],
+  "status": "visually approved; technical review pending"
+}

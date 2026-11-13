@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "24 VDC supply voltage collapses at startup"
-  summary: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located. Text preview; visual evidence and technical review pending."
+  summary: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located. Simulated illustrations; human technical review pending."
   scenario:
     initial_context: "A conveyor stops when two solenoid valves are activated. The PLC stays powered, but a remote I/O module restarts. Supply -PS1 is rated 24 VDC / 5 A, with separate PLC and actuator branches. The restart origin has not yet been located."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-029 (NB-EL-21): Diagnostic method; article-031 (NB-EL-23): Diagnosis by comparison and under load"
@@ -14,7 +14,7 @@ translations:
         - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
         - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
         - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
-        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+        - "Simulated case illustrations; human technical/editorial review pending. Not approved material for real operation."
   learning_objectives:
     OBJ-TRACE-CIRCUIT:
       description: "Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-029 (NB-EL-21): Diagnostic method; article-031 (NB-EL-23): Diagnosis by comparison and under load"
@@ -100,8 +100,26 @@ translations:
     DEC-05-A: "The proposal “Restart the PLC once.” is not supported by this record.  Review: Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery. Choose again without carrying out the proposed option."
     DEC-05-B: "sizing, protection and approval are required. Review: Simultaneous transient demand exceeds PS1's specified dynamic capability and activates current limiting. The solution requires approved engineering: redistribute or limit simultaneity, or size supply and protection according to the manufacturer. Diagnosis and replacement alone do not verify recovery. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Simulated case illustrations; each visual record is disclosed after its corresponding action. The cover provides orientation, not fault evidence."
+  assets:
+    ART-001:
+      alt: "Illustrated cabinet layout with PS1 rated 24 VDC / 5 A, S7-1200 CPU A1, ET 200SP station A2 and terminal block X1."
+      caption: "Orientation only; it does not establish actual wiring or protection coordination."
+    ART-002:
+      alt: "Multifilar-style functional schematic with 230 VAC input, PS1, F1/F2 and YV1/YV2 actuators; connections are not technically validated."
+      caption: "Do not use as an installation drawing or treat it as an approved netlist."
+    ART-003:
+      alt: "Simulated TIA Portal V17 diagnostic buffer showing ET 200SP station loss and return; the Event ID is unverified."
+      caption: "This is not a real Siemens capture or proof of the physical fault mechanism."
+    ART-004:
+      alt: "Simulated FALSE/TRUE commands compared with an external voltmeter beside ET 200SP reading 24.21 V and 17.82 V."
+      caption: "The Watch Table monitors booleans; an external instrument displays voltage. This image does not establish voltage at PS1."
+    ART-005:
+      alt: "Simulated command and clamp-current comparison: 0.42 A idle and 3.68 A commanded; this does not demonstrate overload of a 5 A supply."
+      caption: "3.68 A < 5 A. This image neither measures nor demonstrates a 6.7 A peak."
+    ART-006:
+      alt: "Proposed simulated recovery comparing 5 A and 10 A supplies at 3.68 A, with voltages of 17.82 V and 24.21 V."
+      caption: "Simulated comparison of 5 A and 10 A supplies; it does not alone establish cause or recovery."
   completion:
     title: "Technical debrief"
     summary: "simultaneous transient demand exceeds PS1's specified dynamic capability; the supply enters current limiting. Do not confuse this with a defective cable because the voltage also drops at PS1's own terminals. In the simulated scenario, the worst startup is repeated after the approved solution: the PS1 record stays within design limits and there are no restarts. Protection is retained. No supply model is selected without calculation and no overload is induced on a real cabinet."

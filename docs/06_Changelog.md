@@ -836,3 +836,7 @@ This changelog entry established the official file architecture workflow for Dig
 ### 2026-11-13 — EE-0031: originales del ZIP
 
 Por petición explícita del usuario se vinculan los seis PNG originales sin modificar y se eliminan los seis reemplazos generados. Discrepancias técnicas documentadas; revisión humana pendiente. Sin cambios de Engine ni otras Experiences.
+
+### 2026-11-13 — EE-0031: valores de pinza y notas
+
+Por petición del usuario, solo se editan los dígitos de ART-005 a 1,20 A y 6,70 A; píxeles idénticos fuera de las dos regiones numéricas. Se retiran las advertencias de ART-005/006, conservando solo los valores como pie requerido por el contrato de localización y se sincroniza el alt ES/EN. Sin cambios de preguntas, decisiones ni otras imágenes.

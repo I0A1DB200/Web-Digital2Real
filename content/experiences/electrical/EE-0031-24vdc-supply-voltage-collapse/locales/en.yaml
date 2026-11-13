@@ -115,11 +115,11 @@ translations:
       alt: "Simulated FALSE/TRUE commands compared with an external voltmeter beside ET 200SP reading 24.21 V and 17.82 V."
       caption: "The Watch Table monitors booleans; an external instrument displays voltage. This image does not establish voltage at PS1."
     ART-005:
-      alt: "Simulated command and clamp-current comparison: 0.42 A idle and 3.68 A commanded; this does not demonstrate overload of a 5 A supply."
-      caption: "3.68 A < 5 A. This image neither measures nor demonstrates a 6.7 A peak."
+      alt: "Simulated command and clamp-current comparison: 1.20 A idle and 6.70 A during activation."
+      caption: "1.20 A / 6.70 A"
     ART-006:
       alt: "Proposed simulated recovery comparing 5 A and 10 A supplies at 3.68 A, with voltages of 17.82 V and 24.21 V."
-      caption: "Simulated comparison of 5 A and 10 A supplies; it does not alone establish cause or recovery."
+      caption: "5 A / 10 A"
   completion:
     title: "Technical debrief"
     summary: "simultaneous transient demand exceeds PS1's specified dynamic capability; the supply enters current limiting. Do not confuse this with a defective cable because the voltage also drops at PS1's own terminals. In the simulated scenario, the worst startup is repeated after the approved solution: the PS1 record stays within design limits and there are no restarts. Protection is retained. No supply model is selected without calculation and no overload is induced on a real cabinet."

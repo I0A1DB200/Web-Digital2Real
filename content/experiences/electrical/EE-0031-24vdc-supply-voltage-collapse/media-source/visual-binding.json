@@ -80,18 +80,18 @@
     {
       "id": "ART-005",
       "file": "assets/05-current-watch-comparison.png",
-      "sha256": "7bfd8660d8f5b550b5c1297e4a03029fa3c7927b84af0e433db8c6ac303d4ff7",
+      "sha256": "164fcc384dcef478dc2b18115728ff8aca9221c021b9e83f6aaa7bdbc9d9ffeb",
       "width": 1774,
       "height": 887,
-      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "provenance": "User-authorized numeric-only edit; unchanged pixels outside two LCD numeric regions.",
       "localization": {
         "es": {
-          "alt": "Comparación simulada de órdenes y pinza de corriente: 0,42 A en reposo y 3,68 A con órdenes activas; no demuestra sobrecarga de 5 A.",
-          "caption": "3,68 A < 5 A. No se ha medido ni demostrado un pico de 6,7 A en esta imagen."
+          "alt": "Comparación simulada de órdenes y pinza de corriente: 1,20 A en reposo y 6,70 A durante la activación.",
+          "caption": "1,20 A / 6,70 A"
         },
         "en": {
-          "alt": "Simulated command and clamp-current comparison: 0.42 A idle and 3.68 A commanded; this does not demonstrate overload of a 5 A supply.",
-          "caption": "3.68 A < 5 A. This image neither measures nor demonstrates a 6.7 A peak."
+          "alt": "Simulated command and clamp-current comparison: 1.20 A idle and 6.70 A during activation.",
+          "caption": "1.20 A / 6.70 A"
         }
       }
     },
@@ -105,11 +105,11 @@
       "localization": {
         "es": {
           "alt": "Comparación de recuperación simulada con fuentes de 5 A y 10 A, corriente de 3,68 A y voltajes de 17,82 V y 24,21 V.",
-          "caption": "Comparación simulada de fuentes de 5 A y 10 A; no demuestra por sí sola causa ni recuperación."
+          "caption": "5 A / 10 A"
         },
         "en": {
           "alt": "Proposed simulated recovery comparing 5 A and 10 A supplies at 3.68 A, with voltages of 17.82 V and 24.21 V.",
-          "caption": "Simulated comparison of 5 A and 10 A supplies; it does not alone establish cause or recovery."
+          "caption": "5 A / 10 A"
         }
       }
     }

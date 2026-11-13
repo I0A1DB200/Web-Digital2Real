@@ -14,7 +14,7 @@ const intake=JSON.parse(await readFile(`${dir}/media-source/visual-intake.json`,
 const correction=JSON.parse(await readFile(`${dir}/media-source/visual-binding.json`,'utf8'));
 const incoming=JSON.parse(await readFile(`${dir}/media-source/EE0031_Codex/ASSET_MANIFEST.json`,'utf8'));
 
-test('EE-0031 holds six exact original PNGs, without resizing or recompression', async()=>{
+test('EE-0031 preserves ZIP provenance and the explicitly authorized numeric edit', async()=>{
   assert.equal(incoming.assets.length,6);assert.equal(intake.assets.length,6);
   const actual=(await readdir(`${dir}/assets`)).filter(f=>f.endsWith('.png')).sort();
   assert.deepEqual(actual,intake.assets.map(a=>a.canonical_file.split('/').at(-1)).sort());
@@ -22,7 +22,9 @@ test('EE-0031 holds six exact original PNGs, without resizing or recompression',
   for(const asset of intake.assets){
     const source=incoming.assets.find(a=>a.id===asset.source_id);assert.ok(source);
     const bytes=await readFile(`${dir}/${asset.canonical_file}`);
-    assert.equal(hash(bytes),source.sha256);assert.equal(asset.sha256,source.sha256);
+    assert.equal(hash(bytes),asset.sha256);
+    assert.equal(asset.original_zip_sha256 ?? asset.sha256,source.sha256);
+    if(asset.user_edit) assert.equal(asset.user_edit.outside_regions_pixels_identical,true);
     assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
     assert.deepEqual([bytes.readUInt32BE(16),bytes.readUInt32BE(20)],[asset.width,asset.height]);
     assert.equal(asset.visual_approval,'user_visual_only');

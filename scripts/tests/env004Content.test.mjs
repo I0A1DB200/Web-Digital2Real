@@ -101,8 +101,9 @@ for (const entry of mapping.experiences) {
       assert.equal(author.public.decisions.length,15);
       assert.equal(author.private.decision_logic.filter(d => d.is_correct).length,5);
       assert.equal(author.public.evidence.length,6);
-      assert.deepEqual(author.public.visual.assets,[]);
-      assert.equal(author.public.visual.representation,'planned');
+      const corrected = entry.canonical_editorial_id === 'EE-0031';
+      assert.equal(author.public.visual.assets.length, corrected ? 6 : 0);
+      assert.equal(author.public.visual.representation, corrected ? 'available' : 'planned');
       const local = resolveExperienceLocalization(author,document);
       const artifact = packageExperience(local);
       assert.equal(validateGeneratedWebArtifact(artifact).valid,true);
@@ -135,18 +136,35 @@ for (const entry of mapping.experiences) {
           assert.ok(feedback.includes(document.translations.evidence[`EVID-${String(index).padStart(2,'0')}-RECORD`].content));
         }
         const correct=author.private.decision_logic.find(d => d.stage_id===stage.id && d.is_correct);
-        const after=player.selectDecision(correct.decision_id);
+        player.selectDecision(correct.decision_id);
+        if(player.getState().interaction==='result') player.continue();
+        const after=player.getState();
         assert.equal(after.unlockedEvidence.length,index+1);
         if(index<4) assert.notEqual(after.completionStatus,'completed');
         else { assert.equal(after.completionStatus,'completed'); assert.equal(after.interaction,'completion'); }
       }
       const cleanPlayer=new ExperiencePlayer({experience:artifact});cleanPlayer.start();cleanPlayer.continue();
-      for(const did of author.private.diagnostic_model.critical_path) cleanPlayer.selectDecision(did);
+      for(const did of author.private.diagnostic_model.critical_path) {
+        cleanPlayer.selectDecision(did);
+        if(cleanPlayer.getState().interaction==='result') cleanPlayer.continue();
+      }
       assert.equal(cleanPlayer.getState().completionStatus,'completed');
       const manifest=await yaml(`${entry.path}/media-source/evidence-manifest.yaml`);
       assert.equal(manifest.families.length,4);assert.equal(manifest.slots.length,7);
-      assert.equal(manifest.required_missing_minimum,6);assert.equal(manifest.supplied_evidence_images,0);
-      assert.equal((await readdir(`${entry.path}/assets`)).filter(f => f!=='.gitkeep').length,0);
+      const intake = manifest.asset_intake_manifest
+        ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.asset_intake_manifest}`, 'utf8'))
+        : { assets: [] };
+      assert.equal(manifest.supplied_evidence_images, intake.assets.length);
+      assert.equal(manifest.required_missing_minimum, Math.max(0, manifest.expected_asset_range[0] - intake.assets.length));
+      const storedPngs = (await readdir(`${entry.path}/assets`)).filter(f => f.endsWith('.png')).sort();
+      const revisions = manifest.binding_manifest
+        ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.binding_manifest}`, 'utf8')).assets : [];
+      assert.deepEqual(storedPngs, intake.assets.map(a => a.canonical_file.split('/').at(-1)).sort());
+      if (intake.assets.length) {
+        assert.equal(intake.status, 'ORIGINALS_BOUND_USER_REQUEST_TECHNICAL_REVIEW_PENDING');
+        assert.equal(intake.new_visual_publication_allowed, false);
+        assert.equal(manifest.runtime_registered_images, revisions.length);
+      }
       for(const id of entry.notebooks) assert.ok(getNotebook(locale).some(n => n.id===id));
     });
   }

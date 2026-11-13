@@ -1,0 +1,145 @@
+{
+  "status": "ORIGINALS_BOUND_PREVIEW_TECHNICAL_REVIEW_PENDING",
+  "authorization": "Restore the six ZIP originals, integrate into EE-0031 and delete generated replacements. Explicitly supersedes staging-only instructions; does not establish engineering correctness.",
+  "original_intake": "visual-intake.json",
+  "runtime_registered_assets": 6,
+  "publishable": false,
+  "assets": [
+    {
+      "id": "ART-001",
+      "file": "assets/01-cabinet-layout.png",
+      "sha256": "f0dc9849f701a7641ff957d18a6839ebc9ce11c9635814da4a1a0aa2cfbe11b5",
+      "width": 1024,
+      "height": 1536,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Distribución ilustrada de un cuadro con PS1 24 VDC / 5 A, CPU S7-1200 A1, estación ET 200SP A2 y bornero X1.",
+          "caption": "Solo orientación; no acredita el cableado real ni coordinación de protecciones."
+        },
+        "en": {
+          "alt": "Illustrated cabinet layout with PS1 rated 24 VDC / 5 A, S7-1200 CPU A1, ET 200SP station A2 and terminal block X1.",
+          "caption": "Orientation only; it does not establish actual wiring or protection coordination."
+        }
+      }
+    },
+    {
+      "id": "ART-002",
+      "file": "assets/02-electrical-schematic.png",
+      "sha256": "ac8062ceb7faea580b3d5442b6c9860c55cfa6d06ce3ac72153f6a56a505af12",
+      "width": 1536,
+      "height": 1024,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Esquema funcional de estilo multifilar con entrada 230 VAC, PS1, F1/F2 y actuadores YV1/YV2; conexiones sin validación técnica.",
+          "caption": "No utilizar como documento de instalación ni atribuirle una netlist aprobada."
+        },
+        "en": {
+          "alt": "Multifilar-style functional schematic with 230 VAC input, PS1, F1/F2 and YV1/YV2 actuators; connections are not technically validated.",
+          "caption": "Do not use as an installation drawing or treat it as an approved netlist."
+        }
+      }
+    },
+    {
+      "id": "ART-003",
+      "file": "assets/03-tia-diagnostic-buffer.png",
+      "sha256": "b5e4b3f8d177df301cf502fc367992d517b55c185340ec8af07a578c6b716ea3",
+      "width": 1536,
+      "height": 1024,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Simulación de buffer de diagnóstico TIA Portal V17 con pérdida y retorno de estación ET 200SP; Event ID no validado.",
+          "caption": "No es una captura real de Siemens ni prueba del mecanismo físico del fallo."
+        },
+        "en": {
+          "alt": "Simulated TIA Portal V17 diagnostic buffer showing ET 200SP station loss and return; the Event ID is unverified.",
+          "caption": "This is not a real Siemens capture or proof of the physical fault mechanism."
+        }
+      }
+    },
+    {
+      "id": "ART-004",
+      "file": "assets/04-voltage-watch-comparison.png",
+      "sha256": "629b492e9fd448c53d799f7c6c80cf4b5330d14aa5e083a53a89e301ddc356da",
+      "width": 1774,
+      "height": 887,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Comparación simulada: órdenes FALSE/TRUE y voltímetro externo junto a ET 200SP con 24,21 V y 17,82 V.",
+          "caption": "La Watch Table vigila booleanos; el instrumento externo muestra la tensión. El punto de la imagen no acredita la tensión en PS1."
+        },
+        "en": {
+          "alt": "Simulated FALSE/TRUE commands compared with an external voltmeter beside ET 200SP reading 24.21 V and 17.82 V.",
+          "caption": "The Watch Table monitors booleans; an external instrument displays voltage. This image does not establish voltage at PS1."
+        }
+      }
+    },
+    {
+      "id": "ART-005",
+      "file": "assets/05-current-watch-comparison.png",
+      "sha256": "7bfd8660d8f5b550b5c1297e4a03029fa3c7927b84af0e433db8c6ac303d4ff7",
+      "width": 1774,
+      "height": 887,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Comparación simulada de órdenes y pinza de corriente: 0,42 A en reposo y 3,68 A con órdenes activas; no demuestra sobrecarga de 5 A.",
+          "caption": "3,68 A < 5 A. No se ha medido ni demostrado un pico de 6,7 A en esta imagen."
+        },
+        "en": {
+          "alt": "Simulated command and clamp-current comparison: 0.42 A idle and 3.68 A commanded; this does not demonstrate overload of a 5 A supply.",
+          "caption": "3.68 A < 5 A. This image neither measures nor demonstrates a 6.7 A peak."
+        }
+      }
+    },
+    {
+      "id": "ART-006",
+      "file": "assets/06-recovery-verification.png",
+      "sha256": "51ebeb019f0391a007fc004532691c0716df0b0dc8bfbec3ee1e122625959534",
+      "width": 1774,
+      "height": 887,
+      "provenance": "Original user-supplied ZIP, byte-for-byte",
+      "localization": {
+        "es": {
+          "alt": "Comparación de recuperación simulada con fuentes de 5 A y 10 A, corriente de 3,68 A y voltajes de 17,82 V y 24,21 V.",
+          "caption": "Comparación simulada de fuentes de 5 A y 10 A; no demuestra por sí sola causa ni recuperación."
+        },
+        "en": {
+          "alt": "Proposed simulated recovery comparing 5 A and 10 A supplies at 3.68 A, with voltages of 17.82 V and 24.21 V.",
+          "caption": "Simulated comparison of 5 A and 10 A supplies; it does not alone establish cause or recovery."
+        }
+      }
+    }
+  ],
+  "binding": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003"
+    ],
+    "EVID-02-RECORD": [
+      "ART-004"
+    ],
+    "EVID-03-RECORD": [
+      "ART-005"
+    ],
+    "EVID-05-RECORD": [
+      "ART-006"
+    ],
+    "completion": [
+      "ART-006"
+    ]
+  },
+  "limits": [
+    "Six exact original ZIP images bound at explicit user direction.",
+    "Engineering discrepancies remain unresolved; see visual-intake.json.",
+    "Not certified for installation or manufacturer-approved; human review pending."
+  ],
+  "preserved_decisions_sha256": "680fe9a43bed26b7a6bb7585986d1488b1e6edcb5a453f972c28adeffd0975bb",
+  "preserved_decision_logic_sha256": "cd8385a2850459b7df8ff8186234d3c24b0956801ea07bc32d29f35f4df45b79"
+}

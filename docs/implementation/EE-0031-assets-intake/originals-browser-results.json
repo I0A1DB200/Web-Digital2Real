@@ -1,0 +1,92 @@
+{
+  "flows": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "wrong_retries": 10,
+      "stages": 5,
+      "correct_result_images": [
+        "03-tia-diagnostic-buffer",
+        "04-voltage-watch-comparison",
+        "05-current-watch-comparison",
+        "06-recovery-verification"
+      ],
+      "recovery_only_after_final_verification": true,
+      "zoom": true,
+      "no_clipping": true,
+      "notebook_refs_resolve": true,
+      "hotspots": 10
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "wrong_retries": 10,
+      "stages": 5,
+      "correct_result_images": [
+        "03-tia-diagnostic-buffer",
+        "04-voltage-watch-comparison",
+        "05-current-watch-comparison",
+        "06-recovery-verification"
+      ],
+      "recovery_only_after_final_verification": true,
+      "zoom": true,
+      "no_clipping": true,
+      "notebook_refs_resolve": true,
+      "hotspots": 10
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "wrong_retries": 10,
+      "stages": 5,
+      "correct_result_images": [
+        "03-tia-diagnostic-buffer",
+        "04-voltage-watch-comparison",
+        "05-current-watch-comparison",
+        "06-recovery-verification"
+      ],
+      "recovery_only_after_final_verification": true,
+      "zoom": true,
+      "no_clipping": true,
+      "notebook_refs_resolve": true,
+      "hotspots": 10
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "wrong_retries": 10,
+      "stages": 5,
+      "correct_result_images": [
+        "03-tia-diagnostic-buffer",
+        "04-voltage-watch-comparison",
+        "05-current-watch-comparison",
+        "06-recovery-verification"
+      ],
+      "recovery_only_after_final_verification": true,
+      "zoom": true,
+      "no_clipping": true,
+      "notebook_refs_resolve": true,
+      "hotspots": 10
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "screenshots": [
+    "1440-es-result-1.png",
+    "1440-es-result-2.png",
+    "1440-es-result-3.png",
+    "1440-es-result-5.png",
+    "1440-en-result-1.png",
+    "1440-en-result-2.png",
+    "1440-en-result-3.png",
+    "1440-en-result-5.png",
+    "390-es-result-1.png",
+    "390-es-result-2.png",
+    "390-es-result-3.png",
+    "390-es-result-5.png",
+    "390-en-result-1.png",
+    "390-en-result-2.png",
+    "390-en-result-3.png",
+    "390-en-result-5.png"
+  ]
+}

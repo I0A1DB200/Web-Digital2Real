@@ -825,3 +825,14 @@ This changelog entry established the official file architecture workflow for Dig
 
 - Applied the existing ENV-003 dark gradient to the ENV-004 catalog cover and interactive environment image.
 - Preserved the original cover bytes, approved hotspot positions and pointer/keyboard interactions; the shade stays below hotspots and ignores pointer events.
+
+
+## 2026-11-13 — EE-0031 visual intake held for technical review
+
+- Received six visually approved PNGs with verified original SHA-256 hashes and recorded proposed ES/EN descriptions and decision/evidence timing.
+- Kept all six staged without runtime registration because the new current readings, measurement location, schematic and proposed recovery do not establish the existing diagnosis. New visual publication is blocked pending engineering signoff.
+- Preserved the text-only EE-0031, all decisions/locales, ENV-004 hotspots, shared Engine and existing media.
+
+### 2026-11-13 — EE-0031: originales del ZIP
+
+Por petición explícita del usuario se vinculan los seis PNG originales sin modificar y se eliminan los seis reemplazos generados. Discrepancias técnicas documentadas; revisión humana pendiente. Sin cambios de Engine ni otras Experiences.

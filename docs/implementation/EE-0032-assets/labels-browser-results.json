@@ -1,0 +1,107 @@
+{
+  "flows": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "images_in_results": [
+        "03_tension_S1_14",
+        "04_continuidad_S1",
+        "05_tension_bobina_KM1"
+      ],
+      "continuity_after_D4_only": true,
+      "ART005_only_after_final_verification": true,
+      "six_notebook_ids_resolve": true,
+      "ten_hotspots": true,
+      "in_session_locale_switch": true,
+      "zoom_control": true,
+      "reset": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "images_in_results": [
+        "03_tension_S1_14",
+        "04_continuidad_S1",
+        "05_tension_bobina_KM1"
+      ],
+      "continuity_after_D4_only": true,
+      "ART005_only_after_final_verification": true,
+      "six_notebook_ids_resolve": true,
+      "ten_hotspots": true,
+      "in_session_locale_switch": true,
+      "zoom_control": true,
+      "reset": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "images_in_results": [
+        "03_tension_S1_14",
+        "04_continuidad_S1",
+        "05_tension_bobina_KM1"
+      ],
+      "continuity_after_D4_only": true,
+      "ART005_only_after_final_verification": true,
+      "six_notebook_ids_resolve": true,
+      "ten_hotspots": true,
+      "in_session_locale_switch": true,
+      "zoom_control": true,
+      "reset": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "images_in_results": [
+        "03_tension_S1_14",
+        "04_continuidad_S1",
+        "05_tension_bobina_KM1"
+      ],
+      "continuity_after_D4_only": true,
+      "ART005_only_after_final_verification": true,
+      "six_notebook_ids_resolve": true,
+      "ten_hotspots": true,
+      "in_session_locale_switch": true,
+      "zoom_control": true,
+      "reset": true
+    }
+  ],
+  "gallery": [
+    {
+      "width": 1440,
+      "five_originals_load": true,
+      "no_clipping": true,
+      "aspect_ratios_preserved": true
+    },
+    {
+      "width": 390,
+      "five_originals_load": true,
+      "no_clipping": true,
+      "aspect_ratios_preserved": true
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "screenshots": [
+    "1440-es-result-D2.png",
+    "1440-es-result-D4.png",
+    "1440-es-result-D5.png",
+    "1440-en-result-D2.png",
+    "1440-en-result-D4.png",
+    "1440-en-result-D5.png",
+    "390-es-result-D2.png",
+    "390-es-result-D4.png",
+    "390-es-result-D5.png",
+    "390-en-result-D2.png",
+    "390-en-result-D4.png",
+    "390-en-result-D5.png"
+  ],
+  "technical_publication": "Human technical review pending; S1 labels corrected"
+}

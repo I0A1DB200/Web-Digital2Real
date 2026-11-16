@@ -101,9 +101,9 @@ for (const entry of mapping.experiences) {
       assert.equal(author.public.decisions.length,15);
       assert.equal(author.private.decision_logic.filter(d => d.is_correct).length,5);
       assert.equal(author.public.evidence.length,6);
-      const corrected = entry.canonical_editorial_id === 'EE-0031';
-      assert.equal(author.public.visual.assets.length, corrected ? 6 : 0);
-      assert.equal(author.public.visual.representation, corrected ? 'available' : 'planned');
+      const expectedAssets = {'EE-0031':6,'EE-0032':5}[entry.canonical_editorial_id] ?? 0;
+      assert.equal(author.public.visual.assets.length, expectedAssets);
+      assert.equal(author.public.visual.representation, expectedAssets ? 'available' : 'planned');
       const local = resolveExperienceLocalization(author,document);
       const artifact = packageExperience(local);
       assert.equal(validateGeneratedWebArtifact(artifact).valid,true);
@@ -150,7 +150,7 @@ for (const entry of mapping.experiences) {
       }
       assert.equal(cleanPlayer.getState().completionStatus,'completed');
       const manifest=await yaml(`${entry.path}/media-source/evidence-manifest.yaml`);
-      assert.equal(manifest.families.length,4);assert.equal(manifest.slots.length,7);
+      assert.equal(manifest.families.length,4);assert.equal(manifest.slots.length,entry.canonical_editorial_id==='EE-0032'?5:7);
       const intake = manifest.asset_intake_manifest
         ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.asset_intake_manifest}`, 'utf8'))
         : { assets: [] };
@@ -160,7 +160,12 @@ for (const entry of mapping.experiences) {
       const revisions = manifest.binding_manifest
         ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.binding_manifest}`, 'utf8')).assets : [];
       assert.deepEqual(storedPngs, intake.assets.map(a => a.canonical_file.split('/').at(-1)).sort());
-      if (intake.assets.length) {
+      if (entry.canonical_editorial_id==='EE-0032') {
+        assert.equal(intake.status,'DRAFT_INTEGRATED_HUMAN_TECHNICAL_REVIEW_PENDING');
+        assert.equal(intake.publication_allowed,false);
+        assert.equal(manifest.runtime_registered_images,5);
+        assert.equal(manifest.runtime_presented_images,5);
+      } else if (intake.assets.length) {
         assert.equal(intake.status, 'ORIGINALS_BOUND_USER_REQUEST_TECHNICAL_REVIEW_PENDING');
         assert.equal(intake.new_visual_publication_allowed, false);
         assert.equal(manifest.runtime_registered_images, revisions.length);

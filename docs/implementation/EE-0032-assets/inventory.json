@@ -1,0 +1,34 @@
+{
+  "base_head": "7fd0dcb670b1525fe2c611b451cdda92a9edbdfc",
+  "registered": 5,
+  "presented": 5,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "id": "ART-001",
+      "file": "assets/01_disposicion_cuadro.png",
+      "sha256": "53b5f6d07ae62975e506c373e50a6b4daaf166dea50f5e6e1392f73bd47e1383"
+    },
+    {
+      "id": "ART-002",
+      "file": "assets/02_esquema_multifilar.png",
+      "sha256": "831347a7425c52e4e92ce4d8d44c598d5c09aa1b519e0f365a3a0dba54cb6424"
+    },
+    {
+      "id": "ART-003",
+      "file": "assets/03_tension_S1_14.png",
+      "sha256": "bbe533e780c660e96be66a80d73cf117469f37276e91c32df7a65738318dc160"
+    },
+    {
+      "id": "ART-004",
+      "file": "assets/04_continuidad_S1.png",
+      "sha256": "7d4daeeb9eb754bdf65844062f929b057129229f21481c3c08d6601e28e951a5"
+    },
+    {
+      "id": "ART-005",
+      "file": "assets/05_tension_bobina_KM1.png",
+      "sha256": "ca1acc18d39358a2a4016b1b380421f44e22bcae6c55d7ce06facbc2d982dcba",
+      "original_zip_sha256": "c35e514468b3663ab38fb3941a156eb4b2bf1167d456837de81939c36396aea0"
+    }
+  ]
+}

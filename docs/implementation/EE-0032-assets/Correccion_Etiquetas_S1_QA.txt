@@ -1,0 +1,16 @@
+EE-0032 — CORRECCIÓN AUTORIZADA DE ETIQUETAS S1
+16-11-2026
+
+El usuario autorizó cambiar solo A1/A2 bajo S1 a 13/14. Se han sustituido las cuatro etiquetas de ambos paneles. La edición usa ImageGen y compone únicamente cuatro regiones de 48x35 px sobre el original: (137,318), (260,318), (1025,318) y (1147,318). Comparación RGB: todos los píxeles exteriores son idénticos. Lecturas 0,0 V y 24,2 V, etiquetas de KM1, instrumentos, conexiones y composición sin cambios.
+
+Archivo: content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/05_tension_bobina_KM1.png
+SHA-256 original: c35e514468b3663ab38fb3941a156eb4b2bf1167d456837de81939c36396aea0
+SHA-256 corregido: ca1acc18d39358a2a4016b1b380421f44e22bcae6c55d7ce06facbc2d982dcba
+
+La imagen corregida queda vinculada a EVID-05-RECORD tras DEC-05-B y a completion.media_ids. No aparece antes de la verificación final. Los cinco recursos están visibles en preview; sigue sin existir Asset 06. Alt/caption ES/EN, hashes, manifiestos y notas de recepción actualizados. Preguntas, opciones, feedback, diagnóstico y Engine sin cambios respecto a la integración anterior.
+
+QA: 30/30 pruebas específicas; 557/557 compartidas; packager preview correcto; git diff --check correcto. Navegador Chromium: cuatro recorridos ES/EN a 1440/390 px, 40 reintentos incorrectos, continuidad tras D4, recuperación solo tras D5, debrief y reset. Cero errores JS/HTTP. Inspección visual del PNG final y captura móvil del Result D5 completada. Píxeles fuera de las cuatro regiones comparados exactamente.
+
+El bloqueo específico de etiquetas bajo S1 queda resuelto. Sigue pendiente revisión humana del esquema, referencias y bornes físicos de KM1; la corrección no certifica una instalación real ni la indicación verde del modelo representado. No se declara la Experience técnicamente aprobada para operación real.
+
+Sin commit, push, merge ni deploy en esta tarea. Integración local revisable; no publicada en la web. Logs labels-*.log y labels-browser-results.json junto a este informe. Captura: 390-es-result-D5-corrected.png.

@@ -31,7 +31,7 @@ capability_references:
 public:
   slug: "contactor-does-not-energize"
   title: "El contactor no se activa"
-  summary: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real. Preview con ilustraciones; revisión técnica pendiente."
   estimated_duration: 20
   scenario:
     initial_context: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real."
@@ -44,8 +44,9 @@ public:
         - "El alumno interpreta registros; no realiza trabajos en tensión ni maniobras sobre una instalación real."
         - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
         - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
+        - "El registro de continuidad de S1 requiere circuito desenergizado, ausencia de tensión verificada y aislamiento suficiente para eliminar caminos paralelos."
         - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
-        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+        - "Preview didáctico: revisión técnica pendiente; no es material aprobado para operación real."
   learning_objectives:
     -
       id: "OBJ-TRACE-CIRCUIT"
@@ -74,7 +75,7 @@ public:
         - "DEC-01-A"
         - "DEC-01-B"
         - "DEC-01-C"
-      media_ids: []
+      media_ids: ["ART-002"]
     -
       id: "STAGE-02-DIAGNOSIS"
       phase: "investigation"
@@ -103,7 +104,7 @@ public:
       id: "STAGE-04-DIAGNOSIS"
       phase: "investigation"
       title: "Confirmar la causa e intervenir con seguridad"
-      situation: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado. El aislamiento debe eliminar caminos paralelos.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-03-RECORD"
       decision_ids:
@@ -149,7 +150,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-B"
-      media_ids: []
+      media_ids: ["ART-003"]
     -
       id: "EVID-03-RECORD"
       type: "diagnostic"
@@ -167,7 +168,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-04-A"
-      media_ids: []
+      media_ids: ["ART-004"]
     -
       id: "EVID-05-RECORD"
       type: "functional_test"
@@ -176,7 +177,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-05-B"
-      media_ids: []
+      media_ids: ["ART-005"]
   decisions:
     -
       id: "DEC-01-A"
@@ -239,9 +240,40 @@ public:
       stage_id: "STAGE-05-VERIFY-RECOVERY"
       action: "Desactivar STOP para evitar recurrencia."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-    representation: "planned"
-    assets: []
+    educational_purpose: "Ilustraciones del circuito cableado y registros simulados revelados por decisión; comparativa de recuperación visible solo tras la verificación final."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACTOR-032/01_disposicion_cuadro.png"
+        alt: "Distribución ilustrada del cuadro cableado con PS1, Q1, F1, KM1, F2, S0, S1 y X1."
+        caption: "Localización de componentes."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACTOR-032/02_esquema_multifilar.png"
+        alt: "Esquema multifilar de potencia y mando de 24 VDC, con STOP y protección en serie y auxiliar KM1 en paralelo con START."
+        caption: "Circuito de mando cableado."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACTOR-032/03_tension_S1_14.png"
+        alt: "Registro simulado: S1:14 respecto a 0 V marca 0,0 V sin pulsar y con START pulsado."
+        caption: "S1:14 — 0,0 V / 0,0 V."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACTOR-032/04_continuidad_S1.png"
+        alt: "Ensayo aislado simulado de S1:13–14: OL en reposo y durante accionamiento."
+        caption: "S1:13–14 aislado — OL / OL."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACTOR-032/05_tension_bobina_KM1.png"
+        alt: "Comparación simulada de KM1: 0,0 V antes y 24,2 V después de reparación; S1 identificado con bornes 13–14."
+        caption: "KM1 — 0,0 V / 24,2 V."
+        purpose: "completion"
   completion:
     title: "Debrief técnico"
     summary: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal. Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
@@ -266,7 +298,7 @@ public:
     industrial_value:
       - "Diagnóstico trazable sin sustituir componentes por descarte."
       - "Recuperación verificada manteniendo protecciones."
-    media_ids: []
+    media_ids: ["ART-005"]
 private:
   fault_model:
     root_cause: "contacto de marcha -S1 no cierra pese a accionamiento mecánico. No confundir con bobina defectuosa: no recibe tensión nominal."
@@ -503,7 +535,7 @@ private:
     status: "pending"
     evidence:
       - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
-      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Cinco recursos registrados y visibles en preview; ART-005 con corrección autorizada de etiquetas S1, solo tras verificación final. Revisión técnica humana pendiente; ver media-source/visual-intake.json."
       - "Traducción EN nueva, pendiente de revisión técnica humana."
       - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
       - "Escenario fuente completo: al pulsar START, -KM1 no cierra. Circuito de mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Registros de personal autorizado: +24 V en entrada de S0; +24 V en salida de S0; +24 V en salida de F2; 0 V en salida de S1 mientras START está pulsado; retorno A2 verificado. Contacto S1 presenta apertura mecánica interna."

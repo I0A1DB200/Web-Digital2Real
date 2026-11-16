@@ -1,0 +1,103 @@
+ACTUALIZACIÓN 16-11-2026: corrección de etiquetas S1 autorizada y aplicada; cinco recursos visibles en preview, ART-005 solo después de DEC-05-B. El informe inferior describe la recepción anterior; ver Correccion_Etiquetas_S1_QA.txt para el estado actual.
+
+EE-0032 — INFORME DE IMPLEMENTACIÓN Y QA
+Fecha: 16-11-2026 (Europe/Madrid)
+
+RESULTADO
+Integración local en borrador: cinco PNG originales registrados, cuatro visibles y uno registrado pero oculto. Estado: AUTOMATED PASS / BROWSER FLOW PASS / TECHNICAL PUBLICATION BLOCKED. La integración final de la quinta imagen y la publicación no están completas: se retiene ART-005 por el defecto de etiquetas exigido por el contrato. No existe Asset 06; no se ha generado ningún sustituto ni editado un PNG.
+
+No se ha hecho commit, push, merge ni deploy en esta tarea. La web pública conserva el estado anterior a esta integración.
+
+BASE Y ESTADO INICIAL
+Rama: main. Commit: 7fd0dcb670b1525fe2c611b451cdda92a9edbdfc.
+Experience existente: EE-0032 / EXP-ELECTRICAL-CONTACTOR-032 / fuente editorial EXP-EL-02. Entorno ENV-004; segundo hotspot, x=28,3 %, y=57,3 %. Título actual: «El contactor no se activa»; no se ha renombrado ni duplicado.
+Estado inicial: technical_review / technical_validation pending; preview textual sin assets. Cinco etapas, quince opciones, cinco respuestas de avance y diez de reintento; secuencia A/B/C/A/B.
+Cambios no rastreados ya presentes, conservados:
+?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.md
+?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.txt
+?? docs/implementation/EE-0031-assets-intake/browser-results.json
+?? docs/implementation/EE-0031-assets-intake/focused-tests.log
+?? docs/implementation/EE-0031-assets-intake/mobile-voltage-review.png
+?? docs/implementation/EE-0031-assets-intake/shared-tests.log
+?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.docx
+?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.txt
+?? docs/standards/
+
+
+ALCANCE Y AUTORIDAD
+Petición del usuario: extraer y ejecutar el prompt del ZIP para EE-0032 siguiendo el proceso anterior. El contenido del ZIP se usa como contrato de esta tarea, sin convertir sus descripciones en hechos medidos ni su aceptación visual en aprobación eléctrica.
+Clasificación: EXPERIENCE / CONTENT / MEDIA BINDING. Notebook sigue siendo SSOT. Inspeccionados AGENTS.md, Engineering Director Playbook, arquitectura D2R, estándares de Experience, evidencia/media, assets y QA; esquema V2, resolver ES/EN, packager y Player; patrón EE-0031; biblioteca reutilizable y contenido actual de EE-0032. No se crean imágenes nuevas ni se reutilizan imágenes de otro circuito.
+
+DOCUMENTOS TÉCNICOS REVISADOS
+Notebook article-012, article-019, article-020, article-021, article-027 y article-029: instrumentos, mando/potencia, bobinas y auxiliares, auto-mantenimiento, lectura de mando y diagnóstico. Se conservan sus textos y referencias. Mando cableado de 24 VDC: no se añade PLC ni TIA Portal.
+
+MAPA EXACTO
+ART-001 / 01_disposicion_cuadro.png → public.visual.cover_asset_id; orientación del Incident Brief. No prueba estado eléctrico.
+ART-002 / 02_esquema_multifilar.png → STAGE-01-DIAGNOSIS.media_ids; esquema de referencia disponible antes de DEC-01-A.
+ART-003 / 03_tension_S1_14.png → EVID-02-RECORD.media_ids; adquirida solo por DEC-02-B. 0,0 V respecto a 0 V sin pulsar y pulsado; se interpreta junto a los registros de alimentación y retorno, sin declarar S1 defectuoso solo por esta imagen.
+ART-004 / 04_continuidad_S1.png → EVID-04-RECORD.media_ids; solo después de DEC-04-A (ensayo aislado de confirmación). No aparece después de D3 ni antes de la acción de confirmación. El requisito de aislamiento para eliminar caminos paralelos se añade a la situación de STAGE-04 en ES/EN, visible antes de la acción, además de las restricciones de seguridad del escenario.
+ART-005 / 05_tension_bobina_KM1.png → registrada en public.visual.assets, SIN vínculo a stage/evidence/completion. Bloqueada y oculta por etiquetas A1/A2 bajo S1. Propuesta posterior, no aplicada: EVID-05-RECORD y completion.media_ids tras DEC-05-B, solo después de corrección/validación. No se recorta el panel de reparación para intentar mostrarlo antes.
+No hay Asset 06. La previsión antigua de 6–7 imágenes se sustituye por el inventario cerrado de cinco; no se añade una sexta imagen para satisfacer un plan obsoleto.
+
+ARCHIVOS MODIFICADOS
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/experience.yaml: registro de cinco assets, portada, tres vínculos de contenido, actualización de disponibilidad y seguridad; revisión técnica sigue pendiente.
+- locales/es.yaml y locales/en.yaml: alt/captions equivalentes, avisos de disponibilidad y condición de aislamiento antes del ensayo.
+- README.md y media-source/README.md: recepción, mapa y bloqueo.
+- media-source/evidence-manifest.yaml: cinco slots del inventario cerrado y distinción cinco registrados/cuatro presentados; cuatro familias de evidencia conservadas.
+- scripts/tests/env004Content.test.mjs: expectativa de cinco medios para EE-0032, con comprobación del bloqueo y del cuarto medio visible. El resto de casos conserva sus expectativas.
+- docs/06_Changelog.md.
+
+ARCHIVOS CREADOS EN LA EXPERIENCE
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/visual-intake.json
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/README.md
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/03_tension_S1_14.png
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/04_continuidad_S1.png
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/01_disposicion_cuadro.png
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/05_tension_bobina_KM1.png
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/assets/02_esquema_multifilar.png
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/EE0032_Codex/README.md
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/EE0032_Codex/QA_PENDIENTE.md
+- content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/EE0032_Codex/CODEX_PROMPT.md
+Además: scripts/tests/ee0032MediaIntegration.test.mjs y este directorio de informe/logs/capturas. Copias de CODEX_PROMPT.md, README.md y QA_PENDIENTE.md archivadas byte por byte; no se duplican los PNG en media-source.
+
+PRESERVACIÓN
+Decisiones, respuestas, evaluación, feedback, contenido de evidencias, causa raíz y criterios de recuperación conservados mediante hashes semánticos. La única ampliación del texto de etapa es la condición de eliminar caminos paralelos antes del ensayo de continuidad. No se alteran las demás preguntas ni se introduce una conclusión nueva. Las traducciones de decisiones/evidencias/feedback/completion conservan sus hashes.
+Los 1075 archivos rastreados protegidos fuera de la tarea conservan sus hashes. Sin cambios de Engine, Frontend, ENV, Notebook, EE-0031 ni otras Experiences. Los documentos preexistentes no se han tocado.
+
+HALLAZGOS
+B01 / CONTENT / BLOCKING — ART-005: etiquetas A1/A2 bajo S1, incoherentes con S1:13–14 de las imágenes anteriores. Deben verificarse también las identidades reales de los bornes de medida de KM1:A1–A2 y la indicación verde. No se afirma una función del modelo de contactor basada en el dibujo.
+O01 / CONTENT / OPEN — ART-001/002: validación de esquema, alimentación/protección de PS1, X1, potencia KM1/F2, adecuación DC de F1 1P+N, referencias comerciales, motor, Q1/F2 y símbolos. Los dibujos no son una netlist aprobada: se observan puentes y conductores que requieren verificación, incluida la representación verde/amarilla junto a salidas de potencia en el layout. No se diagnostica un cortocircuito físico a partir de una ilustración ambigua. En layout F1 se sitúa junto a alimentación de PS1; en el esquema se dibuja en +24 V: debe resolverse su función antes de aprobar instalación.
+O02 / CONTENT / OPEN — ART-003 no muestra una medida de +24 V en S1:13. La ausencia de tensión de salida por sí sola no demuestra defecto interno. Los registros de F2 y retorno permanecen como contexto, sin inventar una medición adicional.
+O03 / CONTENT / VERIFIED AUTHORING — Continuidad: aislamiento, desenergización y ausencia de tensión ya forman parte del caso; se hace visible en la etapa de confirmación la eliminación de caminos paralelos. La imagen OL no demuestra que se efectuara una intervención real.
+O04 / TECHNICAL DEBT / OPEN — ART-001/002 contienen números de Experience y «Asset ... de 06», pese al inventario cerrado de cinco. Se conservan los PNG aprobados; no se interpreta ese texto como autorización para fabricar el sexto.
+INTENTIONAL REUSE — ART-001 funciona como portada/orientación del caso; sin reciclar escenas técnicamente incompatibles.
+UNUSED / REGISTERED BUT NOT PRESENTED — ART-005; estado permitido por los estándares, no activo ocultado por CSS ni por un parche de renderer.
+ENGINE — No falta capacidad: cinco recursos, Results tras D2/D4 y un recurso registrado sin presentación se representan con el contrato existente. No se ha modificado arquitectura.
+
+QA EJECUTADO
+PASS — node --test scripts/tests/ee0032MediaIntegration.test.mjs scripts/tests/env004Content.test.mjs: 30/30, cero fallos.
+PASS — node --test: 557/557, cero fallos, sin tests omitidos.
+PASS — node scripts/package-notebook.mjs.
+PASS — node scripts/package-experience-engine.mjs --mode=preview: caso y ENV-004 empaquetados; no rutas ficticias.
+PASS — git diff --check.
+PASS — inventario: cinco firmas PNG, MIME/dimensiones/hash, archivos originales y fuentes archivadas sin alteración; cinco IDs únicos y ninguna sexta imagen.
+PASS — artefactos generados ES/EN: cinco medios registrados y sus hashes coinciden; alt/captions no vacíos; ART-005 no está en stage/evidence/completion.
+PASS — navegador Chromium real: cuatro recorridos (ES/EN × 1440/390 px), cinco etapas, cuarenta reintentos incorrectos en total sin adelantar evidencia, Results D2/D4, cambio de idioma en sesión, finalización y reinicio. Diez hotspots y seis referencias Notebook resuelven. Cero errores de JavaScript/HTTP; cero solicitudes a ART-005 durante el recorrido del alumno, incluida finalización. Control Ampliar/Reducir y carga real comprobados.
+PASS — galería interna de revisión fuera del producto: cinco originales cargan en escritorio/móvil sin distorsión de aspecto ni desbordamiento horizontal. Que ART-005 cargue en QA interno no la convierte en imagen presentada al alumno.
+VISUAL REVIEW — revisados los cinco originales; capturas de D2 escritorio EN y D4 móvil ES revisadas. Los valores 0,0/OL están representados como simulación. Detalles finos de bornes/leyendas en 390 px requieren zoom del navegador; el control de ampliación no garantiza por sí solo aumentar una panorámica limitada por ancho.
+
+INCIDENCIAS DURANTE VERIFICACIÓN, YA RESUELTAS
+Formato YAML nuevo con listas sin sangría no admitido por el parser del repositorio: corregido a sintaxis nativa; clasificado A / contenido de la tarea. Una aserción de navegador pretendía comprobar restricciones de seguridad en el Incident Brief, pero ese campo no lo renderiza la vista actual: la condición necesaria se hizo visible en la etapa de acción, sin parche de Engine. Espera del cambio de idioma corregida en el script de QA; no se cambió el producto para satisfacer una carrera de automatización. La última ejecución de todas las comprobaciones anteriores pasa.
+
+INVENTARIO PNG (SHA-256)
+ART-001 | assets/01_disposicion_cuadro.png | 1536x1024 | 53b5f6d07ae62975e506c373e50a6b4daaf166dea50f5e6e1392f73bd47e1383
+ART-002 | assets/02_esquema_multifilar.png | 1536x1024 | 831347a7425c52e4e92ce4d8d44c598d5c09aa1b519e0f365a3a0dba54cb6424
+ART-003 | assets/03_tension_S1_14.png | 1774x887 | bbe533e780c660e96be66a80d73cf117469f37276e91c32df7a65738318dc160
+ART-004 | assets/04_continuidad_S1.png | 1774x887 | 7d4daeeb9eb754bdf65844062f929b057129229f21481c3c08d6601e28e951a5
+ART-005 | assets/05_tension_bobina_KM1.png | 1774x887 | c35e514468b3663ab38fb3941a156eb4b2bf1167d456837de81939c36396aea0
+
+ARTEFACTOS Y EVIDENCIA
+Logs focused.log, shared.log, notebook-build.log, preview-build.log y browser.log junto a este informe. Datos de navegador: browser-results.json. Capturas seleccionadas: 390-es-result-D4.png y 1440-en-result-D2.png. Todas las capturas/scripts locales: /workspace/work/ee0032-codex/qa/ y /workspace/work/ee0032-codex/browser_qa.py. Extracción del ZIP: /workspace/work/ee0032-codex/.
+
+PUBLICACIÓN Y SIGUIENTE PASO
+La integración local es revisable y pasa QA funcional, pero no se entrega como una Experience técnicamente cerrada ni publicada. El CODEX_PROMPT.md, apartado 6 / línea 32, exige «No alterar los PNG originales sin aprobación expresa» y reportar la inconsistencia A1/A2 como bloqueo. La corrección mínima propuesta es cambiar las etiquetas bajo S1 de A1/A2 a 13/14, conservando el resto de la imagen, y comprobar las etiquetas de KM1. Se requiere autorización del usuario para editar esa imagen. La validación del esquema y referencias de equipo continúa pendiente; corregir etiquetas no equivale a certificar el circuito.

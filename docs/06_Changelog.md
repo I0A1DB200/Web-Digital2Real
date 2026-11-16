@@ -840,3 +840,11 @@ Por petición explícita del usuario se vinculan los seis PNG originales sin mod
 ### 2026-11-13 — EE-0031: valores de pinza y notas
 
 Por petición del usuario, solo se editan los dígitos de ART-005 a 1,20 A y 6,70 A; píxeles idénticos fuera de las dos regiones numéricas. Se retiran las advertencias de ART-005/006, conservando solo los valores como pie requerido por el contrato de localización y se sincroniza el alt ES/EN. Sin cambios de preguntas, decisiones ni otras imágenes.
+
+### 2026-11-16 — EE-0032: cinco assets originales
+
+Cinco PNG de EE0032_Codex.zip registrados, sin alterar sus bytes ni decisiones. Cuatro activos en preview; continuidad tras DEC-04-A. ART-005 queda oculta por etiquetas A1/A2 incorrectas; publicación técnica bloqueada. No existe Asset 06; sin cambios de Engine ni Notebook.
+
+### 2026-11-16 — EE-0032: corrección autorizada de etiquetas S1
+
+Solo A1/A2 bajo S1 cambian a 13/14 en ART-005; píxeles idénticos fuera de cuatro regiones de etiquetas. Imagen vinculada a EVID-05-RECORD y completion tras DEC-05-B. Sin cambios de lecturas, etiquetas KM1, preguntas ni Engine; revisión técnica humana pendiente.

@@ -302,11 +302,15 @@ Historical packages may retain their declared default fallback. Adding a languag
 does not require redesigning the selector or changing Experience IDs.
 
 
-## 18. Standalone Experience access cards
 
-The catalog navigator accepts eligible Experiences with an optional `public.catalog_card` authored in their canonical `experience.yaml`. This navigation image is independent of `public.visual` (Incident Brief/evidence). The object contains `image` (relative to Frontend, within `assets/images/`), positive integer `width`/`height`, and nonempty `alt.es`/`alt.en`. The packager validates these fields and copies the image to a derived `cards/<technical-id>.<extension>` asset. It projects the resulting `catalogCard` into the catalog only after the existing publication eligibility checks.
+## 18. Standalone simulator boundary
 
-The existing title/summary localization is reused; alt text follows the global locale. A native button in the shared catalog opens the existing Workspace `openExperience` boundary. Experiences without this metadata do not acquire a standalone card. Existing ENV cards, ten-Experience associations, completion, access and publication rules are unchanged. This capability does not embed external simulators or distribute engineering sources.
+Standalone interactive simulators remain website delivery assets under
+`Frontend/simulators/`. Their bilingual catalog copy and local HTML routes belong
+to `Frontend/data/site.js`; their runtime, sequence and visual state stay in the
+simulator HTML. They are not Experience records, are not packaged in the
+Experience catalog, and do not create Experience progress or completion.
 
-
-A catalog card may additionally declare `target: simulators/<kebab-case-name>/index.html` for an explicitly authorized standalone HTML simulator. Packaging validates that exact local path and file existence, then projects a relative `href`. The shared catalog uses a native link for these cards; cards without a target continue through Workspace. Simulator runtimes live under `Frontend/simulators/`, not authored `content/`. They are distinct from diagnostic-player progression/completion. Publication of an original HTML includes the content embedded in that HTML; separate engineering source archives remain excluded unless separately authorized.
+The website may embed an explicitly authorized local simulator HTML inside its
+own viewer. It must not represent that simulator as an Experience or make its
+runtime state part of the Experience Engine contract.

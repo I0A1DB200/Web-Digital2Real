@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1220" viewBox="0 0 1600 1220" role="img" aria-labelledby="title desc" style="display:block;width:100%;height:auto">
+<title id="title">E-02-001 · Arquitectura eléctrica e interfaces de E/S</title>
+<desc id="desc">Diagrama de distribución, mapa funcional de siete entradas y cuatro salidas, PLC, handshake de visión, HMI y datos externos; bilingüe, sin direcciones físicas.</desc>
+<defs>
+ <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1L11 6L1 11Z" fill="#167e91"/></marker>
+ <marker id="pwr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1L11 6L1 11Z" fill="#d77727"/></marker>
+ <style>
+ text{font-family:Arial,Helvetica,sans-serif;fill:#172536}.h1{font-size:32px;font-weight:700}.sub{font-size:16px;fill:#526578}.kicker{font-size:13px;font-weight:700;letter-spacing:1px;fill:#526578}.head{font-size:17px;font-weight:700}.body{font-size:14px;fill:#34495c}.small{font-size:12px;fill:#526578}.tag{font-family:Consolas,monospace;font-size:13px;font-weight:700;fill:#126c7f}.tiny{font-size:11px;fill:#526578}.card{fill:#fff;stroke:#9babb8;stroke-width:2}.power{fill:#fff5e9;stroke:#d68b46;stroke-width:2}.plc{fill:#edf6f8;stroke:#28899b;stroke-width:3}.safety{fill:#f2f4f6;stroke:#818f9a;stroke-width:2;stroke-dasharray:8 6}.sig{fill:none;stroke:#167e91;stroke-width:3.5;marker-end:url(#arr)}.pwrline{fill:none;stroke:#d77727;stroke-width:3.5;marker-end:url(#pwr)}.row{fill:#f5f8fa;stroke:#d8e0e6;stroke-width:1}
+ </style>
+</defs>
+<rect width="1600" height="1220" fill="#f1f5f7"/><rect x="22" y="22" width="1556" height="1176" rx="16" fill="#fff" stroke="#c5d0d8" stroke-width="2"/><rect x="22" y="22" width="12" height="1176" rx="6" fill="#e47725"/>
+<text x="58" y="67" class="h1">E-02-001 · Distribución e interfaces eléctricas</text>
+<text x="58" y="96" class="sub">Electrical distribution and I/O interfaces · tags del simulador / simulator tags · physical addresses pending / direcciones físicas pendientes</text>
+<rect x="1196" y="40" width="244" height="44" rx="8" fill="#fff2e6" stroke="#e47725" stroke-width="2"/><text x="1318" y="67" text-anchor="middle" font-size="15" font-weight="700" fill="#8c4916">ESQUEMA PRELIMINAR</text>
+<line x1="50" y1="119" x2="1550" y2="119" stroke="#d4dde3" stroke-width="2"/>
+
+<!-- Power domains -->
+<text x="58" y="151" class="kicker">01 · ALIMENTACIÓN Y RAMAS DE CARGA / POWER SUPPLY AND LOAD BRANCHES</text>
+<rect x="60" y="171" width="260" height="106" rx="10" class="power"/><text x="190" y="205" text-anchor="middle" class="head">Red de planta / Site AC</text><text x="190" y="232" text-anchor="middle" class="body">Tensión, fases y PE por confirmar</text><text x="190" y="256" text-anchor="middle" class="small">Site voltage, phases and PE to confirm</text>
+<rect x="390" y="171" width="300" height="106" rx="10" class="power"/><text x="540" y="205" text-anchor="middle" class="head">Q0 · corte y protección</text><text x="540" y="232" text-anchor="middle" class="body">Equipo y calibre por cálculo</text><text x="540" y="256" text-anchor="middle" class="small">Disconnect/protection rating after calculation</text>
+<path d="M320 224H390" class="pwrline"/>
+<path d="M690 224H750V298H965V320" fill="none" stroke="#d77727" stroke-width="3.5" marker-end="url(#pwr)"/><path d="M750 298H1310V320" fill="none" stroke="#d77727" stroke-width="3.5" marker-end="url(#pwr)"/><circle cx="750" cy="298" r="6" fill="#d77727"/>
+<rect x="810" y="320" width="310" height="98" rx="10" class="power"/><text x="965" y="354" text-anchor="middle" class="head">M1 · accionamiento de cinta</text><text x="965" y="381" text-anchor="middle" class="body">Drive/motor: selección pendiente</text><text x="965" y="402" text-anchor="middle" class="small">AC branch · sizing from load data</text>
+<rect x="1155" y="320" width="310" height="98" rx="10" class="power"/><text x="1310" y="354" text-anchor="middle" class="head">PS1 · fuente de control</text><text x="1310" y="381" text-anchor="middle" class="body">24 VDC · supuesto del caso</text><text x="1310" y="402" text-anchor="middle" class="small">PLC / HMI / field loads · calculate</text>
+
+<!-- I/O mapping -->
+<text x="58" y="458" class="kicker">02 · MAPA FUNCIONAL DE E/S · SIN DIRECCIONES TIA / FUNCTIONAL I/O MAP · NO TIA ADDRESSES</text>
+<rect x="60" y="478" width="600" height="390" rx="10" class="card"/><rect x="60" y="478" width="600" height="48" rx="10" fill="#edf3f6"/><text x="82" y="509" class="head">ENTRADAS DI · 7 TAGS DEL PROTOTIPO</text>
+<text x="82" y="551" class="tiny">TAG DE WATCH</text><text x="350" y="551" class="tiny">FUNCIÓN REPRESENTADA / REPRESENTED FUNCTION</text>
+<g class="row"><rect x="75" y="560" width="570" height="38" rx="4"/><rect x="75" y="602" width="570" height="38" rx="4"/><rect x="75" y="644" width="570" height="38" rx="4"/><rect x="75" y="686" width="570" height="38" rx="4"/><rect x="75" y="728" width="570" height="38" rx="4"/><rect x="75" y="770" width="570" height="38" rx="4"/><rect x="75" y="812" width="570" height="38" rx="4"/></g>
+<g class="tag"><text x="87" y="585">DI_MagazinePart</text><text x="87" y="627">DI_InspectionPresent</text><text x="87" y="669">DI_RejectPosition</text><text x="87" y="711">DI_PusherRetracted</text><text x="87" y="753">DI_PusherExtended</text><text x="87" y="795">DI_ExitA</text><text x="87" y="837">DI_ExitB</text></g>
+<g class="body"><text x="350" y="585">Pieza disponible en salida del magazine</text><text x="350" y="627">Pieza presente durante INSPECT</text><text x="350" y="669">Pieza en estación de clasificación</text><text x="350" y="711">Expulsor lateral en reposo</text><text x="350" y="753">Expulsor lateral extendido</text><text x="350" y="795">Confirmación lógica de salida A</text><text x="350" y="837">Confirmación lógica de salida B</text></g>
+
+<rect x="700" y="478" width="260" height="390" rx="12" class="plc"/><text x="830" y="525" text-anchor="middle" font-size="21" font-weight="700">PLC ESTÁNDAR</text><text x="830" y="555" text-anchor="middle" class="body">S7-1200 · candidato</text><text x="830" y="577" text-anchor="middle" class="small">CPU/módulos pendientes</text><line x1="725" y1="597" x2="935" y2="597" stroke="#b7cdd4" stroke-width="2"/><text x="830" y="628" text-anchor="middle" class="tag">7 DI · 4 DO base</text><text x="830" y="655" text-anchor="middle" class="body">Nombres de tags existentes</text><text x="830" y="678" text-anchor="middle" class="body">se conservan como interfaz</text><line x1="725" y1="699" x2="935" y2="699" stroke="#b7cdd4" stroke-width="2"/><text x="830" y="730" text-anchor="middle" class="small">Direcciones, comunes,</text><text x="830" y="751" text-anchor="middle" class="small">aislamiento y diagnóstico</text><text x="830" y="772" text-anchor="middle" class="small">dependen del módulo elegido</text><text x="830" y="826" text-anchor="middle" class="tiny">sin CPU ni cableado conectado</text>
+<path d="M660 542H700" class="sig"/><text x="680" y="532" text-anchor="middle" class="tiny">DI</text>
+
+<rect x="1000" y="478" width="465" height="390" rx="10" class="card"/><rect x="1000" y="478" width="465" height="48" rx="10" fill="#edf3f6"/><text x="1022" y="509" class="head">SALIDAS DO · 4 TAGS DEL PROTOTIPO</text>
+<text x="1022" y="551" class="tiny">TAG DE WATCH</text><text x="1260" y="551" class="tiny">ORDEN / COMMAND</text>
+<g class="row"><rect x="1015" y="560" width="435" height="54" rx="4"/><rect x="1015" y="620" width="435" height="54" rx="4"/><rect x="1015" y="680" width="435" height="54" rx="4"/><rect x="1015" y="740" width="435" height="54" rx="4"/></g>
+<g class="tag"><text x="1027" y="582">DO_ConveyorRun</text><text x="1027" y="642">DO_FeederValve</text><text x="1027" y="702">DO_PusherValve</text><text x="1027" y="762">DO_VisionTrigger</text></g>
+<g class="body"><text x="1260" y="582">Petición de marcha al drive</text><text x="1260" y="642">Orden lógica del alimentador</text><text x="1260" y="702">Orden lógica del expulsor A</text><text x="1260" y="762">Solicitud de captura</text></g>
+<text x="1027" y="824" class="small">Drive / válvulas / trigger: interfaz física por seleccionar</text><text x="1027" y="845" class="tiny">Physical drive, valve and trigger interfaces pending selection</text>
+<path d="M960 542H1000" class="sig"/><text x="980" y="532" text-anchor="middle" class="tiny">DO</text>
+
+<!-- Device interfaces -->
+<text x="58" y="907" class="kicker">03 · EQUIPOS EXTERNOS, DATOS Y LÍMITE SAFETY / EXTERNAL DEVICES, DATA AND SAFETY BOUNDARY</text>
+<rect x="60" y="927" width="650" height="185" rx="10" class="card"/><text x="84" y="961" class="head">CÁMARA · HANDSHAKE A CERRAR / CAMERA · HANDSHAKE TO DEFINE</text>
+<rect x="84" y="980" width="78" height="42" rx="6" fill="#edf6f8" stroke="#9eb7c1"/><text x="123" y="1006" text-anchor="middle" class="small">TRIG</text><path d="M162 1001H184" class="sig"/>
+<rect x="184" y="980" width="78" height="42" rx="6" fill="#f5f8fa" stroke="#bac7cf"/><text x="223" y="1006" text-anchor="middle" class="small">READY</text><path d="M262 1001H284" class="sig"/>
+<rect x="284" y="980" width="78" height="42" rx="6" fill="#f5f8fa" stroke="#bac7cf"/><text x="323" y="1006" text-anchor="middle" class="small">BUSY</text><path d="M362 1001H384" class="sig"/>
+<rect x="384" y="980" width="78" height="42" rx="6" fill="#f5f8fa" stroke="#bac7cf"/><text x="423" y="1006" text-anchor="middle" class="small">DONE</text><path d="M462 1001H484" class="sig"/>
+<rect x="484" y="980" width="78" height="42" rx="6" fill="#f5f8fa" stroke="#bac7cf"/><text x="523" y="1006" text-anchor="middle" font-size="10" fill="#526578">VALID+RESULT</text><path d="M562 1001H584" class="sig"/>
+<rect x="584" y="980" width="78" height="42" rx="6" fill="#f5f8fa" stroke="#bac7cf"/><text x="623" y="1006" text-anchor="middle" class="small">ACK</text>
+<text x="84" y="1052" class="small">E/S discreta o Ethernet; modelo, señales y ACK pendientes.</text><text x="84" y="1075" class="tiny">Discrete I/O or Ethernet; camera model, fields and ACK pending.</text>
+<text x="84" y="1097" class="tiny">VisionReady / InspectionDone / InspectionValid / VisionOK son lógicos en el simulador; no son bornes.</text>
+
+<rect x="740" y="927" width="370" height="185" rx="10" class="card"/><text x="764" y="961" class="head">HMI + TRAZABILIDAD</text><text x="764" y="992" class="body">PLC ↔ HMI local</text><text x="764" y="1016" class="small">Enlace / modelo por elegir</text><text x="764" y="1048" class="body">PLC → gateway → DB externa</text><text x="764" y="1072" class="small">Contrato, red y protocolo por definir</text><text x="764" y="1096" class="tiny">No conexión SQL directa desde PLC</text>
+<rect x="1140" y="927" width="325" height="185" rx="10" class="safety"/><text x="1164" y="961" class="head">SAFETY INDEPENDIENTE</text><text x="1164" y="992" class="body">Riesgos y funciones</text><text x="1164" y="1016" class="body">pendientes de evaluar.</text><text x="1164" y="1048" class="small">SafetyReady = constante</text><text x="1164" y="1072" class="small">virtual; no es una entrada</text><text x="1164" y="1096" class="small">ni una función Safety.</text>
+<text x="58" y="1150" class="small">Conteos y tags reproducen el simulador. 24 VDC es un supuesto; tensión AC, cargas, protecciones, referencias y direcciones no están calculadas.</text>
+<text x="58" y="1175" class="tiny">Prototype tags are not measured I/O. Confirm CPU, field devices and interface design before assigning terminals or addresses.</text>
+<text x="1540" y="1175" text-anchor="end" font-size="12" font-weight="700" fill="#ad5e1e">REV B · VALIDADA D2R / D2R REVIEWED</text>
+</svg>

@@ -119,44 +119,23 @@
   color: var(--muted);
 }
 
-.simulator-feature {
+
+/* The simulator has its own catalogue section, separate from Experience Engine data. */
+.simulator-catalog-section {
   width: min(1240px, var(--container));
-  margin: 0 auto clamp(1.5rem, 3vw, 2.5rem);
+  margin: 0 auto clamp(2rem, 4vw, 3.5rem);
 }
 
-.simulator-feature__card {
+.simulator-catalog__header {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  gap: .55rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--line);
 }
 
-.simulator-feature__media {
-  min-width: 0;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: #101318;
-}
-
-.simulator-feature__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.simulator-feature__content {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: clamp(1.5rem, 3.4vw, 3.5rem);
-}
-
-.simulator-feature__eyebrow {
-  margin: 0 0 1.1rem;
+.simulator-catalog__eyebrow {
+  margin: 0;
   color: var(--accent);
   font-size: .68rem;
   font-weight: 760;
@@ -165,111 +144,233 @@
   text-transform: uppercase;
 }
 
-.simulator-feature__content h2 {
-  max-width: 12ch;
+.simulator-catalog__header h2 {
   margin: 0;
-  font-size: clamp(2.2rem, 4.5vw, 4.6rem);
-  font-weight: 560;
-  letter-spacing: -.075em;
-  line-height: .9;
-  text-wrap: balance;
+  font-size: clamp(1.65rem, 3vw, 2.6rem);
+  font-weight: 540;
+  letter-spacing: -.055em;
+  line-height: 1.05;
 }
 
-.simulator-feature__description {
-  max-width: 46ch;
-  margin: 1.25rem 0 0;
+.simulator-catalog__description {
+  max-width: 64ch;
+  margin: 0;
   color: var(--ink-soft);
-  font-size: .98rem;
-  line-height: 1.65;
+  font-size: .92rem;
+  line-height: 1.5;
 }
 
-.simulator-feature__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .7rem;
-  margin-top: 1.45rem;
+.simulator-catalog {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.75rem);
+  align-items: stretch;
 }
 
-.simulator-feature__link {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  padding: .7rem .95rem;
+.simulator-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr;
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid var(--line);
-  font-size: .76rem;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: center;
-  text-decoration: none;
-  transition: background-color var(--duration-quick) var(--ease), border-color var(--duration-quick) var(--ease), color var(--duration-quick) var(--ease);
+  background: var(--color-surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--duration-quick) var(--ease);
 }
 
-.simulator-feature__link--primary {
+.simulator-card:hover,
+.simulator-card:focus-within {
   border-color: var(--accent);
-  background: var(--accent);
-  color: var(--color-bg);
 }
 
-.simulator-feature__link--primary:hover {
-  background: transparent;
+.simulator-card__main {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.simulator-card__main:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.simulator-card__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.simulator-card__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 700ms var(--ease);
+}
+
+.simulator-card:hover .simulator-card__image,
+.simulator-card__main:focus-visible .simulator-card__image {
+  transform: scale(1.035);
+}
+
+.simulator-card__content {
+  display: grid;
+  gap: .5rem;
+  padding: .85rem 1rem .9rem;
+}
+
+.simulator-card__eyebrow {
+  color: var(--accent);
+  font-size: .65rem;
+  font-weight: 760;
+  letter-spacing: .14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.simulator-card__title {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 520;
+  line-height: 1.3;
+}
+
+.simulator-card__description {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .9rem;
+  line-height: 1.4;
+}
+
+.simulator-card__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: .74rem;
+  line-height: 1.4;
+}
+
+.simulator-card__open-label {
+  margin: 0;
+  color: var(--accent);
+  font-size: .75rem;
+  font-weight: 720;
+  letter-spacing: .03em;
+}
+
+.simulator-viewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: var(--color-bg);
   color: var(--ink);
 }
 
-.simulator-feature__link--secondary {
-  color: var(--ink);
+.simulator-viewer[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
-.simulator-feature__link--secondary:hover {
+.simulator-viewer::backdrop {
+  background: rgba(0, 0, 0, .88);
+}
+
+.simulator-viewer__toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .45rem clamp(.75rem, 2vw, 1.4rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--color-bg-soft);
+}
+
+.simulator-viewer__title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font-size: .76rem;
+  font-weight: 650;
+  letter-spacing: .08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.simulator-viewer__close {
+  flex: none;
+  min-height: 36px;
+  padding: .45rem .8rem;
+  border: 1px solid var(--line);
+  background: var(--color-surface);
+  color: var(--ink);
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.simulator-viewer__close:hover,
+.simulator-viewer__close:focus-visible {
   border-color: var(--accent);
   color: var(--accent);
 }
 
-.simulator-feature__link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+.simulator-viewer__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  background: #10151c;
 }
 
-.simulator-feature__note,
-.simulator-feature__image-note {
-  margin: .9rem 0 0;
-  color: var(--muted);
-  font-size: .72rem;
-  line-height: 1.5;
-}
-
-.simulator-feature__image-note {
-  margin-top: .35rem;
-  font-size: .66rem;
-}
-
-@media (max-width: 840px) {
-  .simulator-feature__card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .simulator-feature__media {
-    aspect-ratio: 16 / 9;
-  }
-
-  .simulator-feature__content {
-    padding: clamp(1.35rem, 5vw, 2.5rem);
-  }
-
-  .simulator-feature__content h2 {
-    max-width: 16ch;
-    font-size: clamp(2.35rem, 8vw, 4rem);
+@media (max-width: 1100px) {
+  .simulator-catalog {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 520px) {
-  .simulator-feature__media {
-    aspect-ratio: 16 / 9;
+@media (max-width: 760px) {
+  .simulator-catalog {
+    grid-template-columns: 1fr;
   }
 
-  .simulator-feature__actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
+  .simulator-catalog__header {
+    gap: .4rem;
+  }
+
+  .simulator-viewer__toolbar {
+    min-height: 46px;
+  }
+
+  .simulator-viewer__close {
+    min-height: 34px;
+    padding: .35rem .55rem;
+    font-size: .68rem;
   }
 }

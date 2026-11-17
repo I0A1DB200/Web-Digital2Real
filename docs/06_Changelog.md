@@ -1,27 +1,31 @@
 # Changelog
 
-## 2026-11-17 — Open the supplied Cobot HTML
+## 2026-11-17 — Cobot palletizing as a standalone simulator
 
-- Corrected the Cobot access card destination to the exact HTML prototype supplied by the user, now explicitly authorized for publication at simulators/cobot/index.html. The HTML remains byte-for-byte unchanged.
-- Added an optional validated local simulator target to catalog-card metadata and native anchor navigation; existing diagnostic-player cards retain their behavior. Updated ES/EN card summaries to describe the actual simulator.
-- No separate reference ZIP or QA file is published; the original HTML retains its built-in content and CDN dependency.
+- Reclassified the supplied Cobot HTML as a simulator, not an EE-0041 Experience. Removed the one-off Engine package, localization and `public.catalog_card` path; genuine Experiences and ENV behavior remain in the Engine.
+- Added a bilingual Cobot simulator card beside D2R Inspection Cell. Both cards open their local HTML inside the website in an accessible dialog; neither opens a new tab or offers a repository button.
+- Kept the original Cobot HTML runtime and changed only its browser title and visible header to identify it as a simulator. Its card describes the nominal cycle and unavailable `DI_BoxSensor` value, and states that it is not a physical robot or compiled TIA project. HTML SHA256 after the text-only change: `935cc3cdae18b44d01d399cd539f59864840e9f8cdca3b9813cc63ef3f715235`.
+
+## 2026-11-17 — D2R 3D simulator embedded in Experience Lab
+
+- Replaced the large external preview feature with a same-size bilingual simulator card, separate from Experience Engine records; removed the repository button.
+- Clicking the card opens the self-hosted simulator HTML in an in-page dialog. Mirrored the 3D simulator and its 24 project-document files from D2R commit `85b20536425000f0053a8c2bc95fde2d0552757a`; source HTML SHA256 `4fd8dd104f4bae4bf9ffe6f8f50a15bbcf0feb21b38e97374c779ff6f5aa9462`.
+- Preserved the approved 1280×720 cover from the D2R repository unchanged; the site copy remains byte-identical.
 
 ## 2026-11-17 — Focus the selected Experience
 
-- Hide the catalog simulator promotion while a Workspace Experience is loading/open; restore it when returning to the catalog. Opening the Cobot card now places Cobot content at the top instead of the unrelated D2R Inspection Cell promotion.
-- Add a generic Workspace lifecycle callback and regression coverage; Experience identity, data, player logic, catalog order and simulation remain unchanged.
+- Hide the simulator catalog while a Workspace Experience is open and restore it when returning to the catalog, so simulator cards do not compete with an active Experience.
+- Retain the generic Workspace lifecycle callback and regression coverage; Experience identity, data, player logic, catalog order and simulation remain unchanged.
 
-## 2026-11-17 — EE-0041 Cobot standalone access card
+## 2026-11-17 — Supplied Cobot HTML prototype
 
-- Added canonical EE-0041 / EXP-UR-COBOT-001 under robotics/EE-0041-cobot-palletizing, complete ES/EN copy and a text-only evidence-interpretation case derived from the supplied prototype README. No physical diagnosis or recovery is claimed.
-- Extended the existing catalog navigator and packager with optional authored public.catalog_card metadata; title/summary localization and Workspace navigation remain the existing authorities. The approved marketing WebP is independent of Incident Brief media.
-- Marked EE-0041 technical_review for preview access; publish still requires published status and passed technical validation. Existing ENV membership, access and progress rules are intact.
-- Preserved PLC V1.9, simulator motion and Watch Table. No prototype/source publication, commit, push or deployment.
+- Kept the supplied prototype at `Frontend/simulators/cobot/index.html`, including its built-in controls and original Three.js CDN dependency. Changed the title and visible header from “Cobot Engineering Experience” to “Simulador de paletizado con cobot”; the 3D scene, controls and simulation data remain untouched.
+- The earlier EE-0041 Experience card route was retired by the standalone simulator correction above. The HTML remains an illustrative teaching prototype, not a compiled TIA project or validated physical robot.
 
-## 2026-11-17 — D2R 3D Inspection Cell card
+## 2026-11-17 — EE-0041 Cobot evidence-review draft (retired)
 
-- Added the approved D2R simulator cover to the Experience Lab as a responsive, bilingual card with direct links to the private preview and simulator repository.
-- Copied the approved 1280×720 cover unchanged from the simulator repository; the card labels the preview as owner-only and the image as an illustrative render.
+- The intermediate bilingual evidence-review package and its Experience Engine card were removed after the user clarified that this material belongs to the standalone Cobot simulator, not another Experience.
+- Its key evidence limit remains on the simulator card: no confirmed `DI_BoxSensor` value in the supplied trace does not establish a physical OFF state.
 
 ## 2026-11-11 — EE-0030 OPC UA monitoring technical correction
 

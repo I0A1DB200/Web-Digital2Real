@@ -41,7 +41,6 @@ async function createRepository() {
   });
   await mkdir(path.join(root, "Frontend", "generated"), { recursive: true });
   await mkdir(path.join(root, "Frontend", "assets", "images"), { recursive: true });
-  await cp(new URL("../../Frontend/assets/images/d2r-cobot-palletizing-card.webp", import.meta.url), path.join(root, "Frontend", "assets", "images", "d2r-cobot-palletizing-card.webp"), { recursive: true });
   await cp(new URL("../../Frontend/simulators/", import.meta.url), path.join(root, "Frontend", "simulators"), { recursive: true });
   return root;
 }
@@ -118,18 +117,10 @@ test("preview packages every eligible canonical Experience", async t => {
   const generatedRoot = path.join(root, "Frontend", "generated", "experience-engine");
   const catalog = await readJson(path.join(generatedRoot, "catalog.json"));
 
-  assert.deepEqual(result.packaged, [...["EXP-BACNET-DEVICE-029", "EXP-CANOPEN-NODE-028", "EXP-ETHERCAT-SLAVE-027", "EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IMPULSE-LAG-019", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-LOOP-COMPLIANCE-020", "EXP-MODBUS-RTU-025", "EXP-MODBUS-TCP-026", "EXP-MULTISYSTEM-JAM-010", "EXP-OPCUA-DATA-030", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFIBUS-STATION-023", "EXP-PROFIBUS-TERMINATION-024", "EXP-PROFINET-DEVICE-021", "EXP-PROFINET-DEVICE-022", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"], ...["EXP-UR-COBOT-001", "EXP-ELECTRICAL-SUPPLY-031", "EXP-ELECTRICAL-CONTACTOR-032", "EXP-ELECTRICAL-OVERLOAD-033", "EXP-ELECTRICAL-PHASE-034", "EXP-ELECTRICAL-PROTECTION-035", "EXP-ELECTRICAL-RETURN-036", "EXP-ELECTRICAL-CONTACT-037", "EXP-ELECTRICAL-ROTATION-038", "EXP-ELECTRICAL-DROP-039", "EXP-ELECTRICAL-INSULATION-040"]].sort());
+  assert.deepEqual(result.packaged, [...["EXP-BACNET-DEVICE-029", "EXP-CANOPEN-NODE-028", "EXP-ETHERCAT-SLAVE-027", "EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IMPULSE-LAG-019", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-LOOP-COMPLIANCE-020", "EXP-MODBUS-RTU-025", "EXP-MODBUS-TCP-026", "EXP-MULTISYSTEM-JAM-010", "EXP-OPCUA-DATA-030", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFIBUS-STATION-023", "EXP-PROFIBUS-TERMINATION-024", "EXP-PROFINET-DEVICE-021", "EXP-PROFINET-DEVICE-022", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"], ...["EXP-ELECTRICAL-SUPPLY-031", "EXP-ELECTRICAL-CONTACTOR-032", "EXP-ELECTRICAL-OVERLOAD-033", "EXP-ELECTRICAL-PHASE-034", "EXP-ELECTRICAL-PROTECTION-035", "EXP-ELECTRICAL-RETURN-036", "EXP-ELECTRICAL-CONTACT-037", "EXP-ELECTRICAL-ROTATION-038", "EXP-ELECTRICAL-DROP-039", "EXP-ELECTRICAL-INSULATION-040"]].sort());
   assert.deepEqual(result.environments, ["ENV-001", "ENV-002", "ENV-003", "ENV-004"]);
   assert.equal(result.skipped.length, 2);
-  assert.ok(catalog.experiences.some(item => item.id === "EXP-UR-COBOT-001" && item.catalogCard));
-  assert.equal(catalog.experiences.length, 41);
-  const cobot = catalog.experiences.find(item => item.id === "EXP-UR-COBOT-001");
-  assert.equal(cobot.catalogCard.href, "../../simulators/cobot/index.html");
-  assert.equal(cobot.catalogCard.image, "cards/EXP-UR-COBOT-001.webp");
-  assert.equal(cobot.catalogCard.alt.es, "Célula de paletizado industrial con robot colaborativo, cinta transportadora y palé");
-  assert.deepEqual(await readFile(path.join(generatedRoot, cobot.catalogCard.image)),
-    await readFile(path.join(root, "Frontend/assets/images/d2r-cobot-palletizing-card.webp")));
-
+  assert.equal(catalog.experiences.length, 40);
   const bacnet = catalog.experiences.find(item => item.id === "EXP-BACNET-DEVICE-029");
   assert.equal(bacnet.editorialId, "EE-0029");
   assert.equal(bacnet.locales.es, "experiences/EXP-BACNET-DEVICE-029.es.json");
@@ -483,7 +474,7 @@ test("publish excludes technical-review experiences while preview includes them"
 
   assert.deepEqual(publish.packaged, ["EXP-SENSOR-INTERMITTENT-002"]);
   assert.equal(publish.skipped.some(item => item.reason === "publication_state"), true);
-  assert.deepEqual(preview.packaged, [...["EXP-BACNET-DEVICE-029", "EXP-CANOPEN-NODE-028", "EXP-ETHERCAT-SLAVE-027", "EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IMPULSE-LAG-019", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-LOOP-COMPLIANCE-020", "EXP-MODBUS-RTU-025", "EXP-MODBUS-TCP-026", "EXP-MULTISYSTEM-JAM-010", "EXP-OPCUA-DATA-030", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFIBUS-STATION-023", "EXP-PROFIBUS-TERMINATION-024", "EXP-PROFINET-DEVICE-021", "EXP-PROFINET-DEVICE-022", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"], ...["EXP-UR-COBOT-001", "EXP-ELECTRICAL-SUPPLY-031", "EXP-ELECTRICAL-CONTACTOR-032", "EXP-ELECTRICAL-OVERLOAD-033", "EXP-ELECTRICAL-PHASE-034", "EXP-ELECTRICAL-PROTECTION-035", "EXP-ELECTRICAL-RETURN-036", "EXP-ELECTRICAL-CONTACT-037", "EXP-ELECTRICAL-ROTATION-038", "EXP-ELECTRICAL-DROP-039", "EXP-ELECTRICAL-INSULATION-040"]].sort());
+  assert.deepEqual(preview.packaged, [...["EXP-BACNET-DEVICE-029", "EXP-CANOPEN-NODE-028", "EXP-ETHERCAT-SLAVE-027", "EXP-FLOW-LOOP-017", "EXP-GRAPH-SEQUENCE-007", "EXP-HMI-STATE-009", "EXP-IMPULSE-LAG-019", "EXP-INDUCTIVE-GAP-011", "EXP-IOLINK-DEVICE-008", "EXP-LEVEL-REFERENCE-018", "EXP-LOOP-COMPLIANCE-020", "EXP-MODBUS-RTU-025", "EXP-MODBUS-TCP-026", "EXP-MULTISYSTEM-JAM-010", "EXP-OPCUA-DATA-030", "EXP-PNEUMATIC-CYLINDER-004", "EXP-PNEUMATIC-CYLINDER-014", "EXP-PNEUMATIC-LINE-013", "EXP-PRESSURE-SCALING-012", "EXP-PROFIBUS-STATION-023", "EXP-PROFIBUS-TERMINATION-024", "EXP-PROFINET-DEVICE-021", "EXP-PROFINET-DEVICE-022", "EXP-PROFINET-LINK-006", "EXP-SAFETY-GATE-005", "EXP-SENSOR-INTERMITTENT-002", "EXP-SENSOR-SIGNAL-001", "EXP-SICK-DISTANCE-015", "EXP-THERMOCOUPLE-POLARITY-016", "EXP-VFD-AUTHORITY-003"], ...["EXP-ELECTRICAL-SUPPLY-031", "EXP-ELECTRICAL-CONTACTOR-032", "EXP-ELECTRICAL-OVERLOAD-033", "EXP-ELECTRICAL-PHASE-034", "EXP-ELECTRICAL-PROTECTION-035", "EXP-ELECTRICAL-RETURN-036", "EXP-ELECTRICAL-CONTACT-037", "EXP-ELECTRICAL-ROTATION-038", "EXP-ELECTRICAL-DROP-039", "EXP-ELECTRICAL-INSULATION-040"]].sort());
   assert.deepEqual(preview.environments, ["ENV-001", "ENV-002", "ENV-003", "ENV-004"]);
   assert.deepEqual(publish.environments, []);
 });

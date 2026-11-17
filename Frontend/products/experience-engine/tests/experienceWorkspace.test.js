@@ -1353,29 +1353,6 @@ class FakeEventTarget {
   }
 }
 
-test("standalone catalog cards use localized copy and navigation without creating an ENV", async () => {
-  for (const locale of ["es", "en"]) {
-    const documentRef = new FakeDocument();
-    let opened = null;
-    const navigator = createEnvironmentNavigator({ documentRef, baseUrl: "./generated/experience-engine", locale,
-      environments: [], experiences: [{ id: "EXP-STANDALONE", editorialId: "EE-TEST", title: "Cobot", summary: "Review",
-        catalogCard: { image: "cards/cobot.webp", width: 1672, height: 941, alt: { es: "Célula", en: "Cell" } } }],
-      onOpenExperience: id => { opened = id; }, windowRef: null
-    });
-    navigator.renderCatalog();
-    const image = navigator.element.find(element => element.tagName === "IMG");
-    assert.equal(image.alt, locale === "es" ? "Célula" : "Cell");
-    assert.equal(image.width, 1672);
-    assert.equal(image.height, 941);
-    assert.equal(image.src, "./generated/experience-engine/cards/cobot.webp");
-    await findButton(navigator.element, "CobotReview").click();
-    assert.equal(opened, "EXP-STANDALONE");
-    assert.doesNotMatch(navigator.element.text, /No environments are available/);
-    navigator.destroy();
-  }
-});
-
-
 test("Experience lifecycle tells the shell to hide catalog promotion until returning", async () => {
   const artifact = evidenceMediaArtifact("en");
   const changes = [];
@@ -1393,20 +1370,4 @@ test("Experience lifecycle tells the shell to hide catalog promotion until retur
   await findButton(workspace.element, "All experiences").click();
   assert.equal(changes.at(-1), null);
   workspace.destroy();
-});
-
-test("simulator catalog target is a native link and does not activate the diagnostic player", async () => {
-  let opened = 0;
-  const navigator = createEnvironmentNavigator({ documentRef: new FakeDocument(), baseUrl: "./generated/experience-engine", locale: "es",
-    environments: [], experiences: [{ id: "EXP-SIM", editorialId: "EE-SIM", title: "Cobot", summary: "Simulador",
-      catalogCard: { href: "../../simulators/cobot/index.html", image: "cards/cobot.webp", width: 1672, height: 941, alt: { es: "Cobot", en: "Cobot" } } }],
-    onOpenExperience: () => { opened++; }, windowRef: null
-  });
-  navigator.renderCatalog();
-  const link = navigator.element.find(element => element.tagName === "A");
-  assert.ok(link);
-  assert.equal(link.href, "./generated/experience-engine/../../simulators/cobot/index.html");
-  await link.click();
-  assert.equal(opened, 0);
-  navigator.destroy();
 });

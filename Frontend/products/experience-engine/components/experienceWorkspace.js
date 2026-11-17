@@ -13,7 +13,8 @@ export function createExperienceWorkspace({
   progressStore = createEnvironmentProgressStore(),
   preferenceStorage = localeStorage(),
   localePreference = null,
-  windowRef = globalThis.window
+  windowRef = globalThis.window,
+  onExperienceChange = () => {}
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -140,6 +141,7 @@ export function createExperienceWorkspace({
         locale
       );
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
+      onExperienceChange(item.id);
       renderStatus(workspaceUi.loading(item.title));
 
       const artifactPath = selectArtifactPath(item, locale);
@@ -209,6 +211,7 @@ export function createExperienceWorkspace({
   function closeExperience() {
     player = null;
     commands = [];
+    onExperienceChange(null);
     navigator.restore();
     show(navigator.element);
     activeExperienceId = null;
@@ -249,6 +252,7 @@ export function createExperienceWorkspace({
   }
 
   function renderCatalog() {
+    onExperienceChange(null);
     player = null;
     commands = [];
     activeExperienceId = null;

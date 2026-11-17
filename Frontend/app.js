@@ -196,7 +196,11 @@ function renderExperienceLabView() {
   page.className = "experience-lab-view";
   activeSimulatorCard = createSimulatorCard(site.simulator);
 
-  const workspace = createExperienceWorkspace({ localePreference });
+  const simulatorCard = activeSimulatorCard.element;
+  const workspace = createExperienceWorkspace({
+    localePreference,
+    onExperienceChange: experienceId => { simulatorCard.hidden = Boolean(experienceId); }
+  });
   activeExperienceWorkspace = workspace;
   page.append(activeSimulatorCard.element, workspace.element);
   workspace.initialise().then(async () => {

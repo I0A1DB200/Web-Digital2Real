@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-17 — Focus the selected Experience
+
+- Hide the catalog simulator promotion while a Workspace Experience is loading/open; restore it when returning to the catalog. Opening the Cobot card now places Cobot content at the top instead of the unrelated D2R Inspection Cell promotion.
+- Add a generic Workspace lifecycle callback and regression coverage; Experience identity, data, player logic, catalog order and simulation remain unchanged.
+
 ## 2026-11-17 — EE-0041 Cobot standalone access card
 
 - Added canonical EE-0041 / EXP-UR-COBOT-001 under robotics/EE-0041-cobot-palletizing, complete ES/EN copy and a text-only evidence-interpretation case derived from the supplied prototype README. No physical diagnosis or recovery is claimed.

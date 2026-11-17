@@ -100,8 +100,9 @@ export function createEnvironmentNavigator({
     standalone.forEach(experience => {
       const data = experience.catalogCard;
       const card = createElement(documentRef, "article", "environment-card");
-      const main = createElement(documentRef, "button", "environment-card__main");
-      main.type = "button";
+      const main = createElement(documentRef, data.href ? "a" : "button", "environment-card__main");
+      if (data.href) main.href = `${baseUrl}/${data.href}`;
+      else main.type = "button";
       main.setAttribute("aria-label", experience.title);
       const media = createElement(documentRef, "span", "environment-card__media");
       const image = createElement(documentRef, "img", "environment-card__image");
@@ -116,7 +117,7 @@ export function createEnvironmentNavigator({
       appendText(documentRef, content, "span", "environment-card__description", experience.summary);
       main.appendChild(media);
       main.appendChild(content);
-      main.addEventListener("click", () => {
+      if (!data.href) main.addEventListener("click", () => {
         onOpenExperience(experience.id);
         scrollWorkspaceToTop(windowRef);
       });

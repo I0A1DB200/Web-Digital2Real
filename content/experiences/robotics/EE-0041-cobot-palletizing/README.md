@@ -21,10 +21,10 @@ The proposed broader programming/palletizing simulation remains a prototype refe
 
 The Experience definition records the approved image as a navigation illustration, never diagnostic evidence. Dimensions: 1672 × 941. SHA256: 37f3226f4904fd7a819893832338f0090c9470e805192b96a9feb69da737528e.
 
-Technical-review status includes this package in preview only. Publish mode continues to require published status and a passed technical validation. The generic catalog navigator displays Experiences with an authored public.catalog_card alongside existing ENV cards; no fake ENV or membership change is required.
+The access card now opens the exact supplied HTML prototype at Frontend/simulators/cobot/index.html via a native link. It does not enter the textual diagnostic case. The user's explicit correction authorizes publishing this HTML; it is preserved byte-for-byte, including its original built-in controls and downloads. Separate source ZIPs and QA files are not copied to public output.
 
-The card opens the existing openExperience("EXP-UR-COBOT-001") boundary, which loads localized generated artifacts. Keyboard activation and focus use the existing native button and shared card CSS. The image uses centered object-fit cover in the existing 16:9 media container with intrinsic width/height. No simulator or source archive is exposed.
+experience.yaml public.catalog_card.target owns the destination; packaging validates it as a local simulators/<name>/index.html file. The navigator renders a native anchor for this optional destination, while cards without a target retain Workspace navigation. Title/summary/alt remain localized through existing catalog metadata. The supplied HTML itself stays in its original language and depends on the original Three.js CDN. Publishing the original does not imply a compiled TIA project or validated robot kinematics.
 
-Image metadata lives only in experience.yaml public.catalog_card; the title and summary use existing localized Experience fields. Packaging validates the image location, dimensions and ES/EN alt text, then creates a derived cards/EXP-UR-COBOT-001.webp. Existing Experiences without this optional field are unchanged. The shared extension is authorized by the user's request to implement the standalone card.
+HTML SHA256: e8abcef8e8197da333d1b90e944fb7337c9887c9fc5b00c28a258477d4b5e6d2 .
 
 The reference ZIP and PNG master remain in the supplied handoff package. PLC nominal V1.9, simulator motion and Watch Table are unchanged. No commit, push or deployment is part of this change.

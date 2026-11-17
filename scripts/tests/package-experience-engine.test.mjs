@@ -42,6 +42,7 @@ async function createRepository() {
   await mkdir(path.join(root, "Frontend", "generated"), { recursive: true });
   await mkdir(path.join(root, "Frontend", "assets", "images"), { recursive: true });
   await cp(new URL("../../Frontend/assets/images/d2r-cobot-palletizing-card.webp", import.meta.url), path.join(root, "Frontend", "assets", "images", "d2r-cobot-palletizing-card.webp"), { recursive: true });
+  await cp(new URL("../../Frontend/simulators/", import.meta.url), path.join(root, "Frontend", "simulators"), { recursive: true });
   return root;
 }
 
@@ -123,6 +124,7 @@ test("preview packages every eligible canonical Experience", async t => {
   assert.ok(catalog.experiences.some(item => item.id === "EXP-UR-COBOT-001" && item.catalogCard));
   assert.equal(catalog.experiences.length, 41);
   const cobot = catalog.experiences.find(item => item.id === "EXP-UR-COBOT-001");
+  assert.equal(cobot.catalogCard.href, "../../simulators/cobot/index.html");
   assert.equal(cobot.catalogCard.image, "cards/EXP-UR-COBOT-001.webp");
   assert.equal(cobot.catalogCard.alt.es, "Célula de paletizado industrial con robot colaborativo, cinta transportadora y palé");
   assert.deepEqual(await readFile(path.join(generatedRoot, cobot.catalogCard.image)),

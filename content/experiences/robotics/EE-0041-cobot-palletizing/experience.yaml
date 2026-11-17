@@ -19,6 +19,7 @@ capability_references:
       - DIAG-EVIDENCE-01
 public:
   catalog_card:
+    target: simulators/cobot/index.html
     image: assets/images/d2r-cobot-palletizing-card.webp
     width: 1672
     height: 941
@@ -27,7 +28,7 @@ public:
       en: "Industrial palletizing cell with collaborative robot, conveyor and pallet"
   slug: cobot-palletizing
   title: Cobot Programming / Palletizing
-  summary: 'Learning case under technical review: interpret the supplied palletizing prototype and distinguish an unavailable input value from a confirmed OFF state. No physical robot or compiled TIA project is represented.'
+  summary: "Open the supplied HTML cobot palletizing simulator: robot, conveyor, pallet and PLC Watch. Educational prototype; not a compiled TIA project or validated UR10e kinematics."
   estimated_duration: 20
   scenario:
     initial_context: The supplied V3.6 prototype visualizes a nominal palletizing cycle. A learner questions the neutral DI_BoxSensor representation.

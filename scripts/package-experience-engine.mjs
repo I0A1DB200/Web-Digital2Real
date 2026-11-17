@@ -458,5 +458,15 @@ async function copyCatalogCard(card, id, frontendRoot, temporaryRoot) {
   await mkdir(directory, { recursive: true });
   const name = `${id}${path.extname(source)}`;
   await cp(source, path.join(directory, name));
-  return { image: `cards/${name}`, width: card.width, height: card.height, alt: card.alt };
+  let href;
+  if (card.target != null) {
+    if (typeof card.target !== "string" || !/^simulators\/[a-z0-9-]+\/index\.html$/.test(card.target)) {
+      throw new Error(`Invalid catalog_card target for ${id}.`);
+    }
+    const target = path.resolve(frontendRoot, card.target);
+    assertInside(path.join(frontendRoot, "simulators"), target);
+    await access(target);
+    href = `../../${card.target}`;
+  }
+  return { image: `cards/${name}`, width: card.width, height: card.height, alt: card.alt, ...(href ? { href } : {}) };
 }

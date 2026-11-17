@@ -1,7 +1,7 @@
 locale: es
 translations:
   title: Programación de cobot / Paletizado
-  summary: 'Caso de aprendizaje en revisión técnica: interpretar el prototipo de paletizado suministrado y distinguir un dato de entrada no disponible de un estado OFF confirmado. No representa un robot físico ni un proyecto TIA compilado.'
+  summary: "Abre el simulador HTML de la célula de paletizado con cobot: robot, cinta, palé y PLC Watch. Prototipo didáctico; no es un proyecto TIA compilado ni una cinemática UR10e validada."
   scenario:
     initial_context: El prototipo V3.6 suministrado visualiza un ciclo nominal de paletizado. Un alumno cuestiona la representación neutra de DI_BoxSensor.
     operational_state: Solo revisión documental; no se dispone de instalación física ni medida de entrada en vivo.

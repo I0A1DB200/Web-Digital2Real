@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-17 — Open the supplied Cobot HTML
+
+- Corrected the Cobot access card destination to the exact HTML prototype supplied by the user, now explicitly authorized for publication at simulators/cobot/index.html. The HTML remains byte-for-byte unchanged.
+- Added an optional validated local simulator target to catalog-card metadata and native anchor navigation; existing diagnostic-player cards retain their behavior. Updated ES/EN card summaries to describe the actual simulator.
+- No separate reference ZIP or QA file is published; the original HTML retains its built-in content and CDN dependency.
+
 ## 2026-11-17 — Focus the selected Experience
 
 - Hide the catalog simulator promotion while a Workspace Experience is loading/open; restore it when returning to the catalog. Opening the Cobot card now places Cobot content at the top instead of the unrelated D2R Inspection Cell promotion.

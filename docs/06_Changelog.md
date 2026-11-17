@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-17 — D2R 3D Inspection Cell card
+
+- Added the approved D2R simulator cover to the Experience Lab as a responsive, bilingual card with direct links to the private preview and simulator repository.
+- Copied the approved 1280×720 cover unchanged from the simulator repository; the card labels the preview as owner-only and the image as an illustrative render.
+
 ## 2026-11-11 — EE-0030 OPC UA monitoring technical correction
 
 - Concreted EE-0030's root cause: the monitored item is in `MonitoringMode=Sampling` instead of `Reporting` while the session and subscription remain active.

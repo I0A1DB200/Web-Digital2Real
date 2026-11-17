@@ -23,7 +23,17 @@ export function getSite(locale) {
     ...site,
     navigation: site.navigation.map(item => ({ ...item, label: ({ "engineering-notes": "Notas de ingeniería", "experience-lab": "Experience Lab", about: "Acerca de" })[item.view] ?? item.label })),
     home: { ...site.home, title: "Aprende automatización industrial a través de la ingeniería real.", introduction: "Conocimiento práctico de ingeniería basado en problemas industriales reales, sistemas de automatización fiables y la forma de razonar de los ingenieros en planta." },
-    engineeringNotes: { title: "Notas de ingeniería", introduction: "Artículos técnicos concisos sobre retos industriales reales, diagnóstico práctico y decisiones de ingeniería aplicables en planta." }
+    engineeringNotes: { title: "Notas de ingeniería", introduction: "Artículos técnicos concisos sobre retos industriales reales, diagnóstico práctico y decisiones de ingeniería aplicables en planta." },
+    simulator: {
+      ...site.simulator,
+      eyebrow: "D2R-3D-001 · SIMULADOR INDUSTRIAL 3D",
+      description: "Explora la célula de inspección en PLC Engineering Mode: máquina 3D, HMI, PLC Watch y documentación bilingüe del proyecto.",
+      previewLabel: "Abrir vista previa privada",
+      previewNote: "Vista previa privada, accesible con la cuenta propietaria.",
+      repositoryLabel: "Ver repositorio",
+      imageAlt: "Render conceptual de la célula D2R: alimentador, cinta, cámara de inspección, armario y expulsor lateral.",
+      imageNote: "Render ilustrativo; no es una fotografía de una máquina instalada."
+    }
   };
 }
 
@@ -35,6 +45,20 @@ export const site = {
     "An editorial and educational platform for Industrial Automation, built around real engineering problems.",
   author: "Alejandro Sánchez",
   version: "2.0.0",
+
+  simulator: {
+    eyebrow: "D2R-3D-001 · 3D INDUSTRIAL SIMULATOR",
+    title: "D2R Inspection Cell",
+    description: "Explore the inspection cell in PLC Engineering Mode: a 3D machine, HMI, PLC Watch, and bilingual project documentation.",
+    cover: "assets/images/labs/d2r-inspection-cell-cover.jpg",
+    previewUrl: "https://d2r-industrial-cell-preview.hillyclef2.chatgpt.site/",
+    repositoryUrl: "https://github.com/I0A1DB200/d2r-industrial-cell/tree/feature/d2r-ui-design-system",
+    previewLabel: "Open private preview",
+    previewNote: "Private preview, available to the account owner.",
+    repositoryLabel: "View repository",
+    imageAlt: "Concept render of the D2R inspection cell: feeder, conveyor, inspection camera, control cabinet, and side pusher.",
+    imageNote: "Illustrative render; not a photograph of an installed machine."
+  },
 
   navigation: [
     {

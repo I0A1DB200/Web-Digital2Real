@@ -97,7 +97,7 @@ export function environmentUiCopy(locale) {
   return language === "es" ? {
     experienceLab: "Laboratorio de Experiences",
     catalogTitle: "Entornos industriales. Decisiones de diagnóstico reales.",
-    catalogLede: "Selecciona un entorno, inspecciona la máquina e inicia una investigación disponible.",
+    catalogLede: "Selecciona un entorno o una experiencia de ingeniería e inicia una investigación disponible.",
     openEnvironment: "Abrir entorno",
     noEnvironments: "No hay entornos disponibles.",
     backToEnvironments: "← Todos los entornos",
@@ -128,7 +128,7 @@ export function environmentUiCopy(locale) {
   } : {
     experienceLab: "Experience Lab",
     catalogTitle: "Industrial environments. Real diagnostic decisions.",
-    catalogLede: "Select an environment, inspect the machine and begin an available investigation.",
+    catalogLede: "Select an environment or an engineering experience and begin an available investigation.",
     openEnvironment: "Open environment",
     noEnvironments: "No environments are available.",
     backToEnvironments: "← All environments",

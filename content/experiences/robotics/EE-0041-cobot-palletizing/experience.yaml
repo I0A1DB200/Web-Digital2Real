@@ -1,0 +1,236 @@
+contract_version: 2.0.0
+metadata:
+  id: EXP-UR-COBOT-001
+  editorial_id: EE-0041
+  content_version: 1.0.0
+  class: learning
+  access: free
+  status: technical_review
+  language: en
+classification:
+  platform: UR10e conceptual prototype / PLC nominal V1.9
+  domain: Cobot palletizing
+  industry: Manufacturing
+  machine_type: Simulated palletizing cell
+  difficulty: intermediate
+capability_references:
+  - capability_id: ICF-01
+    competency_ids:
+      - DIAG-EVIDENCE-01
+public:
+  catalog_card:
+    image: assets/images/d2r-cobot-palletizing-card.webp
+    width: 1672
+    height: 941
+    alt:
+      es: "Célula de paletizado industrial con robot colaborativo, cinta transportadora y palé"
+      en: "Industrial palletizing cell with collaborative robot, conveyor and pallet"
+  slug: cobot-palletizing
+  title: Cobot Programming / Palletizing
+  summary: 'Learning case under technical review: interpret the supplied palletizing prototype and distinguish an unavailable input value from a confirmed OFF state. No physical robot or compiled TIA project is represented.'
+  estimated_duration: 20
+  scenario:
+    initial_context: The supplied V3.6 prototype visualizes a nominal palletizing cycle. A learner questions the neutral DI_BoxSensor representation.
+    operational_state: Document review only; no physical installation or live input measurement is available.
+    initiating_event: DI_BoxSensor has no confirmed value in the supplied V1.9 trace.
+    learner_role: Automation engineer reviewing the evidence boundary of a simulated cell.
+    safety_context:
+      safe_state: Offline educational review of supplied documentation; no real machine intervention.
+      intervention_constraints:
+        - Do not infer a safe machine state or authorize physical motion from the prototype.
+        - Do not modify the frozen nominal V1.9 cycle or interpret a drawn LED as an electrical measurement.
+  learning_objectives:
+    - id: OBJ-EVIDENCE
+      description: Distinguish unavailable signal data from a confirmed OFF state before drawing a diagnostic conclusion.
+      capability_id: ICF-01
+      competency_id: DIAG-EVIDENCE-01
+  stages:
+    - id: STAGE-CONTEXT
+      phase: incident
+      title: Scope the observation
+      situation: The sensor is drawn neutral. What can be concluded before reviewing its data provenance?
+      evidence_ids:
+        - EVID-0
+      decision_ids:
+        - DEC-0-REVIEW
+        - DEC-0-RETRY
+      media_ids: []
+    - id: STAGE-REVIEW
+      phase: investigation
+      title: Review the source
+      situation: The supplied README states that DI_BoxSensor has no confirmed value in the V1.9 trace. What does that establish?
+      evidence_ids:
+        - EVID-0
+        - EVID-1
+      decision_ids:
+        - DEC-1-REVIEW
+        - DEC-1-RETRY
+      media_ids: []
+    - id: STAGE-VERIFY
+      phase: solution
+      title: Verify the conclusion
+      situation: The README also says the green LED represents power visually and is not an electrical measurement. Which conclusion is defensible?
+      evidence_ids:
+        - EVID-0
+        - EVID-1
+        - EVID-2
+      decision_ids:
+        - DEC-2-REVIEW
+        - DEC-2-RETRY
+      media_ids: []
+  evidence:
+    - id: EVID-0
+      type: initial_observation
+      source: Supplied V3.6 prototype README
+      content: Only the neutral representation is known; no physical signal value has been measured.
+      reliability: high
+      revealed_by: []
+    - id: EVID-1
+      type: diagnostic
+      source: Supplied V3.6 prototype README
+      content: The supplied V3.6 README explicitly states that DI_BoxSensor has no confirmed value in the V1.9 trace.
+      reliability: high
+      revealed_by:
+        - DEC-0-REVIEW
+    - id: EVID-2
+      type: diagnostic
+      source: Supplied V3.6 prototype README
+      content: The supplied README describes the green LED as a visual representation of power, not an electrical measurement.
+      reliability: high
+      revealed_by:
+        - DEC-1-REVIEW
+  decisions:
+    - id: DEC-0-REVIEW
+      stage_id: STAGE-CONTEXT
+      action: Review the documented data provenance before diagnosing the sensor.
+    - id: DEC-0-RETRY
+      stage_id: STAGE-CONTEXT
+      action: Declare a physical sensor failure from the neutral drawing.
+    - id: DEC-1-REVIEW
+      stage_id: STAGE-REVIEW
+      action: Treat the input value as unavailable, rather than confirmed OFF.
+    - id: DEC-1-RETRY
+      stage_id: STAGE-REVIEW
+      action: Treat the unavailable input as confirmed OFF.
+    - id: DEC-2-REVIEW
+      stage_id: STAGE-VERIFY
+      action: Record the observation as inconclusive for the physical sensor; require validated data before a physical diagnosis.
+    - id: DEC-2-RETRY
+      stage_id: STAGE-VERIFY
+      action: Declare the physical installation healthy because the LED is green.
+  visual:
+    educational_purpose: Marketing illustration of the learning context only; it proves no physical installation, sensor state or robot kinematics.
+    representation: planned
+private:
+  fault_model:
+    root_cause: 'Unsupported diagnostic inference: the prototype has no confirmed DI_BoxSensor value. No physical root cause is established.'
+    recovery_conditions:
+      - The learner correctly distinguishes unavailable input data and illustrative LEDs from validated measurements. This is knowledge validation, not equipment recovery.
+  diagnostic_model:
+    hypotheses:
+      - id: HYP-DATA
+        statement: The neutral sensor representation reflects unavailable trace data.
+        initial_status: possible
+    confirmed_root_cause: HYP-DATA
+    critical_path:
+      - DEC-0-REVIEW
+      - DEC-1-REVIEW
+      - DEC-2-REVIEW
+  decision_logic:
+    - decision_id: DEC-0-REVIEW
+      is_correct: true
+      rationale: The available source supports an evidence boundary, not a physical fault or recovery claim.
+      classification: strong
+      consequence: Review the next documented limitation.
+      evidence_revealed:
+        - EVID-1
+      next_stage: STAGE-REVIEW
+      score_effect: 10
+      safety_effect: 0
+    - decision_id: DEC-0-RETRY
+      is_correct: false
+      rationale: This conclusion exceeds the available evidence.
+      classification: weak
+      consequence: The evidence remains insufficient.
+      evidence_revealed: []
+      next_stage: STAGE-CONTEXT
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Distinguish a visual representation and unavailable data from a validated physical measurement.
+    - decision_id: DEC-1-REVIEW
+      is_correct: true
+      rationale: The available source supports an evidence boundary, not a physical fault or recovery claim.
+      classification: strong
+      consequence: Review the next documented limitation.
+      evidence_revealed:
+        - EVID-2
+      next_stage: STAGE-VERIFY
+      score_effect: 10
+      safety_effect: 0
+    - decision_id: DEC-1-RETRY
+      is_correct: false
+      rationale: This conclusion exceeds the available evidence.
+      classification: weak
+      consequence: The evidence remains insufficient.
+      evidence_revealed: []
+      next_stage: STAGE-REVIEW
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Distinguish a visual representation and unavailable data from a validated physical measurement.
+    - decision_id: DEC-2-REVIEW
+      is_correct: true
+      rationale: The available source supports an evidence boundary, not a physical fault or recovery claim.
+      classification: strong
+      consequence: Review the next documented limitation.
+      evidence_revealed: []
+      next_stage: COMPLETE
+      score_effect: 10
+      safety_effect: 0
+    - decision_id: DEC-2-RETRY
+      is_correct: false
+      rationale: This conclusion exceeds the available evidence.
+      classification: weak
+      consequence: The evidence remains insufficient.
+      evidence_revealed: []
+      next_stage: STAGE-VERIFY
+      score_effect: 0
+      safety_effect: 0
+      retry_feedback: Distinguish a visual representation and unavailable data from a validated physical measurement.
+  scoring:
+    purpose: session_feedback
+    initial_score: 50
+    minimum_score: 0
+    maximum_score: 100
+    safety_threshold: 20
+  evaluation_policy:
+    provisional: true
+    mastery_outcomes:
+      - PASS
+    thresholds:
+      - outcome: RETRY_RECOMMENDED
+        minimum: 0
+        maximum: 49
+      - outcome: PASS_WITH_GUIDANCE
+        minimum: 50
+        maximum: 79
+      - outcome: PASS
+        minimum: 80
+        maximum: 100
+  debrief:
+    fault_summary: No physical sensor fault has been established. The limitation is unavailable prototype data.
+    correct_reasoning:
+      - N/D is not OFF. A rendered LED is not an electrical measurement.
+    recovery:
+      - Obtain validated observations before drawing a physical diagnosis; no equipment recovery is claimed.
+  technical_validation:
+    status: pending
+    evidence:
+      - Supplied V3.6 README; no physical validation or browser QA yet.
+localization:
+  default_locale: en
+  supported_locales:
+    - en
+    - es
+  locale_files:
+    en: locales/en.yaml
+    es: locales/es.yaml

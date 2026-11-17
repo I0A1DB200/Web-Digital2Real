@@ -1352,3 +1352,25 @@ class FakeEventTarget {
     if (this.listeners[name] === listener) delete this.listeners[name];
   }
 }
+
+test("standalone catalog cards use localized copy and navigation without creating an ENV", async () => {
+  for (const locale of ["es", "en"]) {
+    const documentRef = new FakeDocument();
+    let opened = null;
+    const navigator = createEnvironmentNavigator({ documentRef, baseUrl: "./generated/experience-engine", locale,
+      environments: [], experiences: [{ id: "EXP-STANDALONE", editorialId: "EE-TEST", title: "Cobot", summary: "Review",
+        catalogCard: { image: "cards/cobot.webp", width: 1672, height: 941, alt: { es: "Célula", en: "Cell" } } }],
+      onOpenExperience: id => { opened = id; }, windowRef: null
+    });
+    navigator.renderCatalog();
+    const image = navigator.element.find(element => element.tagName === "IMG");
+    assert.equal(image.alt, locale === "es" ? "Célula" : "Cell");
+    assert.equal(image.width, 1672);
+    assert.equal(image.height, 941);
+    assert.equal(image.src, "./generated/experience-engine/cards/cobot.webp");
+    await findButton(navigator.element, "CobotReview").click();
+    assert.equal(opened, "EXP-STANDALONE");
+    assert.doesNotMatch(navigator.element.text, /No environments are available/);
+    navigator.destroy();
+  }
+});

@@ -1,0 +1,57 @@
+locale: es
+translations:
+  title: Programación de cobot / Paletizado
+  summary: 'Caso de aprendizaje en revisión técnica: interpretar el prototipo de paletizado suministrado y distinguir un dato de entrada no disponible de un estado OFF confirmado. No representa un robot físico ni un proyecto TIA compilado.'
+  scenario:
+    initial_context: El prototipo V3.6 suministrado visualiza un ciclo nominal de paletizado. Un alumno cuestiona la representación neutra de DI_BoxSensor.
+    operational_state: Solo revisión documental; no se dispone de instalación física ni medida de entrada en vivo.
+    initiating_event: DI_BoxSensor no tiene un valor confirmado en la traza V1.9 suministrada.
+    learner_role: Ingeniero de automatización que revisa los límites de la evidencia de una célula simulada.
+    safety_context:
+      safe_state: Revisión didáctica offline de documentación suministrada; sin intervención en máquinas reales.
+      intervention_constraints:
+        - No inferir un estado seguro ni autorizar movimiento físico a partir del prototipo.
+        - No modificar el ciclo nominal V1.9 congelado ni interpretar un LED dibujado como una medida eléctrica.
+  learning_objectives:
+    OBJ-EVIDENCE:
+      description: Distinguir datos de señal no disponibles de un estado OFF confirmado antes de extraer una conclusión diagnóstica.
+  stages:
+    STAGE-CONTEXT:
+      title: Delimitar la observación
+      situation: El sensor se representa neutro. ¿Qué puede concluirse antes de revisar la procedencia de los datos?
+    STAGE-REVIEW:
+      title: Revisar la fuente
+      situation: El README suministrado indica que DI_BoxSensor no tiene valor confirmado en la traza V1.9. ¿Qué permite establecer?
+    STAGE-VERIFY:
+      title: Verificar la conclusión
+      situation: El README también indica que el LED verde representa visualmente alimentación y no es una medida eléctrica. ¿Qué conclusión es defendible?
+  evidence:
+    EVID-0:
+      source: README del prototipo V3.6 suministrado
+      content: Solo se conoce la representación neutra; no se ha medido ningún valor físico de señal.
+    EVID-1:
+      source: README del prototipo V3.6 suministrado
+      content: El README V3.6 suministrado indica expresamente que DI_BoxSensor no tiene valor confirmado en la traza V1.9.
+    EVID-2:
+      source: README del prototipo V3.6 suministrado
+      content: El README suministrado describe el LED verde como una representación visual de alimentación, no como una medida eléctrica.
+  decisions:
+    DEC-0-REVIEW:
+      action: Revisar la procedencia documentada del dato antes de diagnosticar el sensor.
+    DEC-0-RETRY:
+      action: Declarar una avería física del sensor por el dibujo neutro.
+    DEC-1-REVIEW:
+      action: Tratar el dato de entrada como no disponible, en vez de OFF confirmado.
+    DEC-1-RETRY:
+      action: Tratar la entrada no disponible como OFF confirmado.
+    DEC-2-REVIEW:
+      action: Registrar que la observación no permite diagnosticar el sensor físico; exigir datos validados antes de una conclusión física.
+    DEC-2-RETRY:
+      action: Declarar sana la instalación física porque el LED es verde.
+  visual:
+    educational_purpose: Ilustración de marketing del contexto de aprendizaje; no demuestra instalación física, estado de sensor ni cinemática del robot.
+  assets: {}
+  retry_feedback:
+    DEC-0-RETRY: Distinguir la representación visual y los datos no disponibles de una medida física validada.
+    DEC-1-RETRY: Distinguir la representación visual y los datos no disponibles de una medida física validada.
+    DEC-2-RETRY: Distinguir la representación visual y los datos no disponibles de una medida física validada.

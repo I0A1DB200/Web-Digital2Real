@@ -1,0 +1,57 @@
+locale: en
+translations:
+  title: Cobot Programming / Palletizing
+  summary: 'Learning case under technical review: interpret the supplied palletizing prototype and distinguish an unavailable input value from a confirmed OFF state. No physical robot or compiled TIA project is represented.'
+  scenario:
+    initial_context: The supplied V3.6 prototype visualizes a nominal palletizing cycle. A learner questions the neutral DI_BoxSensor representation.
+    operational_state: Document review only; no physical installation or live input measurement is available.
+    initiating_event: DI_BoxSensor has no confirmed value in the supplied V1.9 trace.
+    learner_role: Automation engineer reviewing the evidence boundary of a simulated cell.
+    safety_context:
+      safe_state: Offline educational review of supplied documentation; no real machine intervention.
+      intervention_constraints:
+        - Do not infer a safe machine state or authorize physical motion from the prototype.
+        - Do not modify the frozen nominal V1.9 cycle or interpret a drawn LED as an electrical measurement.
+  learning_objectives:
+    OBJ-EVIDENCE:
+      description: Distinguish unavailable signal data from a confirmed OFF state before drawing a diagnostic conclusion.
+  stages:
+    STAGE-CONTEXT:
+      title: Scope the observation
+      situation: The sensor is drawn neutral. What can be concluded before reviewing its data provenance?
+    STAGE-REVIEW:
+      title: Review the source
+      situation: The supplied README states that DI_BoxSensor has no confirmed value in the V1.9 trace. What does that establish?
+    STAGE-VERIFY:
+      title: Verify the conclusion
+      situation: The README also says the green LED represents power visually and is not an electrical measurement. Which conclusion is defensible?
+  evidence:
+    EVID-0:
+      source: Supplied V3.6 prototype README
+      content: Only the neutral representation is known; no physical signal value has been measured.
+    EVID-1:
+      source: Supplied V3.6 prototype README
+      content: The supplied V3.6 README explicitly states that DI_BoxSensor has no confirmed value in the V1.9 trace.
+    EVID-2:
+      source: Supplied V3.6 prototype README
+      content: The supplied README describes the green LED as a visual representation of power, not an electrical measurement.
+  decisions:
+    DEC-0-REVIEW:
+      action: Review the documented data provenance before diagnosing the sensor.
+    DEC-0-RETRY:
+      action: Declare a physical sensor failure from the neutral drawing.
+    DEC-1-REVIEW:
+      action: Treat the input value as unavailable, rather than confirmed OFF.
+    DEC-1-RETRY:
+      action: Treat the unavailable input as confirmed OFF.
+    DEC-2-REVIEW:
+      action: Record the observation as inconclusive for the physical sensor; require validated data before a physical diagnosis.
+    DEC-2-RETRY:
+      action: Declare the physical installation healthy because the LED is green.
+  visual:
+    educational_purpose: Marketing illustration of the learning context only; it proves no physical installation, sensor state or robot kinematics.
+  assets: {}
+  retry_feedback:
+    DEC-0-RETRY: Distinguish a visual representation and unavailable data from a validated physical measurement.
+    DEC-1-RETRY: Distinguish a visual representation and unavailable data from a validated physical measurement.
+    DEC-2-RETRY: Distinguish a visual representation and unavailable data from a validated physical measurement.

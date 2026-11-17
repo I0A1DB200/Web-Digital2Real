@@ -300,3 +300,10 @@ Italian locale files are registered. Activation requires:
 
 Historical packages may retain their declared default fallback. Adding a language
 does not require redesigning the selector or changing Experience IDs.
+
+
+## 18. Standalone Experience access cards
+
+The catalog navigator accepts eligible Experiences with an optional `public.catalog_card` authored in their canonical `experience.yaml`. This navigation image is independent of `public.visual` (Incident Brief/evidence). The object contains `image` (relative to Frontend, within `assets/images/`), positive integer `width`/`height`, and nonempty `alt.es`/`alt.en`. The packager validates these fields and copies the image to a derived `cards/<technical-id>.<extension>` asset. It projects the resulting `catalogCard` into the catalog only after the existing publication eligibility checks.
+
+The existing title/summary localization is reused; alt text follows the global locale. A native button in the shared catalog opens the existing Workspace `openExperience` boundary. Experiences without this metadata do not acquire a standalone card. Existing ENV cards, ten-Experience associations, completion, access and publication rules are unchanged. This capability does not embed external simulators or distribute engineering sources.

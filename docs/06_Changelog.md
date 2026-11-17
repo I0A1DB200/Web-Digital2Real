@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-17 — EE-0041 Cobot standalone access card
+
+- Added canonical EE-0041 / EXP-UR-COBOT-001 under robotics/EE-0041-cobot-palletizing, complete ES/EN copy and a text-only evidence-interpretation case derived from the supplied prototype README. No physical diagnosis or recovery is claimed.
+- Extended the existing catalog navigator and packager with optional authored public.catalog_card metadata; title/summary localization and Workspace navigation remain the existing authorities. The approved marketing WebP is independent of Incident Brief media.
+- Marked EE-0041 technical_review for preview access; publish still requires published status and passed technical validation. Existing ENV membership, access and progress rules are intact.
+- Preserved PLC V1.9, simulator motion and Watch Table. No prototype/source publication, commit, push or deployment.
+
 ## 2026-11-11 — EE-0030 OPC UA monitoring technical correction
 
 - Concreted EE-0030's root cause: the monitored item is in `MonitoringMode=Sampling` instead of `Reporting` while the session and subscription remain active.

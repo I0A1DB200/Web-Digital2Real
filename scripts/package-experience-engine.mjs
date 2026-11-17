@@ -87,6 +87,7 @@ export async function packageExperienceEngine({
       defaultLocale: localized?.defaultLocale ?? null,
       sourceDirectory: path.dirname(file),
       editorialId,
+      catalogCard: authoring.public?.catalog_card,
       access: authoring.metadata.access
     });
   }
@@ -129,6 +130,7 @@ export async function packageExperienceEngine({
       } else {
         await writeArtifact(temporaryRoot, `${artifact.identity.id}.json`, artifact);
       }
+      const catalogCard = await copyCatalogCard(candidate.catalogCard, artifact.identity.id, frontendRoot, temporaryRoot);
       catalog.experiences.push({
         id: artifact.identity.id,
         editorialId: candidate.editorialId,
@@ -138,6 +140,7 @@ export async function packageExperienceEngine({
         summary: artifact.metadata.summary,
         estimatedDuration: artifact.metadata.estimated_duration,
         cover: findCover(artifact),
+        ...(catalogCard ? { catalogCard } : {}),
         ...(localizedArtifacts
           ? {
               defaultLocale,
@@ -438,4 +441,22 @@ if (invokedPath === import.meta.url) {
       process.stderr.write(`Experience packaging failed: ${error.message}\n`);
       process.exitCode = 1;
     });
+}
+
+// Optional navigation imagery is independent of Incident Brief/evidence media.
+async function copyCatalogCard(card, id, frontendRoot, temporaryRoot) {
+  if (card == null) return null;
+  if (!card || typeof card.image !== "string" || !card.image.startsWith("assets/images/")
+    || !Number.isInteger(card.width) || card.width <= 0
+    || !Number.isInteger(card.height) || card.height <= 0
+    || !card.alt || !["es", "en"].every(locale => typeof card.alt[locale] === "string" && card.alt[locale].trim())) {
+    throw new Error(`Invalid catalog_card for ${id}.`);
+  }
+  const source = path.resolve(frontendRoot, card.image);
+  assertInside(path.join(frontendRoot, "assets", "images"), source);
+  const directory = path.join(temporaryRoot, "cards");
+  await mkdir(directory, { recursive: true });
+  const name = `${id}${path.extname(source)}`;
+  await cp(source, path.join(directory, name));
+  return { image: `cards/${name}`, width: card.width, height: card.height, alt: card.alt };
 }

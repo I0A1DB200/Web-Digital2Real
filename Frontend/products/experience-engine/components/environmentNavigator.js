@@ -96,7 +96,34 @@ export function createEnvironmentNavigator({
       renderCardProgress(environment, progress);
       list.appendChild(card);
     });
-    if (!environments.length) {
+    const standalone = [...experienceByEditorialId.values()].filter(experience => experience.catalogCard);
+    standalone.forEach(experience => {
+      const data = experience.catalogCard;
+      const card = createElement(documentRef, "article", "environment-card");
+      const main = createElement(documentRef, "button", "environment-card__main");
+      main.type = "button";
+      main.setAttribute("aria-label", experience.title);
+      const media = createElement(documentRef, "span", "environment-card__media");
+      const image = createElement(documentRef, "img", "environment-card__image");
+      image.src = `${baseUrl}/${data.image}`;
+      image.alt = data.alt?.[locale] ?? data.alt?.en ?? experience.title;
+      image.width = data.width;
+      image.height = data.height;
+      image.loading = "lazy";
+      media.appendChild(image);
+      const content = createElement(documentRef, "span", "environment-card__content");
+      appendText(documentRef, content, "span", "environment-card__title", experience.title);
+      appendText(documentRef, content, "span", "environment-card__description", experience.summary);
+      main.appendChild(media);
+      main.appendChild(content);
+      main.addEventListener("click", () => {
+        onOpenExperience(experience.id);
+        scrollWorkspaceToTop(windowRef);
+      });
+      card.appendChild(main);
+      list.appendChild(card);
+    });
+    if (!environments.length && !standalone.length) {
       appendText(documentRef, list, "p", "experience-workspace__empty", ui.noEnvironments);
     }
     fragment.appendChild(list);

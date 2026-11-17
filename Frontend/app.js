@@ -7,6 +7,7 @@ import { createNavbar } from "./components/navbar.js";
 import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
 import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
 import { createArticleViewer } from "./components/articleViewer.js";
+import { createSimulatorCard } from "./components/simulatorCard.js";
 import { createAbout } from "./components/about.js";
 import { applyCharacterReveal, getCharacterRevealDuration } from "./components/heroTextReveal.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
@@ -44,6 +45,7 @@ if (!validViews.has("engineering-notes")) {
 
 let currentView = null;
 let activeArticleViewer = null;
+let activeSimulatorCard = null;
 let activeExperienceWorkspace = null;
 let activeNavbar = null;
 let activeNotebookMotorHero = null;
@@ -93,6 +95,7 @@ function renderView(view) {
   activeNotebookCarousel = null;
   closeArticle();
   closeExperienceWorkspace();
+  activeSimulatorCard = null;
 
   const main = document.createElement("main");
   main.className = "app-main";
@@ -189,8 +192,13 @@ function renderEngineeringNotesView() {
 }
 
 function renderExperienceLabView() {
+  const page = document.createElement("div");
+  page.className = "experience-lab-view";
+  activeSimulatorCard = createSimulatorCard(site.simulator);
+
   const workspace = createExperienceWorkspace({ localePreference });
   activeExperienceWorkspace = workspace;
+  page.append(activeSimulatorCard.element, workspace.element);
   workspace.initialise().then(async () => {
     if (!pendingExperienceId || activeExperienceWorkspace !== workspace) return;
     const experienceId = pendingExperienceId;
@@ -201,7 +209,7 @@ function renderExperienceLabView() {
       // The Workspace renders its own accessible loading error.
     }
   });
-  return workspace.element;
+  return page;
 }
 
 export async function openExperience(experienceId) {
@@ -288,6 +296,7 @@ localePreference.subscribe((locale, pending) => {
   site = getSite(locale);
   notebook = getNotebook(locale);
   document.documentElement.lang = locale;
+  activeSimulatorCard?.update(site.simulator);
   activeNotebookCarousel?.updateArticles(notebook);
   if (activeArticleViewer) activeArticleViewer.updateArticle(notebook.find(article => article.id === activeArticleViewer.getArticleId()));
   const textUpdates = {

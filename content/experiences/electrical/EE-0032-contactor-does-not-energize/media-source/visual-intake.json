@@ -1,0 +1,264 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0032",
+  "canonical_id": "EXP-ELECTRICAL-CONTACTOR-032",
+  "source_archive": "EE0032_Codex.zip",
+  "archive_sha256": "5b83d0aea3a4e4d78bdb07513969c3d0819a452904e8b916a60d332b1289d20b",
+  "status": "DRAFT_INTEGRATED_HUMAN_TECHNICAL_REVIEW_PENDING",
+  "supplied_assets": 5,
+  "runtime_registered_assets": 5,
+  "runtime_presented_assets": 5,
+  "publication_allowed": false,
+  "no_asset_06": true,
+  "assets": [
+    {
+      "source_id": "ASSET-01",
+      "runtime_id": "ART-001",
+      "canonical_file": "assets/01_disposicion_cuadro.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACTOR-032/01_disposicion_cuadro.png",
+      "sha256": "53b5f6d07ae62975e506c373e50a6b4daaf166dea50f5e6e1392f73bd47e1383",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "provenance": "Original user-supplied synthetic teaching image from EE0032_Codex.zip; unchanged PNG.",
+      "rights": "User supplied for this task; no manufacturer approval or verified redistribution license asserted.",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "REVIEW_PENDING",
+      "localization": {
+        "es": {
+          "alt": "Distribución ilustrada del cuadro cableado con PS1, Q1, F1, KM1, F2, S0, S1 y X1.",
+          "caption": "Localización de componentes."
+        },
+        "en": {
+          "alt": "Illustrated hardwired cabinet layout with PS1, Q1, F1, KM1, F2, S0, S1 and X1.",
+          "caption": "Component locations."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-02",
+      "runtime_id": "ART-002",
+      "canonical_file": "assets/02_esquema_multifilar.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACTOR-032/02_esquema_multifilar.png",
+      "sha256": "831347a7425c52e4e92ce4d8d44c598d5c09aa1b519e0f365a3a0dba54cb6424",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "provenance": "Original user-supplied synthetic teaching image from EE0032_Codex.zip; unchanged PNG.",
+      "rights": "User supplied for this task; no manufacturer approval or verified redistribution license asserted.",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "REVIEW_PENDING",
+      "localization": {
+        "es": {
+          "alt": "Esquema multifilar de potencia y mando de 24 VDC, con STOP y protección en serie y auxiliar KM1 en paralelo con START.",
+          "caption": "Circuito de mando cableado."
+        },
+        "en": {
+          "alt": "Multifilar power and 24 VDC control schematic with STOP and protection in series and the KM1 auxiliary in parallel with START.",
+          "caption": "Hardwired control circuit."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-03",
+      "runtime_id": "ART-003",
+      "canonical_file": "assets/03_tension_S1_14.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACTOR-032/03_tension_S1_14.png",
+      "sha256": "bbe533e780c660e96be66a80d73cf117469f37276e91c32df7a65738318dc160",
+      "width": 1774,
+      "height": 887,
+      "mime": "image/png",
+      "provenance": "Original user-supplied synthetic teaching image from EE0032_Codex.zip; unchanged PNG.",
+      "rights": "User supplied for this task; no manufacturer approval or verified redistribution license asserted.",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "REVIEW_PENDING",
+      "localization": {
+        "es": {
+          "alt": "Registro simulado: S1:14 respecto a 0 V marca 0,0 V sin pulsar y con START pulsado.",
+          "caption": "S1:14 — 0,0 V / 0,0 V."
+        },
+        "en": {
+          "alt": "Simulated record: S1:14 relative to 0 V reads 0.0 V with START released and pressed.",
+          "caption": "S1:14 — 0.0 V / 0.0 V."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-04",
+      "runtime_id": "ART-004",
+      "canonical_file": "assets/04_continuidad_S1.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACTOR-032/04_continuidad_S1.png",
+      "sha256": "7d4daeeb9eb754bdf65844062f929b057129229f21481c3c08d6601e28e951a5",
+      "width": 1774,
+      "height": 887,
+      "mime": "image/png",
+      "provenance": "Original user-supplied synthetic teaching image from EE0032_Codex.zip; unchanged PNG.",
+      "rights": "User supplied for this task; no manufacturer approval or verified redistribution license asserted.",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "REVIEW_PENDING",
+      "localization": {
+        "es": {
+          "alt": "Ensayo aislado simulado de S1:13–14: OL en reposo y durante accionamiento.",
+          "caption": "S1:13–14 aislado — OL / OL."
+        },
+        "en": {
+          "alt": "Simulated isolated S1:13–14 test: OL with START released and pressed.",
+          "caption": "Isolated S1:13–14 — OL / OL."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-05",
+      "runtime_id": "ART-005",
+      "canonical_file": "assets/05_tension_bobina_KM1.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACTOR-032/05_tension_bobina_KM1.png",
+      "sha256": "ca1acc18d39358a2a4016b1b380421f44e22bcae6c55d7ce06facbc2d982dcba",
+      "width": 1774,
+      "height": 887,
+      "mime": "image/png",
+      "provenance": "User-authorized edit of four S1 labels only; original ZIP hash retained.",
+      "rights": "User supplied for this task; no manufacturer approval or verified redistribution license asserted.",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "S1_LABELS_CORRECTED_DEVICE_VALIDATION_PENDING",
+      "localization": {
+        "es": {
+          "alt": "Comparación simulada de KM1: 0,0 V antes y 24,2 V después de reparación; S1 identificado con bornes 13–14.",
+          "caption": "KM1 — 0,0 V / 24,2 V."
+        },
+        "en": {
+          "alt": "Simulated KM1 comparison: 0.0 V before and 24.2 V after repair; S1 terminals identified as 13–14.",
+          "caption": "KM1 — 0.0 V / 24.2 V."
+        }
+      },
+      "original_zip_sha256": "c35e514468b3663ab38fb3941a156eb4b2bf1167d456837de81939c36396aea0",
+      "user_edit": {
+        "authorization": "User approved changing only A1/A2 below S1 to 13/14.",
+        "label_regions_xywh": [
+          [
+            137,
+            318,
+            48,
+            35
+          ],
+          [
+            260,
+            318,
+            48,
+            35
+          ],
+          [
+            1025,
+            318,
+            48,
+            35
+          ],
+          [
+            1147,
+            318,
+            48,
+            35
+          ]
+        ],
+        "outside_regions_pixels_identical": true,
+        "labels_on_KM1_unchanged": true
+      }
+    }
+  ],
+  "bindings": {
+    "cover_asset_id": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-02-RECORD": [
+      "ART-003"
+    ],
+    "EVID-04-RECORD": [
+      "ART-004"
+    ],
+    "completion": [
+      "ART-005"
+    ],
+    "EVID-05-RECORD": [
+      "ART-005"
+    ]
+  },
+  "hidden_assets": [],
+  "issues": [
+    {
+      "id": "B01",
+      "classification": "CONTENT",
+      "status": "LABEL_CORRECTION_VERIFIED",
+      "assets": [
+        "ART-005"
+      ],
+      "detail": "Four S1 labels changed from A1/A2 to 13/14 with user approval; all other pixels unchanged. Manufacturer-specific KM1 terminal identity and green indication still require validation."
+    },
+    {
+      "id": "O01",
+      "classification": "CONTENT",
+      "status": "OPEN",
+      "assets": [
+        "ART-001",
+        "ART-002"
+      ],
+      "detail": "Verify actual source supply, protected branches, X1 wiring, KM1/F2 power connections, F1 1P+N suitability for DC, device references, Q1/F2 coordination, motor sizing and IEC symbols. Pictures are not certified installation drawings."
+    },
+    {
+      "id": "O02",
+      "classification": "CONTENT",
+      "status": "OPEN",
+      "assets": [
+        "ART-003"
+      ],
+      "detail": "0 V at S1:14 alone does not prove a failed S1; use upstream and return records. Actual S1:13 supply is not measured by this image."
+    },
+    {
+      "id": "O03",
+      "classification": "CONTENT",
+      "status": "VERIFIED_AUTHORING_PREREQUISITE",
+      "assets": [
+        "ART-004"
+      ],
+      "detail": "Continuity result revealed only after DEC-04-A; simulation, de-energization, isolation, absence of voltage and elimination of parallel paths stated before that action. No actual live work performed."
+    },
+    {
+      "id": "O04",
+      "classification": "TECHNICAL_DEBT",
+      "status": "OPEN",
+      "assets": [
+        "ART-001",
+        "ART-002"
+      ],
+      "detail": "Originals embed EE-0032 and Asset 01/02 de 06 despite five-file closed inventory. Preserve approved originals; do not infer or generate a sixth file."
+    }
+  ],
+  "semantic_sha256": {
+    "decisions": "bc1445b06532932965cf9f57cf33eee8afc510cfa5d085f98fc78c26abb3d3d9"
+  },
+  "private_decision_logic_sha256": "71887668f18016c67effa55999faf549b3d66a2dedf24d470041d4456d57b52d",
+  "fault_model_sha256": "df549d84b993ba8a53d6a24964f2108c32549630059824e498cc429b557eb364",
+  "stages_without_media_sha256": "9b80924a37bba8ab161fb675cac72be5e34199d899a3f5f147a2d8d794fe03d9",
+  "evidence_without_media_sha256": "39dd1ba29c72b0498151c019d376c9de14506763bf3091e93f593b9ec446e134",
+  "no_engine_changes": true,
+  "localized_semantic_sha256": {
+    "es": {
+      "stages": "3a8ca283a142b2b6b377a23ceef197ef821a2fc92fe9d6d8d4f9f72e5eacd41a",
+      "evidence": "217028933c1659b32d4b565db31f4ab1c35da9b01bb3388c9b4dd113e3148d83",
+      "decisions": "31ec8516cbd54c6cfd0e61488d69b52a1d2a0cf3e01078e5da15e6df37b529ee",
+      "retry_feedback": "dc2c13f821a2bbc24c61f26e821e6c5d210d82a0546f50d65dfbc9a0fe088fff",
+      "completion": "410b5eedaaa2357ceb76705415e0721812325fb697d9483f97dbd8b0cabe9d77"
+    },
+    "en": {
+      "stages": "eb5dfdcfed7bbda36f513c3edd9d0ae92bac58e7ee6c84e3a7ca0f06df602298",
+      "evidence": "f8dea126c748b76ce4c0bee8f637096daedd8b33965ac28204121af5b00ad42e",
+      "decisions": "d5f0fe1b4aa7272bd3db297612f087956dc8f606985265553773e5fc0ad947ee",
+      "retry_feedback": "4fd8c396d687cdc6c28f40152234c20f44f04a459a622fad51ba5e335d320873",
+      "completion": "6486c03578b707d6e9134b34aa1d74695401040850a70f558d41199e16373a6b"
+    }
+  }
+}

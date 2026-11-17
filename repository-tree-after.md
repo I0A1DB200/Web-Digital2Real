@@ -67,3 +67,7 @@ La tarjeta abre el caso textual inicial de interpretación de datos del prototip
 ## Preservación
 
 PLC nominal V1.9, movimientos del simulador 3D y Watch Table NO modificados. ZIP de referencia SHA256 cf92dc04c29f1e53b4bba69b07c5ee4046553c1470b11bcfefcd5cce1780cf93. Sin fuentes o ZIP de prototipo en el árbol público. Sin cambios de credenciales, pagos, reglas de entitlement, progreso, scoring del Engine o lógica de simulación. Los cambios de turnos anteriores se conservaron y completaron; estado inicial de este turno incluía asset, borrador, pruebas e informe sin commit.
+
+## Integración autorizada en main — 2026-11-17
+
+El usuario solicitó commit/push y después fusión en main y despliegue. Se integra origin/main 7e66b20 conservando la tarjeta D2R Inspection Cell y las imágenes EE-0032 incorporadas en paralelo. Único conflicto: changelog, resuelto conservando ambas entradas. Builds Notebook/Experience preview PASS; 51/51 tests PASS incluyendo simulatorCard; navegador ES/EN a 390 y 1440 px PASS sin pageerror. Este registro sustituye el estado anterior «sin commit/push/despliegue»; el resultado remoto del despliegue se confirma por GitHub Actions tras el push. El caso mantiene technical_review y no se afirma aprobación técnica del contenido.

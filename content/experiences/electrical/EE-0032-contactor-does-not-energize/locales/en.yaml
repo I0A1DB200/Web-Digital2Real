@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "Contactor does not energize"
-  summary: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated. Text preview; visual evidence and technical review pending."
+  summary: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated. Preview with illustrations; technical review pending."
   scenario:
     initial_context: "Pressing START does not close -KM1. The 24 VDC control circuit is +24V → -S0 STOP NC → -F2 protective NC contact → -S1 START NO → -KM1:A1 → A2:0V, with an NO KM1 seal-in auxiliary. Supplied records are interpreted; no real circuit is operated."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-019 (NB-EL-11): Control versus power; article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-027 (NB-EL-19): Reading control schematics; article-029 (NB-EL-21): Diagnostic method"
@@ -13,8 +13,9 @@ translations:
         - "The learner interprets records; no live work or operations on a real installation are performed."
         - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
         - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "The S1 continuity record requires a de-energized circuit, verified absence of voltage and sufficient isolation to eliminate parallel paths."
         - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
-        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+        - "Teaching preview: technical review pending; not approved material for real operation."
   learning_objectives:
     OBJ-TRACE-CIRCUIT:
       description: "Notebook — reading path in Engineering Notes: article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-019 (NB-EL-11): Control versus power; article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-027 (NB-EL-19): Reading control schematics; article-029 (NB-EL-21): Diagnostic method"
@@ -34,7 +35,7 @@ translations:
       situation: "The record shows +24 V at F2 output and 0 V at S1 output while START is pressed. The A2 return has already been verified. The interruption is between F2 output and S1 output; the internal defect is not yet confirmed.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-04-DIAGNOSIS:
       title: "Confirm the cause and intervene safely"
-      situation: "Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "Path comparison directs the check to S1. Supply is present downstream of F2, A2 return is verified and S1 output lacks voltage with START pressed. Component confirmation uses an isolated test, with de-energization, lockout and absence of voltage verified by authorized personnel. Isolation must eliminate parallel paths.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-05-VERIFY-RECOVERY:
       title: "Verify recovery"
       situation: "The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending.\n\nWhich interpretation or action is justified by the available evidence?"
@@ -100,8 +101,23 @@ translations:
     DEC-05-A: "The proposal “Coil noise is sufficient.” is not supported by this record.  Review: The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending. Choose again without carrying out the proposed option."
     DEC-05-C: "The proposal “Disable STOP to prevent recurrence.” is not supported by this record.  Review: The isolated test and documentation confirm an internal mechanical opening: S1 does not close despite actuation. KM1 does not receive rated voltage; a defective coil has not been established. Approved equivalent S1 replacement and documentation correction are required; recovery is still pending. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Hardwired circuit illustrations and simulated records disclosed by decision; recovery comparison shown only after final verification."
+  assets:
+    ART-001:
+      alt: "Illustrated hardwired cabinet layout with PS1, Q1, F1, KM1, F2, S0, S1 and X1."
+      caption: "Component locations."
+    ART-002:
+      alt: "Multifilar power and 24 VDC control schematic with STOP and protection in series and the KM1 auxiliary in parallel with START."
+      caption: "Hardwired control circuit."
+    ART-003:
+      alt: "Simulated record: S1:14 relative to 0 V reads 0.0 V with START released and pressed."
+      caption: "S1:14 — 0.0 V / 0.0 V."
+    ART-004:
+      alt: "Simulated isolated S1:13–14 test: OL with START released and pressed."
+      caption: "Isolated S1:13–14 — OL / OL."
+    ART-005:
+      alt: "Simulated KM1 comparison: 0.0 V before and 24.2 V after repair; S1 terminals identified as 13–14."
+      caption: "KM1 — 0.0 V / 24.2 V."
   completion:
     title: "Technical debrief"
     summary: "start contact -S1 fails to close despite mechanical actuation. Do not confuse it with a defective coil: the coil does not receive rated voltage. After authorized S1 replacement, the simulated record verifies start, stop, seal-in and protection. Control is restored without bypassing STOP or protection; coil noise is not used as the closure criterion."

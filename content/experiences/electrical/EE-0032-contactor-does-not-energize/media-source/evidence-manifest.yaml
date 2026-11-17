@@ -1,13 +1,13 @@
 editorial_id: "EXP-EL-02"
 canonical_id: "EXP-ELECTRICAL-CONTACTOR-032"
-status: "pending_user_assets_and_technical_review"
+status: "draft_integrated_human_technical_review_pending"
 expected_asset_range:
-  - 6
-  - 7
-supplied_evidence_images: 0
-required_missing_minimum: 6
-optional_additional: 1
-notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+  - 5
+  - 5
+supplied_evidence_images: 5
+required_missing_minimum: 0
+optional_additional: 0
+notes: "Closed inventory of five original PNGs; no Asset 06. Five shown in local preview; ART-005 labels corrected with user approval and revealed after DEC-05-B. Human technical review pending; see visual-intake.json."
 notebooks:
   -
     editorial_id: "NB-EL-04"
@@ -62,61 +62,43 @@ families:
     safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
 slots:
   -
-    proposed_id: "01-CONTEXT"
+    asset_id: "ART-001"
+    source_id: "ASSET-01"
     family: "E1"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/01-context.png"
-    stage_or_decision: "incident"
-    acceptance: "Context only; no electrical claims or root-cause clues."
-    status: "pending_not_registered"
-    expected_text_es: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real."
+    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/01_disposicion_cuadro.png"
+    stage_or_decision: "cover"
+    status: "draft_bound"
   -
-    proposed_id: "02-CIRCUIT"
+    asset_id: "ART-002"
+    source_id: "ASSET-02"
     family: "E1"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/02-circuit.png"
-    stage_or_decision: "D1"
-    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
-    status: "pending_not_registered"
-    expected_text_es: "Al pulsar START, -KM1 no cierra. Mando 24 VDC: +24V → -S0 STOP NC → -F2 contacto NC de protección → -S1 START NO → -KM1:A1 → A2:0V, con auxiliar de mantenimiento KM1 NO. Se interpretan registros aportados; no se acciona el circuito real."
+    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/02_esquema_multifilar.png"
+    stage_or_decision: "STAGE-01-DIAGNOSIS"
+    status: "draft_bound"
   -
-    proposed_id: "03-RECORD"
-    family: "E2"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/03-record.png"
-    stage_or_decision: "after D1"
-    acceptance: "Records supporting the next question, with no future findings."
-    status: "pending_not_registered"
-    expected_text_es: "El esquema y registro autorizado muestran +24 V en entrada y salida de S0. En el estado documentado, STOP NC está cerrado. La denominación STOP no define un contacto abierto en reposo."
-  -
-    proposed_id: "04-COMPARISON"
+    asset_id: "ART-003"
+    source_id: "ASSET-03"
     family: "E3"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/04-comparison.png"
-    stage_or_decision: "after D2"
-    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
-    status: "pending_not_registered"
-    expected_text_es: "El registro muestra +24 V en salida de F2 y 0 V en salida de S1 mientras START está pulsado. El retorno A2 ya está verificado. La interrupción se localiza entre salida de F2 y salida de S1; no se ha confirmado todavía el defecto interno."
+    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/03_tension_S1_14.png"
+    stage_or_decision: "EVID-02-RECORD after DEC-02-B"
+    status: "draft_bound"
   -
-    proposed_id: "05-INSPECTION"
+    asset_id: "ART-004"
+    source_id: "ASSET-04"
     family: "E3"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/05-inspection.png"
-    stage_or_decision: "after D3"
-    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
-    status: "pending_not_registered"
-    expected_text_es: "La comparación por tramos dirige la comprobación a S1. Hay alimentación aguas abajo de F2, retorno A2 verificado y ausencia de tensión a la salida de S1 con START pulsado. Para confirmar el componente se interpreta un ensayo aislado, con desenergización, consignación y ausencia de tensión verificadas por personal autorizado."
+    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/04_continuidad_S1.png"
+    stage_or_decision: "EVID-04-RECORD after DEC-04-A"
+    status: "draft_bound"
   -
-    proposed_id: "06-VERIFICATION"
+    asset_id: "ART-005"
+    source_id: "ASSET-05"
     family: "E4"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/06-verification.png"
-    stage_or_decision: "after D5"
-    acceptance: "Approved post-repair verification record; no invented thresholds or values."
-    status: "pending_not_registered"
-    expected_text_es: "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
-  -
-    proposed_id: "07-SYNTHESIS"
-    family: "E4"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/07-synthesis.png"
-    stage_or_decision: "completion"
-    acceptance: "Optional final synthesis; does not establish recovery on its own."
-    status: "pending_not_registered"
-    expected_text_es: "Tras sustitución autorizada de S1, el registro simulado verifica marcha, paro, auto-mantenimiento y protección. El mando se restablece sin puentear STOP ni protección; el ruido de bobina no se usa como criterio de cierre."
+    intended_path: "assets/EXP-ELECTRICAL-CONTACTOR-032/05_tension_bobina_KM1.png"
+    stage_or_decision: "EVID-05-RECORD and completion after DEC-05-B"
+    status: "draft_bound_after_authorized_label_correction"
 risk_notes:
   - "All energized readings are simulated or previously obtained by authorized personnel."
   - "Confirm diagram against a verified netlist and source topology before registering any visual."
+asset_intake_manifest: "visual-intake.json"
+runtime_registered_images: 5
+runtime_presented_images: 5

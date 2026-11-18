@@ -1,3 +1,17 @@
+const NAVIGATION_ICONS = {
+  "engineering-notes": new URL("../assets/navigation/engineering-notebook.svg", import.meta.url).href,
+  "experience-lab": new URL("../assets/navigation/experience-lab.webp", import.meta.url).href,
+  "about": new URL("../assets/navigation/about-fingerprint.webp", import.meta.url).href
+};
+
+export function updateNavigationLabel(button, label) {
+  button.setAttribute("aria-label", label);
+  button.setAttribute("title", label);
+  if (!button.dataset.icon) button.textContent = label;
+  const visibleLabel = Array.from(button.children).find(child => child.classList.contains("topbar__label"));
+  if (visibleLabel) visibleLabel.textContent = label;
+}
+
 const MOBILE_NAVIGATION_QUERY = "(max-width: 700px)";
 
 export function createNavbar(site, currentView, onNavigate, {
@@ -25,15 +39,15 @@ export function createNavbar(site, currentView, onNavigate, {
 
   const brand = documentRef.createElement("button");
   brand.type = "button";
-  brand.className = "brand";
+  brand.className = "brand brand--editorial";
   brand.dataset.view = site.navigation[0]?.view ?? "engineering-notes";
-  brand.setAttribute("aria-label", "Go to Engineering Notes");
-  brand.append("Digital");
-
-  const brandAccent = documentRef.createElement("span");
-  brandAccent.className = "brand__accent";
-  brandAccent.textContent = "2";
-  brand.append(brandAccent, "Real");
+  const logo = documentRef.createElement("img");
+  logo.className = "brand__image";
+  logo.src = new URL("../assets/brand/d2r-logo-editorial-header.webp", import.meta.url).href;
+  logo.alt = "Digital2Real";
+  logo.width = 1892;
+  logo.height = 616;
+  brand.appendChild(logo);
 
   const menuButton = documentRef.createElement("button");
   menuButton.type = "button";
@@ -57,7 +71,22 @@ export function createNavbar(site, currentView, onNavigate, {
     button.type = "button";
     button.className = "topbar__link";
     button.dataset.view = item.view;
-    button.textContent = item.label;
+    const iconSource = NAVIGATION_ICONS[item.view];
+    if (iconSource) {
+      button.classList.add("topbar__link--icon");
+      button.dataset.icon = "true";
+      const icon = documentRef.createElement("img");
+      icon.className = "topbar__icon";
+      icon.src = iconSource;
+      icon.alt = "";
+      icon.setAttribute("aria-hidden", "true");
+      button.appendChild(icon);
+      const mobileLabel = documentRef.createElement("span");
+      mobileLabel.className = "topbar__label";
+      mobileLabel.setAttribute("aria-hidden", "true");
+      button.appendChild(mobileLabel);
+    }
+    updateNavigationLabel(button, item.label);
 
     if (item.view === currentView) {
       button.classList.add("is-active");
@@ -67,8 +96,9 @@ export function createNavbar(site, currentView, onNavigate, {
     navigation.appendChild(button);
   });
 
-  inner.append(brand, menuButton, navigation);
+  inner.append(menuButton, navigation);
   if (languageControl) inner.appendChild(languageControl);
+  inner.appendChild(brand);
   header.appendChild(inner);
 
   let isMenuOpen = false;

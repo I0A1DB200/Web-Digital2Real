@@ -1,0 +1,40 @@
+ACTUALIZACIÓN: Notebook ya integrado mediante SVG definitivo aportado por el usuario. El bloqueo descrito abajo es histórico y está resuelto. Ver Actualizacion_Notebook_QA.txt y final-results.json. Usuario sigue reservado, sin destino definido.
+
+ICONOS DE NAVEGACIÓN — IMPLEMENTACIÓN Y QA
+18-11-2026
+
+VALIDADO
+Experience Lab y Acerca de integrados en el header preparado anteriormente. Originales PNG aprobados conservados byte por byte. Derivados WebP lossless con reducción proporcional a máximo176px, sin redibujar ni recortar arte; no se presentan como SVG vectoriales. Assets en Frontend/assets/navigation/. Imagen visible44x44, botón mínimo48x48; aspecto contain. Robot/célula y huella inspeccionados a escala final. Fondo negro de Lab integrado con screen, sin eliminar píxeles interiores.
+En escritorio: dos enlaces icon-only, con aria-label y title traducidos. Imágenes decorativas alt vacío/aria-hidden evitan nombre duplicado. En móvil (breakpoint700px): etiquetas traducidas visibles junto a iconos, para facilitar identificación táctil. Estados hover/focus, subrayado activo y rutas existentes conservados. Logo editorial a la derecha y selectorES/EN preservados.
+Usuario reservado en assets/reserved/navigation/, fuera de Frontend y del copiado al sitio. Sin botón, ruta, login, placeholder ni autenticación. No se solicita su imagen en navegador.
+
+BLOQUEADO
+Notebook: no se encontró engineering-notebook.svg ni el archivo de la ruta temporal indicada. Solo existe engineering-notebook-REFERENCE-VERIFY.svg en el ZIP. No se ha activado, recreado ni sustituido por otro diseño. El enlace mantiene su texto original traducido y su destino. El requisito de tres iconos no está completo: solo dos están activos.
+
+NO VERIFICADO
+Identidad del SVG candidato con el original aprobado. No se afirma que sea el mismo. Falta recibir el SVG definitivo o una fuente verificable para continuar esa parte. El candidato queda archivado como referencia fuera de Frontend en source/.
+
+ARCHIVOS
+Frontend/components/navbar.js: dos imágenes y helper updateNavigationLabel para cambiar etiquetas sin destruir el DOM de los iconos; mantiene marca editorial ya preparada.
+Frontend/app.js: importa y llama al helper en updateNavigationLanguage. Es necesario: antes textContent borraría las imágenes al cambiar idioma.
+Frontend/styles/navbar.css: áreas táctiles, imágenes contain, tratamiento de fondo y etiquetas móviles.
+Frontend/components/tests/navbar.test.js: comprueba nombres accesibles en vez de exigir texto visible y añade regresión de traducción sin pérdida de imagen; Notebook sigue textual.
+Frontend/assets/navigation/: fuentes PNG, derivados WebP y README.
+assets/reserved/navigation/: Usuario original y README.
+docs/06_Changelog.md y este directorio de informe, capturas, logs y fuentes.
+Los cambios anteriores del logo header estaban sin commit y se han conservado. Los demás archivos preexistentes no rastreados también se conservan. Sin cambios de Notebook, Experiences, Engine, simuladores, YAML ni rutas de producto.
+
+QA
+node --test Frontend/components/tests/navbar.test.js: 5/5.
+node --test: 570/570, cero fallos.
+node --check Frontend/app.js y navbar.js: correctos.
+node scripts/package-notebook.mjs y node scripts/package-experience-engine.mjs --mode=preview: correctos. No existe comando npm/lint independiente en el proyecto.
+git diff --check: correcto.
+Chromium real ES/EN a1440,1024,768,390 y320px: ambos iconos cargan tras cambios de idioma y navegación; tres destinos probados con foco y Enter, etiquetas accesibles y title localizados, estados activos, menú móvil/Escape y selectorES/EN correctos. Subruta /Web-Digital2Real/Frontend/ verificada. Sin erroresJavaScript/HTTP, solapes de controles ni overflow horizontal. Notebook permanece textual y Usuario/candidatoSVG no son solicitados.
+Inspección manual de originales y capturas escritorio/móvil: robot, caja/transportador y huella reconocibles a tamaño final; detalle fino reducido por escala natural. Texto junto a los iconos en móvil evita depender solo de su reconocimiento.
+
+EVIDENCIAS
+results.json; capturas header-{ancho}-{idioma}.png y menu-page-{390|320}.png. Logs focused/tests/browser y empaquetados. assets.json registra dimensiones, tamaños y hashes. Script de QA: /workspace/work/navigation-icons/qa.py.
+
+ENTREGA
+Dos iconos implementados y validados en local; un icono pendiente por fuente no verificada; Usuario reservado. Sin commit, push, merge ni deploy. El prompt exige verificar el SVG aprobado antes de utilizar la referencia, por lo que se solicita el archivo definitivo de Notebook para cerrar esa parte.

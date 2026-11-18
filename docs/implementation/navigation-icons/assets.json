@@ -1,0 +1,58 @@
+[
+  {
+    "path": "Frontend/assets/navigation/experience-lab-approved.png",
+    "sha256": "4ed050aaefcdf42be1157f682a3b198ae7c7cb412a65c28daebf597b570aa44b",
+    "dimensions": [
+      1312,
+      1199
+    ],
+    "bytes": 1110759,
+    "status": "APPROVED_SOURCE"
+  },
+  {
+    "path": "Frontend/assets/navigation/about-fingerprint-approved.png",
+    "sha256": "f18be6371e12b660bdd6414f6e244b2b65eddf65e0c1615aaa34e62689b25a27",
+    "dimensions": [
+      1312,
+      1199
+    ],
+    "bytes": 1551833,
+    "status": "APPROVED_SOURCE"
+  },
+  {
+    "path": "assets/reserved/navigation/user-account-approved-FUTURE.png",
+    "sha256": "1881c415c95be467de408250b185223101b9122fe2db27cd1cae35d3e0cf5d34",
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "bytes": 1001390,
+    "status": "RESERVED_NOT_PUBLISHED"
+  },
+  {
+    "path": "Frontend/assets/navigation/experience-lab.webp",
+    "dimensions": [
+      176,
+      161
+    ],
+    "bytes": 18256,
+    "sha256": "de2b5e31bc383f7535da0d232db3e274e4a2a47f650d2e9548da40251a043ac1",
+    "status": "ACTIVE_TECHNICAL_DERIVATIVE"
+  },
+  {
+    "path": "Frontend/assets/navigation/about-fingerprint.webp",
+    "dimensions": [
+      176,
+      161
+    ],
+    "bytes": 28984,
+    "sha256": "fe744df9f1d3968b1c3e77dc07d7e85852835425a41d8135f5c25e32fd3d557f",
+    "status": "ACTIVE_TECHNICAL_DERIVATIVE"
+  },
+  {
+    "path": "Frontend/assets/navigation/engineering-notebook.svg",
+    "sha256": "4f6623525792edced1df484914edde79ec6d060da851d94efc021debb5ac68fc",
+    "bytes": 2348,
+    "status": "ACTIVE_DEFINITIVE_SVG_USER_SUPPLIED"
+  }
+]

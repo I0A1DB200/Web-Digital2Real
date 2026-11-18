@@ -879,3 +879,15 @@ Solo A1/A2 bajo S1 cambian a 13/14 en ART-005; píxeles idénticos fuera de cuat
 ### 2026-11-18 — EE-0033: seis imágenes y revisión de datos del caso
 
 Seis PNG originales integrados en preview, sin alterar imágenes ni Engine. Ficha del ZIP actualiza M1/F2 a 3,8 A, L1 de sobrecarga a 5,6 A y posreparación a 3,5 A; no se inventan valores L2/L3. Continuidad 95–96 solo tras declaración visible de aislamiento, ausencia de tensión y eliminación de caminos paralelos. Publicación bloqueada por QA humano.
+
+### 2026-11-18 — Logotipo editorial en cabecera
+
+El header usa el WebP aprobado a la derecha, conserva el original PNG y la navegación, idioma y menú móvil. Rutas relativas al módulo compatibles con subruta. La marca textual de la página PLC permanece intacta.
+
+### 2026-11-18 — Iconos de navegación
+
+Experience Lab y Acerca de usan los PNG aprobados mediante derivados WebP fieles. Etiquetas accesibles ES/EN conservadas al cambiar idioma. Notebook mantiene texto hasta recibir/verificar su SVG aprobado. Usuario se reserva fuera de Frontend, sin control ni ruta.
+
+### 2026-11-18 — Icono Notebook definitivo
+
+engineering-notebook.svg aportado directamente por el usuario, integrado sin modificar. Tres iconos de navegación con etiquetas ES/EN, foco y destino conservados. Usuario continúa reservado, sin inventar destino de cuenta.

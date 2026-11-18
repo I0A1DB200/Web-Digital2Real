@@ -1,0 +1,36 @@
+LOGOTIPO EDITORIAL — IMPLEMENTACIÓN Y QA
+18-11-2026
+
+Implementado en local, sin commit, push, merge ni deploy.
+Clasificación: presentación/branding del sitio. Fuente de verdad: dos imágenes aprobadas del ZIP y componente navbar.js; no se modifica Notebook ni Experience Engine.
+
+Diagnóstico: el logo activo del header se construía como texto Digital + span.brand__accent + Real en Frontend/components/navbar.js, a la izquierda. Reutilización intencional: brand__accent también sirve al texto de Frontend/plc/plc.html; conservado. No se elimina ningún logo, favicon ni imagen de producto/Experience. No se identificó un antiguo asset de logo del header que debiera borrarse.
+
+Añadidos sin modificar bytes:
+Frontend/assets/brand/d2r-logo-editorial-original.png (fuente canónica).
+Frontend/assets/brand/d2r-logo-editorial-header.webp (derivado aprobado, usado por el header).
+
+Modificados:
+Frontend/components/navbar.js: una imagen completa con alt Digital2Real, medidas intrínsecas 1892x616 y ruta mediante new URL relativa al módulo. Marca al final del DOM, a la derecha. Conserva botón y acción de Home real del proyecto: Engineering Notes. El nombre accesible de acción ES/EN lo sigue gestionando app.js; no se duplica otro logo.
+Frontend/styles/navbar.css: marca editorial (.brand--editorial) a la derecha por margin-left:auto, menú/nav/idioma anteriores; imagen contain sin distorsión. Mezcla screen sobre el fondo existente para integrar el negro sin alterar el archivo de arte. Se conserva la marca textual reutilizada por la página PLC. Sin tokens nuevos, dependencias ni infraestructura.
+docs/06_Changelog.md: anotación del cambio.
+Este directorio: informe, hashes, logs y capturas comparables.
+
+Tamaños: ancho clamp(168px,16vw,192px) en escritorio/tablet. Breakpoint existente 700px: ancho min(156px,40vw). Alto automático por proporción. Barra existente 72px escritorio / 66px móvil, sin convertirla en hero.
+Resultados medidos: 1440px ->192x62,5; 1024/768 ->168x54,6875; 390 ->156x50,78125; 320 ->128x41,671875. Margen exterior del contenedor existente conservado. Un solo logo de marca, sin solapes ni scroll horizontal.
+
+QA:
+- node --test Frontend/components/tests/navbar.test.js: 4/4.
+- node --test: 569/569, cero fallos.
+- node --check Frontend/components/navbar.js y git diff --check correctos.
+- node scripts/package-notebook.mjs y node scripts/package-experience-engine.mjs --mode=preview correctos; assets servidos por la estructura estática existente. No existe package.json ni un comando de lint separado que ejecutar.
+- Chromium real: 1440,1024,768,390 y320px, ES/EN, antes/después. Logo derecho, proporción completa y alineación vertical, un solo elemento de marca, sin solapes ni desbordamiento.
+- Enlace a Engineering Notes desde About, teclado/foco, selector ES/EN, menú móvil, cierre con Escape y navegación verificados.
+- Ruta probada bajo /Web-Digital2Real/Frontend/; WebP carga con dimensiones nativas. Sin errores JS/HTTP en comprobaciones finales.
+- Original y derivado inspeccionados visualmente; capturas 1440/390 revisadas. En tamaño de top bar son legibles la marca y el 2; el detalle fino del PLC/cerebro se reduce por el tamaño, sin ocultar arte ni recortar contenido.
+
+Incidencias del script de QA resueltas: callback de interceptación de la captura anterior, espera de recursos remotos al cargar y espera al terminar navegación/foco. No se cambió el producto para resolverlas. La última ejecución pasa en los cinco tamaños.
+
+Archivos ajenos previamente no rastreados conservados. Diff de producto limitado al componente/estilos del header y a los dos assets. No se modifican DNS, hosting, servicios, favicon, logo PLC, Notebook ni Experiences.
+
+Capturas comparables before-{ancho}.png y after-{ancho}-{es|en}.png. Móvil abierto: menu-390.png y menu-320.png. Resultados estructurados: browser-results.json. Pendiente: publicar, solo con instrucción explícita del usuario.

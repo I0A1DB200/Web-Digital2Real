@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1060" viewBox="0 0 1500 1060" role="img" aria-labelledby="title desc" style="display:block;width:100%;height:auto">
+<title id="title">M-02-001 · Layout funcional y secuencia mecánica</title>
+<desc id="desc">Distribución esquemática del alimentador, cinta, cámara, salidas A/B y secuencia gráfica de alimentación e impulsión; bilingual and not to scale.</desc>
+<defs>
+  <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1L11 6L1 11Z" fill="#187f92"/></marker>
+  <marker id="arrO" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1L11 6L1 11Z" fill="#e47725"/></marker>
+  <style>
+    text{font-family:Arial,Helvetica,sans-serif;fill:#172536}.h1{font-size:32px;font-weight:700}.sub{font-size:16px;fill:#526578}.kicker{font-size:13px;font-weight:700;letter-spacing:1px;fill:#526578}.station{font-size:17px;font-weight:700}.body{font-size:15px;fill:#34495c}.small{font-size:13px;fill:#526578}.tiny{font-size:11px;fill:#526578}.tag{font-size:13px;font-weight:700;fill:#126c7f}.panel{fill:#fff;stroke:#9babb8;stroke-width:2}.subpanel{fill:#f5f8fa;stroke:#c7d1d9;stroke-width:1.5}.machine{fill:#d7e0e6;stroke:#697d8d;stroke-width:3}.belt{fill:#364b58;stroke:#1f3440;stroke-width:3}.signal{fill:none;stroke:#187f92;stroke-width:4;marker-end:url(#arr)}.okpath{fill:none;stroke:#e47725;stroke-width:5;marker-end:url(#arrO)}.leader{fill:none;stroke:#8496a4;stroke-width:2;stroke-dasharray:7 5}
+  </style>
+</defs>
+<rect width="1500" height="1060" fill="#f1f5f7"/><rect x="22" y="22" width="1456" height="1016" rx="16" fill="#fff" stroke="#c5d0d8" stroke-width="2"/><rect x="22" y="22" width="12" height="1016" rx="6" fill="#e47725"/>
+<text x="58" y="67" class="h1">M-02-001 · Layout funcional y secuencia mecánica</text>
+<text x="58" y="96" class="sub">Functional layout and mechanical sequence · esquemático / schematic · no a escala / not to scale</text>
+<rect x="1105" y="40" width="335" height="44" rx="8" fill="#fff2e6" stroke="#e47725" stroke-width="2"/><text x="1272" y="67" text-anchor="middle" font-size="15" font-weight="700" fill="#8c4916">VALIDADO D2R / D2R ACCEPTED</text>
+<line x1="50" y1="119" x2="1450" y2="119" stroke="#d4dde3" stroke-width="2"/>
+
+<!-- Functional plan -->
+<rect x="50" y="145" width="1400" height="470" rx="12" class="panel"/>
+<text x="75" y="177" class="kicker">01 · DISPOSICIÓN Y RECORRIDO / LAYOUT AND PART FLOW</text>
+<text x="1425" y="177" text-anchor="end" class="small">Referencias Three.js en unidades gráficas, no cotas CAD</text>
+
+<!-- Feed unit -->
+<text x="175" y="258" text-anchor="middle" class="station">ALIMENTADOR / FEEDER</text>
+<rect x="76" y="278" width="198" height="176" rx="10" class="machine"/>
+<path d="M99 296V397 M117 296V397 M233 296V397 M251 296V397" stroke="#627787" stroke-width="7"/>
+<g fill="#eef2f4" stroke="#8194a1" stroke-width="2"><rect x="137" y="307" width="78" height="13"/><rect x="137" y="328" width="78" height="13"/><rect x="137" y="349" width="78" height="13"/></g>
+<rect x="236" y="367" width="23" height="34" rx="3" fill="#e47725" stroke="#8d4c18" stroke-width="2"/>
+<text x="175" y="416" text-anchor="middle" class="tiny">1 pieza inferior + hasta 6 en pila</text>
+<text x="175" y="439" text-anchor="middle" class="tiny">1 bottom part + up to 6 stacked</text>
+<path d="M260 385H324" class="signal"/>
+
+<!-- Conveyor and inspection -->
+<rect x="320" y="292" width="805" height="166" rx="18" class="machine"/>
+<rect x="338" y="310" width="768" height="130" rx="8" class="belt"/>
+<text x="725" y="366" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">CINTA · FLUJO DE PIEZA +X</text>
+<text x="725" y="392" text-anchor="middle" font-size="14" fill="#d8e3e8">CONVEYOR · PART TRAVEL +X</text>
+<path d="M375 417H1065" class="signal"/>
+<path d="M577 287V226H700V287" fill="none" stroke="#5d7180" stroke-width="8"/>
+<rect x="625" y="234" width="28" height="24" rx="3" fill="#213c4c" stroke="#738796" stroke-width="2"/>
+<text x="638" y="211" text-anchor="middle" class="station">INSPECCIÓN / INSPECTION</text>
+
+<!-- Sort station -->
+<rect x="845" y="228" width="175" height="42" rx="7" fill="#c7d2da" stroke="#647988" stroke-width="3"/>
+<rect x="908" y="269" width="34" height="38" rx="3" fill="#e47725" stroke="#8d4c18" stroke-width="2"/>
+<text x="932" y="213" text-anchor="middle" class="station">EXPULSOR OK / OK PUSHER</text>
+<path d="M925 304V331" class="okpath"/>
+
+<!-- Output routes -->
+<path d="M925 458V500H1066V535" class="okpath"/>
+<rect x="974" y="538" width="186" height="52" rx="8" fill="#fff2e6" stroke="#d47a29" stroke-width="2.5"/>
+<text x="1067" y="560" text-anchor="middle" font-size="15" font-weight="700">RAMPA → A · OK</text>
+<text x="1067" y="580" text-anchor="middle" class="tiny">side transfer / lateral</text>
+<path d="M1125 374H1210" class="signal"/>
+<rect x="1213" y="316" width="205" height="140" rx="10" fill="#edf2f5" stroke="#687d8c" stroke-width="2.5"/>
+<text x="1315" y="348" text-anchor="middle" class="station">B · NOK</text>
+<text x="1315" y="375" text-anchor="middle" class="body">Final de cinta</text>
+<text x="1315" y="398" text-anchor="middle" class="small">Conveyor end</text>
+<text x="1315" y="414" text-anchor="middle" class="tiny">sin accionar expulsor</text>
+<text x="1315" y="434" text-anchor="middle" class="tiny">pusher remains home</text>
+
+<!-- Cabinet and model coordinates -->
+<rect x="80" y="507" width="220" height="70" rx="8" fill="#e7edf1" stroke="#718391" stroke-width="2"/>
+<text x="190" y="534" text-anchor="middle" class="station">ARMARIO / CABINET</text><text x="190" y="557" text-anchor="middle" class="tiny">posición visual junto al feeder</text><text x="190" y="572" text-anchor="middle" class="tiny">visual placement only</text>
+<rect x="335" y="500" width="574" height="83" rx="8" class="subpanel"/>
+<text x="355" y="524" class="tag">REFERENCIAS DEL MODELO / MODEL REFERENCES</text>
+<text x="355" y="548" class="small">Feed X≈−4→−3 · visión X=−0.65 · clasificación X=1.25</text>
+<text x="355" y="570" class="small">B X≈4.15 · coordenadas gráficas, no cotas / render coordinates, not dimensions</text>
+
+<!-- Functional timing notes -->
+<text x="58" y="655" class="kicker">02 · SECUENCIA CONSERVADA DEL SIMULADOR / SIMULATOR SEQUENCE PRESERVED</text>
+<rect x="50" y="673" width="440" height="282" rx="12" class="panel"/>
+<rect x="50" y="673" width="440" height="40" rx="12" fill="#eaf3f5"/><text x="72" y="700" class="station">ALIMENTACIÓN / FEED</text>
+<text x="75" y="746" class="tag">FEED · 0.8 s total</text>
+<text x="75" y="779" class="body">0–0.45 · avance de pieza inferior</text><text x="75" y="801" class="small">forward stroke; upper stack retained</text>
+<text x="75" y="827" class="body">0.45–0.75 · retorno del empujador</text><text x="75" y="849" class="small">pusher retracts; part stays on belt</text>
+<text x="75" y="875" class="body">0.75–0.78 · espera / short dwell</text>
+<text x="75" y="903" class="body">0.78–1.00 · desciende pila .135</text><text x="75" y="925" class="small">stack drops one visual pitch</text>
+<rect x="530" y="673" width="440" height="282" rx="12" class="panel"/>
+<rect x="530" y="673" width="440" height="40" rx="12" fill="#eaf3f5"/><text x="552" y="700" class="station">VISIÓN / VISION</text>
+<text x="555" y="746" class="tag">TRAVEL_VISION · 2.2 s</text><text x="555" y="773" class="body">Cinta mueve pieza a estación</text><text x="555" y="795" class="small">conveyor carries part to camera</text>
+<text x="555" y="831" class="tag">INSPECT · 1.5 s</text><text x="555" y="858" class="body">Cinta detenida · trigger activo</text><text x="555" y="880" class="small">belt stopped · trigger asserted</text>
+<text x="555" y="916" class="small">Resultado del lote simulado; no visión física.</text><text x="555" y="937" class="tiny">Scripted batch result; no real image inspection.</text>
+<rect x="1010" y="673" width="440" height="282" rx="12" class="panel"/>
+<rect x="1010" y="673" width="440" height="40" rx="12" fill="#fff2e6"/><text x="1032" y="700" class="station">CLASIFICACIÓN / SORT</text>
+<text x="1035" y="746" class="tag">SORT_STOP · 0.5 s · pieza detenida</text>
+<text x="1035" y="779" class="body">OK: DISCHARGE 2.2 s · contacto a A</text><text x="1035" y="801" class="small">OK: contact transfer to ramp A</text>
+<text x="1035" y="833" class="body">OK: PUSH_RETRACT 1.1 s · placa retorna</text><text x="1035" y="855" class="small">plate returns while part leaves on ramp</text>
+<text x="1035" y="887" class="body">NOK: cinta a B · expulsor retraído</text><text x="1035" y="909" class="small">NOK: conveyor to B · pusher stays home</text>
+<text x="1035" y="937" class="tiny">Fases y tiempos son los del HTML actual.</text>
+
+<line x1="50" y1="981" x2="1450" y2="981" stroke="#d4dde3" stroke-width="2"/>
+<text x="58" y="1010" class="small">Base: documentos 01–04 y coordenadas visuales del HTML. No incluye tolerancias, perfiles, cargas ni cotas de fabricación.</text>
+<text x="58" y="1030" class="tiny">Basis: documents 01–04 and HTML visual coordinates. No tolerances, frame sizing, loads or manufacturing dimensions.</text>
+<text x="1438" y="1022" text-anchor="end" font-size="12" font-weight="700" fill="#ad5e1e">REV B · VALIDADA D2R / D2R REVIEWED</text>
+</svg>

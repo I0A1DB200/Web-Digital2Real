@@ -1352,3 +1352,22 @@ class FakeEventTarget {
     if (this.listeners[name] === listener) delete this.listeners[name];
   }
 }
+
+test("Experience lifecycle tells the shell to hide catalog promotion until returning", async () => {
+  const artifact = evidenceMediaArtifact("en");
+  const changes = [];
+  const workspace = createExperienceWorkspace({ documentRef: new FakeDocument(),
+    onExperienceChange: id => changes.push(id),
+    fetchImpl: async location => ({ ok: true, json: async () => location.endsWith("catalog.json")
+      ? { version: 1, environments: [], experiences: [{ id: artifact.identity.id, editorialId: "EE-LIFECYCLE", title: artifact.metadata.title, path: "fixture.json" }] }
+      : structuredClone(artifact) }),
+    importPlayer: async () => ({ ExperiencePlayer })
+  });
+  await workspace.initialise();
+  assert.equal(changes.at(-1), null);
+  await workspace.openExperience(artifact.identity.id);
+  assert.equal(changes.at(-1), artifact.identity.id);
+  await findButton(workspace.element, "All experiences").click();
+  assert.equal(changes.at(-1), null);
+  workspace.destroy();
+});

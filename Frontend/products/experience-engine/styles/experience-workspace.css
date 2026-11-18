@@ -130,6 +130,8 @@
 .environment-card__menu-button,
 .environment-card__menu-item,
 .environment-card__main {
+  color: inherit;
+  text-decoration: none;
   border: 0;
   background: transparent;
   color: inherit;

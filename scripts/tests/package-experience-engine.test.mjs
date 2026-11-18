@@ -40,6 +40,8 @@ async function createRepository() {
     recursive: true
   });
   await mkdir(path.join(root, "Frontend", "generated"), { recursive: true });
+  await mkdir(path.join(root, "Frontend", "assets", "images"), { recursive: true });
+  await cp(new URL("../../Frontend/simulators/", import.meta.url), path.join(root, "Frontend", "simulators"), { recursive: true });
   return root;
 }
 

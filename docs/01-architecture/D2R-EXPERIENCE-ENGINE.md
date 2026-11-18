@@ -300,3 +300,17 @@ Italian locale files are registered. Activation requires:
 
 Historical packages may retain their declared default fallback. Adding a language
 does not require redesigning the selector or changing Experience IDs.
+
+
+
+## 18. Standalone simulator boundary
+
+Standalone interactive simulators remain website delivery assets under
+`Frontend/simulators/`. Their bilingual catalog copy and local HTML routes belong
+to `Frontend/data/site.js`; their runtime, sequence and visual state stay in the
+simulator HTML. They are not Experience records, are not packaged in the
+Experience catalog, and do not create Experience progress or completion.
+
+The website may embed an explicitly authorized local simulator HTML inside its
+own viewer. It must not represent that simulator as an Experience or make its
+runtime state part of the Experience Engine contract.

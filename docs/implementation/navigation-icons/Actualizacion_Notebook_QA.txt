@@ -1,0 +1,11 @@
+NOTEBOOK SVG DEFINITIVO — 18-11-2026
+
+VALIDADO: engineering-notebook.svg aportado directamente por el usuario e integrado sin alterar bytes. SHA-256: 4f6623525792edced1df484914edde79ec6d060da851d94efc021debb5ac68fc. Recurso SVG vectorial real; no raster embebido ni dependencias externas. Se sustituye el texto de Notebook en escritorio; nombre accesible y etiqueta móvil ES/EN conservados.
+
+Tres iconos activos de 44x44 en controles mínimos de48x48: Notebook, Experience Lab y Acerca de. Ruta engineering-notes, subrayado naranja activo, foco, teclado, navegación móvil, selectorES/EN y logo editorial conservados. Sin cambios del contenido ni del Engine. Usuario permanece reservado; no se inventa un destino.
+
+Cambios: Frontend/assets/navigation/engineering-notebook.svg; registro en navbar.js; prueba de traducción de Notebook adaptada; README, changelog y expediente de QA actualizados.
+
+QA: cinco pruebas específicas de navbar; suite compartida570; navegador ES/EN a1440,1024,768,390 y320px. Tres destinos por teclado/Enter, imágenes conservadas al cambiar idioma, nombres accesibles/title correctos, menú móvil/Escape, sin overflow ni erroresJS/HTTP. Subruta verificada. Captura final de escritorio revisada; mismos tamaños/estilos de iconos, arte completo. git diff --check correcto.
+
+Sin commit, push, merge ni deploy. Capturas final-header-*.png, final-menu-page-*.png; datos final-results.json. El bloqueo del SVG de referencia se cierra por recepción del archivo definitivo, sin afirmar identidad con un archivo temporal inaccesible.

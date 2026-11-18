@@ -31,7 +31,7 @@
   line-height: 1;
 }
 
-/* Brand control */
+/* Text brand remains available to the standalone PLC page. */
 .brand {
   border: 0;
   padding: 0;
@@ -95,7 +95,7 @@
 }
 
 /* One global control, visible outside the collapsed navigation on mobile. */
-.topbar__nav { margin-left: auto; }
+.topbar__nav { margin-left: 0; }
 .language-selector {
   display: inline-flex;
   align-items: center;
@@ -130,7 +130,52 @@
 .language-selector__option:disabled { cursor: wait; }
 .language-selector__status:not(:empty) { position: absolute; top: 100%; right: 0; padding: 1rem; background: var(--bg); color: var(--ink); max-width: 30ch; }
 @media (max-width: 700px) {
-  .topbar__menu-toggle { margin-left: auto; }
+  .topbar__menu-toggle { margin-left: 0; }
   .language-selector { margin-left: 8px; }
   .language-selector__option { min-width: 38px; padding: 0 7px; }
+}
+
+/* Editorial header mark: last in reading order and aligned to the right. */
+.topbar .brand--editorial {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: clamp(168px, 16vw, 192px);
+  min-height: 44px;
+  margin-left: auto;
+}
+.brand__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: screen;
+}
+@media (max-width: 700px) {
+  .topbar .brand--editorial { width: min(156px, 40vw); }
+}
+
+/* Approved raster navigation artwork; Notebook keeps its text until verified. */
+.topbar__link--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+}
+.topbar__icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.topbar__link[data-view="experience-lab"] .topbar__icon {
+  mix-blend-mode: screen;
+}
+
+.topbar__label { display: none; }
+@media (max-width: 700px) {
+  .topbar__link--icon { justify-content: flex-start; gap: 12px; }
+  .topbar__label { display: inline; }
 }

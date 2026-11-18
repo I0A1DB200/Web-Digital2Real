@@ -1,0 +1,13 @@
+✔ renders data-driven navigation and accessible collapsed menu state (6.746581ms)
+✔ toggles, closes on navigation and preserves the selected data view (0.647224ms)
+✔ closes on outside pointer, Escape and desktop resize (0.554618ms)
+✔ destroy removes document and viewport listeners (0.378598ms)
+✔ locale updates preserve icon artwork and keep the unverified Notebook as text (0.463534ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.777086

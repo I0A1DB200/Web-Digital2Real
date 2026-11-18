@@ -3,7 +3,7 @@ import { createLocalePreference } from "./data/locale.js";
 import { createLanguageSelector } from "./components/languageSelector.js";
 import { getNotebook } from "./generated/notebooks/notebook.js";
 
-import { createNavbar } from "./components/navbar.js";
+import { createNavbar, updateNavigationLabel } from "./components/navbar.js";
 import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
 import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
 import { createArticleViewer } from "./components/articleViewer.js";
@@ -341,7 +341,7 @@ localePreference.subscribe((locale, pending) => {
 function updateNavigationLanguage() {
   for (const item of site.navigation) {
     const link = activeNavbar?.querySelector(`.topbar__link[data-view="${item.view}"]`);
-    if (link) link.textContent = item.label;
+    if (link) updateNavigationLabel(link, item.label);
   }
   const es = localePreference.getLocale() === "es";
   activeNavbar?.querySelector(".brand")?.setAttribute("aria-label", es ? "Ir a notas de ingenier\u00eda" : "Go to Engineering Notes");

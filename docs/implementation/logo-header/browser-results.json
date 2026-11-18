@@ -1,0 +1,71 @@
+{
+  "viewports": [
+    {
+      "width": 1440,
+      "logo_size": [
+        192,
+        62.5
+      ],
+      "right_aligned": true,
+      "no_overlap": true,
+      "no_overflow": true,
+      "aspect_ratio_preserved": true,
+      "home_and_language": true,
+      "subpath_asset_load": true
+    },
+    {
+      "width": 1024,
+      "logo_size": [
+        168,
+        54.6875
+      ],
+      "right_aligned": true,
+      "no_overlap": true,
+      "no_overflow": true,
+      "aspect_ratio_preserved": true,
+      "home_and_language": true,
+      "subpath_asset_load": true
+    },
+    {
+      "width": 768,
+      "logo_size": [
+        168,
+        54.6875
+      ],
+      "right_aligned": true,
+      "no_overlap": true,
+      "no_overflow": true,
+      "aspect_ratio_preserved": true,
+      "home_and_language": true,
+      "subpath_asset_load": true
+    },
+    {
+      "width": 390,
+      "logo_size": [
+        156,
+        50.78125
+      ],
+      "right_aligned": true,
+      "no_overlap": true,
+      "no_overflow": true,
+      "aspect_ratio_preserved": true,
+      "home_and_language": true,
+      "subpath_asset_load": true
+    },
+    {
+      "width": 320,
+      "logo_size": [
+        128,
+        41.671875
+      ],
+      "right_aligned": true,
+      "no_overlap": true,
+      "no_overflow": true,
+      "aspect_ratio_preserved": true,
+      "home_and_language": true,
+      "subpath_asset_load": true
+    }
+  ],
+  "errors": [],
+  "http_errors": []
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+<title id="title">D2R Engineering Notebook</title>
+<defs>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".38" stop-color="#b1bac3"/><stop offset=".65" stop-color="#f7f9fc"/><stop offset="1" stop-color="#69737c"/></linearGradient>
+<linearGradient id="page" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#444950"/><stop offset="1" stop-color="#17191e"/></linearGradient>
+<linearGradient id="orange" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffba35"/><stop offset="1" stop-color="#ed7900"/></linearGradient>
+</defs>
+<!-- Outer depth -->
+<path d="M44 146 Q44 124 67 124 L214 132 Q239 136 256 158 Q274 136 298 132 L446 124 Q468 124 468 146 L468 385 Q468 402 450 402 L296 409 Q271 411 256 427 Q239 410 216 409 L61 402 Q44 402 44 385Z" fill="#181a20" stroke="url(#metal)" stroke-width="13" stroke-linejoin="round"/>
+<path d="M61 158 Q61 145 76 145 L211 155 Q237 160 256 185 Q279 161 305 155 L436 145 Q451 145 451 158 L451 378 L303 383 Q275 385 256 404 Q233 386 205 383 L61 378Z" fill="none" stroke="url(#orange)" stroke-width="11" stroke-linejoin="round"/>
+<!-- Left page -->
+<path d="M81 104 Q163 94 217 112 Q246 122 256 142 L256 365 Q232 344 210 339 Q154 321 81 335Z" fill="url(#page)" stroke="url(#metal)" stroke-width="15" stroke-linejoin="round"/>
+<!-- Right page -->
+<path d="M256 142 Q280 110 309 107 Q373 91 429 104 L429 335 Q357 320 304 339 Q275 348 256 365Z" fill="url(#page)" stroke="url(#metal)" stroke-width="15" stroke-linejoin="round"/>
+<path d="M256 146 L256 364" stroke="#8a939b" stroke-width="7"/>
+<!-- Gear -->
+<g transform="translate(166 217)" fill="url(#metal)"><path d="M-16-57H16L23-41 37-35 54-41 65-13 49-3 49 13 65 24 50 50 34 43 20 50 14 66H-14L-20 50-34 43-50 50-65 24-49 13-49-3-65-13-54-41-37-35-23-41Z" transform="scale(.72)"/><circle r="24" fill="#20242a"/></g>
+<!-- Engineering lines -->
+<g fill="none" stroke="url(#metal)" stroke-linecap="round" stroke-width="12"><path d="M307 171 Q349 158 393 164"/><path d="M307 222 Q354 208 393 215"/><path d="M307 272 Q347 263 380 270"/><path d="M115 303 Q157 295 202 308"/></g>
+<!-- Bookmark -->
+<path d="M310 371 H358 V451 L334 435 310 451Z" fill="url(#orange)" stroke="#ffbf50" stroke-width="6" stroke-linejoin="round"/>
+</svg>

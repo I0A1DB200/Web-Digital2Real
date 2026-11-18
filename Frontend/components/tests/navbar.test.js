@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { createNavbar } from "../navbar.js";
+import { createNavbar, updateNavigationLabel } from "../navbar.js";
 
 class ClassList {
   constructor(element) {
@@ -119,7 +119,7 @@ test("renders data-driven navigation and accessible collapsed menu state", () =>
   assert.equal(toggle.textContent, "☰");
   assert.equal(toggle.getAttribute("aria-expanded"), "false");
   assert.equal(toggle.getAttribute("aria-controls"), "main-navigation");
-  assert.deepEqual(site.navigation.map(item => byView(header, item.view).textContent), site.navigation.map(item => item.label));
+  assert.deepEqual(site.navigation.map(item => byView(header, item.view).getAttribute("aria-label")), site.navigation.map(item => item.label));
   assert.equal(byView(header, "engineering-notes").getAttribute("aria-current"), "page");
 });
 
@@ -157,4 +157,21 @@ test("destroy removes document and viewport listeners", () => {
   header.destroy();
   assert.equal(documentRef.listeners.has("pointerdown"), false);
   assert.equal(media.listeners.size, 0);
+});
+
+test("locale updates preserve all approved icon artwork", () => {
+  const { header } = setup();
+  const lab = byView(header, "experience-lab");
+  const artwork = lab.children[0];
+  updateNavigationLabel(lab, "Laboratorio de experiencias");
+  assert.equal(lab.getAttribute("aria-label"), "Laboratorio de experiencias");
+  assert.equal(lab.getAttribute("title"), "Laboratorio de experiencias");
+  assert.equal(lab.children[0], artwork);
+  assert.equal(artwork.getAttribute("aria-hidden"), "true");
+  const notes = byView(header, "engineering-notes");
+  updateNavigationLabel(notes, "Notas de ingeniería");
+  assert.equal(notes.getAttribute("aria-label"), "Notas de ingeniería");
+  assert.ok(notes.children[0].src.endsWith("engineering-notebook.svg"));
+  assert.equal(notes.children[1].textContent, "Notas de ingeniería");
+  assert.equal(all(header).filter(item => item.classList.contains("topbar__link")).length, 3);
 });

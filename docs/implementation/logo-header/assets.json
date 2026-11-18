@@ -1,0 +1,20 @@
+[
+  {
+    "file": "d2r-logo-editorial-original.png",
+    "sha256": "91b45c6c623f98cdd1eb86aa7d7ac283ef28a7fbcc6e5e4732e1917d434c2a8c",
+    "dimensions": [
+      2172,
+      724
+    ],
+    "bytes": 1977952
+  },
+  {
+    "file": "d2r-logo-editorial-header.webp",
+    "sha256": "aeecf0160d47dd7eb7b4a2da3b6a8cef43fb504a84060ee32819ea96af57035b",
+    "dimensions": [
+      1892,
+      616
+    ],
+    "bytes": 330142
+  }
+]

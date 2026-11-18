@@ -1,0 +1,39 @@
+{
+  "base_commit": "0758765efe5093db1c9326cd40d388d0b3a63b4a",
+  "branch": "work-ee0033-six-assets",
+  "registered": 6,
+  "presented": 6,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "id": "ART-001",
+      "file": "assets/EE0033_Asset01_Cuadro.png",
+      "sha256": "ebf3a0b4f92282149fac11cce92f105196b54f4f65f6ef43cd599495ec897095"
+    },
+    {
+      "id": "ART-002",
+      "file": "assets/EE0033_Asset02_Esquema.png",
+      "sha256": "6dca37476441b5a61b6ede3fc887fd398ce039ed5e63e0c4087d485fe8a57191"
+    },
+    {
+      "id": "ART-003",
+      "file": "assets/EE0033_Asset03_Pinza_5_6A.png",
+      "sha256": "7e7902bd08a19156ba5b6096f4e7bf35c3cf86558020c90742665d1c3a261823"
+    },
+    {
+      "id": "ART-004",
+      "file": "assets/EE0033_Asset04_Termico_F2.png",
+      "sha256": "dca9635a102ea9b49cf41de5d14749da0d1a381cecb9e8f8b4c4b4dcc92b1e55"
+    },
+    {
+      "id": "ART-005",
+      "file": "assets/EE0033_Asset05_Continuidad_95_96.png",
+      "sha256": "1a146237185dd1aa5a001f2aac23f3e8de87c67e05acad228d1ee811a0a36129"
+    },
+    {
+      "id": "ART-006",
+      "file": "assets/EE0033_Asset06_Rodillo_R1.png",
+      "sha256": "c131bd40529829d818988b4fc16e887495ab5376977166cf2ad592c364078199"
+    }
+  ]
+}

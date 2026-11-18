@@ -1,11 +1,11 @@
 locale: "en"
 translations:
-  title: "Motor overload trip"
-  summary: "Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components. Text preview; visual evidence and technical review pending."
+  title: "Motor stops due to overload"
+  summary: "The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations. Preview with illustrations; publication blocked pending human technical QA."
   scenario:
-    initial_context: "Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components."
+    initial_context: "The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-011 (NB-EL-03): Power, energy and industrial loads; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-029 (NB-EL-21): Diagnostic method; article-033 (NB-EL-25): Verification, recurrence and documentation"
-    initiating_event: "Motor overload trip"
+    initiating_event: "Motor stops due to overload"
     learner_role: "Technician interpreting a simulated case and justifying diagnosis, intervention and verification."
     safety_context:
       safe_state: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
@@ -13,8 +13,9 @@ translations:
         - "The learner interprets records; no live work or operations on a real installation are performed."
         - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
         - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
+        - "Interpret an existing continuity test record obtained by authorized personnel: isolated circuit, verified absence of voltage and sufficient isolation to eliminate parallel paths. No energized continuity testing or real operations are performed."
         - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
-        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+        - "Teaching preview: publication blocked pending human QA; not approved material for real operation."
   learning_objectives:
     OBJ-TRACE-CIRCUIT:
       description: "Notebook — reading path in Engineering Notes: article-011 (NB-EL-03): Power, energy and industrial loads; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-022 (NB-EL-14): Three-phase motors, nameplates and overload relays; article-029 (NB-EL-21): Diagnostic method; article-033 (NB-EL-25): Verification, recurrence and documentation"
@@ -25,53 +26,53 @@ translations:
   stages:
     STAGE-01-DIAGNOSIS:
       title: "Bound the symptom"
-      situation: "Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-02-DIAGNOSIS:
       title: "Interpret the first record"
-      situation: "Recorded line currents are 4.5/4.4/4.6 A versus the 3.2 A rating. The trip is delayed. Comparison confirms above-rated current; rotation does not establish normal operation or prove a bolted short circuit.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "The clamp records 5.6 A AC on KM1 L1 against the M1 rating and F2 setting of 3.8 A. Recorded current exceeds the rating; rotation does not establish normal operation or prove a bolted short circuit. No new numerical L2 or L3 readings are supplied and no trip time is inferred. Interpret an existing continuity test record obtained by authorized personnel: isolated circuit, verified absence of voltage and sufficient isolation to eliminate parallel paths. No energized continuity testing or real operations are performed.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-03-DIAGNOSIS:
       title: "Compare hypotheses"
-      situation: "Phase-to-phase voltages are balanced, with no phase loss. All three currents are similar and high. These data do not support phase loss and require investigating mechanical load or motor condition.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "The phase-to-phase voltage record remains balanced, with no documented phase loss. The protection record identifies F2 tripped; the isolated test across the NC pair 95–96 reads OL. Opening the permission drops KM1 out. This identifies protective operation, not the overload cause; investigate mechanical load or motor condition.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-04-DIAGNOSIS:
       title: "Confirm the cause and intervene safely"
-      situation: "The authorized mechanical record identifies abnormal resistance in a return roller; after decoupling and checking under the procedure, it exceeds the historical reference. Abnormal mechanical load is an explanation requiring post-repair confirmation.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "With the machine locked out, the authorized mechanical record identifies abnormal resistance in return roller R1; after decoupling and checking under the procedure, it exceeds the historical reference. The wear image guides inspection but alone does not prove seizure. The explanation requires post-repair confirmation.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-05-VERIFY-RECOVERY:
       title: "Verify recovery"
       situation: "The deteriorated roller causes mechanical overload. Thermal protection operates correctly; its setting is not increased or bypassed to compensate for load. Mechanical repair must be followed by current and protection verification.\n\nWhich interpretation or action is justified by the available evidence?"
   evidence:
     EVID-00-RECORD:
       source: "Simulated teaching record · context"
-      content: "Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components."
+      content: "The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations."
     EVID-01-RECORD:
       source: "Simulated teaching record · D1"
-      content: "Recorded line currents are 4.5/4.4/4.6 A versus the 3.2 A rating. The trip is delayed. Comparison confirms above-rated current; rotation does not establish normal operation or prove a bolted short circuit."
+      content: "The clamp records 5.6 A AC on KM1 L1 against the M1 rating and F2 setting of 3.8 A. Recorded current exceeds the rating; rotation does not establish normal operation or prove a bolted short circuit. No new numerical L2 or L3 readings are supplied and no trip time is inferred."
     EVID-02-RECORD:
       source: "Simulated teaching record · D2"
-      content: "Phase-to-phase voltages are balanced, with no phase loss. All three currents are similar and high. These data do not support phase loss and require investigating mechanical load or motor condition."
+      content: "The phase-to-phase voltage record remains balanced, with no documented phase loss. The protection record identifies F2 tripped; the isolated test across the NC pair 95–96 reads OL. Opening the permission drops KM1 out. This identifies protective operation, not the overload cause; investigate mechanical load or motor condition."
     EVID-03-RECORD:
       source: "Simulated teaching record · D3"
-      content: "The authorized mechanical record identifies abnormal resistance in a return roller; after decoupling and checking under the procedure, it exceeds the historical reference. Abnormal mechanical load is an explanation requiring post-repair confirmation."
+      content: "With the machine locked out, the authorized mechanical record identifies abnormal resistance in return roller R1; after decoupling and checking under the procedure, it exceeds the historical reference. The wear image guides inspection but alone does not prove seizure. The explanation requires post-repair confirmation."
     EVID-04-RECORD:
       source: "Simulated teaching record · D4"
       content: "The deteriorated roller causes mechanical overload. Thermal protection operates correctly; its setting is not increased or bypassed to compensate for load. Mechanical repair must be followed by current and protection verification."
     EVID-05-RECORD:
       source: "Simulated teaching record · D5"
-      content: "After roller repair in the simulated case, currents are verified within applicable limits and protection operational under the procedure. The correct documented setting is confirmed; clearing an alarm or reducing speed without investigation does not establish recovery."
+      content: "After R1 roller repair in the simulated case, the post-repair record provides 3.5 A on L1 against the 3.8 A rating and protection operational under the procedure. F2 retains its documented 3.8 A setting. Recovery is verified under load; clearing the alarm, repeatedly resetting or reducing speed without investigation does not establish recovery."
   decisions:
     DEC-01-A:
-      action: "Increase the relay setting until it stops tripping. The trip is treated as a setting problem, avoiding investigation of why all three currents exceed the nameplate under the new production condition."
+      action: "Increase the relay setting until it stops tripping. Repeatedly reset without investigating. Tripping is treated as a setting problem instead of investigating why current rises under the new production condition."
     DEC-01-B:
       action: "Correlate currents, nameplate and mechanical load."
     DEC-01-C:
       action: "Replace the PLC."
     DEC-02-A:
-      action: "4.5 A versus 3.2 A demonstrates current above the rating."
+      action: "5.6 A versus 3.8 A demonstrates current above the rating."
     DEC-02-B:
       action: "It is normal because the motor rotates. Visible movement is taken as sufficient reason to accept recorded current without comparing the rated value or the load condition."
     DEC-02-C:
       action: "It proves a bolted short circuit."
     DEC-03-A:
-      action: "Phase loss is confirmed. The trip is interpreted as phase loss without comparing it with three similar currents and balanced voltages in the available record."
+      action: "Phase loss is confirmed. Tripping is interpreted as phase loss without comparing the balanced voltage record and protective operation."
     DEC-03-B:
       action: "The supply must be incorrect."
     DEC-03-C:
@@ -89,25 +90,43 @@ translations:
     DEC-05-C:
       action: "Reduce speed without investigating."
   retry_feedback:
-    DEC-01-A: "removes margin without justification. Review: Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components. Choose again without carrying out the proposed option."
-    DEC-01-C: "The proposal “Replace the PLC.” is not supported by this record.  Review: Conveyor motor -M1 trips with a delay after production increases. Nameplate: 400 V / 3.2 A; overload relay set and documented at 3.2 A. Compare electrical records and load before changing settings or components. Choose again without carrying out the proposed option."
-    DEC-02-B: "The proposal “It is normal because the motor rotates.” is not supported by this record.  Review: Recorded line currents are 4.5/4.4/4.6 A versus the 3.2 A rating. The trip is delayed. Comparison confirms above-rated current; rotation does not establish normal operation or prove a bolted short circuit. Choose again without carrying out the proposed option."
-    DEC-02-C: "The proposal “It proves a bolted short circuit.” is not supported by this record.  Review: Recorded line currents are 4.5/4.4/4.6 A versus the 3.2 A rating. The trip is delayed. Comparison confirms above-rated current; rotation does not establish normal operation or prove a bolted short circuit. Choose again without carrying out the proposed option."
-    DEC-03-A: "three similar currents and balanced voltages do not support it. Review: Phase-to-phase voltages are balanced, with no phase loss. All three currents are similar and high. These data do not support phase loss and require investigating mechanical load or motor condition. Choose again without carrying out the proposed option."
-    DEC-03-B: "The proposal “The supply must be incorrect.” is not supported by this record.  Review: Phase-to-phase voltages are balanced, with no phase loss. All three currents are similar and high. These data do not support phase loss and require investigating mechanical load or motor condition. Choose again without carrying out the proposed option."
-    DEC-04-B: "The proposal “The relay is defective because it trips.” is not supported by this record.  Review: The authorized mechanical record identifies abnormal resistance in a return roller; after decoupling and checking under the procedure, it exceeds the historical reference. Abnormal mechanical load is an explanation requiring post-repair confirmation. Choose again without carrying out the proposed option."
-    DEC-04-C: "The proposal “The relay can be bypassed.” is not supported by this record.  Review: The authorized mechanical record identifies abnormal resistance in a return roller; after decoupling and checking under the procedure, it exceeds the historical reference. Abnormal mechanical load is an explanation requiring post-repair confirmation. Choose again without carrying out the proposed option."
+    DEC-01-A: "removes margin without justification. Review: The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations. Choose again without carrying out the proposed option."
+    DEC-01-C: "The proposal “Replace the PLC.” is not supported by this record.  Review: The conveyor starts; as mechanical load increases, F2 trips and KM1 drops out. Fictional M1 motor rated 1.5 kW / 400 VAC / 50 Hz / 3.8 A; F2 set and documented at 3.8 A. Compare electrical records and load before changing settings or components. All data are teaching simulations. Choose again without carrying out the proposed option."
+    DEC-02-B: "The proposal “It is normal because the motor rotates.” is not supported by this record.  Review: The clamp records 5.6 A AC on KM1 L1 against the M1 rating and F2 setting of 3.8 A. Recorded current exceeds the rating; rotation does not establish normal operation or prove a bolted short circuit. No new numerical L2 or L3 readings are supplied and no trip time is inferred. Choose again without carrying out the proposed option."
+    DEC-02-C: "The proposal “It proves a bolted short circuit.” is not supported by this record.  Review: The clamp records 5.6 A AC on KM1 L1 against the M1 rating and F2 setting of 3.8 A. Recorded current exceeds the rating; rotation does not establish normal operation or prove a bolted short circuit. No new numerical L2 or L3 readings are supplied and no trip time is inferred. Choose again without carrying out the proposed option."
+    DEC-03-A: "the balanced voltage record does not confirm phase loss. Review: The phase-to-phase voltage record remains balanced, with no documented phase loss. The protection record identifies F2 tripped; the isolated test across the NC pair 95–96 reads OL. Opening the permission drops KM1 out. This identifies protective operation, not the overload cause; investigate mechanical load or motor condition. Choose again without carrying out the proposed option."
+    DEC-03-B: "The proposal “The supply must be incorrect.” is not supported by this record.  Review: The phase-to-phase voltage record remains balanced, with no documented phase loss. The protection record identifies F2 tripped; the isolated test across the NC pair 95–96 reads OL. Opening the permission drops KM1 out. This identifies protective operation, not the overload cause; investigate mechanical load or motor condition. Choose again without carrying out the proposed option."
+    DEC-04-B: "The proposal “The relay is defective because it trips.” is not supported by this record.  Review: With the machine locked out, the authorized mechanical record identifies abnormal resistance in return roller R1; after decoupling and checking under the procedure, it exceeds the historical reference. The wear image guides inspection but alone does not prove seizure. The explanation requires post-repair confirmation. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “The relay can be bypassed.” is not supported by this record.  Review: With the machine locked out, the authorized mechanical record identifies abnormal resistance in return roller R1; after decoupling and checking under the procedure, it exceeds the historical reference. The wear image guides inspection but alone does not prove seizure. The explanation requires post-repair confirmation. Choose again without carrying out the proposed option."
     DEC-05-A: "The proposal “Only clear the alarm.” is not supported by this record.  Review: The deteriorated roller causes mechanical overload. Thermal protection operates correctly; its setting is not increased or bypassed to compensate for load. Mechanical repair must be followed by current and protection verification. Choose again without carrying out the proposed option."
     DEC-05-C: "may hide the problem. Review: The deteriorated roller causes mechanical overload. Thermal protection operates correctly; its setting is not increased or bypassed to compensate for load. Mechanical repair must be followed by current and protection verification. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Six simulated-case illustrations; electrical and mechanical records disclosed by decision. Human technical review pending."
+  assets:
+    ART-001:
+      alt: "Illustrated cabinet with Q1, PS1, F1, KM1, F2, S1, S0 and a teaching M1 plate rated 1.5 kW, 400 V and 3.8 A."
+      caption: "Equipment locations."
+    ART-002:
+      alt: "Q1–KM1–F2–M1 power schematic and 24 VDC control with F2 and S0 in series and KM1 auxiliary in parallel with S1."
+      caption: "Power and control for the simulated case."
+    ART-003:
+      alt: "Illustrated AC clamp around one KM1 L1 conductor with a simulated 5.6 A reading."
+      caption: "L1 — 5.6 A AC."
+    ART-004:
+      alt: "Illustrated F2 relay with teaching setting 3.8 A and auxiliary terminals marked 95, 96, 97 and 98."
+      caption: "F2 — teaching setting 3.8 A."
+    ART-005:
+      alt: "Simulated F2:95–96 continuity record reading OL; test declared isolated and de-energized."
+      caption: "F2:95–96 — OL, isolated test record."
+    ART-006:
+      alt: "R1 roller with visible wear and dirt near its support and bearing; the image alone does not establish rotational resistance."
+      caption: "R1 — mechanical inspection with the machine locked out."
   completion:
     title: "Technical debrief"
-    summary: "mechanical overload caused by a deteriorated roller; thermal protection operates correctly. After roller repair in the simulated case, currents are verified within applicable limits and protection operational under the procedure. The correct documented setting is confirmed; clearing an alarm or reducing speed without investigation does not establish recovery."
+    summary: "mechanical overload caused by a deteriorated roller; thermal protection operates correctly. After R1 roller repair in the simulated case, the post-repair record provides 3.5 A on L1 against the 3.8 A rating and protection operational under the procedure. F2 retains its documented 3.8 A setting. Recovery is verified under load; clearing the alarm, repeatedly resetting or reducing speed without investigation does not establish recovery."
     process:
       - "Correlate currents, nameplate and mechanical load."
-      - "4.5 A versus 3.2 A demonstrates current above the rating."
+      - "5.6 A versus 3.8 A demonstrates current above the rating."
       - "Prioritize mechanical overload or motor condition; request mechanical evidence."
       - "The roller's abnormal resistance explains increased load, subject to post-repair confirmation."
       - "After repairing the roller, verify currents within limits and protection operational."

@@ -1,0 +1,62 @@
+{
+  "mode": "preview",
+  "output": "Frontend/generated/experience-engine",
+  "packaged": [
+    "EXP-BACNET-DEVICE-029",
+    "EXP-CANOPEN-NODE-028",
+    "EXP-ELECTRICAL-CONTACT-037",
+    "EXP-ELECTRICAL-CONTACTOR-032",
+    "EXP-ELECTRICAL-DROP-039",
+    "EXP-ELECTRICAL-INSULATION-040",
+    "EXP-ELECTRICAL-OVERLOAD-033",
+    "EXP-ELECTRICAL-PHASE-034",
+    "EXP-ELECTRICAL-PROTECTION-035",
+    "EXP-ELECTRICAL-RETURN-036",
+    "EXP-ELECTRICAL-ROTATION-038",
+    "EXP-ELECTRICAL-SUPPLY-031",
+    "EXP-ETHERCAT-SLAVE-027",
+    "EXP-FLOW-LOOP-017",
+    "EXP-GRAPH-SEQUENCE-007",
+    "EXP-HMI-STATE-009",
+    "EXP-IMPULSE-LAG-019",
+    "EXP-INDUCTIVE-GAP-011",
+    "EXP-IOLINK-DEVICE-008",
+    "EXP-LEVEL-REFERENCE-018",
+    "EXP-LOOP-COMPLIANCE-020",
+    "EXP-MODBUS-RTU-025",
+    "EXP-MODBUS-TCP-026",
+    "EXP-MULTISYSTEM-JAM-010",
+    "EXP-OPCUA-DATA-030",
+    "EXP-PNEUMATIC-CYLINDER-004",
+    "EXP-PNEUMATIC-CYLINDER-014",
+    "EXP-PNEUMATIC-LINE-013",
+    "EXP-PRESSURE-SCALING-012",
+    "EXP-PROFIBUS-STATION-023",
+    "EXP-PROFIBUS-TERMINATION-024",
+    "EXP-PROFINET-DEVICE-021",
+    "EXP-PROFINET-DEVICE-022",
+    "EXP-PROFINET-LINK-006",
+    "EXP-SAFETY-GATE-005",
+    "EXP-SENSOR-INTERMITTENT-002",
+    "EXP-SENSOR-SIGNAL-001",
+    "EXP-SICK-DISTANCE-015",
+    "EXP-THERMOCOUPLE-POLARITY-016",
+    "EXP-VFD-AUTHORITY-003"
+  ],
+  "environments": [
+    "ENV-001",
+    "ENV-002",
+    "ENV-003",
+    "ENV-004"
+  ],
+  "skipped": [
+    {
+      "file": "content/experiences/sensors/EE-0009-photoelectric-sensor-misalignment/experience.yaml",
+      "reason": "publication_state"
+    },
+    {
+      "file": "content/experiences/siemens/exp-sie-pn-001-cpu-stop-after-power-loss/experience.yaml",
+      "reason": "publication_state"
+    }
+  ]
+}

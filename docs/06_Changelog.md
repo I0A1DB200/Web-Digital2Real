@@ -875,3 +875,7 @@ Cinco PNG de EE0032_Codex.zip registrados, sin alterar sus bytes ni decisiones. 
 ### 2026-11-16 — EE-0032: corrección autorizada de etiquetas S1
 
 Solo A1/A2 bajo S1 cambian a 13/14 en ART-005; píxeles idénticos fuera de cuatro regiones de etiquetas. Imagen vinculada a EVID-05-RECORD y completion tras DEC-05-B. Sin cambios de lecturas, etiquetas KM1, preguntas ni Engine; revisión técnica humana pendiente.
+
+### 2026-11-18 — EE-0033: seis imágenes y revisión de datos del caso
+
+Seis PNG originales integrados en preview, sin alterar imágenes ni Engine. Ficha del ZIP actualiza M1/F2 a 3,8 A, L1 de sobrecarga a 5,6 A y posreparación a 3,5 A; no se inventan valores L2/L3. Continuidad 95–96 solo tras declaración visible de aislamiento, ausencia de tensión y eliminación de caminos paralelos. Publicación bloqueada por QA humano.

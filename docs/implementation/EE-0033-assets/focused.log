@@ -1,0 +1,37 @@
+✔ EE-0033 preserves six original PNGs with valid paths, dimensions and unique IDs (63.919502ms)
+✔ EE-0033 keeps decision IDs, scoring and root-cause progression while revising the case data (3.495775ms)
+✔ EE-0033 declares human publication block without changing the Engine or certifying device ranges (0.185165ms)
+✔ EE-0033 es gates continuity and roller evidence, retries and verified recovery (24.764291ms)
+✔ EE-0033 en gates continuity and roller evidence, retries and verified recovery (17.094476ms)
+✔ ENV-004 preserves the original cover, all ten approved coordinates and real destinations (14.761152ms)
+✔ Notebook keeps every source paragraph, example, question, answer and five block groupings (2.124646ms)
+✔ source trace accounts for exactly 50 moments and 150 unchanged option meanings (12.018432ms)
+✔ EE-0031 es: complete schema, retry, evidence order and verified completion (25.025298ms)
+✔ EE-0031 en: complete schema, retry, evidence order and verified completion (13.209034ms)
+✔ EE-0032 es: complete schema, retry, evidence order and verified completion (11.409732ms)
+✔ EE-0032 en: complete schema, retry, evidence order and verified completion (8.84211ms)
+✔ EE-0033 es: complete schema, retry, evidence order and verified completion (10.552853ms)
+✔ EE-0033 en: complete schema, retry, evidence order and verified completion (9.080923ms)
+✔ EE-0034 es: complete schema, retry, evidence order and verified completion (8.175363ms)
+✔ EE-0034 en: complete schema, retry, evidence order and verified completion (6.833377ms)
+✔ EE-0035 es: complete schema, retry, evidence order and verified completion (8.864643ms)
+✔ EE-0035 en: complete schema, retry, evidence order and verified completion (8.581975ms)
+✔ EE-0036 es: complete schema, retry, evidence order and verified completion (7.771856ms)
+✔ EE-0036 en: complete schema, retry, evidence order and verified completion (7.379064ms)
+✔ EE-0037 es: complete schema, retry, evidence order and verified completion (8.050388ms)
+✔ EE-0037 en: complete schema, retry, evidence order and verified completion (14.10414ms)
+✔ EE-0038 es: complete schema, retry, evidence order and verified completion (10.669866ms)
+✔ EE-0038 en: complete schema, retry, evidence order and verified completion (7.773348ms)
+✔ EE-0039 es: complete schema, retry, evidence order and verified completion (13.783154ms)
+✔ EE-0039 en: complete schema, retry, evidence order and verified completion (9.142325ms)
+✔ EE-0040 es: complete schema, retry, evidence order and verified completion (16.882303ms)
+✔ EE-0040 en: complete schema, retry, evidence order and verified completion (8.011991ms)
+✔ technical quantities and terminal numbers remain equivalent across ES/EN (1.515964ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 526.138771

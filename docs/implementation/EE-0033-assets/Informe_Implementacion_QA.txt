@@ -1,0 +1,123 @@
+EE-0033 — INFORME DE IMPLEMENTACIÓN Y QA
+Fecha: 18-11-2026 (Europe/Madrid)
+Estado: IMPLEMENTED IN LOCAL PREVIEW / AUTOMATED PASS / BROWSER FLOW PASS
+PUBLICACIÓN: BLOQUEADA POR QA TÉCNICO HUMANO
+
+RESULTADO
+Seis PNG originales de EE0033_Codex.zip integrados y registrados en la Experience existente. No se ha regenerado, recortado ni editado una imagen. Se actualizan los datos y los textos ES/EN al contrato y ficha técnica del ZIP. No se crea una Experience nueva ni un renderer especial. No se ha hecho commit, push, merge ni deploy en esta tarea. La web pública no incluye todavía estos cambios.
+
+BASE, RAMA Y ESTADO INICIAL
+Commit base: 0758765efe5093db1c9326cd40d388d0b3a63b4a. Rama inicial: main.
+Rama de trabajo actual: work-ee0033-six-assets.
+Experience: EE-0033 / EXP-ELECTRICAL-OVERLOAD-033 / fuente editorial EXP-EL-03.
+Ruta: content/experiences/electrical/EE-0033-motor-overload-trip/.
+ENV-004, tercer hotspot (87,7 % / 66,3 %). Título actualizado: «El motor se detiene por sobrecarga» / «Motor stops due to overload».
+Estado inicial: technical_review / technical_validation pending; sin recursos visuales. Cinco etapas y quince opciones.
+Cambios no rastreados preexistentes, conservados:
+?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.md
+?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.txt
+?? docs/implementation/EE-0031-assets-intake/browser-results.json
+?? docs/implementation/EE-0031-assets-intake/focused-tests.log
+?? docs/implementation/EE-0031-assets-intake/mobile-voltage-review.png
+?? docs/implementation/EE-0031-assets-intake/shared-tests.log
+?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.docx
+?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.txt
+?? docs/standards/
+
+
+INSTRUCCIONES Y FUENTES
+El usuario autorizó extraer y ejecutar el prompt de EE0033_Codex.zip. Se han leído CODEX_PROMPT.md, FICHA_TECNICA.md, QA_PENDIENTE.md y README.md. Sus descripciones son datos de un caso simulado y no se convierten en medidas físicas verificadas.
+Inspeccionados AGENTS.md, Engineering Director Playbook, arquitectura, estándares de Experience/evidencia/assets/QA, esquema V2, localización ES/EN, packager, Player y precedentes EE-0031/0032. Consultada biblioteca de assets; no se sustituyen los seis originales por imágenes de otros circuitos.
+Notebook SSOT conservado: article-011, article-016, article-022, article-029 y article-033. Se revisaron sus referencias canónicas y se comprobó que resuelven en ambas lenguas; no se modifican sus teorías ni ejemplos generales.
+
+REVISIÓN DE DATOS DEL CASO — CONTENT
+Se detectó y comunicó antes de editar una diferencia entre la versión existente y el nuevo contrato:
+- Antes: M1/F2 3,2 A; corrientes 4,5/4,4/4,6 A.
+- Ficha nueva: M1 ficticio 1,5 kW / 400 VAC / 50 Hz / 3,8 A; F2 ajustado a 3,8 A; sobrecarga simulada de 5,6 A en L1; 3,5 A en L1 después de reparar R1.
+Se usa la nueva ficha explícita como revisión editorial del caso, sin modificar la causa raíz. Se retiraron los valores antiguos de los textos activos, así como las afirmaciones de tres corrientes similares: no se inventan nuevas lecturas de L2/L3. El registro cualitativo de tensiones entre fases equilibradas se conserva de la autoría canónica previa; no se añaden números de tensión.
+La opción correcta DEC-02-A se actualiza de 4,5/3,2 a 5,6/3,8 A. DEC-01-A incorpora el rearme reiterado sin investigar como conducta incorrecta y penalizada. Se mantienen los IDs, puntuación, reciprocidad acción/evidencia y respuestas correctas B/A/C/A/B. Los feedbacks, situaciones y evidencias se sincronizan con los registros revisados para evitar mostrar datos contradictorios.
+No se deduce un tiempo de disparo a partir de 5,6 A ni se certifica CLASS 10, referencias o rangos comerciales a partir del dibujo.
+
+MAPA DE LOS SEIS ASSETS
+ART-001 / EE0033_Asset01_Cuadro.png → public.visual.cover_asset_id. Orientación inicial: equipos y placa didáctica. No revela el rodillo averiado.
+ART-002 / EE0033_Asset02_Esquema.png → STAGE-01-DIAGNOSIS.media_ids. Esquema contextual previo a la primera decisión.
+ART-003 / EE0033_Asset03_Pinza_5_6A.png → EVID-01-RECORD.media_ids, tras DEC-01-B. Corriente simulada AC en L1, sin asumir que mide corriente de la fuente DC ni las otras fases.
+ART-004 / EE0033_Asset04_Termico_F2.png → EVID-02-RECORD.media_ids, primero en el Result tras DEC-02-A. La imagen ilustra dispositivo/ajuste; no se usa una supuesta luz TRIP para probar disparo.
+ART-005 / EE0033_Asset05_Continuidad_95_96.png → EVID-02-RECORD.media_ids, segundo en el mismo Result tras DEC-02-A. La etapa previa declara circuito aislado, ausencia de tensión verificada y eliminación de caminos paralelos. El alumno interpreta un registro aportado por personal autorizado; no ejecuta un ensayo físico. La imagen sola no acredita que se hicieron esas comprobaciones.
+ART-006 / EE0033_Asset06_Rodillo_R1.png → EVID-03-RECORD.media_ids, después de DEC-03-C, que solicita evidencia mecánica. Se interpreta junto al registro de inspección con máquina consignada; desgaste/suciedad no bastan para demostrar agarrotamiento.
+EVID-04 conserva la confirmación de causa; EVID-05 y el debrief contienen la verificación posreparación de 3,5 A en L1 y protección operativa. No se reutiliza una foto del rodillo deteriorado como imagen de recuperación. completion.media_ids queda vacío; no hay una séptima imagen inventada.
+
+SEGURIDAD Y CONTROL DE REVELACIÓN
+La condición de continuidad está tanto en las restricciones del escenario como en el texto visible de STAGE-02 antes de la opción que libera ART-005. El camino incorrecto mantiene la etapa y no adquiere la continuidad. El aislamiento se declara en la autoría de este registro simulado; no se añade un checkbox ni una excepción de renderer.
+La inspección mecánica se describe con máquina consignada. Se conserva la distinción entre síntoma, actuación de protección y causa raíz. Aumentar F2 o rearmar repetidamente no constituye solución ni verifica recuperación. No se añaden maniobras de trabajo real, valores de protección o umbrales fuera de las fuentes.
+
+CLASIFICACIÓN Y HALLAZGOS
+CONTENT — integración de datos, imágenes, ES/EN, gating y seguridad; pertenece a la Experience.
+ENGINE — sin cambios. El esquema existente admite seis imágenes y dos medios en un mismo Result; no faltan ranuras ni se modifica el renderer.
+INTENTIONAL REUSE — orientación del mismo cuadro a través de los originales del ZIP; no se traslada otro circuito ni se usa una imagen averiada como estado reparado.
+UNUSED — ninguna imagen suministrada queda huérfana; las seis tienen un papel y un momento. No es obligatorio aportar imagen de cierre si el ZIP no contiene una de recuperación.
+TECHNICAL DEBT — autoría editorial histórica de ENV-004 conserva su trazabilidad original en docs/implementation/ENV-004. El test usa una única excepción documentada por la nueva ficha para el texto numérico de DEC-02-A, sin reescribir la fuente histórica ni relajar las otras Experiences.
+B01 / BLOQUEO HUMANO — referencias Siemens y rangos: mezcla visual 3RU2/3RU11; 3RU1116-0AB0 no se ha validado como equivalente a la escala ilustrada 3,5–5 A. No se declara compatibilidad de catálogo.
+B02 / BLOQUEO HUMANO — revisar marcas NC/NO por pares 95–96 y 97–98, A2 dibujado en el relé, símbolo y estado NC de F2/S0, orden F1→F2→S0→S1/KM1, automantenimiento, PE y coordinación F1/Q1/F2. Las escalas ambiguas de F2 en cuadro/pinza no se corrigen mediante texto superpuesto. Ajuste 3,8 A se trata como dato didáctico, no como validación de la referencia dibujada.
+O01 / ABIERTO — confirmar continuidad física del conductor de L1 y configuración segura real de pinza/instrumento. La imagen no es autorización de trabajo eléctrico.
+O02 / REQUISITO DE AUTORÍA VERIFICADO — continuidad condicionada al registro aislado y seguro; la fotografía no demuestra aislamiento ni ausencia de tensión.
+O03 / ABIERTO — confirmar estado mecánico del R1; el desgaste visible no prueba por sí solo resistencia al giro o agarrotamiento.
+O04 / ABIERTO — QA_PENDIENTE exige confirmar identidad exacta de Asset 01/02 respecto de versiones aprobadas en otro hilo. Se garantiza identidad con los archivos de este ZIP, no con imágenes externas no aportadas aquí.
+Los seis PNG son sintéticos didácticos: no se atribuye evidencia de medida real, aval Siemens ni certificación IEC/REBT.
+
+ARCHIVOS MODIFICADOS
+- EE-0033/experience.yaml: seis assets, vínculos, datos/contexto/feedback revisados, título y seguridad; estados technical_review/pending conservados.
+- EE-0033/locales/es.yaml y en.yaml: datos y textos equivalentes, alt/captions y precondiciones.
+- EE-0033/README.md y media-source/README.md: estado actual y bloqueo.
+- EE-0033/media-source/evidence-manifest.yaml: inventario cerrado de seis slots, familias actualizadas y cantidades registradas/presentadas.
+- scripts/tests/env004Content.test.mjs: expectativa de seis medios en EE-0033, revisión numérica de DEC-02-A y bloqueo de publicación; casos anteriores conservados.
+- docs/06_Changelog.md.
+
+ARCHIVOS CREADOS EN LA EXPERIENCE
+- content/experiences/electrical/EE-0033-motor-overload-trip/media-source/visual-intake.json
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset03_Pinza_5_6A.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/README.md
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset02_Esquema.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset06_Rodillo_R1.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset04_Termico_F2.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset05_Continuidad_95_96.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/assets/EE0033_Asset01_Cuadro.png
+- content/experiences/electrical/EE-0033-motor-overload-trip/media-source/EE0033_Codex/README.md
+- content/experiences/electrical/EE-0033-motor-overload-trip/media-source/EE0033_Codex/QA_PENDIENTE.md
+- content/experiences/electrical/EE-0033-motor-overload-trip/media-source/EE0033_Codex/FICHA_TECNICA.md
+- content/experiences/electrical/EE-0033-motor-overload-trip/media-source/EE0033_Codex/CODEX_PROMPT.md
+Además: scripts/tests/ee0033MediaIntegration.test.mjs y este directorio de informe, logs y capturas.
+Los cuatro documentos fuente se archivan byte por byte; no se duplican los PNG dentro de media-source.
+
+PRESERVACIÓN
+1103 archivos rastreados fuera del alcance autorizado conservan sus hashes. EE-0031 y EE-0032 intactas. Sin cambios de Engine, Frontend, entorno ENV-004, hotspots, Notebook u otras Experiences. Los documentos no rastreados preexistentes no se han tocado.
+La estructura de decision_logic, excluyendo textos explicativos revisados, conserva su hash: mismo ID, etapa, resultado correcto/incorrecto, siguiente etapa, evidencia, puntuación y efecto de seguridad.
+
+QA EJECUTADO Y RESULTADOS
+PASS — node --test scripts/tests/ee0033MediaIntegration.test.mjs scripts/tests/env004Content.test.mjs: 29/29, cero fallos.
+PASS — node --test: 562/562, cero fallos, cero omitidas.
+PASS — node scripts/package-notebook.mjs.
+PASS — node scripts/package-experience-engine.mjs --mode=preview; EE-0033 y ENV-004 empaquetados.
+PASS — git diff --check.
+PASS — seis firmas PNG, MIME, dimensiones, SHA-256 y rutas; seis IDs únicos y todos con rol. Fuentes archivadas intactas.
+PASS — inspección de artefactos ES/EN: seis medios, archivos generados con los mismos hashes y descripciones localizadas no vacías. No se filtra lógica privada en la publicación generada.
+PASS — Chromium real ES/EN en 1440 y 390 px: cuatro recorridos completos; cuarenta reintentos incorrectos sin adelantar evidencia; Results de D1, D2 (dos imágenes) y D3 en orden. Continuidad no solicitada antes de la declaración visible y DEC-02-A; R1 no solicitado antes de DEC-03-C. Verificación final muestra 3,5 A, debrief sin imagen de avería reutilizada, cambio de idioma y reinicio correctos. Diez hotspots y cinco referencias Notebook resuelven. Cero errores JS/HTTP.
+PASS — carga y control Ampliar/Reducir de todos los medios de Result; sin desbordamiento horizontal.
+PASS — galería interna de revisión fuera del producto: seis originales cargan en escritorio/móvil conservando proporción y dimensiones nativas.
+REVISIÓN VISUAL — seis originales inspeccionados; capturas de D2 móvil ES (F2 + OL) y D3 escritorio EN (R1) revisadas. A 390 px, detalles finos de escala, bornes y referencias requieren zoom del navegador; no se afirma legibilidad de toda la rotulación a ancho ajustado. Los valores y puntos de medida figuran también en alt/captions y evidencia textual.
+No se realizaron ensayos eléctricos físicos ni validación humana de catálogo/esquema. El PASS funcional no equivale a esa aprobación.
+
+INVENTARIO PNG — SHA-256
+ART-001 | assets/EE0033_Asset01_Cuadro.png | 1536x1024 | ebf3a0b4f92282149fac11cce92f105196b54f4f65f6ef43cd599495ec897095
+ART-002 | assets/EE0033_Asset02_Esquema.png | 1536x1024 | 6dca37476441b5a61b6ede3fc887fd398ce039ed5e63e0c4087d485fe8a57191
+ART-003 | assets/EE0033_Asset03_Pinza_5_6A.png | 1535x1024 | 7e7902bd08a19156ba5b6096f4e7bf35c3cf86558020c90742665d1c3a261823
+ART-004 | assets/EE0033_Asset04_Termico_F2.png | 1536x1024 | dca9635a102ea9b49cf41de5d14749da0d1a381cecb9e8f8b4c4b4dcc92b1e55
+ART-005 | assets/EE0033_Asset05_Continuidad_95_96.png | 1536x1024 | 1a146237185dd1aa5a001f2aac23f3e8de87c67e05acad228d1ee811a0a36129
+ART-006 | assets/EE0033_Asset06_Rodillo_R1.png | 1536x1024 | c131bd40529829d818988b4fc16e887495ab5376977166cf2ad592c364078199
+
+EVIDENCIAS
+Logs focused.log, shared.log, notebook-build.log, preview-build.log y browser.log junto a este informe. browser-results.json contiene resultados estructurados. Capturas seleccionadas: 390-es-result-D2.png y 1440-en-result-D3.png. Capturas/scripts completos: /workspace/work/ee0033-codex/qa/ y /workspace/work/ee0033-codex/browser_qa.py.
+ZIP extraído: /workspace/work/ee0033-codex/.
+
+ESTADO DE ENTREGA
+Integración funcional preparada y probada en rama de trabajo, sin commit ni acciones externas. Publicación BLOQUEADA por QA humano conforme a CODEX_PROMPT.md. Deben revisarse B01/B02 y confirmarse las versiones visuales antes de declarar aprobación técnica. No se corrige ningún PNG de forma silenciosa ni se solicita al usuario aprobar un cambio no preparado.

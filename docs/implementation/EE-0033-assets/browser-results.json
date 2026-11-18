@@ -1,0 +1,139 @@
+{
+  "flows": [
+    {
+      "width": 1440,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": [
+        [
+          "Asset03_Pinza"
+        ],
+        [
+          "Asset04_Termico",
+          "Asset05_Continuidad"
+        ],
+        [
+          "Asset06_Rodillo"
+        ]
+      ],
+      "continuity_after_visible_safety_declaration": true,
+      "roller_after_mechanical_request_only": true,
+      "recovery_L1_A": 3.5,
+      "reset": true,
+      "locale_switch": true,
+      "zoom_controls": true,
+      "ten_hotspots": true,
+      "five_notebook_refs_resolve": true
+    },
+    {
+      "width": 1440,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": [
+        [
+          "Asset03_Pinza"
+        ],
+        [
+          "Asset04_Termico",
+          "Asset05_Continuidad"
+        ],
+        [
+          "Asset06_Rodillo"
+        ]
+      ],
+      "continuity_after_visible_safety_declaration": true,
+      "roller_after_mechanical_request_only": true,
+      "recovery_L1_A": 3.5,
+      "reset": true,
+      "locale_switch": true,
+      "zoom_controls": true,
+      "ten_hotspots": true,
+      "five_notebook_refs_resolve": true
+    },
+    {
+      "width": 390,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": [
+        [
+          "Asset03_Pinza"
+        ],
+        [
+          "Asset04_Termico",
+          "Asset05_Continuidad"
+        ],
+        [
+          "Asset06_Rodillo"
+        ]
+      ],
+      "continuity_after_visible_safety_declaration": true,
+      "roller_after_mechanical_request_only": true,
+      "recovery_L1_A": 3.5,
+      "reset": true,
+      "locale_switch": true,
+      "zoom_controls": true,
+      "ten_hotspots": true,
+      "five_notebook_refs_resolve": true
+    },
+    {
+      "width": 390,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": [
+        [
+          "Asset03_Pinza"
+        ],
+        [
+          "Asset04_Termico",
+          "Asset05_Continuidad"
+        ],
+        [
+          "Asset06_Rodillo"
+        ]
+      ],
+      "continuity_after_visible_safety_declaration": true,
+      "roller_after_mechanical_request_only": true,
+      "recovery_L1_A": 3.5,
+      "reset": true,
+      "locale_switch": true,
+      "zoom_controls": true,
+      "ten_hotspots": true,
+      "five_notebook_refs_resolve": true
+    }
+  ],
+  "gallery": [
+    {
+      "width": 1440,
+      "six_originals_load": true,
+      "aspect_ratios_preserved": true,
+      "no_horizontal_clipping": true
+    },
+    {
+      "width": 390,
+      "six_originals_load": true,
+      "aspect_ratios_preserved": true,
+      "no_horizontal_clipping": true
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "screenshots": [
+    "1440-es-result-D1.png",
+    "1440-es-result-D2.png",
+    "1440-es-result-D3.png",
+    "1440-en-result-D1.png",
+    "1440-en-result-D2.png",
+    "1440-en-result-D3.png",
+    "390-es-result-D1.png",
+    "390-es-result-D2.png",
+    "390-es-result-D3.png",
+    "390-en-result-D1.png",
+    "390-en-result-D2.png",
+    "390-en-result-D3.png"
+  ],
+  "publication": "BLOCKED_PENDING_HUMAN_TECHNICAL_QA"
+}

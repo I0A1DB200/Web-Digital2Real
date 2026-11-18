@@ -1,0 +1,264 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0033",
+  "canonical_id": "EXP-ELECTRICAL-OVERLOAD-033",
+  "source_archive": "EE0033_Codex.zip",
+  "archive_sha256": "323acf01d70c950f71710139de9ac6ad3428e999234c2e6ad65f90b6083fb2d3",
+  "status": "DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA",
+  "supplied_assets": 6,
+  "runtime_registered_assets": 6,
+  "runtime_presented_assets": 6,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "source_id": "ASSET-01",
+      "runtime_id": "ART-001",
+      "canonical_file": "assets/EE0033_Asset01_Cuadro.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset01_Cuadro.png",
+      "sha256": "ebf3a0b4f92282149fac11cce92f105196b54f4f65f6ef43cd599495ec897095",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Cuadro ilustrado con Q1, PS1, F1, KM1, F2, S1, S0 y placa didáctica M1 de 1,5 kW, 400 V y 3,8 A.",
+          "caption": "Localización de equipos."
+        },
+        "en": {
+          "alt": "Illustrated cabinet with Q1, PS1, F1, KM1, F2, S1, S0 and a teaching M1 plate rated 1.5 kW, 400 V and 3.8 A.",
+          "caption": "Equipment locations."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-02",
+      "runtime_id": "ART-002",
+      "canonical_file": "assets/EE0033_Asset02_Esquema.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset02_Esquema.png",
+      "sha256": "6dca37476441b5a61b6ede3fc887fd398ce039ed5e63e0c4087d485fe8a57191",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Esquema de fuerza Q1–KM1–F2–M1 y mando 24 VDC con F2 y S0 en serie y auxiliar KM1 en paralelo con S1.",
+          "caption": "Fuerza y mando del caso simulado."
+        },
+        "en": {
+          "alt": "Q1–KM1–F2–M1 power schematic and 24 VDC control with F2 and S0 in series and KM1 auxiliary in parallel with S1.",
+          "caption": "Power and control for the simulated case."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-03",
+      "runtime_id": "ART-003",
+      "canonical_file": "assets/EE0033_Asset03_Pinza_5_6A.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset03_Pinza_5_6A.png",
+      "sha256": "7e7902bd08a19156ba5b6096f4e7bf35c3cf86558020c90742665d1c3a261823",
+      "width": 1535,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Pinza AC ilustrada alrededor de un conductor L1 de KM1 con lectura simulada de 5,6 A.",
+          "caption": "L1 — 5,6 A AC."
+        },
+        "en": {
+          "alt": "Illustrated AC clamp around one KM1 L1 conductor with a simulated 5.6 A reading.",
+          "caption": "L1 — 5.6 A AC."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-04",
+      "runtime_id": "ART-004",
+      "canonical_file": "assets/EE0033_Asset04_Termico_F2.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset04_Termico_F2.png",
+      "sha256": "dca9635a102ea9b49cf41de5d14749da0d1a381cecb9e8f8b4c4b4dcc92b1e55",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Vista ilustrada del relé F2 con ajuste didáctico 3,8 A y bornes auxiliares marcados 95, 96, 97 y 98.",
+          "caption": "F2 — ajuste didáctico 3,8 A."
+        },
+        "en": {
+          "alt": "Illustrated F2 relay with teaching setting 3.8 A and auxiliary terminals marked 95, 96, 97 and 98.",
+          "caption": "F2 — teaching setting 3.8 A."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-05",
+      "runtime_id": "ART-005",
+      "canonical_file": "assets/EE0033_Asset05_Continuidad_95_96.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset05_Continuidad_95_96.png",
+      "sha256": "1a146237185dd1aa5a001f2aac23f3e8de87c67e05acad228d1ee811a0a36129",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Registro simulado de continuidad entre F2:95 y F2:96 con lectura OL; ensayo declarado aislado y sin tensión.",
+          "caption": "F2:95–96 — OL, registro de ensayo aislado."
+        },
+        "en": {
+          "alt": "Simulated F2:95–96 continuity record reading OL; test declared isolated and de-energized.",
+          "caption": "F2:95–96 — OL, isolated test record."
+        }
+      }
+    },
+    {
+      "source_id": "ASSET-06",
+      "runtime_id": "ART-006",
+      "canonical_file": "assets/EE0033_Asset06_Rodillo_R1.png",
+      "src": "assets/EXP-ELECTRICAL-OVERLOAD-033/EE0033_Asset06_Rodillo_R1.png",
+      "sha256": "c131bd40529829d818988b4fc16e887495ab5376977166cf2ad592c364078199",
+      "width": 1536,
+      "height": 1024,
+      "mime": "image/png",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "Unchanged user-supplied synthetic teaching PNG from EE0033_Codex.zip.",
+      "rights": "User-supplied for this task; no manufacturer endorsement or certified wiring asserted.",
+      "localization": {
+        "es": {
+          "alt": "Rodillo R1 con desgaste y suciedad visibles junto al soporte y rodamiento; no demuestra por sí solo resistencia al giro.",
+          "caption": "R1 — inspección mecánica con máquina consignada."
+        },
+        "en": {
+          "alt": "R1 roller with visible wear and dirt near its support and bearing; the image alone does not establish rotational resistance.",
+          "caption": "R1 — mechanical inspection with the machine locked out."
+        }
+      }
+    }
+  ],
+  "bindings": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003"
+    ],
+    "EVID-02-RECORD": [
+      "ART-004",
+      "ART-005"
+    ],
+    "EVID-03-RECORD": [
+      "ART-006"
+    ],
+    "completion": []
+  },
+  "issues": [
+    {
+      "id": "B01",
+      "classification": "CONTENT",
+      "status": "BLOCKING_HUMAN_REVIEW",
+      "assets": [
+        "ART-001",
+        "ART-004",
+        "ART-005"
+      ],
+      "detail": "Verify actual Siemens references and setting ranges; 3RU2/3RU11 depictions and 3RU1116-0AB0 may not match teaching 3.5–5 A range. Do not present them as manufacturer-equivalent."
+    },
+    {
+      "id": "B02",
+      "classification": "CONTENT",
+      "status": "BLOCKING_HUMAN_REVIEW",
+      "assets": [
+        "ART-001",
+        "ART-002",
+        "ART-004",
+        "ART-005"
+      ],
+      "detail": "Review normal-state NC symbols, F1/F2/S0/S1/KM1 path, PE, protective coordination, ambiguous F2 scale and A2 marking. NC belongs to pair95–96 and NO to pair97–98, not each individual terminal. No asserted luminous TRIP function or exact trip time."
+    },
+    {
+      "id": "O01",
+      "classification": "CONTENT",
+      "status": "OPEN",
+      "assets": [
+        "ART-003"
+      ],
+      "detail": "Clamp intended around one L1 conductor. Physical continuity and safe real measurement setup require human validation; no L2/L3 readings inferred."
+    },
+    {
+      "id": "O02",
+      "classification": "CONTENT",
+      "status": "AUTHORING_PRECONDITION_VERIFIED",
+      "assets": [
+        "ART-005"
+      ],
+      "detail": "Continuity shown only after DEC-02-A; before selection, stage2 declares isolation, verified absence of voltage and elimination of parallel paths. Image itself does not prove these conditions."
+    },
+    {
+      "id": "O03",
+      "classification": "CONTENT",
+      "status": "OPEN",
+      "assets": [
+        "ART-006"
+      ],
+      "detail": "Wear alone does not prove seizure; interpret with the authored authorized mechanical record after machine lockout."
+    },
+    {
+      "id": "O04",
+      "classification": "TECHNICAL_DEBT",
+      "status": "OPEN",
+      "assets": [
+        "ART-001",
+        "ART-002"
+      ],
+      "detail": "User should confirm these exact supplied files correspond to approved visual versions; originals preserved without inferring identity from prior-chat labels."
+    }
+  ],
+  "case_revision": {
+    "source": "EE0033_Codex/FICHA_TECNICA.md",
+    "old_rating_A": 3.2,
+    "new_rating_A": 3.8,
+    "old_overload_lines_A": [
+      4.5,
+      4.4,
+      4.6
+    ],
+    "new_overload_L1_A": 5.6,
+    "new_recovery_L1_A": 3.5,
+    "no_new_L2_L3_values": true,
+    "decision_action_overrides": {
+      "DEC-02-A": {
+        "es": "5,6 A frente a 3,8 A demuestra corriente superior a nominal.",
+        "en": "5.6 A versus 3.8 A demonstrates current above the rating."
+      }
+    }
+  },
+  "preserved_decision_structure_sha256": "e57666b49e7ec1ce79dc8c26454658270dad4150d5bc9be5709e2439f873f4a9",
+  "no_engine_changes": true
+}

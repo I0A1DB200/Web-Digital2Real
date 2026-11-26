@@ -1,0 +1,13 @@
+{
+  "protected_files": 1381,
+  "changed_protected": [],
+  "canonical_options_unchanged": 15,
+  "private_decision_logic_unchanged": 15,
+  "localized_decisions_feedback_records_unchanged": [
+    "es",
+    "en"
+  ],
+  "EE0034_35_36_unchanged": true,
+  "original_head": "a99c05170d1da59f1a166b17ac1b5a32f1a2333d",
+  "original_status": "?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.md\n?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.txt\n?? docs/implementation/EE-0031-assets-intake/browser-results.json\n?? docs/implementation/EE-0031-assets-intake/focused-tests.log\n?? docs/implementation/EE-0031-assets-intake/mobile-voltage-review.png\n?? docs/implementation/EE-0031-assets-intake/shared-tests.log\n?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.docx\n?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.txt\n?? docs/standards/\n"
+}

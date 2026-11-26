@@ -1,0 +1,10 @@
+PENDIENTE DE REVISIÓN TÉCNICA HUMANA — EE-0037
+
+La revisión automatizada y visual del agente no constituye aprobación técnica humana.
+Confirmar fidelidad de hardware ilustrativo genérico, simbología del extracto, traducción ES/EN y adecuación pedagógica de los registros simulados. Los pares 13/14 y21/22 proceden del caso, no de una comprobación de bornas de un modelo comercial instalado.
+Tensión, corrientes, potencia, protecciones y referencias reales no están especificadas ni validadas. Uc es un potencial abstracto; el esquema es un extracto funcional, no un plano ejecutable de instalación.
+Las cuatro fotografías son sintéticas. La foto de inspección no acredita ausencia de tensión; la de reparación no acredita recuperación. Los gráficos de estados y verificación son registros didácticos derivados del caso/modelo, no mediciones de campo ni ensayos realizados.
+No se modifica función de seguridad ni se equipa parada de emergencia. No hay PLC/watch table ni instrumento inventado.
+No hay bloqueo gráfico crítico persistente detectado por el agente. Aprobación técnica humana, aprobación editorial y autorización expresa de publicación siguen pendientes.
+Estados preservados: technical_review, private.technical_validation.pending, publication_allowed=false.
+No commit, push, merge ni deploy en esta ejecución. Siguiente candidata: EE-0038, por verificar fuente y estado al iniciar su producción.

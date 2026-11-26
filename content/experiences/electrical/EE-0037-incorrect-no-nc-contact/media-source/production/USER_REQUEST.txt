@@ -1,0 +1,632 @@
+# DIGITAL2REAL — AUTONOMOUS EXPERIENCE PRODUCTION
+
+## 1. MISIÓN
+
+A partir de este momento debes asumir el proceso completo de producción, generación de assets, validación e integración de nuevas Engineering Experiences de Digital2Real.
+
+Hasta ahora, el proceso se ha realizado manualmente mediante ChatGPT, generando individualmente los assets visuales, corrigiéndolos, aprobándolos, empaquetándolos en ZIP y entregándolos posteriormente a Codex para su integración.
+
+Este proceso debe evolucionar hacia un flujo autónomo, repetible, mantenible y técnicamente controlado.
+
+Tu objetivo es utilizar el conocimiento acumulado en este chat, los paquetes ZIP anteriores, los archivos descomprimidos y el repositorio para producir la siguiente Engineering Experience completa.
+
+No debes limitarte a generar instrucciones, propuestas o informes.
+
+Debes ejecutar el trabajo.
+
+## 2. ROL
+
+Actúa como:
+
+- Industrial Automation Engineer.
+- Engineering Experience Designer.
+- Technical Asset Producer.
+- Electrical Documentation Specialist.
+- Content Integration Engineer.
+- QA Engineer.
+
+El repositorio y sus contratos arquitectónicos constituyen la autoridad sobre la implementación.
+
+Las fuentes técnicas originales constituyen la autoridad sobre el contenido.
+
+No eres responsable de redefinir el producto ni modificar unilateralmente su arquitectura.
+
+## 3. FASE 0 — APRENDIZAJE DEL TRABAJO ANTERIOR
+
+Antes de producir una nueva Experience, inspecciona exhaustivamente los recursos disponibles en este workspace y en el contexto de este chat.
+
+Localiza:
+
+- Paquetes ZIP anteriores.
+- Directorios descomprimidos.
+- `media-source/`.
+- `CODEX_PROMPT.md`.
+- `FICHA_TECNICA.md`.
+- `QA_PENDIENTE.md`.
+- `QA_README.md`.
+- Fuentes originales de Experiences.
+- Assets PNG, WebP y SVG.
+- YAML de Experiences implementadas.
+- Informes de integración.
+- Informes de QA.
+- Correcciones solicitadas por el usuario.
+- Convenciones de nombres.
+- Contratos multimedia.
+- Documentación arquitectónica.
+- Engineering Notebook.
+- Inventario de Environments y Experiences.
+
+No presupongas nombres, rutas ni cantidad de paquetes. Descubre el estado real.
+
+Analiza especialmente las Experiences eléctricas anteriores, incluidas EE-0032, EE-0033, EE-0034, EE-0035 y EE-0036, si están disponibles.
+
+Extrae de ellas:
+
+- Estructura narrativa.
+- Estilo fotográfico.
+- Composición de cuadros eléctricos.
+- Identificación de componentes.
+- Representación de instrumentos de medida.
+- Esquemas eléctricos.
+- Capturas recreadas de software industrial.
+- Secuencia de evidencias.
+- Momento de revelación de la causa raíz.
+- Convenciones de integración.
+- Errores recurrentes.
+- Criterios de aprobación visual.
+- Criterios de validación técnica.
+
+Distingue expresamente entre:
+
+- Recursos aprobados visualmente.
+- Recursos validados técnicamente.
+- Recursos pendientes de QA.
+- Recursos descartados.
+- Recursos ocultos.
+- Recursos publicados.
+
+No aprendas como patrón válido un error conocido de una Experience anterior.
+
+No reproduzcas defectos eléctricos por el hecho de que aparezcan en un asset existente.
+
+## 4. FASE 1 — IDENTIFICACIÓN AUTOMÁTICA DE LA SIGUIENTE EXPERIENCE
+
+Inspecciona el catálogo canónico de Experiences y el estado real del repositorio.
+
+Identifica automáticamente la siguiente Experience pendiente de producción visual dentro del Environment que se está desarrollando.
+
+EE-0037 es la candidata esperada después de EE-0036, pero debes verificarlo.
+
+No inventes su título, escenario, tecnología ni causa raíz.
+
+Comprueba:
+
+- Identificador.
+- Título ES/EN.
+- Environment asociado.
+- Fuente original.
+- YAML existente.
+- Escenario.
+- Síntoma.
+- Causa raíz.
+- Decisiones.
+- Opciones.
+- Respuestas correctas.
+- Feedback.
+- Evidencias.
+- Referencias Notebook.
+- Estado de implementación.
+- Estado de recursos visuales.
+
+Si la Experience ya existe, trabaja sobre ella.
+
+No dupliques una Experience existente.
+
+Si no existe una fuente canónica suficiente, detén únicamente esa producción e informa del bloqueo.
+
+## 5. FASE 2 — DEFINICIÓN DE LA BASE TÉCNICA
+
+Antes de generar imágenes, construye una ficha técnica maestra de la Experience.
+
+La ficha debe definir, según corresponda:
+
+- Equipos industriales.
+- Fabricantes.
+- Modelos y referencias.
+- Tensiones de alimentación.
+- Potencias.
+- Corrientes.
+- Protecciones.
+- Sensores.
+- Actuadores.
+- PLC.
+- Entradas y salidas.
+- Bornas.
+- Cableado.
+- Señales.
+- Comunicaciones.
+- Estados normales.
+- Estados de fallo.
+- Condiciones de medida.
+- Causa raíz.
+- Reparación.
+- Verificación final.
+
+Establece una lista de conexiones cuando exista un circuito eléctrico.
+
+Consulta documentación oficial de fabricantes cuando sea necesario.
+
+Prioriza componentes y configuraciones ya establecidos en el Environment.
+
+No inventes referencias, terminales, valores nominales ni resultados de medida.
+
+Si una especificación es ilustrativa, identifícala como tal.
+
+La ficha técnica será la fuente de referencia para todos los assets de la Experience.
+
+No permitas que un mismo componente cambie de modelo, potencia, tensión, identificación o conexionado entre imágenes.
+
+## 6. FASE 3 — PLANIFICACIÓN DE ASSETS
+
+Diseña normalmente entre 5 y 7 assets visuales por Experience.
+
+El número exacto debe depender de las necesidades del diagnóstico, no de una cuota arbitraria.
+
+Utiliza las Experiences anteriores como referencia.
+
+Una secuencia orientativa es:
+
+### ART-001 — Escenario industrial
+
+Vista general del cuadro eléctrico, máquina, instalación o sistema afectado.
+
+Debe contextualizar el problema sin revelar la causa raíz.
+
+### ART-002 — Documentación técnica
+
+Esquema eléctrico, topología de red, diagrama funcional, arquitectura de control o documentación necesaria para interpretar el sistema.
+
+Debe representar las condiciones que correspondan a la etapa de diagnóstico.
+
+### ART-003 — Primera evidencia
+
+Estado de PLC, HMI, variador, sensor, protección, alarma, Watch Table u otra evidencia inicial.
+
+### ART-004 — Medición o diagnóstico
+
+Fotografía o representación técnica de una comprobación industrial relevante.
+
+### ART-005 — Ensayo de confirmación
+
+Prueba que permita discriminar entre hipótesis y confirmar o descartar componentes.
+
+### ART-006 — Causa raíz
+
+Evidencia física o técnica que confirme la avería.
+
+Solo debe aparecer en el momento autorizado por el contenido didáctico.
+
+### ART-007 — Verificación final
+
+Comprobación posterior a la reparación y recuperación del funcionamiento.
+
+Esta estructura es orientativa.
+
+No introduzcas una Watch Table, un multímetro o un esquema eléctrico si la Experience no lo necesita.
+
+Cada asset debe aportar evidencia útil para el razonamiento del alumno.
+
+## 7. FASE 4 — GENERACIÓN REAL DE ASSETS
+
+Antes de comenzar, inspecciona las herramientas y capacidades de generación y edición visual disponibles en el entorno.
+
+Utiliza las capacidades reales disponibles.
+
+### A. Fotografías industriales
+
+Cuando exista una herramienta de generación de imágenes, utilízala para producir fotografías industriales realistas.
+
+Mantén el estilo de los assets aprobados anteriormente:
+
+- Fotografía industrial realista.
+- Equipos industriales reconocibles.
+- Cuadros eléctricos coherentes.
+- Canaletas y carriles DIN.
+- Cableado organizado.
+- Bornas industriales.
+- Iluminación natural de entorno industrial.
+- Identificadores discretos.
+- Etiquetas adhesivas pequeñas.
+- Instrumentos de medida realistas.
+- Composición limpia.
+- Ausencia de decoración innecesaria.
+
+No añadir:
+
+- Cabeceras Digital2Real.
+- Logotipos D2R superpuestos.
+- Títulos decorativos.
+- Tablas explicativas dentro de fotografías.
+- Flechas innecesarias.
+- Respuestas escritas sobre las imágenes.
+- Elementos que anticipen la causa raíz.
+
+Utiliza el primer asset como referencia visual para generar los siguientes.
+
+Mantén la continuidad de equipos, posiciones, cableado, referencias y entorno.
+
+### B. Esquemas eléctricos
+
+No utilices generación probabilística de imágenes para establecer conexiones eléctricas definitivas.
+
+Utiliza herramientas de dibujo vectorial determinista, preferentemente SVG.
+
+Genera primero la lista de conexiones y después el esquema.
+
+Estética de referencia:
+
+- Estilo EPLAN.
+- Fondo blanco.
+- Trazos finos.
+- Simbología eléctrica convencional.
+- Referencias de componentes discretas.
+- Conductores diferenciados cuando corresponda.
+- Bornas numeradas.
+- Contornos discontinuos de equipos.
+- Sin membretes decorativos.
+
+Verifica eléctricamente el dibujo contra la lista de conexiones.
+
+Exporta a los formatos admitidos por el repositorio.
+
+### C. Interfaces de software industrial
+
+Cuando sea necesario representar TIA Portal, HMI, SCADA, software de diagnóstico o parametrización:
+
+- Utiliza referencias visuales fiables.
+- Respeta la versión del software.
+- Representa únicamente señales existentes.
+- Mantén coherencia entre variables, direcciones y estados.
+- No inventes funcionalidades.
+- No confundir monitorización con forzado.
+
+Cuando se trate de una recreación, no presentarla como captura real.
+
+### D. Instrumentos de medida
+
+Verifica específicamente:
+
+- Tipo de instrumento.
+- Modo de medida.
+- Selector.
+- Unidades.
+- Valor mostrado.
+- Polaridad.
+- Posición de las puntas.
+- Contacto metálico.
+- Terminales.
+- Condiciones eléctricas del ensayo.
+- Condiciones de seguridad.
+
+No aceptar una fotografía únicamente porque su composición visual sea atractiva.
+
+### E. Limitaciones de generación
+
+Si el entorno no dispone de una herramienta real de generación fotográfica, no simules que has generado fotografías.
+
+No utilices imágenes genéricas, placeholders ni diagramas que pretendan ser fotografías.
+
+En ese caso:
+
+- Completa la definición técnica.
+- Produce los esquemas y recursos deterministas posibles.
+- Genera los prompts individuales necesarios.
+- Registra los assets fotográficos como bloqueados.
+- Continúa con las tareas que sí puedan ejecutarse.
+
+No instales servicios externos de pago ni utilices credenciales sin autorización.
+
+## 8. FASE 5 — QA AUTOMÁTICO E ITERACIÓN
+
+Después de generar cada asset, inspecciónalo visual y técnicamente.
+
+No esperes a terminar toda la Experience para detectar errores.
+
+Comprueba:
+
+- Coherencia con la ficha técnica.
+- Coherencia con el asset anterior.
+- Referencias de componentes.
+- Numeración.
+- Etiquetas.
+- Conexionado.
+- Polaridad.
+- Valores eléctricos.
+- Estados de LED.
+- Posición de instrumentos.
+- Ausencia de elementos inventados.
+- Ausencia de errores gráficos evidentes.
+- Momento correcto de revelación.
+
+Si detectas un defecto, intenta corregir únicamente la zona afectada.
+
+No regeneres completamente un asset correcto por un defecto localizado.
+
+Realiza hasta tres intentos razonables de corrección por defecto antes de evaluar otro método.
+
+No entres en bucles indefinidos de regeneración.
+
+Si persiste un error crítico, registra el bloqueo y mantén el recurso fuera de presentación.
+
+La aprobación visual automática no sustituye la aprobación técnica humana.
+
+## 9. FASE 6 — EMPAQUETADO ZIP
+
+Genera un paquete ZIP completo de la Experience.
+
+Utiliza las convenciones reales aprendidas de los paquetes anteriores.
+
+Estructura orientativa:
+
+    EE00XX_Codex/
+        CODEX_PROMPT.md
+        FICHA_TECNICA.md
+        QA_REPORT.md
+        QA_PENDIENTE.md
+        MANIFEST.json
+        SOURCE/
+        ASSETS/
+            EE-00XX_ART-001.png
+            EE-00XX_ART-002.png
+            EE-00XX_ART-003.png
+            EE-00XX_ART-004.png
+            EE-00XX_ART-005.png
+            EE-00XX_ART-006.png
+            EE-00XX_ART-007.png
+
+Adapta esta estructura a las convenciones existentes.
+
+El paquete debe contener archivos reales, no referencias ficticias.
+
+El manifest debe registrar:
+
+- Experience ID.
+- Asset ID.
+- Nombre del archivo.
+- Tipo de recurso.
+- Función didáctica.
+- Evidencia asociada.
+- Etapa de presentación.
+- Alt ES/EN.
+- Caption ES/EN.
+- Fuente.
+- Método de generación.
+- Estado de QA.
+- Limitaciones.
+- Hash SHA-256.
+
+Conserva los originales y las versiones finales según los contratos del repositorio.
+
+Comprueba que el ZIP puede abrirse y que todos los archivos declarados están presentes.
+
+## 10. FASE 7 — INTEGRACIÓN EN EL REPOSITORIO
+
+Una vez generados y comprobados los recursos, integra directamente la Experience en el repositorio.
+
+No esperes a que el usuario vuelva a entregarte el ZIP que tú mismo has generado.
+
+El ZIP será un entregable de trazabilidad y reutilización.
+
+La integración debe realizarse directamente desde los recursos finales verificados.
+
+Inspecciona primero:
+
+- Rama actual.
+- Estado de Git.
+- Cambios locales.
+- Archivos no versionados.
+- Contratos multimedia.
+- YAML.
+- Rutas de producción.
+- Convenciones de almacenamiento.
+
+Preserva todo el trabajo previo.
+
+Registra los assets utilizando los contratos existentes.
+
+Asocia cada recurso a su evidencia correspondiente.
+
+Completa alt y caption ES/EN.
+
+Mantén la secuencia didáctica original.
+
+No mostrar la causa raíz antes del momento establecido.
+
+No crear nuevas decisiones cuando ya existen decisiones canónicas.
+
+No modificar respuestas correctas ni feedback para adaptarlos artificialmente a una imagen incorrecta.
+
+No introducir hacks de renderizado.
+
+No duplicar componentes del Engine.
+
+## 11. INVARIANTES ARQUITECTÓNICOS
+
+Digital2Real produce dos productos:
+
+- Engineering Notebook: conocimiento técnico permanente y reutilizable.
+- Engineering Experiences: diagnóstico, razonamiento y decisiones industriales.
+
+Preservar:
+
+- Experience Engine.
+- Arquitectura del repositorio.
+- Contratos YAML.
+- Identificadores.
+- Navegación.
+- Hotspots.
+- Rutas.
+- Sistema ES/EN.
+- Referencias Notebook.
+- Semántica multimedia.
+- Diseño didáctico.
+- Identidad visual existente.
+
+No modificar Engine, Frontend, CSS global, dependencias, despliegue u otras Experiences para resolver un problema de contenido.
+
+Clasificar cualquier incidencia antes de intervenir:
+
+- CONTENT.
+- ENGINE.
+- INTENTIONAL REUSE.
+- UNUSED.
+- TECHNICAL DEBT.
+
+Si detectas un problema del Engine, documentarlo por separado. No resolverlo mediante parches particulares en la nueva Experience.
+
+## 12. FASE 8 — VALIDACIÓN FUNCIONAL
+
+Ejecuta las pruebas existentes del repositorio.
+
+Comprueba:
+
+- Carga de la Experience.
+- Navegación.
+- Hotspots.
+- Decisiones.
+- Evaluación.
+- Feedback.
+- Evidencias.
+- Imágenes.
+- Recursos multimedia.
+- Traducciones.
+- Referencias Notebook.
+- Ausencia de enlaces rotos.
+- Ausencia de regresiones.
+
+Abre el preview local de la web.
+
+Inspecciona visualmente la Experience completa cuando las herramientas disponibles lo permitan.
+
+Genera capturas de evidencia del resultado.
+
+No declares PASS en pruebas no ejecutadas.
+
+## 13. FASE 9 — MEMORIA OPERATIVA DEL PROCESO
+
+No dependas exclusivamente del contexto temporal de este chat.
+
+Documenta el método de producción aprendido en un archivo reutilizable dentro de la ubicación de documentación técnica o gobernanza que ya exista en el repositorio.
+
+Antes de crear un documento nuevo, comprueba si ya existe una guía equivalente.
+
+Si existe, actualízala sin duplicarla.
+
+Debe recoger:
+
+- Flujo de producción.
+- Convenciones de assets.
+- Estilo visual.
+- Reglas de generación.
+- Validación técnica.
+- Errores recurrentes.
+- Empaquetado.
+- Integración.
+- QA.
+- Condiciones de bloqueo.
+- Criterios de finalización.
+
+El objetivo es que futuras sesiones de Codex puedan repetir el proceso sin depender de que el usuario vuelva a explicar cómo se producen las Experiences.
+
+No modificar contratos arquitectónicos sin autorización.
+
+## 14. CONTROL DE PUBLICACIÓN
+
+La producción y la integración local deben ser autónomas.
+
+La publicación definitiva requiere superar los controles establecidos por el repositorio y obtener la aprobación técnica humana correspondiente.
+
+No confundir disponibilidad multimedia con validación técnica.
+
+No ocultar discrepancias para conseguir un resultado aparentemente completo.
+
+No cambiar artificialmente los estados de revisión para habilitar producción.
+
+No realizar merge, push a producción ni deploy sin autorización expresa.
+
+No sobrescribir ni desbloquear EE-0034, EE-0035 o EE-0036 como efecto secundario de producir la siguiente Experience.
+
+## 15. INFORME FINAL
+
+Al terminar, entrega un informe consolidado que incluya:
+
+- Experience seleccionada.
+- Justificación de su selección.
+- Fuentes originales inspeccionadas.
+- Paquetes anteriores analizados.
+- Patrones aprendidos.
+- Ficha técnica.
+- Assets generados.
+- Miniaturas o capturas de cada asset.
+- Herramientas utilizadas.
+- Correcciones realizadas.
+- Fuentes técnicas consultadas.
+- Resultado individual del QA.
+- ZIP generado y ruta exacta.
+- Hash SHA-256 del ZIP.
+- Archivos integrados.
+- Archivos modificados.
+- Resultado de pruebas.
+- Capturas del preview.
+- Estado de integración.
+- Bloqueos pendientes.
+- Estado de publicación.
+- Siguiente Experience candidata.
+
+Distingue claramente entre:
+
+- Generado.
+- Validado automáticamente.
+- Pendiente de revisión humana.
+- Integrado.
+- Publicado.
+
+## 16. CRITERIO DE FINALIZACIÓN
+
+La tarea no se considera completada únicamente por haber redactado prompts de imágenes.
+
+El resultado esperado es:
+
+1. Siguiente Experience identificada.
+2. Contenido canónico inspeccionado.
+3. Base técnica definida.
+4. Assets reales generados cuando las capacidades lo permitan.
+5. QA realizado.
+6. ZIP generado.
+7. Experience integrada localmente.
+8. Preview comprobado.
+9. Informe final entregado.
+
+No solicites aprobación después de cada asset.
+
+Toma decisiones operativas dentro de las reglas establecidas.
+
+Solicita intervención humana únicamente cuando exista un bloqueo técnico real, una contradicción entre fuentes, una capacidad imprescindible no disponible o una decisión de producto no autorizada.
+
+## 17. ORDEN DE EJECUCIÓN
+
+Comienza ahora.
+
+Inspecciona los paquetes ZIP anteriores y sus directorios descomprimidos.
+
+Aprende de las Experiences implementadas y de sus correcciones.
+
+Identifica la siguiente Engineering Experience pendiente.
+
+Produce una Experience completa de principio a fin.
+
+No te limites a explicar cómo lo harías.
+
+Ejecuta el proceso y entrega los resultados reales.
+
+**Digital2Real: Engineering over marketing. Accuracy over speed. Understanding over memorization.**

@@ -31,7 +31,7 @@ capability_references:
 public:
   slug: "open-return-conductor"
   title: "Un conductor interrumpido impide activar la válvula"
-  summary: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Preview con ilustraciones; publicación bloqueada por revisión técnica pendiente."
   estimated_duration: 20
   scenario:
     initial_context: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
@@ -74,7 +74,7 @@ public:
         - "DEC-01-A"
         - "DEC-01-B"
         - "DEC-01-C"
-      media_ids: []
+      media_ids: ["ART-002"]
     -
       id: "STAGE-02-DIAGNOSIS"
       phase: "investigation"
@@ -91,7 +91,7 @@ public:
       id: "STAGE-03-DIAGNOSIS"
       phase: "investigation"
       title: "Contrastar hipótesis"
-      situation: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Antes del ensayo de resistencia o continuidad se requieren instalación aislada, ausencia de tensión verificada y caminos paralelos aislados conforme al procedimiento autorizado. Aquí solo se interpretan registros simulados.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-02-RECORD"
       decision_ids:
@@ -140,7 +140,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-01-A"
-      media_ids: []
+      media_ids: ["ART-003"]
     -
       id: "EVID-02-RECORD"
       type: "diagnostic"
@@ -149,7 +149,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-B"
-      media_ids: []
+      media_ids: ["ART-004"]
     -
       id: "EVID-03-RECORD"
       type: "diagnostic"
@@ -158,7 +158,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-03-A"
-      media_ids: []
+      media_ids: ["ART-005"]
     -
       id: "EVID-04-RECORD"
       type: "diagnostic"
@@ -167,7 +167,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-04-B"
-      media_ids: []
+      media_ids: ["ART-006"]
     -
       id: "EVID-05-RECORD"
       type: "functional_test"
@@ -176,7 +176,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-05-A"
-      media_ids: []
+      media_ids: ["ART-007"]
   decisions:
     -
       id: "DEC-01-A"
@@ -239,9 +239,52 @@ public:
       stage_id: "STAGE-05-VERIFY-RECOVERY"
       action: "Cerrar incidencia por Q0.3=TRUE."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-    representation: "planned"
-    assets: []
+    educational_purpose: "Ilustraciones del caso simulado; recursos contradictorios ocultos y revisión técnica humana pendiente."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_01_cuadro_electrico.png"
+        alt: "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3."
+        caption: "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_02_esquema_electrico.png"
+        alt: "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V."
+        caption: "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_03_watch_table.png"
+        alt: "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga."
+        caption: "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_04_mediciones_tension.png"
+        alt: "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V."
+        caption: "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_05_continuidad_retorno.png"
+        alt: "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W."
+        caption: "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_06_causa_raiz.png"
+        alt: "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad."
+        caption: "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_07_verificacion_reparacion.png"
+        alt: "Y3 24 VDC / 2,6 W, retorno reparado por X2:8 y lectura simulada A1–A2 de 24,0 VDC."
+        caption: "Y3 24 VDC / 2,6 W, retorno reparado por X2:8 y lectura simulada A1–A2 de 24,0 VDC."
+        purpose: "evidence"
   completion:
     title: "Debrief técnico"
     summary: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado. Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."

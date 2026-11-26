@@ -1,3 +1,7 @@
+> Corrección técnica 26/11/2026: derivados locales y orden de revelación revisados; originales conservados. Estado vigente: visual-intake.json. Publicación bloqueada y aprobación técnica humana pendiente.
+
+> Estado actual: originales del ZIP registrados en preview local; imágenes contradictorias ocultas según visual-intake.json. Publicación bloqueada por revisión técnica humana. Las notas anteriores conservan la planificación histórica.
+
 # EE-0034 — Single Phase Loss
 
 Source editorial ID: EXP-EL-04. Technical ID: EXP-ELECTRICAL-PHASE-034.

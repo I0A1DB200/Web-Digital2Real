@@ -101,7 +101,7 @@ for (const entry of mapping.experiences) {
       assert.equal(author.public.decisions.length,15);
       assert.equal(author.private.decision_logic.filter(d => d.is_correct).length,5);
       assert.equal(author.public.evidence.length,6);
-      const expectedAssets = {'EE-0031':6,'EE-0032':5,'EE-0033':6}[entry.canonical_editorial_id] ?? 0;
+      const expectedAssets = {'EE-0031':6,'EE-0032':5,'EE-0033':6,'EE-0034':6,'EE-0035':7,'EE-0036':7}[entry.canonical_editorial_id] ?? 0;
       assert.equal(author.public.visual.assets.length, expectedAssets);
       assert.equal(author.public.visual.representation, expectedAssets ? 'available' : 'planned');
       const local = resolveExperienceLocalization(author,document);
@@ -153,7 +153,7 @@ for (const entry of mapping.experiences) {
       }
       assert.equal(cleanPlayer.getState().completionStatus,'completed');
       const manifest=await yaml(`${entry.path}/media-source/evidence-manifest.yaml`);
-      assert.equal(manifest.families.length,4);assert.equal(manifest.slots.length,({'EE-0032':5,'EE-0033':6}[entry.canonical_editorial_id] ?? 7));
+      assert.equal(manifest.families.length,4);assert.equal(manifest.slots.length,({'EE-0032':5,'EE-0033':6,'EE-0034':6,'EE-0035':7,'EE-0036':7}[entry.canonical_editorial_id] ?? 7));
       const intake = manifest.asset_intake_manifest
         ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.asset_intake_manifest}`, 'utf8'))
         : { assets: [] };
@@ -163,7 +163,12 @@ for (const entry of mapping.experiences) {
       const revisions = manifest.binding_manifest
         ? JSON.parse(await readFile(`${entry.path}/media-source/${manifest.binding_manifest}`, 'utf8')).assets : [];
       assert.deepEqual(storedPngs, intake.assets.map(a => a.canonical_file.split('/').at(-1)).sort());
-      if (entry.canonical_editorial_id==='EE-0033') {
+      if (['EE-0034','EE-0035','EE-0036'].includes(entry.canonical_editorial_id)) {
+        assert.equal(intake.status,'DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA');
+        assert.equal(intake.publication_allowed,false);
+        assert.equal(manifest.runtime_registered_images, expectedAssets);
+        assert.equal(manifest.runtime_presented_images, intake.assets.filter(a=>a.runtime_presented).length);
+      } else if (entry.canonical_editorial_id==='EE-0033') {
         assert.equal(intake.status,'DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA');
         assert.equal(intake.publication_allowed,false);
         assert.equal(manifest.runtime_registered_images,6);

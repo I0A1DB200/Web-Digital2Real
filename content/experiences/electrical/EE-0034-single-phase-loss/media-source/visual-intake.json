@@ -1,0 +1,287 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0034",
+  "canonical_id": "EXP-ELECTRICAL-PHASE-034",
+  "source_archive": "EE0034_Codex.zip",
+  "status": "DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA",
+  "supplied_assets": 6,
+  "runtime_registered_assets": 6,
+  "runtime_presented_assets": 4,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "runtime_id": "ART-001",
+      "source_id": "EE-0034_ASSET-01.png",
+      "canonical_file": "assets/EE-0034_ASSET-01.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-01.png",
+      "sha256": "017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "cover"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Cuadro ilustrado de Q2, KM2, F2 y M2.",
+          "caption": "Cuadro ilustrado de Q2, KM2, F2 y M2."
+        },
+        "en": {
+          "alt": "Illustrated Q2, KM2, F2 and M2 cabinet.",
+          "caption": "Illustrated Q2, KM2, F2 and M2 cabinet."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-01.png",
+      "original_sha256": "017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-002",
+      "source_id": "EE-0034_ASSET-02.png",
+      "canonical_file": "assets/EE-0034_ASSET-02.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-02.png",
+      "sha256": "de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "STAGE-01-DIAGNOSIS"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Esquema ilustrado de potencia trifásica y mando de KM2.",
+          "caption": "Esquema ilustrado de potencia trifásica y mando de KM2."
+        },
+        "en": {
+          "alt": "Illustrated three-phase power and KM2 control schematic.",
+          "caption": "Illustrated three-phase power and KM2 control schematic."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-02.png",
+      "original_sha256": "de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-003",
+      "source_id": "EE-0034_ASSET-03.png",
+      "canonical_file": "assets/EE-0034_ASSET-03.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-03.png",
+      "sha256": "dccc1b130ad67a113a5c6887a965344f0bcf14deebd94eac59c2a5b165f877d7",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-01-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Medición simulada aguas arriba: L1–L2 400 V, L2–L3 401 V y L3–L1 399 V; puntas en tornillos metálicos.",
+          "caption": "Medición simulada aguas arriba: L1–L2 400 V, L2–L3 401 V y L3–L1 399 V; puntas en tornillos metálicos."
+        },
+        "en": {
+          "alt": "Simulated upstream measurement: L1–L2 400 V, L2–L3 401 V and L3–L1 399 V; probes on metal screws.",
+          "caption": "Simulated upstream measurement: L1–L2 400 V, L2–L3 401 V and L3–L1 399 V; probes on metal screws."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-03.png",
+      "original_sha256": "2ace746bdafd82ccc5a0ec18dec37b9be1839c7e741d1d3516f4c97ba2fbe3e3",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-004",
+      "source_id": "EE-0034_ASSET-04.png",
+      "canonical_file": "assets/EE-0034_ASSET-04.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-04.png",
+      "sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": false,
+      "bindings": [],
+      "technical_status": "BLOCKED",
+      "hidden_reason": "Modelo eléctrico con motor conectado no establecido; 400/0/400 no justificado como consecuencia única de polo abierto.",
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Lecturas simuladas aguas abajo: 400, 0 y 400 V; modelo y contactos pendientes de validación.",
+          "caption": "Lecturas simuladas aguas abajo: 400, 0 y 400 V; modelo y contactos pendientes de validación."
+        },
+        "en": {
+          "alt": "Simulated downstream readings of 400, 0 and 400 V; model and probe contacts await validation.",
+          "caption": "Simulated downstream readings of 400, 0 and 400 V; model and probe contacts await validation."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-04.png",
+      "original_sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-005",
+      "source_id": "EE-0034_ASSET-05.png",
+      "canonical_file": "assets/EE-0034_ASSET-05.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-05.png",
+      "sha256": "23615db817d24ea001157c04252b25da0c104556f51016be233668d7cbae1853",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": false,
+      "bindings": [],
+      "technical_status": "BLOCKED",
+      "hidden_reason": "Selector y puntas corregidos; falta validar representación del cierre de prueba y procedimiento aplicable al contactor exacto.",
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Ensayo ilustrado de KM2 con selector Ω: 0,2 Ω, 0,2 Ω y OL; estado de cierre de prueba pendiente de revisión humana.",
+          "caption": "Ensayo ilustrado de KM2 con selector Ω: 0,2 Ω, 0,2 Ω y OL; estado de cierre de prueba pendiente de revisión humana."
+        },
+        "en": {
+          "alt": "Illustrated KM2 test in Ω mode: 0.2 Ω, 0.2 Ω and OL; test-closed state awaits human review.",
+          "caption": "Illustrated KM2 test in Ω mode: 0.2 Ω, 0.2 Ω and OL; test-closed state awaits human review."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-05.png",
+      "original_sha256": "0b1e3e46735c0f6285c16fb4b00d699f747c6916c65805b50879f87724cfdef2",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-006",
+      "source_id": "EE-0034_ASSET-06.png",
+      "canonical_file": "assets/EE-0034_ASSET-06.png",
+      "src": "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-06.png",
+      "sha256": "7158df6df37112efdac553e6b5b3562d8b9774b7baa472e90360db072bb5ec4e",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-05-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; localized probe endpoint correction.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Lecturas simuladas posreparación de 400, 401 y 399 V entre fases.",
+          "caption": "Lecturas simuladas posreparación de 400, 401 y 399 V entre fases."
+        },
+        "en": {
+          "alt": "Simulated post-repair phase-to-phase readings of 400, 401 and 399 V.",
+          "caption": "Simulated post-repair phase-to-phase readings of 400, 401 and 399 V."
+        }
+      },
+      "original_file": "media-source/originals/EE-0034_ASSET-06.png",
+      "original_sha256": "9032de1cf2eea2a949ad949eef3851cb9081136305fb615f96f4d6b22496f4e2",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    }
+  ],
+  "bindings": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003"
+    ],
+    "EVID-05-RECORD": [
+      "ART-006"
+    ]
+  },
+  "no_engine_changes": true,
+  "semantic_changes": "Authorized minimal evidence wording/timing corrections and safety prerequisites; options, correct answers, evaluation and root cause unchanged.",
+  "issues": [
+    {
+      "asset": "ART-004",
+      "status": "BLOCKING",
+      "detail": "Modelo eléctrico con motor conectado no establecido; 400/0/400 no justificado como consecuencia única de polo abierto."
+    },
+    {
+      "asset": "ART-005",
+      "status": "BLOCKING",
+      "detail": "Selector y puntas corregidos; falta validar representación del cierre de prueba y procedimiento aplicable al contactor exacto."
+    }
+  ],
+  "additional_review": [
+    "Human technical approval is still pending; synthetic assets are not real test records.",
+    "Corrections and source references: docs/implementation/EE-0034-0036-corrections/."
+  ],
+  "preserved_semantics_sha256": {
+    "private": "402a69f73855dc011c75b8ea60cd4a3a8806bf7651a49feff376b2ac15936a5a",
+    "decisions": "44ce1d38f4c2ea8c4b2047b68f132bc46d5a3b2ba0f665f5445148e7cbad2f44",
+    "evidence": "32454ae45033f6b25479ebd44e49d3ce8a19872980e80d66ece814f4f9619567"
+  },
+  "source_archive_sha256": "534e87d2381ba9000010ab51e10fdb47f24150e42f58eaa0de71931168e036b0",
+  "correction_revision": {
+    "authorized_by": "Texto pegado.txt — Corrección técnica y cierre de QA, 26/11/2026",
+    "evaluation_invariants_sha256": "ac733fb7d2d899f01dc33115768870c16695acdef0fe554a5109723554aa8785",
+    "decisions_sha256": "44ce1d38f4c2ea8c4b2047b68f132bc46d5a3b2ba0f665f5445148e7cbad2f44",
+    "root_cause_sha256": "8e34b4d88906e664344d933a424edd7ca0777123ae4b3afebe0ba26b439321ae",
+    "evidence_content_changes": {
+      "es": {
+        "EVID-02-RECORD": "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir.",
+        "EVID-03-RECORD": "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa.",
+        "EVID-00-RECORD": "El motor -M2 no arranca de forma fiable, hay zumbido y actúa la protección. Se comparan registros autorizados antes y después de KM2. Son registros didácticos simulados; en motores conectados, inducción y retroalimentación pueden alterar las lecturas. El patrón de tensión nunca prueba por sí solo un polo abierto."
+      },
+      "en": {
+        "EVID-02-RECORD": "The downstream record shows L1-L2 400 V, L2-L3 0 V and L1-L3 400 V, but its electrical model with the motor connected has not been validated. It is not accepted as a general open-pole pattern or physical proof of phase loss. Compare measurement pairs, references, load state and each pole before concluding.",
+        "EVID-03-RECORD": "The simulated report supplies tests of the three KM2 poles in the test-closed state, with power and control isolated, absence of voltage verified and parallel paths eliminated. It records 1L1–2T1: 0.2 Ω; 3L2–4T2: 0.2 Ω; 5L3–6T3: OL. These are illustrative case values, not universal acceptance limits. Interpret the complete report before confirming the cause.",
+        "EVID-00-RECORD": "Motor -M2 does not start reliably, hums and causes protection to operate. Authorized records before and after KM2 are compared. These are simulated teaching records; induced and backfed voltages can alter readings on connected motors. A voltage pattern never proves an open pole by itself."
+      }
+    },
+    "binding_changes": {
+      "cover": "ART-001",
+      "STAGE-01-DIAGNOSIS": [
+        "ART-002"
+      ],
+      "EVID-01-RECORD": [
+        "ART-003"
+      ],
+      "EVID-05-RECORD": [
+        "ART-006"
+      ]
+    },
+    "publication_allowed": false
+  },
+  "publication_authorization": {
+    "date": "2026-11-26",
+    "approved_by": "user",
+    "request": "push, merge y deploy",
+    "scope": "Publish the current preview via the existing GitHub Pages workflow. Keep technical_review/pending, hidden EE-0034 ART-004/005 and all technical review limits.",
+    "technical_approval_granted": false
+  }
+}

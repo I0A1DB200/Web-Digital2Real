@@ -1,0 +1,18 @@
+APROBACIÓN VISUAL ART-007 — EE-0036 — 26/11/2026
+
+Aprobación explícita del usuario registrada para la imagen corregida, SHA-256:
+392a2b213adf4f3ae09c18892156a635127e0455b9c07de7e976febd5aa4b5e8
+
+ART-007 queda vinculada a EVID-05-RECORD tras DEC-05-A, junto al acta que verifica tensión efectiva y actuación funcional de Y3. No aparece en etapas anteriores. Texto alternativo y pie ES/EN actualizados; imagen binaria sin cambios respecto a la versión aprobada.
+
+Estado actual: EE-0036 presenta sus siete recursos en preview. Total EE-0034/35/36: 18 visibles de 20; siguen ocultos ART-004 y ART-005 de EE-0034 por sus bloqueos técnicos.
+
+QA posterior a la aprobación:
+PASS — 38/38 pruebas focalizadas de integración y ENV-004.
+PASS — empaquetado preview.
+PASS — cuatro recorridos completos Chromium, ES/EN y escritorio/móvil: 40 reintentos incorrectos sin aparición anticipada de ART-007; Result D5, Continue, debrief, reinicio, cambio de idioma, zoom y siete imágenes cargadas.
+Sin errores JS/de consola ni HTTP >=400 observados.
+PASS — git diff --check y 1303 archivos preexistentes fuera del alcance sin cambios de hash.
+
+La aprobación es visual. metadata.status=technical_review, technical_validation.status=pending y publication_allowed=false se mantienen. Validación técnica humana y publicación siguen pendientes.
+No hay commit, push, merge ni deploy. Sin cambios de Engine, Frontend, Notebook u otras Experiences.

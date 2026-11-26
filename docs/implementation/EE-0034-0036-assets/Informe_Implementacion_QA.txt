@@ -1,0 +1,131 @@
+DIGITAL2REAL — EE-0034 / EE-0035 / EE-0036
+INFORME DE IMPLEMENTACIÓN Y QA
+Fecha: 26/11/2026 (Europe/Madrid)
+Estado: INTEGRACIÓN LOCAL IMPLEMENTADA; QA FUNCIONAL PASS; PUBLICACIÓN BLOQUEADA.
+
+ALCANCE Y ESTADO INSPECCIONADO
+Clasificación EXPERIENCE / CONTENT: integración de recursos en las tres Experiences ya existentes de ENV-004. Los diez hotspots y rutas existían y no se modifican.
+Rama de trabajo: work-ee0034-0036-assets
+Base: 2c33b7c8f0bf97d84f4b052ee661d9b74249ffd1
+No se han realizado commit, push, merge ni deploy. Esta entrega no está publicada.
+No hay cambios de Engine, Frontend, Notebook, cabecera, otras Experiences ni dependencias.
+Se conservan los archivos previamente no versionados enumerados en before-state.json; no se incluyen como trabajo de esta entrega.
+
+FUENTES Y CONTRATOS
+Los ZIP son fuentes de contenido e instrucciones de integración, no evidencia de validación eléctrica.
+EE-0034 y EE-0035: CODEX_PROMPT.md, FICHA_TECNICA.md, QA_PENDIENTE.md y SOURCE original archivados en media-source/EE003x_Codex/.
+EE-0036: solo QA_README.md como documento de instrucciones; no contiene CODEX_PROMPT.md ni un nuevo master. No se inventó el documento ausente.
+Se aplican los contratos al alcance autorizado, preservando arquitectura y semántica canónica.
+Bloqueo explícito EE-0035, CODEX_PROMPT.md: resolver QA antes de habilitar publicación. EE-0036, QA_README.md: paquete de revisión, no aprobado para publicación técnica.
+Las imágenes originales no se retocan. No se afirma verificación por fabricante ni certificación IEC.
+
+IMPLEMENTACIÓN
+20 PNG originales registrados; 14 presentados en preview y 6 registrados sin presentación.
+Alt y caption completos en ES/EN para los 20 recursos, incluidos los ocultos.
+Identidades, cinco decisiones correctas por Experience, 15 opciones, feedback, contenidos de evidencia y referencias Notebook conservados.
+Se añadió un prerrequisito visible antes del ensayo aislado en la etapa 3 de EE-0035/36: instalación aislada, ausencia de tensión verificada y caminos paralelos aislados conforme al procedimiento autorizado. Es un requisito, no una afirmación de ejecución real.
+Se aclaró la procedencia externa simulada en el rótulo del registro de corriente F24.2, sin modificar sus datos ni feedback.
+public.visual.representation=available indica disponibilidad de archivos, no aprobación técnica. metadata.status=technical_review y technical_validation.status=pending se mantienen.
+La selección de producción sigue bloqueada por ese estado. El preview permite inspección; no debe promocionarse a producción sin resolver los bloqueos.
+
+RUTAS, INVENTARIO Y MOMENTO DE REVELACIÓN
+
+EE-0034 — EXP-ELECTRICAL-PHASE-034
+/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss
+ZIP SHA-256: 534e87d2381ba9000010ab51e10fdb47f24150e42f58eaa0de71931168e036b0
+Registradas: 6; presentadas: 3; ocultas: 3.
+ART-001 | EE-0034_ASSET-01.png | cover
+ART-002 | EE-0034_ASSET-02.png | STAGE-01-DIAGNOSIS
+ART-003 | EE-0034_ASSET-03.png | OCULTA: El primer par visual es L1–L3, no L1–L2 como requiere el registro.
+ART-004 | EE-0034_ASSET-04.png | OCULTA: Patrón 400/0/400 pendiente de modelo eléctrico y contacto de puntas verificables.
+ART-005 | EE-0034_ASSET-05.png | OCULTA: Selector parece V~ pese a lecturas de resistencia; requiere corrección aprobada.
+ART-006 | EE-0034_ASSET-06.png | EVID-05-RECORD
+Revisión adicional:
+- Manufacturer references, ratings, terminals, probe contact geometry and protective coordination remain unapproved.
+- Synthetic illustrations are not real equipment records or normative certification.
+- Canonical EVID-03 names the open L3 pole after D3; package asks no root-cause disclosure before D4. Existing authored semantics preserved pending editorial decision.
+- 230 VAC control and 4 kW nameplate in supplied schematic are proposed specifications, not newly validated source facts.
+
+EE-0035 — EXP-ELECTRICAL-PROTECTION-035
+/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip
+ZIP SHA-256: 3e8a5f9c4015cf87e1f43ea90852ba5a33af4f95b8b70d32439a80eb23fed8bd
+Registradas: 7; presentadas: 6; ocultas: 1.
+ART-001 | EE-0035_ART-001_cuadro.png | cover
+ART-002 | EE-0035_ART-002_esquema.png | OCULTA: Polaridad de entrada F24 invertida y retorno de cargas sin conexión a PS1:0 V.
+ART-003 | EE-0035_ART-003_disparo.png | EVID-01-RECORD
+ART-004 | EE-0035_ART-004_tension.png | EVID-01-RECORD
+ART-005 | EE-0035_ART-005_bobina.png | EVID-03-RECORD
+ART-006 | EE-0035_ART-006_cortocircuito.png | EVID-04-RECORD
+ART-007 | EE-0035_ART-007_rearme.png | EVID-05-RECORD
+Revisión adicional:
+- Manufacturer references, ratings, terminals, probe contact geometry and protective coordination remain unapproved.
+- Synthetic illustrations are not real equipment records or normative certification.
+- F24.2 current record must be interpreted as an external simulated record, not an intrinsic PSE200U event history.
+- 222 Ω is an illustrative value computed from 24 V / 2.6 W, not a manufacturer acceptance limit; verify coil power terminals versus PE.
+- Cable defect delayed to EVID-04 to display the isolated coil check first; existing EVID-03 text already names the cable defect.
+
+EE-0036 — EXP-ELECTRICAL-RETURN-036
+/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor
+ZIP SHA-256: c7ca67514c24002adf6fde6be9a08b92df5952a99687c9041a02ae0eb3e19443
+Registradas: 7; presentadas: 5; ocultas: 2.
+ART-001 | EE-0036_01_cuadro_electrico.png | cover
+ART-002 | EE-0036_02_esquema_electrico.png | OCULTA: El retorno A2 debe atravesar X2:8 sin bypass; esquema suministrado no validado.
+ART-003 | EE-0036_03_watch_table.png | EVID-01-RECORD
+ART-004 | EE-0036_04_mediciones_tension.png | EVID-02-RECORD
+ART-005 | EE-0036_05_continuidad_retorno.png | EVID-03-RECORD
+ART-006 | EE-0036_06_causa_raiz.png | EVID-04-RECORD
+ART-007 | EE-0036_07_verificacion_reparacion.png | OCULTA: Última versión generada sin aprobación visual explícita.
+Revisión adicional:
+- Manufacturer references, ratings, terminals, probe contact geometry and protective coordination remain unapproved.
+- Synthetic illustrations are not real equipment records or normative certification.
+- Cabinet Y3 marking 2.6 W differs from later 4.8 W depictions; reconcile model identity before publication.
+- CODEX_PROMPT.md and master source were not supplied; QA_README.md used as the package instruction record.
+
+DISCREPANCIAS Y CORRECCIONES PROPUESTAS — TODAVÍA NO EJECUTADAS
+EE-0034 / ART-003: corregir el primer par de puntas y su identificación para que corresponda a L1–L2; conservar 400/401/399 únicamente si un revisor valida el registro y las tres parejas.
+EE-0034 / ART-004: definir el modelo eléctrico con carga, referencias y posibles retornos/inducción antes de aceptar 400/0/400. No existe un juego alternativo de valores aprobado; no se inventa. Hacer visible contacto de puntas sobre metal.
+EE-0034 / ART-005: seleccionar Ω y revisar puntos y accionamiento del contactor bajo condiciones aisladas aprobadas. 0,2 Ω es ilustrativo y no un umbral universal.
+EE-0034 / orden: el texto canónico revela L3 abierto tras D3; el contrato pide no revelar causa antes de D4. No se cambió esa semántica. La imagen de ensayo queda oculta. La decisión editorial sobre ese orden sigue pendiente.
+EE-0034 / esquema y equipos: validar mando 230 VAC L1–N, protección, PE, placa de motor, rangos y referencias. No convertir la ficha propuesta en datos certificados.
+EE-0035 / ART-002: rehacer la conectividad con +24 V de PS1 a IN+ F24, 0 V a IN− y retorno de todas las cargas a PS1:0 V; verificar K1 y que el defecto esté aguas abajo de K1 en el ramal Y2. Comprobar netlist y manual, sin alterar silenciosamente el original.
+EE-0035 / ART-005: comprobar los dos terminales de potencia de la bobina y excluir PE. 222 Ω deriva del ejemplo 24 V / 2,6 W y no define tolerancia del fabricante.
+EE-0035 / orden: bobina en EVID-03 y daño de cable en EVID-04; se conserva que el texto EVID-03 ya describe el daño. No se afirma que ese texto espere a D4.
+EE-0035 / PSE200U: verificar referencia exacta, bornes, ajustes y LED con documentación Siemens; no se revisó ni certificó el manual en esta entrega. El registro de corriente es externo simulado; no se atribuye un historial propio al equipo. La imagen de LED verdes no sustituye la verificación funcional y de selectividad ya escrita.
+EE-0036 / ART-002: corregir a Q0.1→X2:5, Q0.2→X2:6, Q0.3→X2:7→A1; A2→X2:8→0 V sin bypass. Revisar alimentación de DQ y protección inductiva con el diseño real.
+EE-0036 / coherencia: reconciliar bobina 2,6 W de la vista de cuadro con 4,8 W de mediciones; validar referencias y contactos de puntas. El diagnóstico no recibe nuevos valores de corriente.
+EE-0036 / ART-007: falta aprobación visual explícita y revisión de medición/función; permanece oculta. El cierre funciona con el registro textual existente.
+Todos: no se deduce recuperación, seguridad ni autorización para medir en vivo a partir de una fotografía sintética. La revisión técnica humana y editorial permanece pendiente.
+
+QA EJECUTADO
+PASS — node --test scripts/tests/ee0034To0036MediaIntegration.test.mjs scripts/tests/env004Content.test.mjs: 36/36, cero fallos, después del último ajuste de prerrequisitos.
+PASS — node --test scripts/tests/*.test.mjs: 80/80, cero fallos.
+PASS — node --test: 582/582, cero fallos, cero omitidas. Ejecutado antes del último ajuste de redacción del prerrequisito; las 36 pruebas focalizadas y los recorridos de navegador se repitieron después.
+PASS — node scripts/package-experience-engine.mjs --mode=preview y node scripts/package-notebook.mjs.
+PASS — git diff --check.
+PASS — hashes de los 20 PNG contra los originales extraídos y contra la copia generada; dimensiones comprobadas.
+PASS — ES/EN: esquema, proyección pública sin lógica privada, 5 etapas, 15 opciones y 6 evidencias de autoría (5 adquiridas) por Experience.
+PASS — invariantes de Notebook, rutas y diez hotspots ENV-004.
+PASS — preservación de semántica mediante hashes de decisiones, lógica privada y contenido de evidencia; rótulo externo F24.2 tratado explícitamente.
+PASS — navegador Chromium real: 12 recorridos completos (3 Experiences × ES/EN × 1440/390 px), 120 reintentos erróneos, decisiones correctas, Result, Continue, debrief y reinicio.
+PASS — cambio de idioma dentro del recorrido, zoom abrir/cerrar, referencias Notebook, carga y dimensiones de los 20 originales en inspección interna.
+PASS — no se solicitan las imágenes ocultas durante el recorrido del alumno; las imágenes de medición, causa y reparación no se solicitan antes de su desbloqueo.
+PASS — sin errores JavaScript ni errores de consola observados, ni respuestas HTTP >=400 en los recorridos.
+Inspección visual adicional de hojas de contacto y capturas de Result de escritorio/móvil. Los detalles de bornes no pueden declararse validados eléctricamente por su legibilidad en navegador.
+No hubo fallos de producto ni de infraestructura en las comprobaciones finales. Los bloqueos restantes son CONTENT / SOURCE ENGINEERING QA, no fallos del Engine.
+
+ARTEFACTOS Y ALCANCE
+Logs: focused.log, full-tests.log, shared-tests.log, build.log, notebook-build.log, browser.log.
+Recorridos: browser-results.json. Estado previo y control de alcance: before-state.json y scope-check.json.
+Seis capturas representativas ES de escritorio/móvil junto a este informe. Todas las capturas de QA están en /workspace/work/ee0034-36-review/qa/.
+Archivos modificados por Experience: experience.yaml, locales/es.yaml, locales/en.yaml, media-source/evidence-manifest.yaml, README.md y media-source/README.md.
+Archivos nuevos por Experience: originales en assets/, assets/README.md, media-source/visual-intake.json y documentos de procedencia en media-source/EE003x_Codex/.
+Cambios compartidos limitados a docs/06_Changelog.md, expectativas de inventario en scripts/tests/env004Content.test.mjs y nuevo scripts/tests/ee0034To0036MediaIntegration.test.mjs.
+Los PNG son archivos nuevos en el repositorio; no hay modificación de bytes de ninguno de los suministrados.
+Artefactos Frontend/generated regenerados para preview local, no versionados por esta tarea.
+Control de alcance: 1221 archivos versionados fuera del alcance permitido conservan su SHA-256.
+
+PUBLICACIÓN Y REVERSIÓN
+Commit: no. Push: no. Merge: no. Deploy: no.
+No se considera cerrada la validación técnica ni la publicación de estas tres Experiences.
+Para revertir esta tarea local, restaurar únicamente los archivos modificados del alcance de este informe desde la base registrada, retirar solo los archivos nuevos inventariados y regenerar preview. No usar git clean ni eliminar los documentos preexistentes.
+No procede rollback de producción: esta entrega no la ha modificado.

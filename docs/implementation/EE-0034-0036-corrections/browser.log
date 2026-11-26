@@ -1,0 +1,13 @@
+flow 34 1440 es
+flow 34 1440 en
+flow 34 390 es
+flow 34 390 en
+flow 35 1440 es
+flow 35 1440 en
+flow 35 390 es
+flow 35 390 en
+flow 36 1440 es
+flow 36 1440 en
+flow 36 390 es
+flow 36 390 en
+{"flows": 12, "wrong_retries": 120, "originals_load": 20, "errors": [], "http_errors": []}

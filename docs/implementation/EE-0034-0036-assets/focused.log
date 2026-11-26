@@ -1,0 +1,44 @@
+✔ EE-0034: original PNG bytes, dimensions and publication hold are traceable (63.872309ms)
+✔ EE-0034: existing decisions, logic and evidence meanings are preserved (0.701619ms)
+✔ EE-0034 es: blocked assets never bind and every displayed image has localized text (8.89087ms)
+✔ EE-0034 en: blocked assets never bind and every displayed image has localized text (3.963148ms)
+✔ EE-0035: original PNG bytes, dimensions and publication hold are traceable (60.078325ms)
+✔ EE-0035: existing decisions, logic and evidence meanings are preserved (0.523553ms)
+✔ EE-0035 es: blocked assets never bind and every displayed image has localized text (1.948288ms)
+✔ EE-0035 en: blocked assets never bind and every displayed image has localized text (6.021712ms)
+✔ EE-0036: original PNG bytes, dimensions and publication hold are traceable (53.652384ms)
+✔ EE-0036: existing decisions, logic and evidence meanings are preserved (0.728466ms)
+✔ EE-0036 es: blocked assets never bind and every displayed image has localized text (4.668846ms)
+✔ EE-0036 en: blocked assets never bind and every displayed image has localized text (2.044129ms)
+✔ ENV-004 preserves the original cover, all ten approved coordinates and real destinations (15.825514ms)
+✔ Notebook keeps every source paragraph, example, question, answer and five block groupings (4.027801ms)
+✔ source trace accounts for exactly 50 moments and 150 unchanged option meanings (28.877395ms)
+✔ EE-0031 es: complete schema, retry, evidence order and verified completion (41.697226ms)
+✔ EE-0031 en: complete schema, retry, evidence order and verified completion (25.777018ms)
+✔ EE-0032 es: complete schema, retry, evidence order and verified completion (21.713458ms)
+✔ EE-0032 en: complete schema, retry, evidence order and verified completion (25.094434ms)
+✔ EE-0033 es: complete schema, retry, evidence order and verified completion (16.880482ms)
+✔ EE-0033 en: complete schema, retry, evidence order and verified completion (10.516352ms)
+✔ EE-0034 es: complete schema, retry, evidence order and verified completion (10.903926ms)
+✔ EE-0034 en: complete schema, retry, evidence order and verified completion (13.699194ms)
+✔ EE-0035 es: complete schema, retry, evidence order and verified completion (30.840224ms)
+✔ EE-0035 en: complete schema, retry, evidence order and verified completion (20.909278ms)
+✔ EE-0036 es: complete schema, retry, evidence order and verified completion (11.392419ms)
+✔ EE-0036 en: complete schema, retry, evidence order and verified completion (18.151787ms)
+✔ EE-0037 es: complete schema, retry, evidence order and verified completion (63.405334ms)
+✔ EE-0037 en: complete schema, retry, evidence order and verified completion (41.007114ms)
+✔ EE-0038 es: complete schema, retry, evidence order and verified completion (85.96475ms)
+✔ EE-0038 en: complete schema, retry, evidence order and verified completion (31.717519ms)
+✔ EE-0039 es: complete schema, retry, evidence order and verified completion (70.972722ms)
+✔ EE-0039 en: complete schema, retry, evidence order and verified completion (36.265842ms)
+✔ EE-0040 es: complete schema, retry, evidence order and verified completion (72.002422ms)
+✔ EE-0040 en: complete schema, retry, evidence order and verified completion (13.969733ms)
+✔ technical quantities and terminal numbers remain equivalent across ES/EN (1.586277ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1215.907363

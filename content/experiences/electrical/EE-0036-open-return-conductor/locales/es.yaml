@@ -1,7 +1,7 @@
 locale: "es"
 translations:
   title: "Un conductor interrumpido impide activar la válvula"
-  summary: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga. Preview con ilustraciones; publicación bloqueada por revisión técnica pendiente."
   scenario:
     initial_context: "Q0.3 aparece activa, pero -Y3 no conmuta. Cableado: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. El alumno interpreta registros proporcionados, no mide en tensión. Hay que distinguir estado lógico de tensión efectiva en la carga."
     operational_state: "Solo se conocen los datos del incidente; los registros se revelan por etapas. Notebook — itinerario en Engineering Notes: article-009 (NB-EL-01): Tensión, corriente, resistencia y circuito cerrado; article-012 (NB-EL-04): Multímetro, pinza y lectura de medidas; article-026 (NB-EL-18): Borneros, potenciales y numeración; article-028 (NB-EL-20): Trazabilidad y control de revisiones; article-029 (NB-EL-21): Método de diagnóstico"
@@ -31,7 +31,7 @@ translations:
       situation: "Watch confirma Q0.3=TRUE. Este estado lógico no prueba continuidad del camino eléctrico ni tensión entre A1 y A2. Se compara la carga con su retorno usando registros autorizados.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
     STAGE-03-DIAGNOSIS:
       title: "Contrastar hipótesis"
-      situation: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "Bajo orden: salida Q0.3=24 V, A1=24 V y A2=24 V, todos respecto a 0 V del cuadro; A1-A2=0 V. La bobina no recibe diferencia de potencial de 24 V. La referencia y el retorno deben investigarse antes de culpar al programa. Antes del ensayo de resistencia o continuidad se requieren instalación aislada, ausencia de tensión verificada y caminos paralelos aislados conforme al procedimiento autorizado. Aquí solo se interpretan registros simulados.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
     STAGE-04-DIAGNOSIS:
       title: "Confirmar la causa e intervenir con seguridad"
       situation: "Con instalación aislada y ausencia de tensión verificada, el ensayo registra circuito abierto entre X2:8 y barra 0 V. El acta localiza el retorno interrumpido. Los 24 V en A2 se explican en este caso por retorno abierto y acoplamiento a través de la bobina.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
@@ -100,8 +100,29 @@ translations:
     DEC-05-B: "La propuesta «Usar PE de retorno permanente.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
     DEC-05-C: "La propuesta «Cerrar incidencia por Q0.3=TRUE.» no está sustentada por este registro.  Revisa: La causa está en el retorno 0 V entre X2:8 y barra 0 V: no hay circuito cerrado. Se repara y documenta el conductor bajo procedimiento autorizado; PE no puede utilizarse como retorno funcional. Vuelve a elegir sin ejecutar la opción propuesta."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-  assets: {}
+    educational_purpose: "Ilustraciones del caso simulado; recursos contradictorios ocultos y revisión técnica humana pendiente."
+  assets:
+    ART-001:
+      alt: "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3."
+      caption: "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3."
+    ART-002:
+      alt: "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V."
+      caption: "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V."
+    ART-003:
+      alt: "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga."
+      caption: "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga."
+    ART-004:
+      alt: "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V."
+      caption: "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V."
+    ART-005:
+      alt: "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W."
+      caption: "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W."
+    ART-006:
+      alt: "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad."
+      caption: "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad."
+    ART-007:
+      alt: "Y3 24 VDC / 2,6 W, retorno reparado por X2:8 y lectura simulada A1–A2 de 24,0 VDC."
+      caption: "Y3 24 VDC / 2,6 W, retorno reparado por X2:8 y lectura simulada A1–A2 de 24,0 VDC."
   completion:
     title: "Debrief técnico"
     summary: "retorno 0 V interrumpido entre X2:8 y barra de 0 V. El PLC ordena, pero no hay circuito cerrado. Tras reparación autorizada del retorno en el caso simulado, se verifica tensión efectiva A1-A2 bajo orden y actuación correcta de Y3. Se conserva trazabilidad del conductor sin modificar lógica ni utilizar PE; Q0.3=TRUE por sí solo no verifica recuperación."

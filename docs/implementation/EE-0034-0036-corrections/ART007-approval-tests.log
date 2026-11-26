@@ -1,0 +1,46 @@
+✔ EE-0034: preserved original, corrected PNG and publication hold are traceable (71.73411ms)
+✔ EE-0034: options, evaluation, root cause and IDs survive authorized evidence corrections (0.6309ms)
+✔ EE-0034 es: timing, localized media and hidden-resource guards (2.508795ms)
+✔ EE-0034 en: timing, localized media and hidden-resource guards (2.708854ms)
+✔ EE-0035: preserved original, corrected PNG and publication hold are traceable (82.913985ms)
+✔ EE-0035: options, evaluation, root cause and IDs survive authorized evidence corrections (0.357289ms)
+✔ EE-0035 es: timing, localized media and hidden-resource guards (1.413779ms)
+✔ EE-0035 en: timing, localized media and hidden-resource guards (1.557932ms)
+✔ EE-0035: final SVG connectivity agrees with terminals and detects a bypass (2.630053ms)
+✔ EE-0036: preserved original, corrected PNG and publication hold are traceable (25.513443ms)
+✔ EE-0036: options, evaluation, root cause and IDs survive authorized evidence corrections (0.553947ms)
+✔ EE-0036 es: timing, localized media and hidden-resource guards (3.086337ms)
+✔ EE-0036 en: timing, localized media and hidden-resource guards (5.352711ms)
+✔ EE-0036: final SVG connectivity agrees with terminals and detects a bypass (1.283499ms)
+✔ ENV-004 preserves the original cover, all ten approved coordinates and real destinations (19.743186ms)
+✔ Notebook keeps every source paragraph, example, question, answer and five block groupings (4.383327ms)
+✔ source trace accounts for exactly 50 moments and 150 unchanged option meanings (30.389723ms)
+✔ EE-0031 es: complete schema, retry, evidence order and verified completion (36.008286ms)
+✔ EE-0031 en: complete schema, retry, evidence order and verified completion (17.014485ms)
+✔ EE-0032 es: complete schema, retry, evidence order and verified completion (15.938924ms)
+✔ EE-0032 en: complete schema, retry, evidence order and verified completion (14.116138ms)
+✔ EE-0033 es: complete schema, retry, evidence order and verified completion (14.365436ms)
+✔ EE-0033 en: complete schema, retry, evidence order and verified completion (12.247428ms)
+✔ EE-0034 es: complete schema, retry, evidence order and verified completion (12.177108ms)
+✔ EE-0034 en: complete schema, retry, evidence order and verified completion (12.386852ms)
+✔ EE-0035 es: complete schema, retry, evidence order and verified completion (16.508437ms)
+✔ EE-0035 en: complete schema, retry, evidence order and verified completion (14.058265ms)
+✔ EE-0036 es: complete schema, retry, evidence order and verified completion (11.426112ms)
+✔ EE-0036 en: complete schema, retry, evidence order and verified completion (22.312712ms)
+✔ EE-0037 es: complete schema, retry, evidence order and verified completion (13.286743ms)
+✔ EE-0037 en: complete schema, retry, evidence order and verified completion (8.162858ms)
+✔ EE-0038 es: complete schema, retry, evidence order and verified completion (12.213207ms)
+✔ EE-0038 en: complete schema, retry, evidence order and verified completion (9.281358ms)
+✔ EE-0039 es: complete schema, retry, evidence order and verified completion (10.80501ms)
+✔ EE-0039 en: complete schema, retry, evidence order and verified completion (8.303787ms)
+✔ EE-0040 es: complete schema, retry, evidence order and verified completion (12.488377ms)
+✔ EE-0040 en: complete schema, retry, evidence order and verified completion (7.956525ms)
+✔ technical quantities and terminal numbers remain equivalent across ES/EN (2.150281ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 741.806421

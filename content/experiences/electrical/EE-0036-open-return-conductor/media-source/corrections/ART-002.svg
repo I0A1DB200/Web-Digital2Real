@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1500 1000"><rect width="1500" height="1000" fill="white"/>
+<rect x="15" y="15" width="1470" height="970" fill="none" stroke="#1419a2" stroke-width="2"/>
+<polyline points="15,50 1485,50" fill="none" stroke="#156b20" stroke-width="2" />
+<text x="210" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">1</text>
+<text x="340" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">2</text>
+<text x="470" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">3</text>
+<text x="600" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">4</text>
+<text x="730" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">5</text>
+<text x="860" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">6</text>
+<text x="990" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">7</text>
+<text x="1120" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">8</text>
+<text x="1250" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">9</text>
+<text x="1380" y="40" fill="#156b20" font-family="Arial, sans-serif" font-size="18" text-anchor="start">10</text>
+<text x="70" y="115" fill="#1419a2" font-family="Arial, sans-serif" font-size="21" text-anchor="start">~230 VAC</text>
+<text x="70" y="140" fill="#1419a2" font-family="Arial, sans-serif" font-size="19" text-anchor="start">50 Hz</text>
+<text x="260" y="85" fill="#1419a2" font-family="Arial, sans-serif" font-size="21" text-anchor="start">L</text>
+<text x="320" y="85" fill="#1419a2" font-family="Arial, sans-serif" font-size="21" text-anchor="start">N</text>
+<text x="380" y="85" fill="#1419a2" font-family="Arial, sans-serif" font-size="21" text-anchor="start">PE</text>
+<circle data-port="AC:L" cx="260" cy="100" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<circle data-port="AC:N" cx="320" cy="100" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<circle data-port="AC:PE" cx="380" cy="100" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<rect x="225" y="190" width="130" height="120" fill="none" stroke="#1419a2" stroke-width="2"/>
+<text x="110" y="220" fill="#1419a2" font-family="Arial, sans-serif" font-size="24" text-anchor="start">QF1</text>
+<text x="110" y="248" fill="#1419a2" font-family="Arial, sans-serif" font-size="19" text-anchor="start">2P</text>
+<circle data-port="QF1:Lin" cx="260" cy="190" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<circle data-port="QF1:Lout" cx="260" cy="310" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<polyline points="260,100 260,190" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W01" data-from="AC:L" data-to="QF1:Lin"/>
+<polyline points="260,190 260,225 282,252" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="260,270 260,310" fill="none" stroke="#1419a2" stroke-width="2" />
+<circle data-port="QF1:Nin" cx="320" cy="190" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<circle data-port="QF1:Nout" cx="320" cy="310" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<polyline points="320,100 320,190" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W02" data-from="AC:N" data-to="QF1:Nin"/>
+<polyline points="320,190 320,225 342,252" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="320,270 320,310" fill="none" stroke="#1419a2" stroke-width="2" />
+<rect x="110" y="400" width="300" height="270" fill="none" stroke="#1419a2" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="140" y="445" fill="#1419a2" font-family="Arial, sans-serif" font-size="25" text-anchor="start">PS1</text>
+<text x="140" y="480" fill="#1419a2" font-family="Arial, sans-serif" font-size="22" text-anchor="start">SITOP PSU100S</text>
+<text x="140" y="512" fill="#1419a2" font-family="Arial, sans-serif" font-size="21" text-anchor="start">24 VDC / 10 A</text>
+<circle data-port="PS1:L" cx="260" cy="400" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="268" y="390" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">L</text>
+<polyline points="260,310 260,400" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W03" data-from="QF1:Lout" data-to="PS1:L"/>
+<circle data-port="PS1:N" cx="320" cy="400" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="328" y="390" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">N</text>
+<polyline points="320,310 320,400" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W04" data-from="QF1:Nout" data-to="PS1:N"/>
+<circle data-port="PS1:PE" cx="380" cy="400" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="388" y="390" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">PE</text>
+<polyline points="380,100 380,400" fill="none" stroke="#188224" stroke-width="2" data-wire="W05" data-from="AC:PE" data-to="PS1:PE"/>
+<circle data-port="PS1:+" cx="225" cy="670" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="170" y="700" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">+24 V</text>
+<circle data-port="PS1:0" cx="335" cy="670" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="325" y="700" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">0 V</text>
+<circle data-port="F24:in" cx="470" cy="715" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<circle data-port="F24:out" cx="535" cy="715" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<rect x="470" y="704" width="65" height="22" fill="none" stroke="#1419a2" stroke-width="2"/>
+<text x="475" y="675" fill="#1419a2" font-family="Arial, sans-serif" font-size="23" text-anchor="start">F24</text>
+<text x="478" y="696" fill="#1419a2" font-family="Arial, sans-serif" font-size="17" text-anchor="start">2 A</text>
+<polyline points="225,670 225,715 470,715" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W06" data-from="PS1:+" data-to="F24:in"/>
+<rect x="600" y="180" width="800" height="300" fill="none" stroke="#1419a2" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="625" y="215" fill="#1419a2" font-family="Arial, sans-serif" font-size="27" text-anchor="start">PLC1 — S7-1200</text>
+<text x="625" y="245" fill="#1419a2" font-family="Arial, sans-serif" font-size="23" text-anchor="start">CPU 1214C DC/DC/DC</text>
+<text x="625" y="270" fill="#1419a2" font-family="Arial, sans-serif" font-size="19" text-anchor="start">DQ PNP</text>
+<circle data-port="PLC:L+" cx="640" cy="330" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="627" y="315" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">L+</text>
+<circle data-port="PLC:M" cx="705" cy="330" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="693" y="315" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">M</text>
+<circle data-port="PLC:FE" cx="770" cy="330" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="755" y="315" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">FE</text>
+<polyline points="535,715 565,715 565,330 640,330" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W07" data-from="F24:out" data-to="PLC:L+"/>
+<polyline points="335,670 335,930 705,930 705,330" fill="none" stroke="#1419a2" stroke-width="2" data-wire="W08" data-from="PS1:0" data-to="PLC:M"/>
+<polyline points="380,100 445,100 445,350 770,350 770,330" fill="none" stroke="#188224" stroke-width="2" data-wire="W09" data-from="AC:PE" data-to="PLC:FE"/>
+<circle data-port="PLC:3L+" cx="850" cy="330" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="830" y="315" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">3L+</text>
+<circle data-port="PLC:3M" cx="920" cy="330" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="904" y="315" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">3M</text>
+<polyline points="535,715 565,715 565,520 850,520 850,330" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W10" data-from="F24:out" data-to="PLC:3L+"/>
+<polyline points="335,670 335,930 590,930 590,550 920,550 920,330" fill="none" stroke="#1419a2" stroke-width="2" data-wire="W11" data-from="PS1:0" data-to="PLC:3M"/>
+<circle data-port="PLC:Q0.1" cx="1020" cy="420" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="992" y="398" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">Q0.1</text>
+<circle data-port="PLC:Q0.2" cx="1140" cy="420" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1112" y="398" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">Q0.2</text>
+<circle data-port="PLC:Q0.3" cx="1260" cy="420" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1232" y="398" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">Q0.3</text>
+<rect x="620" y="625" width="620" height="85" fill="none" stroke="#1419a2" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="620" y="605" fill="#1419a2" font-family="Arial, sans-serif" font-size="25" text-anchor="start">X2</text>
+<circle data-port="X2:1" cx="640" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="633" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">1</text>
+<circle data-port="X2:2" cx="690" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="683" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">2</text>
+<circle data-port="X2:3" cx="740" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="733" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">3</text>
+<circle data-port="X2:4" cx="790" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="783" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">4</text>
+<circle data-port="X2:5" cx="840" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="833" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">5</text>
+<circle data-port="X2:6" cx="890" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="883" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">6</text>
+<circle data-port="X2:7" cx="940" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="933" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">7</text>
+<circle data-port="X2:8" cx="990" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="983" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">8</text>
+<circle data-port="X2:9" cx="1040" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1033" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">9</text>
+<circle data-port="X2:10" cx="1090" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1083" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">10</text>
+<circle data-port="X2:11" cx="1140" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1133" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">11</text>
+<circle data-port="X2:12" cx="1190" cy="675" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1183" y="653" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">12</text>
+<polyline points="1020,420 1020,570 840,570 840,675" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W12" data-from="PLC:Q0.1" data-to="X2:5"/>
+<polyline points="1140,420 1140,585 890,585 890,675" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W13" data-from="PLC:Q0.2" data-to="X2:6"/>
+<polyline points="1260,420 1260,600 940,600 940,675" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W14" data-from="PLC:Q0.3" data-to="X2:7"/>
+<rect x="1280" y="690" width="160" height="220" fill="none" stroke="#1419a2" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="1310" y="725" fill="#1419a2" font-family="Arial, sans-serif" font-size="25" text-anchor="start">Y3</text>
+<text x="1297" y="754" fill="#1419a2" font-family="Arial, sans-serif" font-size="20" text-anchor="start">24 VDC</text>
+<text x="1300" y="780" fill="#1419a2" font-family="Arial, sans-serif" font-size="19" text-anchor="start">2.6 W</text>
+<circle data-port="Y3:A1" cx="1300" cy="810" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1266" y="800" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">A1</text>
+<circle data-port="Y3:A2" cx="1300" cy="880" r="5" fill="white" stroke="#1419a2" stroke-width="2"/>
+<text x="1266" y="903" fill="#1419a2" font-family="Arial, sans-serif" font-size="18" text-anchor="start">A2</text>
+<rect x="1355" y="825" width="32" height="38" fill="none" stroke="#1419a2" stroke-width="2"/>
+<polyline points="1355,863 1387,825" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1300,810 1370,810 1370,825" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1370,863 1370,880 1300,880" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1370,810 1410,810 1410,832" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1398,832 1422,832" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1410,832 1398,855 1422,855 1410,832" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="1410,855 1410,880 1370,880" fill="none" stroke="#1419a2" stroke-width="2" />
+<polyline points="940,675 940,810 1300,810" fill="none" stroke="#d51e2a" stroke-width="2" data-wire="W15" data-from="X2:7" data-to="Y3:A1"/>
+<polyline points="1300,880 1170,880 1170,740 1010,740 1010,675 990,675" fill="none" stroke="#1419a2" stroke-width="2" data-wire="W16" data-from="Y3:A2" data-to="X2:8"/>
+<polyline points="990,675 970,675 970,930 335,930 335,670" fill="none" stroke="#1419a2" stroke-width="2" data-wire="W17" data-from="X2:8" data-to="PS1:0"/>
+<text x="630" y="967" fill="#1419a2" font-family="Arial, sans-serif" font-size="16" text-anchor="start">Bornas auxiliares sin cargas añadidas. Extracto funcional; verificar referencia exacta de CPU.</text>
+<circle cx="565" cy="520" r="3.5" fill="#d51e2a"/>
+<circle cx="705" cy="930" r="3.5" fill="#1419a2"/>
+<circle cx="590" cy="930" r="3.5" fill="#1419a2"/>
+</svg>

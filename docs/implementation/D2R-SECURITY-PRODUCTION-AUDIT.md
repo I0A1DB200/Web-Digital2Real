@@ -67,9 +67,9 @@ Mapa basado en [ASVS 5.0.0](https://owasp.org/www-project-application-security-v
 |---|---|
 | XSS e inyección HTML | App y About usan plantillas con cadenas de módulos locales versionados. Notebook y Workspace usan nodos de texto para datos de catálogo. Los simuladores usan HTML dinámico sobre registros/estados locales. El lector Markdown escapa texto, resuelve documentos mediante catálogo y genera vínculos. El contenido editable por terceros cambiaría esta frontera y necesita sanitización y allowlist URL canónica. Sin flujo confirmado de entrada externa a HTML ejecutable en las rutas revisadas. |
 | Routing, redirección y rutas de recurso | El hash tolera codificación inválida y queda limitado a vistas aprobadas. Enlaces de iframe usan ruta local normalizada; catálogos/JSON determinan assets y módulos del Engine. Revisar política de rutas y origen en toda futura ingesta. Demo sirve media mediante Starlette, sin ruta propia construida desde parámetros enviados. |
-| Framing y dependencias | Iframes y lector requieren acceso mismo origen para su interacción actual. CDN corre código dentro del contexto de simuladores. SRI aplicado al script clásico; el módulo ES de la célula permanece en CDN. Antes de sesiones reales conviene aislar origen o controlar bytes servidos. No se encontraron flujos de `postMessage` en los módulos revisados. |
+| Framing y dependencias | Iframes y lector requieren acceso mismo origen para su interacción actual. CDN corre código dentro del contexto de simuladores. SRI aplicado al script clásico; el módulo ES de la célula se sirve desde el mismo origen con bytes verificados. Antes de sesiones reales conviene aislar origen o controlar bytes servidos. No se encontraron flujos de `postMessage` en los módulos revisados. |
 | Acceso y datos | API de demo con GET y datos ficticios sin dependencias de propietario. El wildcard CORS era una configuración confirmada, con impacto presente bajo. BOLA/IDOR, mass assignment y CSRF de acciones autenticadas quedan para la futura API. La práctica local puede modificarse en el dispositivo por diseño. |
-| API y disponibilidad | Sin entradas de negocio, consulta SQL, carga de archivos por usuario ni proxy SSRF en el demo revisado. No hay cuotas, WAF ni controles productivos. Limitar recursos y errores antes de abrir API con tráfico real. Error del Workspace en EN puede mostrar mensajes técnicos originados en catálogo o ejecución, con prioridad de revisión al introducir API de producción. |
+| API y disponibilidad | Sin entradas de negocio, consulta SQL, carga de archivos por usuario ni proxy SSRF en el demo revisado. No hay cuotas, WAF ni controles productivos. Limitar recursos y errores antes de abrir API con tráfico real. Los fallos de carga de Workspace muestran mensajes ES/EN de la aplicación, sin incorporar detalles de la excepción. |
 | Dependencias Python | El entorno local tenía FastAPI 0.141.1, Starlette 1.9.0, Pydantic 2.14.1 y Uvicorn 0.52.1. El aviso GHSA-f56c-v883-vx8r abarca esa versión de FastAPI para rutas con parámetros query/header. Las tres rutas propias inspeccionadas no declaran esos parámetros. Fijar una versión corregida y ejecutar SCA antes de incorporar rutas reales. Versiones del entorno local no prueban las de otros entornos. [Aviso del mantenedor](https://github.com/fastapi/fastapi/security/advisories/GHSA-f56c-v883-vx8r) |
 | Cabeceras | TLS, framing, CSP, HSTS, referrer, MIME, permisos y caché reales quedaron pendientes. La [estrategia HTTP](../workflows/D2R-DEPLOYMENT-AND-RECOVERY.md#cabeceras-http) registra política por ruta, iframe y dependencia. |
 
@@ -83,7 +83,7 @@ Activos: fuentes y soluciones, reglas de puntuación, medios premium, intentos v
 | S02 · Media | Catálogo público configurado como `preview`, 38 registros de diferencia frente a `publish`. Si se trata como producción, el gate de validación editorial queda desalineado. | Confirmado localmente. Conservar la demostración. Preservar aprobación editorial por canal y exigir manifiesto de publicación para producción. Responsable Contenido / Operaciones. |
 | S03 · Baja | Tests incluidos por copia íntegra del frontend y permisos Pages/OIDC en build. | Confirmado. Exclusión, comprobación de ausencia, credencial no persistente y permisos acotados en la rama. Activación tras revisión. Responsable CI. |
 | S04 · Baja hoy | CORS comodín del demo permitía lecturas cross-origin de contenido público. | Confirmado. Desactivar por defecto y permitir orígenes exactos configurados, GET. Responsable Backend. |
-| S05 · Media | Compromiso de dependencia CDN o Actions. JS con privilegios de su contexto e integridad del build. | SRI en cobot, con deuda en módulo de célula, pin de Actions y SCA. Responsable Frontend / CI. |
+| S05 · Media | Compromiso de dependencia CDN o Actions. JS con privilegios de su contexto e integridad del build. | SRI en Cobot, módulo de célula verificado y de mismo origen, y SHA fijas para Actions. El SCA del frontend requiere seguimiento de versiones. Responsable Frontend / CI. |
 | S06 · Media | Dependencias Python sin lock, aviso aplicable al intervalo instalado y condicionado por declaraciones de endpoints. | Revisar SCA, fijar transitivas al introducir app real y usar aislamiento. Responsable Backend. |
 | S07 · Alta en producción | Suplantación de cuenta/administración, acceso cruzado, manipulación de sesiones o abuso de entitlements. | Diseñado, pendiente. IdP, MFA, CSRF, control por propietario/recurso y auditoría. Responsable Backend / Titular. |
 | S08 · Alta en producción | Webhook falso, duplicado, fuera de orden, impago o reembolso mal reflejado, con pérdida económica. | Diseñado, pendiente. Firma, eventos únicos, reconciliación y transacciones. Responsable Billing. |
@@ -117,7 +117,7 @@ No se identificaron hallazgos críticos confirmados dentro de las superficies ve
 | Frontend Security | PARTIAL | Construcción y QA local, riesgo CDN restante, cabeceras en vivo pendientes. |
 | API Security | PARTIAL | Demo local y allowlist verificados. API comercial pendiente. |
 | Secrets Management | PARTIAL | Barrido local y exclusión env. Gestor productivo y comprobación remota pendientes. |
-| Dependency Security | PARTIAL | Inventario y SRI parcial. Faltan lock, SCA y pin verificado. |
+| Dependency Security | PARTIAL | Inventario y SRI en Cobot, módulo local verificado y Actions fijadas. Falta confirmar la publicación real. |
 | Authentication | NOT IMPLEMENTED | IdP y revocación en propuesta. |
 | Authorization | NOT IMPLEMENTED | Controles por rol, recurso y propietario en propuesta. |
 | Premium Content Protection | NOT IMPLEMENTED | Catálogo público de práctica y fuentes en Git. |
@@ -157,3 +157,13 @@ workflow ahora valida los PR sin ejecutar los pasos que escriben en Pages.
 La revisión de publicación, settings y ramas protegidas sigue siendo un gate.
 El siguiente trabajo autorizado y los bloqueos se registran en
 [Project Status](../PROJECT_STATUS.md#production-readiness-workstream).
+
+
+El seguimiento incorporó main `36f3db5` y preservó sus correcciones de foco
+y scroll. El PR fija las Actions por SHA, rechaza entradas inesperadas en el
+artefacto de publicación y comprueba firmas conocidas de credenciales
+en texto rastreado. Three.js de la célula conserva la versión 0.164.1
+desde el origen propio. Las versiones prácticas siguen siendo públicas
+en la compilación local. Las peticiones HTTPS a Pages, dominio y DNS
+quedaron bloqueadas por el proxy de la sesión, por lo que la lista
+efectivamente desplegada todavía requiere comprobación externa.

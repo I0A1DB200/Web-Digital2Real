@@ -4,6 +4,28 @@
 
 La propuesta extiende el frontend ES/EN, el empaquetado de Notebook y el Experience Engine existentes. La autoridad pedagógica sigue en el [Content Model](D2R-CONTENT-MODEL.md), el [Engine](D2R-EXPERIENCE-ENGINE.md) y los estándares [D2R-004](../02-standards/D2R-004-assessment-standard.md), [D2R-005](../02-standards/D2R-005-professional-profile-standard.md), [D2R-006](../02-standards/D2R-006-certification-standard.md) y [D2R-007](../02-standards/D2R-007-learning-analytics-model.md). Un cambio de autoridad del Player requiere decisión según [D2R-008](../03-governance/D2R-008-architecture-governance.md).
 
+## Recomendación para decisión del titular
+
+Mantener el frontend actual. Para el piloto comercial, la configuración de
+referencia es Vercel Pro para servir el frontend y redirigir internamente
+`/api/v1`, FastAPI en un servicio gestionado en la UE, Supabase Pro en región
+UE para PostgreSQL y objetos privados, y Stripe Checkout alojado para cobros.
+Evaluar Supabase Auth primero para reducir proveedores y confirmar su formato
+de token, flujo de sesión, MFA, DPA y rotación de claves antes de elegir el
+adaptador. Usar logs estructurados del alojamiento y sondas de disponibilidad
+desde el piloto. Añadir Sentry solo si el volumen y diagnóstico justifican
+otro encargado. Con las tarifas base evaluadas, presupuestar USD 52/mes como
+referencia de Vercel Pro, Render Starter y Supabase Pro, antes de uso,
+impuestos, Stripe y extras. Confirmar región, cuotas, SLA y coste total antes
+de contratar. [Vercel](https://vercel.com/pricing) · [Render](https://render.com/pricing) · [Supabase](https://supabase.com/pricing) · [Stripe](https://stripe.com/es/pricing)
+
+La API optativa usa SQLite y claves públicas locales para validar contratos con
+datos sintéticos. PostgreSQL, autenticación de producción y certificados
+requieren validar el adaptador real, gobierno de sesiones y aislamiento en
+staging. El replay Node reutiliza el Experience Engine. La proyección privada
+por sesión y su despliegue necesitan una prueba de paridad y una decisión de
+arquitectura antes de integrarse con tráfico real.
+
 ## Límites de confianza
 
 ```mermaid

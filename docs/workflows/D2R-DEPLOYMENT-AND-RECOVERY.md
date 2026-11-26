@@ -24,6 +24,38 @@ El workflow actual prueba contratos antes de preparar el artefacto Pages y conce
 
 Migración propuesta: congelar catálogo público, inventariar contenido y enlaces, empaquetar por entorno, validar rutas relativas en staging y ejecutar una promoción con aprobación. Medir errores y latencia tras el corte, conservar origen anterior mientras se verifica y revertir artefacto o destino dentro de la ventana acordada. En base de datos preferir migraciones compatibles y roll-forward ante cambios con escritura. Documentar recuperación por clase de cambio y evitar restaurar indiscriminadamente sobre datos nuevos.
 
+## API local y ensayo de recuperación
+
+Desde la raíz, en un entorno Python 3.12 aislado:
+
+```sh
+python -m pip install -r Backend/requirements-local.txt
+python -m unittest Backend.test_local_platform -v
+node --test Backend/local_assessment.test.mjs
+D2R_LOCAL_DB=/tmp/d2r-synthetic.sqlite python -m uvicorn Backend.local_platform:create_app --factory --host 127.0.0.1 --no-access-log
+```
+
+Comprobar `/health/live`, `/health/ready` y `/openapi.json`.
+El catálogo arranca vacío. La identidad se habilita únicamente con los tres
+parámetros `D2R_LOCAL_TOKEN_ISSUER`, `D2R_LOCAL_TOKEN_AUDIENCE` y
+`D2R_LOCAL_JWKS_FILE`. La API verifica tokens de acceso RS256 mediante PyJWT
+y acepta sujetos habilitados en el almacén local. Las pruebas generan una
+clave efímera e insertan fixtures sintéticas. La configuración no emite
+credenciales, no implementa inicio de sesión ni concede rol de administrador
+desde el token. El demo existente sigue en `Backend.main:app`.
+
+```sh
+python -m Backend.local_backup /tmp/d2r-synthetic.sqlite /tmp/d2r-restored.sqlite
+D2R_LOCAL_DB=/tmp/d2r-restored.sqlite python -m uvicorn Backend.local_platform:create_app --factory --host 127.0.0.1 --no-access-log
+```
+
+Usar un destino nuevo en el ensayo. La copia es consistente, se crea con modo
+0600 y se verifica la integridad y versión antes de abrirla. El ensayo con
+datos sintéticos comprueba que restaurar no pisa un destino existente y que
+los cambios posteriores a la copia no aparecen en ella. Para staging y
+producción mantener secretos separados, restringir acceso y aplicar la tabla
+de recuperación con PostgreSQL y objetos. El flujo SQLite es de desarrollo.
+
 ## Cabeceras HTTP
 
 El workflow empaqueta archivos; la verificación de cabeceras en vivo quedó bloqueada. Las políticas siguientes se aplican en el CDN/proxy futuro, con comprobación HTTP de rutas, errores, redirecciones y recursos:

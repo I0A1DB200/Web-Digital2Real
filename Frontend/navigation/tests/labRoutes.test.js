@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {parseRoute,formatRoute,parentRoute} from '../labRoutes.js';
+import {parseRoute,formatRoute,parentRoute,preserveLabViewport} from '../labRoutes.js';
 import {scrollToContent} from '../../components/scrollToContent.js';
 
 test('navigation routes round-trip without exposing pedagogical state',()=>{
@@ -29,4 +29,16 @@ test('content scrolling accounts for current position/navbar and respects visibi
  scrollToContent(target,{windowRef,ifNeeded:true,focus:true});assert.equal(scrolls.length,0);assert.deepEqual(focus,[{preventScroll:true}]);
  target.getBoundingClientRect=()=>({top:-40,bottom:0});scrollToContent(target,{windowRef,ifNeeded:true});assert.deepEqual(scrolls.pop(),{top:228,left:0,behavior:'smooth'});
  windowRef.matchMedia=()=>({matches:true});scrollToContent(target,{windowRef});assert.equal(scrolls.pop().behavior,'auto');
+});
+
+
+test('Lab entry starts at page top; only related ENV and preview transitions preserve position',()=>{
+ const lab={view:'experience-lab'}, env={...lab,environmentId:'ENV-004'}, preview={...env,previewId:'EXP-TEST'}, experience={...env,experienceId:'EXP-TEST'};
+ assert.equal(preserveLabViewport({view:'engineering-notes'},lab),false);
+ assert.equal(preserveLabViewport(lab,env),false);
+ assert.equal(preserveLabViewport(env,preview),true);
+ assert.equal(preserveLabViewport(preview,experience),true);
+ assert.equal(preserveLabViewport(preview,{...env,experienceId:'OTHER'}),false);
+ assert.equal(preserveLabViewport(preview,{...experience,environmentId:'OTHER'}),false);
+ assert.equal(preserveLabViewport(experience,preview),false); // Browser history owns restoration on return.
 });

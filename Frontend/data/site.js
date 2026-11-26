@@ -22,8 +22,8 @@ export function getSite(locale) {
   return {
     ...site,
     navigation: site.navigation.map(item => ({ ...item, label: ({ "engineering-notes": "Notas de ingeniería", "experience-lab": "Experience Lab", about: "Acerca de" })[item.view] ?? item.label })),
-    home: { ...site.home, title: "Aprende automatización industrial a través de la ingeniería real.", introduction: "Conocimiento práctico de ingeniería basado en problemas industriales reales, sistemas de automatización fiables y la forma de razonar de los ingenieros en planta." },
-    engineeringNotes: { title: "Notas de ingeniería", introduction: "Artículos técnicos concisos sobre retos industriales reales, diagnóstico práctico y decisiones de ingeniería aplicables en planta." },
+    home: { ...site.home, title: "Aprende automatización industrial a través de la ingeniería real.", notebookLabel: "Ir a Engineering Notebook" },
+    engineeringNotes: { title: "Notas de ingeniería" },
     simulators: localizeSimulators("es")
   };
 }
@@ -115,14 +115,11 @@ export const site = {
   home: {
     eyebrow: "Digital2Real",
     title: "Learn Industrial Automation Through Real Engineering.",
-    introduction:
-      "Practical engineering knowledge built around real industrial problems, reliable automation systems and the way engineers think in the field."
+    notebookLabel: "Go to Engineering Notebook"
   },
 
   engineeringNotes: {
-    title: "Engineering Notes",
-    introduction:
-      "Concise technical articles built around real industrial challenges, practical diagnostics and engineering decisions that can be applied in the field."
+    title: "Engineering Notes"
   },
 
   about: {

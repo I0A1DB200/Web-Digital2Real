@@ -10,6 +10,7 @@ export function createEnvironmentNavigator({
   environments,
   experiences,
   onOpenExperience,
+  onNavigate = null,
   onOpenTheory = null,
   onTheorySectionCompleted = null,
   progressStore = createEnvironmentProgressStore(),
@@ -25,6 +26,7 @@ export function createEnvironmentNavigator({
       .map(experience => [experience.editorialId, experience])
   );
   let selectedEnvironment = null;
+  let restoreGeneration = 0;
   let theorySectionIndex = null;
   let stage = null;
   let progressElement = null;
@@ -66,6 +68,7 @@ export function createEnvironmentNavigator({
       card.appendChild(top);
       const main = createElement(documentRef, "button", "environment-card__main");
       main.type = "button";
+      main.dataset.environmentId = environment.id;
       main.setAttribute("aria-label", `${ui.openEnvironment}: ${environmentTitle(environment)}`);
       const media = createElement(documentRef, "span", "environment-card__media");
       media.dataset.environmentId = environment.id;
@@ -86,8 +89,7 @@ export function createEnvironmentNavigator({
       appendText(documentRef, content, "span", "environment-card__count", ui.experienceCount(environment.capacity));
       main.appendChild(content);
       main.addEventListener("click", () => {
-        renderEnvironment(environment.id);
-        scrollWorkspaceToTop(windowRef);
+        requestView({ environmentId: environment.id });
       });
       card.appendChild(main);
       const progress = createElement(documentRef, "div", "environment-card__progress");
@@ -116,7 +118,7 @@ export function createEnvironmentNavigator({
     const back = createElement(documentRef, "button", "experience-action experience-action--quiet");
     back.type = "button";
     back.textContent = ui.backToEnvironments;
-    back.addEventListener("click", renderCatalog);
+    back.addEventListener("click", () => requestView({}));
     shell.appendChild(back);
     const heading = createElement(documentRef, "header", "environment-view__header");
     const title = createElement(documentRef, "div", "environment-view__title");
@@ -125,7 +127,7 @@ export function createEnvironmentNavigator({
     heading.appendChild(title);
     if (environment.theory && typeof onOpenTheory === "function") {
       const theory = createButton(documentRef, ui.openTheory, "experience-action experience-action--primary");
-      theory.addEventListener("click", async () => renderTheory(environment, await onOpenTheory(environment)));
+      theory.addEventListener("click", () => requestView({ environmentId: environment.id, theorySectionIndex: 0 }));
       heading.appendChild(theory);
     }
     shell.appendChild(heading);
@@ -146,6 +148,7 @@ export function createEnvironmentNavigator({
       if (!experience) return [];
       const marker = createElement(documentRef, "button", "environment-hotspot");
       marker.type = "button";
+      marker.dataset.experienceId = experience.id;
       marker.style.setProperty("--hotspot-x", `${hotspot.x}%`);
       marker.style.setProperty("--hotspot-y", `${hotspot.y}%`);
       marker.setAttribute("aria-label", `${ui.inspect} ${experience.title}`);
@@ -153,7 +156,8 @@ export function createEnvironmentNavigator({
       const record = { hotspot, experience, marker };
       marker.addEventListener("click", event => {
         event?.stopPropagation?.();
-        togglePopover(record);
+        if (onNavigate) requestView({ environmentId: environment.id, hotspotId: activeRecord === record ? null : experience.editorialId });
+        else togglePopover(record);
       });
       stage.appendChild(marker);
       return [record];
@@ -170,7 +174,7 @@ export function createEnvironmentNavigator({
     leaveEnvironment();
     const shell = createElement(documentRef, "div", "experience-workspace__shell");
     const back = createButton(documentRef, ui.backToEnvironment, "experience-action experience-action--quiet");
-    back.addEventListener("click", () => renderEnvironment(environment.id));
+    back.addEventListener("click", () => requestView({ environmentId: environment.id }));
     shell.appendChild(back);
     const header = createElement(documentRef, "header", "experience-workspace__catalog-header");
     appendText(documentRef, header, "span", "experience-workspace__eyebrow", `${environment.id} · ${ui.theory}`);
@@ -203,9 +207,12 @@ export function createEnvironmentNavigator({
       const next = createButton(documentRef, sectionIndex === theory.sections.length - 1 ? ui.completeTheory : ui.continueTheory, "experience-action experience-action--primary");
       next.addEventListener("click", () => {
         onTheorySectionCompleted?.(environment.id, section.id);
+        if (onNavigate) return requestView(sectionIndex === theory.sections.length - 1
+          ? { environmentId: environment.id }
+          : { environmentId: environment.id, theorySectionIndex: sectionIndex + 1 });
         if (sectionIndex === theory.sections.length - 1) renderEnvironment(environment.id);
         else { sectionIndex += 1; renderSection(); }
-        scrollWorkspaceToTop(windowRef);
+        scrollWorkspaceToTop(windowRef, element);
       });
       actions.appendChild(next);
       panel.appendChild(actions);
@@ -217,7 +224,7 @@ export function createEnvironmentNavigator({
 
   function togglePopover(record) {
     if (activeRecord === record) {
-      closePopover({ restoreFocus: true });
+      dismissPopover();
       return;
     }
     closePopover({ restoreFocus: false });
@@ -242,14 +249,14 @@ export function createEnvironmentNavigator({
     const start = createButton(documentRef, ui.beginInvestigation, "experience-action experience-action--primary");
     start.addEventListener("click", event => {
       event?.stopPropagation?.();
-      closePopover({ restoreFocus: false });
+      if (!onNavigate) closePopover({ restoreFocus: false });
       return onOpenExperience(record.experience.id, selectedEnvironment.id);
     });
     const close = createButton(documentRef, ui.close, "experience-action experience-action--quiet");
     close.setAttribute("aria-label", `${ui.close} ${record.experience.title}`);
     close.addEventListener("click", event => {
       event?.stopPropagation?.();
-      closePopover({ restoreFocus: true });
+      dismissPopover();
     });
     controls.appendChild(start);
     controls.appendChild(close);
@@ -260,7 +267,7 @@ export function createEnvironmentNavigator({
     resizeObserver?.observe?.(stage);
     resizeObserver?.observe?.(activePopover);
     positionActivePopover();
-    close.focus?.();
+    close.focus?.({ preventScroll: true });
   }
 
   function positionActivePopover() {
@@ -293,6 +300,11 @@ export function createEnvironmentNavigator({
     activeConnector.style.setProperty("--connector-angle", `${placement.connector.angle}deg`);
   }
 
+  function dismissPopover() {
+    if (onNavigate) requestView({ environmentId: selectedEnvironment.id });
+    else closePopover({ restoreFocus: true });
+  }
+
   function closePopover({ restoreFocus }) {
     if (!activeRecord) return;
     const marker = activeRecord.marker;
@@ -305,20 +317,20 @@ export function createEnvironmentNavigator({
     activeRecord = null;
     activePopover = null;
     activeConnector = null;
-    if (restoreFocus) marker.focus?.();
+    if (restoreFocus) marker.focus?.({ preventScroll: true });
   }
 
   function handleOutsideClick(event) {
-    if (!activeRecord) return;
+    if (!activeRecord || element.isConnected === false || event?.target?.closest?.(".topbar")) return;
     const target = event?.target;
     if (activeRecord.marker.contains?.(target) || activePopover?.contains?.(target)) return;
-    closePopover({ restoreFocus: true });
+    dismissPopover();
   }
 
   function handleKeydown(event) {
     if (event?.key !== "Escape" || !activeRecord) return;
     event.preventDefault?.();
-    closePopover({ restoreFocus: true });
+    dismissPopover();
   }
 
   function renderProgress() {
@@ -460,7 +472,7 @@ export function createEnvironmentNavigator({
     close.addEventListener("click", event => { event?.stopPropagation?.(); closeCatalogSurface({ restoreFocus: true }); });
     panel.appendChild(close); panel.addEventListener("click", event => event?.stopPropagation?.());
     backdrop.appendChild(panel); backdrop.addEventListener("click", () => closeCatalogSurface({ restoreFocus: true }));
-    element.appendChild(backdrop); activeCatalogSurface = { backdrop, returnFocus }; close.focus?.();
+    element.appendChild(backdrop); activeCatalogSurface = { backdrop, returnFocus }; close.focus?.({ preventScroll: true });
   }
 
   function getCardProgress(environment) {
@@ -475,7 +487,7 @@ export function createEnvironmentNavigator({
     if (!activeCatalogSurface) return;
     const { backdrop, returnFocus } = activeCatalogSurface;
     backdrop.remove?.(); activeCatalogSurface = null;
-    if (restoreFocus) returnFocus?.focus?.();
+    if (restoreFocus) returnFocus?.focus?.({ preventScroll: true });
   }
 
   function handleCatalogOutsideClick(event) {
@@ -500,12 +512,25 @@ export function createEnvironmentNavigator({
       hotspotId: activeRecord?.experience.editorialId ?? null };
   }
 
+  function requestView(view) {
+    if (onNavigate) return onNavigate(view);
+    if (!Number.isInteger(view.theorySectionIndex)) {
+      if (view.environmentId) renderEnvironment(view.environmentId);
+      else renderCatalog();
+      scrollWorkspaceToTop(windowRef, element);
+      return;
+    }
+    return restoreView(view).then(() => scrollWorkspaceToTop(windowRef, element));
+  }
+
   async function restoreView(view) {
+    const generation = ++restoreGeneration;
     if (!view?.environmentId) { renderCatalog(); return; }
     const environment = environments.find(item => item.id === view.environmentId);
     // Load before altering the displayed view, so failure preserves navigation.
-    const theory = view.theorySectionIndex !== null && environment?.theory
+    const theory = Number.isInteger(view.theorySectionIndex) && environment?.theory
       ? await onOpenTheory(environment) : null;
+    if (generation !== restoreGeneration) return;
     renderEnvironment(view.environmentId);
     if (theory) renderTheory(environment, theory, view.theorySectionIndex);
     else if (view.hotspotId) {

@@ -1,0 +1,143 @@
+{
+  "removed": [
+    {
+      "id": "article-009",
+      "title_en": "Voltage, current, resistance and a closed circuit",
+      "title_es": "Tensión, corriente, resistencia y circuito cerrado"
+    },
+    {
+      "id": "article-010",
+      "title_en": "AC, DC, frequency and RMS values",
+      "title_es": "AC, DC, frecuencia y valores eficaces"
+    },
+    {
+      "id": "article-011",
+      "title_en": "Power, energy and industrial loads",
+      "title_es": "Potencia, energía y cargas industriales"
+    },
+    {
+      "id": "article-012",
+      "title_en": "Multimeters, clamps and interpreting measurements",
+      "title_es": "Multímetro, pinza y lectura de medidas"
+    },
+    {
+      "id": "article-013",
+      "title_en": "Measurement quality and differential diagnosis",
+      "title_es": "Calidad de la medida y diagnóstico diferencial"
+    },
+    {
+      "id": "article-014",
+      "title_en": "Single-phase and three-phase supplies",
+      "title_es": "Alimentación monofásica y trifásica"
+    },
+    {
+      "id": "article-015",
+      "title_en": "Industrial 24 VDC power supplies",
+      "title_es": "Fuentes industriales de 24 VDC"
+    },
+    {
+      "id": "article-016",
+      "title_en": "Fuses, circuit breakers and overcurrent protection",
+      "title_es": "Fusibles, magnetotérmicos y protección de sobreintensidad"
+    },
+    {
+      "id": "article-017",
+      "title_en": "RCDs, insulation and PE",
+      "title_es": "Diferenciales, aislamiento y PE"
+    },
+    {
+      "id": "article-018",
+      "title_en": "Selectivity, segregation and distribution",
+      "title_es": "Selectividad, separación y distribución"
+    },
+    {
+      "id": "article-019",
+      "title_en": "Control versus power",
+      "title_es": "Mando frente a potencia"
+    },
+    {
+      "id": "article-020",
+      "title_en": "Contactors, coils and auxiliaries",
+      "title_es": "Contactores, bobinas y auxiliares"
+    },
+    {
+      "id": "article-021",
+      "title_en": "Pushbuttons, seal-in and interlocks",
+      "title_es": "Pulsadores, auto-mantenimiento y enclavamientos"
+    },
+    {
+      "id": "article-022",
+      "title_en": "Three-phase motors, nameplates and overload relays",
+      "title_es": "Motores trifásicos, placa y relé de sobrecarga"
+    },
+    {
+      "id": "article-023",
+      "title_en": "Relays, timers and PLC outputs",
+      "title_es": "Relés, temporizadores y salidas PLC"
+    },
+    {
+      "id": "article-024",
+      "title_en": "Symbols and conventions",
+      "title_es": "Símbolos y convenciones"
+    },
+    {
+      "id": "article-025",
+      "title_en": "Designations and cross-references",
+      "title_es": "Designación y referencias cruzadas"
+    },
+    {
+      "id": "article-026",
+      "title_en": "Terminals, potentials and numbering",
+      "title_es": "Borneros, potenciales y numeración"
+    },
+    {
+      "id": "article-027",
+      "title_en": "Reading control schematics",
+      "title_es": "Lectura de esquemas de mando"
+    },
+    {
+      "id": "article-028",
+      "title_en": "Traceability and revision control",
+      "title_es": "Trazabilidad y control de revisiones"
+    },
+    {
+      "id": "article-029",
+      "title_en": "Diagnostic method",
+      "title_es": "Método de diagnóstico"
+    },
+    {
+      "id": "article-030",
+      "title_en": "Isolation, lockout and proving absence of voltage",
+      "title_es": "Consignación y comprobación de ausencia de tensión"
+    },
+    {
+      "id": "article-031",
+      "title_en": "Diagnosis by comparison and under load",
+      "title_es": "Diagnóstico por comparación y bajo carga"
+    },
+    {
+      "id": "article-032",
+      "title_en": "Insulation and leakage",
+      "title_es": "Aislamiento y fugas"
+    },
+    {
+      "id": "article-033",
+      "title_en": "Verification, recurrence and documentation",
+      "title_es": "Verificación, recurrencia y documentación"
+    }
+  ],
+  "retained": [
+    "article-001",
+    "article-002",
+    "article-003",
+    "article-004",
+    "article-005",
+    "article-006",
+    "article-007",
+    "article-008"
+  ],
+  "after_033": [],
+  "retained_content_exact": true,
+  "removed_count": 25,
+  "newly_orphaned_assets": []
+}

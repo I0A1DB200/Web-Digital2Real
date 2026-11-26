@@ -1,0 +1,102 @@
+DIGITAL2REAL — FRONTEND UX, NAVEGACIÓN Y LIMPIEZA NOTEBOOK
+Informe de implementación y QA · 26/11/2026 (Europe/Madrid)
+
+RESULTADO
+IMPLEMENTED / AUTOMATED PASS / BROWSER QA PASS. Trabajo en rama fix/d2r-frontend-navigation-notebook-cleanup; preparado para revisión. Sin merge a main ni deploy. El artefacto local se genera mediante scripts oficiales; no se modifica directamente como sustituto de la fuente. No frameworks, dependencias ni hosting nuevos.
+
+1. ESTADO INICIAL
+Rama inicial main, HEAD 31b1b380e2f639b5fc5e0380f2719d4688b2941d. Cambios previos no versionados ajenos al encargo: informes/logs/capturaEE-0031, revisión transversalENV-004 DOCX/TXT y docs/standards/. Todos preservados. Inventario inicial de33 notasES/EN, IDsarticle-001…article-033; ninguna posterior a033. Fuente canónica Notebook y overlayES identificados antes de editar. Guías AGENTS, Playbook, arquitectura, Engine, modelo de contenido, QA y baseline consultadas.
+
+2. CLASIFICACIÓN Y CAUSAS RAÍZ
+ARCHITECTURE / navegación de presentación: app.js solo reconocía hashes principales; ENV, hotspot y sesión vivían en estados internos sin historial. Cambiar de vista destruía Workspace y Player. Por ello Atrás salía directamente de Lab y no conservaba el contexto.
+ENGINE/Frontend: scrollWorkspaceToTop forzaba top:0 en abrir, iniciar, continuar, avanzar y reiniciar. Navigator también lo aplicaba al entorno/teoría y el app al cambiar de vista. Además el foco del popover podía producir scroll nativo.
+CONTENT:25 entradasNB-EL habían sido añadidas a Notebook comoarticle-009…033. Retirada autorizada en fuente real, sin filtrosCSS ni renumeración.
+UX/UI: los dos párrafos introductorios y el masthead/identidad superior del artículo añadían ruido. La animación del titular exigía simultáneamente que existiera el párrafo. Se elimina esa dependencia.
+No se cambia la semántica del Headless Player, evaluación, decisiones, evidencias o Results.
+
+3. CAMBIOS Y JUSTIFICACIÓN
+- Frontend/app.js: coordina hashes/historial, aplicación de rutas, preservación de composiciónLab, scroll/foco, enlaces profundos y cancelación de transiciones antiguas. Mantiene APIwindow.openExperience y el selector global. Retira párrafos/contenedores, anima el título sin depender del párrafo e incorpora la flecha.
+- Frontend/navigation/labRoutes.js (nuevo): parsing/formato y padres puros; sin estado pedagógico en URL. No dependencia de routing.
+- Frontend/components/scrollToContent.js (nuevo): alineación mediante geometría real y navbar medida, visibilidad, foco preventScroll y movimiento reducido.
+- Frontend/products/experience-engine/components/scrollWorkspace.js: wrapper de presentación que apunta a Result/Stage/encabezado visible; elimina el reset indiscriminado al origen del documento.
+- experienceWorkspace.js: valida rutas contra catálogo/hotspots, conserva sesiones y comandos en memoria, reconstruye localización de forma transaccional, descarta resultados asíncronos obsoletos y evita registrar dos veces una finalización al restaurar navegación.
+- environmentNavigator.js: emite intenciones de navegación al app; conserva uso independiente para tests/consumidores. Identificadores estables de foco, cierre al padre y foco sin saltos. Teoría participa del mismo modelo, sin mezclar decisionesPlayer con historial.
+- Frontend/data/site.js: retira exclusivamente introduccioneshome/NotebookES/EN y añade etiqueta accesible para la flecha. Titular, SEO, logo y navegación principal conservados.
+- Frontend/components/articleViewer.js: retira masthead Digital2Real/Notebook e identidad Nota XXX en componente compartido. El título técnico es el primer contenido editorial. Metadata, contenido, imágenes, código, controles y referencias internas permanecen.
+- Frontend/styles/layout.css: flechaSVGinline curva naranja del token existente, sin fondo, sin animación añadida; zona reservada inferior derecha. Retira CSS del soporte que ya no existe. Fondo, tipografía y escala del título conservados.
+- Frontend/styles/notebook.css: retira reglas de masthead/identidad y margen superior residual del bloque de título; no altera el contenido técnico.
+- content/notebooks/notebook.js y locales/es.js: retiran exactamente25 entradas autorizadas. 001–008 iguales por comparación completa ES/EN con la instantánea anterior.
+- TestsWorkspace, pruebas nuevas de rutas/scroll y testsNotebook/ENV004: regresión de sesiones/cancelación/geométría y expectativas de catálogo acordes con la retirada autorizada; no parche de contenidoEE/ENV para conseguir verde.
+- docs/03_FrontendArchitecture.md, docs/VALIDATION_BASELINE.md y docs/06_Changelog.md: modelo actual de rutas, límites de sesión y validación. Este directorio contiene evidencia, inventarios y herramientas reproducibles.
+Lista exacta: files.json. No se modifican navbar, logo, iconos, colores corporativos, responsive.css, variables.css, simuladores, dependencias ni workflow.
+
+4. MODELO DE NAVEGACIÓN
+Antes: #engineering-notes / #experience-lab / #about; transiciones internas no representadas en historial.
+Ahora:
+#engineering-notes
+#experience-lab
+#experience-lab/env/{ENV-ID}
+#experience-lab/env/{ENV-ID}/preview/{EXPERIENCE-ID}
+#experience-lab/env/{ENV-ID}/experience/{EXPERIENCE-ID}
+#experience-lab/env/{ENV-ID}/theory/{sección1-based}
+#about
+
+Los IDs son los canónicos del catálogo generado. Preview corresponde al popover/hotspot existente; Experience conserva su presentación/Incident Brief original. No se inventa otra pantalla de contenido. Browser Back/Forward recorre la jerarquía real. Los botones internos vuelven al padre y reutilizan la entrada anterior cuando coincide. No hay entradas por decisión, intento, Result, evidencia o etapa. Hashchange y popstate se coordinan sin duplicar aplicaciones.
+Acceso directo y recarga resuelven la ruta bajo un subdirectorio equivalente a GitHubPages. IDExperience desconocido: vuelve alENV conocido; ENV desconocido: catálogo; hash malformado: Notebook. Se rechazan rutas con segmentos no admitidos. Las rutas no exponen lógica privada.
+
+5. POLÍTICA DE SCROLL, FOCO Y ASINCRONÍA
+Responsabilidad central: app para historial/restauración; helper compartido para geometría; wrapperWorkspace para cambios de contenido. Abrir un hotspot no llama al scroll si la posición se conserva. Abrir Experience alinea encabezado; cambios de etapa/Result solo alinean el contenido cuando queda fuera de la zona visible bajo la navbar. Back/Forward restaura posición y foco estable del hotspot/tarjeta/encabezado según contexto. Siempre preventScroll al mover foco. La flecha mueve al Notebook sin cambiar hash o history.length y funciona por teclado ES/EN. Movimiento reducido usa auto; movimiento normal usa smooth.
+La geometría mide la barra y el contenido, sin coordenadas rígidas por Experience ni timeouts arbitrarios. Una navegación posterior invalida carga/replay anterior. El error de carga de artefacto se presenta como alerta accesible, sin rechazoJS no gestionado.
+
+6. RETIRADA DEL NOTEBOOK
+Identificadores exactos retirados(25):
+article-009, article-010, article-011, article-012, article-013, article-014, article-015, article-016, article-017, article-018, article-019, article-020, article-021, article-022, article-023, article-024, article-025, article-026, article-027, article-028, article-029, article-030, article-031, article-032, article-033.
+Inventario final (8):
+article-001, article-002, article-003, article-004, article-005, article-006, article-007, article-008.
+Notas posteriores a 033:0 en inventario inicial; ninguna entrada ajena al rango eliminada. Se conservan IDs y contenido completo de001–008, incluyendo código y diagramas, en ambos idiomas. Inventario con títulosES/EN y comprobación de igualdad: notebook-inventory.json. Retirada aplicada en fuentes y regeneración oficial, sin ocultaciónCSS/renderer.
+
+7. REFERENCIAS Y ASSETS
+45archivos YAML conservados contienen asociaciones/lecturas textuales a notas retiradas, incluido media-source. Se inventarían en withdrawn-references.json. Son referencias editoriales/identificadores, no enlacesNotebookclicables en la UI actual. La retirada deja esta deuda de lectura explícita. No se finge que esas notas sigan disponibles ni se cambianEE/ENV o su teoría para encubrirla. Cualquier eliminación/reasignación de esas lecturas exige un encargo posterior sobre las fuentes correspondientes.
+No hay nuevas URLsNotebook404, ni nuevas roturas de imports/recursos durante los recorridos. Los25 artículos retirados no teníancoverImage ni recursos de imagen propios en sus registros:0assets nuevos directamente huérfanos identificados. Ninguna imagen eliminada. Los3 vídeos desconectados ya faltantes enVALIDATION_BASELINE siguen siendo deuda previa, sin cambios.
+
+8. INVARIANTES Y ALCANCE
+1457archivos previamente existentes fuera del alcance comparados por SHA256:0 cambios. Incluye todas las Experiences, ENV, HeadlessEngine, assets/logo/iconos y simuladores, además del trabajo no versionado previo. Validación específica de 876 archivos de dominios protegidos:PASS. Solo se añaden binarios de capturas QA; no se cambia ningún asset de producto. Estados técnicos, datos pedagógicos y YAML intactos.
+La separaciónNotebook/ExperienceLab/HeadlessPlayer se conserva. La caché en memoria pertenece a presentación y contiene Players/comandos existentes; no cambia el formato de persistencia ni contratosPlayer.
+
+9. PRUEBAS Y RESULTADOS
+- node --test:597/597PASS;0 fallos,0 omitidas. all-tests-final.log.
+- Regresión enfocada de navegación/Workspace:44/44PASS. Incluye parsing de rutas, padres/fallback, ausencia de estado pedagógico enURL, navbar/visibilidad/movimiento, comandos, intentos y evidencias al salir/volver, finalización no duplicada y navegación que supersede un cambio de idioma pendiente.
+- Checks previos específicosNotebook/Workspace/ENV004:64/64PASS.
+- SintaxisJS:72 archivosPASS; imports relativos:116 resueltos sin errores. validation.json.
+- node scripts/package-notebook.mjs:PASS; genera8 notasES/EN desde fuente.
+- node scripts/package-experience-engine.mjs --mode=preview:PASS. Artefactos/Player publicados según empaquetado existente; no se modifica el generado comoSSOT.
+- Comparación001–008antes/después ES/EN completa:PASS.
+- git diff --check:PASS.
+
+10. BROWSER QA
+Chromium real, ES/EN ×390×844 /1280×900 /1440×1100:6 recorridos completosPASS,0 erroresJS/HTTP inesperados. Cada recorrido comprueba:
+- titular conservado, párrafos ausentes, flecha/teclado sin historial, fondo/composición y sin desbordamiento;
+- carrusel8 notas, artículo sin masthead/identidad, cierreEscape y foco a tarjeta;
+- catálogo→ENV→Preview→Experience, hotspot sin scrollinjustificado y encabezado inicial visible;
+- opción incorrecta / retry y camino completo correcto deEE-0037 hasta Debrief, sin entradas de historial por decisiones;
+- Back por Experience/Preview/ENV/catálogo/vista previa y Forward por la mismajerarquía, con Result/sesión/posición/foco preservados;
+- cambio ES/EN conservando ruta y sesión; botones internos al padre;
+- simulador independiente abre suiframebajo el subdirectorio y cierra; susfuentes permanecen idénticas;
+- rutas profundas Preview/Experience y recarga, IDs desconocidos / hash malformado con fallback controlado.
+Pruebas adicionales PASS: flecha normal smooth; teoría profunda sección 2→3→Atrás→recarga conserva sección/progreso; 503 intencional de artefacto muestra alerta sin error JS no gestionado; recargar tras adquirir evidencia conserva ruta y muestra un nuevo inicio visible(ningún Result ficticio).
+Resultados estructurados:browser-results.json,extra-results.json,reload-results.json. Capturas antes/después enqa/; galería comparativa enqa-gallery.html. Las capturas históricas Lab se sirven mediante intercepción de módulos iniciales guardados, sin revertir checkout. Hero/artículo antes capturadosantes de su edición. Inspección visual de escritorio/móvil y recursos realizada.
+
+11. CLASIFICACIÓN DE INCIDENCIAS RESUELTAS
+La primera suite tras el cambio presentó30 fallos:26 expectativas desactualizadas(E: catálogo retirado y antigua política top:0);3 regresiones iniciales de presentación compartida(C: fallback independiente de teoría / cierre de popover), corregidas sin cambiarPlayer;1 aserción sobre nombre concreto de variable(B: comprobación de fuente demasiado específica), preservada con nombre coherente. Las suites siguientes pasan íntegramente. No se eliminan pruebas para silenciar fallos.
+Las incidencias de arranqueHTTP y scripts de captura se resolvieron en la herramienta de QA (tarjeta activa, arg keyword e intercepción Playwright); no se parcheóproducto para ocultarlas. El 503 es un fallo provocado del ensayo, separado del tráfico sano sin errores.
+
+12. LÍMITES Y REVISIÓN
+- No hay persistencia de sesiones pedagógicas trasreload/cierre de documento. Se recupera ruta y progreso agregado existente; decisiones/evidencias de sesión reinician. Dentro de la misma página, Back/Forward y cambios de vista sí conservan sesión. BFCache conservado cuando el navegador lo admite.
+- Permanecen las lecturas textuales a notas retiradas ya inventariadas. No se afirma limpieza editorial deEE/ENV, porqueestá prohibida en este encargo.
+- QA en Chromiumlocal bajo /Web-Digital2Real/Frontend/, equivalente a hosting por subdirectorio. No se publica ni se afirma validación en producciónGitHubPages de esta rama.
+- Pendiente revisión humana del paquete antes de fusionar. No hay bloqueo técnico de implementación, automatización ni navegador pendiente.
+
+13. RAMA, COMMIT Y PUBLICACIÓN
+Rama:fix/d2r-frontend-navigation-notebook-cleanup.
+Commit final:se registrará en el recibo de entrega y en la respuesta tras cerrar esta evidencia QA (evita autorreferencia dentro del propio commit).
+Sin push, merge ni deploy de este paquete. La web pública permanece en el commit del logo31b1b380e2f639b5fc5e0380f2719d4688b2941d.

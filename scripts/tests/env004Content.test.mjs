@@ -48,34 +48,16 @@ test('ENV-004 preserves the original cover, all ten approved coordinates and rea
   assert.doesNotMatch(JSON.stringify(env), /Review_Only/);
 });
 
-test('Notebook keeps every source paragraph, example, question, answer and five block groupings', () => {
-  const es = getNotebook('es'); const en = getNotebook('en');
-  assert.equal(mapping.notebooks.length, 25);
-  assert.equal(new Set(mapping.notebooks.map(n => n.canonical_id)).size, 25);
-  assert.deepEqual(Array.from({length:5}, (_,b) => mapping.notebooks.filter(n => n.block===b+1).length), [5,5,5,5,5]);
-  for (const note of mapping.notebooks) {
-    const spanish = es.find(n => n.id===note.canonical_id);
-    const english = en.find(n => n.id===note.canonical_id);
-    assert.equal(spanish.title, note.title_es);
-    assert.equal(english.title, note.title_en);
-    assert.equal(english.review_status, 'technical_review');
-    // Slice by the next heading instead of treating paragraph line endings as section boundaries.
-    const start = source.indexOf(`### ${note.editorial_id} · `);
-    const tail = source.slice(source.indexOf('\n', start)+1);
-    const end = tail.search(/^### NB-EL-|^## BLOQUE|^# PARTE/m);
-    const original = tail.slice(0,end<0?undefined:end).trim().split(/\n\s*\n/u).filter(p => p.trim() && p.trim()!=='---').map(plain);
-    assert.deepEqual(spanish.sections.filter(s => s.id!=='s-review').map(s => s.content), original, note.editorial_id);
-    assert.deepEqual(english.sections.map(s => s.id), spanish.sections.map(s => s.id));
-    assert.equal(english.sections.length, original.length+1);
-    assert.equal(english.sections[0].id, 's-review');
-    assert.match(english.sections[0].content,/human technical review/);
-    assert.ok(english.sections.every(s => typeof s.content==='string' && s.content.trim()));
-    assert.match(english.sections.map(s => s.content).join(' '), /Self-check:/);
-    assert.match(spanish.sections.map(s => s.content).join(' '), /Comprobación:/);
-    assert.equal(spanish.categories.length, 1);
-    assert.equal(english.categories.length, 1);
+test('ENV004 historical Notebook associations remain documented after authorized catalog withdrawal', () => {
+  assert.equal(mapping.notebooks.length,25);
+  const withdrawn = Array.from({length:25}, (_,i) => `article-${String(i+9).padStart(3,'0')}`);
+  assert.deepEqual(mapping.notebooks.map(n => n.canonical_id).sort(), withdrawn);
+  for (const locale of ['es','en']) {
+    assert.ok(getNotebook(locale).every(n => !withdrawn.includes(n.id)));
+    assert.equal(getNotebook(locale).length,8);
   }
-  assert.equal(new Set(mapping.notebooks.map(n => en.find(a => a.id===n.canonical_id).categories[0])).size,5);
+  // The source and ENV/Experience associations are historical technical content, not broken navigation URLs.
+  for (const n of mapping.notebooks) assert.ok(source.includes(n.editorial_id));
 });
 
 test('source trace accounts for exactly 50 moments and 150 unchanged option meanings', () => {
@@ -183,17 +165,12 @@ for (const entry of mapping.experiences) {
         assert.equal(intake.new_visual_publication_allowed, false);
         assert.equal(manifest.runtime_registered_images, revisions.length);
       }
-      for(const id of entry.notebooks) assert.ok(getNotebook(locale).some(n => n.id===id));
+      for(const id of entry.notebooks) assert.ok(mapping.notebooks.some(n => n.canonical_id===id)); // Preserved authored reference to a withdrawn Note, not a live catalog entry.
     });
   }
 }
 
 test('technical quantities and terminal numbers remain equivalent across ES/EN', () => {
   const quantities = text => (text.match(/\d+(?:[.,]\d+)?/gu) ?? []).map(value => String(Number(value.replace(',', '.'))));
-  const spanish=getNotebook('es'), english=getNotebook('en');
-  for(const note of mapping.notebooks) {
-    const es=spanish.find(n => n.id===note.canonical_id), en=english.find(n => n.id===note.canonical_id);
-    es.sections.forEach((section,index) => assert.deepEqual(quantities(en.sections[index].content),quantities(section.content),`${note.editorial_id}.${section.id}`));
-  }
   for(const row of trace) assert.deepEqual(quantities(row.action_en).sort(),quantities(row.action_es).sort(),`${row.canonical_id}.${row.decision_id}`);
 });

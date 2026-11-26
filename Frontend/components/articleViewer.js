@@ -146,20 +146,6 @@ function createHeader(article, title, titleId) {
   const header = document.createElement("header");
   header.className = "article-viewer__header";
 
-  const masthead = document.createElement("div");
-  masthead.className = "article-viewer__masthead";
-  appendTextElement(masthead, "strong", "", "Digital2Real");
-  appendTextElement(masthead, "span", "", "Notebook");
-  header.appendChild(masthead);
-
-  const noteNumber = getArticleNumber(article);
-  appendTextElement(
-    header,
-    "span",
-    "article-viewer__identity",
-    noteNumber ? `${notebookUi(article.locale).note} #${noteNumber}` : notebookUi(article.locale).note
-  );
-
   const titleBlock = document.createElement("div");
   titleBlock.className = "article-viewer__title-block";
 
@@ -379,11 +365,6 @@ function getIdentifier(value) {
     .replace(/^-|-$/g, "");
 
   return identifier || "notebook-article";
-}
-
-function getArticleNumber(article) {
-  const match = getText(article.id).match(/(\d+)$/);
-  return match ? match[1].padStart(3, "0") : "";
 }
 
 function getText(value, fallback = "") {

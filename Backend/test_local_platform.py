@@ -5,6 +5,7 @@ from unittest import TestCase
 
 from fastapi.testclient import TestClient
 
+from Backend.local_backup import snapshot
 from Backend.local_platform import Principal, create_app, resolve_principal
 from Backend.local_store import LocalStore, SubscriptionSnapshot
 
@@ -104,6 +105,18 @@ class LocalPlatformTest(TestCase):
         self.now = 200
         self.assertEqual(self.client.put(path, json={"version": "v1"}).status_code, 409)
         self.assertEqual(self.client.put(path, json={"version": "v2"}).status_code, 204)
+
+    def test_snapshot_can_be_restored_without_overwriting_existing_data(self):
+        target = self.store.path.with_name("restored.sqlite")
+        self.store.save_bookmark("alice", "EE-0033", "S1")
+        snapshot(self.store.path, target)
+        self.store.save_bookmark("alice", "EE-0033", "S2")
+        restored = LocalStore(target)
+        restored.migrate()
+        self.assertEqual(restored.export("alice")["practice_bookmarks"][0]["stage"], "S1")
+        with self.assertRaises(FileExistsError):
+            snapshot(self.store.path, target)
+        self.assertEqual(restored.export("alice")["practice_bookmarks"][0]["stage"], "S1")
 
     def test_migration_preserves_rows_and_rejects_a_future_schema(self):
         self.store.migrate()

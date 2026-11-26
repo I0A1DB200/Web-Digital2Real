@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - Backend/**
+      - experience-engine/**
       - .github/workflows/backend-local.yml
   push:
     branches: [main]
     paths:
       - Backend/**
+      - experience-engine/**
       - .github/workflows/backend-local.yml
 
 permissions:
@@ -27,3 +29,7 @@ jobs:
       - run: python -m pip install --disable-pip-version-check -r Backend/requirements-local.txt
       - run: python -m pip check
       - run: python -m unittest Backend.test_local_platform -v
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: node --test Backend/local_assessment.test.mjs

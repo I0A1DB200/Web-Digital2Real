@@ -192,3 +192,8 @@
 
   .editorial-hero h1 { font-size: clamp(3.2rem, 14vw, 5rem); }
 }
+
+/* Route/arrow focus announces headings without drawing a control outline around text.
+   Interactive buttons and links keep their existing focus-visible indicators. */
+.app-main[tabindex="-1"]:focus,
+.app-main :is(h1, h2)[tabindex="-1"]:focus { outline: none; }

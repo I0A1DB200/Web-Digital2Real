@@ -13,7 +13,7 @@ import { createAbout } from "./components/about.js";
 import { applyCharacterReveal } from "./components/heroTextReveal.js";
 import { createExperienceWorkspace } from "./products/experience-engine/components/experienceWorkspace.js";
 
-import { parseRoute, formatRoute, parentRoute } from "./navigation/labRoutes.js";
+import { parseRoute, formatRoute, parentRoute, preserveLabViewport } from "./navigation/labRoutes.js";
 import { scrollToContent } from "./components/scrollToContent.js";
 
 const app = document.querySelector("#app");
@@ -74,7 +74,7 @@ function focusSelector() {
 }
 
 function saveNavigationPosition() {
-  if (routing) return;
+  if (routing || window.location.hash !== requestedHash) return;
   window.history.replaceState({ ...window.history.state, d2r: {
     ...window.history.state?.d2r, hash: window.location.hash,
     scrollY: window.scrollY, focus: focusSelector()
@@ -84,25 +84,24 @@ function saveNavigationPosition() {
 function navigateTo(view) {
   if (!validViews.has(view)) return;
   if (view === currentView && formatRoute({ view }) === window.location.hash) {
-    scrollToContent(app.querySelector('main h1'), { focus: true });
+    scrollToContent(app.querySelector('main'), { behavior: 'instant' });
     return;
   }
-  return navigateRoute({ view });
+  return navigateRoute({ view }, { fromPrimary: true });
 }
 
-function navigateRoute(route) {
+function navigateRoute(route, { fromPrimary = false } = {}) {
   const hash = formatRoute(route);
   if (hash === window.location.hash) return;
   saveNavigationPosition();
-  if (hash === formatRoute(parentRoute(activeRoute)) && window.history.state?.d2r?.previousHash === hash) {
+  if (!fromPrimary && hash === formatRoute(parentRoute(activeRoute)) && window.history.state?.d2r?.previousHash === hash) {
     window.history.back();
     return;
   }
   const previousHash = window.location.hash;
-  const preserve = route.environmentId && route.environmentId === activeRoute.environmentId
-    && !route.experienceId && !activeRoute.experienceId;
+  const preserve = preserveLabViewport(activeRoute, route);
   window.history.pushState({ d2r: { hash, previousHash,
-    scrollY: preserve ? window.scrollY : null } }, "", hash);
+    scrollY: fromPrimary ? 0 : preserve ? window.scrollY : null } }, "", hash);
   return renderRoute();
 }
 
@@ -110,16 +109,23 @@ async function renderRoute() {
   if (requestedHash === window.location.hash) return;
   requestedHash = window.location.hash;
   const revision = ++routeRevision;
+  const initialRender = !routeHasRendered;
   const position = !routeHasRendered && parseRoute(window.location.hash).experienceId
     ? null : window.history.state?.d2r;
   routing = true;
   let route = parseRoute(window.location.hash);
+  // Stop old hero/Player smooth scrolling before its content is replaced, including Back/Forward.
+  if (activeRoute.experienceId || !route.environmentId) {
+    window.scrollTo({ top: window.scrollY, left: 0, behavior: 'instant' });
+  }
   renderView(route.view);
   if (route.view === 'experience-lab') {
     await experienceLabReady;
     if (revision !== routeRevision) return;
+    activeSimulatorCatalog.element.hidden = Boolean(route.environmentId);
     try {
       route = await activeExperienceWorkspace.restoreRoute(route);
+      activeSimulatorCatalog.element.hidden = Boolean(route.environmentId);
     } catch {
       if (revision !== routeRevision) return;
       activeRoute = route;
@@ -127,6 +133,11 @@ async function renderRoute() {
       scrollToContent(activeExperienceWorkspace.element.querySelector('[role="alert"] h2'), { focus: true });
       return;
     }
+    if (revision !== routeRevision) return;
+  }
+  if (!route.environmentId || activeRoute.experienceId) {
+    // Align primary views and restored Player exits after the new layout has reached the browser's rendering frame.
+    await new Promise(resolve => window.requestAnimationFrame(resolve));
     if (revision !== routeRevision) return;
   }
   activeRoute = route;
@@ -137,20 +148,20 @@ async function renderRoute() {
   requestedHash = hash;
   const target = route.previewId
     ? app.querySelector('.environment-popover button')
-    : route.view === 'experience-lab' ? activeExperienceWorkspace.element.querySelector('h1, h2')
-      : app.querySelector('main h1, main h2');
+    : route.view === 'experience-lab' && route.environmentId ? activeExperienceWorkspace.element.querySelector('h1, h2')
+      : app.querySelector('main');
   if (Number.isFinite(position?.scrollY)) {
-    if (Math.abs(window.scrollY - position.scrollY) > 1) {
-      window.scrollTo({ top: position.scrollY, left: 0, behavior: 'auto' });
+    if (!route.environmentId || Math.abs(window.scrollY - position.scrollY) > 1) {
+      window.scrollTo({ top: position.scrollY, left: 0, behavior: 'instant' });
     }
   } else if (!route.previewId) {
-    const content = route.view === 'experience-lab'
+    const content = route.view === 'experience-lab' && route.environmentId
       ? activeExperienceWorkspace.element.querySelector('h1, h2') : app.querySelector('main');
-    scrollToContent(content, { behavior: 'auto' });
+    scrollToContent(content, { behavior: 'instant' });
   }
   let previousFocus = null;
   try { previousFocus = position?.focus ? app.querySelector(position.focus) : null; } catch { /* stale focus key */ }
-  const focus = previousFocus ?? target;
+  const focus = initialRender ? null : previousFocus ?? target;
   if (focus && !focus.matches('button, a[href], input, [tabindex]')) focus.setAttribute('tabindex', '-1');
   focus?.focus({ preventScroll: true });
   routing = false;
@@ -260,8 +271,7 @@ function renderExperienceLabView() {
   const simulatorCatalog = activeSimulatorCatalog.element;
   const workspace = createExperienceWorkspace({
     localePreference,
-    onNavigate: navigateRoute,
-    onExperienceChange: experienceId => { simulatorCatalog.hidden = Boolean(experienceId); }
+    onNavigate: navigateRoute
   });
   activeExperienceWorkspace = workspace;
   page.append(simulatorCatalog, workspace.element);

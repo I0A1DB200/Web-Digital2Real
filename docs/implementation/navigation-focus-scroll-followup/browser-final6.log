@@ -1,0 +1,19 @@
+flow chromium 390 es
+positions 132 132
+BACK 132 {'y': 132, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 132, 'focus': None}}, 'calls': [[{'top': 131.59375, 'left': 0, 'behavior': 'instant'}], [{'top': 59.59375, 'left': 0, 'behavior': 'smooth'}], [{'top': 508.140625, 'left': 0, 'behavior': 'smooth'}], [{'top': 338, 'left': 0, 'behavior': 'instant'}], [{'top': 132, 'left': 0, 'behavior': 'instant'}]]}
+flow chromium 390 en
+positions 132 132
+BACK 132 {'y': 132, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 132, 'focus': None}}, 'calls': [[{'top': 131.59375, 'left': 0, 'behavior': 'instant'}], [{'top': 59.59375, 'left': 0, 'behavior': 'smooth'}], [{'top': 486.109375, 'left': 0, 'behavior': 'smooth'}], [{'top': 456, 'left': 0, 'behavior': 'instant'}], [{'top': 132, 'left': 0, 'behavior': 'instant'}]]}
+flow chromium 1280 es
+positions 202 202
+BACK 202 {'y': 202, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 202, 'focus': None}}, 'calls': [[{'top': 202.3125, 'left': 0, 'behavior': 'instant'}], [{'top': 97.984375, 'left': 0, 'behavior': 'smooth'}], [{'top': 416.3125, 'left': 0, 'behavior': 'smooth'}], [{'top': 152, 'left': 0, 'behavior': 'instant'}], [{'top': 202, 'left': 0, 'behavior': 'instant'}]]}
+flow chromium 1280 en
+positions 202 202
+BACK 202 {'y': 202, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 202, 'focus': None}}, 'calls': [[{'top': 202.3125, 'left': 0, 'behavior': 'instant'}], [{'top': 97.984375, 'left': 0, 'behavior': 'smooth'}], [{'top': 416.3125, 'left': 0, 'behavior': 'smooth'}], [{'top': 152, 'left': 0, 'behavior': 'instant'}], [{'top': 202, 'left': 0, 'behavior': 'instant'}]]}
+flow chromium 1440 es
+positions 152 152
+BACK 152 {'y': 152, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 152, 'focus': None}}, 'calls': [[{'top': 621, 'left': 0, 'behavior': 'instant'}], [{'top': 0, 'left': 0, 'behavior': 'instant'}], [{'top': 206.140625, 'left': 0, 'behavior': 'instant'}], [{'top': 99.59375, 'left': 0, 'behavior': 'smooth'}], [{'top': 152, 'left': 0, 'behavior': 'instant'}]]}
+flow chromium 1440 en
+positions 152 152
+BACK 152 {'y': 152, 'state': {'d2r': {'hash': '#experience-lab/env/ENV-004/preview/EXP-ELECTRICAL-CONTACT-037', 'previousHash': '#experience-lab/env/ENV-004', 'scrollY': 152, 'focus': None}}, 'calls': [[{'top': 0, 'left': 0, 'behavior': 'instant'}], [{'top': 0, 'left': 0, 'behavior': 'instant'}], [{'top': 206.140625, 'left': 0, 'behavior': 'instant'}], [{'top': 99.59375, 'left': 0, 'behavior': 'smooth'}], [{'top': 152, 'left': 0, 'behavior': 'instant'}]]}
+{"flows": 6, "engines": ["chromium"], "errors": [], "http_errors": []}

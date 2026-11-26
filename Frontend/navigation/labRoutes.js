@@ -36,3 +36,11 @@ export function parentRoute(route) {
   if (route.previewId || Number.isInteger(route.theorySectionIndex)) return { view: 'experience-lab', environmentId: route.environmentId };
   return { view: 'experience-lab' };
 }
+
+// Preserve the current reading position within an ENV, including opening its previewed Experience.
+export function preserveLabViewport(previous, next) {
+  if (previous.view !== 'experience-lab' || next.view !== 'experience-lab'
+    || !next.environmentId || next.environmentId !== previous.environmentId) return false;
+  return (!next.experienceId && !previous.experienceId)
+    || Boolean(previous.previewId && next.experienceId === previous.previewId);
+}

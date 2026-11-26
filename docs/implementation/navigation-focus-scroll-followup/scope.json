@@ -1,0 +1,7 @@
+{
+  "protected_files": 1542,
+  "changed_protected": [],
+  "original_head": "948c0e86eb23f8020ea5fa736825dbc96f388482",
+  "previous_untracked": "?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.md\n?? docs/implementation/EE-0031-assets-intake/Informe_Implementacion_QA.txt\n?? docs/implementation/EE-0031-assets-intake/browser-results.json\n?? docs/implementation/EE-0031-assets-intake/focused-tests.log\n?? docs/implementation/EE-0031-assets-intake/mobile-voltage-review.png\n?? docs/implementation/EE-0031-assets-intake/shared-tests.log\n?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.docx\n?? docs/implementation/ENV-004/Revision_Tecnica_Transversal_ENV-004.txt\n?? docs/standards/\n",
+  "no_player_experience_environment_notebook_logo_icon_or_simulator_changes": true
+}

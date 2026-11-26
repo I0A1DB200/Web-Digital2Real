@@ -37,6 +37,7 @@ test("catalog recovery retries failed and malformed loads before returning to a 
     });
     await workspace.initialise();
     assert.match(workspace.element.text, /could not be loaded/);
+    assert.doesNotMatch(workspace.element.text, /Network failure|catalog\.json/);
     await findButton(workspace.element, "Back to Experience Lab").click();
     assert.equal(requests, 2);
     assert.match(workspace.element.text, /No environments are available/);
@@ -608,7 +609,7 @@ test("renders safe errors for missing experiences and unsupported contracts", as
 
   await workspace.initialise();
   await assert.rejects(workspace.openExperience("EXP-MISSING-MACHINE-001"));
-  assert.match(workspace.element.text, /not available/);
+  assert.match(workspace.element.text, /The requested experience is unavailable/);
   assert.doesNotMatch(workspace.element.text, /root_cause|scoring|fault_model/);
 });
 

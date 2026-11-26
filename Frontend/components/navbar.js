@@ -43,10 +43,10 @@ export function createNavbar(site, currentView, onNavigate, {
   brand.dataset.view = site.navigation[0]?.view ?? "engineering-notes";
   const logo = documentRef.createElement("img");
   logo.className = "brand__image";
-  logo.src = new URL("../assets/brand/d2r-logo-editorial-header.webp", import.meta.url).href;
+  logo.src = new URL("../assets/brand/d2r-logo-editorial-dark.png", import.meta.url).href;
   logo.alt = "Digital2Real";
-  logo.width = 1892;
-  logo.height = 616;
+  logo.width = 2172;
+  logo.height = 724;
   brand.appendChild(logo);
 
   const menuButton = documentRef.createElement("button");

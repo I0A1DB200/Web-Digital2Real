@@ -923,3 +923,7 @@ El usuario solicita nuevo commit, push, merge y despliegue tras validar ART-004/
 ### 2026-11-26 — EE-0037: producción visual autónoma local
 
 Siete recursos nuevos (cuatro fotografías sintéticas y tres gráficos SVG/PNG deterministas) vinculados a portada, plano y cinco evidencias, ES/EN. Prerrequisito de aislamiento visible antes de D3. Decisiones, evaluación, feedback, rutas, Engine y otras Experiences preservados. Memoria operativa añadida a la guía Factory existente, sin cambiar contratos. Revisión técnica humana y publicación pendientes.
+
+### 2026-11-26 — Sustitución del logotipo editorial de cabecera
+
+Nuevo arte aprobado del usuario `d2r-logo-editorial-dark.png` incorporado sin alterar bytes a `Frontend/assets/brand/` y usado por la cabecera. Medidas intrínsecas adaptadas al PNG; se conservan disposición, accesibilidad, idiomas, navegación y estilos existentes. Los recursos de marca anteriores permanecen como histórico.

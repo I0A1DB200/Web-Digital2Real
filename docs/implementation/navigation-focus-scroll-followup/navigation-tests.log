@@ -1,0 +1,17 @@
+✔ renders data-driven navigation and accessible collapsed menu state (3.008021ms)
+✔ toggles, closes on navigation and preserves the selected data view (0.409068ms)
+✔ closes on outside pointer, Escape and desktop resize (0.381694ms)
+✔ destroy removes document and viewport listeners (0.216959ms)
+✔ locale updates preserve all approved icon artwork (0.308592ms)
+✔ navigation routes round-trip without exposing pedagogical state (2.470107ms)
+✔ malformed and unsupported routes fail to a known parent (0.503677ms)
+✔ content scrolling accounts for current position/navbar and respects visibility and reduced motion (2.150584ms)
+✔ Lab entry starts at page top; only related ENV and preview transitions preserve position (0.256662ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 157.372665

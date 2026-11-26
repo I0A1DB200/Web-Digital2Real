@@ -1,0 +1,24 @@
+D2R — Corrección del foco y scroll de navegación
+26/11/2026 (Europe/Madrid)
+
+Solicitud: eliminar el recuadro azul del titular, abrir Experience Lab arriba y mantener el contexto de preview al entrar en una EE.
+
+Causas verificadas: renderRoute enfocaba automáticamente el H1 inicial con tabindex=-1, susceptible al contorno nativo del navegador mostrado en la captura. La portada Lab alineaba con el encabezado del catálogo inferior, en vez del inicio de la página. La política de preservación excluía preview→Experience y retirar los simuladores solo al abrir el Player alteraba el contenido situado encima del workspace. Con movimiento normal, un scroll suave anterior podía seguir actuando sobre la nueva vista/restauración.
+
+Cambios:
+- app.js: sin foco automático del titular en la carga inicial; la navegación principal enfoca el landmark main, con preventScroll. Lab y otras portadas entran arriba, también al pulsar otra vez su icono. La navegación principal se distingue del regreso por historial.
+- preserveLabViewport(): preserva la posición entre vistas del mismo ENV y al abrir la Experience del preview actual. Las rutas/historial/Headless Player no cambian.
+- Simuladores visibles en la portada Lab; ENV, preview y Experience comparten un origen de workspace estable. La apertura de EE no retira contenido superior adicional ni fuerza subir.
+- Se cancela scroll suave saliente antes de reemplazar contenido. Restauración sobre el frame de layout, con revisión de navegación para evitar carreras; no hay temporizadores arbitrarios. Eventos de scroll obsoletos no sobrescriben otra entrada de historial.
+- CSS limitado a main y encabezados con tabindex=-1: sin contorno informativo nativo. Botones/enlaces mantienen sus indicadores de teclado, incluida la flecha. No se aplica outline:none global.
+- Documentación de arquitectura/changelog y regresión de selección de política de viewport actualizados.
+
+QA:
+598/598 pruebas completas PASS, cero fallos/omitidas. Regresión enfocada Workspace/rutas:45/45 PASS; comprobación adicional rutas/navbar:9/9 PASS. JS e imports afectados resuelven por pruebas nativas; git diff --check PASS.
+Chromium real, movimiento normal, ES/EN ×390×844,1280×900,1440×1100:6 recorridos PASS. Titular sin contorno, controles con foco visible, flecha funcional, Lab en scrollY=0 tras primera entrada y repetición, preview→EE conserva exactamente scroll (132→132 móvil,202→202 a1280,152→152 a1440), sin llamada de scroll durante esa apertura, Back/Forward conserva sesión/evidencia y posición. Cero erroresJS/HTTP y sin desbordamiento horizontal.
+Comprobación adicional móvil con movimiento reducido: PASS; capturas estables del titular completo y portada en reduced-390-es-*.png. Las capturas normales pueden mostrar la animación original del titular/reveal en curso; no se ha eliminado esa animación.
+Safari/iOS no se ejecutó: WebKit no está instalado en este entorno. Se corrige el foco y el estilo nativo que explican la captura, con reglas compatibles de CSS; no se afirma una prueba real en iPhone.
+1542 archivos previamente existentes protegidos, sin cambios. Incluye todas las Experiences, ENV, Notebook, Player, logo, iconos, simuladores y trabajo no versionado previo. Solo seis archivos existentes del alcance y este directorio de evidencia cambiados.
+
+Rama:fix/navigation-focus-scroll-followup.
+Publicación: pendiente de verificar tras commit/PR/merge; el resultado del workflow exacto se registrará en el recibo de entrega. Esta evidencia documenta el QA previo al despliegue.

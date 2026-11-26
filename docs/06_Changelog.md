@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-26 — Delegated engineering delivery
+
+- Govern end-to-end engineering on approved objectives by risk and require evidence before integration.
+- Build and test Pages pull requests. Only main can configure Pages, upload its artifact and deploy.
+
 ## 2026-11-26 — Security and production readiness preparation
 
 - Gate the Pages preview artifact on contract tests, exclude frontend test fixtures and scope write permissions to deployment.

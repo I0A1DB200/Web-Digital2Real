@@ -145,4 +145,15 @@ No se identificaron hallazgos críticos confirmados dentro de las superficies ve
 | 6 · Progress & Certification | Aprobar evaluación y certificar paridad con Engine. Verificar datos versionados, revocación, privacidad y restauración. |
 | 7 · Production Readiness | Ensayar recuperación, incidentes y compra de punta a punta en staging. Revisar ASVS por superficie y aprobar independientemente lanzamiento, fiscalidad y cumplimiento. |
 
-**Git:** rama `feature/d2r-security-production-readiness`, HEAD base `2c33b7c8f0bf97d84f4b052ee661d9b74249ffd1`. El identificador final se entrega con el resultado de Git. La rama queda local para revisión, sin push, despliegue ni merge.
+**Git:** rama `feature/d2r-security-production-readiness`, HEAD base `2c33b7c8f0bf97d84f4b052ee661d9b74249ffd1`. El commit inicial de auditoría fue `1972dde`. La rama se actualizó con main `c68f7c4` y se publicó para revisión en el [PR #18](https://github.com/I0A1DB200/Web-Digital2Real/pull/18).
+
+
+## Seguimiento de la revisión
+
+La actualización conserva la navegación con enlaces directos y la identidad de
+pestaña de main. Pasaron 598 pruebas locales y Chromium verificó enlace directo,
+recarga, historial y visibilidad del footer a 390 px ES y 1440 px EN. El
+workflow ahora valida los PR sin ejecutar los pasos que escriben en Pages.
+La revisión de publicación, settings y ramas protegidas sigue siendo un gate.
+El siguiente trabajo autorizado y los bloqueos se registran en
+[Project Status](../PROJECT_STATUS.md#production-readiness-workstream).

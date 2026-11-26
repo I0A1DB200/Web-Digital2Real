@@ -1,0 +1,143 @@
+{
+  "status": "PASS",
+  "solver": "numpy.linalg.solve; independent 2\u00d72 complex nodal solve",
+  "fixtures": "Sensitivity fixtures only, not measured motor or instrument specifications.",
+  "cases": [
+    {
+      "winding_test_impedance": {
+        "real": 0.1,
+        "imag": 0.2
+      },
+      "meter_test_impedance": 1000000.0,
+      "values": [
+        400.0,
+        199.99996999999544,
+        199.99996999999559
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 0.1,
+        "imag": 0.2
+      },
+      "meter_test_impedance": 10000000.0,
+      "values": [
+        400.0,
+        199.9999969999999,
+        199.999997
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 1.0,
+        "imag": 1.0
+      },
+      "meter_test_impedance": 1000000.0,
+      "values": [
+        400.0,
+        199.99970000022492,
+        199.99970000022506
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 1.0,
+        "imag": 1.0
+      },
+      "meter_test_impedance": 10000000.0,
+      "values": [
+        400.0,
+        199.99997000000224,
+        199.99997000000226
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 5.0,
+        "imag": 20.0
+      },
+      "meter_test_impedance": 1000000.0,
+      "values": [
+        400.0,
+        199.99849992125192,
+        199.99849992125195
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 5.0,
+        "imag": 20.0
+      },
+      "meter_test_impedance": 10000000.0,
+      "values": [
+        400.0,
+        199.99984999921256,
+        199.99984999921247
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 50.0,
+        "imag": 50.0
+      },
+      "meter_test_impedance": 1000000.0,
+      "values": [
+        400.0,
+        199.98500056254224,
+        199.98500056254215
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "winding_test_impedance": {
+        "real": 50.0,
+        "imag": 50.0
+      },
+      "meter_test_impedance": 10000000.0,
+      "values": [
+        400.0,
+        199.9985000056251,
+        199.998500005625
+      ],
+      "rounded": [
+        400,
+        200,
+        200
+      ]
+    }
+  ]
+}

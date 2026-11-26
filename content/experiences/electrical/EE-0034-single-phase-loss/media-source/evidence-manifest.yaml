@@ -45,7 +45,7 @@ families:
     editorial_id: "E3"
     purpose_es: "registro de inspección aislada de polo L3"
     purpose_en: "isolated L3 pole inspection record"
-    data_values_expected_es: "Aguas abajo se registran L1-L2 400 V, L2-L3 0 V y L1-L3 400 V. Este patrón idealizado requiere contrastar medida, carga y cada polo; la comparación localiza la investigación, no demuestra por sí sola un defecto físico. El acta de inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3, contrastado con continuidad y estado mecánico según fabricante. El ensayo aislado confirma la falta de conducción, no una inferencia basada solo en tensiones."
+    data_values_expected_es: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
     earliest_disclosure: "split by acquisition: after D2 and D3; never show later findings early"
     validation: "Must agree with the authored case, measurement points, reference, load and acquisition moment. Static pixels do not prove dynamic recovery."
     safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
@@ -76,13 +76,13 @@ slots:
   -
     asset_id: "ART-004"
     intended_path: "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-04.png"
-    stage_or_decision: "REGISTERED BUT NOT PRESENTED"
-    status: "blocked_registered_hidden"
+    stage_or_decision: "EVID-02-RECORD"
+    status: "user_approved_bounded_simulation_local_preview"
   -
     asset_id: "ART-005"
     intended_path: "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-05.png"
-    stage_or_decision: "REGISTERED BUT NOT PRESENTED"
-    status: "blocked_registered_hidden"
+    stage_or_decision: "EVID-04-RECORD"
+    status: "user_approved_bounded_simulation_local_preview"
   -
     asset_id: "ART-006"
     intended_path: "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-06.png"
@@ -95,4 +95,4 @@ risk_notes:
 
 asset_intake_manifest: "visual-intake.json"
 runtime_registered_images: 6
-runtime_presented_images: 4
+runtime_presented_images: 6

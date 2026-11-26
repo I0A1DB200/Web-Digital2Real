@@ -1,0 +1,5 @@
+AUTORIZACIÓN DE PUBLICACIÓN —26/11/2026
+
+Tras validar ART-004, ART-005 y las condiciones del modelo, el usuario solicita explícitamente «nuevo commit, push, merge y deploy». Se publica el preview con20/20recursos presentados en EE-0034/35/36.
+
+Se mantienen los límites de la simulación, la causa raíz, la evaluación y technical_review/pending para la revisión técnica global. Los informes anteriores conservan el estado histórico sin publicación que tenían al entregarse. Esta autorización se registra sin afirmar resultados de despliegue antes de ejecutarlo.

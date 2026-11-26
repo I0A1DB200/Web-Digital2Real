@@ -55,3 +55,15 @@ Cada fila define el alcance y el borrador de sustancia. Los textos públicos req
 - Asesoría debe clasificar actividad y prestación según automatización y participación humana, verificar IVA, reglas de localización, evidencia de país, B2B/B2C e inversión del sujeto pasivo cuando corresponda, OSS y tratamiento extracomunitario. Configurar impuesto y moneda por SKU, comprador y territorio. No aplicar exención por formación sin fundamento específico. Definir series de facturas y rectificativas, distinguir factura de justificante de pasarela y conservar datos contables por finalidad. [AEAT · IVA y comercio electrónico](https://sede.agenciatributaria.gob.es/Sede/iva/iva-comercio-electronico.html) · [Reglamento de facturación](https://www.boe.es/buscar/act.php?id=BOE-A-2012-14696)
 - Revisar SIF y facturación electrónica B2B por separado; confirmar ámbito, excepciones y régimen territorial. El RDL 43/2026 remite el plazo de adaptación SIF al previsto en la disposición final cuarta, apartado 1.b del RD 238/2026. Validar su cómputo y vigencia con asesoría en la decisión de proveedor. [RDL 43/2026](https://www.boe.es/buscar/doc.php?id=BOE-A-2026-24701)
 - Bloqueos del titular antes del lanzamiento: identidad legal y contactos, servicio y mercados, fiscalidad y emisor, condiciones comerciales, encargado y transferencias, plazos de retención, revisión jurídica ES/EN y aprobación de documentos con fecha de vigencia.
+
+
+## Controles locales verificados
+
+La API de laboratorio sirve la versión efectiva ES/EN de documentos sintéticos
+y registra la versión aceptada una vez por usuario. La exportación está limitada
+al sujeto autorizado. El cierre local bloquea el token existente para ese sujeto
+y elimina marcadores de práctica. Conserva referencias contables y aceptaciones
+para que se decida su retención legal. Antes de habilitar derechos reales se debe
+integrar el IdP, validar la supresión o disociación transversal, cancelar la
+renovación en el proveedor y aplicar la caducidad de copias. Los documentos
+contractuales de producción siguen sujetos a aprobación.

@@ -122,10 +122,10 @@ export function createExperienceWorkspace({
       assertCatalog(catalog);
       loadingCatalog = false;
       if (!destroyed) renderCatalog();
-    } catch (error) {
+    } catch {
       loadingCatalog = false;
       catalog = null;
-      if (!destroyed) renderError(error);
+      if (!destroyed) renderError();
     }
     return controller;
   }
@@ -173,7 +173,7 @@ export function createExperienceWorkspace({
     } catch (error) {
       if (revision !== requestRevision || destroyed) return null;
       loadingExperience = false;
-      renderError(error);
+      renderError();
       throw error;
     }
   }
@@ -371,12 +371,12 @@ export function createExperienceWorkspace({
     show(status);
   }
 
-  function renderError(error) {
+  function renderError() {
     const panel = createElement(documentRef, "div", "experience-workspace__status experience-workspace__status--error");
     panel.setAttribute("role", "alert");
     appendText(documentRef, panel, "span", "experience-workspace__eyebrow", workspaceUi.experienceUnavailable);
     appendText(documentRef, panel, "h2", "", workspaceUi.labUnavailable);
-    appendText(documentRef, panel, "p", "", safeErrorMessage(error, workspaceUi));
+    appendText(documentRef, panel, "p", "", workspaceUi.unavailable);
     const back = createButton(documentRef, workspaceUi.backToLab, "experience-action");
     back.addEventListener("click", () => onNavigate ? onNavigate({ view: "experience-lab" }) : catalog ? renderCatalog() : initialise());
     panel.appendChild(back);
@@ -821,11 +821,6 @@ function localizeCatalogItem(item, requestedLocale) {
   const copy = item.localizedMetadata[normalized]
     ?? item.localizedMetadata[item.defaultLocale];
   return copy ? { ...item, ...copy } : item;
-}
-
-function safeErrorMessage(error, ui = experienceUiCopy()) {
-  if (ui.language === "es" || !error || typeof error.message !== "string") return ui.unavailable;
-  return error.message;
 }
 
 function resolveModuleUrl(location, documentRef) {

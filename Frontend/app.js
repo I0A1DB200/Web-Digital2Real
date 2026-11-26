@@ -3,6 +3,7 @@ import { createLocalePreference } from "./data/locale.js";
 import { createLanguageSelector } from "./components/languageSelector.js";
 import { getNotebook } from "./generated/notebooks/notebook.js";
 
+import { createFooter } from "./components/footer.js";
 import { createNavbar, updateNavigationLabel } from "./components/navbar.js";
 import { createNotebookCarousel } from "./products/notebook/components/notebookCarousel.js";
 import { createNotebookMotorHero } from "./products/notebook/components/notebookMotorHero.js";
@@ -54,6 +55,8 @@ let activeSimulatorViewer = null;
 let activeSimulatorId = null;
 let activeExperienceWorkspace = null;
 let activeNavbar = null;
+let activeFooter = null;
+let activeExperienceId = null;
 let activeNotebookMotorHero = null;
 let experienceLabPage = null;
 let experienceLabReady = null;
@@ -195,7 +198,9 @@ function renderView(view) {
   main.appendChild(renderCurrentView());
   activeNavbar?.destroy?.();
   activeNavbar = createNavbar(site, currentView, navigateTo, { languageControl: languageControl.element });
-  app.replaceChildren(activeNavbar, main);
+  activeFooter = createFooter(site);
+  app.replaceChildren(activeNavbar, main, activeFooter.element);
+  updateFooterVisibility();
   updateNavigationLanguage();
   activeNotebookMotorHero?.initialise(main.querySelector(".notes-section"));
 
@@ -260,7 +265,12 @@ function renderExperienceLabView() {
   const simulatorCatalog = activeSimulatorCatalog.element;
   const workspace = createExperienceWorkspace({
     localePreference,
-    onNavigate: navigateRoute
+    onNavigate: navigateRoute,
+    onExperienceChange: experienceId => {
+      if (activeExperienceWorkspace !== workspace) return;
+      activeExperienceId = experienceId;
+      updateFooterVisibility();
+    }
   });
   activeExperienceWorkspace = workspace;
   page.append(simulatorCatalog, workspace.element);
@@ -274,6 +284,7 @@ function openSimulator(simulator, returnFocusTo) {
   activeSimulatorId = simulator.id;
   activeSimulatorViewer = createSimulatorViewer(simulator, closeSimulatorViewer, returnFocusTo);
   activeSimulatorViewer.activate();
+  updateFooterVisibility();
 }
 
 function closeSimulatorViewer() {
@@ -282,6 +293,11 @@ function closeSimulatorViewer() {
   activeSimulatorViewer = null;
   activeSimulatorId = null;
   viewer.destroy();
+  updateFooterVisibility();
+}
+
+function updateFooterVisibility() {
+  if (activeFooter) activeFooter.element.hidden = Boolean(activeSimulatorId || (currentView === "experience-lab" && activeExperienceId));
 }
 
 export async function openExperience(experienceId) {
@@ -371,6 +387,7 @@ localePreference.subscribe((locale, pending) => {
   }
   app.querySelector('.editorial-hero__arrow')?.setAttribute('aria-label', site.home.notebookLabel);
   updateNavigationLanguage();
+  activeFooter?.update(site);
 });
 
 function updateNavigationLanguage() {

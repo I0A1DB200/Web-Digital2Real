@@ -22,3 +22,8 @@ Frontend/generated/.notebook-build/
 Thumbs.db
 *.swp
 *.tmp
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example

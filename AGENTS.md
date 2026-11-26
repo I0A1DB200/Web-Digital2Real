@@ -332,7 +332,12 @@ Always:
 -   report unexpected repository state;
 -   report any blocker instead of bypassing architecture.
 
-Do not commit or push unless explicitly authorized.
+An approved objective authorizes reversible technical work through local commits,
+pushes to the work branch, and pull requests. Follow the
+[Development Workflow](docs/DEVELOPMENT_WORKFLOW.md) for risk, review and
+integration. Keep the work scoped and continue with authorized dependencies
+after validation. Direct updates to main and protection bypass are prohibited for Codex.
+Escalate high-risk and irreversible actions for explicit approval.
 
 Do not modify image binaries unless explicitly authorized by the task.
 

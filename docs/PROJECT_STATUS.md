@@ -13,6 +13,16 @@
 |---|---|
 | In Progress | Repository physical migration |
 
+## Production readiness workstream
+
+| State | Work, evidence and next gate |
+|---|---|
+| Implemented on work branch | [Security hardening and audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md), reconciled with current main, and delegated delivery in the [Development Workflow](DEVELOPMENT_WORKFLOW.md). |
+| Draft PR under review | [PR #18](https://github.com/I0A1DB200/Web-Digital2Real/pull/18) builds and tests without deploying. Local packaging, all 598 tests, and Chromium routing/footer checks passed. |
+| Next approved work | Check the draft PR build and repair scoped failures. Once review evidence is complete, request maintainer review for the changes to publication policy. |
+| Blocked on settings and evidence | Verify live Pages source and headers, protected-branch checks, and DNS and email in the applicable administration context. Future hardening candidates include verified SHA pinning and dependency inventory. |
+| Blocked on owner decisions | Approve hosting and region, identity and API boundaries, protected content, checkout and accounting, legal publication and launch. See [architecture](01-architecture/D2R-PRODUCTION-READINESS-PROPOSAL.md). |
+
 ## Current Sprint
 
 - [x] **Completed:** Repository architecture audit

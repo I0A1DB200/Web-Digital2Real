@@ -58,7 +58,11 @@ Identify ownership, SSOTs, boundaries, dependencies, risks, and the smallest coh
 
 ### Approval
 
-List the exact files to be created, modified, moved, or removed and the files explicitly not touched. Obtain approval before implementation.
+Record the approved objective and intended file scope. That approval delegates
+reversible technical choices inside the objective and existing architecture.
+Escalate new product scope, high-risk work or a required architecture decision
+before implementing it. Record any evidence-driven scope adjustment that stays
+within the objective.
 
 ### Implementation
 
@@ -66,7 +70,10 @@ Apply only the approved package. Keep structural, behavioral, and visual changes
 
 ### Validation
 
-Run checks proportional to risk. Record results and unresolved issues.
+Run checks proportional to risk. On failure, establish cause, classify it
+using the QA Standard, fix defects within scope and repeat relevant validation.
+Preserve valid assertions and acceptance criteria. Correct outdated expectations
+only with evidence. Record unresolved failures and their impact.
 
 ### Review
 
@@ -74,7 +81,7 @@ Review the diff, architecture compliance, behavior preservation, documentation, 
 
 ### Merge
 
-Merge only reviewed, validated, complete work. The main branch must remain runnable.
+Merge only through the PR policy below. The main branch must remain runnable.
 
 ## 3. Architecture Rules
 
@@ -126,7 +133,7 @@ An ADR records context, decision, consequences, alternatives, status, and supers
 - A package should modify no more than five file paths.
 - Moves count as changed paths.
 - Split larger work into independently runnable packages.
-- Exceed five paths only when correctness requires atomic change and approval explicitly covers the exception.
+- When consistency requires an atomic change across more paths, record why and keep the change within the approved objective.
 
 ### Behavior preservation
 
@@ -268,10 +275,26 @@ main
 
 ### Merge
 
-- Merge only approved work with passing validation.
-- Preserve a clear history of decisions and packages.
-- Do not commit directly to `main` without explicit approval.
-- Do not push, merge, rewrite history, or delete branches without authorization.
+Publish the scoped work branch and open or update its PR autonomously when
+review is the next delivery gate. Base new work on current main and reconcile
+ongoing branches without rewriting published history. Keep PRs with unmet gates
+in draft and state the blocker. Use the highest applicable risk level.
+
+| Risk | Examples | Integration |
+|---|---|---|
+| Low | Visual or accessibility fixes, scoped bugs, noncontractual docs, tests, behavior-preserving refactors, compatible hardening | Eligible for automatic integration through a PR only after mandatory checks pass, scope and regression evidence are reviewed, automated review has no significant unresolved risk, rollback is documented, and branch policy permits it. Missing evidence means review is still required. |
+| Medium | Routing, persistence, APIs, modules, integrations and material security changes | Implement and validate within approved scope. Prepare the PR autonomously. Obtain review by the responsible maintainer or architect and satisfy branch rules before merge. |
+| High | Production identity, critical permissions or secrets, real payments, destructive migration, DNS or mail, foundational contracts, legal publication, commercial releases | Obtain explicit owner approval before execution. Apply relevant architecture and release gates and record the decision. |
+
+Service contracts, new costs, exposure of personal or private information,
+production data deletion, history rewrites, weakening safeguards, commercial
+model changes, pedagogy changes and irreversible architecture require specific
+authorization. Keep main updates on protected PR paths and never bypass controls.
+
+After closing a package, update Project Status with evidence, risk, dependencies
+and next approved action. Continue any unblocked, authorized dependency. Report
+completion, corrections, validation, residual risk, decisions, branch and commit
+concisely. Use repository evidence for details.
 
 ### Main
 

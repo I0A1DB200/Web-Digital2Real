@@ -135,6 +135,11 @@ Do not lower Definition of Done.
                                                   product
   -----------------------------------------------------------------------
 
+When validation fails, record the cause and classification, repair in scope,
+rerun the failing checks and relevant regressions, and record the outcome.
+Keep valid checks and acceptance criteria intact. An unresolved mandatory
+gate blocks integration under the [Development Workflow](../DEVELOPMENT_WORKFLOW.md).
+
 ## 9. Status vocabulary
 
 Use precise status:

@@ -21,6 +21,7 @@ export function getSite(locale) {
   if (locale !== "es") return site;
   return {
     ...site,
+    footer: { ...site.footer, contactLabel: "Contacto" },
     navigation: site.navigation.map(item => ({ ...item, label: ({ "engineering-notes": "Notas de ingeniería", "experience-lab": "Experience Lab", about: "Acerca de" })[item.view] ?? item.label })),
     home: { ...site.home, title: "Aprende automatización industrial a través de la ingeniería real.", notebookLabel: "Ir a Engineering Notebook" },
     engineeringNotes: { title: "Notas de ingeniería" },
@@ -89,6 +90,7 @@ function localizeSimulators(locale) {
 /** @type {SiteData} */
 export const site = {
   name: "Digital2Real",
+  footer: { contactLabel: "Contact", contactEmail: "hello@d2rautomation.com" },
   subtitle: "Industrial Automation Through Real Engineering",
   description:
     "An editorial and educational platform for Industrial Automation, built around real engineering problems.",

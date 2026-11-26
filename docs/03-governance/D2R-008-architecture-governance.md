@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | D2R-008 |
-| Version | 1.0.0 |
+| Version | 1.1.0 |
 | Status | Approved baseline |
 | Owner | Digital2Real Architecture |
 | Scope | Evolution, versioning, approval, deprecation, supersession, and decision records |
@@ -94,7 +94,7 @@ Changes MUST identify affected producers, consumers, stored artifacts, links, an
 2. Classify the change as patch, minor, or major.
 3. Determine whether an RFC, ADR, User Story, or bounded documentation update is required.
 4. List exact files and dependencies.
-5. Obtain the required approval.
+5. Apply the approval and risk gates in the [Development Workflow](../DEVELOPMENT_WORKFLOW.md). Reversible work inside an approved objective and existing architecture is delegated. Changes to frozen meaning, shared contracts or irreversible architecture retain RFC/ADR and owner gates.
 6. Implement the smallest coherent packages.
 7. Validate links, contracts, tests, compatibility, and SSOT ownership.
 8. Record status, version, migration, and remaining decisions.
@@ -119,4 +119,5 @@ Architecture MUST NOT be changed by an isolated implementation package. Code tha
 
 | Version | Change |
 |---|---|
+| 1.1.0 | Recognized delegated reversible engineering under the Development Workflow and preserved architecture approval gates. |
 | 1.0.0 | Established versioning, capability approval, ADR, compatibility, and supersession governance. |

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-26 — Delegated engineering delivery
+
+- Govern end-to-end engineering on approved objectives by risk and require evidence before integration.
+- Build and test Pages pull requests. Only main can configure Pages, upload its artifact and deploy.
+
+## 2026-11-26 — Security and production readiness preparation
+
+- Gate the Pages preview artifact on contract tests, exclude frontend test fixtures and scope write permissions to deployment.
+- Restrict demo API CORS to configured origins and verify the Cobot script integrity without changing its Three.js version.
+- Add a bilingual corporate footer and record production architecture, legal and operations proposals in the [security audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md).
+/^>>>>>>> origin/main$/d
+
 ## 2026-11-26 — Browser tab identity
 
 - Set the website tab title to Digital2Real across views and locales while preserving the SEO description.

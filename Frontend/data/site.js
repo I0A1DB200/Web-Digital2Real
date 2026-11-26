@@ -163,7 +163,7 @@ export const site = {
   },
 
   seo: {
-    title: "Digital2Real — Industrial Automation Through Real Engineering",
+    title: "Digital2Real",
     description:
       "Engineering Notes and practical learning experiences built around real industrial automation problems, diagnostics and reliable control systems."
   },

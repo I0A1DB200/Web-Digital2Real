@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-26 — Browser tab identity
+
+- Set the website tab title to Digital2Real across views and locales while preserving the SEO description.
+- Added the D2R favicon master and browser icon exports under `Frontend/assets/brand`. Versioned the icon URLs to refresh cached assets.
+
 ## 2026-11-17 — Cobot palletizing as a standalone simulator
 
 - Reclassified the supplied Cobot HTML as a simulator, not an EE-0041 Experience. Removed the one-off Engine package, localization and `public.catalog_card` path; genuine Experiences and ENV behavior remain in the Engine.

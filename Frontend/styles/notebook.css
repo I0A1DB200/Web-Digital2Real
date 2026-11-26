@@ -1048,34 +1048,7 @@
   padding: clamp(56px, 7vw, 92px) clamp(24px, 7vw, 88px) 0;
 }
 
-.article-viewer__masthead {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  color: var(--muted);
-  font-size: 0.64rem;
-  font-weight: 720;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.article-viewer__masthead strong {
-  color: var(--ink);
-}
-
-.article-viewer__identity {
-  display: block;
-  margin-top: 18px;
-  color: var(--muted);
-  font-size: 0.68rem;
-  font-weight: 720;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.article-viewer__title-block {
-  margin-top: 34px;
-}
+.article-viewer__title-block { margin: 0; }
 
 .article-viewer__header h1 {
   max-width: 880px;
@@ -1394,10 +1367,6 @@
 
   .article-viewer__header {
     padding-top: 74px;
-  }
-
-  .article-viewer__title-block {
-    margin-top: 28px;
   }
 
   .article-viewer__header h1 {

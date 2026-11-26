@@ -927,3 +927,9 @@ Siete recursos nuevos (cuatro fotografías sintéticas y tres gráficos SVG/PNG 
 ### 2026-11-26 — Sustitución del logotipo editorial de cabecera
 
 Nuevo arte aprobado del usuario `d2r-logo-editorial-dark.png` incorporado sin alterar bytes a `Frontend/assets/brand/` y usado por la cabecera. Medidas intrínsecas adaptadas al PNG; se conservan disposición, accesibilidad, idiomas, navegación y estilos existentes. Los recursos de marca anteriores permanecen como histórico.
+
+### 2026-11-26 — Frontend UX, history navigation and Notebook cleanup
+
+Hero retains its headline, removes introductory paragraphs ES/EN and adds an accessible curved orange Notebook scroll arrow. Article headings start with the technical title, without masthead/Note identity. Canonical Notebook source/ES overlay withdraw exactly article-009–article-033; article-001–article-008 are unchanged. Generated publication rebuilt through official scripts.
+
+Lab navigation uses validated hash routes for catalog/ENV/preview/Experience/Theory, browser Back/Forward, parent actions and geometry-based scrolling below the navbar. Player sessions stay in memory across route transitions; reload restores routes, not command history. Focus/scroll, reduced motion and locale/session continuity are handled in presentation. No EE/ENV YAML, Headless Player, logo, icon, shared image or simulator source changes. Historical textual references to withdrawn Notes are recorded for editorial review. Implementation remains on a review branch, with no merge/deploy.

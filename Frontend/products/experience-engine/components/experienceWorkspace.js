@@ -14,7 +14,8 @@ export function createExperienceWorkspace({
   preferenceStorage = localeStorage(),
   localePreference = null,
   windowRef = globalThis.window,
-  onExperienceChange = () => {}
+  onExperienceChange = () => {},
+  onNavigate = null
 } = {}) {
   if (!documentRef || typeof documentRef.createElement !== "function") {
     throw new Error("Experience Workspace requires a document.");
@@ -42,6 +43,8 @@ export function createExperienceWorkspace({
   let commands = [];
   let languageError = false;
   let currentContent = null;
+  let requestRevision = 0;
+  const sessions = new Map();
 
   function show(content) {
     currentContent = content;
@@ -57,6 +60,7 @@ export function createExperienceWorkspace({
   async function setLanguage(requested) {
     const nextLocale = supportedLocale(requested);
     if (destroyed || switchingLanguage || loadingExperience || loadingCatalog || nextLocale === locale) return false;
+    const languageRevision = requestRevision;
     switchingLanguage = true;
     languageError = false;
     const previousContent = currentContent;
@@ -66,11 +70,11 @@ export function createExperienceWorkspace({
       let nextPlayer = player;
       if (player) {
         const item = catalog.experiences.find(item => item.id === activeExperienceId);
-        const [artifact, module] = await Promise.all([
+        const [artifact, playerModule] = await Promise.all([
           loadJson(`${baseUrl}/${selectArtifactPath(item, nextLocale)}`, fetchImpl),
           importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
         ]);
-        nextPlayer = new module.ExperiencePlayer({ experience: artifact });
+        nextPlayer = new playerModule.ExperiencePlayer({ experience: artifact });
         // Reapply only this session's accepted commands to a detached Player.
         // No UI, completion registration or persistence occurs during replay.
         commands.forEach(([method, argument]) => nextPlayer[method](argument));
@@ -83,7 +87,7 @@ export function createExperienceWorkspace({
         nextNavigator = buildNavigator(nextLocale);
         await nextNavigator.restoreView(view);
       }
-      if (destroyed) { nextNavigator?.destroy(); return false; }
+      if (destroyed || languageRevision !== requestRevision) { nextNavigator?.destroy(); return false; }
       locale = nextLocale;
       workspaceUi = experienceUiCopy(locale);
       if (!localePreference) saveLocale(preferenceStorage, locale);
@@ -97,7 +101,7 @@ export function createExperienceWorkspace({
       return true;
     } catch {
       nextNavigator?.destroy();
-      if (!destroyed) {
+      if (!destroyed && languageRevision === requestRevision) {
         languageError = true;
         switchingLanguage = false;
         if (previousContent) show(previousContent);
@@ -126,47 +130,94 @@ export function createExperienceWorkspace({
     return controller;
   }
 
+  function saveSession() {
+    if (player && activeExperienceId) sessions.set(activeExperienceId, {
+      player, commands, completionRecorded, environmentId: activeEnvironmentId
+    });
+  }
+
   async function openExperience(experienceId, environmentId = null) {
     if (destroyed) throw new Error("Experience Workspace has been destroyed.");
     if (switchingLanguage) return null;
+    const revision = ++requestRevision;
+    saveSession();
     loadingExperience = true;
-
     try {
       if (!catalog) {
         catalog = await loadJson(`${baseUrl}/catalog.json`, fetchImpl);
         assertCatalog(catalog);
       }
-      const item = localizeCatalogItem(
-        catalog.experiences.find(experience => experience.id === experienceId),
-        locale
-      );
+      const item = localizeCatalogItem(catalog.experiences.find(item => item.id === experienceId), locale);
       if (!item) throw new Error(`Experience ${experienceId} is not available.`);
-      onExperienceChange(item.id);
-      renderStatus(workspaceUi.loading(item.title));
-
-      const artifactPath = selectArtifactPath(item, locale);
-      const [artifact, playerModule] = await Promise.all([
-        loadJson(`${baseUrl}/${artifactPath}`, fetchImpl),
-        importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
-      ]);
-      if (typeof playerModule.ExperiencePlayer !== "function") {
-        throw new Error("The generated package does not expose ExperiencePlayer.");
+      const saved = sessions.get(item.id);
+      let nextPlayer = saved?.player;
+      if (!nextPlayer || nextPlayer.getState().experience.language !== locale) {
+        const [artifact, playerModule] = await Promise.all([
+          loadJson(`${baseUrl}/${selectArtifactPath(item, locale)}`, fetchImpl),
+          importPlayer(resolveModuleUrl(`${baseUrl}/player/experiencePlayer.js`, documentRef))
+        ]);
+        nextPlayer = new playerModule.ExperiencePlayer({ experience: artifact });
+        saved?.commands.forEach(([method, arg]) => nextPlayer[method](arg));
       }
-      if (destroyed) return null;
-      player = new playerModule.ExperiencePlayer({ experience: artifact });
-      commands = [];
-      loadingExperience = false;
+      if (destroyed || revision !== requestRevision) return null;
+      player = nextPlayer;
+      commands = saved?.commands ?? [];
       activeExperienceId = item.id;
       activeEnvironmentId = environmentId;
-      completionRecorded = false;
+      completionRecorded = saved?.completionRecorded ?? false;
+      loadingExperience = false;
+      onExperienceChange(item.id);
       renderPlayer();
-      scrollWorkspaceToTop(windowRef);
+      if (!onNavigate) scrollWorkspaceToTop(windowRef, element);
       return player.getState();
     } catch (error) {
+      if (revision !== requestRevision || destroyed) return null;
       loadingExperience = false;
-      if (!destroyed) renderError(error);
+      renderError(error);
       throw error;
     }
+  }
+
+  function experienceRoute(experienceId, environmentId = null) {
+    const item = catalog?.experiences.find(item => item.id === experienceId);
+    if (!item) return { view: "experience-lab" };
+    const environment = catalog.environments.find(env => (!environmentId || env.id === environmentId)
+      && env.hotspots.some(h => h.experienceEditorialId === item.editorialId));
+    return environment ? { view: "experience-lab", environmentId: environment.id, experienceId }
+      : { view: "experience-lab" };
+  }
+
+  async function restoreRoute(route) {
+    if (!catalog || destroyed) return { view: "experience-lab" };
+    if (switchingLanguage) { ++requestRevision; switchingLanguage = false; }
+    const base = { view: "experience-lab" };
+    const environment = catalog.environments.find(env => env.id === route.environmentId);
+    const id = route.experienceId ?? route.previewId;
+    const item = catalog.experiences.find(item => item.id === id);
+    let resolved = environment ? { ...base, environmentId: environment.id } : base;
+    if (environment && item && environment.hotspots.some(h => h.experienceEditorialId === item.editorialId)) {
+      resolved = { ...resolved, ...(route.experienceId ? { experienceId: id } : { previewId: id }) };
+    } else if (environment && Number.isInteger(route.theorySectionIndex)
+      && route.theorySectionIndex >= 0 && route.theorySectionIndex < (environment.theory?.sectionIds?.length ?? 0)) {
+      resolved.theorySectionIndex = route.theorySectionIndex;
+    }
+    if (resolved.experienceId) {
+      await openExperience(resolved.experienceId, resolved.environmentId);
+    } else {
+      const revision = ++requestRevision;
+      loadingExperience = false;
+      saveSession();
+      player = null;
+      activeExperienceId = null;
+      activeEnvironmentId = null;
+      commands = [];
+      onExperienceChange(null);
+      await navigator.restoreView({ environmentId: resolved.environmentId,
+        hotspotId: resolved.previewId ? item.editorialId : null,
+        theorySectionIndex: resolved.theorySectionIndex ?? null });
+      if (!destroyed && revision === requestRevision) show(navigator.element);
+    }
+    return resolved;
   }
 
   function startExperience() {
@@ -174,7 +225,7 @@ export function createExperienceWorkspace({
     player.start();
     commands.push(["start"]);
     renderPlayer();
-    scrollWorkspaceToTop(windowRef);
+    scrollWorkspaceToTop(windowRef, element);
   }
 
   function continueExperience() {
@@ -183,7 +234,7 @@ export function createExperienceWorkspace({
     player.continue();
     commands.push(["continue"]);
     renderPlayer(leavingResult);
-    scrollWorkspaceToTop(windowRef);
+    scrollWorkspaceToTop(windowRef, element);
   }
 
   function selectDecision(decisionId) {
@@ -196,7 +247,7 @@ export function createExperienceWorkspace({
     const advanced = before.currentStage?.id !== after.currentStage?.id
       || before.interaction !== after.interaction
       || before.completionStatus !== after.completionStatus;
-    if (advanced) scrollWorkspaceToTop(windowRef);
+    if (advanced) scrollWorkspaceToTop(windowRef, element);
   }
 
   function restartExperience() {
@@ -205,10 +256,16 @@ export function createExperienceWorkspace({
     commands = [];
     completionRecorded = false;
     renderPlayer();
-    scrollWorkspaceToTop(windowRef);
+    scrollWorkspaceToTop(windowRef, element);
   }
 
   function closeExperience() {
+    if (onNavigate) {
+      return onNavigate(activeEnvironmentId
+        ? { view: "experience-lab", environmentId: activeEnvironmentId, previewId: activeExperienceId }
+        : { view: "experience-lab" });
+    }
+    saveSession();
     player = null;
     commands = [];
     onExperienceChange(null);
@@ -282,7 +339,14 @@ export function createExperienceWorkspace({
       experiences: catalog.experiences.map(item => (
         localizeCatalogItem(item, targetLocale)
       )),
-      onOpenExperience: openExperience,
+      onOpenExperience: (id, env) => onNavigate
+        ? onNavigate(experienceRoute(id, env)) : openExperience(id, env),
+      onNavigate: onNavigate ? view => {
+        const item = catalog.experiences.find(item => item.editorialId === view.hotspotId);
+        return onNavigate({ view: "experience-lab", ...(view.environmentId ? { environmentId: view.environmentId } : {}),
+          ...(item ? { previewId: item.id } : {}),
+          ...(Number.isInteger(view.theorySectionIndex) ? { theorySectionIndex: view.theorySectionIndex } : {}) });
+      } : null,
       onOpenTheory: async environment => {
         const theoryLocale = selectTheoryLocale(environment.theory, targetLocale);
         const theory = await loadJson(`${baseUrl}/${environment.theory.locales[theoryLocale]}`, fetchImpl);
@@ -314,7 +378,7 @@ export function createExperienceWorkspace({
     appendText(documentRef, panel, "h2", "", workspaceUi.labUnavailable);
     appendText(documentRef, panel, "p", "", safeErrorMessage(error, workspaceUi));
     const back = createButton(documentRef, workspaceUi.backToLab, "experience-action");
-    back.addEventListener("click", () => catalog ? renderCatalog() : initialise());
+    back.addEventListener("click", () => onNavigate ? onNavigate({ view: "experience-lab" }) : catalog ? renderCatalog() : initialise());
     panel.appendChild(back);
     show(panel);
   }
@@ -328,6 +392,8 @@ export function createExperienceWorkspace({
   function destroy() {
     releaseLocaleGuard?.();
     destroyed = true;
+    ++requestRevision;
+    sessions.clear();
     navigator?.destroy();
     player = null;
     catalog = null;
@@ -343,6 +409,8 @@ export function createExperienceWorkspace({
     setLanguage,
     getLocale: () => locale,
     openExperience,
+    restoreRoute,
+    experienceRoute,
     getState: () => player?.getState() ?? null,
     destroy
   });

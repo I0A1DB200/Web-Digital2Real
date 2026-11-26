@@ -90,4 +90,4 @@ Then report:
 
 Browser QA is a separate final campaign unless explicitly included.
 
-No commit/push unless authorized.
+Use the [Development Workflow](../../docs/DEVELOPMENT_WORKFLOW.md) for publication and integration of authorized campaign work.

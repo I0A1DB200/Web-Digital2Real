@@ -50,7 +50,7 @@ A task prompt must define:
 -   applicable standards;
 -   validation;
 -   final report;
--   commit/push policy.
+-   Git exceptions, if any, to the [Development Workflow](../docs/DEVELOPMENT_WORKFLOW.md).
 
 ## 5. Execution rule
 

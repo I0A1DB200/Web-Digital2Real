@@ -21,6 +21,7 @@ export function getSite(locale) {
   if (locale !== "es") return site;
   return {
     ...site,
+    footer: { ...site.footer, contactLabel: "Contacto" },
     navigation: site.navigation.map(item => ({ ...item, label: ({ "engineering-notes": "Notas de ingeniería", "experience-lab": "Experience Lab", about: "Acerca de" })[item.view] ?? item.label })),
     home: { ...site.home, title: "Aprende automatización industrial a través de la ingeniería real.", introduction: "Conocimiento práctico de ingeniería basado en problemas industriales reales, sistemas de automatización fiables y la forma de razonar de los ingenieros en planta." },
     engineeringNotes: { title: "Notas de ingeniería", introduction: "Artículos técnicos concisos sobre retos industriales reales, diagnóstico práctico y decisiones de ingeniería aplicables en planta." },
@@ -89,6 +90,7 @@ function localizeSimulators(locale) {
 /** @type {SiteData} */
 export const site = {
   name: "Digital2Real",
+  footer: { contactLabel: "Contact", contactEmail: "hello@d2rautomation.com" },
   subtitle: "Industrial Automation Through Real Engineering",
   description:
     "An editorial and educational platform for Industrial Automation, built around real engineering problems.",

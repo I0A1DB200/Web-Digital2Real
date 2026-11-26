@@ -1,7 +1,28 @@
+from os import getenv
+from pathlib import Path
+from urllib.parse import urlsplit
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+
+
+DEMO_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in getenv("D2R_DEMO_ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+for origin in DEMO_ALLOWED_ORIGINS:
+    parsed = urlsplit(origin)
+    if (
+        parsed.scheme not in {"http", "https"}
+        or not parsed.hostname
+        or parsed.username is not None
+        or "*" in origin
+        or origin != f"{parsed.scheme}://{parsed.netloc}"
+    ):
+        raise ValueError("D2R_DEMO_ALLOWED_ORIGINS must contain exact HTTP(S) origins")
 
 BASE_DIR = Path(__file__).resolve().parent
 MEDIA_DIR = BASE_DIR / "media"
@@ -10,13 +31,12 @@ VIDEO_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title="SCADA Web API")
 
-# CORS: permite que el frontend (otro puerto) llame al backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],      # en local simplificamos
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if DEMO_ALLOWED_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=DEMO_ALLOWED_ORIGINS,
+        allow_methods=["GET"],
+    )
 
 # Servir estáticos (vídeos)
 app.mount("/media", StaticFiles(directory=str(MEDIA_DIR)), name="media")

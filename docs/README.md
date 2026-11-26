@@ -61,6 +61,13 @@ This directory contains current project documentation and the governed architect
 - The Headless Player contract is owned by [`experience-engine/player/`](../experience-engine/player/README.md).
 - Generated frontend artifacts are derived outputs and are not documentation authorities.
 
+## Production readiness
+
+- [Security and production audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md)
+- [Production architecture proposal](01-architecture/D2R-PRODUCTION-READINESS-PROPOSAL.md)
+- [Privacy register and legal preparation](03-governance/D2R-PRODUCTION-PRIVACY.md)
+- [Deployment, monitoring and recovery plan](workflows/D2R-DEPLOYMENT-AND-RECOVERY.md)
+
 ## Legacy and historical documents
 
 Earlier numbered documents, RFCs, specifications, implementation reports, and changelogs remain available for history and their bounded responsibilities. A `Superseded by` header identifies documents whose active responsibility moved into this baseline. Historical statements MUST NOT override a current canonical document.

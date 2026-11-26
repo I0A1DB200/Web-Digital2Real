@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-26 — Security and production readiness preparation
+
+- Gate the Pages preview artifact on contract tests, exclude frontend test fixtures and scope write permissions to deployment.
+- Restrict demo API CORS to configured origins and verify the Cobot script integrity without changing its Three.js version.
+- Add a bilingual corporate footer and record production architecture, legal and operations proposals in the [security audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md).
+
 ## 2026-11-17 — Cobot palletizing as a standalone simulator
 
 - Reclassified the supplied Cobot HTML as a simulator, not an EE-0041 Experience. Removed the one-off Engine package, localization and `public.catalog_card` path; genuine Experiences and ENV behavior remain in the Engine.

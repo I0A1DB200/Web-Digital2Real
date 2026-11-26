@@ -10,6 +10,12 @@
 - Gate the Pages preview artifact on contract tests, exclude frontend test fixtures and scope write permissions to deployment.
 - Restrict demo API CORS to configured origins and verify the Cobot script integrity without changing its Three.js version.
 - Add a bilingual corporate footer and record production architecture, legal and operations proposals in the [security audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md).
+/^>>>>>>> origin/main$/d
+
+## 2026-11-26 — Browser tab identity
+
+- Set the website tab title to Digital2Real across views and locales while preserving the SEO description.
+- Added the D2R favicon master and browser icon exports under `Frontend/assets/brand`. Versioned the icon URLs to refresh cached assets.
 
 ## 2026-11-17 — Cobot palletizing as a standalone simulator
 

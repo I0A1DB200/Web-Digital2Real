@@ -193,18 +193,7 @@ function renderView(view) {
   updateNavigationLanguage();
   activeNotebookMotorHero?.initialise(main.querySelector(".notes-section"));
 
-  document.title = getDocumentTitle();
   initialiseRevealAnimations();
-}
-
-function getDocumentTitle() {
-  const currentItem = site.navigation.find(item => item.view === currentView);
-
-  if (!currentItem || currentView === "engineering-notes") {
-    return site.seo.title;
-  }
-
-  return `${currentItem.label} | ${site.name}`;
 }
 
 function renderEngineeringNotesView() {
@@ -389,7 +378,6 @@ localePreference.subscribe((locale, pending) => {
   app.querySelector('.editorial-hero__arrow')?.setAttribute('aria-label', site.home.notebookLabel);
   updateNavigationLanguage();
   activeFooter?.update(site);
-  document.title = getDocumentTitle();
 });
 
 function updateNavigationLanguage() {

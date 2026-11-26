@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "Installed contact does not match the schematic"
-  summary: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified. Text preview; visual evidence and technical review pending."
+  summary: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified. Preview with simulated teaching media; human technical review pending."
   scenario:
     initial_context: "After maintenance, -KM3's command is enabled only when STOP -S3 is physically pressed. The approved drawing requires NC in series with control. This is a process STOP, not an emergency-stop function; no safety circuit is modified."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-027 (NB-EL-19): Reading control schematics; article-028 (NB-EL-20): Traceability and revision control"
@@ -14,7 +14,7 @@ translations:
         - "Do not bypass STOP, E-STOP, overload relays, RCDs or other protection; do not use PE as a return."
         - "Do not measure resistance on energized circuits or connect an insulation tester to connected electronics."
         - "Intervention only by competent, authorized personnel under the applicable procedure; no LOTO sequences, PPE or regulatory thresholds are invented."
-        - "Text preview: evidence images and technical/editorial review pending; this is not approved material for real operation."
+        - "Preview with synthetic images and teaching graphics; technical/editorial review pending, not approved for real operation."
   learning_objectives:
     OBJ-TRACE-CIRCUIT:
       description: "Notebook — reading path in Engineering Notes: article-020 (NB-EL-12): Contactors, coils and auxiliaries; article-021 (NB-EL-13): Pushbuttons, seal-in and interlocks; article-024 (NB-EL-16): Symbols and conventions; article-025 (NB-EL-17): Designations and cross-references; article-026 (NB-EL-18): Terminals, potentials and numbering; article-027 (NB-EL-19): Reading control schematics; article-028 (NB-EL-20): Traceability and revision control"
@@ -31,7 +31,7 @@ translations:
       situation: "Component documentation identifies 13-14 as NO and 21-22 as NC. Designation, drawing and physical state are compared; NO/NC is not inferred from wire colour or universally assumed without documentation.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-03-DIAGNOSIS:
       title: "Compare hypotheses"
-      situation: "The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "The state record shows 13-14 open at rest and closed when pressed. Permission appearing when S3 is actuated is consistent with NO used where NC is expected; the installed connection still needs confirmation. Interpret a simulated inspection with the installation isolated and absence of voltage verified under the applicable procedure; no real operations or checks are performed.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-04-DIAGNOSIS:
       title: "Confirm the cause and intervene safely"
       situation: "Isolated verification finds NO pair 13-14 accidentally wired instead of NC 21-22. The assembly does not match the approved drawing and gives an inverted permission; it is not evidence of phase loss or a welded contactor.\n\nWhich interpretation or action is justified by the available evidence?"
@@ -100,8 +100,29 @@ translations:
     DEC-05-B: "The proposal “Start only once.” is not supported by this record.  Review: An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3. Choose again without carrying out the proposed option."
     DEC-05-C: "The proposal “Remove the stop contact.” is not supported by this record.  Review: An NO connection in a function requiring NC is confirmed. Wiring is restored to the drawing under an authorized procedure and the maintenance deviation recorded. Correction does not consist of inverting bits, changing HMI text or bypassing S3. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Synthetic images and simulated-record graphics; human review pending. The cover is context, not electrical proof."
+  assets:
+    ART-001:
+      alt: "Simulated cabinet with flat red S3 STOP, green START and KM3 contactor; S3 connections concealed."
+      caption: "Industrial context recreation; rear connections are concealed and the root cause is not established."
+    ART-002:
+      alt: "Intended control extract: S3 NC 21–22 in series with parallel START and KM3 NO auxiliary, A1/A2 coil and Uc return."
+      caption: "Illustrative intended control extract with contacts at rest. Uc unspecified; power and protection outside this extract."
+    ART-003:
+      alt: "Unwired S3 reference specimen: NO 13–14 on the left and NC 21–22 on the right."
+      caption: "Unwired identification reference, not the installed assembly. Pairs follow case documentation; no actual commercial model is asserted."
+    ART-004:
+      alt: "Simulated record: NO 13–14 open and permission 0 at rest; closed and permission 1 when S3 is pressed."
+      caption: "Authored state record. Permission is not a START command; installed wiring still requires confirmation."
+    ART-005:
+      alt: "Simulated S3 inspection: two conductors at NO 13 and 14; NC 21 and 22 entries empty."
+      caption: "Finding from the authored isolated inspection record: NO 13–14 wired where the drawing requires NC 21–22. Synthetic photo does not establish real isolation."
+    ART-006:
+      alt: "S3 after illustrated correction: two conductors at NC 21 and 22; NO 13 and 14 entries empty."
+      caption: "Illustrated correction under the case authorized procedure. Moving the pair alone does not establish functional recovery."
+    ART-007:
+      alt: "Simulated sequence: released, press START, release START, press STOP, release STOP; KM3 0, 1, 1, 0, 0."
+      caption: "Authored simulation derived from intended control: holds after START release, drops with STOP and does not restart on STOP release. Not a real test."
   completion:
     title: "Technical debrief"
     summary: "connection to an NO contact in a function requiring NC according to the design. Important: do not confuse a process STOP with a safety emergency-stop function; this scenario does not modify a safety circuit. After authorized correction in the simulated scenario, STOP and START are checked at rest and when actuated, together with seal-in. The control sequence is validated and documented; one start does not replace full verification."

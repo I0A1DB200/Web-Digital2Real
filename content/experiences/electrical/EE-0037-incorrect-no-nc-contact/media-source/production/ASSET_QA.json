@@ -1,0 +1,102 @@
+{
+  "status": "AGENT_VISUAL_AND_AUTOMATED_PASS_HUMAN_TECHNICAL_PENDING",
+  "assets": [
+    {
+      "asset_id": "ART-001",
+      "sha256": "e335b16761e78bc8662a1082566fff742c65df93b8a4656e10ffd62efbe92e12",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Portada: S3 rojo plano y START verde no iluminados, KM3 coherente; posterior oculto, sin causa ni ratings inventados.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-002",
+      "sha256": "6b0cce2683c75dc81d4195e41a0c52974450dfbcb70231b9b41f6e12e809e584",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Plano: S3 NC21/22 antes de ambos ramales paralelos START y KM3; A1/A2 y retornoUc sin valor numérico. Raster inspeccionado y conectividad real SVG comprobada en8 estados.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-003",
+      "sha256": "f76a591184e6d7543533662abae87f14ae34953d43288b025518fdc73909573a",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Referencia: bloque sin cablear, pares13/14NO y21/22NC legibles; cuatro tornillos presentes y entradas vacías. Corrección localizada1 del original descartado.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-004",
+      "sha256": "c4c3859c5df1094d739cc46012ab23b68a772211e2865f19dd942f74d27195df",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Registro:13/14abierto en reposo,cerrado pulsado; permiso0/1 sin equipararlo a START. No presenta aún conexión instalada.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-005",
+      "sha256": "d144828ba28c263d11974f8bb7dd2c9ed6dd9600402566eda242fead497d4dbe",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Fallo: dos conductores independientes solo13y14;21y22vacíos, sin puente. Adquirido despuésD3, tras prerrequisito visible de aislamiento.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-006",
+      "sha256": "6f7fec7d2360c917e4cd3c4df7afe28bedad8ebe5fe4e0fc3cdf37b905c79b51",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Corrección: mismos dos conductores pasan solo21y22;13y14vacíos; bloque y numeración mantenidos. Adquirido despuésD4, sin afirmar recuperación.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    },
+    {
+      "asset_id": "ART-007",
+      "sha256": "d892fe5032db7003c7d867af8463ea8b771872b0f6823ad7fb98d0a42e1d5e03",
+      "agent_visual_check": "PASS",
+      "automated_check": "PASS",
+      "technical_human_approval": "PENDING",
+      "check": "Verificación: secuencia reposo/STARTpulsado/STARTsuelto/STOPpulsado/STOPsuelto;KM3=0,1,1,0,0. Modelo simulado contrastado con circuito dibujado; adquirido despuésD5.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "file": "production/originals/ART003-rejected-missing-screws.png",
+      "reason": "Terminales sin tornillos cautivos; corregido con ImageGen en un intento; original fuera de runtime."
+    }
+  ]
+}

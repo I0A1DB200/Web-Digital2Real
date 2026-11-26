@@ -919,3 +919,7 @@ El usuario valida ART-004/005 y las condiciones explícitas del modelo calculado
 ### 2026-11-26 — Publicación autorizada de las dos revisiones de EE-0034
 
 El usuario solicita nuevo commit, push, merge y despliegue tras validar ART-004/005 y las condiciones del modelo. Preview con20/20recursos en EE-0034/35/36; revisión técnica global y límites del modelo conservados. Sin cambios de Engine, otras Experiences o configuración de despliegue.
+
+### 2026-11-26 — EE-0037: producción visual autónoma local
+
+Siete recursos nuevos (cuatro fotografías sintéticas y tres gráficos SVG/PNG deterministas) vinculados a portada, plano y cinco evidencias, ES/EN. Prerrequisito de aislamiento visible antes de D3. Decisiones, evaluación, feedback, rutas, Engine y otras Experiences preservados. Memoria operativa añadida a la guía Factory existente, sin cambiar contratos. Revisión técnica humana y publicación pendientes.

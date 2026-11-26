@@ -1,0 +1,10 @@
+EE-0037 — Autorización de publicación posterior a la producción local
+
+El usuario solicita expresamente «commit, push, merge y deploy» después de recibir el informe de QA de EE-0037. Se autoriza publicar el preview mediante el workflow GitHub Pages existente.
+
+Los informes y el ZIP anteriores describen el cierre de la producción local, previo a esta autorización. Sus menciones «sin commit / no publicado» conservan ese estado histórico; no describen la publicación posterior. La revisión técnica humana no se marca artificialmente como aprobada: technical_review/pending permanece. Se publican los siete recursos didácticos simulados con su procedencia y límites visibles.
+
+Alcance: EE-0037, documentación y pruebas asociadas, anexo operativo a la guía Factory y changelog. Trabajo previo no relacionado preservado. EE-0034/35/36 y Engine/Frontend/dependencias sin cambios.
+Validación previa:590/590pruebas;4recorridosES/ENdesktop/mobile;40reintentos;7imágenes cargadas;0erroresHTTP/JS;1381archivos protegidos intactos. SHA delZIP entregado: c627130769af03c276a8d9997f4b57f7d26f654c6ba0d3962c94794ec4fdd291.
+
+El commit/PR, merge y resultado real del despliegue se comunicarán una vez verificados en GitHub. No se afirma éxito antes de observar el workflow del SHA exacto.

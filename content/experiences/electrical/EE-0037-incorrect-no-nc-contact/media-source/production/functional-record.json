@@ -1,0 +1,36 @@
+{
+  "type": "authored_simulation_not_measurement",
+  "initial_KM3": false,
+  "rows": [
+    {
+      "step": 1,
+      "START_pressed": false,
+      "STOP_pressed": false,
+      "KM3_on": false
+    },
+    {
+      "step": 2,
+      "START_pressed": true,
+      "STOP_pressed": false,
+      "KM3_on": true
+    },
+    {
+      "step": 3,
+      "START_pressed": false,
+      "STOP_pressed": false,
+      "KM3_on": true
+    },
+    {
+      "step": 4,
+      "START_pressed": false,
+      "STOP_pressed": true,
+      "KM3_on": false
+    },
+    {
+      "step": 5,
+      "START_pressed": false,
+      "STOP_pressed": false,
+      "KM3_on": false
+    }
+  ]
+}

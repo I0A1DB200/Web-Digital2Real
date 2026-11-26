@@ -1,0 +1,61 @@
+DIGITAL2REAL — INFORME CONSOLIDADO DE PRODUCCIÓN E IMPLEMENTACIÓN / QA
+EE-0037 — El contacto instalado no corresponde al esquema
+Fecha: 26/11/2026 (Europe/Madrid)
+
+RESULTADO
+Producción local e integración realizadas. Siete recursos finales generados: cuatro fotografías sintéticas y tres gráficos deterministas SVG/PNG. AUTOMATED PASS; BROWSER QA PASS para los recorridos ejecutados. Aprobación técnica humana pendiente. No publicado. Sin commit, push, merge ni deploy.
+
+SELECCIÓN Y FUENTE
+EXP-ELECTRICAL-CONTACT-037, editorialEE-0037, fuenteEXP-EL-07; ENV-004, hotspot7de10. Ya existía con5etapas,15opciones,6registros y ningún recurso visual registrado. Es la siguiente candidata trasEE-0036 con recursos; se evita duplicar Experience. ES:El contacto instalado no corresponde al esquema. EN:Installed contact does not match the schematic.
+SSOT: content/experiences/electrical/EE-0037-incorrect-no-nc-contact/experience.yaml, locales y docs/implementation/ENV-004/source-editorial-es.md. Maestro original corroborado con el ZIPENV-004 y extracción. Paquetes históricos localizados sin asumir número: inventario completo de archivos ZIP y miembros en SOURCE/EXPERIENCE/media-source/production/discovery.json dentro del entregable.
+
+APRENDIZAJE
+Analizados paquetesEE0032/33/34/35/36, extracciones, media-source, prompts/fichas/QA disponibles, YAML y correcciones. Estados separados: visual aceptado, técnico aprobado solo en alcance acotado, pendiente, descartado, oculto y publicado. Publicado no equivale a validado técnicamente. SOURCE_REVIEW.md documenta las fuentes y límites.
+No se reutilizan patrones descartados:400/0/400sin modelo, polaridad invertida/retornos flotantes, bypass de retorno, potencia de bobina inconsistente, modo de instrumento erróneo, LED como prueba de recuperación. Se mantienen fotografía industrial sobria, pequeños identificadores, continuidad de hardware y revelación por adquisición.
+
+BASE TÉCNICA
+S3 es PARO de proceso momentáneo, no emergencia. Caso: cableado accidental NO13–14 donde plano requiere NC21–22. Permiso inverso no implica arranque al pulsar PARO; START y auto-mantenimiento siguen siendo necesarios.
+Uc, corriente, potencia, protecciones, modelo instalado y PLC no están especificados. No se inventan valores ni instrumentos. Referencia documental Siemens3SU1150-0AB20-1FA0/3SU1400-1AA10-1FA0 solo para tipología1NO+1NC, no as-built comercial. Página oficial consultada; detalle de bornas procede del caso, sin afirmar comprobación del diagrama de un producto real. FICHA_TECNICA.md incluye URL oficial y lista de conexiones previa al dibujo.
+N1 Uc–S3:21; N2 S3:22–START:13–KM3aux:13; N3 START:14–KM3aux:14–KM3:A1; N4 KM3:A2–retornoUc. Extracto funcional ilustrativo; potencia/protecciones aguas arriba fuera de alcance. S3 siempre en serie con ambos ramales.
+
+RECURSOS Y QA INDIVIDUAL
+ART-001: Portada: S3 rojo plano y START verde no iluminados, KM3 coherente; posterior oculto, sin causa ni ratings inventados. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-002: Plano: S3 NC21/22 antes de ambos ramales paralelos START y KM3; A1/A2 y retornoUc sin valor numérico. Raster inspeccionado y conectividad real SVG comprobada en8 estados. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-003: Referencia: bloque sin cablear, pares13/14NO y21/22NC legibles; cuatro tornillos presentes y entradas vacías. Corrección localizada1 del original descartado. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-004: Registro:13/14abierto en reposo,cerrado pulsado; permiso0/1 sin equipararlo a START. No presenta aún conexión instalada. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-005: Fallo: dos conductores independientes solo13y14;21y22vacíos, sin puente. Adquirido despuésD3, tras prerrequisito visible de aislamiento. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-006: Corrección: mismos dos conductores pasan solo21y22;13y14vacíos; bloque y numeración mantenidos. Adquirido despuésD4, sin afirmar recuperación. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+ART-007: Verificación: secuencia reposo/STARTpulsado/STARTsuelto/STOPpulsado/STOPsuelto;KM3=0,1,1,0,0. Modelo simulado contrastado con circuito dibujado; adquirido despuésD5. Resultado: inspección del agente y comprobaciones automáticas PASS; aprobación humana PENDING.
+
+HERRAMIENTAS Y CORRECCIONES
+ImageGen produjo fotografías reales sintéticas, usando la portada como referencia de continuidad. View_image permitió inspeccionar cada resultado. Único defecto detectado: primerART003 sin tornillos;1corrección localizada, original conservado fuera del runtime. ART006 es edición localizada deART005; sin regenerar el cuadro. Python generaSVG deterministas y connections.json antes de exportar con Inkscape. SVG y raster finales inspeccionados. No software/WatchTable/mediciones inventadas. ASSET_QA.json y GENERATION_RECORD.md registran revisión y procedencia.
+
+INTEGRACIÓN
+PortadaART001; stage1ART002; EVID01ART003; EVID02ART004; EVID03ART005; EVID04ART006; EVID05ART007. No solicitud HTTP temprana de evidencias futuras en los4recorridos. Sin reescritura de decisiones, respuestas correctas, registros ni feedback. Se añade prerrequisito de aislamiento visible antesD3 y se actualiza texto de disponibilidad; humanreview permanece pendiente. Alt y caption ES/EN diferenciados, contrastados exactamente con el manifiesto. Solo fuentes, assets, documentación y pruebas del alcance. No Engine, Frontend, CSS, dependencias, rutas ni otras Experiences modificados.
+Guía reutilizable existente actualizada: docs/03-governance/D2R-FACTORY-001-experience-production-workflow.md, anexo operativo borrador; no se duplican guías ni se alteran contratos o autoridad de aprobación.
+
+PRUEBAS EJECUTADAS
+- node --test scripts/tests/env004Content.test.mjs:24/24PASS.
+- node --test scripts/tests/ee0037Production.test.mjs:3/3PASS (binarios/localización/revelación; grafo reconstruido de líneasSVG en8combinaciones; recuperación coherente con el circuito).
+- node --test:590/590PASS,0fallos,0omitidas. Log: full-suite-final.log.
+- node scripts/package-experience-engine.mjs --mode=preview: generación finalPASS. No es despliegue.
+- Chromium/Playwright:4recorridos completos (ES/EN ×1440desktop/390mobile),5decisiones correctas y10incorrectas porrecorrido,40reintentos totales; feedback visible, etapas/evidencias/completion, zoom, cambio de idioma conservando sesión y resetPASS.10hotspots y7referenciasNotebook resueltas en ambos idiomas.7PNG cargados con dimensiones correctas.0erroresJS/consola/HTTP en recorridos finales. Resultados y28capturas de brief/etapa/resultados en qa/.
+- Inspección de los7recursos finales, hoja de contacto y capturas representativas desktopES/mobileEN realizada. Las capturas full-page pueden mostrar la barra fija en la posición relativa al scroll del navegador; se preserva el diseño existente. No se afirma auditoría universal del Frontend ni validación técnica de campo. Gráficos reducidos en móvil pueden requerir ampliar/zoom para leer etiquetas.
+- Integridad de alcance:1381archivos previamente existentes protegidos comparados porSHA256 sin cambios. EE0034/35/36 y trabajo no versionado previo preservados.15opciones y15entradas de lógica privadas intactas, traducciones de decisiones/feedback/evidenciaES/EN intactas. Estado anterior en scope-check.json.
+- git diff --check:PASS.
+
+INCIDENCIAS Y LÍMITES
+Primera ejecución usó erróneamente --mode preview en vez de --mode=preview y generó catálogo publish local. Provocó timeout inicial de navegador y1falloENV-002 en primera suite(589/590); clasificadoD, artefacto generado equivocado. Comando corregido, preview reconstruido y suite/browser repetidos con éxito. No cambio de producto para ocultar el fallo.
+No bloqueo gráfico crítico persistente detectado. Pendiente revisión humana técnica/editorial de hardware ilustrativo, simbología, traducción y modelo didáctico. Fotos y registros no son ensayo ni mediciones de campo, ni procedimiento de trabajo real. Estados technical_review/pending ypublication_allowed=false preservados. No autorización de publicación inferida de solicitudes antiguas.
+
+ENTREGABLES
+Ficha maestra, fuente canónica antes/después, solicitud de usuario, originales descartados,7assets finales,3SVG,lista de conexiones,modelo funcional,manifest conSHA256/ES/EN/roles,QA individual,logs,miniaturas,capturas y herramientas de reproducción.
+Ruta de integración: /workspace/Web-Digital2Real/content/experiences/electrical/EE-0037-incorrect-no-nc-contact/
+Rama local: work-ee0037-autonomous-production. HEAD conservado a99c05170d1da59f1a166b17ac1b5a32f1a2333d.
+Archivos modificados/creados enumerados en files.json; capturas en qa/; vista conjunta EE0037-contact-sheet.jpg.
+Siguiente candidata: EE-0038 (verificar fuente/estado al iniciar, no producida en esta ejecución).
+
+ZIP VERIFICADO
+Ruta exacta: /workspace/deliverables/EE0037_Codex.zip
+SHA-256: c627130769af03c276a8d9997f4b57f7d26f654c6ba0d3962c94794ec4fdd291
+Tamaño: 18573787 bytes; 79 miembros. CRC y hashes de todos los miembros declarados: PASS. MANIFEST se excluye de su propio inventario; SHA delZIP externo.

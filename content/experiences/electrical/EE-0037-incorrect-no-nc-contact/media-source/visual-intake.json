@@ -1,0 +1,316 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0037",
+  "canonical_id": "EXP-ELECTRICAL-CONTACT-037",
+  "status": "DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA",
+  "supplied_assets": 7,
+  "runtime_registered_assets": 7,
+  "runtime_presented_assets": 7,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "runtime_id": "ART-001",
+      "asset_id": "ART-001",
+      "source_id": "EE-0037_ART-001.png",
+      "canonical_file": "assets/EE-0037_ART-001.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-001.png",
+      "sha256": "e335b16761e78bc8662a1082566fff742c65df93b8a4656e10ffd62efbe92e12",
+      "width": 1536,
+      "height": 1024,
+      "type": "synthetic_photo",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "cover"
+      ],
+      "didactic_role": "cover",
+      "evidence_id": null,
+      "generation_method": "ImageGen; inspected; continuity references",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Cuadro simulado con PARO S3 rojo plano, START verde y contactor KM3; conexiones de S3 ocultas.",
+          "caption": "Recreación industrial del contexto; no muestra el conexionado posterior ni demuestra la causa."
+        },
+        "en": {
+          "alt": "Simulated cabinet with flat red S3 STOP, green START and KM3 contactor; S3 connections concealed.",
+          "caption": "Industrial context recreation; rear connections are concealed and the root cause is not established."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-002",
+      "asset_id": "ART-002",
+      "source_id": "EE-0037_ART-002.png",
+      "canonical_file": "assets/EE-0037_ART-002.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-002.png",
+      "sha256": "6b0cce2683c75dc81d4195e41a0c52974450dfbcb70231b9b41f6e12e809e584",
+      "width": 1600,
+      "height": 1000,
+      "type": "deterministic_technical_graphic",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "STAGE-01-DIAGNOSIS"
+      ],
+      "didactic_role": "STAGE-01-DIAGNOSIS",
+      "evidence_id": null,
+      "generation_method": "Python deterministic SVG; Inkscape raster export",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Extracto previsto de mando: S3 NC 21–22 en serie con START y auxiliar KM3 NO en paralelo, bobina A1/A2 y retorno Uc.",
+          "caption": "Extracto funcional ilustrativo del plano previsto, con contactos en reposo. Uc sin valor asignado; potencia y protecciones fuera del extracto."
+        },
+        "en": {
+          "alt": "Intended control extract: S3 NC 21–22 in series with parallel START and KM3 NO auxiliary, A1/A2 coil and Uc return.",
+          "caption": "Illustrative intended control extract with contacts at rest. Uc unspecified; power and protection outside this extract."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-003",
+      "asset_id": "ART-003",
+      "source_id": "EE-0037_ART-003.png",
+      "canonical_file": "assets/EE-0037_ART-003.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-003.png",
+      "sha256": "f76a591184e6d7543533662abae87f14ae34953d43288b025518fdc73909573a",
+      "width": 1536,
+      "height": 1024,
+      "type": "synthetic_photo",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-01-RECORD"
+      ],
+      "didactic_role": "EVID-01-RECORD",
+      "evidence_id": "EVID-01-RECORD",
+      "generation_method": "ImageGen; inspected; continuity references",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Espécimen de referencia S3 sin cablear: NO 13–14 a la izquierda y NC 21–22 a la derecha.",
+          "caption": "Referencia de identificación sin cableado, no montaje instalado. Pares según la documentación del caso; no se atribuye un modelo comercial real."
+        },
+        "en": {
+          "alt": "Unwired S3 reference specimen: NO 13–14 on the left and NC 21–22 on the right.",
+          "caption": "Unwired identification reference, not the installed assembly. Pairs follow case documentation; no actual commercial model is asserted."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-004",
+      "asset_id": "ART-004",
+      "source_id": "EE-0037_ART-004.png",
+      "canonical_file": "assets/EE-0037_ART-004.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-004.png",
+      "sha256": "c4c3859c5df1094d739cc46012ab23b68a772211e2865f19dd942f74d27195df",
+      "width": 1600,
+      "height": 1000,
+      "type": "deterministic_technical_graphic",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-02-RECORD"
+      ],
+      "didactic_role": "EVID-02-RECORD",
+      "evidence_id": "EVID-02-RECORD",
+      "generation_method": "Python deterministic SVG; Inkscape raster export",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Registro simulado: NO 13–14 abierto y permiso 0 en reposo; cerrado y permiso 1 al pulsar S3.",
+          "caption": "Registro didáctico de estados. Permiso no equivale a orden START; el conexionado instalado aún requiere confirmación."
+        },
+        "en": {
+          "alt": "Simulated record: NO 13–14 open and permission 0 at rest; closed and permission 1 when S3 is pressed.",
+          "caption": "Authored state record. Permission is not a START command; installed wiring still requires confirmation."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-005",
+      "asset_id": "ART-005",
+      "source_id": "EE-0037_ART-005.png",
+      "canonical_file": "assets/EE-0037_ART-005.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-005.png",
+      "sha256": "d144828ba28c263d11974f8bb7dd2c9ed6dd9600402566eda242fead497d4dbe",
+      "width": 1536,
+      "height": 1024,
+      "type": "synthetic_photo",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-03-RECORD"
+      ],
+      "didactic_role": "EVID-03-RECORD",
+      "evidence_id": "EVID-03-RECORD",
+      "generation_method": "ImageGen; inspected; continuity references",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Inspección simulada de S3: dos conductores en NO 13 y 14; entradas NC 21 y 22 vacías.",
+          "caption": "Hallazgo del registro de inspección aislada: NO 13–14 cableado donde el plano requiere NC 21–22. Foto sintética; no acredita aislamiento real."
+        },
+        "en": {
+          "alt": "Simulated S3 inspection: two conductors at NO 13 and 14; NC 21 and 22 entries empty.",
+          "caption": "Finding from the authored isolated inspection record: NO 13–14 wired where the drawing requires NC 21–22. Synthetic photo does not establish real isolation."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-006",
+      "asset_id": "ART-006",
+      "source_id": "EE-0037_ART-006.png",
+      "canonical_file": "assets/EE-0037_ART-006.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-006.png",
+      "sha256": "6f7fec7d2360c917e4cd3c4df7afe28bedad8ebe5fe4e0fc3cdf37b905c79b51",
+      "width": 1536,
+      "height": 1024,
+      "type": "synthetic_photo",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-04-RECORD"
+      ],
+      "didactic_role": "EVID-04-RECORD",
+      "evidence_id": "EVID-04-RECORD",
+      "generation_method": "ImageGen; inspected; continuity references",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "S3 tras corrección ilustrada: dos conductores en NC 21 y 22; entradas NO 13 y 14 vacías.",
+          "caption": "Corrección ilustrada bajo el procedimiento autorizado del caso. El cambio de par no demuestra por sí solo recuperación funcional."
+        },
+        "en": {
+          "alt": "S3 after illustrated correction: two conductors at NC 21 and 22; NO 13 and 14 entries empty.",
+          "caption": "Illustrated correction under the case authorized procedure. Moving the pair alone does not establish functional recovery."
+        }
+      }
+    },
+    {
+      "runtime_id": "ART-007",
+      "asset_id": "ART-007",
+      "source_id": "EE-0037_ART-007.png",
+      "canonical_file": "assets/EE-0037_ART-007.png",
+      "src": "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-007.png",
+      "sha256": "d892fe5032db7003c7d867af8463ea8b771872b0f6823ad7fb98d0a42e1d5e03",
+      "width": 1600,
+      "height": 1000,
+      "type": "deterministic_technical_graphic",
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-05-RECORD"
+      ],
+      "didactic_role": "EVID-05-RECORD",
+      "evidence_id": "EVID-05-RECORD",
+      "generation_method": "Python deterministic SVG; Inkscape raster export",
+      "source": "Canonical EXP-EL-07 and existing EE-0037; master production/FICHA_TECNICA.md",
+      "qa_status": "AUTOMATED_AND_AGENT_VISUAL_CHECKED_HUMAN_PENDING",
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "provenance": "New authored synthetic teaching illustration, not a field record.",
+      "proves": "Depicted authored condition at the disclosed stage.",
+      "does_not_prove": "Real equipment measurements, manufacturer compliance, actual safe isolation or real recovery.",
+      "limitations": [
+        "No installed commercial model, numerical Uc, current or power is established.",
+        "Photographs are synthetic; graphs are authored simulations.",
+        "Human technical approval remains pending."
+      ],
+      "localization": {
+        "es": {
+          "alt": "Secuencia simulada: reposo, pulsar START, soltar START, pulsar STOP y soltar STOP; KM3 0, 1, 1, 0, 0.",
+          "caption": "Registro didáctico simulado derivado del mando previsto: mantiene al soltar START, cae con STOP y no rearranca al soltar STOP. No es un ensayo real."
+        },
+        "en": {
+          "alt": "Simulated sequence: released, press START, release START, press STOP, release STOP; KM3 0, 1, 1, 0, 0.",
+          "caption": "Authored simulation derived from intended control: holds after START release, drops with STOP and does not restart on STOP release. Not a real test."
+        }
+      }
+    }
+  ],
+  "bindings": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003"
+    ],
+    "EVID-02-RECORD": [
+      "ART-004"
+    ],
+    "EVID-03-RECORD": [
+      "ART-005"
+    ],
+    "EVID-04-RECORD": [
+      "ART-006"
+    ],
+    "EVID-05-RECORD": [
+      "ART-007"
+    ]
+  },
+  "no_engine_changes": true,
+  "semantic_changes": "Only media, availability wording and visible isolation prerequisite before D3; decisions, correctness, evidence text, feedback unchanged.",
+  "issues": []
+}

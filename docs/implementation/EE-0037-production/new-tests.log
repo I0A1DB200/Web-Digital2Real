@@ -1,0 +1,11 @@
+✔ EE37 final binaries, localized alt/caption and disclosure agree with manifest (39.493391ms)
+✔ EE37 actual drawn circuit: STOP cuts both START and holding paths under all eight states (4.509487ms)
+✔ EE37 final record follows drawn circuit: holds, stops, no restart after STOP release (2.711796ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 145.716251

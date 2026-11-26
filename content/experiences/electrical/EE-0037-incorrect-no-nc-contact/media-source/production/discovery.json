@@ -1,0 +1,271 @@
+{
+  "archives": [
+    {
+      "path": "/workspace/attachments/806423d3-72c1-4d30-b16f-13c9df452e7d/EE-0026_5_assets.zip",
+      "sha256": "5be662c1a81d8539584729fe4e253a506c3c3ae16b4707997ec92fde906953e7",
+      "files": 6,
+      "images": 5,
+      "entries": [
+        "EE-0026_5_assets/",
+        "EE-0026_5_assets/ASSET-01_S7-1500_original.png",
+        "EE-0026_5_assets/ASSET-02_TIA_MB_CLIENT.png",
+        "EE-0026_5_assets/ASSET-03_Wireshark_FC03.png",
+        "EE-0026_5_assets/ASSET-04_ModScan64.png",
+        "EE-0026_5_assets/ASSET-05_Diagnosis_TIA_ModScan.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/90ab178c-6c01-49f0-ba26-9cb647017bd7/EE-0025_Modbus_RTU_assets_draft.zip",
+      "sha256": "4eeac85c459c0e7d33f521bbcd76af169549550c35225afc377205ff957dde58",
+      "files": 7,
+      "images": 6,
+      "entries": [
+        "EE-0025_assets/ASSET-01-installation-context.svg",
+        "EE-0025_assets/ASSET-02-plc-diagnostic.svg",
+        "EE-0025_assets/ASSET-03-rs485-topology.svg",
+        "EE-0025_assets/ASSET-04-client-serial-settings.svg",
+        "EE-0025_assets/ASSET-05-server-serial-settings.svg",
+        "EE-0025_assets/ASSET-06-recovery-verification.svg",
+        "EE-0025_assets/README.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/a3584494-e68c-4b8d-98e2-c76d5c5ebcbd/EE-0014_Assets_y_Prompt_Codex.zip",
+      "sha256": "cf034fe292d067626a76ae2fb1645522ad03ef57b0fab1b77eed63f1eebd448a",
+      "files": 10,
+      "images": 7,
+      "entries": [
+        "EE-0014/ASSET_AUDIT.md",
+        "EE-0014/EE-0014_ART-001.png",
+        "EE-0014/EE-0014_ART-002.png",
+        "EE-0014/EE-0014_ART-003.png",
+        "EE-0014/EE-0014_ART-004.png",
+        "EE-0014/EE-0014_ART-005.png",
+        "EE-0014/EE-0014_ART-006.png",
+        "EE-0014/EE-0014_ART-007.png",
+        "EE-0014/EE-0014_CODEX_PROMPT.md",
+        "EE-0014/README.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/e9895a7e-76f9-4c48-a6e8-1731cbe47117/EE-0025_6_imagenes_originales.zip",
+      "sha256": "38588960e4166fa5bb8bf5dab7f3275553539ec191c63668377e21ff2a95246b",
+      "files": 6,
+      "images": 6,
+      "entries": [
+        "01_S7-1500_instalacion.png",
+        "02_TIA_Portal_diagnostico.png",
+        "03_RS485_esquema.png",
+        "04_Modbus_cliente_configuracion.png",
+        "05_Modbus_servidor_configuracion.png",
+        "06_Modbus_traza_comunicacion.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/fc1f1801-c67e-44ff-b46b-fef5bb6e728b/EE-0027_EtherCAT_6_assets.zip",
+      "sha256": "c103860c2c8d99bb3319a3ed0b55c676cda72125d1d4b8062732a60853af6dd3",
+      "files": 7,
+      "images": 6,
+      "entries": [
+        "ASSET-01_EVID-01-INCIDENT.png",
+        "ASSET-02_EVID-02-AL-DIAGNOSTIC.png",
+        "ASSET-03_EVID-03-EXPECTED-PDO.png",
+        "ASSET-04_EVID-04-ACTUAL-PDO.png",
+        "ASSET-05_EVID-05-MASTER-DIAGNOSTIC.png",
+        "ASSET-06_EVID-06-RECOVERY.png",
+        "README_ASSET_MAPPING.txt"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/fcc35fdd-9ce0-4392-8fac-9c148f45dadf/EE-0015_Codex_FINAL_6_ART.zip",
+      "sha256": "3e959defde21153c8ed637bf9c710cb42d86f7a7e2efd456edc9b5da845f7608",
+      "files": 9,
+      "images": 6,
+      "entries": [
+        "EE-0015_Codex_FINAL_6_ART/ASSET-MANIFEST.md",
+        "EE-0015_Codex_FINAL_6_ART/CODEX-IMPLEMENTATION-PROMPT.md",
+        "EE-0015_Codex_FINAL_6_ART/README.md",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-001.png",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-002.png",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-004.png",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-005.png",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-006.png",
+        "EE-0015_Codex_FINAL_6_ART/assets/ART-007.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/febeb48d-f499-4b10-9b9d-922ca318ddb2/EE-0029_BACnet_6_evidencias_Codex.zip",
+      "sha256": "69b8d330fe8206097351069a6a7c2b8340c4c9f8c243cd01091f199ade14a8aa",
+      "files": 7,
+      "images": 6,
+      "entries": [
+        "assets/EVID-01-INCIDENT.png",
+        "assets/EVID-02-IP-ADDRESSING.png",
+        "assets/EVID-03-SUBNET-ROUTING.png",
+        "assets/EVID-04-WHOIS-TRAFFIC.png",
+        "assets/EVID-05-BBMD-CONFIG.png",
+        "assets/EVID-06-RECOVERY.png",
+        "README.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/aa76180d-ce6e-4eb0-bfcd-f934bf60748a/EE0033_Codex.zip",
+      "sha256": "323acf01d70c950f71710139de9ac6ad3428e999234c2e6ad65f90b6083fb2d3",
+      "files": 10,
+      "images": 6,
+      "entries": [
+        "README.md",
+        "CODEX_PROMPT.md",
+        "QA_PENDIENTE.md",
+        "FICHA_TECNICA.md",
+        "assets/EE0033_Asset02_Esquema.png",
+        "assets/EE0033_Asset01_Cuadro.png",
+        "assets/EE0033_Asset05_Continuidad_95_96.png",
+        "assets/EE0033_Asset04_Termico_F2.png",
+        "assets/EE0033_Asset03_Pinza_5_6A.png",
+        "assets/EE0033_Asset06_Rodillo_R1.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/5bcbeb48-da83-4dce-bef2-b657f956449c/EE0031_Codex.zip",
+      "sha256": "ac9189cd294a212537229c3f285a26a2f1f8d55004c7622afaf2ff3e8bbcf7cf",
+      "files": 9,
+      "images": 6,
+      "entries": [
+        "README.md",
+        "ASSET_MANIFEST.json",
+        "CODEX_PROMPT.md",
+        "assets/EE-0031_ASSET-01_Cabinet_Layout.png",
+        "assets/EE-0031_ASSET-03_TIA_Diagnostic_Buffer.png",
+        "assets/EE-0031_ASSET-05_Current_Watch_Comparison.png",
+        "assets/EE-0031_ASSET-06_Recovery_Verification.png",
+        "assets/EE-0031_ASSET-04_Voltage_Watch_Comparison.png",
+        "assets/EE-0031_ASSET-02_Electrical_Schematic.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/c2d9b53b-b460-4f9a-874c-c2dc995629ee/D2R_logo_header_Codex.zip",
+      "sha256": "fb870ff629be1871a29398abe31869004d63a11dcfa680042a2cb71246f0d4fa",
+      "files": 6,
+      "images": 2,
+      "entries": [
+        "D2R_logo_header_package/",
+        "D2R_logo_header_package/README.txt",
+        "D2R_logo_header_package/CODEX_IMPLEMENTAR_LOGO_HEADER.md",
+        "D2R_logo_header_package/assets/",
+        "D2R_logo_header_package/assets/d2r-logo-editorial-original.png",
+        "D2R_logo_header_package/assets/d2r-logo-editorial-header.webp"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/9abfbee1-25e0-436c-909f-c2d52c16a44c/D2R_navigation_icons_codex.zip",
+      "sha256": "0d2531ac6680c40b0f2aa575e0c966a183cfee6fcf8f5c2559847a7d009b5b33",
+      "files": 9,
+      "images": 4,
+      "entries": [
+        "D2R_navigation_package/",
+        "D2R_navigation_package/CODEX_IMPLEMENTATION_PROMPT.md",
+        "D2R_navigation_package/assets/",
+        "D2R_navigation_package/assets/about-fingerprint-approved.png",
+        "D2R_navigation_package/assets/user-account-approved-FUTURE.png",
+        "D2R_navigation_package/assets/engineering-notebook-REFERENCE-VERIFY.svg",
+        "D2R_navigation_package/assets/experience-lab-approved.png",
+        "D2R_navigation_package/README.md",
+        "D2R_navigation_package/docs/"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/e776c592-97b4-4f14-b2e8-bc99026dae69/EE0034_Codex.zip",
+      "sha256": "534e87d2381ba9000010ab51e10fdb47f24150e42f58eaa0de71931168e036b0",
+      "files": 10,
+      "images": 6,
+      "entries": [
+        "assets/EE-0034_ASSET-01.png",
+        "assets/EE-0034_ASSET-02.png",
+        "assets/EE-0034_ASSET-03.png",
+        "assets/EE-0034_ASSET-04.png",
+        "assets/EE-0034_ASSET-05.png",
+        "assets/EE-0034_ASSET-06.png",
+        "SOURCE_EE0034.md",
+        "FICHA_TECNICA.md",
+        "QA_PENDIENTE.md",
+        "CODEX_PROMPT.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/81a16f84-a084-46da-8b70-16eef10c6e91/EE0036_Codex.zip",
+      "sha256": "c7ca67514c24002adf6fde6be9a08b92df5952a99687c9041a02ae0eb3e19443",
+      "files": 8,
+      "images": 7,
+      "entries": [
+        "EE-0036/assets/EE-0036_01_cuadro_electrico.png",
+        "EE-0036/assets/EE-0036_02_esquema_electrico.png",
+        "EE-0036/assets/EE-0036_03_watch_table.png",
+        "EE-0036/assets/EE-0036_04_mediciones_tension.png",
+        "EE-0036/assets/EE-0036_05_continuidad_retorno.png",
+        "EE-0036/assets/EE-0036_06_causa_raiz.png",
+        "EE-0036/assets/EE-0036_07_verificacion_reparacion.png",
+        "EE-0036/QA_README.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/deef95f6-7deb-4d71-8fe4-a833b10bcbc7/EE0032_Codex.zip",
+      "sha256": "5b83d0aea3a4e4d78bdb07513969c3d0819a452904e8b916a60d332b1289d20b",
+      "files": 8,
+      "images": 5,
+      "entries": [
+        "CODEX_PROMPT.md",
+        "QA_PENDIENTE.md",
+        "README.md",
+        "assets/01_disposicion_cuadro.png",
+        "assets/02_esquema_multifilar.png",
+        "assets/03_tension_S1_14.png",
+        "assets/04_continuidad_S1.png",
+        "assets/05_tension_bobina_KM1.png"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/34c786d5-bf0c-4af9-8f60-92b3e9e5f4d6/ENV-004_Codex_Implementacion_Completa_Texto.zip",
+      "sha256": "b53608799baae45e5da4be7abbb6025a9a1460713f7a661bc8224f420bc37923",
+      "files": 7,
+      "images": 2,
+      "entries": [
+        "CODEX_PROMPT.md",
+        "README.md",
+        "assets/ENV-004_Cover_Approved.png",
+        "assets/ENV-004_Hotspots_Review_Only.png",
+        "config/ENV-004_Hotspots_10_Map.json",
+        "config/ENV-004_Hotspots_10_Spec.md",
+        "content/ENV-004_Master_Content_ES.md"
+      ]
+    },
+    {
+      "path": "/workspace/attachments/ffbb78e4-256b-4687-b32e-1367ce3e6e3f/EE0035_Codex.zip",
+      "sha256": "3e8a5f9c4015cf87e1f43ea90852ba5a33af4f95b8b70d32439a80eb23fed8bd",
+      "files": 11,
+      "images": 7,
+      "entries": [
+        "assets/EE-0035_ART-001_cuadro.png",
+        "assets/EE-0035_ART-002_esquema.png",
+        "assets/EE-0035_ART-003_disparo.png",
+        "assets/EE-0035_ART-004_tension.png",
+        "assets/EE-0035_ART-005_bobina.png",
+        "assets/EE-0035_ART-006_cortocircuito.png",
+        "assets/EE-0035_ART-007_rearme.png",
+        "SOURCE_EE0035.md",
+        "FICHA_TECNICA.md",
+        "QA_PENDIENTE.md",
+        "CODEX_PROMPT.md"
+      ]
+    }
+  ],
+  "selection": "EE-0037; ENV-004 hotspot 7; existing canonical source EXP-EL-07; visual planned, assets empty",
+  "previous_state": "EE0032/33 visual supplied, technical pending; EE0034/35/36 corrected preview published with bounded approvals, overall technical pending. Published does not mean technically approved.",
+  "rejected_patterns": [
+    "EE34 old 400/0/400 without electrical model",
+    "EE35 reversed source and floating returns",
+    "EE36 bypassed return and inconsistent coil ratings",
+    "Meter mode/contact geometry and LEDs alone are insufficient proof"
+  ],
+  "next": "EE-0038"
+}

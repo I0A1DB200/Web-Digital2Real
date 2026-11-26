@@ -31,7 +31,7 @@ capability_references:
 public:
   slug: "incorrect-no-nc-contact"
   title: "El contacto instalado no corresponde al esquema"
-  summary: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad. Preview con recursos didácticos simulados; revisión técnica humana pendiente."
   estimated_duration: 20
   scenario:
     initial_context: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
@@ -45,7 +45,7 @@ public:
         - "No puentear STOP, E-STOP, relés térmicos, diferenciales ni otras protecciones; no usar PE como retorno."
         - "No medir resistencia en circuitos energizados ni aplicar megóhmetro a electrónica conectada."
         - "Intervención solo por personal competente y autorizado conforme al procedimiento aplicable; no se inventan secuencias LOTO, EPI ni umbrales normativos."
-        - "Preview textual: imágenes de evidencia y revisión técnica/editorial pendientes; no es material aprobado para operación real."
+        - "Preview con imágenes sintéticas y gráficos didácticos; revisión técnica/editorial pendiente, sin aprobación para operación real."
   learning_objectives:
     -
       id: "OBJ-TRACE-CIRCUIT"
@@ -74,7 +74,7 @@ public:
         - "DEC-01-A"
         - "DEC-01-B"
         - "DEC-01-C"
-      media_ids: []
+      media_ids: ["ART-002"]
     -
       id: "STAGE-02-DIAGNOSIS"
       phase: "investigation"
@@ -91,7 +91,7 @@ public:
       id: "STAGE-03-DIAGNOSIS"
       phase: "investigation"
       title: "Contrastar hipótesis"
-      situation: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada. Se interpreta una inspección simulada con instalación aislada y ausencia de tensión verificada según el procedimiento aplicable; no se realizan maniobras ni comprobaciones reales.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-02-RECORD"
       decision_ids:
@@ -140,7 +140,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-01-A"
-      media_ids: []
+      media_ids: ["ART-003"]
     -
       id: "EVID-02-RECORD"
       type: "diagnostic"
@@ -149,7 +149,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-A"
-      media_ids: []
+      media_ids: ["ART-004"]
     -
       id: "EVID-03-RECORD"
       type: "diagnostic"
@@ -158,7 +158,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-03-A"
-      media_ids: []
+      media_ids: ["ART-005"]
     -
       id: "EVID-04-RECORD"
       type: "diagnostic"
@@ -167,7 +167,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-04-B"
-      media_ids: []
+      media_ids: ["ART-006"]
     -
       id: "EVID-05-RECORD"
       type: "functional_test"
@@ -176,7 +176,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-05-A"
-      media_ids: []
+      media_ids: ["ART-007"]
   decisions:
     -
       id: "DEC-01-A"
@@ -239,9 +239,52 @@ public:
       stage_id: "STAGE-05-VERIFY-RECOVERY"
       action: "Eliminar el contacto de paro."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-    representation: "planned"
-    assets: []
+    educational_purpose: "Imágenes sintéticas y gráficos de registros simulados; revisión humana pendiente. La portada es contexto, no prueba eléctrica."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-001.png"
+        alt: "Cuadro simulado con PARO S3 rojo plano, START verde y contactor KM3; conexiones de S3 ocultas."
+        caption: "Recreación industrial del contexto; no muestra el conexionado posterior ni demuestra la causa."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-002.png"
+        alt: "Extracto previsto de mando: S3 NC 21–22 en serie con START y auxiliar KM3 NO en paralelo, bobina A1/A2 y retorno Uc."
+        caption: "Extracto funcional ilustrativo del plano previsto, con contactos en reposo. Uc sin valor asignado; potencia y protecciones fuera del extracto."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-003.png"
+        alt: "Espécimen de referencia S3 sin cablear: NO 13–14 a la izquierda y NC 21–22 a la derecha."
+        caption: "Referencia de identificación sin cableado, no montaje instalado. Pares según la documentación del caso; no se atribuye un modelo comercial real."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-004.png"
+        alt: "Registro simulado: NO 13–14 abierto y permiso 0 en reposo; cerrado y permiso 1 al pulsar S3."
+        caption: "Registro didáctico de estados. Permiso no equivale a orden START; el conexionado instalado aún requiere confirmación."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-005.png"
+        alt: "Inspección simulada de S3: dos conductores en NO 13 y 14; entradas NC 21 y 22 vacías."
+        caption: "Hallazgo del registro de inspección aislada: NO 13–14 cableado donde el plano requiere NC 21–22. Foto sintética; no acredita aislamiento real."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-006.png"
+        alt: "S3 tras corrección ilustrada: dos conductores en NC 21 y 22; entradas NO 13 y 14 vacías."
+        caption: "Corrección ilustrada bajo el procedimiento autorizado del caso. El cambio de par no demuestra por sí solo recuperación funcional."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-007.png"
+        alt: "Secuencia simulada: reposo, pulsar START, soltar START, pulsar STOP y soltar STOP; KM3 0, 1, 1, 0, 0."
+        caption: "Registro didáctico simulado derivado del mando previsto: mantiene al soltar START, cae con STOP y no rearranca al soltar STOP. No es un ensayo real."
+        purpose: "evidence"
   completion:
     title: "Debrief técnico"
     summary: "conexión a contacto NO en una función que requiere NC según diseño. Importante: no confundir STOP de proceso con función de parada de emergencia de seguridad; el escenario no modifica un circuito de seguridad. Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
@@ -503,7 +546,7 @@ private:
     status: "pending"
     evidence:
       - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
-      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Siete recursos didácticos reales registrados y vinculados; master, QA y procedencia en media-source/production. Aprobación técnica humana pendiente."
       - "Traducción EN nueva, pendiente de revisión técnica humana."
       - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
       - "Escenario fuente completo: tras mantenimiento, la orden de marcha de -KM3 solo se habilita cuando se pulsa físicamente el pulsador de PARO -S3. El plano aprobado exige contacto NC en serie con el mando; en el conjunto de contactos instalado se ha cableado accidentalmente el par NO 13-14 en lugar del NC 21-22. Registro de estados: en reposo 13-14 abierto, al pulsar cerrado; el mando interpreta permiso inverso."

@@ -1,13 +1,13 @@
 editorial_id: "EXP-EL-07"
 canonical_id: "EXP-ELECTRICAL-CONTACT-037"
-status: "pending_user_assets_and_technical_review"
+status: "draft_integrated_publication_blocked_human_qa"
 expected_asset_range:
   - 6
   - 7
-supplied_evidence_images: 0
-required_missing_minimum: 6
-optional_additional: 1
-notes: "E1–E4 are four narrative evidence families, not a four-image limit. Seven proposed slots, including optional synthesis; final approved selection may contain six. Intended paths below are specifications only, never runtime src references."
+supplied_evidence_images: 7
+required_missing_minimum: 0
+optional_additional: 0
+notes: "Seven generated resources bound by canonical acquisition; visual-intake.json records provenance, localization, hashes and limits. Four narrative families retained. Human review pending."
 notebooks:
   -
     editorial_id: "NB-EL-12"
@@ -65,61 +65,44 @@ families:
     safety: "Simulated teaching case. Energized readings are records already obtained by authorized personnel. Before invasive inspection, continuity, resistance or insulation testing: de-energization, lockout, verified absence of voltage and stored-energy control under the installation procedure."
 slots:
   -
-    proposed_id: "01-CONTEXT"
-    family: "E1"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/01-context.png"
-    stage_or_decision: "incident"
-    acceptance: "Context only; no electrical claims or root-cause clues."
-    status: "pending_not_registered"
-    expected_text_es: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+    asset_id: "ART-001"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-001.png"
+    stage_or_decision: "cover"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "02-CIRCUIT"
-    family: "E1"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/02-circuit.png"
-    stage_or_decision: "D1"
-    acceptance: "Verified schematic/netlist with source, return, protection and reference state."
-    status: "pending_not_registered"
-    expected_text_es: "Tras mantenimiento, la orden de -KM3 solo se habilita al pulsar físicamente PARO -S3. El plano aprobado requiere NC en serie con mando. Es un STOP de proceso, no una función de parada de emergencia; no se modifica un circuito de seguridad."
+    asset_id: "ART-002"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-002.png"
+    stage_or_decision: "STAGE-01-DIAGNOSIS"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "03-RECORD"
-    family: "E2"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/03-record.png"
-    stage_or_decision: "after D1"
-    acceptance: "Records supporting the next question, with no future findings."
-    status: "pending_not_registered"
-    expected_text_es: "La documentación del componente identifica 13-14 como NO y 21-22 como NC. Se comparan designación, plano y estado físico; no se infiere NO/NC por color de hilo ni se universaliza una designación sin documentación."
+    asset_id: "ART-003"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-003.png"
+    stage_or_decision: "EVID-01-RECORD"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "04-COMPARISON"
-    family: "E3"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/04-comparison.png"
-    stage_or_decision: "after D2"
-    acceptance: "Measurement comparison available before D3; conceal later isolated inspection."
-    status: "pending_not_registered"
-    expected_text_es: "El registro de estados muestra 13-14 abierto en reposo y cerrado al pulsar. La aparición de permiso al accionar S3 concuerda con uso de NO donde se espera NC; todavía debe confirmarse la conexión instalada."
+    asset_id: "ART-004"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-004.png"
+    stage_or_decision: "EVID-02-RECORD"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "05-INSPECTION"
-    family: "E3"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/05-inspection.png"
-    stage_or_decision: "after D3"
-    acceptance: "Isolated inspection/test supporting D4; physical state must match the case."
-    status: "pending_not_registered"
-    expected_text_es: "La verificación aislada encuentra el par NO 13-14 cableado accidentalmente en lugar de NC 21-22. El montaje no corresponde al plano aprobado y produce permiso inverso; no es una prueba de pérdida de fase ni contactor soldado."
+    asset_id: "ART-005"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-005.png"
+    stage_or_decision: "EVID-03-RECORD"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "06-VERIFICATION"
-    family: "E4"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/06-verification.png"
-    stage_or_decision: "after D5"
-    acceptance: "Approved post-repair verification record; no invented thresholds or values."
-    status: "pending_not_registered"
-    expected_text_es: "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+    asset_id: "ART-006"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-006.png"
+    stage_or_decision: "EVID-04-RECORD"
+    status: "draft_bound_human_qa_pending"
   -
-    proposed_id: "07-SYNTHESIS"
-    family: "E4"
-    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/07-synthesis.png"
-    stage_or_decision: "completion"
-    acceptance: "Optional final synthesis; does not establish recovery on its own."
-    status: "pending_not_registered"
-    expected_text_es: "Tras corrección autorizada en el escenario simulado, se comprueban STOP y START en reposo y accionamiento y el auto-mantenimiento. La secuencia de mando queda validada y documentada; un único arranque no sustituye la verificación completa."
+    asset_id: "ART-007"
+    intended_path: "assets/EXP-ELECTRICAL-CONTACT-037/EE-0037_ART-007.png"
+    stage_or_decision: "EVID-05-RECORD"
+    status: "draft_bound_human_qa_pending"
 risk_notes:
   - "All energized readings are simulated or previously obtained by authorized personnel."
   - "Confirm diagram against a verified netlist and source topology before registering any visual."
+
+asset_intake_manifest: "visual-intake.json"
+runtime_registered_images: 7
+runtime_presented_images: 7

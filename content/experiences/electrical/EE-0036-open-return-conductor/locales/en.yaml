@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "An open conductor prevents valve activation"
-  summary: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage. Text preview; visual evidence and technical review pending."
+  summary: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage. Preview with illustrations; publication blocked pending technical review."
   scenario:
     initial_context: "Q0.3 appears active, but -Y3 does not switch. Wiring: Q0.3 → X2:7 → Y3:A1; Y3:A2 → X2:8 → 0V. The learner interprets supplied records, not live measurements. Logical state must be distinguished from effective load voltage."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-009 (NB-EL-01): Voltage, current, resistance and a closed circuit; article-012 (NB-EL-04): Multimeters, clamps and interpreting measurements; article-026 (NB-EL-18): Terminals, potentials and numbering; article-028 (NB-EL-20): Traceability and revision control; article-029 (NB-EL-21): Diagnostic method"
@@ -31,7 +31,7 @@ translations:
       situation: "Watch confirms Q0.3=TRUE. This logical state does not prove electrical-path continuity or voltage between A1 and A2. The load and return are compared using authorized records.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-03-DIAGNOSIS:
       title: "Compare hypotheses"
-      situation: "Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "Under command: Q0.3 output=24 V, A1=24 V and A2=24 V, all relative to cabinet 0 V; A1-A2=0 V. The coil does not receive a 24 V potential difference. Reference and return must be investigated before blaming the program. Before resistance or continuity testing, the installation must be isolated, absence of voltage verified and parallel paths isolated under the authorized procedure. Only simulated records are interpreted here.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-04-DIAGNOSIS:
       title: "Confirm the cause and intervene safely"
       situation: "With the installation isolated and absence of voltage verified, the test records an open circuit between X2:8 and the 0 V bar. The report locates the interrupted return. In this case, 24 V at A2 results from the open return and coupling through the coil.\n\nWhich interpretation or action is justified by the available evidence?"
@@ -100,8 +100,29 @@ translations:
     DEC-05-B: "The proposal “Use PE as the permanent return.” is not supported by this record.  Review: The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return. Choose again without carrying out the proposed option."
     DEC-05-C: "The proposal “Close the incident because Q0.3=TRUE.” is not supported by this record.  Review: The cause is in the 0 V return between X2:8 and the 0 V bar: there is no closed circuit. The conductor is repaired and documented under an authorized procedure; PE cannot be used as a functional return. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Simulated-case illustrations; conflicting assets hidden and human technical review pending."
+  assets:
+    ART-001:
+      alt: "Illustrated PS1, PLC, F24, X2 and Y3 cabinet."
+      caption: "Illustrated PS1, PLC, F24, X2 and Y3 cabinet."
+    ART-002:
+      alt: "Corrected CPU 1214C DC/DC/DC schematic with 3L+/3M DQ supply, Q0.3 through X2:7 to A1 and A2 return exclusively through X2:8 to PS1:0 V."
+      caption: "Corrected CPU 1214C DC/DC/DC schematic with 3L+/3M DQ supply, Q0.3 through X2:7 to A1 and A2 return exclusively through X2:8 to PS1:0 V."
+    ART-003:
+      alt: "Simulated TIA watch table: Y3_Command at Q0.3 is TRUE; this does not establish load voltage."
+      caption: "Simulated TIA watch table: Y3_Command at Q0.3 is TRUE; this does not establish load voltage."
+    ART-004:
+      alt: "Y3 24 VDC / 2.6 W: simulated records A1–PS1:0 V 24.0 V; A2–PS1:0 V 24.0 V; A1–A2 0.0 V."
+      caption: "Y3 24 VDC / 2.6 W: simulated records A1–PS1:0 V 24.0 V; A2–PS1:0 V 24.0 V; A1–A2 0.0 V."
+    ART-005:
+      alt: "Isolated X2:8–PS1:0 V bar test with simulated OL reading; metal contact and Ω mode. Y3: 24 VDC / 2.6 W."
+      caption: "Isolated X2:8–PS1:0 V bar test with simulated OL reading; metal contact and Ω mode. Y3: 24 VDC / 2.6 W."
+    ART-006:
+      alt: "Interrupted blue return in the Y3 24 VDC / 2.6 W case; isolated inspection, confirmed with the continuity report."
+      caption: "Interrupted blue return in the Y3 24 VDC / 2.6 W case; isolated inspection, confirmed with the continuity report."
+    ART-007:
+      alt: "Y3 24 VDC / 2.6 W, repaired return through X2:8 and a simulated 24.0 VDC reading across A1–A2."
+      caption: "Y3 24 VDC / 2.6 W, repaired return through X2:8 and a simulated 24.0 VDC reading across A1–A2."
   completion:
     title: "Technical debrief"
     summary: "interrupted 0 V return between X2:8 and the 0 V bar. The PLC commands, but there is no closed circuit. After authorized return repair in the simulated case, effective A1-A2 voltage under command and correct Y3 actuation are verified. Conductor traceability is retained without changing logic or using PE; Q0.3=TRUE alone does not verify recovery."

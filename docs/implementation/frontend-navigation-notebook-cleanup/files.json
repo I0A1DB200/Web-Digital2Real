@@ -1,0 +1,28 @@
+{
+  "modified": [
+    "Frontend/app.js",
+    "Frontend/components/articleViewer.js",
+    "Frontend/data/site.js",
+    "Frontend/products/experience-engine/components/environmentNavigator.js",
+    "Frontend/products/experience-engine/components/experienceWorkspace.js",
+    "Frontend/products/experience-engine/components/scrollWorkspace.js",
+    "Frontend/products/experience-engine/tests/experienceWorkspace.test.js",
+    "Frontend/styles/layout.css",
+    "Frontend/styles/notebook.css",
+    "content/notebooks/locales/es.js",
+    "content/notebooks/notebook.js",
+    "docs/03_FrontendArchitecture.md",
+    "docs/06_Changelog.md",
+    "docs/VALIDATION_BASELINE.md",
+    "scripts/tests/env004Content.test.mjs",
+    "scripts/tests/notebook-localization.test.mjs"
+  ],
+  "created_runtime": [
+    "Frontend/navigation/labRoutes.js",
+    "Frontend/components/scrollToContent.js"
+  ],
+  "created_tests": [
+    "Frontend/navigation/tests/labRoutes.test.js"
+  ],
+  "created_evidence_directory": "docs/implementation/frontend-navigation-notebook-cleanup"
+}

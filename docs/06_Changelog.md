@@ -897,3 +897,45 @@ Experience Lab y Acerca de usan los PNG aprobados mediante derivados WebP fieles
 ### 2026-11-18 — Icono Notebook definitivo
 
 engineering-notebook.svg aportado directamente por el usuario, integrado sin modificar. Tres iconos de navegación con etiquetas ES/EN, foco y destino conservados. Usuario continúa reservado, sin inventar destino de cuenta.
+
+### 2026-11-26 — EE-0034, EE-0035 y EE-0036: integración local de recursos
+
+20 PNG originales registrados; recursos contradictorios o sin aprobación visual permanecen ocultos. Evidencia visual vinculada por adquisición ES/EN, sin cambios de Engine, respuestas ni rutas. Prerrequisitos visibles antes de ensayos aislados en EE-0035/36. Publicación bloqueada por QA técnico humano; inventarios en cada media-source/visual-intake.json.
+
+### 2026-11-26 — Corrección técnica local de EE-0034/35/36
+
+Esquemas de EE-0035 y EE-0036 corregidos mediante SVG determinista y conexiones auditables. Derivados fotográficos locales corrigen puntas, modos y potencia 2,6 W de la bobina VACF-A-A1-1. Confirmación de causa raíz situada en D4; bobina Y2 antes del cable dañado. Originales conservados, sin cambios de Engine, opciones ni evaluación. EE-0034 ART-004/005 y EE-0036 ART-007 permanecen ocultos; publicación y validación humana pendientes.
+
+### 2026-11-26 — EE-0036: aprobación visual de ART-007
+
+Aprobación visual explícita del usuario registrada por hash de la imagen corregida. Vinculada a EVID-05 tras verificar reparación y actuación funcional en D5, con textos ES/EN. Siete recursos presentados en preview; technical_review/pending y publicación bloqueada se conservan. Sin cambios binarios, Engine ni despliegue.
+
+### 2026-11-26 — Publicación autorizada del preview EE-0034/35/36
+
+El usuario autoriza commit, push, merge y despliegue del preview actual con18recursos visibles. Se preservan las dos imágenes ocultas de EE-0034, el estado de revisión técnica pendiente y el workflow de Pages existente. La autorización de publicar no equivale a aprobación técnica.
+
+### 2026-11-26 — EE-0034: revisión de los dos recursos pendientes
+
+ART-004 corregida a400/200/200V para un modelo calculado explícito de motor parado, estrella equilibrada y medida de alta impedancia; no son medidas reales. ART-005 incorpora cierre mecánico de prueba mediante Control Kit documentado para3RT20 S00 y conservaΩ/0,2/0,2/OL. Recursos habilitados solo en preview local trasD2 yD4; evaluación y causa raíz conservadas. Aprobación de condiciones y derivados, revisión técnica y nueva publicación pendientes.
+
+### 2026-11-26 — EE-0034: validación de las dos revisiones
+
+El usuario valida ART-004/005 y las condiciones explícitas del modelo calculado y estado de ensayo. Aprobación limitada a esa simulación y vinculada a hashes de los dos PNG y del cálculo; no cambia la revisión técnica global ni publica nuevos cambios.
+
+### 2026-11-26 — Publicación autorizada de las dos revisiones de EE-0034
+
+El usuario solicita nuevo commit, push, merge y despliegue tras validar ART-004/005 y las condiciones del modelo. Preview con20/20recursos en EE-0034/35/36; revisión técnica global y límites del modelo conservados. Sin cambios de Engine, otras Experiences o configuración de despliegue.
+
+### 2026-11-26 — EE-0037: producción visual autónoma local
+
+Siete recursos nuevos (cuatro fotografías sintéticas y tres gráficos SVG/PNG deterministas) vinculados a portada, plano y cinco evidencias, ES/EN. Prerrequisito de aislamiento visible antes de D3. Decisiones, evaluación, feedback, rutas, Engine y otras Experiences preservados. Memoria operativa añadida a la guía Factory existente, sin cambiar contratos. Revisión técnica humana y publicación pendientes.
+
+### 2026-11-26 — Sustitución del logotipo editorial de cabecera
+
+Nuevo arte aprobado del usuario `d2r-logo-editorial-dark.png` incorporado sin alterar bytes a `Frontend/assets/brand/` y usado por la cabecera. Medidas intrínsecas adaptadas al PNG; se conservan disposición, accesibilidad, idiomas, navegación y estilos existentes. Los recursos de marca anteriores permanecen como histórico.
+
+### 2026-11-26 — Frontend UX, history navigation and Notebook cleanup
+
+Hero retains its headline, removes introductory paragraphs ES/EN and adds an accessible curved orange Notebook scroll arrow. Article headings start with the technical title, without masthead/Note identity. Canonical Notebook source/ES overlay withdraw exactly article-009–article-033; article-001–article-008 are unchanged. Generated publication rebuilt through official scripts.
+
+Lab navigation uses validated hash routes for catalog/ENV/preview/Experience/Theory, browser Back/Forward, parent actions and geometry-based scrolling below the navbar. Player sessions stay in memory across route transitions; reload restores routes, not command history. Focus/scroll, reduced motion and locale/session continuity are handled in presentation. No EE/ENV YAML, Headless Player, logo, icon, shared image or simulator source changes. Historical textual references to withdrawn Notes are recorded for editorial review. Implementation remains on a review branch, with no merge/deploy.

@@ -1,0 +1,242 @@
+ACTUALIZACIÓN VIGENTE — 26/11/2026
+ART-007 de EE-0036 aprobada visualmente por el usuario y habilitada tras D5 en preview. Total actual: 18 visibles y 2 ocultos (EE-0034 ART-004/005). QA posterior: 38 pruebas y 4 recorridos completos, PASS. Detalle: Aprobacion_Visual_ART007_QA.txt. La validación técnica y publicación siguen pendientes. El informe siguiente conserva el estado anterior a esta aprobación.
+
+DIGITAL2REAL — CORRECCIÓN TÉCNICA Y CIERRE DE QA
+EE-0034 / EE-0035 / EE-0036 — ENV-004
+26/11/2026 — Europe/Madrid
+ESTADO: CORRECCIONES LOCALES IMPLEMENTADAS; QA FUNCIONAL PASS; CIERRE TÉCNICO Y PUBLICACIÓN BLOQUEADOS.
+
+1. ESTADO INICIAL Y FINAL
+Rama: work-ee0034-0036-assets; base 2c33b7c8f0bf97d84f4b052ee661d9b74249ffd1.
+Inicial:20 assets registrados,14 visibles,6 ocultos. Final:20 registrados,17 visibles,3 ocultos.
+EE-0034:4 visibles de6; EE-0035:7 de7; EE-0036:6 de7.
+Se modifican10 PNG:3 en EE-0034,2 en EE-0035 y5 en EE-0036. Los20 originales se conservan byte a byte en media-source/originals/.
+No hay commit, push, merge ni deploy. La producción no cambia.
+
+2. ALCANCE E INVARIANTES
+Clasificación EXPERIENCE / CONTENT. Cambios sobre las tres bases existentes, sin reconstrucción.
+Se mantienen IDs, ART/EVID, rutas, hotspots, ENV-004,5 decisiones, 15 opciones, respuestas correctas, evaluación, objetivos y causas raíz, traducciones ES/EN y referencias Notebook.
+Cambian exclusivamente los textos de evidencia afectados, su ubicación de presentación, prerrequisitos y metadatos/derivados asociados. No se alteran next_stage, is_correct, puntuación, efectos de seguridad ni critical_path.
+Hashes y comparación estructural verifican decisiones y lógica. Snapshot previo en media-source/corrections-before-experience.yaml; se usa solo como trazabilidad, no como nueva Experience activa.
+Engine, Frontend, renderers,CSS,Notebook,navegación,otras Experiences,dependencias y despliegue no se han editado. Frontend/generated se regenera solo como salida local ignorada.
+Los 1246 archivos existentes fuera del alcance permitido conservan sus hashes; incluye documentos preexistentes sin versionar y el informe anterior.
+
+3. CORRECCIONES Y COMPARATIVA INDIVIDUAL DE LOS20 ASSETS
+
+EE-0034 / ART-001 — VISIBLE EN PREVIEW
+Orientación del cuadro conservada; Q2/KM2/F2/M2 y PE visibles. Trazabilidad física completa, referencias y ajustes no certificados. No hay medición en este recurso.
+Método: Original sin cambios.
+Momento: cover
+SHA original: 017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41
+SHA actual: 017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0034 / ART-002 — VISIBLE EN PREVIEW
+Esquema original conservado: fuerza Q2–KM2–F2–M2, mando L1–N 230 VAC y PE representados. No consta placa completa de M2, neutro real ni coordinación; no se inventan referencias o calibres.
+Método: Original sin cambios.
+Momento: STAGE-01-DIAGNOSIS
+SHA original: de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6
+SHA actual: de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0034 / ART-003 — VISIBLE EN PREVIEW
+Puntas corregidas en metal para L1–L2/L2–L3/L3–L1 y referencia gráfica F2 restaurada al texto original. 400/401/399 V conservados como registro simulado aguas arriba; no prueban estado de polos.
+Método: Derivado corregido; original preservado.
+Momento: EVID-01-RECORD
+SHA original: 2ace746bdafd82ccc5a0ec18dec37b9be1839c7e741d1d3516f4c97ba2fbe3e3
+SHA actual: dccc1b130ad67a113a5c6887a965344f0bcf14deebd94eac59c2a5b165f877d7
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0034 / ART-004 — OCULTO
+Sin edición ni nuevos valores. 400/0/400 V no se puede justificar a partir del único dato de polo L3 abierto con motor conectado. Falta modelo y condiciones de adquisición. Oculta.
+Método: Original sin cambios.
+Momento: Registrado sin presentación.
+SHA original: f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1
+SHA actual: f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1
+QA técnico individual: BLOCKED.
+
+EE-0034 / ART-005 — OCULTO
+Selector en Ω y ambas puntas en tornillos de cada polo corregidos. 0,2/0,2/OL conservados como valores ilustrativos. La imagen no permite validar el mecanismo en cierre de prueba ni su procedimiento para la referencia exacta; sigue oculta.
+Método: Derivado corregido; original preservado.
+Momento: Registrado sin presentación.
+SHA original: 0b1e3e46735c0f6285c16fb4b00d699f747c6916c65805b50879f87724cfdef2
+SHA actual: 23615db817d24ea001157c04252b25da0c104556f51016be233668d7cbae1853
+QA técnico individual: BLOCKED.
+
+EE-0034 / ART-006 — VISIBLE EN PREVIEW
+También se corrigieron las seis puntas de la verificación para contacto metálico en 2T1/4T2/6T3. Se conservan 400/401/399 V y V~. Solo se revela tras D5, junto al acta de arranque y protección; no prueba recuperación completa por sí sola.
+Método: Derivado corregido; original preservado.
+Momento: EVID-05-RECORD
+SHA original: 9032de1cf2eea2a949ad949eef3851cb9081136305fb615f96f4d6b22496f4e2
+SHA actual: 7158df6df37112efdac553e6b5b3562d8b9774b7baa472e90360db072bb5ec4e
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-001 — VISIBLE EN PREVIEW
+Original conservado como contexto: canal2 en rojo, otros en verde. Referencias contrastadas a nivel de familia. La geometría generada de bornes/selector/LED adicional ON y Q1 debe revisarse contra el equipo exacto.
+Método: Original sin cambios.
+Momento: cover
+SHA original: 36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e
+SHA actual: 36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-002 — VISIBLE EN PREVIEW
+Esquema corregido con SVG determinista. Polaridad correcta, cuatro salidas protegidas, retorno directo a PS1, K1 NO en serie con Y2. No se dibuja un defecto antes del diagnóstico ni se inventa la bobina de mando K1. Lista y dibujo pasan conectividad.
+Método: Derivado corregido; original preservado.
+Momento: STAGE-01-DIAGNOSIS
+SHA original: 62015c51b5991369be8871be0bb89663e92c52191c4d03a3e7328ecb12f94630
+SHA actual: 3448d9e4bedf4861c8f5f594729836a2fd9fad0733896f9599bc088b754c489a
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-003 — VISIBLE EN PREVIEW
+Original conservado. Estado estático: canal2 rojo y otros verdes, compatible con desconexión de rama; no permite inferir corriente de fallo, historial ni momento de rearme. Geometría física pendiente de cotejo final.
+Método: Original sin cambios.
+Momento: EVID-01-RECORD
+SHA original: 2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895
+SHA actual: 2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-004 — VISIBLE EN PREVIEW
+Original conservado: 24,1 VDC, selector VDC, puntas en positivos/negativos metálicos de PS1 y canal2 rojo. No es una lectura de salida F24.2 ni demuestra corriente de cortocircuito. Identidad comercial y geometría final requieren revisión humana.
+Método: Original sin cambios.
+Momento: EVID-01-RECORD
+SHA original: c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46
+SHA actual: c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-005 — VISIBLE EN PREVIEW
+Derivado local: terminales de alimentación marcados2/1 y PE separado sin puntas, selector Ω y 222 Ω conservados. Pinout y potencia contrastados con Festo; geometría de foto sintética requiere aprobación humana. El cálculo nominal no certifica resistencia real ni tolerancia.
+Método: Derivado corregido; original preservado.
+Momento: EVID-03-RECORD
+SHA original: e7001447022846943162e28b9dcbfad255c58b845541015d2676cb793fc216e4
+SHA actual: 845af1ad8908d6eeea2c1662a11a41c388805a6ddb8d06113fcad240fb4731ac
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-006 — VISIBLE EN PREVIEW
+Fotografía conservada. Aislamiento rojo/azul dañado y contacto visible. La asignación al tramo aguas abajo de K1 procede del acta del caso; la foto no muestra sus dos extremos. Se presenta después de la comprobación de bobina, en contexto de D4.
+Método: Original sin cambios.
+Momento: STAGE-04-DIAGNOSIS
+SHA original: 9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5
+SHA actual: 9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0035 / ART-007 — VISIBLE EN PREVIEW
+Original conservado: cuatro indicadores verdes. El texto exige reparación de cable/protección mecánica y verificación funcional/selectividad. No se equipara rearme con movimiento de Y2 ni se aportan tiempos de campo.
+Método: Original sin cambios.
+Momento: EVID-05-RECORD
+SHA original: 072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0
+SHA actual: 072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-001 — VISIBLE EN PREVIEW
+Original conservado; la placa VACF-A-A1-1 24 VDC/2,6 W fija la especificación nominal y se ha contrastado con Festo. Referencias, conexión física de DQ y fidelidad de envolventes generadas requieren aprobación técnica.
+Método: Original sin cambios.
+Momento: cover
+SHA original: 597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d
+SHA actual: 597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-002 — VISIBLE EN PREVIEW
+Esquema SVG corregido: fuente y PE, protección, L+/M,3L+/3M, salidas independientes y A2→X2:8→PS1:0 V. Se conserva supresión antiparalela con cátodo A1. No hay cargas inventadas en bornas auxiliares. Lista y dibujo pasan comprobaciones y prueba negativa de bypass.
+Método: Derivado corregido; original preservado.
+Momento: STAGE-01-DIAGNOSIS
+SHA original: 46f9ac3081e3e3c7fde00316498c8110e2017e7b1ea52e606c7a8a59e125bff5
+SHA actual: 484e0d9e327a8d6a122eac39f9908c3526c087e3fe067d3e13fc19159e537780
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-003 — VISIBLE EN PREVIEW
+Watch Table original conservada: Q0.3=TRUE, sin añadir feedback ni forzado. Es recreación TIA V17, no captura real. Estados auxiliares no prueban la alimentación física de Y3.
+Método: Original sin cambios.
+Momento: EVID-01-RECORD
+SHA original: 33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7
+SHA actual: 33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-004 — VISIBLE EN PREVIEW
+Derivado: Y3 unificada a2,6 W, VDC explícito y puntas negras en contactos metálicos0V. Se conservan24/24/0 V. Son coherentes condicionalmente con retorno abierto, bobina finita e instrumento de alta impedancia; no se inventa una resistencia real de bobina ni la impedancia del modelo Fluke.
+Método: Derivado corregido; original preservado.
+Momento: EVID-02-RECORD
+SHA original: f4b2d3eef92ab9bb58e87f1362cff25430f2a12ccdc970a76361f255e223ddf3
+SHA actual: 0ef35f137ea5aaef0196827e7c9052157ab5e704f9699ffe82e1ffc802004e8f
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-005 — VISIBLE EN PREVIEW
+Derivado: Y3 a2,6 W y punta negra con contacto metálico0V; OL y Ω conservados. El ensayo debe aislar el tramo y sus caminos paralelos, sin tensión; el requisito aparece antes de D3. La imagen no demuestra esas condiciones por sí sola.
+Método: Derivado corregido; original preservado.
+Momento: EVID-03-RECORD
+SHA original: 319bd632a2e292a66c11fac08d7c2bd3a76de2c62380f7036f05fb25d50ba718
+SHA actual: 183eb4d779d9e5d63724e9525498d04032b0ef6361f442d9a00f8a3c4bfc7410
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-006 — VISIBLE EN PREVIEW
+Único cambio en la foto aprobada: potencia4,8→2,6 W. Se conserva la geometría del conductor azul interrumpido, sin flechas ni nuevas etiquetas. La identificación del tramo X2:8–0V se apoya además en el acta de continuidad.
+Método: Derivado corregido; original preservado.
+Momento: EVID-04-RECORD
+SHA original: 9b006d834df7ba917dbcf4bec050c8baaf9a2ed13ca8a2b5f43c38774678fd22
+SHA actual: dcace6e60cea3f843405238c9b445dcfa3350fe3d2905193ac4f32017983dc2e
+QA técnico individual: REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING.
+
+EE-0036 / ART-007 — OCULTO
+Candidata corregida:2,6 W, VDC24,0 V, contactos metálicosA1/A2 y retorno azul continuo por8 representados. Se conserva el requisito adicional de actuación funcional. Sigue oculta hasta aprobación visual explícita; dicha aprobación no sustituirá la técnica.
+Método: Derivado corregido; original preservado.
+Momento: Registrado sin presentación.
+SHA original: af25c8c16b9bc4d810fe26699f0400ea1d1db64849729faef190dbc9fbdc3db9
+SHA actual: 392a2b213adf4f3ae09c18892156a635127e0455b9c07de7e976febd5aa4b5e8
+QA técnico individual: BLOCKED.
+
+4. CONEXIONES Y ORDEN DE REVELACIÓN
+EE-0035 ART-002: PS1+→F24+, PS10V→referenciaF24; salidas4positivas; F24.2→K1 NO→Y2; retornos de todas las cargas DIRECTOS aPS10V. Control deK1 fuera del extracto, sin inventar bobina o señal. No se dibuja el cortocircuito en el esquema inicial.
+EE-0036 ART-002: protección→PS1;PE; +24V→F24→CPU L+ yDQ3L+;0V→M y3M; Q0.1→X2:5,Q0.2→X2:6,Q0.3→X2:7→A1;A2→X2:8→PS10V. Bornas auxiliares permanecen sin cargas añadidas.
+Ambos SVG y listas de conexiones están en media-source/corrections/ART-002.svg y ART-002-connections.json.
+Las pruebas leen las polilíneas SVG finales, contrastan coordenadas de bornes, reconstruyen un grafo, detectan uniones/no uniones y comprueban el corte del retorno al retirarX2:8. Una prueba negativa inserta un bypass y verifica que el detector lo ve. No es una certificación de diseño o de equipo instalado.
+EE-0034: trasD3 se muestran lecturas brutas y condiciones del acta; la confirmación declarativa deL3 abierto corresponde aD4. El ensayo fotografiado permanece oculto por el bloqueo de estado mecánico.
+EE-0035: ResultD3 muestra primero bobina y222 Ω; al pulsarContinuar, contextoD4 muestra cable dañado; al acertarD4 se confirma la causa. El resultado de bobina no contiene ya la confirmación del defecto del cable.
+EE-0036: Watch lógico, tensiones, continuidad y causa mantienen sus adquisiciones previas. ART-007 no se habilita ni en el debrief.
+
+5. FUENTES INSPECCIONADAS Y JUSTIFICACIÓN
+Fuentes y límites completos en technical-sources.json.
+S1 Siemens PSE200U: manual04.2019 C98130-A7579-A1-4-7629,§2.2,2.4,2.5.2,2.6.2.
+S2 Siemens PSE200U instrucciones compactas16/11/2023: tabla de estados, rango y rearme, texto oficial indexado.
+S3 Festo VACF-A-A1-1,8030822: ficha oficial de 2 páginas,pie6/6/26;24 VDC/2,6 W, conexión tipoA, pinout1/2/PE. Texto y captura de página1 inspeccionados.
+S4 Siemens S7-1200,V20,11/2024: tabla6 deCPU1214C DC/DC/DC confirma3L+/3M y salidas separadas. La referencia exacta del PLC ilustrado no es legible con certeza.
+S5 Siemens PSU100S,07.2014,§6.2 p.42: tabla oficial indexada confirma6EP1334-2BA20,24V/10 A. No se afirma haber leído el PDF completo porque su apertura dio403.
+Los detalles se limitan a lo efectivamente inspeccionado. Las descargas locales de Siemens/Festo dieron403 por la red del entorno; se usó el conector web para los documentos accesibles. Otros enlaces Festo devolvieron502; la ficha EN_GB con la ruta Datasheet sí pudo abrirse.
+No se pudo inspeccionar una ficha oficial exacta de3RU2116-1JB0; la solicitud devolvió403. Tampoco se validó inequívocamente3RT2016-1AP00. No se sustituyen por referencias parecidas ni se cambian rangos por conjetura.
+Modelo de400/0/400, cálculo222 Ω y efecto de impedancia del voltímetro: Modelos_y_Limites_Tecnicos.txt. No se introdujeron nuevos registros de campo ni valores alternativos paraART-004.
+
+6. QA EJECUTADO Y RESULTADOS
+PASS — node --test:584/584, cero fallos, cero omitidas, tras la última corrección de asset.
+PASS — pruebas focalizadas de contenido/media:38/38. Se añaden2 controles de conectividad a las pruebas de integración existentes.
+PASS — empaquetado preview y Notebook. Generados ES/EN inspeccionados por pruebas y recorridos.
+PASS —20 originales contra hashes previos;20 derivados/copias contra inventario y salida generada; dimensiones PNG y carga.
+PASS —12 recorridos completos Chromium:3 Experiences ×ES/EN × 1440/390px;120 opciones incorrectas conRetry sin desbloqueo indebido; resultados/Continue,debrief,reinicio,cambio de idioma,zoom y referenciasNotebook.
+PASS — tras la última corrección deEE-0034 ART-006 se repitieron sus4 recorridos completos y40 reintentos adicionales; conserva el resto de la matriz verificada.
+PASS — el daño de cableY2 no se solicita durante el resultado de bobina; aparece después deContinuar, enD4. Recursos ocultos nunca solicitados por el alumno.
+PASS — sin errores JS/de consola ni HTTP>=400 observados en recorridos.
+PASS — git diff --check y control de alcance por hashes.
+Fallos intermedios resueltos: el test de original intacto quedó obsoleto al introducir derivados autorizados y se actualizó para comprobar DOS hashes, original y actual; un patrónEN exigía un orden literal de palabras para ausencia de tensión y se corrigió sin relajar el requisito. ClasificaciónE: expectativa desactualizada. Las comprobaciones finales pasan.
+La validación automática y de navegador es funcional. No equivale a aprobación técnica humana.
+
+7. PRUEBAS NO EJECUTADAS Y BLOQUEOS
+No se han realizado mediciones reales, ensayo de motor/bobina, corriente de cortocircuito, rearme de equipo, verificación mecánica ni validación de selectividad en instalación.
+No se ha certificado toda la geometría de equipo generado ni su equivalencia con referencias comerciales.
+ART-004 EE-0034: falta modelo fiable y condiciones reales del motor/medida; continúa oculta.
+ART-005 EE-0034: Ω y contactos corregidos, pero falta validar cierre de prueba y procedimiento para el contactor exacto; continúa oculta.
+ART-007 EE-0036: candidata corregida presentada para aprobación visual humana; continúa oculta hasta respuesta explícita. La actuación funcional deY3 sigue siendo requisito separado.
+Los demás recursos son visibles solo en preview sujeto a revisión técnica. No se marca technicalPASS por recuperación del archivo o por estética.
+metadata.status=technical_review y technical_validation.status=pending conservados en las tres Experiences.
+
+8. ARCHIVOS Y ENTREGABLES
+Paquetes inspeccionados: YAML/locales ES/EN,manifests,contratos/fichas/QA/SOURCE archivados,ZIP originales y20 PNG; normasD2R aplicables y estado previo.
+Modificados:experience.yaml,locales/es.yaml,locales/en.yaml,media-source/visual-intake.json,evidence-manifest.yaml,README y assets/README en cada paquete; 10 PNG derivados; test de integración y Changelog.
+Creados:20 originales enmedia-source/originals,2 SVG y2 listas de conexiones,3 snapshots previos de Experience,documentación y capturas de esta entrega.
+Detalle de ficheros en file-scope.json; la lista refleja el estado local combinado con la integración anterior, todavía sin commit.
+Comparativa visual:comparativa-assets.html. Se han comprobado sus 40 imágenes antes/después y capturado 3 comparativas, incluida ART-007 de EE-0036. Auditoría20 recursos:asset-technical-qa.json. Fuentes:technical-sources.json.
+Logs:full-tests.log,focused-tests.log,build.log,notebook-build.log,browser.log,browser-final34.log.
+Recorridos y comprobaciones:browser-results.json; capturas desktop/móvil adjuntas.
+La imagen final deEE-0036 está en la ruta de asset habitual, preservandoART-007. Su original está enmedia-source/originals.
+
+9. ESTADO DE PUBLICACIÓN
+No hay commit,push,merge ni deploy. Producción sin cambios.
+Cierre funcional:PASS. Cierre técnico global:PARCIAL/BLOQUEADO. Aprobación visual finalEE-0036:PENDIENTE.
+No se habilitan recursos para cumplir una cuota20/20. Quedan3ocultos con causas concretas.
+Para revertir esta intervención conservando la integración anterior, usar los snapshots y hashes de /workspace/work/ee0034-36-corrections/before/ y before-state.json; restaurar solo el alcance inventariado. No usar git clean ni borrar trabajo preexistente.

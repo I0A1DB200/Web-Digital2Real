@@ -75,7 +75,11 @@ Validate the following hashes in a browser:
 | Route | Expected result |
 |---|---|
 | `#engineering-notes` | Engineering Notes view renders |
-| `#academy` | Academy view renders |
+| `#experience-lab` | Environment catalog renders |
+| `#experience-lab/env/{validId}` | Environment resolves from generated catalog |
+| `#experience-lab/env/{validId}/preview/{validExperienceId}` | Anchored preview without viewport reset |
+| `#experience-lab/env/{validId}/experience/{validExperienceId}` | Experience session within current page |
+| `#experience-lab/env/{validId}/theory/{validSection}` | Theory section resolves |
 | `#about` | About view renders |
 | unknown hash | Engineering Notes fallback renders |
 | malformed encoded hash | Engineering Notes fallback renders |
@@ -85,7 +89,11 @@ For each valid route verify:
 - navigation active state;
 - document title;
 - content presence;
-- scroll reset on route change;
+- content alignment below the navbar on primary navigation;
+- viewport and focus restoration for browser Back/Forward and internal Lab parents;
+- no forced scroll reset for hotspot previews;
+- no history entry for Player decisions, retries, evidence or stages;
+- deep-link reload restores the route, without claiming pedagogical session persistence;
 - browser Back and Forward navigation;
 - repeated activation of the current route.
 

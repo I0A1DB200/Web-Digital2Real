@@ -1,0 +1,8 @@
+# Contrato de integración — EE-0034
+Clasificación CONTENT / media. Localiza EE-0034-single-phase-loss por ID canónico y comprueba YAML, localizaciones ES/EN, manifest, estándares D2R y precedentes EE-0032/0033. No crear otra Experience ni cambiar Engine, renderer, catálogo global, otras Experiences o Notebook. Conserva IDs, decisiones, respuestas, feedback y referencias Notebook existentes. SOURCE_EE0034.md es referencia editorial, no sustituye automáticamente el YAML actual.
+
+Importa los seis PNG originales en la estructura de media prevista por el repositorio; conserva masters genuinos y genera derivados únicamente conforme a estándares existentes. Vincula evidencias al momento narrativo indicado en FICHA_TECNICA.md, sin revelar causa antes de D4 ni reparación antes de resolución. Alt text ES/EN, unidades y bornes coherentes. No inventes rutas ni IDs: inspecciona primero. Si hay discrepancias, documenta y detén cambios semánticos hasta aprobación.
+
+QA_PENDIENTE.md contiene bloqueantes: no marcar technical pass ni publicar por aprobación visual. Integrar solo en rama/preview según gobernanza; si el contenido ya está publicado, no sustituir evidencias de producción hasta revisión. No fabricar evidencia ni corregir valores silenciosamente. Proponer correcciones y solicitar aprobación humana. No modificar otras Experiences.
+
+Validar esquema de paquete, resolución de media, localizaciones, navegación D1–D5, orden de evidencias, ausencia de spoilers, build y suite de regresión existente. Comprobar visualmente desktop/móvil si disponible. Reportar rama, commit, archivos modificados, mapping asset→evidencia, resultados reales de pruebas, discrepancias, bloqueantes, estado publicación y rollback. No afirmar pruebas no ejecutadas.

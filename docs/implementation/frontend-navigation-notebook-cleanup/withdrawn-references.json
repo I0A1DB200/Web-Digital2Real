@@ -1,0 +1,604 @@
+[
+  {
+    "file": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-022",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-017",
+      "article-030",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0032-contactor-does-not-energize/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-012",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-027",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-020",
+      "article-021",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0036-open-return-conductor/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-026",
+      "article-028",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-026",
+      "article-029",
+      "article-032"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0033-motor-overload-trip/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-011",
+      "article-016",
+      "article-022",
+      "article-029",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-026",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0034-single-phase-loss/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-016",
+      "article-022",
+      "article-026",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/experience.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-029",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-022",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-022",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0038-incorrect-motor-rotation/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-022",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-017",
+      "article-030",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-017",
+      "article-030",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0040-insulation-fault-to-protective-earth/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-017",
+      "article-030",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0032-contactor-does-not-energize/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-012",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-027",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0032-contactor-does-not-energize/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-012",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-027",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0032-contactor-does-not-energize/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-012",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-027",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-020",
+      "article-021",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-020",
+      "article-021",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-020",
+      "article-021",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0036-open-return-conductor/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-026",
+      "article-028",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0036-open-return-conductor/media-source/corrections-before-experience.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-026",
+      "article-028",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0036-open-return-conductor/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-026",
+      "article-028",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0036-open-return-conductor/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-026",
+      "article-028",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-026",
+      "article-029",
+      "article-032"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/media-source/corrections-before-experience.yaml",
+    "withdrawn_note_ids": [
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-026",
+      "article-029",
+      "article-032"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-026",
+      "article-029",
+      "article-032"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-026",
+      "article-029",
+      "article-032"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0033-motor-overload-trip/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-011",
+      "article-016",
+      "article-022",
+      "article-029",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0033-motor-overload-trip/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-011",
+      "article-016",
+      "article-022",
+      "article-029",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0033-motor-overload-trip/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-011",
+      "article-016",
+      "article-022",
+      "article-029",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-026",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-026",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0039-excessive-voltage-drop-at-terminal/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-026",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0034-single-phase-loss/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-016",
+      "article-022",
+      "article-026",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0034-single-phase-loss/media-source/corrections-before-experience.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-016",
+      "article-022",
+      "article-026",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0034-single-phase-loss/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-016",
+      "article-022",
+      "article-026",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0034-single-phase-loss/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-014",
+      "article-016",
+      "article-022",
+      "article-026",
+      "article-029"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/media-source/evidence-manifest.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-029",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/locales/es.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-029",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/experiences/electrical/EE-0031-24vdc-supply-voltage-collapse/locales/en.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-012",
+      "article-015",
+      "article-029",
+      "article-031"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/environments/ENV-004-industrial-electrical-systems/theory.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-010",
+      "article-011",
+      "article-012",
+      "article-013",
+      "article-014",
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-022",
+      "article-023",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028",
+      "article-029",
+      "article-030",
+      "article-031",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  },
+  {
+    "file": "content/environments/ENV-004-industrial-electrical-systems/locales/theory.en.yaml",
+    "withdrawn_note_ids": [
+      "article-009",
+      "article-010",
+      "article-011",
+      "article-012",
+      "article-013",
+      "article-014",
+      "article-015",
+      "article-016",
+      "article-017",
+      "article-018",
+      "article-019",
+      "article-020",
+      "article-021",
+      "article-022",
+      "article-023",
+      "article-024",
+      "article-025",
+      "article-026",
+      "article-027",
+      "article-028",
+      "article-029",
+      "article-030",
+      "article-031",
+      "article-032",
+      "article-033"
+    ],
+    "type": "Historical textual reading reference; not a clickable Notebook URL",
+    "action": "Preserved; authored content outside scope"
+  }
+]

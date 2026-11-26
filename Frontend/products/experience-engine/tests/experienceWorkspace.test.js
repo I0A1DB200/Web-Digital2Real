@@ -44,7 +44,7 @@ test("catalog recovery retries failed and malformed loads before returning to a 
   }
 });
 
-async function resultWorkspace(language = "en", storage = null, localePreference = null, windowRef = null) {
+async function resultWorkspace(language = "en", storage = null, localePreference = null, windowRef = null, gate = null) {
   const artifact = evidenceMediaArtifact(language);
   const documentRef = new FakeDocument();
   documentRef.documentElement = { lang: language };
@@ -60,7 +60,7 @@ async function resultWorkspace(language = "en", storage = null, localePreference
     hotspots: [{ experienceEditorialId: "EE-TEST", x: 50, y: 50 }]
   }] };
   const workspace = createExperienceWorkspace({ documentRef, progressStore, localePreference, windowRef,
-    fetchImpl: async location => ({ ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : evidenceMediaArtifact(location.endsWith(".es.json") ? "es" : "en")) }),
+    fetchImpl: async location => { await gate?.(location); return { ok: true, json: async () => structuredClone(location.endsWith("catalog.json") ? catalog : evidenceMediaArtifact(location.endsWith(".es.json") ? "es" : "en")) }; },
     importPlayer: async () => ({ ExperiencePlayer })
   });
   await workspace.initialise(); await workspace.openExperience(artifact.identity.id, "ENV-TEST");
@@ -72,7 +72,7 @@ async function resultWorkspace(language = "en", storage = null, localePreference
   return { workspace, documentRef, store, begin, click, registrations: () => registrations };
 }
 
-test("workspace scrolls to the top only when an Experience advances", async () => {
+test("workspace targets content only when an Experience advances", async () => {
   const scrolls = [];
   const fixture = await resultWorkspace("en", null, null, {
     matchMedia: () => ({ matches: false }),
@@ -83,7 +83,7 @@ test("workspace scrolls to the top only when an Experience advances", async () =
   fixture.click("Replace without checking");
   assert.equal(scrolls.length, 0);
   fixture.click("Inspect connector");
-  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
+  assert.deepEqual(scrolls.at(-1), { top: 100, left: 0, behavior: "smooth" });
   fixture.workspace.destroy();
 });
 
@@ -817,7 +817,7 @@ test("localizes Theory actions and keeps content and actions as 32px-gap sibling
   assert.equal(section.children[1].children[0].textContent, "Continuar teoría");
   scrolls.length = 0;
   findButton(navigator.element, "Continuar teoría").click();
-  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
+  assert.deepEqual(scrolls.at(-1), { top: 100, left: 0, behavior: "smooth" });
   assert.ok(findButton(navigator.element, "Completar teoría"));
 
   const styles = await readFile(new URL("../styles/experience-workspace.css", import.meta.url), "utf8");
@@ -1057,7 +1057,7 @@ test("Environment Selector cards navigate, expose accessible metadata and derive
 
   scrolls.length = 0;
   navigator.element.find(item => item.attributes["aria-label"] === "Open environment: Automated Factory").click();
-  assert.deepEqual(scrolls.at(-1), { top: 0, left: 0, behavior: "smooth" });
+  assert.deepEqual(scrolls.at(-1), { top: 100, left: 0, behavior: "smooth" });
   assert.ok(navigator.element.find(item => item.className === "environment-stage"));
   findButton(navigator.element, "All environments").click();
   assert.ok(navigator.element.find(item => item.className === "environment-catalog"));
@@ -1370,4 +1370,50 @@ test("Experience lifecycle tells the shell to hide catalog promotion until retur
   await findButton(workspace.element, "All experiences").click();
   assert.equal(changes.at(-1), null);
   workspace.destroy();
+});
+
+test('route restoration preserves accepted commands, attempts and evidence within the same page', async () => {
+  const fixture=await resultWorkspace();
+  fixture.begin();fixture.click('Replace without checking');fixture.click('Inspect connector');
+  const before=JSON.stringify(fixture.workspace.getState());
+  const id=fixture.workspace.getState().experience.id;
+  await fixture.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST',previewId:id});
+  assert.equal(fixture.workspace.getState(),null);
+  await fixture.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST',experienceId:id});
+  assert.equal(JSON.stringify(fixture.workspace.getState()),before);
+  await fixture.workspace.restoreRoute({view:'experience-lab'});
+  await fixture.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST',experienceId:id});
+  assert.equal(JSON.stringify(fixture.workspace.getState()),before);
+  assert.equal(fixture.registrations(),0);fixture.workspace.destroy();
+});
+
+test('unknown deep-linked identifiers return a known catalog/environment without starting a Player', async()=>{
+  const fixture=await resultWorkspace();
+  assert.deepEqual(await fixture.workspace.restoreRoute({view:'experience-lab',environmentId:'UNKNOWN'}),{view:'experience-lab'});
+  assert.deepEqual(await fixture.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST',experienceId:'UNKNOWN'}),{view:'experience-lab',environmentId:'ENV-TEST'});
+  assert.equal(fixture.workspace.getState(),null);fixture.workspace.destroy();
+});
+
+test('completed sessions restored by navigation do not register completion twice',async()=>{
+  const f=await resultWorkspace();f.begin();f.click('Inspect connector');f.click('Continue');f.click('Assess measurement');f.click('Verify recovery');
+  const id=f.workspace.getState().experience.id;assert.equal(f.registrations(),1);
+  await f.workspace.restoreRoute({view:'experience-lab'});
+  await f.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST',experienceId:id});
+  assert.equal(f.registrations(),1);assert.equal(f.workspace.getState().completionStatus,'completed');f.workspace.destroy();
+});
+
+
+test('navigation supersedes a pending language replay without restoring stale Player content',async()=>{
+  let release, started;
+  const entered=new Promise(resolve=>{started=resolve;});
+  const blocked=new Promise(resolve=>{release=resolve;});
+  const f=await resultWorkspace('en',null,null,null,location=>{
+    if(location.endsWith('.es.json')) { started(); return blocked; }
+  });
+  f.begin();f.click('Inspect connector');
+  const change=f.workspace.setLanguage('es');await entered;
+  await f.workspace.restoreRoute({view:'experience-lab',environmentId:'ENV-TEST'});
+  release();assert.equal(await change,false);
+  assert.equal(f.workspace.getLocale(),'en');assert.equal(f.workspace.getState(),null);
+  assert.ok(f.workspace.element.find(item=>item.className==='environment-stage'));f.workspace.destroy();
 });

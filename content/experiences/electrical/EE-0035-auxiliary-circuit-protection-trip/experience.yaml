@@ -31,7 +31,7 @@ capability_references:
 public:
   slug: "auxiliary-circuit-protection-trip"
   title: "Dispara la protección del circuito auxiliar"
-  summary: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Preview textual; evidencias visuales y revisión técnica pendientes."
+  summary: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente. Preview con ilustraciones; publicación bloqueada por revisión técnica pendiente."
   estimated_duration: 20
   scenario:
     initial_context: "El fusible electrónico -F24.2 de un ramal 24 VDC desconecta al ordenar -Y2. Otros ramales siguen activos. Se debe identificar la protección y rama exactas antes de modificar límites o sustituir fuente."
@@ -74,7 +74,7 @@ public:
         - "DEC-01-A"
         - "DEC-01-B"
         - "DEC-01-C"
-      media_ids: []
+      media_ids: ["ART-002"]
     -
       id: "STAGE-02-DIAGNOSIS"
       phase: "investigation"
@@ -91,7 +91,7 @@ public:
       id: "STAGE-03-DIAGNOSIS"
       phase: "investigation"
       title: "Contrastar hipótesis"
-      situation: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Antes del ensayo de resistencia o continuidad se requieren instalación aislada, ausencia de tensión verificada y caminos paralelos aislados conforme al procedimiento autorizado. Aquí solo se interpretan registros simulados.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-02-RECORD"
       decision_ids:
@@ -103,14 +103,14 @@ public:
       id: "STAGE-04-DIAGNOSIS"
       phase: "investigation"
       title: "Confirmar la causa e intervenir con seguridad"
-      situation: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "Después de comprobar la bobina, la inspección aislada del cable muestra aislamiento dañado y contacto entre los conductores +24 V y 0 V dentro de la canaleta, aguas abajo del contacto K1. Esta observación debe interpretarse para decidir la causa y la intervención.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-03-RECORD"
       decision_ids:
         - "DEC-04-A"
         - "DEC-04-B"
         - "DEC-04-C"
-      media_ids: []
+      media_ids: ["ART-006"]
     -
       id: "STAGE-05-VERIFY-RECOVERY"
       phase: "solution"
@@ -140,12 +140,12 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-01-A"
-      media_ids: []
+      media_ids: ["ART-003", "ART-004"]
     -
       id: "EVID-02-RECORD"
       type: "diagnostic"
-      source: "Registro didáctico simulado · D2"
-      content: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      source: "Registro didáctico simulado externo · D2"
+      content: "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-B"
@@ -154,11 +154,11 @@ public:
       id: "EVID-03-RECORD"
       type: "diagnostic"
       source: "Registro didáctico simulado · D3"
-      content: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      content: "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado."
       reliability: "confirmed"
       revealed_by:
         - "DEC-03-C"
-      media_ids: []
+      media_ids: ["ART-005"]
     -
       id: "EVID-04-RECORD"
       type: "diagnostic"
@@ -176,7 +176,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-05-B"
-      media_ids: []
+      media_ids: ["ART-007"]
   decisions:
     -
       id: "DEC-01-A"
@@ -239,9 +239,52 @@ public:
       stage_id: "STAGE-05-VERIFY-RECOVERY"
       action: "Dejar Y2 desconectada sin documentar."
   visual:
-    educational_purpose: "Evidencia textual progresiva; imágenes pendientes de suministro y aprobación. La portada ENV es solo contexto, nunca prueba eléctrica."
-    representation: "planned"
-    assets: []
+    educational_purpose: "Ilustraciones del caso simulado; recursos contradictorios ocultos y revisión técnica humana pendiente."
+    representation: "available"
+    cover_asset_id: "ART-001"
+    assets:
+      - id: "ART-001"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-001_cuadro.png"
+        alt: "Cuadro ilustrado con PS1, F24 y PLC; el canal 2 indica desconexión."
+        caption: "Cuadro ilustrado con PS1, F24 y PLC; el canal 2 indica desconexión."
+        purpose: "catalog_cover"
+      - id: "ART-002"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-002_esquema.png"
+        alt: "Esquema funcional corregido: PS1 alimenta F24 con polaridad correcta; F24.2 pasa por K1 hasta Y2 y los retornos van directamente a PS1:0 V."
+        caption: "Esquema funcional corregido: PS1 alimenta F24 con polaridad correcta; F24.2 pasa por K1 hasta Y2 y los retornos van directamente a PS1:0 V."
+        purpose: "evidence"
+      - id: "ART-003"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-003_disparo.png"
+        alt: "F24 ilustrado: canal 2 rojo y otros canales verdes."
+        caption: "F24 ilustrado: canal 2 rojo y otros canales verdes."
+        purpose: "evidence"
+      - id: "ART-004"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-004_tension.png"
+        alt: "Registro simulado de 24,1 V en PS1 mientras el canal 2 está desconectado."
+        caption: "Registro simulado de 24,1 V en PS1 mientras el canal 2 está desconectado."
+        purpose: "evidence"
+      - id: "ART-005"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-005_bobina.png"
+        alt: "Ensayo aislado de Y2, VACF-A-A1-1: 222 Ω simulados entre 1 y 2; PE excluido. Valor equivalente ilustrativo, no tolerancia de fabricante."
+        caption: "Ensayo aislado de Y2, VACF-A-A1-1: 222 Ω simulados entre 1 y 2; PE excluido. Valor equivalente ilustrativo, no tolerancia de fabricante."
+        purpose: "evidence"
+      - id: "ART-006"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-006_cortocircuito.png"
+        alt: "Aislamiento dañado y conductores rojo y azul en contacto en el cable Y2."
+        caption: "Aislamiento dañado y conductores rojo y azul en contacto en el cable Y2."
+        purpose: "evidence"
+      - id: "ART-007"
+        type: "image"
+        src: "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-007_rearme.png"
+        alt: "F24 ilustrado con los cuatro indicadores de canal verdes tras reparación."
+        caption: "F24 ilustrado con los cuatro indicadores de canal verdes tras reparación."
+        purpose: "evidence"
   completion:
     title: "Debrief técnico"
     summary: "cortocircuito en cable de Y2, aguas abajo de protección F24.2; la protección cumple su función. Tras sustituir el tramo y corregir la protección mecánica del cable en el escenario simulado, se verifican ramal, función y actuación selectiva según procedimiento. Se conserva la coordinación prevista y se documenta la reparación; desconectar Y2 sin registrar no cierra el caso."
@@ -340,7 +383,7 @@ private:
       is_correct: true
       rationale: "F24.2 identifica el ramal de Y2. Los demás ramales permanecen activos y PS1 mantiene 24,1 V. La evidencia delimita el fallo a la rama o carga; no demuestra un fallo general de los 24 V ni PLC en STOP."
       classification: "strong"
-      consequence: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      consequence: "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
       evidence_revealed:
         - "EVID-02-RECORD"
       next_stage: "STAGE-03-DIAGNOSIS"
@@ -362,33 +405,33 @@ private:
       decision_id: "DEC-03-A"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: false
-      rationale: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      rationale: "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
       classification: "weak"
-      consequence: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-04-DIAGNOSIS"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «F24.2 es necesariamente defectuoso.» no está sustentada por este registro.  Revisa: El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-03-B"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: false
       rationale: "no explica corriente de cortocircuito."
       classification: "weak"
-      consequence: "no explica corriente de cortocircuito. Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "no explica corriente de cortocircuito. Revisa: El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-04-DIAGNOSIS"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "no explica corriente de cortocircuito. Revisa: El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "no explica corriente de cortocircuito. Revisa: El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-03-C"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: true
-      rationale: "El registro de F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      rationale: "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
       classification: "strong"
-      consequence: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      consequence: "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado."
       evidence_revealed:
         - "EVID-03-RECORD"
       next_stage: "STAGE-04-DIAGNOSIS"
@@ -398,7 +441,7 @@ private:
       decision_id: "DEC-04-A"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: true
-      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      rationale: "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado."
       classification: "strong"
       consequence: "El cortocircuito está en el cable aguas abajo de F24.2; la protección cumple su función. La reparación exige sustituir el tramo y corregir su protección mecánica. Rearmes repetidos o aumento de calibre no corrigen el defecto."
       evidence_revealed:
@@ -410,26 +453,26 @@ private:
       decision_id: "DEC-04-B"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: false
-      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      rationale: "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado."
       classification: "unsafe"
-      consequence: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-05-VERIFY-RECOVERY"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «Rearmar repetidamente hasta estabilizar.» no está sustentada por este registro.  Revisa: Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-04-C"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: false
-      rationale: "La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2."
+      rationale: "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado."
       classification: "weak"
-      consequence: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-05-VERIFY-RECOVERY"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: La inspección aislada confirma aislamiento dañado en el cable de Y2, con contacto entre conductores +24 V y 0 V dentro de una canaleta. La bobina Y2, separada y comprobada, no presenta anomalía. No se puentea F24.2. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «Sustituir por fusible de mayor calibre.» no está sustentada por este registro.  Revisa: Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-05-A"
       stage_id: "STAGE-05-VERIFY-RECOVERY"

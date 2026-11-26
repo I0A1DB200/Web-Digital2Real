@@ -1,0 +1,52 @@
+[
+  {
+    "id": "S1",
+    "manufacturer": "Siemens",
+    "title": "SITOP Selectivity modules",
+    "url": "https://cache.industry.siemens.com/dl/files/004/108989004/att_911004/v1/A7579-A1-4-76_MANUAL_SITOP-PSE200U_en-US.pdf",
+    "version": "04.2019; C98130-A7579-A1-4-7629",
+    "sections": "2.2 pp.12–13; 2.4 pp.15–18; 2.5.2 p.20; 2.6.2 pp.23–27",
+    "inspected": "Official PDF text via web tool; input, output and reference terminals inspected.",
+    "justification": "PSE200U -2BA11 has four positive protected outputs. Its 0 V connection feeds internal electronics; load returns run directly to the supply. Connections 11/12/14 and RST are distinct from load circuits. No internal event history is claimed."
+  },
+  {
+    "id": "S2",
+    "manufacturer": "Siemens",
+    "title": "PSE200U compact operating instructions",
+    "url": "https://cache.industry.siemens.com/dl/files/697/109826697/att_1162628/v1/A5E52419507-1-XB_OP-INST_SITOP-PSE200U_2023-11-16.pdf",
+    "version": "A5E52419507-1-XB; 2023-11-16",
+    "sections": "English technical data and LED/reset table, indexed official text",
+    "inspected": "Technical table supplied by web search of official document, not a downloaded local PDF.",
+    "justification": "The -2BA11 range is 0.5–3 A per channel. Green indicates output on; red indicates automatic shutdown and flashing red indicates reset availability. Individual pushbuttons and common RST exist. The illustration is a static state and does not establish reset timing or successful Y2 motion."
+  },
+  {
+    "id": "S3",
+    "manufacturer": "Festo",
+    "title": "VACF-A-A1-1, part8030822, data sheet",
+    "url": "https://ftp.festo.com/Public/PNEUMATIC/SOFTWARE_SERVICE/Datasheet/EN_GB/8030822.pdf",
+    "version": "Footer of inspected PDF: 6/6/26",
+    "sections": "p.1 characteristic coil data, electrical connection and pin diagram; p.2 winding material",
+    "inspected": "Official two-page PDF text and page1 screenshot. Search index also exposed the numbered pin diagram.",
+    "justification": "The approved cabinet reference corresponds to 24 VDC and 2.6 W. Form A uses two opposing power contacts, numbered1/2, and a separate PE contact. The sheet does not state a DC winding resistance tolerance. 24²/2.6=221.54 Ω is a calculated nominal equivalent, not a guaranteed ohmmeter reading."
+  },
+  {
+    "id": "S4",
+    "manufacturer": "Siemens",
+    "title": "S7-1200 CPU1214C wiring diagrams",
+    "url": "https://docs.tia.siemens.cloud/r/simatic_s7_1200_manual_collection_eses_20/technical-specifications/cpu-1214c/cpu-1214c-wiring-diagrams?contentId=p3odk09gwpNfer9jMauCJg",
+    "version": "V20;11/2024",
+    "sections": "Tables5–6: DC/DC/DC, X10 and X12",
+    "inspected": "Official wiring table text inspected.",
+    "justification": "CPU1214C DC/DC/DC has separate L+/M CPU supply and 3L+/3M DQ supply. Q0.1/Q0.2/Q0.3 remain independent outputs. The pictured order number cannot be read conclusively; this family reference does not certify a particular installed CPU."
+  },
+  {
+    "id": "S5",
+    "manufacturer": "Siemens",
+    "title": "PSU100S operating instructions",
+    "url": "https://support.industry.siemens.com/cs/attachments/67476474/PSU100S_Handbuch_englisch_en-US.pdf",
+    "version": "07.2014; C98130-A7589-A1-5-7629",
+    "sections": "6.2 Output p.42, indexed official table",
+    "inspected": "Official indexed technical table read; opening full PDF returned403.",
+    "justification": "The listed 6EP1334-2BA20 is a 24 VDC/10 A PSU100S. No new coordination or inrush values are introduced in the case."
+  }
+]

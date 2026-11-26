@@ -1,0 +1,1 @@
+Siete recursos finales sintéticos/deterministas de EE-0037. Inventario vigente: ../media-source/visual-intake.json. SVG y original descartado: ../media-source/production/. Disponibilidad no equivale a validación técnica humana.

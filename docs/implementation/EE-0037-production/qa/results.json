@@ -1,0 +1,243 @@
+{
+  "flows": [
+    {
+      "experience": 37,
+      "width": 1440,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": {
+        "0": [
+          3
+        ],
+        "1": [
+          4
+        ],
+        "2": [
+          5
+        ],
+        "3": [
+          6
+        ],
+        "4": [
+          7
+        ]
+      },
+      "hidden_assets_never_requested": true,
+      "no_early_requests": true,
+      "reset": true,
+      "locale_switch": true,
+      "zoom": true,
+      "ten_hotspots": true,
+      "notebook_refs_resolve": [
+        "article-020",
+        "article-021",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-027",
+        "article-028"
+      ]
+    },
+    {
+      "experience": 37,
+      "width": 1440,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": {
+        "0": [
+          3
+        ],
+        "1": [
+          4
+        ],
+        "2": [
+          5
+        ],
+        "3": [
+          6
+        ],
+        "4": [
+          7
+        ]
+      },
+      "hidden_assets_never_requested": true,
+      "no_early_requests": true,
+      "reset": true,
+      "locale_switch": true,
+      "zoom": true,
+      "ten_hotspots": true,
+      "notebook_refs_resolve": [
+        "article-020",
+        "article-021",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-027",
+        "article-028"
+      ]
+    },
+    {
+      "experience": 37,
+      "width": 390,
+      "locale": "es",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": {
+        "0": [
+          3
+        ],
+        "1": [
+          4
+        ],
+        "2": [
+          5
+        ],
+        "3": [
+          6
+        ],
+        "4": [
+          7
+        ]
+      },
+      "hidden_assets_never_requested": true,
+      "no_early_requests": true,
+      "reset": true,
+      "locale_switch": true,
+      "zoom": true,
+      "ten_hotspots": true,
+      "notebook_refs_resolve": [
+        "article-020",
+        "article-021",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-027",
+        "article-028"
+      ]
+    },
+    {
+      "experience": 37,
+      "width": 390,
+      "locale": "en",
+      "five_stages_complete": true,
+      "wrong_retries": 10,
+      "result_images": {
+        "0": [
+          3
+        ],
+        "1": [
+          4
+        ],
+        "2": [
+          5
+        ],
+        "3": [
+          6
+        ],
+        "4": [
+          7
+        ]
+      },
+      "hidden_assets_never_requested": true,
+      "no_early_requests": true,
+      "reset": true,
+      "locale_switch": true,
+      "zoom": true,
+      "ten_hotspots": true,
+      "notebook_refs_resolve": [
+        "article-020",
+        "article-021",
+        "article-024",
+        "article-025",
+        "article-026",
+        "article-027",
+        "article-028"
+      ]
+    }
+  ],
+  "originals_load": [
+    {
+      "experience": 37,
+      "asset": "ART-001",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-002",
+      "dimensions": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-003",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-004",
+      "dimensions": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-005",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-006",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "experience": 37,
+      "asset": "ART-007",
+      "dimensions": [
+        1600,
+        1000
+      ]
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "screenshots": [
+    "EE0037-1440-es-D1.png",
+    "EE0037-1440-es-D2.png",
+    "EE0037-1440-es-D3.png",
+    "EE0037-1440-es-D4.png",
+    "EE0037-1440-es-D5.png",
+    "EE0037-1440-en-D1.png",
+    "EE0037-1440-en-D2.png",
+    "EE0037-1440-en-D3.png",
+    "EE0037-1440-en-D4.png",
+    "EE0037-1440-en-D5.png",
+    "EE0037-390-es-D1.png",
+    "EE0037-390-es-D2.png",
+    "EE0037-390-es-D3.png",
+    "EE0037-390-es-D4.png",
+    "EE0037-390-es-D5.png",
+    "EE0037-390-en-D1.png",
+    "EE0037-390-en-D2.png",
+    "EE0037-390-en-D3.png",
+    "EE0037-390-en-D4.png",
+    "EE0037-390-en-D5.png"
+  ],
+  "publication": "BLOCKED_PENDING_HUMAN_TECHNICAL_QA"
+}

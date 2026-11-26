@@ -1,0 +1,438 @@
+[
+  {
+    "experience": "EE-0034",
+    "asset": "ART-001",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-01.png",
+    "original_sha256": "017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41",
+    "final_sha256": "017caf1fa770773613808b9cee2e9698a33d11bf151049191a88c449e26cfe41",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "cover"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Orientación del cuadro conservada; Q2/KM2/F2/M2 y PE visibles. Trazabilidad física completa, referencias y ajustes no certificados. No hay medición en este recurso.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Orientación del cuadro conservada; Q2/KM2/F2/M2 y PE visibles. Trazabilidad física completa, referencias y ajustes no certificados. No hay medición en este recurso."
+  },
+  {
+    "experience": "EE-0034",
+    "asset": "ART-002",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-02.png",
+    "original_sha256": "de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6",
+    "final_sha256": "de3a3773759b3e88cdf2e7b1726b9ac51df6950502e84d723eb0bdfbb60559a6",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "STAGE-01-DIAGNOSIS"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Esquema original conservado: fuerza Q2–KM2–F2–M2, mando L1–N 230 VAC y PE representados. No consta placa completa de M2, neutro real ni coordinación; no se inventan referencias o calibres.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Esquema original conservado: fuerza Q2–KM2–F2–M2, mando L1–N 230 VAC y PE representados. No consta placa completa de M2, neutro real ni coordinación; no se inventan referencias o calibres."
+  },
+  {
+    "experience": "EE-0034",
+    "asset": "ART-003",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-03.png",
+    "original_sha256": "2ace746bdafd82ccc5a0ec18dec37b9be1839c7e741d1d3516f4c97ba2fbe3e3",
+    "final_sha256": "dccc1b130ad67a113a5c6887a965344f0bcf14deebd94eac59c2a5b165f877d7",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-01-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Puntas corregidas en metal para L1–L2/L2–L3/L3–L1 y referencia gráfica F2 restaurada al texto original. 400/401/399 V conservados como registro simulado aguas arriba; no prueban estado de polos.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Puntas corregidas en metal para L1–L2/L2–L3/L3–L1 y referencia gráfica F2 restaurada al texto original. 400/401/399 V conservados como registro simulado aguas arriba; no prueban estado de polos."
+  },
+  {
+    "experience": "EE-0034",
+    "asset": "ART-004",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-04.png",
+    "original_sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+    "final_sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+    "modified": false,
+    "visible": false,
+    "moment": [],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Sin edición ni nuevos valores. 400/0/400 V no se puede justificar a partir del único dato de polo L3 abierto con motor conectado. Falta modelo y condiciones de adquisición. Oculta.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "BLOCKED",
+    "notes": "Sin edición ni nuevos valores. 400/0/400 V no se puede justificar a partir del único dato de polo L3 abierto con motor conectado. Falta modelo y condiciones de adquisición. Oculta."
+  },
+  {
+    "experience": "EE-0034",
+    "asset": "ART-005",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-05.png",
+    "original_sha256": "0b1e3e46735c0f6285c16fb4b00d699f747c6916c65805b50879f87724cfdef2",
+    "final_sha256": "23615db817d24ea001157c04252b25da0c104556f51016be233668d7cbae1853",
+    "modified": true,
+    "visible": false,
+    "moment": [],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Selector en Ω y ambas puntas en tornillos de cada polo corregidos. 0,2/0,2/OL conservados como valores ilustrativos. La imagen no permite validar el mecanismo en cierre de prueba ni su procedimiento para la referencia exacta; sigue oculta.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "BLOCKED",
+    "notes": "Selector en Ω y ambas puntas en tornillos de cada polo corregidos. 0,2/0,2/OL conservados como valores ilustrativos. La imagen no permite validar el mecanismo en cierre de prueba ni su procedimiento para la referencia exacta; sigue oculta."
+  },
+  {
+    "experience": "EE-0034",
+    "asset": "ART-006",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0034-single-phase-loss/assets/EE-0034_ASSET-06.png",
+    "original_sha256": "9032de1cf2eea2a949ad949eef3851cb9081136305fb615f96f4d6b22496f4e2",
+    "final_sha256": "7158df6df37112efdac553e6b5b3562d8b9774b7baa472e90360db072bb5ec4e",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-05-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "También se corrigieron las seis puntas de la verificación para contacto metálico en 2T1/4T2/6T3. Se conservan 400/401/399 V y V~. Solo se revela tras D5, junto al acta de arranque y protección; no prueba recuperación completa por sí sola.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "También se corrigieron las seis puntas de la verificación para contacto metálico en 2T1/4T2/6T3. Se conservan 400/401/399 V y V~. Solo se revela tras D5, junto al acta de arranque y protección; no prueba recuperación completa por sí sola."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-001",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-001_cuadro.png",
+    "original_sha256": "36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e",
+    "final_sha256": "36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "cover"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Original conservado como contexto: canal2 en rojo, otros en verde. Referencias contrastadas a nivel de familia. La geometría generada de bornes/selector/LED adicional ON y Q1 debe revisarse contra el equipo exacto.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Original conservado como contexto: canal2 en rojo, otros en verde. Referencias contrastadas a nivel de familia. La geometría generada de bornes/selector/LED adicional ON y Q1 debe revisarse contra el equipo exacto."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-002",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-002_esquema.png",
+    "original_sha256": "62015c51b5991369be8871be0bb89663e92c52191c4d03a3e7328ecb12f94630",
+    "final_sha256": "3448d9e4bedf4861c8f5f594729836a2fd9fad0733896f9599bc088b754c489a",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "STAGE-01-DIAGNOSIS"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "SVG graph checked",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Esquema corregido con SVG determinista. Polaridad correcta, cuatro salidas protegidas, retorno directo a PS1, K1 NO en serie con Y2. No se dibuja un defecto antes del diagnóstico ni se inventa la bobina de mando K1. Lista y dibujo pasan conectividad.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Esquema corregido con SVG determinista. Polaridad correcta, cuatro salidas protegidas, retorno directo a PS1, K1 NO en serie con Y2. No se dibuja un defecto antes del diagnóstico ni se inventa la bobina de mando K1. Lista y dibujo pasan conectividad."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-003",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-003_disparo.png",
+    "original_sha256": "2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895",
+    "final_sha256": "2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "EVID-01-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Original conservado. Estado estático: canal2 rojo y otros verdes, compatible con desconexión de rama; no permite inferir corriente de fallo, historial ni momento de rearme. Geometría física pendiente de cotejo final.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Original conservado. Estado estático: canal2 rojo y otros verdes, compatible con desconexión de rama; no permite inferir corriente de fallo, historial ni momento de rearme. Geometría física pendiente de cotejo final."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-004",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-004_tension.png",
+    "original_sha256": "c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46",
+    "final_sha256": "c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "EVID-01-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Original conservado: 24,1 VDC, selector VDC, puntas en positivos/negativos metálicos de PS1 y canal2 rojo. No es una lectura de salida F24.2 ni demuestra corriente de cortocircuito. Identidad comercial y geometría final requieren revisión humana.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Original conservado: 24,1 VDC, selector VDC, puntas en positivos/negativos metálicos de PS1 y canal2 rojo. No es una lectura de salida F24.2 ni demuestra corriente de cortocircuito. Identidad comercial y geometría final requieren revisión humana."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-005",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-005_bobina.png",
+    "original_sha256": "e7001447022846943162e28b9dcbfad255c58b845541015d2676cb793fc216e4",
+    "final_sha256": "845af1ad8908d6eeea2c1662a11a41c388805a6ddb8d06113fcad240fb4731ac",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-03-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Derivado local: terminales de alimentación marcados2/1 y PE separado sin puntas, selector Ω y 222 Ω conservados. Pinout y potencia contrastados con Festo; geometría de foto sintética requiere aprobación humana. El cálculo nominal no certifica resistencia real ni tolerancia.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Derivado local: terminales de alimentación marcados2/1 y PE separado sin puntas, selector Ω y 222 Ω conservados. Pinout y potencia contrastados con Festo; geometría de foto sintética requiere aprobación humana. El cálculo nominal no certifica resistencia real ni tolerancia."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-006",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-006_cortocircuito.png",
+    "original_sha256": "9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5",
+    "final_sha256": "9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "STAGE-04-DIAGNOSIS"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Fotografía conservada. Aislamiento rojo/azul dañado y contacto visible. La asignación al tramo aguas abajo de K1 procede del acta del caso; la foto no muestra sus dos extremos. Se presenta después de la comprobación de bobina, en contexto de D4.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Fotografía conservada. Aislamiento rojo/azul dañado y contacto visible. La asignación al tramo aguas abajo de K1 procede del acta del caso; la foto no muestra sus dos extremos. Se presenta después de la comprobación de bobina, en contexto de D4."
+  },
+  {
+    "experience": "EE-0035",
+    "asset": "ART-007",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip/assets/EE-0035_ART-007_rearme.png",
+    "original_sha256": "072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0",
+    "final_sha256": "072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "EVID-05-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Original conservado: cuatro indicadores verdes. El texto exige reparación de cable/protección mecánica y verificación funcional/selectividad. No se equipara rearme con movimiento de Y2 ni se aportan tiempos de campo.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Original conservado: cuatro indicadores verdes. El texto exige reparación de cable/protección mecánica y verificación funcional/selectividad. No se equipara rearme con movimiento de Y2 ni se aportan tiempos de campo."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-001",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_01_cuadro_electrico.png",
+    "original_sha256": "597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d",
+    "final_sha256": "597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "cover"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Original conservado; la placa VACF-A-A1-1 24 VDC/2,6 W fija la especificación nominal y se ha contrastado con Festo. Referencias, conexión física de DQ y fidelidad de envolventes generadas requieren aprobación técnica.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Original conservado; la placa VACF-A-A1-1 24 VDC/2,6 W fija la especificación nominal y se ha contrastado con Festo. Referencias, conexión física de DQ y fidelidad de envolventes generadas requieren aprobación técnica."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-002",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_02_esquema_electrico.png",
+    "original_sha256": "46f9ac3081e3e3c7fde00316498c8110e2017e7b1ea52e606c7a8a59e125bff5",
+    "final_sha256": "484e0d9e327a8d6a122eac39f9908c3526c087e3fe067d3e13fc19159e537780",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "STAGE-01-DIAGNOSIS"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "SVG graph checked",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Esquema SVG corregido: fuente y PE, protección, L+/M,3L+/3M, salidas independientes y A2→X2:8→PS1:0 V. Se conserva supresión antiparalela con cátodo A1. No hay cargas inventadas en bornas auxiliares. Lista y dibujo pasan comprobaciones y prueba negativa de bypass.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Esquema SVG corregido: fuente y PE, protección, L+/M,3L+/3M, salidas independientes y A2→X2:8→PS1:0 V. Se conserva supresión antiparalela con cátodo A1. No hay cargas inventadas en bornas auxiliares. Lista y dibujo pasan comprobaciones y prueba negativa de bypass."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-003",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_03_watch_table.png",
+    "original_sha256": "33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7",
+    "final_sha256": "33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7",
+    "modified": false,
+    "visible": true,
+    "moment": [
+      "EVID-01-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Watch Table original conservada: Q0.3=TRUE, sin añadir feedback ni forzado. Es recreación TIA V17, no captura real. Estados auxiliares no prueban la alimentación física de Y3.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Watch Table original conservada: Q0.3=TRUE, sin añadir feedback ni forzado. Es recreación TIA V17, no captura real. Estados auxiliares no prueban la alimentación física de Y3."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-004",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_04_mediciones_tension.png",
+    "original_sha256": "f4b2d3eef92ab9bb58e87f1362cff25430f2a12ccdc970a76361f255e223ddf3",
+    "final_sha256": "0ef35f137ea5aaef0196827e7c9052157ab5e704f9699ffe82e1ffc802004e8f",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-02-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Derivado: Y3 unificada a2,6 W, VDC explícito y puntas negras en contactos metálicos0V. Se conservan24/24/0 V. Son coherentes condicionalmente con retorno abierto, bobina finita e instrumento de alta impedancia; no se inventa una resistencia real de bobina ni la impedancia del modelo Fluke.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Derivado: Y3 unificada a2,6 W, VDC explícito y puntas negras en contactos metálicos0V. Se conservan24/24/0 V. Son coherentes condicionalmente con retorno abierto, bobina finita e instrumento de alta impedancia; no se inventa una resistencia real de bobina ni la impedancia del modelo Fluke."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-005",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_05_continuidad_retorno.png",
+    "original_sha256": "319bd632a2e292a66c11fac08d7c2bd3a76de2c62380f7036f05fb25d50ba718",
+    "final_sha256": "183eb4d779d9e5d63724e9525498d04032b0ef6361f442d9a00f8a3c4bfc7410",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-03-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Derivado: Y3 a2,6 W y punta negra con contacto metálico0V; OL y Ω conservados. El ensayo debe aislar el tramo y sus caminos paralelos, sin tensión; el requisito aparece antes de D3. La imagen no demuestra esas condiciones por sí sola.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Derivado: Y3 a2,6 W y punta negra con contacto metálico0V; OL y Ω conservados. El ensayo debe aislar el tramo y sus caminos paralelos, sin tensión; el requisito aparece antes de D3. La imagen no demuestra esas condiciones por sí sola."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-006",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_06_causa_raiz.png",
+    "original_sha256": "9b006d834df7ba917dbcf4bec050c8baaf9a2ed13ca8a2b5f43c38774678fd22",
+    "final_sha256": "dcace6e60cea3f843405238c9b445dcfa3350fe3d2905193ac4f32017983dc2e",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-04-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Único cambio en la foto aprobada: potencia4,8→2,6 W. Se conserva la geometría del conductor azul interrumpido, sin flechas ni nuevas etiquetas. La identificación del tramo X2:8–0V se apoya además en el acta de continuidad.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "REVIEWED_LOCAL_DRAFT_HUMAN_APPROVAL_PENDING",
+    "notes": "Único cambio en la foto aprobada: potencia4,8→2,6 W. Se conserva la geometría del conductor azul interrumpido, sin flechas ni nuevas etiquetas. La identificación del tramo X2:8–0V se apoya además en el acta de continuidad."
+  },
+  {
+    "experience": "EE-0036",
+    "asset": "ART-007",
+    "path": "/workspace/Web-Digital2Real/content/experiences/electrical/EE-0036-open-return-conductor/assets/EE-0036_07_verificacion_reparacion.png",
+    "original_sha256": "af25c8c16b9bc4d810fe26699f0400ea1d1db64849729faef190dbc9fbdc3db9",
+    "final_sha256": "392a2b213adf4f3ae09c18892156a635127e0455b9c07de7e976febd5aa4b5e8",
+    "modified": true,
+    "visible": true,
+    "moment": [
+      "EVID-05-RECORD"
+    ],
+    "checks": {
+      "wiring_polarity_terminals": "Visual review; see notes and manufacturer limits",
+      "references_ratings": "Human technical sign-off pending; no invented order number",
+      "probes_instrument_values": "Candidata corregida:2,6 W, VDC24,0 V, contactos metálicosA1/A2 y retorno azul continuo por8 representados. Se conserva el requisito adicional de actuación funcional. Sigue oculta hasta aprobación visual explícita; dicha aprobación no sustituirá la técnica.",
+      "safety": "Simulated records only; isolation/absence of voltage/parallel-path prerequisites visible before invasive tests",
+      "root_cause_and_timing": "Preserved evaluation; acquisition/timing checked in tests and browser",
+      "publication": "BLOCKED; metadata technical_review / technical_validation pending"
+    },
+    "qa_outcome": "VISUAL_APPROVED_LOCAL_DRAFT_TECHNICAL_REVIEW_PENDING",
+    "notes": "Aprobación visual explícita del usuario el 26/11/2026, registrada por hash. Presentada después de D5 junto al acta de tensión efectiva y actuación funcional; revisión técnica humana pendiente."
+  }
+]

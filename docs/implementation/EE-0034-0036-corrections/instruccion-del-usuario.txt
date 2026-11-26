@@ -1,0 +1,448 @@
+# DIGITAL2REAL — Corrección técnica y cierre de QA
+## EE-0034 / EE-0035 / EE-0036 — ENV-004
+
+### 1. OBJETIVO
+
+Resolver todas las discrepancias identificadas en el informe de implementación y QA del 26/11/2026, trabajando exclusivamente sobre las tres Experiences existentes.
+
+**No reconstruir, rediseñar ni reinterpretar las Experiences. Corregir sobre las bases existentes.**
+
+Clasificación del trabajo: **EXPERIENCE / CONTENT — Corrección técnica y deuda de contenido.**
+
+### 2. ESTADO DE PARTIDA
+
+- Rama: `work-ee0034-0036-assets`
+- Base registrada: `2c33b7c8f0bf97d84f4b052ee661d9b74249ffd1`
+- 20 assets registrados.
+- 14 assets presentados en preview.
+- 6 assets ocultos por QA.
+- QA funcional: PASS.
+- QA técnico: pendiente.
+- Publicación: bloqueada.
+
+Antes de editar, inspeccionar el estado real del repositorio, los cambios locales, los contratos de integración, los ZIP originales y los documentos técnicos archivados.
+
+Preservar cualquier trabajo preexistente ajeno a esta intervención.
+
+### 3. INVARIANTES OBLIGATORIOS
+
+Conservar:
+
+- Identidades e identificadores de las tres Experiences.
+- Estructura YAML existente.
+- Environment ENV-004.
+- Hotspots y rutas.
+- Las cinco decisiones de cada Experience.
+- Las quince opciones de cada Experience.
+- Respuestas correctas y lógica de evaluación.
+- Objetivos didácticos.
+- Causas raíz originales.
+- Referencias al Engineering Notebook.
+- Traducciones ES/EN.
+- Identificadores ART y EVID.
+- Estética industrial de los assets aprobados.
+- Arquitectura y contratos del Experience Engine.
+
+No modificar:
+
+- Engine.
+- Frontend.
+- Renderers.
+- CSS global.
+- Notebook.
+- Navegación.
+- Otras Experiences.
+- Dependencias.
+- Configuración de despliegue.
+
+No introducir funcionalidades nuevas ni refactorizaciones fuera del alcance.
+
+### 4. EE-0034 — EXP-ELECTRICAL-PHASE-034
+
+Ruta:
+
+`content/experiences/electrical/EE-0034-single-phase-loss`
+
+#### ART-003 — Medición aguas arriba
+
+Corregir las parejas de fases representadas para que coincidan exactamente con el registro:
+
+- L1–L2.
+- L2–L3.
+- L3–L1.
+
+Conservar los valores existentes únicamente si resultan coherentes con el modelo eléctrico validado.
+
+Comprobar que las puntas contactan con los terminales metálicos correspondientes.
+
+#### ART-004 — Medición aguas abajo
+
+Resolver la inconsistencia del patrón 400/0/400 V.
+
+Analizar el circuito real representado, considerando:
+
+- Polo L3 abierto del contactor.
+- Motor conectado.
+- Configuración de devanados.
+- Estado de alimentación.
+- Posibles retornos a través de devanados.
+- Condiciones de medida.
+- Influencia del instrumento de medida.
+
+No inventar valores alternativos.
+
+Si los valores originales no son técnicamente justificables, determinar y documentar las condiciones necesarias para corregirlos. Actualizar únicamente los datos afectados y sus evidencias asociadas cuando exista una justificación técnica suficiente.
+
+Si no puede establecerse un modelo fiable, mantener el asset oculto y documentar el bloqueo.
+
+#### ART-005 — Ensayo de resistencia
+
+- Corregir el selector del multímetro a Ω.
+- Verificar la posición de las puntas.
+- Representar correctamente el estado del contactor durante el ensayo.
+- Mantener explícitas las condiciones de aislamiento y ausencia de tensión.
+- No presentar 0,2 Ω como límite universal de aceptación.
+
+#### Esquema y componentes
+
+Revisar:
+
+- Alimentación trifásica.
+- Circuito de mando.
+- Disponibilidad de neutro si el mando utiliza 230 VAC.
+- Protecciones.
+- Contactor KM2.
+- Relé térmico F2.
+- Motor M2.
+- Conductor PE.
+- Referencias y características nominales.
+
+Corregir exclusivamente las inconsistencias demostradas.
+
+#### Orden de revelación
+
+Resolver la revelación anticipada del polo L3 abierto.
+
+Mantener las decisiones existentes y ajustar únicamente la ubicación o el momento de presentación de la evidencia que confirma la causa raíz.
+
+No modificar la lógica de evaluación.
+
+### 5. EE-0035 — EXP-ELECTRICAL-PROTECTION-035
+
+Ruta:
+
+`content/experiences/electrical/EE-0035-auxiliary-circuit-protection-trip`
+
+#### ART-002 — Esquema eléctrico
+
+Corregir el esquema existente conservando su estética industrial.
+
+Conexionado obligatorio:
+
+- PS1 +24 V → entrada positiva de F24.
+- PS1 0 V → entrada negativa o referencia correspondiente de F24, según documentación del fabricante.
+- Salida F24.2 → contacto de mando K1 → Y2.
+- Retorno de Y2 → PS1 0 V.
+- Retorno correcto de las demás cargas.
+- Cortocircuito situado aguas abajo de K1 para mantener la coherencia con el disparo al ordenar Y2.
+
+Verificar que no existen:
+
+- Polaridades invertidas.
+- Retornos flotantes no intencionados.
+- Puentes incorrectos.
+- Conexiones ficticias.
+- Derivaciones que anulen las protecciones.
+
+Utilizar trazado vectorial determinista y una lista de conexiones verificable.
+
+No utilizar generación de imágenes para establecer la conectividad eléctrica definitiva.
+
+#### SITOP PSE200U
+
+Consultar documentación oficial Siemens para verificar:
+
+- Referencia exacta.
+- Bornes.
+- Número de canales.
+- Rangos de ajuste.
+- Estados de los LED.
+- Procedimiento de rearme.
+- Señalización.
+- Características de protección.
+
+Mantener el registro de corriente como evidencia externa simulada.
+
+No atribuir al dispositivo funciones de registro histórico que no posea.
+
+#### ART-005 — Bobina Y2
+
+- Verificar referencia comercial y características nominales.
+- Identificar los dos terminales de alimentación.
+- Excluir PE de la medición de resistencia.
+- Revisar la posición de las puntas.
+- Confirmar la coherencia del valor ilustrativo de 222 Ω.
+
+Distinguir entre resistencia equivalente calculada y resistencia real especificada por el fabricante.
+
+No inventar tolerancias.
+
+#### ART-006 y ART-007
+
+Revisar coherencia del daño físico, reparación y rearme.
+
+La indicación de LED verdes no sustituye la comprobación funcional de Y2 ni la verificación de la protección.
+
+#### Orden de revelación
+
+Mantener la comprobación de bobina antes de mostrar el daño físico del conductor.
+
+Eliminar exclusivamente la revelación anticipada de la causa raíz en los textos o evidencias que corresponda.
+
+### 6. EE-0036 — EXP-ELECTRICAL-RETURN-036
+
+Ruta:
+
+`content/experiences/electrical/EE-0036-open-return-conductor`
+
+#### ART-001 — Cuadro eléctrico
+
+Resolver la discrepancia entre la bobina Y3 de 2,6 W y las representaciones posteriores de 4,8 W.
+
+Determinar la especificación correcta a partir de las fuentes disponibles y de la documentación del fabricante.
+
+Unificar todas las representaciones afectadas.
+
+No cambiar el modelo de electroválvula arbitrariamente.
+
+#### ART-002 — Esquema eléctrico
+
+Corregir el esquema existente mediante trazado vectorial controlado.
+
+Conexionado obligatorio:
+
+- Alimentación 230 VAC → protección → PS1.
+- PE conectado correctamente.
+- PS1 +24 V → F24 → alimentación del PLC.
+- PS1 0 V → referencia del PLC.
+- Alimentación del grupo DQ conforme al modelo real de CPU.
+- Q0.1 → X2:5.
+- Q0.2 → X2:6.
+- Q0.3 → X2:7 → Y3:A1.
+- Y3:A2 → X2:8 → PS1 0 V.
+
+Mantener las bornas auxiliares existentes sin inventar cargas ni funciones.
+
+Verificar:
+
+- Independencia de las salidas.
+- Ausencia de puentes entre +24 V y Q0.3.
+- Ausencia de bypass de X2:8.
+- Polaridad.
+- Alimentación del grupo de salidas.
+- Protección frente a sobretensiones inductivas.
+
+Conservar la estética EPLAN aprobada: fondo blanco, líneas finas, referencias azules y conductores diferenciados.
+
+#### ART-003 — Watch Table
+
+Conservar la representación existente de TIA Portal V17.
+
+- Q0.3 = TRUE.
+- No introducir señales de feedback inexistentes.
+- No confundir monitorización con forzado.
+- No presentar la recreación como captura real de software.
+
+#### ART-004 — Mediciones de tensión
+
+Conservar las tres mediciones si resultan coherentes con el circuito:
+
+- A1 respecto a PS1:0 V = 24 VDC.
+- A2 respecto a PS1:0 V ≈ 24 VDC.
+- A1 respecto a A2 ≈ 0 VDC.
+
+Considerar la impedancia del multímetro y el retorno interrumpido.
+
+Corregir:
+
+- Contacto de las puntas.
+- Selector del instrumento.
+- Identificación de terminales.
+- Coherencia del cableado.
+- Potencia nominal de Y3.
+
+Mantener la composición fotográfica sin cabeceras, tablas ni explicaciones superpuestas.
+
+#### ART-005 — Continuidad
+
+- Selector en Ω o modo de continuidad correspondiente.
+- Lectura OL coherente con el ensayo.
+- Contacto metálico de ambas puntas.
+- Conductor aislado de caminos paralelos.
+- Instalación desenergizada y ausencia de tensión verificada como prerrequisito.
+- Coherencia entre el tramo medido y la ubicación del defecto.
+
+#### ART-006 — Causa raíz
+
+Conservar la fotografía aprobada del conductor azul interrumpido.
+
+Verificar que el defecto pertenece al tramo de retorno diagnosticado.
+
+No añadir etiquetas explicativas, flechas ni elementos que alteren innecesariamente el asset aprobado.
+
+#### ART-007 — Verificación final
+
+Corregir:
+
+- Contacto metálico de las puntas en A1 y A2.
+- Selector en VDC.
+- Coherencia de la lectura de 24 VDC.
+- Conductor de retorno reparado.
+- Identidad y potencia nominal de Y3.
+
+Mantener la comprobación funcional de la electroválvula como requisito adicional.
+
+La tensión correcta no demuestra por sí sola la conmutación mecánica.
+
+Presentar la versión corregida para aprobación visual humana antes de habilitarla definitivamente.
+
+### 7. MÉTODO DE CORRECCIÓN DE ASSETS
+
+Aplicar el principio de mínima intervención.
+
+1. Inspeccionar el asset original.
+2. Identificar el defecto concreto.
+3. Determinar la corrección técnicamente justificada.
+4. Corregir únicamente los elementos afectados.
+5. Comparar el resultado con el original.
+6. Validar que no se han introducido nuevas discrepancias.
+
+Conservar los originales en `media-source/`.
+
+Mantener los identificadores y rutas de producción existentes cuando sea compatible con los contratos del repositorio.
+
+No regenerar completamente una fotografía si puede corregirse localmente.
+
+No sustituir fotografías industriales por diagramas, iconos o ilustraciones genéricas.
+
+Si no existe capacidad para editar correctamente un asset fotográfico, documentar el bloqueo y mantenerlo oculto. No improvisar sustituciones.
+
+### 8. FUENTES Y VALIDACIÓN TÉCNICA
+
+Priorizar:
+
+- Documentación oficial Siemens.
+- Documentación oficial del fabricante de la electroválvula.
+- Manuales técnicos de los componentes representados.
+- Fuentes originales de las Experiences.
+- Contratos técnicos archivados en el repositorio.
+
+Registrar documento, referencia, versión, página o apartado utilizado para justificar cada corrección.
+
+No afirmar que se ha consultado una fuente que no se haya podido inspeccionar.
+
+No inventar referencias comerciales, valores eléctricos, pinouts, tolerancias ni características de protección.
+
+Cuando exista incertidumbre, documentarla explícitamente.
+
+### 9. QA OBLIGATORIO
+
+#### QA técnico
+
+Comprobar individualmente los 20 assets:
+
+- Conexionado.
+- Polaridad.
+- Terminales.
+- Referencias comerciales.
+- Características nominales.
+- Coherencia entre imágenes.
+- Posición de puntas.
+- Modo del instrumento.
+- Valores de medida.
+- Condiciones de seguridad.
+- Coherencia entre causa raíz y evidencias.
+- Ausencia de revelación anticipada.
+
+Para los esquemas eléctricos, generar una lista de conexiones y verificarla contra el dibujo final.
+
+#### QA funcional
+
+Ejecutar las pruebas existentes del repositorio.
+
+Verificar:
+
+- Carga de las tres Experiences.
+- Navegación.
+- Hotspots.
+- Rutas.
+- Decisiones.
+- Evaluación.
+- Feedback.
+- Presentación de evidencias.
+- Recursos multimedia.
+- Alt y caption ES/EN.
+- Referencias Notebook.
+- Ausencia de regresiones.
+
+Inspeccionar visualmente el preview de las tres Experiences.
+
+No declarar PASS para pruebas que no hayan podido ejecutarse.
+
+#### QA de alcance
+
+Revisar `git diff` y confirmar que no existen modificaciones fuera del alcance autorizado.
+
+### 10. CONTROL DE PUBLICACIÓN
+
+El objetivo es recuperar los 20 assets para su presentación, siempre que superen las validaciones correspondientes.
+
+No habilitar recursos incorrectos únicamente para alcanzar 20/20.
+
+Mantener:
+
+- `metadata.status=technical_review`
+- `technical_validation.status=pending`
+
+No cambiar estos estados sin aprobación técnica humana explícita.
+
+No confundir `public.visual.representation=available` con aprobación técnica.
+
+No realizar commit, push, merge ni deploy.
+
+### 11. INFORME FINAL OBLIGATORIO
+
+Entregar un informe consolidado que incluya:
+
+- Estado inicial y final.
+- Archivos inspeccionados.
+- Archivos modificados.
+- Correcciones realizadas por Experience y asset.
+- Comparativa antes/después.
+- Fuentes técnicas consultadas.
+- Justificación de cada modificación.
+- Assets registrados, visibles y ocultos.
+- Resultado individual del QA de los 20 assets.
+- Pruebas ejecutadas y resultados.
+- Pruebas no ejecutadas.
+- Discrepancias pendientes.
+- Bloqueos técnicos.
+- Cambios que requieren aprobación humana.
+- Confirmación de ausencia de modificaciones en Engine, Frontend y otras Experiences.
+- Estado final de publicación.
+
+Incluir capturas del preview y de los assets corregidos cuando el entorno lo permita.
+
+### 12. INSTRUCCIÓN FINAL
+
+Ejecutar las correcciones, no limitarse a elaborar otro informe de recomendaciones.
+
+Trabajar sobre las bases existentes.
+
+No reconstruir las Experiences.
+
+No cambiar su propósito, diseño didáctico ni arquitectura.
+
+Resolver todo aquello que pueda justificarse técnicamente y detener únicamente las correcciones que carezcan de información, herramientas o evidencias suficientes.
+
+**Corregir, verificar y preservar. No reinventar.**

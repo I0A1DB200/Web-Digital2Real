@@ -1,0 +1,9 @@
+AUTORIZACIÓN DE PUBLICACIÓN DEL PREVIEW — 26/11/2026
+
+El usuario solicita explícitamente «push, merge y deploy» después de aprobar visualmente ART-007 de EE-0036.
+
+Alcance: versión actual de EE-0034, EE-0035 y EE-0036 en el preview de la web existente, con18recursos presentados y2recursos de EE-0034 ocultos (ART-004 yART-005). Se conservan la revisión técnica pendiente, los límites documentados y el flujo de GitHub Pages existente.
+
+La autorización de publicación no constituye aprobación técnica eléctrica. metadata.status=technical_review y technical_validation.status=pending se mantienen. publication_allowed=false en los inventarios sigue señalando que no hay cierre técnico; publication_authorization registra por separado esta autorización explícita de publicar el preview.
+
+Los informes anteriores conservan su estado histórico «sin commit/push/deploy» en el momento de su entrega. El resultado de esta publicación se acredita mediante el commit, la PR fusionada y la ejecución del workflow de GitHub Actions correspondientes.

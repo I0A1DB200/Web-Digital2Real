@@ -1,0 +1,13 @@
+LOGOTIPO EDITORIAL NEGRO — IMPLEMENTACIÓN Y QA
+26/11/2026 (Europe/Madrid)
+
+Solicitud: subir la imagen entregada al apartado de logos del repositorio y sustituir el logo actual. El ZIP solo contiene d2r-logo-editorial-dark.png; sin instrucciones adicionales.
+Clasificación: presentación/branding de sitio, capa CONTENT. No cambios de arquitectura funcional.
+
+Arte original copiado sin alteración de bytes a Frontend/assets/brand/d2r-logo-editorial-dark.png. PNG2172x724,1502982bytes; SHA256fbdf8f244bf81192c9d4022484263eb60543b846e95e0a6ffd1fb5f9117a4915.
+Navbar cambia la referencia del WebP anterior al PNG nuevo y sus medidas intrínsecas. Sin recorte, regeneración ni reinterpretación. Se conservan estilos, posición derecha, altDigital2Real, navegación Home y teclado, idioma, iconos y menú móvil. Los logos anteriores se conservan como histórico, sin uso activo en navbar. Assets históricos de páginaPLC/favicon intactos.
+
+Validación:5/5pruebas existentes de navbar;4tamaños de navegadorChromium(1440,768,390,320),ES/EN; proporción3:1, sin solapes ni desbordamiento horizontal, cargaPNG correcta, navegación y activación por tecladoPASS.0erroresJS/HTTP.8capturas, escritorioES/móvilEN inspeccionadas. git diff--checkPASS.
+
+Alcance: PNG nuevo, navbar.js, changelog y esta evidenciaQA. Notebook, ExperienceEngine, todas las Experiences, dependencias y CSS intactos. Trabajo no versionado previo preservado.
+Publicación: se seguirá el flujo existente de PR/merge/GitHubPages; el resultado se comunicará tras verificar el workflow delSHAexacto.

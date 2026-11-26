@@ -1,0 +1,40 @@
+{
+  "modified": [
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/README.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/experience.yaml",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/locales/en.yaml",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/locales/es.yaml",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/README.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/evidence-manifest.yaml",
+    "docs/03-governance/D2R-FACTORY-001-experience-production-workflow.md",
+    "docs/06_Changelog.md",
+    "scripts/tests/env004Content.test.mjs"
+  ],
+  "created": [
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-001.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-002.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-003.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-004.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-005.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-006.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/EE-0037_ART-007.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/assets/README.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/ASSET_QA.json",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/EE-0037_ART-002.svg",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/EE-0037_ART-004.svg",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/EE-0037_ART-007.svg",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/FICHA_TECNICA.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/GENERATION_RECORD.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/QA_PENDIENTE.txt",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/SOURCE_REVIEW.md",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/USER_REQUEST.txt",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/browser_qa.py",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/connections.json",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/discovery.json",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/draw.py",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/functional-record.json",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/production/originals/ART003-rejected-missing-screws.png",
+    "content/experiences/electrical/EE-0037-incorrect-no-nc-contact/media-source/visual-intake.json",
+    "scripts/tests/ee0037Production.test.mjs"
+  ]
+}

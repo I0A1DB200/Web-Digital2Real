@@ -1,7 +1,7 @@
 locale: "en"
 translations:
   title: "Auxiliary circuit protection trips"
-  summary: "Electronic fuse -F24.2 on a 24 VDC branch disconnects when -Y2 is commanded. Other branches remain active. Identify the exact protection and branch before changing limits or replacing the supply. Text preview; visual evidence and technical review pending."
+  summary: "Electronic fuse -F24.2 on a 24 VDC branch disconnects when -Y2 is commanded. Other branches remain active. Identify the exact protection and branch before changing limits or replacing the supply. Preview with illustrations; publication blocked pending technical review."
   scenario:
     initial_context: "Electronic fuse -F24.2 on a 24 VDC branch disconnects when -Y2 is commanded. Other branches remain active. Identify the exact protection and branch before changing limits or replacing the supply."
     operational_state: "Only incident facts are known; records are disclosed by stage. Notebook — reading path in Engineering Notes: article-015 (NB-EL-07): Industrial 24 VDC power supplies; article-016 (NB-EL-08): Fuses, circuit breakers and overcurrent protection; article-017 (NB-EL-09): RCDs, insulation and PE; article-018 (NB-EL-10): Selectivity, segregation and distribution; article-026 (NB-EL-18): Terminals, potentials and numbering; article-029 (NB-EL-21): Diagnostic method; article-032 (NB-EL-24): Insulation and leakage"
@@ -31,10 +31,10 @@ translations:
       situation: "F24.2 identifies Y2's branch. Other branches remain active and PS1 maintains 24.1 V. Evidence bounds the fault to the branch or load; it does not establish a general 24 V failure or PLC STOP.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-03-DIAGNOSIS:
       title: "Compare hypotheses"
-      situation: "The F24.2 record shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "The external simulated record of branch F24.2 shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared. Before resistance or continuity testing, the installation must be isolated, absence of voltage verified and parallel paths isolated under the authorized procedure. Only simulated records are interpreted here.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-04-DIAGNOSIS:
       title: "Confirm the cause and intervene safely"
-      situation: "Isolated inspection confirms damaged insulation on Y2's cable, with +24 V and 0 V conductors touching inside a cable duct. The separated and checked Y2 coil has no anomaly. F24.2 is not bypassed.\n\nWhich interpretation or action is justified by the available evidence?"
+      situation: "After the coil check, isolated cable inspection shows damaged insulation and contact between the +24 V and 0 V conductors inside the trunking, downstream of contact K1. Interpret this observation to decide the cause and intervention.\n\nWhich interpretation or action is justified by the available evidence?"
     STAGE-05-VERIFY-RECOVERY:
       title: "Verify recovery"
       situation: "The short circuit is in the cable downstream of F24.2; protection fulfils its function. Repair requires replacing the section and correcting its mechanical protection. Repeated resets or a higher rating do not correct the defect.\n\nWhich interpretation or action is justified by the available evidence?"
@@ -46,11 +46,11 @@ translations:
       source: "Simulated teaching record · D1"
       content: "F24.2 identifies Y2's branch. Other branches remain active and PS1 maintains 24.1 V. Evidence bounds the fault to the branch or load; it does not establish a general 24 V failure or PLC STOP."
     EVID-02-RECORD:
-      source: "Simulated teaching record · D2"
-      content: "The F24.2 record shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared."
+      source: "External simulated teaching record · D2"
+      content: "The external simulated record of branch F24.2 shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared."
     EVID-03-RECORD:
       source: "Simulated teaching record · D3"
-      content: "Isolated inspection confirms damaged insulation on Y2's cable, with +24 V and 0 V conductors touching inside a cable duct. The separated and checked Y2 coil has no anomaly. F24.2 is not bypassed."
+      content: "With the installation isolated and absence of voltage verified, Y2 is checked separately from its cable. The simulated record shows 222 Ω between power terminals 1 and 2, without using PE. 24²/2.6 ≈ 221.5 Ω explains the illustrative equivalent value of 222 Ω; it is not a resistance or tolerance guaranteed by Festo. Inspection continues on the isolated cable."
     EVID-04-RECORD:
       source: "Simulated teaching record · D4"
       content: "The short circuit is in the cable downstream of F24.2; protection fulfils its function. Repair requires replacing the section and correcting its mechanical protection. Repeated resets or a higher rating do not correct the defect."
@@ -93,15 +93,36 @@ translations:
     DEC-01-C: "The proposal “Increase F24.2's limit.” is not supported by this record.  Review: Electronic fuse -F24.2 on a 24 VDC branch disconnects when -Y2 is commanded. Other branches remain active. Identify the exact protection and branch before changing limits or replacing the supply. Choose again without carrying out the proposed option."
     DEC-02-A: "other branches operate. Review: F24.2 identifies Y2's branch. Other branches remain active and PS1 maintains 24.1 V. Evidence bounds the fault to the branch or load; it does not establish a general 24 V failure or PLC STOP. Choose again without carrying out the proposed option."
     DEC-02-C: "The proposal “The PLC is in STOP.” is not supported by this record.  Review: F24.2 identifies Y2's branch. Other branches remain active and PS1 maintains 24.1 V. Evidence bounds the fault to the branch or load; it does not establish a general 24 V failure or PLC STOP. Choose again without carrying out the proposed option."
-    DEC-03-A: "The proposal “F24.2 must be defective.” is not supported by this record.  Review: The F24.2 record shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared. Choose again without carrying out the proposed option."
-    DEC-03-B: "does not explain short-circuit current. Review: The F24.2 record shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared. Choose again without carrying out the proposed option."
-    DEC-04-B: "The proposal “Reset repeatedly until stable.” is not supported by this record.  Review: Isolated inspection confirms damaged insulation on Y2's cable, with +24 V and 0 V conductors touching inside a cable duct. The separated and checked Y2 coil has no anomaly. F24.2 is not bypassed. Choose again without carrying out the proposed option."
-    DEC-04-C: "The proposal “Replace with a higher-rated fuse.” is not supported by this record.  Review: Isolated inspection confirms damaged insulation on Y2's cable, with +24 V and 0 V conductors touching inside a cable duct. The separated and checked Y2 coil has no anomaly. F24.2 is not bypassed. Choose again without carrying out the proposed option."
+    DEC-03-A: "The proposal “F24.2 must be defective.” is not supported by this record.  Review: The external simulated record of branch F24.2 shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared. Choose again without carrying out the proposed option."
+    DEC-03-B: "does not explain short-circuit current. Review: The external simulated record of branch F24.2 shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared. Choose again without carrying out the proposed option."
+    DEC-04-B: "The proposal “Reset repeatedly until stable.” is not supported by this record.  Review: With the installation isolated and absence of voltage verified, Y2 is checked separately from its cable. The simulated record shows 222 Ω between power terminals 1 and 2, without using PE. 24²/2.6 ≈ 221.5 Ω explains the illustrative equivalent value of 222 Ω; it is not a resistance or tolerance guaranteed by Festo. Inspection continues on the isolated cable. Choose again without carrying out the proposed option."
+    DEC-04-C: "The proposal “Replace with a higher-rated fuse.” is not supported by this record.  Review: With the installation isolated and absence of voltage verified, Y2 is checked separately from its cable. The simulated record shows 222 Ω between power terminals 1 and 2, without using PE. 24²/2.6 ≈ 221.5 Ω explains the illustrative equivalent value of 222 Ω; it is not a resistance or tolerance guaranteed by Festo. Inspection continues on the isolated cable. Choose again without carrying out the proposed option."
     DEC-05-A: "The proposal “Only clear the event.” is not supported by this record.  Review: The short circuit is in the cable downstream of F24.2; protection fulfils its function. Repair requires replacing the section and correcting its mechanical protection. Repeated resets or a higher rating do not correct the defect. Choose again without carrying out the proposed option."
     DEC-05-C: "The proposal “Leave Y2 disconnected without documenting it.” is not supported by this record.  Review: The short circuit is in the cable downstream of F24.2; protection fulfils its function. Repair requires replacing the section and correcting its mechanical protection. Repeated resets or a higher rating do not correct the defect. Choose again without carrying out the proposed option."
   visual:
-    educational_purpose: "Progressive textual evidence; images await supply and approval. The ENV cover is context only, never electrical proof."
-  assets: {}
+    educational_purpose: "Simulated-case illustrations; conflicting assets hidden and human technical review pending."
+  assets:
+    ART-001:
+      alt: "Illustrated PS1, F24 and PLC cabinet; channel 2 indicates disconnection."
+      caption: "Illustrated PS1, F24 and PLC cabinet; channel 2 indicates disconnection."
+    ART-002:
+      alt: "Corrected functional schematic: PS1 supplies F24 with correct polarity; F24.2 passes through K1 to Y2 and load returns go directly to PS1:0 V."
+      caption: "Corrected functional schematic: PS1 supplies F24 with correct polarity; F24.2 passes through K1 to Y2 and load returns go directly to PS1:0 V."
+    ART-003:
+      alt: "Illustrated F24: channel 2 red and other channels green."
+      caption: "Illustrated F24: channel 2 red and other channels green."
+    ART-004:
+      alt: "Simulated PS1 reading of 24.1 V while channel 2 is disconnected."
+      caption: "Simulated PS1 reading of 24.1 V while channel 2 is disconnected."
+    ART-005:
+      alt: "Isolated Y2 VACF-A-A1-1 test: simulated 222 Ω across 1 and 2; PE excluded. Illustrative equivalent value, not a manufacturer tolerance."
+      caption: "Isolated Y2 VACF-A-A1-1 test: simulated 222 Ω across 1 and 2; PE excluded. Illustrative equivalent value, not a manufacturer tolerance."
+    ART-006:
+      alt: "Damaged insulation and contacting red and blue conductors in the Y2 cable."
+      caption: "Damaged insulation and contacting red and blue conductors in the Y2 cable."
+    ART-007:
+      alt: "Illustrated F24 with four green channel indicators after repair."
+      caption: "Illustrated F24 with four green channel indicators after repair."
   completion:
     title: "Technical debrief"
     summary: "short circuit in Y2's cable downstream of F24.2; protection fulfils its function. After replacing the section and correcting mechanical cable protection in the simulated scenario, branch, function and selective operation are verified under the procedure. Intended coordination is retained and the repair documented; disconnecting Y2 without a record does not close the case."

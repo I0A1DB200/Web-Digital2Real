@@ -1,0 +1,583 @@
+# D2R — Frontend UX, Navigation & Notebook Cleanup
+
+## 1. Objetivo
+
+Implementar un paquete de mejoras visuales, funcionales y de limpieza de contenido en Digital2Real.
+
+Web de referencia:
+https://i0a1db200.github.io/Web-Digital2Real/
+
+El objetivo es consolidar una interfaz editorial profesional, reducir el ruido visual, garantizar una navegación coherente y preservar la separación arquitectónica entre Engineering Notebook y Experience Lab.
+
+### Clasificación del trabajo
+
+- **ARCHITECTURE:** navegación, routing y gestión de estados.
+- **CONTENT:** limpieza del catálogo Notebook.
+- **ENGINE / Frontend:** corrección del comportamiento compartido de navegación y scroll.
+- **UX/UI:** simplificación de la presentación editorial.
+
+No modificar la lógica pedagógica ni los contratos del Experience Engine.
+
+---
+
+## 2. Inspección previa obligatoria
+
+Antes de realizar cambios, consultar:
+
+- `AGENTS.md`
+- `docs/03-governance/ENGINEERING-DIRECTOR-PLAYBOOK.md`
+- `docs/01-architecture/D2R-ENGINEERING-OS-ARCHITECTURE.md`
+- `docs/01-architecture/D2R-EXPERIENCE-ENGINE.md`
+- `docs/01-architecture/D2R-CONTENT-MODEL.md`
+- `docs/02-standards/D2R-STD-004-qa-standard.md`
+- `docs/VALIDATION_BASELINE.md`
+
+Inspeccionar especialmente:
+
+- `Frontend/app.js`
+- `Frontend/data/site.js`
+- `Frontend/styles/layout.css`
+- `Frontend/styles/variables.css`
+- `Frontend/styles/notebook.css`
+- `Frontend/styles/responsive.css`
+- `Frontend/components/articleViewer.js`
+- `Frontend/components/navbar.js`
+- `Frontend/products/experience-engine/components/scrollWorkspace.js`
+- `Frontend/products/experience-engine/components/experienceWorkspace.js`
+- `Frontend/products/experience-engine/components/environmentNavigator.js`
+- `content/notebooks/notebook.js`
+
+Localizar también los scripts de generación de artefactos y las pruebas automatizadas existentes.
+
+Registrar el estado inicial del repositorio y proteger cualquier cambio previo ajeno a este encargo.
+
+---
+
+## 3. Simplificación del hero principal
+
+Mantener exactamente el titular actual:
+
+**Aprende automatización industrial a través de la ingeniería real.**
+
+Eliminar el siguiente párrafo:
+
+«Conocimiento práctico de ingeniería basado en problemas industriales reales, sistemas de automatización fiables y la forma de razonar de los ingenieros en planta.»
+
+Aplicar también la eliminación a su equivalente en inglés.
+
+### Requisitos
+
+- Eliminar el elemento visual y los contenedores que queden innecesarios.
+- Revisar las referencias del sistema de traducción.
+- Revisar la animación de aparición del titular, ya que actualmente depende también de la existencia del párrafo inferior.
+- Mantener la tipografía, escala y composición editorial del titular.
+- No introducir nuevos textos para sustituir el párrafo eliminado.
+- No modificar innecesariamente los metadatos SEO.
+- Conservar el fondo negro actual.
+
+---
+
+## 4. Incorporar una flecha editorial
+
+Añadir una flecha curva orientada hacia abajo en la zona inferior derecha del hero.
+
+La flecha debe ocupar el espacio libre próximo al final del titular, sin interferir con la tipografía.
+
+### Dirección artística
+
+- Estética editorial contemporánea.
+- Trazo fino y limpio.
+- Curvatura natural.
+- Naranja corporativo existente.
+- Sin fondo ni contenedor visible.
+- Sin efectos luminosos.
+- Sin estética gaming.
+- Sin apariencia de botón comercial.
+- Sin animaciones excesivas.
+
+Utilizar preferentemente un SVG inline y los tokens de color existentes.
+
+### Comportamiento
+
+Al pulsar la flecha:
+
+- Desplazar al usuario hasta la sección Engineering Notebook.
+- Mantener la ruta principal actual.
+- No generar entradas innecesarias en el historial.
+- Respetar la altura de la barra de navegación.
+- Respetar `prefers-reduced-motion`.
+
+La flecha debe ser accesible mediante teclado y contar con una descripción accesible en ES y EN.
+
+Adaptar su posición y tamaño a escritorio, tablet y móvil.
+
+---
+
+## 5. Simplificación de la sección Engineering Notebook
+
+Eliminar el texto introductorio:
+
+«Artículos técnicos concisos sobre retos industriales reales, diagnóstico práctico y decisiones de ingeniería aplicables en planta.»
+
+Eliminar también su equivalente en inglés.
+
+### Mantener
+
+- Título de la sección.
+- Composición visual existente.
+- Motor y elementos gráficos.
+- Carrusel.
+- Tarjetas de las notas válidas.
+- Interacciones existentes.
+
+Revisar el espacio vertical resultante y evitar contenedores vacíos.
+
+No sustituir el texto eliminado por otro párrafo comercial o explicativo.
+
+El objetivo es dar protagonismo al conocimiento técnico y reducir el ruido visual.
+
+---
+
+## 6. Limpieza del catálogo Engineering Notebook
+
+Durante una incorporación anterior de Engineering Experiences se añadieron incorrectamente una serie de notas al catálogo Notebook.
+
+Eliminar todas las notas comprendidas entre:
+
+**009 y 033, ambas incluidas.**
+
+Total esperado: **25 notas**.
+
+### Identificadores afectados
+
+009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032 y 033.
+
+### Procedimiento
+
+1. Inspeccionar `content/notebooks/notebook.js` como fuente canónica.
+2. Verificar los identificadores reales de las notas.
+3. Confirmar que corresponden a entradas Notebook y no a Engineering Experiences.
+4. Eliminar las entradas correspondientes en ES y EN.
+5. Revisar referencias cruzadas y dependencias.
+6. Regenerar los artefactos derivados mediante el procedimiento oficial.
+7. Validar el catálogo resultante.
+
+### Invariantes
+
+- Conservar las notas 001–008.
+- Conservar las notas posteriores a la 033, si existen.
+- No renumerar ninguna nota.
+- No modificar los identificadores restantes.
+- No eliminar ni modificar ninguna Engineering Experience (EE).
+- No modificar los entornos ENV.
+- No modificar YAML de Experiences.
+- No eliminar imágenes compartidas.
+- No eliminar recursos utilizados por el Experience Engine.
+- No alterar contenidos técnicos de las notas restantes.
+
+Identificar posibles assets huérfanos y documentarlos, pero no eliminarlos dentro de este paquete.
+
+No resolver la eliminación ocultando tarjetas mediante CSS, filtros del renderer o modificaciones exclusivas de los artefactos generados.
+
+La eliminación debe realizarse en la fuente canónica.
+
+Si el inventario real no coincide con las 25 notas esperadas, documentar la discrepancia y no eliminar entradas ajenas al rango autorizado.
+
+---
+
+## 7. Simplificación visual de los artículos Notebook
+
+Actualmente, al abrir una nota de ingeniería, aparece un encabezado superior similar a:
+
+**D2R · Nota de ingeniería XXX**
+
+Eliminar este encabezado de todas las notas.
+
+Aplicar también la corrección a su equivalente en inglés.
+
+### Resultado esperado
+
+El título técnico del artículo debe convertirse en el primer elemento editorial visible del contenido.
+
+### Mantener
+
+- Título técnico.
+- Imágenes.
+- Diagramas.
+- Esquemas eléctricos.
+- Contenido técnico.
+- Tablas.
+- Bloques de código.
+- Controles de navegación y cierre.
+- Identificadores internos.
+- Metadatos.
+- Referencias técnicas.
+
+Implementar la corrección en el componente compartido que renderiza los artículos.
+
+No editar individualmente cada nota para eliminar el encabezado.
+
+Eliminar también los márgenes y espacios residuales generados por su retirada.
+
+---
+
+## 8. Corrección del scroll en Experience Lab
+
+URL de referencia:
+
+https://i0a1db200.github.io/Web-Digital2Real/#experience-lab
+
+### Problema observado
+
+Cuando el usuario selecciona una Experience y se abre su Preview, la página se desplaza hacia la parte superior de forma incorrecta.
+
+Este comportamiento rompe la continuidad de la navegación y obliga al usuario a localizar nuevamente el contenido.
+
+### Hallazgo técnico preliminar
+
+El componente:
+
+`Frontend/products/experience-engine/components/scrollWorkspace.js`
+
+Utiliza:
+
+`window.scrollTo({ top: 0 })`
+
+Este comportamiento se invoca desde diferentes transiciones del Experience Workspace y Environment Navigator.
+
+También existe un desplazamiento global en `Frontend/app.js` al cambiar de vista.
+
+Verificar cuál de estos mecanismos interviene en cada caso antes de modificar.
+
+### Comportamiento requerido
+
+- Abrir un hotspot no debe desplazar injustificadamente la página.
+- Abrir una Preview debe mantener el contexto visual.
+- Abrir una Experience debe situar su encabezado o contenido inicial en el área visible.
+- Iniciar una Experience debe producir una transición coherente.
+- Cambiar de etapa debe desplazar únicamente cuando resulte necesario.
+- Regresar al entorno debe recuperar la posición anterior.
+- Regresar al catálogo debe recuperar una posición coherente.
+
+### Implementación
+
+Centralizar la política de scroll en el componente propietario de esta responsabilidad.
+
+Utilizar objetivos asociados al contenido real del workspace cuando corresponda.
+
+Revisar:
+
+- `scrollWorkspaceToTop()`
+- `renderView()`
+- `openExperience()`
+- `startExperience()`
+- `continueExperience()`
+- `selectDecision()`
+- `restartExperience()`
+- `closeExperience()`
+- `renderEnvironment()`
+- `restoreView()`
+
+Considerar también:
+
+- Altura de la navbar.
+- Foco accesible.
+- Carga asíncrona de contenido.
+- Restauración de posición.
+- Preferencias de movimiento reducido.
+
+No utilizar:
+
+- Timeouts arbitrarios.
+- Posiciones de píxeles rígidas.
+- Soluciones particulares para cada Experience.
+- Parches CSS que oculten el problema real.
+- Cambios en el Headless Player para resolver un problema de presentación.
+
+---
+
+## 9. Revisión estructural del enrutamiento
+
+### Problema observado
+
+Cuando el usuario utiliza el botón Atrás del navegador, no regresa al estado anterior dentro de Experience Lab.
+
+En su lugar, puede terminar directamente en la página principal.
+
+### Hallazgo técnico preliminar
+
+`Frontend/app.js` gestiona las vistas principales mediante hashes.
+
+Sin embargo, los estados internos de Experience Lab se gestionan dentro del workspace y del Environment Navigator sin representar necesariamente cada transición en el historial del navegador.
+
+Por tanto, existen diferentes niveles de navegación que deben coordinarse.
+
+### Arquitectura conceptual requerida
+
+Inicio
+→ Experience Lab
+→ Catálogo de entornos
+→ Entorno seleccionado
+→ Preview
+→ Experience
+
+El navegador debe reconocer las transiciones de navegación relevantes.
+
+### Comportamiento esperado al retroceder
+
+Experience
+→ Preview o entorno de origen
+→ Entorno
+→ Catálogo
+→ Vista anterior
+
+La ruta exacta deberá respetar el flujo real existente y evitar duplicar estados equivalentes.
+
+### Modelo de rutas orientativo
+
+- `#engineering-notes`
+- `#experience-lab`
+- `#experience-lab/env/{environmentId}`
+- `#experience-lab/env/{environmentId}/preview/{experienceId}`
+- `#experience-lab/env/{environmentId}/experience/{experienceId}`
+- `#about`
+
+Estas rutas representan una propuesta arquitectónica, no una obligación de implementación literal.
+
+Inspeccionar los identificadores canónicos, los contratos existentes y los mecanismos de navegación antes de decidir la estructura definitiva.
+
+### Requisitos funcionales
+
+1. El botón Atrás debe recuperar la vista anterior.
+2. El botón Adelante debe funcionar correctamente.
+3. Los botones internos de volver deben regresar a su vista padre.
+4. Cerrar una Preview debe devolver al entorno correspondiente.
+5. Cerrar una Experience debe devolver a su contexto de origen.
+6. Regresar desde un entorno debe recuperar el catálogo.
+7. No regresar automáticamente a la página principal cuando exista un contexto interno válido.
+8. Evitar entradas duplicadas en el historial.
+9. Evitar bucles entre eventos de navegación.
+10. Soportar acceso directo a rutas profundas válidas.
+11. Soportar la recarga del navegador en rutas profundas.
+12. Resolver identificadores desconocidos de forma controlada.
+13. Conservar la compatibilidad con GitHub Pages.
+14. Mantener la URL base del repositorio.
+15. Preservar el comportamiento del selector ES/EN.
+
+### Gestión de estado
+
+La navegación debe preservar, cuando corresponda:
+
+- Entorno seleccionado.
+- Experience seleccionada.
+- Hotspot de origen.
+- Posición de scroll.
+- Foco.
+- Progreso registrado.
+- Estado de sesión.
+- Decisiones realizadas.
+- Evidencias obtenidas.
+
+No reiniciar una Experience como efecto secundario de una transición de navegación.
+
+No prometer restauración de sesiones tras una recarga si el contrato actual no permite recuperarlas. En ese caso, documentar la limitación y separar la recuperación de la ruta de la persistencia del estado pedagógico.
+
+No generar una entrada en el historial por cada decisión, intento, evidencia o cambio de etapa del Player.
+
+Los estados pedagógicos internos no deben confundirse con las rutas de navegación.
+
+No introducir frameworks o dependencias de routing si la arquitectura actual permite resolverlo de manera mantenible.
+
+---
+
+## 10. Límites arquitectónicos
+
+Mantener la separación existente:
+
+**Notebook**
+→ Conocimiento técnico permanente y SSOT.
+
+**Experience Lab**
+→ Presentación y navegación de experiencias industriales.
+
+**Experience Engine / Headless Player**
+→ Lógica pedagógica, decisiones, evidencias, resultados y evaluación.
+
+**Frontend**
+→ Presentación, navegación, composición visual y experiencia de usuario.
+
+Corregir cada problema en la capa responsable.
+
+No utilizar cambios de contenido para solucionar defectos de navegación.
+
+No utilizar cambios del motor pedagógico para resolver problemas de scroll o routing.
+
+---
+
+## 11. Fuera de alcance
+
+No modificar:
+
+- Logotipo editorial aprobado.
+- Identidad visual corporativa.
+- Iconografía principal.
+- Paleta de colores, salvo reutilización de tokens existentes.
+- YAML de Experiences.
+- Contenido pedagógico de Experiences.
+- Lógica de diagnóstico.
+- Evidencias y Results.
+- Contratos del Headless Experience Player.
+- Modelos 3D.
+- Simuladores independientes.
+- Sistemas de evaluación.
+- Certificados.
+- Autenticación.
+- Usuarios.
+- Pagos.
+- Infraestructura de hosting.
+
+No realizar refactorizaciones masivas ajenas al problema.
+
+No eliminar assets sin verificar dependencias.
+
+No fusionar directamente a `main`.
+
+---
+
+## 12. Validación y QA obligatorios
+
+Ejecutar las pruebas existentes y añadir pruebas de regresión para los nuevos comportamientos.
+
+### QA visual
+
+| Prueba | Resultado esperado |
+|---|---|
+| Hero principal | Titular conservado |
+| Párrafo introductorio | Eliminado |
+| Flecha editorial | Visible y funcional |
+| Fondo | Negro actual |
+| Notebook | Sin párrafo introductorio |
+| Artículos | Sin encabezado D2R · Nota de ingeniería XXX |
+| ES/EN | Presentación coherente |
+| Responsive | Sin desbordamientos |
+| Movimiento reducido | Respetado |
+
+### QA de contenido
+
+| Prueba | Resultado esperado |
+|---|---|
+| Notas 001–008 | Conservadas |
+| Notas 009–033 | Eliminadas |
+| Notas posteriores a 033 | Conservadas, si existen |
+| Identificadores | Sin renumeración |
+| Engineering Experiences | Sin modificaciones |
+| Assets compartidos | Conservados |
+| Artefactos generados | Coherentes con fuente canónica |
+| Referencias | Sin nuevas roturas |
+
+### QA de navegación
+
+| Prueba | Resultado esperado |
+|---|---|
+| Inicio → Experience Lab | Catálogo visible |
+| Catálogo → Entorno | Entorno correcto |
+| Entorno → Preview | Sin salto de scroll injustificado |
+| Preview → Experience | Contenido inicial visible |
+| Experience → Atrás | Contexto anterior |
+| Preview → Atrás | Entorno correspondiente |
+| Entorno → Atrás | Catálogo |
+| Navegador: Adelante | Recuperación de ruta |
+| Cerrar Experience | Regreso al origen |
+| Recargar ruta profunda | Ruta válida recuperada |
+| Ruta desconocida | Fallback controlado |
+| Cambio ES/EN | Contexto conservado |
+| Progreso | Sin pérdida ni duplicación |
+| Simuladores 3D | Sin regresiones |
+| Notebook | Apertura y cierre correctos |
+| Navegación repetida | Sin bucles ni duplicaciones |
+
+### QA de navegador real
+
+Validar como mínimo:
+
+- 390 × 844 px.
+- 1280 × 900 px.
+- 1440 × 1100 px.
+
+Comprobar:
+
+- Consola JavaScript.
+- Errores de red.
+- Carga de recursos.
+- Navegación mediante teclado.
+- Foco.
+- Scroll.
+- Historial.
+- Responsive.
+- Traducciones.
+- Comportamiento en GitHub Pages o entorno equivalente bajo un subdirectorio.
+
+Ejecutar:
+
+- Validación de sintaxis JavaScript.
+- Validación de imports.
+- Pruebas automatizadas disponibles.
+- Validación de artefactos generados.
+- `git diff --check`.
+
+Si la infraestructura de pruebas de navegador no está disponible, registrar:
+
+**BROWSER QA / AUTOMATION — INFRASTRUCTURE BLOCKED**
+
+No declarar como superadas pruebas que no se hayan ejecutado.
+
+---
+
+## 13. Entregables
+
+Trabajar en una rama específica.
+
+Nombre sugerido:
+
+`fix/d2r-frontend-navigation-notebook-cleanup`
+
+Entregar un informe final con:
+
+1. Estado inicial del repositorio.
+2. Clasificación de los problemas.
+3. Causas raíz verificadas.
+4. Archivos modificados.
+5. Justificación de cada modificación.
+6. Modelo de rutas anterior y nuevo.
+7. Política de scroll implementada.
+8. Identificadores exactos de las notas eliminadas.
+9. Inventario final del Notebook.
+10. Confirmación de que ninguna Experience ha sido eliminada o modificada.
+11. Inventario de posibles assets huérfanos.
+12. Pruebas ejecutadas y resultados.
+13. Capturas de antes y después.
+14. Limitaciones y bloqueos.
+15. Riesgos pendientes.
+16. Rama y commit final.
+
+---
+
+## 14. Definition of Done
+
+El paquete se considerará completado cuando:
+
+- El hero conserve únicamente su titular y la nueva flecha editorial.
+- La flecha permita acceder a Notebook.
+- La sección Notebook no contenga el párrafo introductorio.
+- Las notas 009–033 hayan sido eliminadas de la fuente canónica y de los artefactos derivados.
+- Los artículos no muestren el encabezado superior D2R · Nota de ingeniería XXX.
+- Experience Lab no presente desplazamientos injustificados.
+- Los botones Atrás y Adelante funcionen correctamente.
+- El usuario pueda regresar al contexto desde el que abrió una Experience.
+- El contenido pedagógico permanezca intacto.
+- No se introduzcan regresiones.
+- Se hayan documentado y ejecutado las validaciones aplicables.
+
+**Principio rector: corregir el sistema una sola vez, en la capa adecuada, preservando la arquitectura y la identidad de Digital2Real.**
+
+Implementar, validar y entregar el informe. No realizar merge a main sin revisión.

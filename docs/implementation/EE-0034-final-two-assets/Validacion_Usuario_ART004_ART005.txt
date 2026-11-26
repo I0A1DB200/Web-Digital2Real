@@ -1,0 +1,9 @@
+VALIDACIÓN DEL USUARIO —26/11/2026
+
+El usuario responde «si» a la validación de las dos versiones ART-004/005 y de las condiciones del modelo simulado. Aprobación limitada registrada por hashes en user-approval.json y en el inventario de EE-0034.
+
+Los20/20recursos están vinculados al preview local. Las dos revisiones no constituyen mediciones reales, certificación ni aprobación de todas las referencias/equipos de la instalación. metadata.status=technical_review, technical_validation.status=pending y publication_allowed=false se conservan para el cierre técnico global.
+
+QA posterior al registro:41/41pruebas focalizadas, sin fallos; hashes de imágenes, código del modelo y resultados coinciden con las versiones validadas. git diff --check:PASS. No se repite navegador porque no cambia presentación, flujo ni archivos binarios respecto al QA anterior.
+
+Sin nuevo commit,push,merge ni deploy. La versión pública sigue en el release5fbe58c.

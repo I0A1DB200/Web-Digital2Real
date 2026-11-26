@@ -1,0 +1,14 @@
+{
+  "file": "Frontend/assets/brand/d2r-logo-editorial-dark.png",
+  "sha256": "fbdf8f244bf81192c9d4022484263eb60543b846e95e0a6ffd1fb5f9117a4915",
+  "dimensions": [
+    2172,
+    724
+  ],
+  "bytes": 1502982,
+  "source": "Digital2Real-logo-editorial-negro.zip/d2r-logo-editorial-dark.png",
+  "unchanged_source_bytes": true,
+  "active_consumer": "Frontend/components/navbar.js",
+  "previous_asset": "Frontend/assets/brand/d2r-logo-editorial-header.webp",
+  "previous_asset_state": "Retained for history; no longer used by navbar"
+}

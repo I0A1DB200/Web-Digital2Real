@@ -1,0 +1,18 @@
+{
+  "zip": "/workspace/deliverables/EE0037_Codex.zip",
+  "sha256": "c627130769af03c276a8d9997f4b57f7d26f654c6ba0d3962c94794ec4fdd291",
+  "bytes": 18573787,
+  "members": 79,
+  "zip_crc": "PASS",
+  "declared_files_sha256": "PASS",
+  "assets": 7,
+  "runtime_hash_match": "PASS",
+  "suite": {
+    "tests": 590,
+    "pass": 590,
+    "fail": 0
+  },
+  "browser_flows": 4,
+  "wrong_retries": 40,
+  "publication": "NOT_PUBLISHED_HUMAN_REVIEW_PENDING"
+}

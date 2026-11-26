@@ -1,0 +1,1 @@
+Originales preservados en ../media-source/originals/. Las correcciones mantienen ART y rutas. visual-intake.json registra hashes original/derivado, método, orden y bloqueos. Las dos revisiones SVG y sus listas de conexiones están en ../media-source/corrections/. Publicación y revisión técnica humana pendientes.

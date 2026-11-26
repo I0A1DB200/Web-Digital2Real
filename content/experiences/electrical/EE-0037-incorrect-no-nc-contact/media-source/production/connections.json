@@ -1,0 +1,47 @@
+{
+  "nodes": {
+    "N1": [
+      "Uc",
+      "S3:21"
+    ],
+    "N2": [
+      "S3:22",
+      "START:13",
+      "KM3aux:13"
+    ],
+    "N3": [
+      "START:14",
+      "KM3aux:14",
+      "KM3:A1"
+    ],
+    "N4": [
+      "KM3:A2",
+      "return_Uc"
+    ]
+  },
+  "contacts": [
+    {
+      "id": "S3",
+      "kind": "NC",
+      "a": "N1",
+      "b": "N2"
+    },
+    {
+      "id": "START",
+      "kind": "NO",
+      "a": "N2",
+      "b": "N3"
+    },
+    {
+      "id": "KM3aux",
+      "kind": "NO",
+      "a": "N2",
+      "b": "N3"
+    }
+  ],
+  "coil": {
+    "a": "N3",
+    "b": "N4"
+  },
+  "limits": "Functional illustrative extract; Uc unspecified; protection and power upstream omitted; no PE return."
+}

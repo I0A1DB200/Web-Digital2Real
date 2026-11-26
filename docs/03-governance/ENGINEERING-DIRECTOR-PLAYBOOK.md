@@ -1,6 +1,6 @@
 # Digital2Real --- Engineering Director Playbook
 
-**Version:** 2\
+**Version:** 3\
 **Date:** 2 October 2026\
 **Scope:** Architecture · Codex contracts · Experience Engine · Media
 semantics · QA\
@@ -439,7 +439,12 @@ For every technical conclusion verify:
 
 ## 11. Codex operating contract
 
-Codex is the implementation executor.
+Codex owns end-to-end engineering delivery of an approved objective. Follow the
+[Development Workflow](../DEVELOPMENT_WORKFLOW.md) for delegated technical
+decisions, risk-based review and publication. Preserve product and architecture
+ownership and continue through validation, remediation, documentation and the
+next authorized dependency. Escalate evidence gaps that prevent a safe
+implementation and decisions beyond delegated authority.
 
 Once the Experience method is established, Codex may autonomously:
 
@@ -732,7 +737,7 @@ The EE-0008 → EE-0011 campaign established five reusable checks:
 
 ## 16. Repository and implementation hygiene
 
--   Never commit or push unless explicitly authorized.
+-   Commit and publish authorized work branches through the Development Workflow.
 -   Do not overwrite or revert pre-existing dirty-worktree changes.
 -   At campaign end distinguish campaign changes from pre-existing
     repository state.
@@ -880,7 +885,7 @@ TEST_PLAN:
 -   [ ] No unrelated Experience changes.
 -   [ ] No unauthorized binary changes.
 -   [ ] Pre-existing worktree state preserved.
--   [ ] Commit/push only when explicitly authorized.
+-   [ ] Branch publication and PR follow the delegated scope and review policy.
 
 ------------------------------------------------------------------------
 

@@ -91,7 +91,7 @@ public:
       id: "STAGE-03-DIAGNOSIS"
       phase: "investigation"
       title: "Contrastar hipótesis"
-      situation: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir. Antes del ensayo de polos se requieren aislamiento de fuerza y mando, ausencia de tensión verificada y eliminación de caminos paralelos, conforme al procedimiento autorizado. El alumno interpreta un acta simulada; no acciona ni mide el equipo real.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. Antes del ensayo de polos se requieren aislamiento de fuerza y mando, ausencia de tensión verificada y eliminación de caminos paralelos, conforme al procedimiento autorizado. El alumno interpreta un acta simulada; no acciona ni mide el equipo real. El accesorio de cierre de prueba debe ser compatible con 3RT20 S00 y usarse únicamente para ensayos sin carga, con montaje y retirada sin tensión; el alumno interpreta registros, no realiza esa maniobra.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-02-RECORD"
       decision_ids:
@@ -103,7 +103,7 @@ public:
       id: "STAGE-04-DIAGNOSIS"
       phase: "investigation"
       title: "Confirmar la causa e intervenir con seguridad"
-      situation: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
+      situation: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa.\n\n¿Qué interpretación o acción está justificada con la evidencia disponible?"
       evidence_ids:
         - "EVID-03-RECORD"
       decision_ids:
@@ -145,16 +145,16 @@ public:
       id: "EVID-02-RECORD"
       type: "diagnostic"
       source: "Registro didáctico simulado · D2"
-      content: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir."
+      content: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto."
       reliability: "confirmed"
       revealed_by:
         - "DEC-02-A"
-      media_ids: []
+      media_ids: ["ART-004"]
     -
       id: "EVID-03-RECORD"
       type: "diagnostic"
       source: "Registro didáctico simulado · D3"
-      content: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa."
+      content: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
       reliability: "confirmed"
       revealed_by:
         - "DEC-03-A"
@@ -167,7 +167,7 @@ public:
       reliability: "confirmed"
       revealed_by:
         - "DEC-04-B"
-      media_ids: []
+      media_ids: ["ART-005"]
     -
       id: "EVID-05-RECORD"
       type: "functional_test"
@@ -264,14 +264,14 @@ public:
       - id: "ART-004"
         type: "image"
         src: "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-04.png"
-        alt: "Lecturas simuladas aguas abajo: 400, 0 y 400 V; modelo y contactos pendientes de validación."
-        caption: "Lecturas simuladas aguas abajo: 400, 0 y 400 V; modelo y contactos pendientes de validación."
+        alt: "Modelo calculado de motor parado: 400 V AC en 2T1–4T2, 200 V AC en 4T2–6T3 y 200 V AC en 2T1–6T3; puntas en metal."
+        caption: "Simulación: estrella equilibrada, punto común flotante, rotor parado, sin FEM de giro y medida de alta impedancia. Los valores no describen cualquier motor ni confirman solos la causa."
         purpose: "evidence"
       - id: "ART-005"
         type: "image"
         src: "assets/EXP-ELECTRICAL-PHASE-034/EE-0034_ASSET-05.png"
-        alt: "Ensayo ilustrado de KM2 con selector Ω: 0,2 Ω, 0,2 Ω y OL; estado de cierre de prueba pendiente de revisión humana."
-        caption: "Ensayo ilustrado de KM2 con selector Ω: 0,2 Ω, 0,2 Ω y OL; estado de cierre de prueba pendiente de revisión humana."
+        alt: "Ensayo aislado de KM2 con Control Kit de cierre de prueba 3RT2916-4MC00, selector Ω y lecturas ilustrativas 0,2 Ω, 0,2 Ω y OL."
+        caption: "Cierre mecánico de ensayo sin carga y con potencia y mando consignados; lectura del acta simulada, no una maniobra del alumno. No se adopta 0,2 Ω como criterio universal."
         purpose: "evidence"
       - id: "ART-006"
         type: "image"
@@ -365,7 +365,7 @@ private:
       is_correct: true
       rationale: "En condición de prueba controlada con contactor cerrado, aguas arriba de KM2 se registran 400/401/399 V entre fases. La alimentación es aproximadamente equilibrada en el registro; no se deducen valores fase-neutro."
       classification: "strong"
-      consequence: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir."
+      consequence: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto."
       evidence_revealed:
         - "EVID-02-RECORD"
       next_stage: "STAGE-03-DIAGNOSIS"
@@ -399,9 +399,9 @@ private:
       decision_id: "DEC-03-A"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: true
-      rationale: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir."
+      rationale: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto."
       classification: "strong"
-      consequence: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa."
+      consequence: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
       evidence_revealed:
         - "EVID-03-RECORD"
       next_stage: "STAGE-04-DIAGNOSIS"
@@ -411,43 +411,43 @@ private:
       decision_id: "DEC-03-B"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: false
-      rationale: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir."
+      rationale: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto."
       classification: "weak"
-      consequence: "La propuesta «El transformador de cabecera está probado defectuoso.» no está sustentada por este registro.  Revisa: El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «El transformador de cabecera está probado defectuoso.» no está sustentada por este registro.  Revisa: En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-04-DIAGNOSIS"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «El transformador de cabecera está probado defectuoso.» no está sustentada por este registro.  Revisa: El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «El transformador de cabecera está probado defectuoso.» no está sustentada por este registro.  Revisa: En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-03-C"
       stage_id: "STAGE-03-DIAGNOSIS"
       is_correct: false
-      rationale: "El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir."
+      rationale: "En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto."
       classification: "weak"
-      consequence: "La propuesta «No importa la diferencia antes/después.» no está sustentada por este registro.  Revisa: El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «No importa la diferencia antes/después.» no está sustentada por este registro.  Revisa: En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-04-DIAGNOSIS"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «No importa la diferencia antes/después.» no está sustentada por este registro.  Revisa: El registro aguas abajo muestra L1-L2 400 V, L2-L3 0 V y L1-L3 400 V, pero no se ha validado su modelo eléctrico con el motor conectado. No se acepta como patrón general de un polo abierto ni como prueba física de pérdida de fase. Deben contrastarse las parejas, las referencias, el estado de la carga y cada polo antes de concluir. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «No importa la diferencia antes/después.» no está sustentada por este registro.  Revisa: En esta simulación calculada, M2 está parado y se representa por tres impedancias iguales en estrella con punto común flotante, sin FEM de giro. Con medida de alta impedancia, el modelo da aproximadamente 400 V entre 2T1–4T2, 200 V entre 4T2–6T3 y 200 V entre 2T1–6T3. Se comparan con los 400/401/399 V aguas arriba para localizar la investigación. No son medidas reales ni un patrón universal; las tensiones por sí solas no confirman un polo abierto. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-04-A"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: false
-      rationale: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa."
+      rationale: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
       classification: "weak"
-      consequence: "La propuesta «Cambiar fusibles sin revisar.» no está sustentada por este registro.  Revisa: El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «Cambiar fusibles sin revisar.» no está sustentada por este registro.  Revisa: El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-05-VERIFY-RECOVERY"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «Cambiar fusibles sin revisar.» no está sustentada por este registro.  Revisa: El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «Cambiar fusibles sin revisar.» no está sustentada por este registro.  Revisa: El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-04-B"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: true
-      rationale: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa."
+      rationale: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
       classification: "strong"
       consequence: "El polo L3 de KM2 no conduce y provoca pérdida de fase en potencia. Se requiere sustitución autorizada conforme al diseño y revisión de desgaste, terminales y coordinación. El diagnóstico no autoriza rearmar y producir sin verificar."
       evidence_revealed:
@@ -459,14 +459,14 @@ private:
       decision_id: "DEC-04-C"
       stage_id: "STAGE-04-DIAGNOSIS"
       is_correct: false
-      rationale: "El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa."
+      rationale: "El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa."
       classification: "weak"
-      consequence: "La propuesta «El PLC ha invertido dos fases.» no está sustentada por este registro.  Revisa: El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
+      consequence: "La propuesta «El PLC ha invertido dos fases.» no está sustentada por este registro.  Revisa: El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
       evidence_revealed: []
       next_stage: "STAGE-05-VERIFY-RECOVERY"
       score_effect: -5
       safety_effect: 0
-      retry_feedback: "La propuesta «El PLC ha invertido dos fases.» no está sustentada por este registro.  Revisa: El acta simulada aporta ensayos de los tres polos de KM2 en estado de cierre de prueba, con fuerza y mando aislados, ausencia de tensión verificada y caminos paralelos eliminados. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son valores ilustrativos del caso, no límites universales de aceptación. Corresponde interpretar el conjunto del acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
+      retry_feedback: "La propuesta «El PLC ha invertido dos fases.» no está sustentada por este registro.  Revisa: El acta simulada corresponde a polos aislados de caminos paralelos, fuerza y mando consignados y ausencia de tensión verificada. El cierre mecánico de prueba se establece con el Control Kit 3RT2916-4MC00 para la familia 3RT20 S00, sin carga y sin energizar la bobina, conforme a la documentación del fabricante. Registra 1L1–2T1: 0,2 Ω; 3L2–4T2: 0,2 Ω; 5L3–6T3: OL. Son lecturas ilustrativas, no límites universales. Corresponde interpretar el acta antes de confirmar la causa. Vuelve a elegir sin ejecutar la opción propuesta."
     -
       decision_id: "DEC-05-A"
       stage_id: "STAGE-05-VERIFY-RECOVERY"
@@ -540,7 +540,7 @@ private:
     status: "pending"
     evidence:
       - "Fuente: ENV-004_Master_Content_ES.md, propuesta editorial v1.0; datos didácticos simulados."
-      - "Imágenes de evidencia pendientes: previsión editorial 6–7 por Experience; no se registran rutas ficticias."
+      - "Seis ilustraciones disponibles en preview; revisión local ART-004/005 con modelo calculado y fuente Siemens Control Kit. Aprobación técnica humana pendiente."
       - "Traducción EN nueva, pendiente de revisión técnica humana."
       - "ICF-06 planned: los tres IDs COMP-EL-* son asociaciones provisionales de autoría, no competencias aprobadas ni certificación."
-      - "Escenario fuente completo: el motor -M2 no arranca de forma fiable; hay zumbido y protección actúa. Registro autorizado con contactor cerrado en condición de prueba controlada: tensiones entre fases aguas arriba de -KM2: 400/401/399 V; aguas abajo: L1-L2 400 V, L2-L3 0 V, L1-L3 400 V (datos didácticos idealizados, medidos con referencia y estado definidos). Inspección aislada identifica un polo de KM2 abierto por fallo de contacto en L3; se contrasta con continuidad/estado mecánico según fabricante."
+      - "Fuente histórica ENV-004: patrón 400/0/400 V descartado para esta revisión. Registro vigente: modelo calculado 400/200/200 V bajo condiciones explícitas en media-source/final-two-assets; no son medidas de campo. Causa original: polo L3 de KM2 sin conducción, confirmada por acta aislada."

@@ -907,3 +907,15 @@ Aprobación visual explícita del usuario registrada por hash de la imagen corre
 ### 2026-11-26 — Publicación autorizada del preview EE-0034/35/36
 
 El usuario autoriza commit, push, merge y despliegue del preview actual con18recursos visibles. Se preservan las dos imágenes ocultas de EE-0034, el estado de revisión técnica pendiente y el workflow de Pages existente. La autorización de publicar no equivale a aprobación técnica.
+
+### 2026-11-26 — EE-0034: revisión de los dos recursos pendientes
+
+ART-004 corregida a400/200/200V para un modelo calculado explícito de motor parado, estrella equilibrada y medida de alta impedancia; no son medidas reales. ART-005 incorpora cierre mecánico de prueba mediante Control Kit documentado para3RT20 S00 y conservaΩ/0,2/0,2/OL. Recursos habilitados solo en preview local trasD2 yD4; evaluación y causa raíz conservadas. Aprobación de condiciones y derivados, revisión técnica y nueva publicación pendientes.
+
+### 2026-11-26 — EE-0034: validación de las dos revisiones
+
+El usuario valida ART-004/005 y las condiciones explícitas del modelo calculado y estado de ensayo. Aprobación limitada a esa simulación y vinculada a hashes de los dos PNG y del cálculo; no cambia la revisión técnica global ni publica nuevos cambios.
+
+### 2026-11-26 — Publicación autorizada de las dos revisiones de EE-0034
+
+El usuario solicita nuevo commit, push, merge y despliegue tras validar ART-004/005 y las condiciones del modelo. Preview con20/20recursos en EE-0034/35/36; revisión técnica global y límites del modelo conservados. Sin cambios de Engine, otras Experiences o configuración de despliegue.

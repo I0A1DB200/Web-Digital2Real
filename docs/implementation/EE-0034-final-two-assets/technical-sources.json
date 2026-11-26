@@ -1,0 +1,32 @@
+[
+  {
+    "id": "S1",
+    "title": "Siemens SIRIUS Control Kit S00/S0/S2/S3",
+    "reference": "3ZX1012-0RT20-4MA1; A8E56200682000A/RS-AC/005",
+    "version": "06 March2018",
+    "url": "https://cache.industry.siemens.com/dl/files/849/38626849/att_945854/v1/A8E56200682000A_RS-AC_005_201803221613409175.pdf",
+    "sections": "p.2 isolation and authorized-personnel warning; p.3 compatibility table S00→3RT2916-4MC00 and installation illustrations",
+    "inspected": "Four-page official PDF text accessed. Screenshot endpoint returned only a text image marker through this connector, so no claim of CAD geometry verification is made.",
+    "supports": "Control Kit family compatibility and manufacturer prerequisites. No installation is performed in this task."
+  },
+  {
+    "id": "S2",
+    "title": "Siemens SIRIUS Innovations3RT2 contactors/contactor assemblies",
+    "reference": "A5E03656507120A/RS-AB/003",
+    "version": "10/2014",
+    "url": "https://cache.industry.siemens.com/dl/files/557/60306557/att_111612/v1/manual_contactors_3RT2_en-US.pdf",
+    "sections": "8.8.1–8.8.2,p.180",
+    "inspected": "Relevant official indexed section inspected; full PDF opening failed because the connector reported content length too large.",
+    "supports": "Load-free mechanical test closure with the family-specific Control Kit, with power removed for attachment/removal. Not a general authorization to force or repair a faulty contactor."
+  },
+  {
+    "id": "S3",
+    "title": "Siemens Control Kit catalog entry",
+    "reference": "IC10·2025,p.3/117",
+    "version": "2025",
+    "url": "https://cache.industry.siemens.com/dl/files/995/109771995/att_1311261/v1/SIRIUS_IC10_chap03_English_2025_202501240947246584.pdf",
+    "sections": "Control Kit miscellaneous accessories table",
+    "inspected": "Official indexed catalog table; subsequent full URL opening returned404.",
+    "supports": "Family3RT2.1,S00 and order3RT2916-4MC00; indexed corroboration, not a claim of full catalog inspection."
+  }
+]

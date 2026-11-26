@@ -1,0 +1,71 @@
+ACTUALIZACIÓN VIGENTE —26/11/2026
+El usuario valida explícitamente las dos versiones ART-004/005 y las condiciones del modelo simulado. Aprobación vinculada a hashes de imágenes, modelo y resultados en user-approval.json. Los20/20recursos están disponibles en preview local. La revisión técnica global de equipos/instalación permanece pendiente; no se ha realizado nueva publicación. El informe siguiente conserva el estado anterior a esta validación.
+
+DIGITAL2REAL — EE-0034: ART-004 Y ART-005
+Informe de corrección y QA — 26/11/2026,Europe/Madrid
+
+ESTADO
+Revisión local implementada y QA funcional PASS. Las seis imágenes de EE-0034 están vinculadas al preview local; el total EE-0034/35/36 es 20/20 en este preview. La web publicada no se ha actualizado: mantiene los18 recursos de la publicación anterior.
+Los dos nuevos derivados y las condiciones del modelo quedan disponibles para revisión humana. No se declara aprobación técnica definitiva, certificación ni mediciones reales. Se mantienen technical_review/pending y publication_allowed=false.
+
+CLASIFICACIÓN Y ALCANCE
+EXPERIENCE/CONTENT: corrección de los dos recursos concretos. Misma Experience, IDs ART/EVID,5 decisiones,15 opciones, respuestas, evaluación, causa raíz, rutas, hotspots y Notebook. Sin cambios en Engine, Frontend, otras Experiences ni dependencias de producto.
+Rama: work-ee0034-two-assets. Base: 5fbe58ce5d38cd542fb7740995c8ac4b93be68a3.
+Sin nuevos commit, push, merge ni deploy en esta intervención.
+
+ART-004 — QUÉ CAMBIA Y POR QUÉ
+Antes: 400/0/400 V con el motor conectado y sin modelo suficiente; el texto ya advertía que no era un patrón válido general.
+Ahora: aproximadamente 400/200/200 V, EXCLUSIVAMENTE como resultado calculado de un modelo didáctico definido: motor parado, tres impedancias finitas e iguales en estrella, punto común flotante, sin FEM de giro y medida de alta impedancia. No se afirma que este modelo identifique al motor real ni sus parámetros.
+La fuente se representa con fasores que reproducen las magnitudes aguas arriba ya suministradas400/401/399 V. Elegir un fasor como referencia cero es una elección matemática, no significa que una fase esté a tierra o que se conozcan tensiones fase-neutro.
+Con el tercer camino de alimentación sin conducción, el terminal flotante adopta, en este modelo, la media fasorial de los otros dos. Sus dos diferencias respecto a los terminales alimentados son la mitad de la diferencia entre estos:400 V y200/200 V. Se ha comprobado también la perturbación de un voltímetro de impedancia finita mediante dos resoluciones nodales independientes.
+Los valores de impedancia usados en las pruebas numéricas son fixtures para comprobar el modelo, no datos de placa ni especificaciones del multímetro ilustrado. La lectura calculada no es un ensayo real.
+Los contraejemplos con devanados no equilibrados o FEM adicional producen valores diferentes: el patrón no se usa como regla universal ni como confirmación del polo averiado.
+La causa de origen sigue siendo el polo L3 sin conducción y se confirma con el acta aislada en D4. Se mantienen las respuestas correctas. El texto de ART-004/EVID-02 no identifica anticipadamente qué polo ha fallado.
+En la imagen se corrigen las lecturas y los contactos metálicos; los pares son2T1–4T2,4T2–6T3 y2T1–6T3. Todos los instrumentos permanecen enV~.
+
+ART-005 — QUÉ CAMBIA Y POR QUÉ
+Antes: Ω y puntas ya corregidos, pero no quedaba establecido el medio de cierre mecánico de ensayo.
+Ahora: la reconstrucción muestra un Control Kit 3RT2916-4MC00 para la familia 3RT20 S00 en posición de prueba. La fuente oficial permite concretar la condición de cierre sin carga y sin alimentar la bobina; no se propone una maniobra improvisada con dedo o destornillador.
+Se explicitan antes de la investigación de polos:consignación de potencia y mando, ausencia de tensión verificada, eliminación de caminos paralelos, accesorio compatible y montaje/retirada sin tensión. El alumno interpreta un registro; no realiza maniobras reales.
+Las lecturas0,2 Ω/0,2 Ω/OL se conservan como datos ilustrativos del acta suministrada.0,2 Ω no es un límite universal, ni una resistencia de contacto certificada; la foto no prueba por sí sola el aislamiento o el correcto montaje.
+Los selectores están enΩ y las puntas sobre los tornillos de los mismos polos. El accesorio amarillo es mecánico, sin puente ni conexiones a la bobina. La compatibilidad documental se ha comprobado a nivel de familiaS00; la fidelidad geométrica de la reconstrucción y la aceptación de la versión corresponden todavía a revisión humana.
+La referencia de pedido no validada del rótulo se sustituye en estos dos derivados por la familia 3RT20 S00. No se inventa un nuevo código comercial ni se sustituye arbitrariamente el contactor. Las otras imágenes históricas conservan sus rótulos no validados; la correspondencia comercial global sigue pendiente.
+
+ORDEN
+ART-004→EVID-02,solo tras acertar D2. ART-005→EVID-04,solo tras confirmar D4. EVID-03 conserva los datos brutos del acta para interpretarD4, sin imagen nueva que declare la causa antes de la respuesta.
+Se conserva verificación de recuperación en D5,con comprobación trifásica, arranque y protección. Ni las tensiones ni el accesorio de prueba demuestran por sí solos recuperación completa.
+
+FUENTES EFECTIVAMENTE INSPECCIONADAS
+S1:Siemens3ZX1012-0RT20-4MA1,RS-AC/005,06/03/2018,4 páginas. Texto oficial:p.2 requisitos de desconexión y personal autorizado;p.3 tabla3RT2916-4MC00↔S00. El conector de captura devolvió solo un marcador textual de imagen, por lo que no se afirma haber validado geometría CAD a partir de esa captura.
+S2:manual SIRIUS3RT2,10/2014,A5E03656507120A/RS-AB/003,§8.8.1–8.8.2,p.180:texto oficial indexado de la función de cierre sin carga. El PDF completo excedía el tamaño admitido por el conector; no se afirma lectura íntegra.
+S3:catálogo Siemens IC10·2025,p.3/117,tabla oficial indexada del kit paraS00. La apertura completa posterior dio404. Se usa como corroboración, no como documento descargado o íntegramente inspeccionado.
+Enlaces, versiones y límites:technical-sources.json. El modelo calculado no se atribuye a Siemens ni a un ensayo del fabricante; su derivación es un artefacto de ingeniería de esta revisión.
+
+QA
+PASS — node --test:587/587, cero fallos y cero omitidas.
+PASS — focalizadas integración yENV-004:41/41.
+PASS — modelo:la fuente conserva400/401/399 V; se comprueban el cálculo ideal, la sensibilidad a alta impedancia finita, y contraejemplos que invalidan una afirmación universal.
+PASS — resolución independiente numpy.linalg.solve:8/8 casos numéricos, guardados enindependent-nodal-check.json. NumPy pertenece al entorno de QA; no se añade ninguna dependencia al producto.
+PASS — el registro ilustrativo de polos rechaza cualquiera de las seis condiciones previas ausentes, incluida ausencia de tensión, aislamiento y cierre de prueba.
+PASS — empaquetado preview,hashes y dimensiones de los6 PNG actuales y sus originales. Los otros4 PNG de EE-0034 no cambian.
+PASS — Chromium real:4 recorridos completos ES/EN,1440/390px;40 reintentos incorrectos,Result,Continue,debrief,reinicio,cambio de idioma,zoom,referenciasNotebook y10 hotspots.
+PASS — no hay solicitudes anticipadas deART-004/005; aparecen después deD2 yD4. Sin errores JS/de consola ni respuestas HTTP>=400observadas.
+PASS — git diff --check y control de alcance por hashes.
+Incidencia de test durante preparación:una comparación de coma flotante exigía igualdad exacta; se corrigió con tolerancia numérica1e-9,menor que la resolución de presentación, sin cambiar valores o lógica para forzar el resultado.
+No ejecutado: ensayo físico de motor,caracterización de devanados,medidas de campo,actuación real con accesorio,certificación normativa ni aceptación técnica humana.
+
+TRAZABILIDAD
+Originales de usuario:media-source/originals,con hashes conservados.
+Versiones anteriores:media-source/final-two-assets/previous.
+Derivados:las mismas rutas assets/EE-0034_ASSET-04.png yEE-0034_ASSET-05.png.
+Cálculo reproducible:model.mjs,model-results.json e independent-nodal-check.json enmedia-source/final-two-assets/.
+Registro de cambios y hashes:visual-intake.json ytwo-asset-review.json.
+Comparativa antes/después:comparativa.html. Capturas desktop/móvil ybrowser-results.json junto a este informe.
+Archivos modificados:solo EE-0034(2 PNG,YAML,ES/EN,manifest,metadatos yREADMEs),test de integración yChangelog. Archivos nuevos:modelo/resultados,previos de esos2 PNG ydocumentación QA. Listado:file-scope.json.
+
+Los 1337 archivos preexistentes fuera del alcance permitido conservan sus SHA-256; se preservan los documentos ajenos sin versionar.
+
+PUBLICACIÓN Y REVISIÓN
+Los dos bloqueos específicos se han abordado con un modelo calculado explícito y una condición de ensayo documentada, con derivados revisables. Esto no cambia el estado técnico global a aprobado.
+Pendiente: validar humanamente las condiciones adoptadas del modelo y las dos nuevas representaciones antes de otra publicación. La web actual no incorpora estos cambios locales.
+No se ha hecho nuevo commit,push,merge ni deploy. La autorización anterior de publicación corresponde al release5fbe58c y se conserva como antecedente.

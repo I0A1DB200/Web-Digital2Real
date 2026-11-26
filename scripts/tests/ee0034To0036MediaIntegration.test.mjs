@@ -16,8 +16,10 @@ for(const n of [34,35,36]){
  test(`EE-00${n}: preserved original, corrected PNG and publication hold are traceable`,async()=>{
   assert.equal(intake.publication_allowed,false);assert.equal(author.metadata.status,'technical_review');
   assert.equal(author.private.technical_validation.status,'pending');
+  if(n===34){const approval=intake.two_asset_revision.approval;assert.equal(intake.two_asset_revision.model_conditions_approved,true);assert.equal(approval.model_source_sha256,hash(await readFile(`${dir}/media-source/final-two-assets/model.mjs`)));assert.equal(approval.model_results_sha256,hash(await readFile(`${dir}/media-source/final-two-assets/model-results.json`)));}
   for(const a of intake.assets){
    const b=await readFile(`${dir}/${a.canonical_file}`),original=await readFile(`${dir}/${a.original_file}`);
+   if(n===34&&['ART-004','ART-005'].includes(a.runtime_id)){assert.equal(a.visual_approval.status,'APPROVED');assert.equal(a.visual_approval.asset_sha256,hash(b));assert.equal(a.authored_conditions_approval.status,'APPROVED');}
    assert.equal(hash(b),a.sha256);assert.equal(hash(original),a.original_sha256);
    assert.equal(b.subarray(1,4).toString(),'PNG');assert.deepEqual([b.readUInt32BE(16),b.readUInt32BE(20)],[a.width,a.height]);
    assert.equal(a.binary_modified,a.sha256!==a.original_sha256);
@@ -44,7 +46,17 @@ for(const n of [34,35,36]){
   if(n===34){
    const e=local.public.evidence.find(e=>e.id==='EVID-03-RECORD');assert.doesNotMatch(e.content,/identifica un polo|identifies an open pole/);assert.match(e.content,/OL/);
    assert.deepEqual(local.public.evidence.find(e=>e.id==='EVID-01-RECORD').media_ids,['ART-003']);
-   assert.ok(!refs.includes('ART-004'));assert.ok(!refs.includes('ART-005'));
+   for(const id of ['ART-004','ART-005']){
+    const rendered=local.public.visual.assets.find(a=>a.id===id),record=intake.assets.find(a=>a.runtime_id===id);
+    assert.equal(rendered.alt,record.localization[locale].alt);assert.equal(rendered.caption,record.localization[locale].caption);
+   }
+   assert.deepEqual(local.public.evidence.find(e=>e.id==='EVID-02-RECORD').media_ids,['ART-004']);
+   assert.deepEqual(local.public.evidence.find(e=>e.id==='EVID-04-RECORD').media_ids,['ART-005']);
+   assert.deepEqual(local.public.evidence.find(e=>e.id==='EVID-03-RECORD').media_ids,[]);
+   assert.match(e.content,/3RT2916-4MC00/);
+   assert.match(local.public.evidence.find(e=>e.id==='EVID-02-RECORD').content,/400 V/);
+   assert.match(local.public.evidence.find(e=>e.id==='EVID-02-RECORD').content,/200 V/);
+   assert.doesNotMatch(local.public.evidence.find(e=>e.id==='EVID-02-RECORD').content,/400\/0\/400|L2-L3 0 V/);
   }
   if(n===35){
    const e=local.public.evidence.find(e=>e.id==='EVID-03-RECORD');assert.match(e.content,/222/);assert.doesNotMatch(e.content,/aislamiento dañado|damaged insulation|conductores.*contacto|conductors.*contact/);
@@ -82,3 +94,23 @@ for(const n of [34,35,36]){
   if(n===35){assert.ok(connected('Y2:0','PS1:0','F24:0'),'load return must not depend on the F24 electronics reference');}
  });
 }
+
+const phaseModel=await import('../../content/experiences/electrical/EE-0034-single-phase-loss/media-source/final-two-assets/model.mjs');
+test('EE-0034: explicit floating-star model reproduces the upstream source and calculates 400/200/200',()=>{
+ phaseModel.upstreamMagnitudes().forEach((v,i)=>assert.ok(Math.abs(v-[400,401,399][i])<1e-9));
+ for(const z of [[0.1,0.2],[1,1],[5,20],[50,50]]){
+  const options={impedances:[z,z,z]};
+  phaseModel.downstreamMagnitudes(options).forEach((v,i)=>assert.ok(Math.abs(v-[400,200,200][i])<1e-9));
+  assert.deepEqual(phaseModel.downstreamMagnitudes({...options,meterOhms:1e6}).map(Math.round),[400,200,200]);
+ }
+});
+test('EE-0034: unbalanced windings and back EMF invalidate a universal 400/200/200 claim',()=>{
+ assert.notDeepEqual(phaseModel.downstreamMagnitudes({impedances:[[1,1],[2,2],[1,1]]}).map(Math.round),[400,200,200]);
+ assert.notDeepEqual(phaseModel.downstreamMagnitudes({emfs:[[0,0],[0,0],[0,40]]}).map(Math.round),[400,200,200]);
+ assert.throws(()=>phaseModel.downstreamMagnitudes({meterOhms:0}));
+});
+test('EE-0034: pole readings require isolation and established mechanical test closure',()=>{
+ const ready={powerIsolated:true,controlIsolated:true,absenceVerified:true,parallelPathsIsolated:true,testKitInstalled:true,testClosed:true};
+ for(const key of Object.keys(ready))assert.throws(()=>phaseModel.isolatedPoleRecord({...ready,[key]:false}));
+ const record=phaseModel.isolatedPoleRecord(ready);assert.deepEqual(record.illustrativeReadings,['0.2 Ω','0.2 Ω','OL']);assert.equal(record.universalAcceptanceLimit,false);
+});

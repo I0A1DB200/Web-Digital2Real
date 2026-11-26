@@ -1,0 +1,59 @@
+{
+  "conditions": {
+    "kind": "calculated teaching simulation; not a real motor parameter identification",
+    "connection": "star; floating neutral; three equal finite impedances",
+    "rotor": "stationary; no rotational back EMF in this linear model",
+    "instrument": "ideal high impedance; finite impedance sensitivity checked separately",
+    "contacts": "test-state main paths commanded closed; one non-conducting third pole",
+    "outside_scope": "unequal windings, rotation/back EMF, other returns, real input impedance and dynamic recovery"
+  },
+  "upstream": [
+    400,
+    400.99999999999994,
+    399
+  ],
+  "downstreamIdeal": [
+    400,
+    200,
+    200
+  ],
+  "finiteImpedanceSensitivity": [
+    {
+      "meterOhms": 1000000,
+      "calculated": [
+        400,
+        199.999700000225,
+        199.999700000225
+      ],
+      "display": [
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "meterOhms": 10000000,
+      "calculated": [
+        400,
+        199.99997000000224,
+        199.99997000000218
+      ],
+      "display": [
+        400,
+        200,
+        200
+      ]
+    }
+  ],
+  "unbalancedCounterexample": [
+    400,
+    266.6666666666667,
+    133.33333333333331
+  ],
+  "emfCounterexample": [
+    400,
+    203.9607805437114,
+    203.9607805437114
+  ],
+  "assumed_test_impedances_note": "1+j1 Ω is a numerical test fixture for invariance, not an identified motor or rated current. Meter values are model sensitivity cases, not specifications of the pictured meter."
+}

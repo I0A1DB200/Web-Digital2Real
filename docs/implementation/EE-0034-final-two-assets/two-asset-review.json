@@ -1,0 +1,46 @@
+{
+  "experience": "EE-0034",
+  "base_commit": "5fbe58ce5d38cd542fb7740995c8ac4b93be68a3",
+  "branch": "work-ee0034-two-assets",
+  "status": "USER_APPROVED_LOCAL_SIMULATION",
+  "human_technical_approval": true,
+  "current_derivatives_visually_approved": true,
+  "new_deployment_performed": false,
+  "assets": [
+    {
+      "asset": "ART-004",
+      "sha256": "e24dd15838751792de6fdbb73f4a8e5ad4f843c01f4d29eb3be20d0b41d6bf23",
+      "original_sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+      "before_sha256": "f227a8c20d83d95fa3b1791187a8e5c8dd93a252fcd977fb6693e149854eb5b1",
+      "runtime_binding": "EVID-02-RECORD",
+      "visual_checks": "Three-panel layout retained; correct terminal pairs, metal contact, AC or Ω mode and new modeled/illustrative values inspected.",
+      "limits": "Photographic reconstruction is not a manufacturer CAD drawing, measurement certificate or proof of actual isolation.",
+      "human_review_pending": false,
+      "approval_scope": "Visual versions ART-004/005 and explicit conditions of the calculated teaching model/test state only. Does not approve real field measurements, all equipment ratings, installation safety, or publication."
+    },
+    {
+      "asset": "ART-005",
+      "sha256": "5aeef5f961033eaa5f799e33d3662cf5c2538e616ed8e84c0bb18be47b539c47",
+      "original_sha256": "0b1e3e46735c0f6285c16fb4b00d699f747c6916c65805b50879f87724cfdef2",
+      "before_sha256": "23615db817d24ea001157c04252b25da0c104556f51016be233668d7cbae1853",
+      "runtime_binding": "EVID-04-RECORD",
+      "visual_checks": "Three-panel layout retained; correct terminal pairs, metal contact, AC or Ω mode and new modeled/illustrative values inspected.",
+      "limits": "Photographic reconstruction is not a manufacturer CAD drawing, measurement certificate or proof of actual isolation.",
+      "human_review_pending": false,
+      "approval_scope": "Visual versions ART-004/005 and explicit conditions of the calculated teaching model/test state only. Does not approve real field measurements, all equipment ratings, installation safety, or publication."
+    }
+  ],
+  "human_technical_approval_scope": "Visual versions ART-004/005 and explicit conditions of the calculated teaching model/test state only. Does not approve real field measurements, all equipment ratings, installation safety, or publication.",
+  "approval": {
+    "date": "2026-11-26",
+    "approved_by": "user",
+    "evidence": "Explicit reply «si» to: ¿Validas estas dos versiones y las condiciones del modelo?",
+    "scope": "Visual versions ART-004/005 and explicit conditions of the calculated teaching model/test state only. Does not approve real field measurements, all equipment ratings, installation safety, or publication.",
+    "model_source_sha256": "e1d4be6f4aeeaf467f5a9ad649252e4f239a3acc82f8a6d87c2483c06f704d51",
+    "model_results_sha256": "30aebdb0bb46629e894fe02cc312bcef61effbfd781bd03ff0817046b28a4ed0",
+    "asset_sha256": {
+      "ART-004": "e24dd15838751792de6fdbb73f4a8e5ad4f843c01f4d29eb3be20d0b41d6bf23",
+      "ART-005": "5aeef5f961033eaa5f799e33d3662cf5c2538e616ed8e84c0bb18be47b539c47"
+    }
+  }
+}

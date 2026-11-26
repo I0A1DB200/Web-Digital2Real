@@ -3,13 +3,15 @@ name: Deploy Digital2Real to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,6 +38,7 @@ jobs:
           find scripts experience-engine Frontend -type f \( -name '*.test.js' -o -name '*.test.mjs' \) -print0 | xargs -0 node --test
 
       - name: Configure Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Prepare Pages publication root
@@ -50,11 +53,13 @@ jobs:
           test -f _site/generated/experience-engine/catalog.json
 
       - name: Upload static site
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     permissions:
       pages: write
       id-token: write

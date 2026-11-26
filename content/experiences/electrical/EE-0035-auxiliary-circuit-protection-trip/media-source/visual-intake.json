@@ -1,0 +1,326 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0035",
+  "canonical_id": "EXP-ELECTRICAL-PROTECTION-035",
+  "source_archive": "EE0035_Codex.zip",
+  "status": "DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA",
+  "supplied_assets": 7,
+  "runtime_registered_assets": 7,
+  "runtime_presented_assets": 7,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "runtime_id": "ART-001",
+      "source_id": "EE-0035_ART-001_cuadro.png",
+      "canonical_file": "assets/EE-0035_ART-001_cuadro.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-001_cuadro.png",
+      "sha256": "36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "cover"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Cuadro ilustrado con PS1, F24 y PLC; el canal 2 indica desconexión.",
+          "caption": "Cuadro ilustrado con PS1, F24 y PLC; el canal 2 indica desconexión."
+        },
+        "en": {
+          "alt": "Illustrated PS1, F24 and PLC cabinet; channel 2 indicates disconnection.",
+          "caption": "Illustrated PS1, F24 and PLC cabinet; channel 2 indicates disconnection."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-001_cuadro.png",
+      "original_sha256": "36a4a0151ec9376040c5fa7a2a757bddf27300f0d2198da86b00a6f54485010e",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-002",
+      "source_id": "EE-0035_ART-002_esquema.png",
+      "canonical_file": "assets/EE-0035_ART-002_esquema.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-002_esquema.png",
+      "sha256": "3448d9e4bedf4861c8f5f594729836a2fd9fad0733896f9599bc088b754c489a",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "STAGE-01-DIAGNOSIS"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Esquema funcional corregido: PS1 alimenta F24 con polaridad correcta; F24.2 pasa por K1 hasta Y2 y los retornos van directamente a PS1:0 V.",
+          "caption": "Esquema funcional corregido: PS1 alimenta F24 con polaridad correcta; F24.2 pasa por K1 hasta Y2 y los retornos van directamente a PS1:0 V."
+        },
+        "en": {
+          "alt": "Corrected functional schematic: PS1 supplies F24 with correct polarity; F24.2 passes through K1 to Y2 and load returns go directly to PS1:0 V.",
+          "caption": "Corrected functional schematic: PS1 supplies F24 with correct polarity; F24.2 passes through K1 to Y2 and load returns go directly to PS1:0 V."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-002_esquema.png",
+      "original_sha256": "62015c51b5991369be8871be0bb89663e92c52191c4d03a3e7328ecb12f94630",
+      "binary_modified": true,
+      "correction_method": "deterministic SVG → PNG"
+    },
+    {
+      "runtime_id": "ART-003",
+      "source_id": "EE-0035_ART-003_disparo.png",
+      "canonical_file": "assets/EE-0035_ART-003_disparo.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-003_disparo.png",
+      "sha256": "2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-01-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "F24 ilustrado: canal 2 rojo y otros canales verdes.",
+          "caption": "F24 ilustrado: canal 2 rojo y otros canales verdes."
+        },
+        "en": {
+          "alt": "Illustrated F24: channel 2 red and other channels green.",
+          "caption": "Illustrated F24: channel 2 red and other channels green."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-003_disparo.png",
+      "original_sha256": "2fdcd8a3c9954829fc70a6abfc1f4377eee2ef4e216daf6eb2de5f9db3b8a895",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-004",
+      "source_id": "EE-0035_ART-004_tension.png",
+      "canonical_file": "assets/EE-0035_ART-004_tension.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-004_tension.png",
+      "sha256": "c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-01-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Registro simulado de 24,1 V en PS1 mientras el canal 2 está desconectado.",
+          "caption": "Registro simulado de 24,1 V en PS1 mientras el canal 2 está desconectado."
+        },
+        "en": {
+          "alt": "Simulated PS1 reading of 24.1 V while channel 2 is disconnected.",
+          "caption": "Simulated PS1 reading of 24.1 V while channel 2 is disconnected."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-004_tension.png",
+      "original_sha256": "c1bdb3ba286167f2eb79515a0813fcd457298ddd49b6cd6b1ec5ea41abd69d46",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-005",
+      "source_id": "EE-0035_ART-005_bobina.png",
+      "canonical_file": "assets/EE-0035_ART-005_bobina.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-005_bobina.png",
+      "sha256": "845af1ad8908d6eeea2c1662a11a41c388805a6ddb8d06113fcad240fb4731ac",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-03-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Ensayo aislado de Y2, VACF-A-A1-1: 222 Ω simulados entre 1 y 2; PE excluido. Valor equivalente ilustrativo, no tolerancia de fabricante.",
+          "caption": "Ensayo aislado de Y2, VACF-A-A1-1: 222 Ω simulados entre 1 y 2; PE excluido. Valor equivalente ilustrativo, no tolerancia de fabricante."
+        },
+        "en": {
+          "alt": "Isolated Y2 VACF-A-A1-1 test: simulated 222 Ω across 1 and 2; PE excluded. Illustrative equivalent value, not a manufacturer tolerance.",
+          "caption": "Isolated Y2 VACF-A-A1-1 test: simulated 222 Ω across 1 and 2; PE excluded. Illustrative equivalent value, not a manufacturer tolerance."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-005_bobina.png",
+      "original_sha256": "e7001447022846943162e28b9dcbfad255c58b845541015d2676cb793fc216e4",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-006",
+      "source_id": "EE-0035_ART-006_cortocircuito.png",
+      "canonical_file": "assets/EE-0035_ART-006_cortocircuito.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-006_cortocircuito.png",
+      "sha256": "9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "STAGE-04-DIAGNOSIS"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Aislamiento dañado y conductores rojo y azul en contacto en el cable Y2.",
+          "caption": "Aislamiento dañado y conductores rojo y azul en contacto en el cable Y2."
+        },
+        "en": {
+          "alt": "Damaged insulation and contacting red and blue conductors in the Y2 cable.",
+          "caption": "Damaged insulation and contacting red and blue conductors in the Y2 cable."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-006_cortocircuito.png",
+      "original_sha256": "9522ad460d9094308e6478ca311fc6b0c26b5005a1c92ee7f67fa7c441dcb9a5",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-007",
+      "source_id": "EE-0035_ART-007_rearme.png",
+      "canonical_file": "assets/EE-0035_ART-007_rearme.png",
+      "src": "assets/EXP-ELECTRICAL-PROTECTION-035/EE-0035_ART-007_rearme.png",
+      "sha256": "072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-05-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "F24 ilustrado con los cuatro indicadores de canal verdes tras reparación.",
+          "caption": "F24 ilustrado con los cuatro indicadores de canal verdes tras reparación."
+        },
+        "en": {
+          "alt": "Illustrated F24 with four green channel indicators after repair.",
+          "caption": "Illustrated F24 with four green channel indicators after repair."
+        }
+      },
+      "original_file": "media-source/originals/EE-0035_ART-007_rearme.png",
+      "original_sha256": "072706615448e47e2534f34dbff90dd801d243b1fa596ec87a1d05f659fbe9c0",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    }
+  ],
+  "bindings": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003",
+      "ART-004"
+    ],
+    "EVID-03-RECORD": [
+      "ART-005"
+    ],
+    "STAGE-04-DIAGNOSIS": [
+      "ART-006"
+    ],
+    "EVID-05-RECORD": [
+      "ART-007"
+    ]
+  },
+  "no_engine_changes": true,
+  "semantic_changes": "Authorized minimal evidence wording/timing corrections and safety prerequisites; options, correct answers, evaluation and root cause unchanged.",
+  "issues": [],
+  "additional_review": [
+    "Human technical approval is still pending; synthetic assets are not real test records.",
+    "Corrections and source references: docs/implementation/EE-0034-0036-corrections/."
+  ],
+  "preserved_semantics_sha256": {
+    "private": "fc87f27e1585b1fbd2f4b4791aeb08bd7d48a4d5fd4a7462e39fc12ff615612e",
+    "decisions": "4913c14b582c1709aeba18322b958d218156fdf8762bbfa629eb16a6bc2de387",
+    "evidence": "b0939b15913dfe9b05201c1fd80a908718929fccae7bee4d133ae177111765bb"
+  },
+  "source_archive_sha256": "3e8a5f9c4015cf87e1f43ea90852ba5a33af4f95b8b70d32439a80eb23fed8bd",
+  "correction_revision": {
+    "authorized_by": "Texto pegado.txt — Corrección técnica y cierre de QA, 26/11/2026",
+    "evaluation_invariants_sha256": "bc8e7cd426cd7dad90c3d364dae6e0577628e1252f06d6037b374334e8cfd5ea",
+    "decisions_sha256": "4913c14b582c1709aeba18322b958d218156fdf8762bbfa629eb16a6bc2de387",
+    "root_cause_sha256": "f368e947459335727a3d24f121bd9801507c53d740efbb21a29285a759f241c7",
+    "evidence_content_changes": {
+      "es": {
+        "EVID-03-RECORD": "Con la instalación aislada y ausencia de tensión verificada, la bobina Y2 se comprueba separada del cable. El registro simulado muestra 222 Ω entre los terminales de alimentación 1 y 2, sin utilizar PE. 24²/2,6 ≈ 221,5 Ω explica el valor equivalente ilustrativo de 222 Ω; no es una resistencia ni tolerancia garantizada por Festo. La inspección continúa sobre el cableado consignado.",
+        "EVID-02-RECORD": "El registro externo simulado del ramal F24.2 muestra corriente de fallo muy elevada y desconexión al ordenar Y2. Una carga mecánica bloqueada no explica por sí sola este registro de cortocircuito; corresponde investigar aislamiento o carga en corto con instalación aislada y preparada."
+      },
+      "en": {
+        "EVID-03-RECORD": "With the installation isolated and absence of voltage verified, Y2 is checked separately from its cable. The simulated record shows 222 Ω between power terminals 1 and 2, without using PE. 24²/2.6 ≈ 221.5 Ω explains the illustrative equivalent value of 222 Ω; it is not a resistance or tolerance guaranteed by Festo. Inspection continues on the isolated cable.",
+        "EVID-02-RECORD": "The external simulated record of branch F24.2 shows very high fault current and disconnection when Y2 is commanded. A mechanically blocked load does not by itself explain this short-circuit record; investigate insulation or a shorted load with the installation isolated and prepared."
+      }
+    },
+    "binding_changes": {
+      "cover": "ART-001",
+      "STAGE-01-DIAGNOSIS": [
+        "ART-002"
+      ],
+      "EVID-01-RECORD": [
+        "ART-003",
+        "ART-004"
+      ],
+      "EVID-03-RECORD": [
+        "ART-005"
+      ],
+      "STAGE-04-DIAGNOSIS": [
+        "ART-006"
+      ],
+      "EVID-05-RECORD": [
+        "ART-007"
+      ]
+    },
+    "publication_allowed": false
+  },
+  "publication_authorization": {
+    "date": "2026-11-26",
+    "approved_by": "user",
+    "request": "push, merge y deploy",
+    "scope": "Publish the current preview via the existing GitHub Pages workflow. Keep technical_review/pending, hidden EE-0034 ART-004/005 and all technical review limits.",
+    "technical_approval_granted": false
+  }
+}

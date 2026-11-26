@@ -1,0 +1,329 @@
+{
+  "format": "D2R Experience media intake",
+  "editorial_id": "EE-0036",
+  "canonical_id": "EXP-ELECTRICAL-RETURN-036",
+  "source_archive": "EE0036_Codex.zip",
+  "status": "DRAFT_INTEGRATED_PUBLICATION_BLOCKED_HUMAN_QA",
+  "supplied_assets": 7,
+  "runtime_registered_assets": 7,
+  "runtime_presented_assets": 7,
+  "publication_allowed": false,
+  "assets": [
+    {
+      "runtime_id": "ART-001",
+      "source_id": "EE-0036_01_cuadro_electrico.png",
+      "canonical_file": "assets/EE-0036_01_cuadro_electrico.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_01_cuadro_electrico.png",
+      "sha256": "597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "cover"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3.",
+          "caption": "Cuadro ilustrado con PS1, PLC, F24, X2 y Y3."
+        },
+        "en": {
+          "alt": "Illustrated PS1, PLC, F24, X2 and Y3 cabinet.",
+          "caption": "Illustrated PS1, PLC, F24, X2 and Y3 cabinet."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_01_cuadro_electrico.png",
+      "original_sha256": "597d99f69e6ce9ca405ca5035cb780bb68e0a503bbf58b16b50adf383354516d",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-002",
+      "source_id": "EE-0036_02_esquema_electrico.png",
+      "canonical_file": "assets/EE-0036_02_esquema_electrico.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_02_esquema_electrico.png",
+      "sha256": "484e0d9e327a8d6a122eac39f9908c3526c087e3fe067d3e13fc19159e537780",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "STAGE-01-DIAGNOSIS"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V.",
+          "caption": "Esquema corregido de CPU 1214C DC/DC/DC con alimentación DQ 3L+/3M, Q0.3 por X2:7 a A1 y retorno A2 exclusivamente por X2:8 a PS1:0 V."
+        },
+        "en": {
+          "alt": "Corrected CPU 1214C DC/DC/DC schematic with 3L+/3M DQ supply, Q0.3 through X2:7 to A1 and A2 return exclusively through X2:8 to PS1:0 V.",
+          "caption": "Corrected CPU 1214C DC/DC/DC schematic with 3L+/3M DQ supply, Q0.3 through X2:7 to A1 and A2 return exclusively through X2:8 to PS1:0 V."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_02_esquema_electrico.png",
+      "original_sha256": "46f9ac3081e3e3c7fde00316498c8110e2017e7b1ea52e606c7a8a59e125bff5",
+      "binary_modified": true,
+      "correction_method": "deterministic SVG → PNG"
+    },
+    {
+      "runtime_id": "ART-003",
+      "source_id": "EE-0036_03_watch_table.png",
+      "canonical_file": "assets/EE-0036_03_watch_table.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_03_watch_table.png",
+      "sha256": "33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7",
+      "width": 1711,
+      "height": 919,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-01-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "Unchanged user-supplied synthetic original.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga.",
+          "caption": "Tabla de observación TIA simulada: Y3_Command en Q0.3 aparece TRUE; no acredita tensión en carga."
+        },
+        "en": {
+          "alt": "Simulated TIA watch table: Y3_Command at Q0.3 is TRUE; this does not establish load voltage.",
+          "caption": "Simulated TIA watch table: Y3_Command at Q0.3 is TRUE; this does not establish load voltage."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_03_watch_table.png",
+      "original_sha256": "33d3f67b1f4fd0547da3a4db2815149bd0962bcc4a0fd5d9fc0433d870531cb7",
+      "binary_modified": false,
+      "correction_method": "unchanged"
+    },
+    {
+      "runtime_id": "ART-004",
+      "source_id": "EE-0036_04_mediciones_tension.png",
+      "canonical_file": "assets/EE-0036_04_mediciones_tension.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_04_mediciones_tension.png",
+      "sha256": "0ef35f137ea5aaef0196827e7c9052157ab5e704f9699ffe82e1ffc802004e8f",
+      "width": 2172,
+      "height": 724,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-02-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V.",
+          "caption": "Y3 24 VDC / 2,6 W: registros simulados A1–PS1:0 V 24,0 V; A2–PS1:0 V 24,0 V; A1–A2 0,0 V."
+        },
+        "en": {
+          "alt": "Y3 24 VDC / 2.6 W: simulated records A1–PS1:0 V 24.0 V; A2–PS1:0 V 24.0 V; A1–A2 0.0 V.",
+          "caption": "Y3 24 VDC / 2.6 W: simulated records A1–PS1:0 V 24.0 V; A2–PS1:0 V 24.0 V; A1–A2 0.0 V."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_04_mediciones_tension.png",
+      "original_sha256": "f4b2d3eef92ab9bb58e87f1362cff25430f2a12ccdc970a76361f255e223ddf3",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-005",
+      "source_id": "EE-0036_05_continuidad_retorno.png",
+      "canonical_file": "assets/EE-0036_05_continuidad_retorno.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_05_continuidad_retorno.png",
+      "sha256": "183eb4d779d9e5d63724e9525498d04032b0ef6361f442d9a00f8a3c4bfc7410",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-03-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W.",
+          "caption": "Ensayo aislado X2:8–barra PS1:0 V con lectura simulada OL; contacto metálico y selector Ω. Y3: 24 VDC / 2,6 W."
+        },
+        "en": {
+          "alt": "Isolated X2:8–PS1:0 V bar test with simulated OL reading; metal contact and Ω mode. Y3: 24 VDC / 2.6 W.",
+          "caption": "Isolated X2:8–PS1:0 V bar test with simulated OL reading; metal contact and Ω mode. Y3: 24 VDC / 2.6 W."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_05_continuidad_retorno.png",
+      "original_sha256": "319bd632a2e292a66c11fac08d7c2bd3a76de2c62380f7036f05fb25d50ba718",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-006",
+      "source_id": "EE-0036_06_causa_raiz.png",
+      "canonical_file": "assets/EE-0036_06_causa_raiz.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_06_causa_raiz.png",
+      "sha256": "dcace6e60cea3f843405238c9b445dcfa3350fe3d2905193ac4f32017983dc2e",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-04-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad.",
+          "caption": "Retorno azul interrumpido del caso Y3 24 VDC / 2,6 W; inspección consignada, confirmación junto al acta de continuidad."
+        },
+        "en": {
+          "alt": "Interrupted blue return in the Y3 24 VDC / 2.6 W case; isolated inspection, confirmed with the continuity report.",
+          "caption": "Interrupted blue return in the Y3 24 VDC / 2.6 W case; isolated inspection, confirmed with the continuity report."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_06_causa_raiz.png",
+      "original_sha256": "9b006d834df7ba917dbcf4bec050c8baaf9a2ed13ca8a2b5f43c38774678fd22",
+      "binary_modified": true,
+      "correction_method": "localized image edit"
+    },
+    {
+      "runtime_id": "ART-007",
+      "source_id": "EE-0036_07_verificacion_reparacion.png",
+      "canonical_file": "assets/EE-0036_07_verificacion_reparacion.png",
+      "src": "assets/EXP-ELECTRICAL-RETURN-036/EE-0036_07_verificacion_reparacion.png",
+      "sha256": "392a2b213adf4f3ae09c18892156a635127e0455b9c07de7e976febd5aa4b5e8",
+      "width": 1536,
+      "height": 1024,
+      "runtime_registered": true,
+      "runtime_presented": true,
+      "bindings": [
+        "EVID-05-RECORD"
+      ],
+      "technical_status": "HUMAN_REVIEW_PENDING",
+      "hidden_reason": null,
+      "provenance": "User-supplied synthetic original preserved in media-source/originals; derived correction recorded separately.",
+      "proves": "Illustrates the depicted state; interpreted with the authored simulated record.",
+      "does_not_prove": "Real measurements, manufacturer compliance, safe isolation or functional recovery by itself.",
+      "reuse_restriction": "Experience-local draft; technical publication approval pending.",
+      "localization": {
+        "es": {
+          "alt": "Y3 24 VDC / 2,6 W, retorno reparado por X2:8 y lectura simulada A1–A2 de 24,0 VDC.",
+          "caption": "Verificación eléctrica simulada tras reparar el retorno; el acta incluye también la actuación funcional de Y3."
+        },
+        "en": {
+          "alt": "Y3 24 VDC / 2.6 W, repaired return through X2:8 and a simulated 24.0 VDC reading across A1–A2.",
+          "caption": "Simulated electrical verification after return repair; the report also includes functional Y3 actuation."
+        }
+      },
+      "original_file": "media-source/originals/EE-0036_07_verificacion_reparacion.png",
+      "original_sha256": "af25c8c16b9bc4d810fe26699f0400ea1d1db64849729faef190dbc9fbdc3db9",
+      "binary_modified": true,
+      "correction_method": "localized image edit",
+      "visual_approval": {
+        "status": "APPROVED",
+        "approved_by": "user",
+        "date": "2026-11-26",
+        "evidence": "Explicit user reply «si» to approval of corrected EE-0036 ART-007 in this conversation.",
+        "asset_sha256": "392a2b213adf4f3ae09c18892156a635127e0455b9c07de7e976febd5aa4b5e8",
+        "scope": "Visual acceptance and local preview presentation only; human technical validation and publication remain pending."
+      }
+    }
+  ],
+  "bindings": {
+    "cover": "ART-001",
+    "STAGE-01-DIAGNOSIS": [
+      "ART-002"
+    ],
+    "EVID-01-RECORD": [
+      "ART-003"
+    ],
+    "EVID-02-RECORD": [
+      "ART-004"
+    ],
+    "EVID-03-RECORD": [
+      "ART-005"
+    ],
+    "EVID-04-RECORD": [
+      "ART-006"
+    ],
+    "EVID-05-RECORD": [
+      "ART-007"
+    ]
+  },
+  "no_engine_changes": true,
+  "semantic_changes": "Authorized minimal evidence wording/timing corrections and safety prerequisites; options, correct answers, evaluation and root cause unchanged.",
+  "issues": [],
+  "additional_review": [
+    "Human technical approval is still pending; synthetic assets are not real test records.",
+    "Corrections and source references: docs/implementation/EE-0034-0036-corrections/."
+  ],
+  "preserved_semantics_sha256": {
+    "private": "27546a91e2d75e729fe2b38d05c3a992b450c8ee31567174eb18765fb7fdf321",
+    "decisions": "2e46e361617df35bb153a17297efe92d9ab0ccddd969d9fa470057eae2c5430f",
+    "evidence": "37f02f8e37c729c75a6347e2d48b5ada6c37a64861917ef33ecd54b55a871e86"
+  },
+  "source_archive_sha256": "c7ca67514c24002adf6fde6be9a08b92df5952a99687c9041a02ae0eb3e19443",
+  "correction_revision": {
+    "authorized_by": "Texto pegado.txt — Corrección técnica y cierre de QA, 26/11/2026",
+    "evaluation_invariants_sha256": "c0bf53ed808e9fd9353fb0f2f412e08b4b3743ffb041161f07bfdc08ae5cb18b",
+    "decisions_sha256": "2e46e361617df35bb153a17297efe92d9ab0ccddd969d9fa470057eae2c5430f",
+    "root_cause_sha256": "d9f7bbfc03641fd194fb0c4c5785eded1fca29394df6b4bfa4f991dfc365c755",
+    "evidence_content_changes": {},
+    "binding_changes": {
+      "cover": "ART-001",
+      "STAGE-01-DIAGNOSIS": [
+        "ART-002"
+      ],
+      "EVID-01-RECORD": [
+        "ART-003"
+      ],
+      "EVID-02-RECORD": [
+        "ART-004"
+      ],
+      "EVID-03-RECORD": [
+        "ART-005"
+      ],
+      "EVID-04-RECORD": [
+        "ART-006"
+      ],
+      "EVID-05-RECORD": [
+        "ART-007"
+      ]
+    },
+    "publication_allowed": false
+  },
+  "publication_authorization": {
+    "date": "2026-11-26",
+    "approved_by": "user",
+    "request": "push, merge y deploy",
+    "scope": "Publish the current preview via the existing GitHub Pages workflow. Keep technical_review/pending, hidden EE-0034 ART-004/005 and all technical review limits.",
+    "technical_approval_granted": false
+  }
+}

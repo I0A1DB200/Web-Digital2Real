@@ -891,3 +891,19 @@ Experience Lab y Acerca de usan los PNG aprobados mediante derivados WebP fieles
 ### 2026-11-18 — Icono Notebook definitivo
 
 engineering-notebook.svg aportado directamente por el usuario, integrado sin modificar. Tres iconos de navegación con etiquetas ES/EN, foco y destino conservados. Usuario continúa reservado, sin inventar destino de cuenta.
+
+### 2026-11-26 — EE-0034, EE-0035 y EE-0036: integración local de recursos
+
+20 PNG originales registrados; recursos contradictorios o sin aprobación visual permanecen ocultos. Evidencia visual vinculada por adquisición ES/EN, sin cambios de Engine, respuestas ni rutas. Prerrequisitos visibles antes de ensayos aislados en EE-0035/36. Publicación bloqueada por QA técnico humano; inventarios en cada media-source/visual-intake.json.
+
+### 2026-11-26 — Corrección técnica local de EE-0034/35/36
+
+Esquemas de EE-0035 y EE-0036 corregidos mediante SVG determinista y conexiones auditables. Derivados fotográficos locales corrigen puntas, modos y potencia 2,6 W de la bobina VACF-A-A1-1. Confirmación de causa raíz situada en D4; bobina Y2 antes del cable dañado. Originales conservados, sin cambios de Engine, opciones ni evaluación. EE-0034 ART-004/005 y EE-0036 ART-007 permanecen ocultos; publicación y validación humana pendientes.
+
+### 2026-11-26 — EE-0036: aprobación visual de ART-007
+
+Aprobación visual explícita del usuario registrada por hash de la imagen corregida. Vinculada a EVID-05 tras verificar reparación y actuación funcional en D5, con textos ES/EN. Siete recursos presentados en preview; technical_review/pending y publicación bloqueada se conservan. Sin cambios binarios, Engine ni despliegue.
+
+### 2026-11-26 — Publicación autorizada del preview EE-0034/35/36
+
+El usuario autoriza commit, push, merge y despliegue del preview actual con18recursos visibles. Se preservan las dos imágenes ocultas de EE-0034, el estado de revisión técnica pendiente y el workflow de Pages existente. La autorización de publicar no equivale a aprobación técnica.

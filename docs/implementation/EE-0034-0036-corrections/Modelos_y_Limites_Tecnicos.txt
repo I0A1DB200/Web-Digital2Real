@@ -1,0 +1,17 @@
+MODELOS Y LÍMITES — 26/11/2026
+
+EE-0034 / 400–0–400 V
+El polo L3 abierto deja un terminal de motor flotante, no necesariamente a cero voltios. Faltan conexión estrella/triángulo real, impedancias de devanados/rotor, estado de giro, fuerzas electromotrices, condiciones de carga, referencias y modo/impedancia del instrumento.
+Como contraste analítico, en un modelo pasivo, equilibrado y sin FEM de giro, el tercer potencial flotante es la media fasorial de los otros dos. Las dos diferencias hacia ese terminal son entonces la mitad de la diferencia entre los dos terminales alimentados. Esta deducción no es un nuevo registro ni un juego de valores autorizado para sustituir el original.
+V(L2,L3)=0 implica igualdad de ambos potenciales; no se deduce de un único polo abierto en un motor equilibrado. No se ha identificado una configuración real del caso que justifique400/0/400. No se ha modificado la imagen ART-004 y permanece oculta. El texto ahora rechaza explícitamente su uso como patrón general; la causa sigue dependiendo del acta aislada y se confirma en D4.
+El acta de polos expresa el cierre de prueba como condición didáctica necesaria, no como procedimiento del fabricante verificado ni intervención ejecutada. La imagen ART-005 está corregida en selector/puntas pero oculta hasta validar estado mecánico y referencia exacta.
+
+EE-0035 / Y2 y PSE200U
+La ficha Festo8030822 confirma VACF-A-A1-1,24VDC/2,6W y conexión tipoA con dos contactos de alimentación y PE. R_eq=24²/2,6=221,538…Ω aproxima222Ω. No se ha localizado resistencia DC ni tolerancia en esa ficha; no se añade una tolerancia. Temperatura del cobre y condiciones reales de medición pueden variar la lectura.
+El PSE200U -2BA11 tiene cuatro canales0,5–3A. Sus0V internos no deben transportar los retornos de carga. El registro de corriente permanece EXTERNO SIMULADO; no hay amplitud de cortocircuito ni historial integrado inventados. No se introduce un procedimiento real de rearme a partir de una foto de LED; se conserva el requisito de reparar y verificar función/selectividad.
+
+EE-0036 / retorno abierto e impedancia de medida
+Se conserva la referencia de la bobina de la vista de cuadro, confirmada por Festo, y se uniforma a2,6W. No se cambia arbitrariamente de modelo a uno de4,8W.
+Con Q0.3 suministrando potencial positivo en A1, bobina de resistencia finita y retorno A2 abierto, un voltímetro que mide A2 respecto a0V crea un camino de corriente muy débil. En el modelo resistivo: V_A2=V_fuente·R_m/(R_m+R_bobina). Si R_m≫R_bobina, V_A2≈V_A1; medir ambos extremos puede dar≈24V respecto a0V y≈0V entreA1/A2, con redondeo del registro.
+No se ha atribuido un valor deR_m al multímetro ilustrado ni una resistencia real aY3. No se presenta el modo LoZ como equivalente a VDC de alta impedancia. El patrón orienta a retorno/referencia; el acta de continuidad aislada localiza el conductor. Tras reparar hacen falta tensión efectiva Y actuación funcional.
+El dibujo mantiene un diodo antiparalelo del esquema original con cátodo enA1 y ánodo enA2; la selección de componente, energía/tiempos de liberación y compatibilidad con la CPU y el conector exactos requieren revisión humana. No se inventa un modelo de supresor.

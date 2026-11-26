@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1500 1000"><rect width="1500" height="1000" fill="white"/>
+<text x="70" y="75" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">230 VAC</text>
+<rect x="260" y="100" width="115" height="160" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="280" y="85" fill="#202020" font-family="Arial, sans-serif" font-size="25" text-anchor="start">Q1</text>
+<rect x="480" y="80" width="390" height="215" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="620" y="115" fill="#202020" font-family="Arial, sans-serif" font-size="26" text-anchor="start">PS1</text>
+<text x="535" y="150" fill="#202020" font-family="Arial, sans-serif" font-size="22" text-anchor="start">SITOP PSU100S</text>
+<text x="535" y="180" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">24 VDC / 10 A</text>
+<polyline points="620,210 720,210 720,260 620,260 620,210" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="620,260 720,210" fill="none" stroke="#202020" stroke-width="2" />
+<text x="632" y="233" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">~</text>
+<text x="683" y="253" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">=</text>
+<circle data-port="AC:L" cx="90" cy="130" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="55" y="120" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">L</text>
+<circle data-port="PS1:L" cx="480" cy="130" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="488" y="120" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">L</text>
+<circle data-port="Q1:Lin" cx="260" cy="130" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="Q1:Lout" cx="375" cy="130" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="90,130 260,130" fill="none" stroke="#202020" stroke-width="2" data-wire="W01" data-from="AC:L" data-to="Q1:Lin"/>
+<polyline points="275,130 305,105" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="320,130 360,130" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="260,130 275,130" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="375,130 480,130" fill="none" stroke="#202020" stroke-width="2" data-wire="W02" data-from="Q1:Lout" data-to="PS1:L"/>
+<circle data-port="AC:N" cx="90" cy="200" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="55" y="190" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">N</text>
+<circle data-port="PS1:N" cx="480" cy="200" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="488" y="190" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">N</text>
+<circle data-port="Q1:Nin" cx="260" cy="200" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="Q1:Nout" cx="375" cy="200" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="90,200 260,200" fill="none" stroke="#202020" stroke-width="2" data-wire="W03" data-from="AC:N" data-to="Q1:Nin"/>
+<polyline points="275,200 305,175" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="320,200 360,200" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="260,200 275,200" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="375,200 480,200" fill="none" stroke="#202020" stroke-width="2" data-wire="W04" data-from="Q1:Nout" data-to="PS1:N"/>
+<circle data-port="AC:PE" cx="90" cy="270" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="55" y="260" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">PE</text>
+<circle data-port="PS1:PE" cx="480" cy="270" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="488" y="260" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">PE</text>
+<polyline points="90,270 480,270" fill="none" stroke="#202020" stroke-width="2" data-wire="W05" data-from="AC:PE" data-to="PS1:PE"/>
+<polyline points="150,270 150,285" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="134,285 166,285" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="139,291 161,291" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="145,297 155,297" fill="none" stroke="#202020" stroke-width="2" />
+<circle data-port="PS1:+" cx="870" cy="180" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="878" y="170" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">+24 V</text>
+<circle data-port="PS1:0" cx="870" cy="260" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="878" y="250" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">0 V</text>
+<rect x="390" y="400" width="990" height="210" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="700" y="445" fill="#202020" font-family="Arial, sans-serif" font-size="25" text-anchor="start">F24 — SITOP PSE200U</text>
+<text x="740" y="478" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">6EP1961-2BA11</text>
+<text x="995" y="505" fill="#202020" font-family="Arial, sans-serif" font-size="19" text-anchor="start">4 × 0.5…3 A</text>
+<circle data-port="F24:+" cx="550" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="485" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">+24 V</text>
+<circle data-port="F24:0" cx="720" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="730" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">0 V</text>
+<polyline points="870,180 960,180 960,340 550,340 550,400" fill="none" stroke="#202020" stroke-width="2" data-wire="W06" data-from="PS1:+" data-to="F24:+"/>
+<polyline points="870,260 1470,260 1470,360 720,360 720,400" fill="none" stroke="#202020" stroke-width="2" data-wire="W07" data-from="PS1:0" data-to="F24:0"/>
+<circle data-port="ZERO" cx="1000" cy="945" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="870,260 1470,260 1470,945 1000,945" fill="none" stroke="#202020" stroke-width="2" data-wire="W08" data-from="PS1:0" data-to="ZERO"/>
+<circle data-port="F24:RST" cx="1030" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="1035" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">RST</text>
+<circle data-port="F24:11" cx="1130" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="1135" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">11</text>
+<circle data-port="F24:12" cx="1220" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="1225" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">12</text>
+<circle data-port="F24:14" cx="1310" cy="400" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="1315" y="385" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">14</text>
+<polyline points="1130,405 1130,455 1190,455 1220,425" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="1220,400 1220,425" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="1310,400 1310,455 1250,455" fill="none" stroke="#202020" stroke-width="2" />
+<text x="490" y="540" fill="#202020" font-family="Arial, sans-serif" font-size="23" text-anchor="middle">F24.1</text>
+<text x="490" y="575" fill="#202020" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">2.0 A</text>
+<circle data-port="F24:OUT1" cx="490" cy="610" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="465" y="633" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">1</text>
+<rect x="400" y="800" width="180" height="105" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="490" y="840" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="middle">PLC S7-1200</text>
+<circle data-port="PLC S7-1200:+" cx="490" cy="800" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="PLC S7-1200:0" cx="490" cy="905" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="490,905 490,945 1000,945" fill="none" stroke="#202020" stroke-width="2" data-wire="W09" data-from="PLC S7-1200:0" data-to="ZERO"/>
+<polyline points="490,610 490,800" fill="none" stroke="#202020" stroke-width="2" data-wire="W10" data-from="F24:OUT1" data-to="PLC S7-1200:+"/>
+<text x="740" y="540" fill="#202020" font-family="Arial, sans-serif" font-size="23" text-anchor="middle">F24.2</text>
+<text x="740" y="575" fill="#202020" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">0.5 A</text>
+<circle data-port="F24:OUT2" cx="740" cy="610" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="715" y="633" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">2</text>
+<rect x="650" y="800" width="180" height="105" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="740" y="840" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="middle">Y2</text>
+<circle data-port="Y2:+" cx="740" cy="800" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="Y2:0" cx="740" cy="905" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="740,905 740,945 1000,945" fill="none" stroke="#202020" stroke-width="2" data-wire="W11" data-from="Y2:0" data-to="ZERO"/>
+<circle data-port="K1:13" cx="740" cy="680" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="748" y="670" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">13</text>
+<circle data-port="K1:14" cx="740" cy="745" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="748" y="735" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">14</text>
+<polyline points="740,610 740,680" fill="none" stroke="#202020" stroke-width="2" data-wire="W12" data-from="F24:OUT2" data-to="K1:13"/>
+<polyline points="740,680 770,705" fill="none" stroke="#202020" stroke-width="2" />
+<polyline points="740,745 740,725" fill="none" stroke="#202020" stroke-width="2" />
+<text x="785" y="722" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="start">K1</text>
+<polyline points="740,745 740,800" fill="none" stroke="#202020" stroke-width="2" data-wire="W13" data-from="K1:14" data-to="Y2:+"/>
+<rect x="715" y="850" width="50" height="30" fill="none" stroke="#202020" stroke-width="2"/>
+<polyline points="715,880 765,850" fill="none" stroke="#202020" stroke-width="2" />
+<text x="990" y="540" fill="#202020" font-family="Arial, sans-serif" font-size="23" text-anchor="middle">F24.3</text>
+<text x="990" y="575" fill="#202020" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">1.0 A</text>
+<circle data-port="F24:OUT3" cx="990" cy="610" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="965" y="633" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">3</text>
+<rect x="900" y="800" width="180" height="105" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="990" y="840" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="middle">SENSORES</text>
+<circle data-port="SENSORES:+" cx="990" cy="800" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="SENSORES:0" cx="990" cy="905" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="990,905 990,945 1000,945" fill="none" stroke="#202020" stroke-width="2" data-wire="W14" data-from="SENSORES:0" data-to="ZERO"/>
+<polyline points="990,610 990,800" fill="none" stroke="#202020" stroke-width="2" data-wire="W15" data-from="F24:OUT3" data-to="SENSORES:+"/>
+<text x="1240" y="540" fill="#202020" font-family="Arial, sans-serif" font-size="23" text-anchor="middle">F24.4</text>
+<text x="1240" y="575" fill="#202020" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">1.0 A</text>
+<circle data-port="F24:OUT4" cx="1240" cy="610" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<text x="1215" y="633" fill="#202020" font-family="Arial, sans-serif" font-size="18" text-anchor="start">4</text>
+<rect x="1150" y="800" width="180" height="105" fill="none" stroke="#202020" stroke-width="2"/>
+<text x="1240" y="840" fill="#202020" font-family="Arial, sans-serif" font-size="21" text-anchor="middle">RELÉS AUX.</text>
+<circle data-port="RELÉS AUX.:+" cx="1240" cy="800" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<circle data-port="RELÉS AUX.:0" cx="1240" cy="905" r="5" fill="white" stroke="#202020" stroke-width="2"/>
+<polyline points="1240,905 1240,945 1000,945" fill="none" stroke="#202020" stroke-width="2" data-wire="W16" data-from="RELÉS AUX.:0" data-to="ZERO"/>
+<polyline points="1240,610 1240,800" fill="none" stroke="#202020" stroke-width="2" data-wire="W17" data-from="F24:OUT4" data-to="RELÉS AUX.:+"/>
+<text x="400" y="985" fill="#202020" font-family="Arial, sans-serif" font-size="17" text-anchor="start">K1: contacto de mando; circuito de bobina fuera de este extracto.</text>
+<circle cx="490" cy="945" r="3.5" fill="#202020"/>
+<circle cx="740" cy="945" r="3.5" fill="#202020"/>
+<circle cx="990" cy="945" r="3.5" fill="#202020"/>
+<circle cx="1240" cy="945" r="3.5" fill="#202020"/>
+</svg>

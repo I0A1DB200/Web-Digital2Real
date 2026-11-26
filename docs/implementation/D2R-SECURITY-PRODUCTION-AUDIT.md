@@ -115,21 +115,21 @@ No se identificaron hallazgos críticos confirmados dentro de las superficies ve
 | Área | Estado | Justificación |
 |---|---|---|
 | Frontend Security | PARTIAL | Construcción y QA local, riesgo CDN restante, cabeceras en vivo pendientes. |
-| API Security | PARTIAL | Demo local y allowlist verificados. API comercial pendiente. |
+| API Security | PARTIAL | Demo y API local verificados con health, contratos, tokens firmados, respuestas privadas y aislamiento. Staging pendiente. |
 | Secrets Management | PARTIAL | Barrido local y exclusión env. Gestor productivo y comprobación remota pendientes. |
-| Dependency Security | PARTIAL | Inventario y SRI en Cobot, módulo local verificado y Actions fijadas. Falta confirmar la publicación real. |
-| Authentication | NOT IMPLEMENTED | IdP y revocación en propuesta. |
-| Authorization | NOT IMPLEMENTED | Controles por rol, recurso y propietario en propuesta. |
-| Premium Content Protection | NOT IMPLEMENTED | Catálogo público de práctica y fuentes en Git. |
-| Database Security | NOT IMPLEMENTED | No hay DB comercial. |
-| Payment Security | NOT IMPLEMENTED | Contrato de integración, entorno de prueba por aprobar. |
-| User Privacy | PARTIAL | Inventario dirigido y persistencia local observada. Falta validar proveedores, retención y derechos operativos. |
+| Dependency Security | PARTIAL | SRI en Cobot, módulo local de célula verificado, Actions fijadas por SHA y lock/SCA del API local. Pendiente verificar los binarios publicados. |
+| Authentication | PARTIAL | API valida firma, tipo, emisor, audiencia y caducidad en local. IdP, sesiones y recuperación requieren integración. |
+| Authorization | PARTIAL | Acceso local por identidad, rol de prueba y recurso. Aislamiento demostrado con datos sintéticos. |
+| Premium Content Protection | PARTIAL | Derechos, caducidad y entrega privada ensayados localmente. Bloqueados los artefactos y objetos comerciales. |
+| Database Security | PARTIAL | SQLite local con migración transaccional, constraints y copia consistente. PostgreSQL y RLS pendientes. |
+| Payment Security | PARTIAL | Snapshots sintéticos monotónicos, idempotencia y revocación probadas. Checkout y firma del proveedor pendientes. |
+| User Privacy | PARTIAL | Inventario, versionado, exportación y cierre local probados. Retención y derechos transversales pendientes. |
 | Legal Compliance | BLOCKED | Datos del titular, condiciones, revisión de mercados y aprobación jurídica/fiscal pendientes. |
-| Certification Integrity | NOT IMPLEMENTED | Propuesta autoritativa y verificable, práctica cliente vigente. |
+| Certification Integrity | PARTIAL | Replay canónico local, con rechazo de práctica. Sesiones duraderas, firma/emisión y revocación pendientes. |
 | Infrastructure | BLOCKED | Artefacto local probado. Parámetros y cabeceras remotos, DNS/correo y elección de host pendientes. |
-| CI/CD | PARTIAL | Pipeline endurecido localmente, ejecución GitHub, protección de rama y aprobación de entorno pendientes. |
+| CI/CD | PARTIAL | CI del PR verificada y despliegue omitido. Backend incorpora pruebas y SCA. Protección de rama y aprobación de entorno pendientes. |
 | Monitoring | NOT IMPLEMENTED | Métricas, alertas y propietarios propuestos. |
-| Backups | NOT IMPLEMENTED | RPO, RTO y restauración propuestos. |
+| Backups | PARTIAL | Recuperación SQLite local con destino nuevo e integridad comprobada. RPO/RTO comerciales sin validar. |
 | Incident Response | PARTIAL | Runbook preparado. Faltan rotación de guardia, contactos y simulacro. |
 
 ## Roadmap y decisiones de lanzamiento

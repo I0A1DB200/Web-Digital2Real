@@ -18,10 +18,11 @@
 | State | Work, evidence and next gate |
 |---|---|
 | Implemented on work branch | [Security hardening and audit](implementation/D2R-SECURITY-PRODUCTION-AUDIT.md), reconciled with current main, and delegated delivery in the [Development Workflow](DEVELOPMENT_WORKFLOW.md). |
-| Draft PR under review | [PR #18](https://github.com/I0A1DB200/Web-Digital2Real/pull/18) builds and tests without deploying. Local packaging, all 598 tests, and Chromium routing/footer checks passed. |
-| Next approved work | Check the draft PR build and repair scoped failures. Once review evidence is complete, request maintainer review for the changes to publication policy. |
-| Blocked on settings and evidence | Verify live Pages source and headers, protected-branch checks, and DNS and email in the applicable administration context. Future hardening candidates include verified SHA pinning and dependency inventory. |
-| Blocked on owner decisions | Approve hosting and region, identity and API boundaries, protected content, checkout and accounting, legal publication and launch. See [architecture](01-architecture/D2R-PRODUCTION-READINESS-PROPOSAL.md). |
+| Draft PR under review | [PR #18](https://github.com/I0A1DB200/Web-Digital2Real/pull/18) builds and tests without deploying. Local packaging, tests and Chromium routing, footer and Inspection Cell checks passed. |
+| Draft backend PR | [PR #20](https://github.com/I0A1DB200/Web-Digital2Real/pull/20) para API optativa, migración SQLite no destructiva, verificación de tokens firmados, cierre local, catálogo por derechos, tratamiento idempotente de suscripciones, marcadores de práctica, versiones legales y exportación. El Player canónico reproduce intentos de evaluación sintéticos. Se verificó una restauración local. |
+| Next approved work | Validar en PR el API y las Actions fijadas. Revisar las reglas de main y Pages antes de integrar. El siguiente paquete técnico es la prueba de paridad y proyección privada para sesiones de evaluación, más el adaptador de IdP y facturación cuando se aprueben sus contratos. |
+| Blocked on external evidence | El proxy devolvió HTTP 403 a las consultas de Pages, dominio y DNS sobre HTTPS. La resolución de los nombres tampoco respondió desde el entorno. La publicación real, las cabeceras, SPF, DKIM con selector confirmado y DMARC siguen sin verificación. |
+| Blocked on owner decisions | Aprobar hosting y región, identidad, checkout y facturación, retención y textos legales. Definir aprobación de contenido acreditativo y emisión o revocación de certificados antes de activar producción. See [architecture](01-architecture/D2R-PRODUCTION-READINESS-PROPOSAL.md). |
 
 ## Current Sprint
 

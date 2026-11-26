@@ -1,0 +1,40 @@
+name: Validate local platform API
+
+on:
+  pull_request:
+    paths:
+      - Backend/**
+      - experience-engine/**
+      - .github/workflows/backend-local.yml
+  push:
+    branches: [main]
+    paths:
+      - Backend/**
+      - experience-engine/**
+      - .github/workflows/backend-local.yml
+
+permissions:
+  contents: read
+
+jobs:
+  local-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check -r Backend/requirements-local.txt
+      - run: python -m pip check
+      - run: python -m unittest Backend.test_local_platform -v
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: node --test Backend/local_assessment.test.mjs
+      - name: Check locked dependencies against advisories
+        run: |
+          python -m venv "$RUNNER_TEMP/d2r-dependency-audit"
+          "$RUNNER_TEMP/d2r-dependency-audit/bin/pip" install pip-audit==2.10.1
+          "$RUNNER_TEMP/d2r-dependency-audit/bin/pip-audit" --strict -r Backend/requirements-local.txt

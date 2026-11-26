@@ -10,7 +10,7 @@ El titular ejerce como autónomo en España y usa Digital2Real como marca. Usar 
 
 | Tratamiento | Estado y datos | Base propuesta y acceso | Retención o acción |
 |---|---|---|---|
-| Visita | Hosting estático y solicitudes al CDN Three.js en simuladores. Terceros pueden recibir IP, hora, navegador y referrer según configuración. | Evaluar operación y seguridad, encargo o relación independiente. Identificar logs reales, subencargados, transferencia y DPA. | Plazos de proveedor pendientes. Evitar telemetría adicional. |
+| Visita | Hosting estático y solicitud al CDN Three.js en Cobot. Terceros pueden recibir IP, hora, navegador y referrer según configuración. | Evaluar operación y seguridad, encargo o relación independiente. Identificar logs reales, subencargados, transferencia y DPA. | Plazos de proveedor pendientes. Evitar telemetría adicional. |
 | Idioma y progreso de práctica | Idioma, IDs de experiencias, bloques de teoría y estados de práctica en dispositivo. | Evaluar dispositivo y RGPD por finalidad. Lectura/escritura en origen del navegador. | Persistencia sin TTL explícito. Documentar reset y uso en dispositivo compartido. |
 | Contacto y derechos | Correo corporativo previsto. Si un usuario lo usa, se procesan dirección, mensaje y metadatos por servicio de correo. | Atención de solicitud precontractual, contractual o interés legítimo según caso. Acceso del titular y soporte autorizado. | Definir borrado tras resolución y excepciones por reclamaciones. Verificar buzón y alias. |
 | Cuenta y sesión | Previsto. ID externo, contacto verificado, sesión y atributos mínimos. | Contrato o medidas precontractuales, seguridad del servicio por finalidad. IdP y soporte autorizado. | Propuesta de expirar sesiones por inactividad y revocar al cierre. |
@@ -27,7 +27,7 @@ Completar registro de actividades con categorías de interesados, destinatarios,
 | `digital2real.experience-locale.v1` | localStorage, preferencia explícita ES/EN | Sin TTL. Conservar alcance, revisar exención y documentar. |
 | `digital2real.environment-progress.v1`, `digital2real.environment-progress.v2` | localStorage, progreso de práctica en mismo dispositivo | Sin TTL. Evaluar si persistencia está solicitada y es estrictamente necesaria, documentar finalidad y permitir borrado. |
 | `d2r-document-language` | localStorage del simulador y lector documental, preferencia de lectura | Sin TTL. Documentar alcance en el mismo origen. |
-| Cookies, IndexedDB, píxeles, servicios externos | No se observaron escrituras explícitas de cookies ni IndexedDB en los módulos principales revisados. CDN de ambos simuladores y configuración de hosting requieren inspección de cabeceras reales. | Registrar responsables y tiempos de cada integración. La carga de un CDN por sí sola tampoco demuestra cookies. |
+| Cookies, IndexedDB, píxeles, servicios externos | No se observaron escrituras explícitas de cookies ni IndexedDB en los módulos principales revisados. CDN del Cobot y configuración de hosting requieren inspección de cabeceras reales. | Registrar responsables y tiempos de cada integración. La carga de un CDN por sí sola tampoco demuestra cookies. |
 
 Inspeccionar tráfico, almacenamiento y cabeceras en producción y en los iframes, con contexto limpio y tras cada elección. Para almacenamiento opcional sujeto a consentimiento, bloquear carga hasta aceptación, ofrecer aceptar y rechazar al mismo nivel, granularidad y retirada accesible, limpiar lo controlable y conservar evidencia por versión/finalidad. Si toda persistencia queda justificada como exenta, publicar información proporcional sin diálogo de consentimiento innecesario. [Guía AEPD](https://www.aepd.es/guias/guia-cookies.pdf)
 
@@ -55,3 +55,15 @@ Cada fila define el alcance y el borrador de sustancia. Los textos públicos req
 - Asesoría debe clasificar actividad y prestación según automatización y participación humana, verificar IVA, reglas de localización, evidencia de país, B2B/B2C e inversión del sujeto pasivo cuando corresponda, OSS y tratamiento extracomunitario. Configurar impuesto y moneda por SKU, comprador y territorio. No aplicar exención por formación sin fundamento específico. Definir series de facturas y rectificativas, distinguir factura de justificante de pasarela y conservar datos contables por finalidad. [AEAT · IVA y comercio electrónico](https://sede.agenciatributaria.gob.es/Sede/iva/iva-comercio-electronico.html) · [Reglamento de facturación](https://www.boe.es/buscar/act.php?id=BOE-A-2012-14696)
 - Revisar SIF y facturación electrónica B2B por separado; confirmar ámbito, excepciones y régimen territorial. El RDL 43/2026 remite el plazo de adaptación SIF al previsto en la disposición final cuarta, apartado 1.b del RD 238/2026. Validar su cómputo y vigencia con asesoría en la decisión de proveedor. [RDL 43/2026](https://www.boe.es/buscar/doc.php?id=BOE-A-2026-24701)
 - Bloqueos del titular antes del lanzamiento: identidad legal y contactos, servicio y mercados, fiscalidad y emisor, condiciones comerciales, encargado y transferencias, plazos de retención, revisión jurídica ES/EN y aprobación de documentos con fecha de vigencia.
+
+
+## Controles locales verificados
+
+La API de laboratorio sirve la versión efectiva ES/EN de documentos sintéticos
+y registra la versión aceptada una vez por usuario. La exportación está limitada
+al sujeto autorizado. El cierre local bloquea el token existente para ese sujeto
+y elimina marcadores de práctica. Conserva referencias contables y aceptaciones
+para que se decida su retención legal. Antes de habilitar derechos reales se debe
+integrar el IdP, validar la supresión o disociación transversal, cancelar la
+renovación en el proveedor y aplicar la caducidad de copias. Los documentos
+contractuales de producción siguen sujetos a aprobación.

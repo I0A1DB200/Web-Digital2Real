@@ -42,7 +42,7 @@ class LocalStore:
             if version != 0:
                 raise ValueError("Unsupported local database version")
             for definition in (
-                "users (subject TEXT PRIMARY KEY)",
+                "users (subject TEXT PRIMARY KEY, closed_at INTEGER)",
                 """resources (
                     id TEXT PRIMARY KEY, title TEXT NOT NULL, payload TEXT NOT NULL,
                     access TEXT NOT NULL CHECK(access IN ('public','registered','premium','internal','admin')),
@@ -79,7 +79,7 @@ class LocalStore:
 
     def user_exists(self, subject):
         with self.transaction() as db:
-            return db.execute("SELECT 1 FROM users WHERE subject = ?", (subject,)).fetchone() is not None
+            return db.execute("SELECT 1 FROM users WHERE subject = ? AND closed_at IS NULL", (subject,)).fetchone() is not None
 
     def resources(self, subject, staff, now, resource_id=None):
         with self.transaction() as db:
@@ -125,11 +125,13 @@ class LocalStore:
 
     def save_bookmark(self, subject, experience, stage):
         with self.transaction(write=True) as db:
-            db.execute(
-                """INSERT INTO bookmarks VALUES (?,?,?)
+            result = db.execute(
+                """INSERT INTO bookmarks
+                   SELECT subject, ?, ? FROM users WHERE subject = ? AND closed_at IS NULL
                    ON CONFLICT(subject,experience) DO UPDATE SET stage=excluded.stage""",
-                (subject, experience, stage),
+                (experience, stage, subject),
             )
+            return result.rowcount == 1
 
     @staticmethod
     def _current_document(db, document, now):
@@ -149,10 +151,19 @@ class LocalStore:
             if not current or current["version"] != version:
                 return False
             db.execute(
-                "INSERT INTO acceptances VALUES (?,?,?,?) ON CONFLICT DO NOTHING",
-                (subject, document, version, now),
+                """INSERT INTO acceptances
+                   SELECT subject, ?, ?, ? FROM users WHERE subject=? AND closed_at IS NULL
+                   ON CONFLICT DO NOTHING""",
+                (document, version, now, subject),
             )
-            return True
+            return db.execute(
+                """SELECT 1 FROM users WHERE subject=? AND closed_at IS NULL""", (subject,),
+            ).fetchone() is not None
+
+    def close_account(self, subject, now):
+        with self.transaction(write=True) as db:
+            db.execute("UPDATE users SET closed_at = ? WHERE subject = ? AND closed_at IS NULL", (now, subject))
+            db.execute("DELETE FROM bookmarks WHERE subject = ?", (subject,))
 
     def export(self, subject):
         with self.transaction() as db:

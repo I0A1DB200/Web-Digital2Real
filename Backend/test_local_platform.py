@@ -1,11 +1,16 @@
 from dataclasses import replace
 from pathlib import Path
+import json
+from time import time
 from tempfile import TemporaryDirectory
 from unittest import TestCase
 
+import jwt
+from cryptography.hazmat.primitives.asymmetric import rsa
 from fastapi.testclient import TestClient
 
 from Backend.local_backup import snapshot
+from Backend.local_identity import AccessTokenVerifier
 from Backend.local_platform import Principal, create_app, resolve_principal
 from Backend.local_store import LocalStore, SubscriptionSnapshot
 
@@ -18,7 +23,7 @@ class LocalPlatformTest(TestCase):
         self.app = create_app(self.store, clock=lambda: self.now)
         self.client = self.enterContext(TestClient(self.app))
         with self.store.transaction(write=True) as db:
-            db.executemany("INSERT INTO users VALUES (?)", [("alice",), ("bob",)])
+            db.executemany("INSERT INTO users(subject) VALUES (?)", [("alice",), ("bob",)])
             db.executemany("INSERT INTO resources VALUES (?,?,?,?,?)", [
                 ("anonymous", "Demo", "public data", "public", None),
                 ("member", "Member", "registered data", "registered", None),
@@ -105,6 +110,36 @@ class LocalPlatformTest(TestCase):
         self.now = 200
         self.assertEqual(self.client.put(path, json={"version": "v1"}).status_code, 409)
         self.assertEqual(self.client.put(path, json={"version": "v2"}).status_code, 204)
+
+    def test_signed_access_token_and_local_closure(self):
+        issuer = "https://issuer.invalid"
+        audience = "local-api"
+        private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        jwk = jwt.algorithms.RSAAlgorithm.to_jwk(private_key.public_key(), as_dict=True)
+        jwk["kid"] = "fixture"
+        jwks = self.store.path.with_name("public-jwks.json")
+        jwks.write_text(json.dumps({"keys": [jwk]}), encoding="utf-8")
+        self.app.state.token_verifier = AccessTokenVerifier(issuer, audience, jwks)
+        now = int(time())
+        claims = {"iss": issuer, "aud": audience, "sub": "alice", "iat": now, "exp": now + 60,
+                  "jti": "fixture", "client_id": "local-client", "admin": True}
+
+        def headers(payload, typ="at+jwt"):
+            token = jwt.encode(payload, private_key, algorithm="RS256", headers={"kid": "fixture", "typ": typ})
+            return {"Authorization": "Bearer " + token}
+
+        self.assertEqual(self.client.get("/api/v1/me/export", headers=headers(claims)).status_code, 200)
+        self.assertEqual(self.client.get("/api/v1/resources/ops", headers=headers(claims)).status_code, 404)
+        for invalid in (headers(claims, "JWT"), headers(dict(claims, aud="other")),
+                        headers(dict(claims, iss="https://other.invalid")),
+                        headers(dict(claims, exp=now - 1))):
+            self.assertEqual(self.client.get("/api/v1/me/export", headers=invalid).status_code, 401)
+        self.store.save_bookmark("alice", "EE-0033", "S1")
+        self.assertEqual(self.client.post("/api/v1/me/closure", headers=headers(claims)).status_code, 204)
+        self.assertEqual(self.client.get("/api/v1/me/export", headers=headers(claims)).status_code, 401)
+        self.assertEqual(self.store.export("alice")["practice_bookmarks"], [])
+        self.assertFalse(self.store.save_bookmark("alice", "EE-0033", "S3"))
+        self.assertFalse(self.store.accept("alice", "terms", "v1", self.now))
 
     def test_snapshot_can_be_restored_without_overwriting_existing_data(self):
         target = self.store.path.with_name("restored.sqlite")

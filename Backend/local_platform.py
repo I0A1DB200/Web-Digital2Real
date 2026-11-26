@@ -13,6 +13,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
+from .local_identity import AccessTokenVerifier
 from .local_store import LocalStore, utc_timestamp
 
 logger = logging.getLogger(__name__)
@@ -28,8 +29,13 @@ class Principal:
     admin: bool = False
 
 
-def resolve_principal() -> Principal | None:
-    return None
+def resolve_principal(request: Request) -> Principal | None:
+    verifier = request.app.state.token_verifier
+    scheme, _, token = request.headers.get("Authorization", "").partition(" ")
+    if verifier is None or scheme.lower() != "bearer":
+        return None
+    subject = verifier.subject(token)
+    return Principal(subject) if subject is not None else None
 
 
 class ResourceSummary(BaseModel):
@@ -52,12 +58,20 @@ class Acceptance(BaseModel):
     version: Identifier
 
 
-def create_app(store: LocalStore | None = None, *, clock=utc_timestamp):
+def create_app(store: LocalStore | None = None, *, clock=utc_timestamp, token_verifier=None):
     if store is None:
         db_path = os.environ.get("D2R_LOCAL_DB")
         if not db_path:
             raise ValueError("D2R_LOCAL_DB is required for the opt-in local API")
         store = LocalStore(Path(db_path))
+        settings = [os.environ.get(name) for name in (
+            "D2R_LOCAL_TOKEN_ISSUER", "D2R_LOCAL_TOKEN_AUDIENCE", "D2R_LOCAL_JWKS_FILE",
+        )]
+        if any(settings):
+            if not all(settings):
+                raise ValueError("Issuer, audience and JWKS file must be configured together")
+            issuer, audience, jwks_file = settings
+            token_verifier = AccessTokenVerifier(issuer, audience, Path(jwks_file))
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -65,6 +79,8 @@ def create_app(store: LocalStore | None = None, *, clock=utc_timestamp):
         yield
 
     app = FastAPI(title="Digital2Real local platform contracts", version="0.1.0", lifespan=lifespan)
+
+    app.state.token_verifier = token_verifier
 
     @app.middleware("http")
     async def disable_shared_caching(request: Request, call_next):
@@ -118,7 +134,8 @@ def create_app(store: LocalStore | None = None, *, clock=utc_timestamp):
     def bookmark(experience_id: ResourceId, body: Bookmark,
                  principal: Annotated[Principal, Depends(require_account)]):
         # Practice bookmarks are user notes. They carry no assessment authority.
-        store.save_bookmark(principal.subject, experience_id, body.stage)
+        if not store.save_bookmark(principal.subject, experience_id, body.stage):
+            raise HTTPException(401, "Authentication required")
         return Response(status_code=204)
 
     @app.get("/api/v1/legal/{document_id}")
@@ -139,5 +156,10 @@ def create_app(store: LocalStore | None = None, *, clock=utc_timestamp):
     @app.get("/api/v1/me/export")
     def export(principal: Annotated[Principal, Depends(require_account)]):
         return store.export(principal.subject)
+
+    @app.post("/api/v1/me/closure", status_code=204)
+    def close_account(principal: Annotated[Principal, Depends(require_account)]):
+        store.close_account(principal.subject, clock())
+        return Response(status_code=204)
 
     return app
